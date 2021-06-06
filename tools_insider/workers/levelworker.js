@@ -50,13 +50,13 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                         const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
                         mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         } else {
-                            message.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         }
                     } else {
                         if (cache.canal_id) {
                             mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
                         } else {
-                            message.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         }
                     }
                 }
