@@ -5,7 +5,6 @@
   "main": "app.js",
   "dependencies": {
     "@jimp/plugin-circle": "^0.16.1",
-    "crypto": "^1.0.1",
     "discord.js": "^12.5.2",
     "emoji-strip": "^1.0.1",
     "ffmpeg-static": "^4.3.0",
