@@ -15,12 +15,12 @@ const { globalAgent } = require('http');
 
 
 //Services Workers
-const guildcreate = require('./tools/workers/guildcreate');
-const guilddelete = require('./tools/workers/guilddelete');
-const guildmemberadd = require('./tools/workers/guildmemberadd');
-const guildmemberremove = require('./tools/workers/guildmemberremove');
-const levelworker = require('./tools/workers/levelworker');
-const antispamworker = require('./tools/workers/antispamworker');
+const guildcreate = require('./tools_insider/workers/guildcreate');
+const guilddelete = require('./tools_insider/workers/guilddelete');
+const guildmemberadd = require('./tools_insider/workers/guildmemberadd');
+const guildmemberremove = require('./tools_insider/workers/guildmemberremove');
+const levelworker = require('./tools_insider/workers/levelworker');
+const antispamworker = require('./tools_insider/workers/antispamworker');
 console.log('[OK] Services Workers Cargados');
 
 //Versioning Parameters
@@ -83,7 +83,7 @@ console.log('Cargando comandos...');
 
 client.commands = new Collection();
 
-const commandFiles = fs.readdirSync('./tools').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./tools_insider').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
     console.log('[··] Cargando ' + file);
