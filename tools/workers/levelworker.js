@@ -46,10 +46,18 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                     const toexport = nivold.replace('{nivel-nuevo}', `${niv}`);
                     if (cache.cartelactivado != 0) {
                         var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + global.id + '.jpg');
-                        const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-                        mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                        if (cache.canal_id) {
+                            const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                        } else {
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                        }
                     } else {
-                        mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
+                        if (cache.canal_id) {
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
+                        } else {
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                        }
                     }
                 }
                 async function cocina() {
