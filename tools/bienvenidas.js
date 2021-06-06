@@ -80,7 +80,7 @@ module.exports = {
                             final.push('"'+integer+'"');
                         })
                         final = "[" + final.toString()+"]";
-                        var sql = "UPDATE `servidores` SET `bienvenida_roles` = '" + final + "' WHERE `servidores`.`guild` = " + global.id;
+                        var sql = "UPDATE `servidores` SET `bienvenida_roles_user` = '" + final + "' WHERE `servidores`.`guild` = " + global.id;
                         con.query(sql);
                         message.channel.send(':white_check_mark: Se han actualizado los roles a otorgar correctamente.');
                         break;
