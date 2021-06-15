@@ -4,15 +4,15 @@ module.exports = {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
                 switch (args[1]) {
-                    /*case 'skin':
+                    case 'aspecto':
                         if (args[2] <= 9 && args[1] != 0) {
                             var sql = "UPDATE `servidores` SET `niveles_aspecto` = '" + args[2] + "', `niveles_fondo_custom` = '" + args[3] + "' WHERE `servidores`.`guild` = " + global.id;
-                            message.channel.send(' se ha actualizado la skin del cartel de niveles');
+                            message.channel.send(' se ha actualizado el aspecto del cartel de niveles');
                             con.query(sql);
                         } else {
-                            message.channel.send(' parece que el ID de la skin que has introducido es inválida. Consulta las skins disponibles en https://wiredpenguin.duoestudios.es/modulos/niveles#skins');
+                            message.channel.send(' parece que el ID del aspecto que has introducido es inválida. Consulta los aspectos disponibles en https://wiredpenguin.duoestudios.es/gestion-del-servidor/niveles#skins');
                         }
-                        break;*/
+                        break;
                     case 'dificultad':
                         if (args[2]) {
                             var sql = "UPDATE `servidores` SET `niveles_dificultad` = '" + parseInt(args[2]) + "' WHERE `servidores`.`guild` = " + global.id;
@@ -45,7 +45,7 @@ module.exports = {
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://wiredpenguin.duoestudios.es/modulos/niveles#comandos');
+                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://wiredpenguin.duoestudios.es/gestion-del-servidor/niveles#comandos');
                         break;
                 }
             } else {

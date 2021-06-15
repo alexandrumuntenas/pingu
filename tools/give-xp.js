@@ -30,13 +30,13 @@ module.exports = {
                                 message.channel.send(':white_check_mark: Se ha establecido los puntos de experiencia de <@' + user.id + '> a `' + exp + '` y el nivel a `' + niv + '`');
                             });
                         } else {
-                            message.channel.send(":information_source: El segundo argumento debe ser un @usuario :arrow_right: https://wiredpenguin.duoestudios.es/modulos/niveles#moderadores");
+                            message.channel.send(":information_source: El segundo argumento debe ser un @usuario :arrow_right: https://wiredpenguin.duoestudios.es/compromiso-y-diversion/niveles#moderadores");
                         }
                     } else {
-                        message.channel.send(":scream: ¿A donde vás flipado? Introduce un valor númerico entre 0 - 9999 :arrow_right: https://wiredpenguin.duoestudios.es/modulos/niveles#moderadores");
+                        message.channel.send(":scream: ¿A donde vás flipado? Introduce un valor númerico entre 0 - 9999 :arrow_right: https://wiredpenguin.duoestudios.es/compromiso-y-diversion/niveles#moderadores");
                     }
                 } else {
-                    message.channel.send(":information_source: El primer argumento debe ser un valor númerico :arrow_right: https://wiredpenguin.duoestudios.es/modulos/niveles#moderadores");
+                    message.channel.send(":information_source: El primer argumento debe ser un valor númerico :arrow_right: https://wiredpenguin.duoestudios.es/compromiso-y-diversion/niveles#moderadores");
                 }
             }
         } else {

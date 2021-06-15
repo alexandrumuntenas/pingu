@@ -26,7 +26,7 @@ module.exports = {
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de despedidas :arrow_right:  https://wiredpenguin.duoestudios.es/modulos/despedidas');
+                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de despedidas :arrow_right:  https://wiredpenguin.duoestudios.es/gestion-del-servidor/despedidas');
                         break;
                 }
             } else {
@@ -38,7 +38,7 @@ module.exports = {
                     var fin = 1;
                     var response = 'activadas';
                 }
-                var sql = "UPDATE `servidores` SET `salida_activado` = '"+fin+"' WHERE `servidores`.`guild` = " + global.id;
+                var sql = "UPDATE `servidores` SET `salida_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
                 message.channel.send(':white_check_mark: Las despedidas han sido ' + response + '.');
                 con.query(sql);
             }

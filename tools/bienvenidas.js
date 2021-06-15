@@ -77,15 +77,15 @@ module.exports = {
                         var roles = message.mentions.roles.array();
                         roles.forEach(i => {
                             var integer = i.id;
-                            final.push('"'+integer+'"');
+                            final.push('"' + integer + '"');
                         })
-                        final = "[" + final.toString()+"]";
+                        final = "[" + final.toString() + "]";
                         var sql = "UPDATE `servidores` SET `bienvenida_roles_user` = '" + final + "' WHERE `servidores`.`guild` = " + global.id;
                         con.query(sql);
                         message.channel.send(':white_check_mark: Se han actualizado los roles a otorgar correctamente.');
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de bienvenidas :arrow_right:  https://wiredpenguin.duoestudios.es/modulos/bienvenidas');
+                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de bienvenidas :arrow_right:  https://wiredpenguin.duoestudios.es/gestion-del-servidor/bienvenidas');
                         break;
                 }
             } else {
