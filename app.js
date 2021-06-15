@@ -70,9 +70,10 @@ var con = mysql.createConnection({
     charset: "utf8_unicode_ci",
 });
 con.connect(function (err) {
-    console.log('Me he conectado a MariaDB! Continuando el inicio del script...');
     if (err) {
         console.log(err)
+    } else {
+        console.log('Me he conectado a MariaDB! Continuando el inicio del script...');
     }
 });
 
@@ -128,7 +129,7 @@ client.on('guildMemberAdd', member => {
     guildmemberadd(client, con, Jimp, downloader, webp, fs, MessageAttachment, member);
 });
 
-client.on('guildMemberRemove', member => { 
+client.on('guildMemberRemove', member => {
     guildmemberremove(client, con, member);
 });
 
@@ -179,8 +180,8 @@ client.on('message', (message) => {
                     message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
                 }
             }
-                
-            if (result[0].aspam_activado != 0){
+
+            if (result[0].aspam_activado != 0) {
                 antispamworker(message);
             }
             //Leveling
