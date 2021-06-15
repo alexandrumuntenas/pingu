@@ -6,7 +6,7 @@ module.exports = function (con, guild) {
     con.query(duplicatedentry, function (err, result) {
         if (!result[0]) {
             con.query(sql, function (err, result) {
-                if (err) console.log(err);
+                if (err) throw err;
             });
         }
     });
