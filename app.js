@@ -146,7 +146,7 @@ client.on('message', (message) => {
     global.sql.config = "SELECT * FROM `servidores` WHERE guild = '" + global.id + "'";
     //Conectamos con Mariadb y obtenemos datos del servidor
     con.query(global.sql.config, function (err, result) {
-        if (result[0]) {
+        if (typeof result[0] !== 'undefined') {
             global.prefix = result[0].prefix;
             var id = global.id;
             //Comprobamos si el mensaje ha comenzado con prefijo
