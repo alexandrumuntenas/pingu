@@ -12,13 +12,16 @@ module.exports = {
                     })
                     break;
                 case 'eliminar':
-                    var delcmd = "DELETE FROM `comandos_custom` WHERE `cmd` = '" + args[2] + "'";
+                    var delcmd = "DELETE FROM `comandos_custom` WHERE `cmd` = '" + args[2] + "' AND `guild` = " + global.id;
                     con.query(delcmd, function (err) {
                         if (err) throw err;
                         message.channel.send(':white_check_mark: Se ha eliminado correctamente el comando personalizado `' + args[2] + '`');
                     })
                     break;
                 case 'listar':
+                    break;
+                default:
+                    message.channel.send(':information_source: No has indicado una opción correcta :arrow_right: https://wiredpenguin.duoestudios.es/gestion-del-servidor/comandos-personalizados')
                     break;
             }
         }
