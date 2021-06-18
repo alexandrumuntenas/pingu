@@ -12,6 +12,11 @@ module.exports = {
                     })
                     break;
                 case 'eliminar':
+                    var delcmd = "DELETE FROM `comandos_custom` WHERE `cmd` = '" + args[2] + "'";
+                    con.query(delcmd, function (err) {
+                        if (err) throw err;
+                        message.channel.send(':white_check_mark: Se ha eliminado correctamente el comando personalizado `' + args[2] + '`');
+                    })
                     break;
                 case 'listar':
                     break;
