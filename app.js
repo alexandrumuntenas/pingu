@@ -15,12 +15,12 @@ const { globalAgent } = require('http');
 
 
 //Services Workers
-const guildcreate = require('./tools/workers/guildcreate');
-const guilddelete = require('./tools/workers/guilddelete');
-const guildmemberadd = require('./tools/workers/guildmemberadd');
-const guildmemberremove = require('./tools/workers/guildmemberremove');
-const levelworker = require('./tools/workers/levelworker');
-const antispamworker = require('./tools/workers/antispamworker');
+const guildcreate = require('./services/guildcreate');
+const guilddelete = require('./services/guilddelete');
+const guildmemberadd = require('./services/guildmemberadd');
+const guildmemberremove = require('./services/guildmemberremove');
+const levelworker = require('./services/levelworker');
+const antispamworker = require('./services/antispamworker');
 console.log('[OK] Services Workers Cargados');
 
 //Versioning Parameters
