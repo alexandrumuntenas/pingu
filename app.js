@@ -171,7 +171,19 @@ client.on('message', (message) => {
             var contenido = tolower.toLowerCase();
 
             if (args) {
-                if (!client.commands.has(args[0])) return;
+                if (!client.commands.has(args[0])) {
+                    var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
+                    con.query(consultacomandoscustom, function (err, result) {
+                        if (typeof result[0] !== 'undefined') {
+                            var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
+                            con.query(buscarcomando, function (err, result) {
+                                if (typeof result[0] !== 'undefined') {
+                                    message.channel.send(result[0].returns);
+                                }
+                            });
+                        }
+                    });
+                };
 
                 try {
                     client.commands.get(args[0]).execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
