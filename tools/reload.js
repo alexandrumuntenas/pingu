@@ -32,13 +32,13 @@ module.exports = {
             }
             if (args[1] == 'service') {
                 console.log('[LO] Intentado recargar el servicio ' + args[2]);
-                const commandName = args[2].toLowerCase();
+                const commandName = args[0].toLowerCase();
                 const command = message.client.commands.get(commandName)
                     || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
                 if (!command) {
                     console.log('[ERR] Intentado recargar el servicio ' + args[2]);
-                    return message.channel.send(`No existe ningún worker con ese nombre o alias \`${commandName}\`, ${message.author}!`);
+                    return message.channel.send(`No existe ningún servicio con ese nombre o alias \`${commandName}\`, ${message.author}!`);
                 }
 
                 const commandFolders = fs.readdirSync('./services/');
