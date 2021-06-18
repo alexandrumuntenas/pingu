@@ -4,7 +4,7 @@ module.exports = {
         if (args[1]) {
             switch (args[1]) {
                 case 'crear':
-                    var motivo = message.content.replace(global.prefix + 'ccmd crear ', '');
+                    var motivo = message.content.replace(global.prefix + 'ccmd crear ' + args[1] + ' ', '');
                     var crearccmd = "INSERT INTO `comandos_custom` (`guild`, `cmd`, `returns`) VALUES ('" + global.id + "', '" + args[2] + "', '" + motivo + "')";
                     con.query(crearccmd, function (err) {
                         if (err) throw err;
