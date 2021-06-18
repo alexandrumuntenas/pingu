@@ -171,7 +171,14 @@ client.on('message', (message) => {
             var contenido = tolower.toLowerCase();
 
             if (args) {
-                if (!client.commands.has(args[0])) {
+                if (client.commands.has(args[0])) {
+                    try {
+                        client.commands.get(args[0]).execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
+                    } catch (error) {
+                        console.error(error);
+                        message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
+                    }
+                } else {
                     var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
                     con.query(consultacomandoscustom, function (err, result) {
                         if (typeof result[0] !== 'undefined') {
@@ -184,13 +191,6 @@ client.on('message', (message) => {
                         }
                     });
                 };
-
-                try {
-                    client.commands.get(args[0]).execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
-                } catch (error) {
-                    console.error(error);
-                    message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
-                }
             }
 
             if (result[0].aspam_activado != 0) {
