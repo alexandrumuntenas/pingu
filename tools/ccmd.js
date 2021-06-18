@@ -23,8 +23,6 @@ module.exports = {
                         message.channel.send(':information_source: No has indicado una opción correcta :arrow_right: https://wiredpenguin.duoestudios.es/gestion-del-servidor/comandos-personalizados')
                         break;
                 }
-            } else {
-                message.channel.send(':tools: Estamos aún trabajando en la función "Listar comandos personalizados disponibles"');
             }
         } else {
             message.channel.send(':x: No tienes permisos suficientes para ejecutar este comando');
