@@ -1,6 +1,5 @@
 module.exports = {
     name: 'rank',
-    aliases: 'level',
     execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (result[0].niveles_activado != 0) {
             if (message.mentions.users.first()) {
@@ -113,7 +112,7 @@ module.exports = {
             };
         } else {
             if (message.member.hasPermission('ADMINISTRATOR')) {
-                message.channel.send(":information_source: Este servidor tiene desactivado los leveling. Para activarlos, utiliza el siguiente comando: `" + global.prefix + "settings enable leveling`");
+                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utiliza el siguiente comando: `" + global.prefix + "niveles`");
             } else {
                 message.reply(" este servidor tiene desactivado los leveling");
             }
