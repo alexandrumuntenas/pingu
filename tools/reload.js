@@ -1,12 +1,10 @@
-const fs = require('fs');
-
 module.exports = {
     name: 'reload',
     execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (message.author.id === '722810818823192629') {
             if (args[1] == 'cmd') {
                 console.log('[LO] Intentado recargar el comando ' + args[2]);
-                const commandName = args[2].toLowerCase();
+                const commandName = args[0].toLowerCase();
                 const command = message.client.commands.get(commandName)
                     || message.client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
