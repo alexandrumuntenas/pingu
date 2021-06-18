@@ -53,7 +53,9 @@ module.exports = {
                     console.log('[OK] Recargar el servicio ' + args[2]);
                 } catch (error) {
                     console.log('[ERR] Intentado recargar el servicio ' + args[2]);
-                    message.channel.send(`se ha producido un error recargando el servicio \`${args[2]}\`:\n\`${error.message}\``);
+                    if (error.code === "MODULE_NOT_FOUND") {
+                        message.channel.send(`:x: El servicio especificado no existe.`);
+                    }
                 }
             }
         } else {
