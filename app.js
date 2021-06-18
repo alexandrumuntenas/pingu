@@ -185,7 +185,7 @@ client.on('message', (message) => {
                             var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
                             con.query(buscarcomando, function (err, result) {
                                 if (typeof result[0] !== 'undefined') {
-                                    message.channel.send(result[0].returns);
+                                    message.channel.send(":mega: " + result[0].returns);
                                 }
                             });
                         }
