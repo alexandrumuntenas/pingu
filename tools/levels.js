@@ -5,7 +5,6 @@ module.exports = {
             var dif = result[0].niveles_dificultad;
             var lookupfortop10 = "SELECT * FROM leveling WHERE guild = " + global.id + " ORDER BY nivel DESC LIMIT 10";
             con.query(lookupfortop10, function (err, rows, result) {
-                console.log(rows);
                 if (result) {
                     if (typeof result[0] !== 'undefined') {
                         var embed = new MessageEmbed();
