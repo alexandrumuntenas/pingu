@@ -19,8 +19,8 @@ const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
 const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
-const levelworker = require('./services/levelworker');
-const antispamworker = require('./services/antispamworker');
+const levelworker = require('./services/leveling');
+const antispamworker = require('./services/antispam');
 console.log('[OK] Services Workers Cargados');
 
 //Versioning Parameters
@@ -189,6 +189,8 @@ client.on('message', (message) => {
                                         message.channel.send(":mega: " + result[0].returns);
                                     }
                                 });
+                            } else {
+                                // Contestar a mensajes personalizdos
                             }
                         });
                     };
