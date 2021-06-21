@@ -15,7 +15,7 @@ module.exports = {
                             embed.addFields({ name: usuario.username, value: "Nivel: " + row.nivel + " | Experiencia: " + ((parseInt(row.nivel) * (dif * 100)) + parseInt(row.experiencia)) })
                         });
                     };
-                    embed.setFooter('Para obtener el TOP 10, Wired Penguin ordena de forma descendente los datos de nivel registrados.')
+                    embed.setFooter('Para obtener el TOP 10, Wired Penguin ordena de forma descendente los datos de nivel registrados en función del nivel.')
                     message.channel.send(embed);
                 }
             });
