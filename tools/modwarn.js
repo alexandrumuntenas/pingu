@@ -29,7 +29,7 @@ module.exports = {
                         break;
                         break;
                     default:
-                        message.reply(':information_source: No has indicado una configuración válida. Por favor, consulta la documentación :arrow_right: https://wiredpenguin.duoestudios.es/gestion-del-servidor/moderador#infracciones');
+                        message.reply(':information_source: No has indicado una configuración válida. Por favor, consulta la documentación :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/moderador#infracciones');
                         break;
                 }
             } else {

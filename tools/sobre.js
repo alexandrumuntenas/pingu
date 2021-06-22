@@ -46,7 +46,7 @@ module.exports = {
                     },
                     {
                         name: 'Documentación',
-                        value: `https://wiredpenguin.duoestudios.es`,
+                        value: `https://pingu.duoestudios.es`,
                     },
                     {
                         name: 'Version',

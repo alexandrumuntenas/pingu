@@ -101,7 +101,7 @@ client.on('ready', () => {
         activity: {
             name: '1 y 0',
             type: 'WATCHING',
-            url: 'https://wiredpenguin.duoestudios.es'
+            url: 'https://pingu.duoestudios.es'
         }
     })
     setInterval(() => {
@@ -110,7 +110,7 @@ client.on('ready', () => {
             activity: {
                 name: '1 y 0',
                 type: 'WATCHING',
-                url: 'https://wiredpenguin.duoestudios.es'
+                url: 'https://pingu.duoestudios.es'
             }
         })
     }, 3600000);

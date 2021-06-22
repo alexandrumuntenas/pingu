@@ -26,7 +26,7 @@ module.exports = {
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de despedidas :arrow_right:  https://wiredpenguin.duoestudios.es/gestion-del-servidor/despedidas');
+                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de despedidas :arrow_right:  https://pingu.duoestudios.es/gestion-del-servidor/despedidas');
                         break;
                 }
             } else {

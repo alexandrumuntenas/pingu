@@ -20,7 +20,7 @@ module.exports = {
                         })
                         break;
                     default:
-                        message.channel.send(':information_source: No has indicado una opción correcta :arrow_right: https://wiredpenguin.duoestudios.es/gestion-del-servidor/comandos-personalizados')
+                        message.channel.send(':information_source: No has indicado una opción correcta :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/comandos-personalizados')
                         break;
                 }
             }

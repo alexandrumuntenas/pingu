@@ -10,7 +10,7 @@ module.exports = {
                             message.channel.send(' se ha actualizado el aspecto del cartel de niveles');
                             con.query(sql);
                         } else {
-                            message.channel.send(' parece que el ID del aspecto que has introducido es inválida. Consulta los aspectos disponibles en https://wiredpenguin.duoestudios.es/gestion-del-servidor/niveles#skins');
+                            message.channel.send(' parece que el ID del aspecto que has introducido es inválida. Consulta los aspectos disponibles en https://pingu.duoestudios.es/gestion-del-servidor/niveles#skins');
                         }
                         break;
                     case 'dificultad':
@@ -45,7 +45,7 @@ module.exports = {
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://wiredpenguin.duoestudios.es/gestion-del-servidor/niveles#comandos');
+                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/niveles#comandos');
                         break;
                 }
             } else {

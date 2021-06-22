@@ -85,7 +85,7 @@ module.exports = {
                         message.channel.send(':white_check_mark: Se han actualizado los roles a otorgar correctamente.');
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de bienvenidas :arrow_right:  https://wiredpenguin.duoestudios.es/gestion-del-servidor/bienvenidas');
+                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de bienvenidas :arrow_right:  https://pingu.duoestudios.es/gestion-del-servidor/bienvenidas');
                         break;
                 }
             } else {
