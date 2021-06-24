@@ -1,12 +1,12 @@
 module.exports = {
     name: 'infractions',
-    execute(libraries) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     const user = message.mentions.users.first();
-                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + data.server.id + "' AND `user` = '" + user.id + "' LIMIT 5";
-                    var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `infracciones` WHERE `guild` = '" + data.server.id + "' AND `user` = '" + user.id + "'";
+                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "' LIMIT 5";
+                    var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "'";
 
                     con.query(verinfraccionescantidad, function (err, result) {
                         var ultimas = result[0].total;
@@ -26,7 +26,7 @@ module.exports = {
                         })
                     })
                 } else {
-                    message.channel.send(':information_source: no has mencionado a ningún usuario. Uso: `' + data.server.prefix + 'infractions <usuario>`');
+                    message.channel.send(':information_source: no has mencionado a ningún usuario. Uso: `' + global.server.prefix + 'infractions <usuario>`');
                 }
             }
         } else {

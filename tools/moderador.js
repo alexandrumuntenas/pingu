@@ -1,6 +1,6 @@
 module.exports = {
     name: 'moderador',
-    execute(libraries) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             var valor = result[0].moderador_activado;
             if (valor == 1) {
@@ -8,7 +8,7 @@ module.exports = {
             } else {
                 var fin = 1;
             }
-            var sql = "UPDATE `servidores` SET `moderador_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + data.server.id;
+            var sql = "UPDATE `servidores` SET `moderador_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
             if (fin == 0) {
                 var response = 'desactivado';
             } else {

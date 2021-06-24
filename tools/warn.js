@@ -1,19 +1,19 @@
 module.exports = {
     name: 'warn',
-    execute(libraries) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 var array = message.mentions.users.array();
                 message.mentions.users.array().forEach(user => {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };
                     if (cache.activado != 0) {
-                        var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + data.server.id + "'";
+                        var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
                         con.query(consultarcantidad, function (err, result) {
-                            var infraccion = message.content.replace(data.server.prefix + 'warn ', '');
+                            var infraccion = message.content.replace(global.server.prefix + 'warn ', '');
                             array.forEach(user => {
                                 infraccion = infraccion.replace('<@!' + user.id + '>', '');
                             })
-                            var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + data.server.id + "','" + infraccion + "')";
+                            var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
                             con.query(nuevainfraccion);
                             var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(infraccion);
                             message.channel.send(embed);
@@ -43,11 +43,11 @@ module.exports = {
                             }
                         });
                     } else {
-                        var infraccion = message.content.replace(data.server.prefix + 'mwarn ', '');
+                        var infraccion = message.content.replace(global.server.prefix + 'mwarn ', '');
                         array.forEach(user => {
                             infraccion = infraccion.replace('<@!' + user.id + '>', '');
                         })
-                        var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + data.server.id + "','" + infraccion + "')";
+                        var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
                         con.query(nuevainfraccion);
                         var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(infraccion);
                         message.channel.send(embed);

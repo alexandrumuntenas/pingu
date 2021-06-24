@@ -1,6 +1,6 @@
 module.exports = {
     name: 'embed',
-    execute(libraries) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (message.mentions.channels.first()) {
                 var canal = message.mentions.channels.first();
@@ -26,7 +26,7 @@ module.exports = {
                         message.channel.send(respuesta);
                     });
             } else {
-                message.channel.send(':information_source: Te falta especificar un canal. Uso: `' + data.server.prefix + 'embed <canal>`');
+                message.channel.send(':information_source: Te falta especificar un canal. Uso: `' + global.server.prefix + 'embed <canal>`');
             }
         } else {
             message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')

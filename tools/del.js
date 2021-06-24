@@ -1,6 +1,6 @@
 module.exports = {
     name: 'del',
-    execute(libraries) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (args[1]) {
@@ -13,10 +13,10 @@ module.exports = {
                             });
 
                     } else {
-                        message.channel.send(':information_source: Introduce un valor entre 1-99. Por ejemplo: ' + data.server.prefix + 'del 65');
+                        message.channel.send(':information_source: Introduce un valor entre 1-99. Por ejemplo: ' + global.server.prefix + 'del 65');
                     }
                 } else {
-                    message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + data.server.prefix + 'del <cantidad>`');
+                    message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'del <cantidad>`');
                 }
             }
         } else {
