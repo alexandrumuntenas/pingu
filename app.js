@@ -62,7 +62,6 @@ async function comprobarcarpetas() {
 var con = mysql.createConnection({
     host: "localhost",
     user: "wiredpenguin",
-    port: "30000",
     password: "",
     database: "wiredpenguin",
     charset: "utf8_unicode_ci",
