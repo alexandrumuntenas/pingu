@@ -136,6 +136,7 @@ client.on('message', (message) => {
 
     data = [];
     data.server = [];
+    data.user = [];
     data.server.id = message.guild.id;
     data.server.name = message.guild.name;
     data.user.id = message.author.id;
