@@ -1,4 +1,4 @@
-module.exports = function (client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+module.exports = function (client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment) {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
     if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
     global = [];
