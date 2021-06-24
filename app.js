@@ -164,7 +164,7 @@ client.on('message', (message) => {
                 var tolower = message.content;
                 var contenido = tolower.toLowerCase();
 
-                const libraries = args, client, con, contenido, data, downloader, emojiStrip, fetch, fs, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp;
+                var libraries = args, client, con, contenido, data, downloader, emojiStrip, fetch, fs, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp;
 
                 if (args) {
                     if (client.commands.has(args[0])) {
