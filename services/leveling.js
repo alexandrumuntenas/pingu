@@ -1,8 +1,8 @@
-module.exports = function (result, client, con, Jimp, downloader, webp, message, MessageAttachment, global) {
+module.exports = function (result, client, con, Jimp, downloader, webp, message, MessageAttachment, data) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_aspecto };
     var dif = result[0].niveles_dificultad;
     // Si no coincide con ningún comando, pasamos al system de leveling
-    con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
+    con.query("SELECT * FROM `leveling` WHERE guild = '" + data.server.id + "' AND user = '" + message.author.id + "'", function (err, result) {
         if (result[0]) {
             var exp = parseInt(result[0].experiencia);
             var niv = parseInt(result[0].nivel);
@@ -35,7 +35,7 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                         image.composite(top, 39, 32);
                         image.print(font, 300, 55, (niv - 1) + " -> " + niv);
                         image.print(font, 300, 155, 'Nuevo nivel');
-                        image.writeAsync('./usuarios/leveling/' + message.author.id + '_' + global.id + '.jpg');
+                        image.writeAsync('./usuarios/leveling/' + message.author.id + '_' + data.server.id + '.jpg');
                         enviar();
                     });
                 }
@@ -45,18 +45,18 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                     const nivold = member.replace('{nivel-antiguo}', `${niv - 1}`);
                     const toexport = nivold.replace('{nivel-nuevo}', `${niv}`);
                     if (cache.cartelactivado != 0) {
-                        var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + global.id + '.jpg');
+                        var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + data.server.id + '.jpg');
                         if (cache.canal_id) {
                             const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + data.server.prefix + "rank`", attachament);
                         } else {
-                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + data.server.prefix + "rank`", attachament);
                         }
                     } else {
                         if (cache.canal_id) {
-                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + data.server.prefix + "rank`");
                         } else {
-                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + data.server.prefix + "rank`", attachament);
                         }
                     }
                 }
@@ -72,10 +72,10 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                 }
                 cocina();
             }
-            var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + global.id + "'";
+            var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + data.server.id + "'";
             con.query(actualizardatos);
         } else {
-            var newuser = "INSERT INTO `leveling` (`user`, `guild`) VALUES ('" + message.author.id + "', '" + global.id + "')";
+            var newuser = "INSERT INTO `leveling` (`user`, `guild`) VALUES ('" + message.author.id + "', '" + data.server.id + "')";
             con.query(newuser);
         }
     });

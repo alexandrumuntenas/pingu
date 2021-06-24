@@ -1,6 +1,6 @@
 module.exports = {
     name: 'anti-spam',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             var valor = result[0].aspam_activado;
             if (valor == 1) {
@@ -10,7 +10,7 @@ module.exports = {
                 var fin = 1;
                 var response = 'activado';
             }
-            var sql = "UPDATE `servidores` SET `aspam_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
+            var sql = "UPDATE `servidores` SET `aspam_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + data.server.id;
             message.channel.send(':white_check_mark: He ' + response + ' correctamente el modo anti-spam.');
             con.query(sql);
         } else {

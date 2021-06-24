@@ -1,6 +1,6 @@
 module.exports = {
     name: 'warn',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
@@ -8,11 +8,11 @@ module.exports = {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };
                     if (args[2]) {
                         if (cache.activado != 0) {
-                            var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
+                            var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + data.server.id + "'";
                             con.query(consultarcantidad, function (err, result) {
-                                var infraccion = message.content.replace(global.prefix + 'warn ', '');
+                                var infraccion = message.content.replace(data.server.prefix + 'warn ', '');
                                 var infraccion = infraccion.replace('<@!' + user.id + '>', '');
-                                var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
+                                var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + data.server.id + "','" + infraccion + "')";
                                 con.query(nuevainfraccion);
                                 var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(infraccion);
                                 message.channel.send(embed);
@@ -42,18 +42,18 @@ module.exports = {
                                 }
                             });
                         } else {
-                            var infraccion = message.content.replace(global.prefix + 'warn ', '');
+                            var infraccion = message.content.replace(data.server.prefix + 'warn ', '');
                             var infraccion = infraccion.replace('<@!' + user.id + '>', '');
-                            var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
+                            var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + data.server.id + "','" + infraccion + "')";
                             con.query(nuevainfraccion);
                             var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(infraccion);
                             message.channel.send(embed);
                         }
                     } else {
-                        message.channel.send(':information_source: Te falta el motivo de la infracción. Uso: `' + global.prefix + 'warn <usuario> <motivo>`');
+                        message.channel.send(':information_source: Te falta el motivo de la infracción. Uso: `' + data.server.prefix + 'warn <usuario> <motivo>`');
                     }
                 } else {
-                    message.channel.send(':information_source: No has mencionado a ningún usuario y no has introducido un motivo. Uso: `' + global.prefix + 'warn <usuario> <motivo>`');
+                    message.channel.send(':information_source: No has mencionado a ningún usuario y no has introducido un motivo. Uso: `' + data.server.prefix + 'warn <usuario> <motivo>`');
                 }
             }
         } else {

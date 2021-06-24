@@ -1,6 +1,6 @@
 module.exports = {
     name: 'rank',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
         if (result[0].niveles_activado != 0) {
             if (message.mentions.users.first()) {
                 var user = message.mentions.users.first();
@@ -10,7 +10,7 @@ module.exports = {
                 }
                 var dif = result[0].niveles_dificultad;
                 var cache = { "aspecto": result[0].niveles_aspecto }
-                var sql = "SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'";
+                var sql = "SELECT * FROM `leveling` WHERE guild = '" + data.server.id + "' AND user = '" + user.id + "'";
                 // Si no coincide con ningún comando, pasamos al system de leveling
                 con.query(sql, function (err, result) {
                     if (result[0]) {
@@ -40,12 +40,12 @@ module.exports = {
                                 image.composite(top, 39, 32);
                                 image.print(font, 300, 55, "Nivel: " + niv);
                                 image.print(font, 300, 155, "XP: " + ((niv * 100) + exp));
-                                image.writeAsync('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg')
+                                image.writeAsync('./usuarios/leveling/' + user.id + '_' + data.server.id + '_rank.jpg')
                                 enviar();
                             });
                         }
                         function enviar() {
-                            var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                            var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + data.server.id + '_rank.jpg');
                             message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + niv + "` y dispone de `" + ((niv * 100) + exp) + "` puntos de experiencia", attachament);
                         }
                         async function cocina() {
@@ -62,7 +62,7 @@ module.exports = {
                 var dif = result[0].niveles_dificultad;
                 var cache = { "aspecto": result[0].niveles_aspecto }
                 // Si no coincide con ningún comando, pasamos al system de leveling
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + data.server.id + "' AND user = '" + message.author.id + "'", function (err, result) {
                     if (result[0]) {
                         var exp = parseInt(result[0].experiencia);
                         var niv = parseInt(result[0].nivel);
@@ -90,12 +90,12 @@ module.exports = {
                                 image.composite(top, 39, 32);
                                 image.print(font, 300, 55, "Nivel: " + niv);
                                 image.print(font, 300, 155, "XP: " + ((niv * 100) + exp));
-                                image.writeAsync('./usuarios/leveling/' + message.author.id + '_' + global.id + '_rank.jpg')
+                                image.writeAsync('./usuarios/leveling/' + message.author.id + '_' + data.server.id + '_rank.jpg')
                                 enviar();
                             });
                         }
                         function enviar() {
-                            var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + global.id + '_rank.jpg');
+                            var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + data.server.id + '_rank.jpg');
                             message.reply(" te encuentras en el nivel `" + niv + "` y dispones de `" + ((niv * 100) + exp) + "` puntos de experiencia", attachament);
 
                         }
@@ -112,7 +112,7 @@ module.exports = {
             };
         } else {
             if (message.member.hasPermission('ADMINISTRATOR')) {
-                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utiliza el siguiente comando: `" + global.prefix + "niveles`");
+                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utiliza el siguiente comando: `" + data.server.prefix + "niveles`");
             } else {
                 message.reply(" este servidor tiene desactivado los leveling");
             }

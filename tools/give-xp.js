@@ -1,10 +1,10 @@
 module.exports = {
     name: 'give-xp',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].niveles_activado != 0) {
                 function mf2(nivel, experiencia, user) {
-                    var sql_actualizar_xp_dar = "UPDATE `leveling` SET `experiencia` = '" + experiencia + "', `nivel` = '" + nivel + "' WHERE `leveling`.`user` = " + user.id + " AND `leveling`.`guild` = " + global.id;
+                    var sql_actualizar_xp_dar = "UPDATE `leveling` SET `experiencia` = '" + experiencia + "', `nivel` = '" + nivel + "' WHERE `leveling`.`user` = " + user.id + " AND `leveling`.`guild` = " + data.server.id;
                     con.query(sql_actualizar_xp_dar);
                 }
                 if (parseInt(args[1])) {
@@ -12,7 +12,7 @@ module.exports = {
                         if (message.mentions.users.first()) {
                             const user = message.mentions.users.first();
                             var dif = result[0].niveles_dificultad;
-                            var sql_niveles_dar = "SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'";
+                            var sql_niveles_dar = "SELECT * FROM `leveling` WHERE guild = '" + data.server.id + "' AND user = '" + user.id + "'";
                             con.query(sql_niveles_dar, function (err, result) {
                                 var exp = parseInt(result[0].experiencia) + (parseInt(result[0].nivel * (dif * 100)));
                                 var exp = exp + parseInt(args[1]);

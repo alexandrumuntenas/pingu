@@ -1,17 +1,17 @@
 module.exports = {
     name: 'modwarn',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
                 switch (args[1]) {
                     case 'cantidad':
                         if (args[2]) {
                             var cantidad = parseInt(args[2]);
-                            var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `servidores`.`guild` = " + global.id;
+                            var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `servidores`.`guild` = " + data.server.id;
                             con.query(sql);
                             message.channel.send(':white_check_mark: Se ha actualizado la cantidad correctamente.');
                         } else {
-                            message.channel.send(':information_source: Debes especificar un valor numérico. Uso: `' + global.prefix + 'modwarn cantidad <cantidad>`');
+                            message.channel.send(':information_source: Debes especificar un valor numérico. Uso: `' + data.server.prefix + 'modwarn cantidad <cantidad>`');
                         }
                         break;
                     case 'accion':
@@ -23,7 +23,7 @@ module.exports = {
                             var fin = 1;
                             var response = 'banear';
                         }
-                        var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_accion` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
+                        var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_accion` = '" + fin + "' WHERE `servidores`.`guild` = " + data.server.id;
                         message.channel.send(':information_source: Se ha cambiado correctamente la acción a tomar a `' + response + '`');
                         con.query(sql);
                         break;
@@ -41,7 +41,7 @@ module.exports = {
                     var fin = 1;
                     var response = 'activado';
                 }
-                var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
+                var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + data.server.id;
                 message.channel.send(':white_check_mark: He ' + response + ' correctamente el `auto-ban` y el `auto-kick` del comando `warn` :wink:').then((sent) => {
                     setTimeout(() => {
                         sent.delete();
