@@ -131,7 +131,7 @@ client.on('guildMemberRemove', member => {
 });
 
 client.on('message', (message) => {
-    onmessage(levelworker, antispamworker, client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
+    onmessage(levelworker, antispamworker, client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
 });
 
 client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
