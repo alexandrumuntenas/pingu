@@ -6,7 +6,7 @@ module.exports = {
                 var sql = "UPDATE `servidores` SET `prefix` = '" + args[1] + "' WHERE `servidores`.`guild` = '" + data.server.id + "'";
                 con.query(sql, function (err) {
                 });
-                message.channel.send(":white_check_mark: prefijo cambiado de \"" + data.server.prefix + "\" a \"" + args[1] + "\" correctamente :thumbsup:");
+                message.channel.send(":white_check_mark: Prefijo cambiado de \"" + data.server.prefix + "\" a \"" + args[1] + "\" correctamente :thumbsup:");
             } else {
                 message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + data.server.prefix + 'prefijo <prefijo>`');
             }
