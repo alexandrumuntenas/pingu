@@ -1,6 +1,6 @@
 module.exports = {
     name: 'levels',
-    execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (result[0].niveles_activado != 0) {
             var dif = result[0].niveles_dificultad;
             var lookupfortop10 = "SELECT * FROM leveling WHERE guild = " + global.id + " ORDER BY nivel DESC LIMIT 10";

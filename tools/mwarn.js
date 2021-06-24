@@ -1,6 +1,6 @@
 module.exports = {
     name: 'mwarn',
-    execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 var array = message.mentions.users.array();
@@ -10,8 +10,8 @@ module.exports = {
                         var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
                         con.query(consultarcantidad, function (err, result) {
                             var infraccion = message.content.replace(global.prefix + 'mwarn ', '');
-                            array.forEach(user =>  {
-                            infraccion = infraccion.replace('<@!' + user.id + '>', '');
+                            array.forEach(user => {
+                                infraccion = infraccion.replace('<@!' + user.id + '>', '');
                             })
                             var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
                             con.query(nuevainfraccion);

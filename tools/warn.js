@@ -1,6 +1,6 @@
 module.exports = {
     name: 'warn',
-    execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
@@ -53,7 +53,7 @@ module.exports = {
                         message.channel.send(':information_source: Te falta el motivo de la infracción. Uso: `' + global.prefix + 'warn <usuario> <motivo>`');
                     }
                 } else {
-                    message.channel.send(':information_source: No has mencionado a ningún usuario y no has introducido un motivo. Uso: `'+global.prefix+'warn <usuario> <motivo>`');
+                    message.channel.send(':information_source: No has mencionado a ningún usuario y no has introducido un motivo. Uso: `' + global.prefix + 'warn <usuario> <motivo>`');
                 }
             }
         } else {

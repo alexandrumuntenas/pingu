@@ -1,6 +1,6 @@
 module.exports = {
     name: 'rank',
-    execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (result[0].niveles_activado != 0) {
             if (message.mentions.users.first()) {
                 var user = message.mentions.users.first();

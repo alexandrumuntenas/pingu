@@ -1,6 +1,6 @@
 module.exports = {
     name: 'despedidas',
-    execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
                 switch (args[1]) {

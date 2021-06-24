@@ -1,4 +1,4 @@
-module.exports = function (client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+module.exports = function (client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
     if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
     global = [];
@@ -39,7 +39,7 @@ module.exports = function (client, versionbot, build, con, Math, Jimp, downloade
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
+                            client.commands.get(args[0]).execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global);
                         } catch (error) {
                             console.error(error);
                             message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');

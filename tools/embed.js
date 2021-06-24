@@ -1,6 +1,6 @@
 module.exports = {
     name: 'embed',
-    execute(client, versionbot, build, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
+    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, global) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (message.mentions.channels.first()) {
                 var canal = message.mentions.channels.first();
@@ -18,7 +18,7 @@ module.exports = {
                                 embed.setDescription(collected.first());
                                 const mensaje = client.channels.cache.find(channel => channel.id === canal.id);
                                 mensaje.send(embed);
-                                message.reply(':white_check_mark: Se ha enviado correctamente el mensaje a <#' + canal+ '>');
+                                message.reply(':white_check_mark: Se ha enviado correctamente el mensaje a <#' + canal + '>');
                             }).catch(() => {
                                 message.reply(respuesta);
                             });
@@ -26,7 +26,7 @@ module.exports = {
                         message.channel.send(respuesta);
                     });
             } else {
-                message.channel.send(':information_source: Te falta especificar un canal. Uso: `'+global.prefix+'embed <canal>`');
+                message.channel.send(':information_source: Te falta especificar un canal. Uso: `' + global.prefix + 'embed <canal>`');
             }
         } else {
             message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
