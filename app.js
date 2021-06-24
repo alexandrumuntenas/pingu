@@ -166,7 +166,7 @@ client.on('message', (message) => {
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp);
+                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp);
                         } catch (error) {
                             console.error(error);
                             message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
