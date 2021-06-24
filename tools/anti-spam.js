@@ -1,6 +1,6 @@
 module.exports = {
     name: 'anti-spam',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
+    execute(libraries) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             var valor = result[0].aspam_activado;
             if (valor == 1) {

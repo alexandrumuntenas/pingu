@@ -14,6 +14,7 @@
     "moment": "^2.29.1",
     "ms": "^2.1.3",
     "mysql2": "^2.2.5",
+    "node-fetch": "^2.6.1",
     "nodejs-file-downloader": "^4.6.0",
     "opusscript": "^0.0.8",
     "pdfkit": "^0.12.1",

@@ -12,6 +12,7 @@ const pdf = require('pdfkit');
 const emojiStrip = require('emoji-strip');
 const msi = require('ms');
 const { globalAgent } = require('http');
+const fetch = require('node-fetch');
 
 
 //Services Workers
@@ -129,8 +130,8 @@ client.on('guildMemberAdd', member => {
 client.on('guildMemberRemove', member => {
     guildmemberremove(client, con, member);
 });
-
 client.on('message', (message) => {
+
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
     if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
 
@@ -163,10 +164,12 @@ client.on('message', (message) => {
                 var tolower = message.content;
                 var contenido = tolower.toLowerCase();
 
+                const libraries = args, client, con, contenido, data, downloader, emojiStrip, fetch, fs, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp;
+
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data);
+                            client.commands.get(args[0]).execute(libraries);
                         } catch (error) {
                             console.error(error);
                             message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');

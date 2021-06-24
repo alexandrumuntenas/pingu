@@ -1,6 +1,6 @@
 module.exports = {
     name: 'sobre',
-    execute(client, con, Math, Jimp, downloader, webp, fs, pdf, moment, msi, emojiStrip, message, args, contenido, result, Intents, MessageEmbed, MessageReaction, MessageCollector, MessageAttachment, data) {
+    execute(libraries) {
         const embed = new MessageEmbed()
             .setAuthor(
                 `Información sobre ${client.user.username}`,
