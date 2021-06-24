@@ -58,11 +58,7 @@ module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttac
                         mensaje.send(toexport, attachament);
                     }
                     async function cocina() {
-                        if (result[0].bienvenida_cartel != 0) {
-                            paso1();
-                        } else {
-                            enviar();
-                        }
+                        paso1();
                         if (result[0].burbuja_activado == 1) {
                             if (member) {
                                 member
