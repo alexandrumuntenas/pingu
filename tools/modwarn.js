@@ -11,7 +11,7 @@ module.exports = {
                             con.query(sql);
                             message.channel.send(':white_check_mark: Se ha actualizado la cantidad correctamente.');
                         } else {
-                            message.channel.send(':information_source: Debes especificar un valor numérico. Uso: `' + global.server.prefix + 'modwarn cantidad <cantidad>`');
+                            message.channel.send(':information_source: Debes especificar un valor numérico. Uso: `' + global.prefix + 'modwarn cantidad <cantidad>`');
                         }
                         break;
                     case 'accion':

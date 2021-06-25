@@ -11,18 +11,18 @@ module.exports = {
                             message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida. Anunciaré allí los nuevos miembros :thumbsup:');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Actualmente, el canal donde se notifican las bienvenidas es <#' + result[0].bienvenida_canal_id + '>. Para cambiar el canal, utilice el siguiente comando `' + global.server.prefix + 'bienvenidas canal <canal>`');
+                            message.channel.send(':information_source: Actualmente, el canal donde se notifican las bienvenidas es <#' + result[0].bienvenida_canal_id + '>. Para cambiar el canal, utilice el siguiente comando `' + global.prefix + 'bienvenidas canal <canal>`');
                         }
                         break;
                     case 'mensaje':
                         if (args[2]) {
-                            var mensaje = message.content.replace(global.server.prefix + 'bienvenidas mensaje ', '');
+                            var mensaje = message.content.replace(global.prefix + 'bienvenidas mensaje ', '');
                             var mensaje = emojiStrip(mensaje);
                             var sql = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + mensaje + "' WHERE `servidores`.`guild` = " + global.id;
                             message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida correctamente.');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Actualmente, el mensaje de bienvenida es `' + result[0].bienvenida_mensaje + '`. Para cambiar el mensaje, utilice el siguiente comando `' + global.server.prefix + 'bienvenidas mensaje <message>"`');
+                            message.channel.send(':information_source: Actualmente, el mensaje de bienvenida es `' + result[0].bienvenida_mensaje + '`. Para cambiar el mensaje, utilice el siguiente comando `' + global.prefix + 'bienvenidas mensaje <message>"`');
                         }
                         break;
                     case 'cartel':

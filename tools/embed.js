@@ -26,7 +26,7 @@ module.exports = {
                         message.channel.send(respuesta);
                     });
             } else {
-                message.channel.send(':information_source: Te falta especificar un canal. Uso: `' + global.server.prefix + 'embed <canal>`');
+                message.channel.send(':information_source: Te falta especificar un canal. Uso: `' + global.prefix + 'embed <canal>`');
             }
         } else {
             message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')

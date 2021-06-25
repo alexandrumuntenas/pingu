@@ -48,15 +48,15 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                         var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + global.id + '.jpg');
                         if (cache.canal_id) {
                             const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.server.prefix + "rank`", attachament);
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         } else {
-                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.server.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         }
                     } else {
                         if (cache.canal_id) {
-                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.server.prefix + "rank`");
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
                         } else {
-                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.server.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         }
                     }
                 }

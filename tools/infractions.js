@@ -26,7 +26,7 @@ module.exports = {
                         })
                     })
                 } else {
-                    message.channel.send(':information_source: no has mencionado a ningún usuario. Uso: `' + global.server.prefix + 'infractions <usuario>`');
+                    message.channel.send(':information_source: no has mencionado a ningún usuario. Uso: `' + global.prefix + 'infractions <usuario>`');
                 }
             }
         } else {

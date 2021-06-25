@@ -13,10 +13,10 @@ module.exports = {
                             });
 
                     } else {
-                        message.channel.send(':information_source: Introduce un valor entre 1-99. Por ejemplo: ' + global.server.prefix + 'del 65');
+                        message.channel.send(':information_source: Introduce un valor entre 1-99. Por ejemplo: ' + global.prefix + 'del 65');
                     }
                 } else {
-                    message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'del <cantidad>`');
+                    message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'del <cantidad>`');
                 }
             }
         } else {

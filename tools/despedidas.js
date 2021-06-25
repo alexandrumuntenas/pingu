@@ -11,18 +11,18 @@ module.exports = {
                             message.channel.send(':white_check_mark: Se ha actualizado el canal de despedidas. Anunciaré allí las salidas de miembros :thumbsup:');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'despedidas canal <canal>`');
+                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'despedidas canal <canal>`');
                         }
                         break;
                     case 'mensaje':
                         if (args[2]) {
-                            var mensaje = message.content.replace(global.server.prefix + 'despedidas mensaje ', '');
+                            var mensaje = message.content.replace(global.prefix + 'despedidas mensaje ', '');
                             var mensaje = emojiStrip(mensaje);
                             var sql = "UPDATE `servidores` SET `salida_mensaje` = '" + mensaje + "' WHERE `servidores`.`guild` = " + global.id;
                             message.channel.send(':white_check_mark: Se ha actualizado el mensaje correctamente.');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'despedidas mensaje <message>"`');
+                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'despedidas mensaje <message>"`');
                         }
                         break;
                     default:

@@ -19,7 +19,7 @@ module.exports = {
                             message.channel.send(':white_check_mark: Se ha actualizado la dificultad correctamente.');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'niveles dificultad <dificultad>`');
+                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'niveles dificultad <dificultad>`');
                         }
                         break;
                     case 'canal':
@@ -30,18 +30,18 @@ module.exports = {
                             message.channel.send(':white_check_mark: Se ha actualizado el canal de niveles. Anunciaré allí los avances de nivel :thumbsup:');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'niveles canal <canal>`');
+                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'niveles canal <canal>`');
                         }
                         break;
                     case 'mensaje':
                         if (args[2]) {
-                            var mensaje = message.content.replace(global.server.prefix + 'niveles mensaje ', '');
+                            var mensaje = message.content.replace(global.prefix + 'niveles mensaje ', '');
                             var mensaje = emojiStrip(mensaje);
                             var sql = "UPDATE `servidores` SET `niveles_canal_mensaje` = '" + mensaje + "' WHERE `servidores`.`guild` = " + global.id;
                             message.channel.send(':white_check_mark: El mensaje ha sido actualizado');
                             con.query(sql);
                         } else {
-                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.server.prefix + 'niveles mensaje <mensaje>"`');
+                            message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'niveles mensaje <mensaje>"`');
                         }
                         break;
                     default:
