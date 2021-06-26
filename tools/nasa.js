@@ -6,7 +6,10 @@ module.exports = {
             translate(quote.explanation, { to: "es" }).then(res => {
                 var embed = new MessageEmbed();
                 embed.setTitle(quote.title);
-                embed.setDescription(res.text);
+                embed.setDescription(quote.explanation);
+                embed.addField(
+                    { name: ":flag_es: Traducción", value: res.text },
+                );
                 embed.setImage(quote.hdurl);
                 embed.setFooter("Imagen por " + quote.copyright);
                 message.channel.send(embed);
