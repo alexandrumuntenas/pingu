@@ -7,9 +7,7 @@ module.exports = {
                 var embed = new MessageEmbed();
                 embed.setTitle(quote.title);
                 embed.setDescription(quote.explanation);
-                embed.addFields(
-                    { name: ":flag_es: Traducción", value: res.text },
-                );
+                embed.addField(":flag_es: Traducción", res.text);
                 embed.setImage(quote.hdurl);
                 embed.setFooter("Imagen por " + quote.copyright);
                 message.channel.send(embed);
