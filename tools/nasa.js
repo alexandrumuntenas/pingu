@@ -7,7 +7,7 @@ module.exports = {
                 var embed = new MessageEmbed();
                 embed.setTitle(quote.title);
                 embed.setDescription(quote.explanation);
-                embed.addField(
+                embed.addFields(
                     { name: ":flag_es: Traducción", value: res.text },
                 );
                 embed.setImage(quote.hdurl);
