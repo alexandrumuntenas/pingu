@@ -13,7 +13,7 @@ const emojiStrip = require('emoji-strip');
 const msi = require('ms');
 const { globalAgent } = require('http');
 const fetch = require('node-fetch');
-const translate = require('google-translate-free')
+const translate = require('translatte')
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
