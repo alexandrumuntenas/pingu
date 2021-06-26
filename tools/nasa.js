@@ -8,8 +8,8 @@ module.exports = {
                     .then(response => response.json())
                     .then(quote => {
                         translate(quote.explanation, { to: "es" }).then(res => {
+                            var embed = new MessageEmbed();
                             dominantcolor(quote.hdurl, function (err, color) {
-                                var embed = new MessageEmbed();
                                 embed.setTitle(quote.title);
                                 embed.setDescription(":flag_es: **Traducción: **" + res.text);
                                 embed.setImage(quote.hdurl);
