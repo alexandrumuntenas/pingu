@@ -14,7 +14,7 @@ const msi = require('ms');
 const { globalAgent } = require('http');
 const fetch = require('node-fetch');
 const translate = require('translatte')
-const dominantcolor = require('dominant-color'),
+const dominantcolor = require('dominant-color');
 
 
 //Services Workers
