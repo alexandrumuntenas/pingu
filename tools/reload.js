@@ -1,6 +1,6 @@
 module.exports = {
     name: 'reload',
-    execute(args, client, con, contenido, downloader, dominantcolor, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (message.author.id === '722810818823192629') {
             if (args[1] == 'cmd') {
                 console.log('[LO] Intentado recargar el comando ' + args[2]);
