@@ -1,7 +1,7 @@
 module.exports = {
     name: 'nasa',
     execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
-        function embed(quote) {
+        async function embed(quote) {
             var explanationinspanish = await translate(quote.explanation, "es");
             var embed = new MessageEmbed();
             embed.setTitle(quote.title);
