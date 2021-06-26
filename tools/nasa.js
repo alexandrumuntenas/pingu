@@ -9,7 +9,7 @@ module.exports = {
                     .then(quote => {
                         translate(quote.explanation, { to: "es" }).then(res => {
                             var embed = new MessageEmbed();
-                            dominantcolor(quote.hdurl, function (err, color) {
+                            dominantcolor(quote.hdurl).then(color => {
                                 embed.setTitle(quote.title);
                                 embed.setDescription(":flag_es: **Traducción: **" + res.text);
                                 embed.setImage(quote.hdurl);
