@@ -3,7 +3,6 @@ module.exports = {
     execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
         function embed(quote) {
             var embed = new MessageEmbed();
-            embed.setAuthor(quote.anime);
             embed.setTitle(quote.title);
             embed.setDescription(quote.explanation);
             embed.setImage(quote.hdurl);
