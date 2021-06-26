@@ -13,7 +13,7 @@ const emojiStrip = require('emoji-strip');
 const msi = require('ms');
 const { globalAgent } = require('http');
 const fetch = require('node-fetch');
-
+const translate = require('translate')
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
@@ -166,7 +166,7 @@ client.on('message', (message) => {
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp);
+                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                         } catch (error) {
                             console.error(error);
                             message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');

@@ -1,6 +1,6 @@
 module.exports = {
     name: 'modwarn',
-    execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, webp) {
+    execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
                 switch (args[1]) {
