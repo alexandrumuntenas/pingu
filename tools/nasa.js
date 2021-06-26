@@ -1,6 +1,6 @@
 module.exports = {
     name: 'nasa',
-    execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, contenido, downloader, dominantcolor, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
 
         message.reply(' cargando imagen del día... ')
             .then(msg => {
@@ -8,13 +8,16 @@ module.exports = {
                     .then(response => response.json())
                     .then(quote => {
                         translate(quote.explanation, { to: "es" }).then(res => {
-                            var embed = new MessageEmbed();
-                            embed.setTitle(quote.title);
-                            embed.setDescription(":flag_es: **Traducción: **" + res.text);
-                            embed.setImage(quote.hdurl);
-                            embed.setFooter("Imagen por " + quote.copyright);
-                            message.channel.send(embed);
-                            msg.delete();
+                            dominantcolor(quote.hdurl, function (err, color) {
+                                var embed = new MessageEmbed();
+                                embed.setTitle(quote.title);
+                                embed.setDescription(":flag_es: **Traducción: **" + res.text);
+                                embed.setImage(quote.hdurl);
+                                embed.setColor('#' + color);
+                                embed.setFooter("Imagen por " + quote.copyright);
+                                message.channel.send(embed);
+                                msg.delete();
+                            });
                         });
                     });
             })
