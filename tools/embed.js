@@ -8,33 +8,50 @@ module.exports = {
             embed.setTimestamp();
             embed.setFooter('Powered by Pingu')
             addfields = 0;
+            ftime = 0;
+            function purga() {
+                if (ftime == 0) {
+                    message.channel.bulkDelete(2);
+                    ++ftime;
+                } else {
+                    message.channel.bulkDelete(4);
+                }
+            }
             function indice() {
                 message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** Establecer Título \n **2.** Establecer Descripción \n **3.** Establecer Thumbnail \n **4.** Añadir Nuevo Campo (hasta 25) \n **5.** Establecer Imagen \n **6.** Establecer color del borde \n **7.** Previsualizar mensaje \n **8.** Enviar mensaje');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         switch (collected.first().content) {
                             case '1':
+                                purga()
                                 e_titulo();
                                 break;
                             case '2':
+                                purga()
                                 e_descrip();
                                 break;
                             case '3':
+                                purga()
                                 e_thumbnail();
                                 break;
                             case '4':
+                                purga()
                                 a_field();
                                 break;
                             case '5':
+                                purga()
                                 e_imagen();
                                 break;
                             case '6':
+                                purga()
                                 e_color();
                                 break;
                             case '7':
+                                purga()
                                 previsualizar();
                                 break;
                             case '8':
+                                purga()
                                 enviar();
                                 break;
                         }
@@ -60,7 +77,6 @@ module.exports = {
             }
 
             function a_field() {
-                console.log(addfields)
                 ++addfields;
                 if (addfields == 0 || addfields <= 2) {
                     message.channel.send(':arrow_right: Introduce el título del nuevo campo #' + addfields);
