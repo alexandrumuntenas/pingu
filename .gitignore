@@ -1,4 +1,5 @@
 /node_modules
 /usuarios
 /brand
+/.vscode
 package-lock.json
