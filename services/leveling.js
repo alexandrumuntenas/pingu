@@ -1,5 +1,5 @@
 module.exports = function (result, client, con, Jimp, downloader, webp, message, MessageAttachment, global) {
-    var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_aspecto };
+    var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
     var dif = result[0].niveles_dificultad;
     // Si no coincide con ningún comando, pasamos al system de leveling
     con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
@@ -31,7 +31,7 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
                     top.circle();
                     top.resize(220, 220);
                     const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-                    await Jimp.read('./recursos/leveling_cartel.png', function (err, image) {
+                    await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
                         image.composite(top, 39, 32);
                         image.print(font, 300, 55, (niv - 1) + " -> " + niv);
                         image.print(font, 300, 155, 'Nuevo nivel');

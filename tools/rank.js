@@ -9,7 +9,7 @@ module.exports = {
                     return
                 }
                 var dif = result[0].niveles_dificultad;
-                var cache = { "aspecto": result[0].niveles_aspecto }
+                var cache = { "aspecto": result[0].niveles_fondo }
                 var sql = "SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'";
                 // Si no coincide con ningún comando, pasamos al system de leveling
                 con.query(sql, function (err, result) {
@@ -36,7 +36,7 @@ module.exports = {
                             top.circle();
                             top.resize(220, 220);
                             const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-                            await Jimp.read('./recursos/leveling_cartel.png', function (err, image) {
+                            await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
                                 image.composite(top, 39, 32);
                                 image.print(font, 300, 55, "Nivel: " + niv);
                                 image.print(font, 300, 155, "XP: " + ((niv * 100) + exp));
@@ -60,7 +60,7 @@ module.exports = {
                 })
             } else {
                 var dif = result[0].niveles_dificultad;
-                var cache = { "aspecto": result[0].niveles_aspecto }
+                var cache = { "aspecto": result[0].niveles_fondo }
                 // Si no coincide con ningún comando, pasamos al system de leveling
                 con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
                     if (result[0]) {
@@ -86,7 +86,7 @@ module.exports = {
                             top.circle();
                             top.resize(220, 220);
                             const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-                            await Jimp.read('./recursos/leveling_cartel.png', function (err, image) {
+                            await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
                                 image.composite(top, 39, 32);
                                 image.print(font, 300, 55, "Nivel: " + niv);
                                 image.print(font, 300, 155, "XP: " + ((niv * 100) + exp));

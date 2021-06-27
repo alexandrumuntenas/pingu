@@ -4,13 +4,13 @@ module.exports = {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
                 switch (args[1]) {
-                    case 'aspecto':
-                        if (args[2] <= 9 && args[1] != 0) {
-                            var sql = "UPDATE `servidores` SET `niveles_aspecto` = '" + args[2] + "', `niveles_fondo_custom` = '" + args[3] + "' WHERE `servidores`.`guild` = " + global.id;
-                            message.channel.send(' se ha actualizado el aspecto del cartel de niveles');
+                    case 'fondo':
+                        if (args[2] <= 20 && args[1] != 0) {
+                            var sql = "UPDATE `servidores` SET `niveles_fondo` = '" + args[2] + "', `niveles_fondo_custom` = '" + args[3] + "' WHERE `servidores`.`guild` = " + global.id;
+                            message.channel.send(':white_check_mark: Se ha actualizado el fondo del cartel de niveles');
                             con.query(sql);
                         } else {
-                            message.channel.send(' parece que el ID del aspecto que has introducido es inválida. Consulta los aspectos disponibles en https://pingu.duoestudios.es/gestion-del-servidor/niveles#skins');
+                            message.channel.send(':x: Parece que el ID del fondo que has introducido es inválida. Consulta los aspectos disponibles en https://pingu.duoestudios.es/personalizacion/fondos');
                         }
                         break;
                     case 'dificultad':
@@ -45,7 +45,7 @@ module.exports = {
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/niveles#comandos');
+                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://pingu.duoestudios.es/utilidades/mensajes-enriquecidos#comandos');
                         break;
                 }
             } else {
