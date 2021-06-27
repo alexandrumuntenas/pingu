@@ -138,9 +138,9 @@ client.on('message', (message) => {
     global.id = message.guild.id;
     global.name = message.guild.name;
     //Conectamos con Mariadb y obtenemos datos del servidor
-    con.query("SELECT * FROM `servidores` WHERE guild = '" + global.id + "'", function (err, result) {
+    con.query("SELECT * FROM `servidores` WHERE guild = '" + global.id + "'", function (err, result, rows) {
         if (result) {
-            if (typeof result[0] !== 'undefined') {
+            if (rows.lenght) {
                 global.prefix = result[0].prefix;
                 var id = global.id;
                 //Comprobamos si el mensaje ha comenzado con prefijo
