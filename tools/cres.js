@@ -15,7 +15,7 @@ module.exports = {
             if (args[1]) {
                 switch (args[1]) {
                     case 'crear':
-                        var identificador = makeId(3);
+                        var identificador = makeId(7);
                         message.reply(':arrow_right: ¿A qué mensaje tengo que responder?')
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
