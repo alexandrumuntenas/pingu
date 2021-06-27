@@ -163,40 +163,29 @@ client.on('message', (message) => {
                 }
                 var tolower = message.content;
                 var contenido = tolower.toLowerCase();
-
-                if (args) {
-                    if (client.commands.has(args[0])) {
-                        try {
-                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
-                        } catch (error) {
-                            console.error(error);
-                            message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
-                        }
-                    } else {
-                        var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
-                        con.query(consultacomandoscustom, function (err, result) {
-                            if (typeof result[0] !== 'undefined') {
-                                var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
-                                con.query(buscarcomando, function (err, result) {
-                                    if (typeof result[0] !== 'undefined') {
-                                        message.channel.send(":mega: " + result[0].returns);
-                                    }
-                                });
-                            } else {
-                                var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
-                                con.query(consultarespuestacustom, function (err, result) {
-                                    if (typeof result[0] !== 'undefined') {
-                                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
-                                        con.query(buscarrespuesta, function (err, result) {
-                                            if (typeof result[0] !== 'undefined') {
-                                                message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
-                                            }
-                                        });
-                                    }
-                                });
+                if (message.content.startsWith(global.prefix)) {
+                    if (args) {
+                        if (client.commands.has(args[0])) {
+                            try {
+                                client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                            } catch (error) {
+                                console.error(error);
+                                message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
                             }
-                        });
-                    };
+                        } else {
+                            var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
+                            con.query(consultacomandoscustom, function (err, result) {
+                                if (typeof result[0] !== 'undefined') {
+                                    var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
+                                    con.query(buscarcomando, function (err, result) {
+                                        if (typeof result[0] !== 'undefined') {
+                                            message.channel.send(":mega: " + result[0].returns);
+                                        }
+                                    });
+                                }
+                            });
+                        };
+                    }
                 }
 
                 if (result[0].aspam_activado != 0) {
@@ -208,6 +197,19 @@ client.on('message', (message) => {
                         levelworker(result, client, con, Jimp, downloader, webp, message, MessageAttachment, global);
                     }
                 }
+
+                // Respuestas personalizadas
+                var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
+                con.query(consultarespuestacustom, function (err, result) {
+                    if (typeof result[0] !== 'undefined') {
+                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
+                        con.query(buscarrespuesta, function (err, result) {
+                            if (typeof result[0] !== 'undefined') {
+                                message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
+                            }
+                        });
+                    }
+                });
             }
         }
         else {
