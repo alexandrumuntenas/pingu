@@ -20,7 +20,6 @@ module.exports = {
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
                                 var accionante = collected.first().content;
-                                accionante = accionante.toLower();
                                 message.channel.send(':arrow_right: ¿Qué tengo que responder?')
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
@@ -30,11 +29,11 @@ module.exports = {
                                             if (err) throw err;
                                             message.channel.send(':white_check_mark: Se ha creado correctamente la respuesta personalizada. Su identificador es: `' + identificador + '`.');
                                         })
-                                    }).catch((err) => {
-                                        message.reply(err);
+                                    }).catch(() => {
+                                        message.reply(' se ha producido un error...');
                                     });
-                            }).catch((err) => {
-                                message.reply(err);
+                            }).catch(() => {
+                                message.reply(' se ha producido un error...');
                             });
                         break;
                     case 'eliminar':

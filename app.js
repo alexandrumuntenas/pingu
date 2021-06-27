@@ -202,7 +202,7 @@ client.on('message', (message) => {
                 var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
                 con.query(consultarespuestacustom, function (err, result) {
                     if (typeof result[0] !== 'undefined') {
-                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
+                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + message.content + "'";
                         con.query(buscarrespuesta, function (err, result) {
                             if (typeof result[0] !== 'undefined') {
                                 message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
