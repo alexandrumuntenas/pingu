@@ -19,13 +19,13 @@ module.exports = {
                         message.reply(':arrow_right: ¿A qué mensaje tengo que responder?')
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
-                                var accionante = collected.first();
+                                var accionante = collected.first().content;
+                                accionante = accionante.toLower();
                                 message.channel.send(':arrow_right: ¿Qué tengo que responder?')
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
-                                        var respuesta = collected.first();
+                                        var respuesta = collected.first().content;
                                         console.log(respuesta);
-                                        var crearcres = "INSERT INTO `respuestas_custom` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + global.id + "', '" + accionante + "', '" + respuesta + "')";
                                         con.query(crearcres, function (err) {
                                             if (err) throw err;
                                             message.channel.send(':white_check_mark: Se ha creado correctamente la respuesta personalizada. Su identificador es: `' + identificador + '`.');
