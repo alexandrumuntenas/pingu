@@ -13,7 +13,7 @@ module.exports = {
                         var embed = new MessageEmbed();
                         embed.setTitle('Ranking')
                         embed.setAuthor(global.name);
-                        ordenarDesc(row, experiecia);
+                        ordenarDesc(rows, experiecia);
                         rows.forEach(function (row) {
                             var usuario = client.users.cache.find(user => user.id === row.user);
                             embed.addFields({ name: usuario.username, value: "Nivel: " + row.nivel + " | Experiencia: " + ((parseInt(row.nivel) * (dif * 100)) + parseInt(row.experiencia)) })
