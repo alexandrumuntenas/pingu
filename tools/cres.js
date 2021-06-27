@@ -30,11 +30,11 @@ module.exports = {
                                             if (err) throw err;
                                             message.channel.send(':white_check_mark: Se ha creado correctamente la respuesta personalizada. Su identificador es: `' + identificador + '`.');
                                         })
-                                    }).catch(() => {
-                                        message.reply(respuesta);
+                                    }).catch((err) => {
+                                        message.reply(err);
                                     });
-                            }).catch(() => {
-                                message.reply(respuesta);
+                            }).catch((err) => {
+                                message.reply(err);
                             });
                         break;
                     case 'eliminar':
