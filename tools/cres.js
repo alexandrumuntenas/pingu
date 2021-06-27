@@ -20,6 +20,7 @@ module.exports = {
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
                                 var accionante = collected.first().content;
+                                accionante = accionante.toLowerCase();
                                 message.channel.send(':arrow_right: ¿Qué tengo que responder?')
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
