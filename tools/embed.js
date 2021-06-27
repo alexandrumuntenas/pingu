@@ -78,7 +78,7 @@ module.exports = {
 
             function a_field() {
                 ++addfields;
-                if (addfields == 0 || addfields <= 2) {
+                if (addfields == 0 || addfields <= 25) {
                     message.channel.send(':arrow_right: Introduce el título del nuevo campo #' + addfields);
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1 }).then(collected => {
