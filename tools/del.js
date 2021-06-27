@@ -9,7 +9,11 @@ module.exports = {
                         message.channel.bulkDelete(i + 1, true)
                             .then((_message) => {
                                 message.channel
-                                    .send(`He eliminado \`${_message.size - 1}\` mensajes :broom:`);
+                                    .send(`He eliminado \`${_message.size - 1}\` mensajes :broom:`).then((sent) => {
+                                        setTimeout(() => {
+                                            sent.delete();
+                                        }, 2500);
+                                    });;
                             });
 
                     } else {
