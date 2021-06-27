@@ -24,8 +24,8 @@ module.exports = {
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
                                         var respuesta = collected.first();
-                                        var crearccmd = "INSERT INTO `respuestas_custom` (`identificador`,`guild`, `cmd`, `returns`) VALUES ('" + identificador + "','" + global.id + "', '" + accionante + "', '" + respuesta + "')";
-                                        con.query(crearccmd, function (err) {
+                                        var crearcres = "INSERT INTO `respuestas_custom` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + global.id + "', '" + accionante + "', '" + respuesta + "')";
+                                        con.query(crearcres, function (err) {
                                             if (err) throw err;
                                             message.channel.send(':white_check_mark: Se ha creado correctamente la respuesta personalizada. Su identificador es: `' + identificador + '`.');
                                         })
