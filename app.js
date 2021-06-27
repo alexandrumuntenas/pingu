@@ -107,7 +107,7 @@ client.on('ready', () => {
         client.user.setPresence({
             status: 'idle',
             activity: {
-                name: '1 y 0',
+                name: 'pingu.duoestudios.es',
                 type: 'WATCHING',
                 url: 'https://pingu.duoestudios.es'
             }
