@@ -6,11 +6,11 @@ module.exports = {
                 switch (args[1]) {
                     case 'fondo':
                         if (args[2] <= 20 && args[1] != 0) {
-                            var sql = "UPDATE `servidores` SET `niveles_fondo` = '" + args[2] + "', `niveles_fondo_custom` = '" + args[3] + "' WHERE `servidores`.`guild` = " + global.id;
+                            var sql = "UPDATE `servidores` SET `niveles_fondo` = '" + args[2] + "' WHERE `servidores`.`guild` = " + global.id;
                             message.channel.send(':white_check_mark: Se ha actualizado el fondo del cartel de niveles');
                             con.query(sql);
                         } else {
-                            message.channel.send(':x: Parece que el ID del fondo que has introducido es inválida. Consulta los aspectos disponibles en https://pingu.duoestudios.es/personalizacion/fondos');
+                            message.channel.send(':x: Parece que el ID del fondo que has introducido es inválida. Consulta los fondos disponibles en https://pingu.duoestudios.es/personalizacion/fondos');
                         }
                         break;
                     case 'dificultad':

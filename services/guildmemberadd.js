@@ -7,7 +7,7 @@ module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttac
     con.query(sql, function (err, result) {
         if (result[0].bienvenida_activado != 0) {
             if (result[0].bienvenida_mensaje_activado != 0) {
-                cache = { "canal_id": result[0].bienvenida_canal_id, "canal_msg": result[0].bienvenida_mensaje };
+                cache = { "canal_id": result[0].bienvenida_canal_id, "canal_msg": result[0].bienvenida_mensaje, "aspecto": result[0].bienvenida_fondo };
                 const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
                 if (result[0].bienvenida_cartel != 0) {
                     var user = member.user;
@@ -41,7 +41,7 @@ module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttac
 
                         top.resize(220, 220);
                         const font = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE);
-                        await Jimp.read('./recursos/leveling_cartel.png', function (err, image) {
+                        await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
                             image.composite(top, 39, 32);
                             image.print(font, 300, 109, "Hola " + user.tag);
                             image.print(font, 300, 141, "Miembro #" + member.guild.memberCount);

@@ -84,6 +84,15 @@ module.exports = {
                         con.query(sql);
                         message.channel.send(':white_check_mark: Se han actualizado los roles a otorgar correctamente.');
                         break;
+                    case 'fondo':
+                        if (args[2] <= 20 && args[1] != 0) {
+                            var sql = "UPDATE `servidores` SET `bienvenida_fondo` = '" + args[2] + "' WHERE `servidores`.`guild` = " + global.id;
+                            message.channel.send(':white_check_mark: Se ha actualizado el fondo del cartel de bienvenida');
+                            con.query(sql);
+                        } else {
+                            message.channel.send(':x: Parece que el ID del fondo que has introducido es inválida. Consulta los fondos disponibles en https://pingu.duoestudios.es/personalizacion/fondos');
+                        }
+                        break;
                     default:
                         message.channel.send(':information_source: No has especificado una configuración válida del módulo de bienvenidas :arrow_right:  https://pingu.duoestudios.es/gestion-del-servidor/bienvenidas');
                         break;
