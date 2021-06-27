@@ -35,7 +35,7 @@ module.exports = {
                         embed.addField(`Duración: `, msi(msi(time), {
                             long: true
                         }), true);
-                        embed.setFooter("Powered by Wired Penguin");
+                        embed.setFooter("Powered by Pingu ");
                         embed.setAuthor(author.username, author.avatarURL());
                         mensaje.send(embed).then(embedMessage => {
                             embedMessage.react("🎉");

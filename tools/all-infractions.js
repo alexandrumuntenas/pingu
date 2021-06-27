@@ -10,7 +10,7 @@ module.exports = {
                             if (err) throw err;
                             var pdfDoc = new pdf;
                             pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf'));
-                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Wired Penguin').moveDown(1);
+                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Pingu ').moveDown(1);
                             pdfDoc.font('./recursos/typography/Roboto-Regular.ttf', 12).text("Infracciones del usuario: " + user.tag);
                             pdfDoc.text("Servidor: " + global.name);
                             pdfDoc.text("Documento generado el: " + moment().format('MMMM Do YYYY, h:mm:ss a'));
@@ -42,7 +42,7 @@ module.exports = {
                             if (err) throw err;
                             var pdfDoc = new pdf;
                             pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf'));
-                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Wired Penguin').moveDown(1);
+                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Pingu ').moveDown(1);
                             pdfDoc.font('./recursos/typography/Roboto-Regular.ttf', 12).text("Infracciones del usuario: " + user.tag);
                             pdfDoc.text("Servidor: " + global.name);
                             pdfDoc.text("Documento generado el: " + moment().format('MMMM Do YYYY, h:mm:ss a'));
