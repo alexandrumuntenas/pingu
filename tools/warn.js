@@ -9,7 +9,7 @@ module.exports = {
                     if (cache.activado != 0) {
                         var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
                         con.query(consultarcantidad, function (err, result) {
-                            var infraccion = message.content.replace(global.server.prefix + 'warn ', '');
+                            var infraccion = message.content.replace(global.prefix + 'warn ', '');
                             array.forEach(user => {
                                 infraccion = infraccion.replace('<@!' + user.id + '>', '');
                             })
@@ -43,7 +43,7 @@ module.exports = {
                             }
                         });
                     } else {
-                        var infraccion = message.content.replace(global.server.prefix + 'mwarn ', '');
+                        var infraccion = message.content.replace(global.prefix + 'mwarn ', '');
                         array.forEach(user => {
                             infraccion = infraccion.replace('<@!' + user.id + '>', '');
                         })

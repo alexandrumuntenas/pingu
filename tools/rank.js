@@ -112,7 +112,7 @@ module.exports = {
             };
         } else {
             if (message.member.hasPermission('ADMINISTRATOR')) {
-                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utiliza el siguiente comando: `" + global.server.prefix + "niveles`");
+                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utiliza el siguiente comando: `" + global.prefix + "niveles`");
             } else {
                 message.reply(" este servidor tiene desactivado los leveling");
             }
