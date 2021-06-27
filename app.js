@@ -167,7 +167,7 @@ client.on('message', (message) => {
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader,  emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                            client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                         } catch (error) {
                             console.error(error);
                             message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
@@ -183,7 +183,17 @@ client.on('message', (message) => {
                                     }
                                 });
                             } else {
-                                // Contestar a mensajes personalizdos
+                                var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
+                                con.query(consultarespuestacustom, function (err, result) {
+                                    if (typeof result[0] !== 'undefined') {
+                                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
+                                        con.query(buscarrespuesta, function (err, result) {
+                                            if (typeof result[0] !== 'undefined') {
+                                                message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         });
                     };
