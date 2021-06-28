@@ -13,6 +13,7 @@ const msi = require('ms');
 const translate = require('translatte')
 const progressbar = require('string-progressbar');
 const boxen = require('boxen');
+const fetch = require('node-fetch');
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
