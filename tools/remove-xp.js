@@ -17,8 +17,8 @@ module.exports = {
                                 var exp = parseInt(result[0].experiencia) + (parseInt(result[0].nivel * (dif * 100)))
                                 var exp = exp - parseInt(args[1]);
                                 var niv = 0;
-                                while (exp > dif * 100) {
-                                    var exp = exp - 100;
+                                while (exp >= (((niv * niv) * dif) * 100)) {
+                                    var exp = exp - (((niv * niv) * dif) * 100);
                                     var niv = niv + 1;
                                     mf2(niv, exp, user);
                                 }
