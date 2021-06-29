@@ -69,7 +69,6 @@ async function comprobarcarpetas() {
 var con = mysql.createConnection({
     host: "localhost",
     user: "wiredpenguin",
-    port: "30000",
     password: "",
     database: "wiredpenguin",
     charset: "utf8_unicode_ci",
@@ -231,5 +230,5 @@ client.on('message', (message) => {
     )
 });
 
-client.login('ODQ3NTE3NTQxMDgwMzY3MTI0.YK_ONw.lX_psegfTcjglbokdP9qqAnoYgg');
+client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
 
