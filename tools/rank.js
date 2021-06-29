@@ -18,8 +18,8 @@ module.exports = {
                         var niv = parseInt(result[0].nivel);
                         var required = ((niv ^ 2) * dif) * 100;
                         var progress = progressbar.filledBar(required, exp);
-                        var restante = required - progress;
-                        var card = boxen(user.username + '#' + user.discriminator + '\n**Nivel** ' + niv + '\n**Experiencia** ' + exp + '\n**Progreso** Te faltan ' + restante + ' puntos para avanzar a un nuevo nivel \n' + progress, { padding: 1 });
+                        var restante = required - exp;
+                        var card = boxen(user.username + '#' + user.discriminator + '\n**Nivel** ' + niv + '\n**Experiencia** ' + exp + '\n**Progreso** ' + exp + '/' + required + ' \n' + progress, { padding: 1 });
                         message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + niv + "` y dispone de `" + ((niv * 100) + exp) + "` puntos de experiencia");
                         message.channel.send(card);
                     } else {
