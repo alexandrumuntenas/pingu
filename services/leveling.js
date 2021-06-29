@@ -1,4 +1,4 @@
-module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global, tr) {
+module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
     var dif = result[0].niveles_dificultad;
     con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
@@ -73,11 +73,6 @@ module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, 
             }
             var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + global.id + "'";
             con.query(actualizardatos);
-            tr.push(message.author.id);
-            console.log(talkedRecently);
-            setTimeout(() => {
-                tr.delete(message.author.id);
-            }, 60000);
         } else {
             var newuser = "INSERT INTO `leveling` (`user`, `guild`) VALUES ('" + message.author.id + "', '" + global.id + "')";
             con.query(newuser);

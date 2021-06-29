@@ -28,7 +28,7 @@ const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
 const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
-const levelworker = require('./services/leveling');
+const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
 console.log('[OK] Services Workers Cargados');
 
@@ -202,7 +202,12 @@ client.on('message', (message) => {
                 if (!contenido.startsWith(global.prefix)) {
                     if (!talkedRecently.has(message.author.id)) {
                         if (result[0].niveles_activado != "0") {
-                            levelworker(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global, talkedRecently);
+                            leveling(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global);
+                            talkedRecently.push(message.author.id);
+                            console.log(talkedRecently);
+                            setTimeout(() => {
+                                talkedRecently.delete(message.author.id);
+                            }, 60000);
                         }
                     }
                 }
