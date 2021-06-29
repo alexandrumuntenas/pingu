@@ -40,11 +40,7 @@ module.exports = {
                                     .then(buffer => {
                                         canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
                                         var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                        if (nivel == 0) {
-                                            message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (experiencia) + "` puntos de experiencia", attachament);
-                                        } else {
-                                            message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) ^ 2) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
-                                        }
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) ^ 2) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
                             } catch (error) {
                                 Sentry.captureException(error);
@@ -88,11 +84,7 @@ module.exports = {
                                     .then(buffer => {
                                         canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
                                         var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                        if (nivel == 0) {
-                                            message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (experiencia) + "` puntos de experiencia", attachament);
-                                        } else {
-                                            message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) ^ 2) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
-                                        }
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) ^ 2) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
                             } catch (error) {
                                 Sentry.captureException(error);

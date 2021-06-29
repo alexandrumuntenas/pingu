@@ -6,9 +6,9 @@ module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, 
         if (result[0]) {
             var exp = parseInt(result[0].experiencia);
             var niv = parseInt(result[0].nivel);
-            var exp = exp + 1;
+            var exp = exp + Math.floor(Math.random() * 26) + 15;
 
-            if (exp > dif * 100) {
+            if (exp >= (((niv * niv) * dif) * 100)) {
                 var exp = 0;
                 var niv = niv + 1;
                 async function paso1() {
