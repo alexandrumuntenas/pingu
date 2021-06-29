@@ -1,13 +1,13 @@
 module.exports = {
     name: 'all-infractions',
-    execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     var user = message.mentions.users.first()
                     async function step1() {
                         con.query('SELECT * FROM `infracciones` WHERE user = \'' + user.id + '\' AND guild = \'' + global.id + '\'', function (err, result) {
-                            if (err) throw err;
+                            if (err) Sentry.captureException(err);
                             var pdfDoc = new pdf;
                             pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf'));
                             pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Pingu ').moveDown(1);
@@ -24,7 +24,7 @@ module.exports = {
                             }
                             pdfDoc.end();
                             pdfDoc.on('end', function (err) {
-                                if (err) throw err;
+                                if (err) Sentry.captureException(err);
                                 var attachament = new MessageAttachment('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf');
                                 message.author.send('Aquí está el reporte para el usuario `' + user.tag + '` en el servidor *' + global.name + '*', attachament);
                             })
@@ -39,7 +39,7 @@ module.exports = {
                     var user = message.author;
                     async function step1() {
                         con.query('SELECT * FROM `infracciones` WHERE user = \'' + user.id + '\' AND guild = \'' + global.id + '\'', function (err, result) {
-                            if (err) throw err;
+                            if (err) Sentry.captureException(err);
                             var pdfDoc = new pdf;
                             pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf'));
                             pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Pingu ').moveDown(1);

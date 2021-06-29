@@ -1,4 +1,4 @@
-module.exports = function (result, client, con, Jimp, downloader, webp, message, MessageAttachment, global) {
+module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
     var dif = result[0].niveles_dificultad;
     // Si no coincide con ningún comando, pasamos al system de leveling

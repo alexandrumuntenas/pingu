@@ -1,6 +1,6 @@
 const { json } = require("mathjs");
 
-module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttachment, member) {
+module.exports = function (client, con, Sentry, Jimp, downloader, webp, fs, MessageAttachment, member) {
     var id = member.guild.id;
     var sql = "SELECT * FROM `servidores` WHERE guild = '" + id + "'";
     //Conectamos con el servidor

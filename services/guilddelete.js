@@ -6,7 +6,7 @@ module.exports = function (con, guild) {
     var sql3 = "DELETE FROM `comandos_custom` WHERE guild = '" + id + "'";
     var sql4 = "DELETE FROM `respuestas_custom` WHERE guild = '" + id + "'";
     con.query(sql, function (err, result) {
-        if (err) throw err;
+        if (err) Sentry.captureException(err);
         con.query(sql1);
         con.query(sql2);
         con.query(sql2);

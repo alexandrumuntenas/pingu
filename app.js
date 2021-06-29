@@ -128,11 +128,11 @@ client.on('guildDelete', (guild) => {
 });
 
 client.on('guildMemberAdd', member => {
-    guildmemberadd(client, con, Jimp, downloader, webp, fs, MessageAttachment, member);
+    guildmemberadd(client, con, Sentry, Jimp, downloader, webp, fs, MessageAttachment, member);
 });
 
 client.on('guildMemberRemove', member => {
-    guildmemberremove(client, con, member);
+    guildmemberremove(client, con, Sentry, member);
 });
 client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
@@ -170,7 +170,7 @@ client.on('message', (message) => {
                     if (args) {
                         if (client.commands.has(args[0])) {
                             try {
-                                client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                                client.commands.get(args[0]).execute(args, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                             } catch (error) {
                                 console.error(error);
                                 message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
@@ -197,7 +197,7 @@ client.on('message', (message) => {
                 //Leveling
                 if (!contenido.startsWith(global.prefix)) {
                     if (result[0].niveles_activado != "0") {
-                        levelworker(result, client, con, Jimp, downloader, webp, message, MessageAttachment, global);
+                        levelworker(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global);
                     }
                 }
 
@@ -220,7 +220,7 @@ client.on('message', (message) => {
             var id = global.id;
             var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
             con.query(sql, function (err, result) {
-                if (err) throw err;
+                if (err) Sentry.captureException(err);
             });
         }
     }
