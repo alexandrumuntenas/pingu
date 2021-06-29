@@ -22,29 +22,26 @@ module.exports = {
                                 cloneFiles: false,
                             });
                             try {
-                                await avatar.download().then(function () {
-                                    await webp.dwebp("./usuarios/avatares/" + user.id + ".webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v").then(function () {
-                                        var rank = new canvacord.Rank()
-                                            .setAvatar("./usuarios/avatares/" + user.id + ".jpg")
-                                            .setCurrentXP(experiencia)
-                                            .setRequiredXP(((nivel * nivel) * dif) * 100)
-                                            .setStatus(user.presence.status, true)
-                                            .setLevel(nivel, 'NIVEL')
-                                            .setProgressBar("#FFFFFF", "COLOR")
-                                            .setUsername(user.username)
-                                            .setDiscriminator(user.discriminator)
-                                            .setRank(0, '', false)
-                                            .setBackground("IMAGE", './recursos/carteles/' + cache.aspecto + '.png');
+                                await avatar.download();
+                                await webp.dwebp("./usuarios/avatares/" + user.id + "_level.webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
+                                var rank = new canvacord.Rank()
+                                    .setAvatar("./usuarios/avatares/" + user.id + "_level.jpg")
+                                    .setCurrentXP(experiencia)
+                                    .setRequiredXP(((nivel * nivel) * dif) * 100)
+                                    .setStatus(user.presence.status, true)
+                                    .setLevel(nivel, 'NIVEL')
+                                    .setProgressBar("#FFFFFF", "COLOR")
+                                    .setUsername(user.username)
+                                    .setDiscriminator(user.discriminator)
+                                    .setRank(0, '', false)
+                                    .setBackground("IMAGE", './recursos/carteles/' + cache.aspecto + '.png');
 
-                                        rank.build()
-                                            .then(buffer => {
-                                                canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                                var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                                message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
-                                            });
+                                rank.build()
+                                    .then(buffer => {
+                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
-                                });
-
                             } catch (error) {
                                 Sentry.captureException(error);
                             }
