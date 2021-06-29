@@ -202,12 +202,12 @@ client.on('message', (message) => {
                 if (!contenido.startsWith(global.prefix)) {
                     if (!talkedRecently.has(message.author.id)) {
                         if (result[0].niveles_activado != "0") {
-                            leveling(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global);
-                            talkedRecently.push(message.author.id);
+                            talkedRecently.add(message.author.id);
                             console.log(talkedRecently);
                             setTimeout(() => {
                                 talkedRecently.delete(message.author.id);
                             }, 60000);
+                            leveling(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global);
                         }
                     }
                 }
