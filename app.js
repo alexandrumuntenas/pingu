@@ -1,4 +1,10 @@
 //https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+Sentry.init({
+    dsn: "https://04202e015581483eb6a5d5c1d3eccd3c@o887024.ingest.sentry.io/5839777",
+    tracesSampleRate: 1.0,
+});
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const Math = require('mathjs');
@@ -11,8 +17,6 @@ const pdf = require('pdfkit');
 const emojiStrip = require('emoji-strip');
 const msi = require('ms');
 const translate = require('translatte')
-const progressbar = require('string-progressbar');
-const boxen = require('boxen');
 const fetch = require('node-fetch');
 
 //Services Workers
@@ -167,7 +171,7 @@ client.on('message', (message) => {
                     if (args) {
                         if (client.commands.has(args[0])) {
                             try {
-                                client.commands.get(args[0]).execute(args, boxen, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, progressbar, result, translate, webp);
+                                client.commands.get(args[0]).execute(args, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                             } catch (error) {
                                 console.error(error);
                                 message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');

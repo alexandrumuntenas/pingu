@@ -5,7 +5,8 @@
   "main": "app.js",
   "dependencies": {
     "@jimp/plugin-circle": "^0.16.1",
-    "boxen": "^5.0.1",
+    "@sentry/node": "^6.8.0",
+    "@sentry/tracing": "^6.8.0",
     "discord.js": "^12.5.2",
     "emoji-strip": "^1.0.1",
     "ffmpeg-static": "^4.3.0",
@@ -17,15 +18,12 @@
     "mysql2": "^2.2.5",
     "node-fetch": "^2.6.1",
     "nodejs-file-downloader": "^4.6.0",
-    "opusscript": "^0.0.8",
     "pdfkit": "^0.12.1",
     "rss-parser": "^3.12.0",
     "simple-youtube-api": "^5.2.1",
-    "string-progressbar": "^1.0.4",
     "superagent": "^6.1.0",
     "translatte": "^3.0.1",
-    "webp-converter": "^2.3.3",
-    "ytdl-core": "^4.5.0"
+    "webp-converter": "^2.3.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
