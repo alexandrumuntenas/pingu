@@ -75,6 +75,7 @@ module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, 
                 var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + global.id + "'";
                 con.query(actualizardatos);
                 talkedRecently.add(message.author.id);
+                console.log(talkedRecently);
                 setTimeout(() => {
                     talkedRecently.delete(message.author.id);
                 }, 60000);
