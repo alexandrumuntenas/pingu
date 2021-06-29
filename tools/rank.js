@@ -1,110 +1,96 @@
 module.exports = {
     name: 'rank',
-    execute(args, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, canvacord, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (result[0].niveles_activado != 0) {
+            var dif = result[0].niveles_dificultad;
+            var cache = { "aspecto": result[0].niveles_fondo }
             if (message.mentions.users.first()) {
                 var user = message.mentions.users.first();
                 if (user.bot) {
                     message.reply(' los bots no reciben experiencia por que son, pues eso, bots.');
                     return
                 }
-                var dif = result[0].niveles_dificultad;
-                var cache = { "aspecto": result[0].niveles_fondo }
-                var sql = "SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'";
-                // Si no coincide con ningún comando, pasamos al system de leveling
-                con.query(sql, function (err, result) {
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'", function (err, result) {
                     if (result[0]) {
-                        var exp = parseInt(result[0].experiencia);
-                        var niv = parseInt(result[0].nivel);
-                        async function paso1() {
+                        var experiencia = parseInt(result[0].experiencia);
+                        var nivel = parseInt(result[0].nivel);
+                        async function fa() {
                             const avatar = new downloader({
                                 url: user.avatarURL(),
                                 directory: "./usuarios/avatares/",
-                                fileName: user.id + '.webp',
+                                fileName: user.id + '_level.webp',
                                 cloneFiles: false,
                             });
                             try {
                                 await avatar.download();
+                                await webp.dwebp("./usuarios/avatares/" + user.id + ".webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
+                                var rank = new canvacord.Rank()
+                                    .setAvatar("./usuarios/avatares/" + user.id + ".jpg")
+                                    .setCurrentXP(experiencia)
+                                    .setRequiredXP(((nivel * nivel) * dif) * 100)
+                                    .setStatus(user.presence.status, true)
+                                    .setLevel(nivel, 'NIVEL')
+                                    .setProgressBar("#FFFFFF", "COLOR")
+                                    .setUsername(user.username)
+                                    .setDiscriminator(user.discriminator)
+                                    .setRank(0, '', false)
+                                    .setBackground("IMAGE", './recursos/carteles/' + cache.aspecto + '.png');
+
+                                rank.build()
+                                    .then(buffer => {
+                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) ^ 2) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
+                                    });
                             } catch (error) {
+                                Sentry.captureException(error);
                             }
                         }
-                        async function paso2() {
-                            await webp.dwebp("./usuarios/avatares/" + user.id + ".webp", "./usuarios/avatares/" + user.id + ".jpg", "-o", logging = "-v");
-                        }
-                        async function paso3() {
-                            const top = await Jimp.read("./usuarios/avatares/" + user.id + ".jpg");
-                            top.circle();
-                            top.resize(220, 220);
-                            const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-                            await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
-                                image.composite(top, 39, 32);
-                                image.print(font, 300, 55, "Nivel: " + niv);
-                                image.print(font, 300, 155, "XP: " + ((niv * 100) + exp));
-                                image.writeAsync('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg')
-                                enviar();
-                            });
-                        }
-                        function enviar() {
-                            var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                            message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + niv + "` y dispone de `" + ((niv * 100) + exp) + "` puntos de experiencia", attachament);
-                        }
-                        async function cocina() {
-                            await paso1();
-                            await paso2();
-                            paso3();
-                        }
-                        cocina();
+                        fa();
                     } else {
                         message.reply(" no te he podido localizar en la base de datos. Escribe unos cuantos mensajes y vuelve a intentarlo.")
                     }
                 })
             } else {
-                var dif = result[0].niveles_dificultad;
-                var cache = { "aspecto": result[0].niveles_fondo }
                 // Si no coincide con ningún comando, pasamos al system de leveling
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
+                user = message.author;
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'", function (err, result) {
                     if (result[0]) {
-                        var exp = parseInt(result[0].experiencia);
-                        var niv = parseInt(result[0].nivel);
-                        async function paso1() {
+                        var experiencia = parseInt(result[0].experiencia);
+                        var nivel = parseInt(result[0].nivel);
+                        async function fa() {
                             const avatar = new downloader({
-                                url: message.author.avatarURL(),
+                                url: user.avatarURL(),
                                 directory: "./usuarios/avatares/",
-                                fileName: message.author.id + '.webp',
+                                fileName: user.id + '_level.webp',
                                 cloneFiles: false,
                             });
                             try {
                                 await avatar.download();
+                                await webp.dwebp("./usuarios/avatares/" + user.id + ".webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
+                                var rank = new canvacord.Rank()
+                                    .setAvatar("./usuarios/avatares/" + user.id + ".jpg")
+                                    .setCurrentXP(experiencia)
+                                    .setRequiredXP(((nivel * nivel) * dif) * 100)
+                                    .setStatus(user.presence.status, true)
+                                    .setLevel(nivel, 'NIVEL')
+                                    .setProgressBar("#FFFFFF", "COLOR")
+                                    .setUsername(user.username)
+                                    .setDiscriminator(user.discriminator)
+                                    .setRank(0, '', false)
+                                    .setBackground("IMAGE", './recursos/carteles/' + cache.aspecto + '.png');
+
+                                rank.build()
+                                    .then(buffer => {
+                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) ^ 2) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
+                                    });
                             } catch (error) {
+                                Sentry.captureException(error);
                             }
                         }
-                        async function paso2() {
-                            await webp.dwebp("./usuarios/avatares/" + message.author.id + ".webp", "./usuarios/avatares/" + message.author.id + ".jpg", "-o", logging = "-v");
-                        }
-                        async function paso3() {
-                            const top = await Jimp.read("./usuarios/avatares/" + message.author.id + ".jpg");
-                            top.circle();
-                            top.resize(220, 220);
-                            const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-                            await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
-                                image.composite(top, 39, 32);
-                                image.print(font, 300, 55, "Nivel: " + niv);
-                                image.print(font, 300, 155, "XP: " + ((niv * 100) + exp));
-                                image.writeAsync('./usuarios/leveling/' + message.author.id + '_' + global.id + '_rank.jpg')
-                                enviar();
-                            });
-                        }
-                        function enviar() {
-                            var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + global.id + '_rank.jpg');
-                            message.reply(" te encuentras en el nivel `" + niv + "` y dispones de `" + ((niv * 100) + exp) + "` puntos de experiencia", attachament);
-
-                        }
-                        async function cocina() {
-                            await paso1();
-                            await paso2();
-                            paso3();
-                        }
-                        cocina();
+                        fa();
                     } else {
                         message.reply(" no te he podido localizar en la base de datos. Escribe unos cuantos mensajes y vuelve a intentarlo.")
                     }

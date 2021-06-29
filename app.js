@@ -1,10 +1,4 @@
 //https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
-Sentry.init({
-    dsn: "https://04202e015581483eb6a5d5c1d3eccd3c@o887024.ingest.sentry.io/5839777",
-    tracesSampleRate: 1.0,
-});
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const Math = require('mathjs');
@@ -18,6 +12,15 @@ const emojiStrip = require('emoji-strip');
 const msi = require('ms');
 const translate = require('translatte')
 const fetch = require('node-fetch');
+const canvacord = require('canvacord');
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+
+// Inicializar Sentry
+Sentry.init({
+    dsn: "https://04202e015581483eb6a5d5c1d3eccd3c@o887024.ingest.sentry.io/5839777",
+    tracesSampleRate: 1.0,
+});
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
@@ -171,9 +174,9 @@ client.on('message', (message) => {
                     if (args) {
                         if (client.commands.has(args[0])) {
                             try {
-                                client.commands.get(args[0]).execute(args, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                                client.commands.get(args[0]).execute(args, canvacord, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                             } catch (error) {
-                                Sentry.captureException(error);
+                                console.log(error);
                                 message.reply(' hemos reportado a la central un error producido cuando ha intentado ejecutar este comando...');
                             }
                         } else {
