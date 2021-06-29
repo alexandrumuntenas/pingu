@@ -66,6 +66,7 @@ async function comprobarcarpetas() {
 var con = mysql.createConnection({
     host: "localhost",
     user: "wiredpenguin",
+    port: "30000",
     password: "",
     database: "wiredpenguin",
     charset: "utf8_unicode_ci",
@@ -172,8 +173,8 @@ client.on('message', (message) => {
                             try {
                                 client.commands.get(args[0]).execute(args, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                             } catch (error) {
-                                console.error(error);
-                                message.reply(' se ha producido un error mientras se intentaba ejecutar ese comando...');
+                                Sentry.captureException(error);
+                                message.reply(' hemos reportado a la central un error producido cuando ha intentado ejecutar este comando...');
                             }
                         } else {
                             var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
@@ -227,5 +228,5 @@ client.on('message', (message) => {
     )
 });
 
-client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
+client.login('ODQ3NTE3NTQxMDgwMzY3MTI0.YK_ONw.lX_psegfTcjglbokdP9qqAnoYgg');
 
