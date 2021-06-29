@@ -15,6 +15,7 @@ const fetch = require('node-fetch');
 const canvacord = require('canvacord');
 const Sentry = require("@sentry/node");
 const Tracing = require("@sentry/tracing");
+const talkedRecently = new Set();
 
 // Inicializar Sentry
 Sentry.init({
@@ -199,8 +200,10 @@ client.on('message', (message) => {
                 }
                 //Leveling
                 if (!contenido.startsWith(global.prefix)) {
-                    if (result[0].niveles_activado != "0") {
-                        levelworker(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global);
+                    if (!talkedRecently.has(message.author.id)) {
+                        if (result[0].niveles_activado != "0") {
+                            levelworker(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global, talkedRecently);
+                        }
                     }
                 }
 
