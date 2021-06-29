@@ -1,6 +1,7 @@
 module.exports = {
     name: 'rank',
-    execute(args, boxen, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, progressbar, result, translate, webp) {
+    execute(args, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+        console.log(result[0]);
         if (result[0].niveles_activado != 0) {
             if (message.mentions.users.first()) {
                 var user = message.mentions.users.first();
