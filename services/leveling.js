@@ -1,7 +1,7 @@
-module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global, talkedRecently) {
+module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global, tr) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
     var dif = result[0].niveles_dificultad;
-    if (talkedRecently.has(message.author.id)) {
+    if (tr.has(message.author.id)) {
         con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
             if (result[0]) {
                 var exp = parseInt(result[0].experiencia);
@@ -74,10 +74,10 @@ module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, 
                 }
                 var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + global.id + "'";
                 con.query(actualizardatos);
-                talkedRecently.add(message.author.id);
+                tr.add(message.author.id);
                 console.log(talkedRecently);
                 setTimeout(() => {
-                    talkedRecently.delete(message.author.id);
+                    tr.delete(message.author.id);
                 }, 60000);
             } else {
                 var newuser = "INSERT INTO `leveling` (`user`, `guild`) VALUES ('" + message.author.id + "', '" + global.id + "')";
