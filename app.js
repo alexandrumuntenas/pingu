@@ -203,7 +203,6 @@ client.on('message', (message) => {
                     if (!talkedRecently.has(message.author.id)) {
                         if (result[0].niveles_activado != "0") {
                             talkedRecently.add(message.author.id);
-                            console.log(talkedRecently);
                             setTimeout(() => {
                                 talkedRecently.delete(message.author.id);
                             }, 60000);
