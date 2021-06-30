@@ -3,6 +3,10 @@ module.exports = {
     execute(args, canvas, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (message.author.id === '722810818823192629') {
             if (args[1] == 'cmd') {
+                const transaction = Sentry.startTransaction({
+                    op: "Reload",
+                    name: "Ejecución del comando en Guild " + global.id,
+                });
                 console.log('[LO] Intentado recargar el comando ' + args[2]);
                 const commandName = args[0].toLowerCase();
                 const command = message.client.commands.get(commandName)
@@ -23,7 +27,10 @@ module.exports = {
                     message.client.commands.set(newCommand.name, newCommand);
                     message.channel.send(`El comando \`${args[2]}\` ha sido recargado!`);
                     console.log('[OK] Recargar el módulo ' + args[2]);
-                } catch (error) {
+                } catch (e) {
+                    Sentry.captureException(e);
+                } finally {
+                    transaction.finish();
                     console.log('[ERR] Intentado recargar el módulo ' + args[2]);
                     message.channel.send(`se ha producido un error recargando el comando \`${args[1]}\`:\n\`${error.message}\``);
                 }
@@ -49,7 +56,11 @@ module.exports = {
                     message.client.commands.set(newCommand.name, newCommand);
                     message.channel.send(`El servicio \`${args[2]}\` ha sido recargado!`);
                     console.log('[OK] Recargar el servicio ' + args[2]);
-                } catch (error) {
+                } catch (e) {
+                    Sentry.captureException(e);
+                } finally {
+                    transaction.finish();
+
                     console.log('[ERR] Intentado recargar el servicio ' + args[2]);
                     if (error.code === "MODULE_NOT_FOUND") {
                         message.channel.send(`:x: El servicio especificado no existe.`);

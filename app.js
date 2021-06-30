@@ -172,10 +172,18 @@ client.on('message', (message) => {
                 var contenido = tolower.toLowerCase();
                 if (message.content.startsWith(global.prefix)) {
                     if (args) {
+                        const transaction = Sentry.startTransaction({
+                            op: "Intentar ejecutar comando / comando personalizado",
+                            name: "Ejecución del evento en Guild " + global.id,
+                        });
                         if (client.commands.has(args[0])) {
                             try {
                                 client.commands.get(args[0]).execute(args, canvacord, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
-                            } catch (error) {
+                            } catch (e) {
+                                Sentry.captureException(e);
+                            } finally {
+                                transaction.finish();
+
                                 console.log(error);
                                 message.reply(' hemos reportado a la central un error producido cuando ha intentado ejecutar este comando...');
                             }

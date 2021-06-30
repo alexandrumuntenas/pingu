@@ -1,6 +1,10 @@
 const { json } = require("mathjs");
 
 module.exports = function (client, con, Sentry, Jimp, downloader, webp, fs, MessageAttachment, member) {
+    const transaction = Sentry.startTransaction({
+        op: "GuildMemberAdd",
+        name: "Ejecución del evento en Guild " + global.id,
+    });
     var id = member.guild.id;
     var sql = "SELECT * FROM `servidores` WHERE guild = '" + id + "'";
     //Conectamos con el servidor
@@ -28,7 +32,10 @@ module.exports = function (client, con, Sentry, Jimp, downloader, webp, fs, Mess
                         try {
                             await avatar.download();
                             paso2();
-                        } catch (error) {
+                        } catch (e) {
+                            Sentry.captureException(e);
+                        } finally {
+                            transaction.finish();
                         }
                     }
                     async function paso2() {

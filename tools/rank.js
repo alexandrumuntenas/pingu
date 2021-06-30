@@ -2,6 +2,10 @@ module.exports = {
     name: 'rank',
     execute(args, canvacord, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (result[0].niveles_activado != 0) {
+            const transaction = Sentry.startTransaction({
+                op: "Rank",
+                name: "Ejecución del comando en Guild " + global.id,
+            });
             var dif = result[0].niveles_dificultad;
             var cache = { "aspecto": result[0].niveles_fondo }
             if (message.mentions.users.first()) {
@@ -42,8 +46,10 @@ module.exports = {
                                         var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
                                         message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
-                            } catch (error) {
-                                Sentry.captureException(error);
+                            } catch (e) {
+                                Sentry.captureException(e);
+                            } finally {
+                                transaction.finish();
                             }
                         }
                         fa();
@@ -86,8 +92,10 @@ module.exports = {
                                         var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
                                         message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
-                            } catch (error) {
-                                Sentry.captureException(error);
+                            } catch (e) {
+                                Sentry.captureException(e);
+                            } finally {
+                                transaction.finish();
                             }
                         }
                         fa();
