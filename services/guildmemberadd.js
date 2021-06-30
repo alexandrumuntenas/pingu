@@ -1,5 +1,3 @@
-const { json } = require("mathjs");
-
 module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttachment, member) {
     var id = member.guild.id;
     var sql = "SELECT * FROM `servidores` WHERE guild = '" + id + "'";
@@ -11,13 +9,6 @@ module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttac
                 const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
                 if (result[0].bienvenida_cartel != 0) {
                     var user = member.user;
-                    async function paso0() {
-                        fs.stat('./usuarios/bienvenidas/' + user.id + '_' + id + '_join.jpg', function (err) {
-                            if (err == null) {
-                                fs.unlinkSync('./usuarios/bienvenidas/' + user.id + '_' + id + '_join.jpg');
-                            }
-                        })
-                    };
                     async function paso1() {
                         const avatar = new downloader({
                             url: user.avatarURL(),
@@ -71,7 +62,7 @@ module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttac
                 } else {
                     //Reemplazamos valores como {user} o {server} para que nodejs pueda interpretarlo
                     const fromdb = cache.canal_msg;
-                    const userreplace = fromdb.replace('{user}', `<@${user.id}>`);
+                    const userreplace = fromdb.replace('{user}', `<@${member.user.id}>`);
                     const toexport = userreplace.replace('{server}', `${member.guild.name}`);
                     mensaje.send(toexport);
                 }
