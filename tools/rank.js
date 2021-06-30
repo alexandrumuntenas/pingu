@@ -67,7 +67,7 @@ module.exports = {
                             });
                             try {
                                 await avatar.download();
-                                await webp.dwebp("./usuarios/avatares/" + user.id + ".webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
+                                await webp.dwebp("./usuarios/avatares/" + user.id + "_level.webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
                                 var rank = new canvacord.Rank()
                                     .setAvatar("./usuarios/avatares/" + user.id + "_level.jpg")
                                     .setCurrentXP(experiencia)
