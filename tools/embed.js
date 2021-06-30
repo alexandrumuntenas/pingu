@@ -57,6 +57,10 @@ module.exports = {
                             case '9':
                                 message.channel.send(':information_source: Se ha descartado el mensaje enriquecido.')
                                 break;
+                            default:
+                                purga()
+                                indice();
+                                break;
                         }
                     });
             }
@@ -153,14 +157,10 @@ module.exports = {
                         message.channel.send(embed);
                     });
             }
-
-            // Comienzo del constructor visual
             message.channel.send('<:info:858737080950718484> Bienvenido al constructor visual de mensajes enriquecidos. Le iremos haciendo una serie de preguntas para ir construyendo su mensaje enriquecido a medida.');
-            indice(embed, 0);
-
+            indice();
         } else {
             message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
         }
     }
 }
-//
