@@ -169,7 +169,6 @@ client.on('message', (message) => {
                                 client.commands.get(args[0]).execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                             } catch (e) {
                                 console.log(e);
-                            } finally {
                                 message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
                             }
                         } else {
