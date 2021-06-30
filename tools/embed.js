@@ -97,7 +97,7 @@ module.exports = {
                                     message.channel.send(':arrow_right: Mostrar campo #' + addfields + ' en línea. Respuestas disponibles: y(es) / n(o)');
                                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                                         { max: 1 }).then(collected => {
-                                            if (collected.first().content === "y") {
+                                            if (collected.first().content === "y" || collected.first().content === "yes") {
                                                 embed.addField(titulo, descrip, true);
                                                 indice();
                                             } else {
