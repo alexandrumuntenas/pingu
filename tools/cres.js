@@ -1,6 +1,6 @@
 module.exports = {
     name: 'cres',
-    execute(args, canvacord, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             function makeId(length) {
                 var result = '';
@@ -27,7 +27,7 @@ module.exports = {
                                         var respuesta = collected.first().content;
                                         var crearcres = "INSERT INTO `respuestas_custom` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + global.id + "', '" + accionante + "', '" + respuesta + "')";
                                         con.query(crearcres, function (err) {
-                                            if (err) Sentry.captureException(err);
+                                            console.log(err)
                                             message.channel.send(':white_check_mark: Se ha creado correctamente la respuesta personalizada. Su identificador es: `' + identificador + '`.');
                                         })
                                     }).catch(() => {
@@ -40,7 +40,7 @@ module.exports = {
                     case 'eliminar':
                         var delcmd = "DELETE FROM `respuestas_custom` WHERE `identificador` = '" + args[2] + "' AND `guild` = " + global.id;
                         con.query(delcmd, function (err) {
-                            if (err) Sentry.captureException(err);
+                            console.log(err)
                             message.channel.send(':white_check_mark: Se ha eliminado correctamente la respuesta personalizada con identificador `' + args[2] + '`');
                         })
                         break;

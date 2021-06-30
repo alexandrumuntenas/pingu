@@ -1,4 +1,4 @@
-module.exports = function (client, con, Sentry, member) {
+module.exports = function (client, con, member) {
     var id = member.guild.id;
     var uid = member.user.id;
     var sql = "SELECT * FROM `servidores` WHERE guild = '" + id + "'";

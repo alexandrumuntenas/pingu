@@ -13,15 +13,7 @@ const msi = require('ms');
 const translate = require('translatte')
 const fetch = require('node-fetch');
 const canvacord = require('canvacord');
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
 const talkedRecently = new Set();
-
-// Inicializar Sentry
-Sentry.init({
-    dsn: "https://04202e015581483eb6a5d5c1d3eccd3c@o887024.ingest.sentry.io/5839777",
-    tracesSampleRate: 1.0,
-});
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
@@ -132,11 +124,11 @@ client.on('guildDelete', (guild) => {
 });
 
 client.on('guildMemberAdd', member => {
-    guildmemberadd(client, con, Sentry, Jimp, downloader, webp, fs, MessageAttachment, member);
+    guildmemberadd(client, con, Jimp, downloader, webp, fs, MessageAttachment, member);
 });
 
 client.on('guildMemberRemove', member => {
-    guildmemberremove(client, con, Sentry, member);
+    guildmemberremove(client, con, member);
 });
 client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
@@ -172,20 +164,13 @@ client.on('message', (message) => {
                 var contenido = tolower.toLowerCase();
                 if (message.content.startsWith(global.prefix)) {
                     if (args) {
-                        const transaction = Sentry.startTransaction({
-                            op: "Intentar ejecutar comando / comando personalizado",
-                            name: "Ejecución del evento en Guild " + global.id,
-                        });
                         if (client.commands.has(args[0])) {
                             try {
-                                client.commands.get(args[0]).execute(args, canvacord, client, con, Sentry, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                                client.commands.get(args[0]).execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
                             } catch (e) {
-                                Sentry.captureException(e);
+                                console.log(e);
                             } finally {
-                                transaction.finish();
-
-                                console.log(error);
-                                message.reply(' hemos reportado a la central un error producido cuando ha intentado ejecutar este comando...');
+                                message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
                             }
                         } else {
                             var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
@@ -214,7 +199,7 @@ client.on('message', (message) => {
                             setTimeout(() => {
                                 talkedRecently.delete(message.author.id);
                             }, 60000);
-                            leveling(result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global);
+                            leveling(result, client, con, Jimp, downloader, webp, message, MessageAttachment, global);
                         }
                     }
                 }
@@ -238,7 +223,7 @@ client.on('message', (message) => {
             var id = global.id;
             var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
             con.query(sql, function (err, result) {
-                if (err) Sentry.captureException(err);
+                if (err) console.log(err);
             });
         }
     }

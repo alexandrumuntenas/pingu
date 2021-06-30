@@ -1,8 +1,4 @@
-module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, message, MessageAttachment, global) {
-    const transaction = Sentry.startTransaction({
-        op: "Leveling",
-        name: "Ejecución del evento en Guild " + global.id,
-    });
+module.exports = function (result, client, con, Jimp, downloader, webp, message, MessageAttachment, global) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
     var dif = result[0].niveles_dificultad;
     con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
@@ -23,11 +19,8 @@ module.exports = function (result, client, con, Sentry, Jimp, downloader, webp, 
                     });
                     try {
                         await avatar.download();
-                    } catch (e) {
-                        Sentry.captureException(e);
-                    } finally {
-                        transaction.finish();
-
+                    } catch (error) {
+                        console.log(error);
                     }
                 }
                 async function paso2() {
