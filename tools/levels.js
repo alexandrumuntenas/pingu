@@ -12,7 +12,9 @@ module.exports = {
                         embed.setAuthor(global.name);
                         rows.forEach(function (row) {
                             var usuario = client.users.cache.find(user => user.id === row.user);
-                            embed.addFields({ name: usuario.username, value: "Nivel: " + row.nivel + " | Experiencia: " + ((parseInt(row.nivel) * (dif * 100)) + parseInt(row.experiencia)) })
+                            var nivel = parseInt(row.nivel);
+                            var experiencia = parseInt(row.experiencia);
+                            embed.addFields({ name: usuario.username, value: "Nivel: " + row.nivel + " | Experiencia: " + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) })
                         });
                     };
                     embed.setFooter('Para obtener el TOP 10, Pingu ordena de forma descendente los datos de nivel registrados en función del nivel.')
