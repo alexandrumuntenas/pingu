@@ -15,7 +15,7 @@ module.exports = {
             function indice() {
                 message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
-                    { max: 1 }).then(collected => {
+                    { max: 1, time: 30000, errors: ['time'] }).then(collected => {
                         switch (collected.first().content) {
                             case '1':
                                 purga()
@@ -49,6 +49,8 @@ module.exports = {
                                 indice();
                                 break;
                         }
+                    }).catch(collected => {
+                        message.channel.send(':information_source: Se ha cerrado la configuración del módulo de bienvenidas');
                     });
             }
 
