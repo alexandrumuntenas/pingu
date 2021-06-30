@@ -85,7 +85,7 @@ module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttac
             if (result[0].bienvenida_roles_user) {
                 var role = JSON.parse(result[0].bienvenida_roles_user);
                 role.forEach(element => {
-                    member.roles.add(member.guild.roles.cache.get(element));
+                    member.roles.add(member.guild.roles.cache.find(role => role.id === element));
                 })
             }
         }
