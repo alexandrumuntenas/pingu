@@ -133,106 +133,102 @@ client.on('guildMemberRemove', member => {
 });
 client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
-    if (message.author.bot || message.author === client.user) return;
+    if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
 
-    if (message.channel.type !== "dm") {
-        global = [];
-        global.id = message.guild.id;
-        global.name = message.guild.name;
-        //Conectamos con Mariadb y obtenemos datos del servidor
-        con.query("SELECT * FROM `servidores` WHERE guild = '" + global.id + "'", function (err, result, rows) {
-            if (result) {
-                if (result[0] !== undefined) {
-                    global.prefix = result[0].prefix;
-                    var id = global.id;
-                    //Comprobamos si el mensaje ha comenzado con prefijo
-                    if (message.content.startsWith(global.prefix) && message.content != global.prefix) {
+    global = [];
+    global.id = message.guild.id;
+    global.name = message.guild.name;
+    //Conectamos con Mariadb y obtenemos datos del servidor
+    con.query("SELECT * FROM `servidores` WHERE guild = '" + global.id + "'", function (err, result, rows) {
+        if (result) {
+            if (result[0] !== undefined) {
+                global.prefix = result[0].prefix;
+                var id = global.id;
+                //Comprobamos si el mensaje ha comenzado con prefijo
+                if (message.content.startsWith(global.prefix) && message.content != global.prefix) {
 
-                        //Retirar el comandomsg.content.split(' ').splice(1).join(' ')
-                        var cortar = message.content.trim().split(' ');
+                    //Retirar el comandomsg.content.split(' ').splice(1).join(' ')
+                    var cortar = message.content.trim().split(' ');
 
-                        //Solo retira el prefijo del comando, por lo que cuenta también la acción deseada en el array
-                        var mensajeprocesado = message.content.replace(global.prefix, '');
-                        //Regex para los argumentos con ""
+                    //Solo retira el prefijo del comando, por lo que cuenta también la acción deseada en el array
+                    var mensajeprocesado = message.content.replace(global.prefix, '');
+                    //Regex para los argumentos con ""
 
-                        const regex = new RegExp('"[^"]+"|[\\S]+', 'g');
-                        var args = [];
-                        mensajeprocesado.match(regex).forEach(element => {
-                            if (!element) return;
-                            return args.push(element.replace(/"/g, ''));
-                        });
+                    const regex = new RegExp('"[^"]+"|[\\S]+', 'g');
+                    var args = [];
+                    mensajeprocesado.match(regex).forEach(element => {
+                        if (!element) return;
+                        return args.push(element.replace(/"/g, ''));
+                    });
 
-                    }
-                    var tolower = message.content;
-                    var contenido = tolower.toLowerCase();
-                    if (message.content.startsWith(global.prefix)) {
-                        if (args) {
-                            if (client.commands.has(args[0])) {
-                                try {
-                                    client.commands.get(args[0]).execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
-                                } catch (e) {
-                                    console.log(e);
-                                    message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
-                                }
-                            } else {
-                                var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
-                                con.query(consultacomandoscustom, function (err, result) {
-                                    if (typeof result[0] !== 'undefined') {
-                                        var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
-                                        con.query(buscarcomando, function (err, result) {
-                                            if (typeof result[0] !== 'undefined') {
-                                                message.channel.send("<:comandoscustom:858671400424046602>" + result[0].returns);
-                                            }
-                                        });
-                                    }
-                                });
-                            };
-                        }
-                    }
-
-                    if (result[0].aspam_activado != 0) {
-                        antispamworker(message);
-                    }
-                    //Leveling
-                    if (!contenido.startsWith(global.prefix)) {
-                        if (!talkedRecently.has(message.author.id)) {
-                            if (result[0].niveles_activado != "0") {
-                                talkedRecently.add(message.author.id);
-                                setTimeout(() => {
-                                    talkedRecently.delete(message.author.id);
-                                }, 60000);
-                                leveling(result, client, con, Jimp, downloader, webp, message, MessageAttachment, global);
+                }
+                var tolower = message.content;
+                var contenido = tolower.toLowerCase();
+                if (message.content.startsWith(global.prefix)) {
+                    if (args) {
+                        if (client.commands.has(args[0])) {
+                            try {
+                                client.commands.get(args[0]).execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                            } catch (e) {
+                                console.log(e);
+                                message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
                             }
-                        }
-                    }
-
-                    // Respuestas personalizadas
-                    var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
-                    con.query(consultarespuestacustom, function (err, result) {
-                        if (typeof result[0] !== 'undefined') {
-                            var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
-                            con.query(buscarrespuesta, function (err, result) {
+                        } else {
+                            var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
+                            con.query(consultacomandoscustom, function (err, result) {
                                 if (typeof result[0] !== 'undefined') {
-                                    message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
+                                    var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
+                                    con.query(buscarcomando, function (err, result) {
+                                        if (typeof result[0] !== 'undefined') {
+                                            message.channel.send("<:comandoscustom:858671400424046602>" + result[0].returns);
+                                        }
+                                    });
                                 }
                             });
-                        }
-                    });
+                        };
+                    }
                 }
-            }
-            else {
-                var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
-                var id = global.id;
-                var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
-                con.query(sql, function (err, result) {
-                    if (err) console.log(err);
+
+                if (result[0].aspam_activado != 0) {
+                    antispamworker(message);
+                }
+                //Leveling
+                if (!contenido.startsWith(global.prefix)) {
+                    if (!talkedRecently.has(message.author.id)) {
+                        if (result[0].niveles_activado != "0") {
+                            talkedRecently.add(message.author.id);
+                            setTimeout(() => {
+                                talkedRecently.delete(message.author.id);
+                            }, 60000);
+                            leveling(result, client, con, Jimp, downloader, webp, message, MessageAttachment, global);
+                        }
+                    }
+                }
+
+                // Respuestas personalizadas
+                var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
+                con.query(consultarespuestacustom, function (err, result) {
+                    if (typeof result[0] !== 'undefined') {
+                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
+                        con.query(buscarrespuesta, function (err, result) {
+                            if (typeof result[0] !== 'undefined') {
+                                message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
+                            }
+                        });
+                    }
                 });
             }
         }
-        )
-    } else {
-        dm(canvacord, client, con, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, translate, webp)
+        else {
+            var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
+            var id = global.id;
+            var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
+            con.query(sql, function (err, result) {
+                if (err) console.log(err);
+            });
+        }
     }
+    )
 });
 
 client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
