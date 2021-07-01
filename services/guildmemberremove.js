@@ -7,7 +7,7 @@ module.exports = function (client, con, member) {
     var user = member.user;
     if (member.user.id != client.user.id) {
         con.query(sql, function (err, result) {
-            if (result[0].salida_activado != 0) {
+            if (result[0].salida_mensaje_activado != 0) {
                 cache = { "canal_id": result[0].salida_canal, "canal_msg": result[0].salida_mensaje };
                 const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
                 const fromdb = cache.canal_msg;
