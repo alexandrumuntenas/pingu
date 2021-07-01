@@ -9,9 +9,10 @@ module.exports = {
                     if (cache.activado != 0) {
                         var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
                         con.query(consultarcantidad, function (err, result) {
-                            var infraccion = message.content.replace(global.prefix + 'warn ', '');
+                            var infraccion = message.content;
+                            infraccion.replace(global.prefix + 'warn ', '');
                             array.forEach(user => {
-                                infraccion = infraccion.replace('<@!' + user.id + '>', '');
+                                infraccion = infraccion.replace('<@' + user.id + '>', '');
                             })
                             var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
                             con.query(nuevainfraccion);
