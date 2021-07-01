@@ -5,7 +5,7 @@ module.exports = function (result, client, con, Jimp, downloader, webp, message,
         if (result[0]) {
             var exp = parseInt(result[0].experiencia);
             var niv = parseInt(result[0].nivel);
-            var exp = exp + Math.floor(Math.random() * 26) + 15;
+            var exp = exp + Math.round(Math.random(15, 25));
 
             if (exp >= (((niv * niv) * dif) * 100)) {
                 var exp = 0;
