@@ -7,6 +7,7 @@ module.exports = {
             embed.setAuthor(message.author.username, message.author.avatarURL());
             embed.setTimestamp();
             embed.setFooter('Powered by Pingu')
+            embed.setColor("#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); }));
             addfields = 0;
             ftime = 0;
             function purga() {
@@ -132,7 +133,7 @@ module.exports = {
             }
 
             function e_color() {
-                message.channel.send(':arrow_right: Introduce el color que deseas en hexadecimal.')
+                message.channel.send(':arrow_right: Introduce el color que deseas en hexadecimal. (Es necesario poner # al principio)')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         embed.setColor(collected.first().content);
