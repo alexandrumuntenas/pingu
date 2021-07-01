@@ -9,14 +9,16 @@ module.exports = {
                     if (cache.activado != 0) {
                         var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
                         con.query(consultarcantidad, function (err, result) {
-                            var infraccion = message.content;
-                            infraccion.replace(global.prefix + 'warn ', '');
+                            var warn = message.content;
+                            console.log(warn);
+                            warn.replace(global.prefix + 'warn ', '');
+                            console.log(warn);
                             array.forEach(user => {
-                                infraccion = infraccion.replace('<@' + user.id + '>', '');
+                                warn = warn.replace('<@' + user.id + '>', '');
                             })
-                            var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + infraccion + "')";
+                            var nuevainfraccion = "INSERT INTO `infracciones` (`user`, `guild`,`motivo`) VALUES ('" + user.id + "', '" + global.id + "','" + warn + "')";
                             con.query(nuevainfraccion);
-                            var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(infraccion);
+                            var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(warn);
                             message.channel.send(embed);
                             const member = message.guild.member(user);
                             if (parseInt(result[0].itotal) + 1 >= cache.cantidad) {
