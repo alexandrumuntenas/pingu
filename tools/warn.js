@@ -4,10 +4,9 @@ module.exports = {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 var warn = message.content;
-                warn.replace(global.prefix + 'warn', '');
-                console.log(warn)
                 message.mentions.users.array().forEach(user => {
-                    warn = warn.replace('<@' + user.id + '>', '');
+                    warn = warn.replace('<@!' + user.id + '>', '');
+                    warn = warn.replace(`${global.prefix}warn`, '');
                 })
                 console.log(warn)
                 message.mentions.users.array().forEach(user => {
