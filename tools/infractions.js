@@ -11,7 +11,7 @@ module.exports = {
                     con.query(verinfraccionescantidad, function (err, result) {
                         var ultimas = result[0].total;
                         con.query(verinfracciones5, function (err, result) {
-                            var embed = new MessageEmbed().setAuthor("Infracciones de " + user.tag, user.displayAvatarURL()).setTitle('Infracciones totales').setDescription(ultimas);
+                            var embed = new MessageEmbed().setAuthor("Infracciones de " + user.tag, user.displayAvatarURL()).setTitle('Infracciones totales: ' + ultimas);
                             async function infraccionestotales() {
                                 var i = 0;
                                 for (var i = 0; i < result.length; i++) {
