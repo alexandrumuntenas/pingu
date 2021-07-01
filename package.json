@@ -17,7 +17,7 @@
     "mysql2": "^2.2.5",
     "node-fetch": "^2.6.1",
     "nodejs-file-downloader": "^4.6.0",
-    "pdf-lib": "^1.16.0",
+    "pdfkit": "^0.12.1",
     "rss-parser": "^3.12.0",
     "superagent": "^6.1.0",
     "translatte": "^3.0.1",
