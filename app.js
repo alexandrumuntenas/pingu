@@ -231,7 +231,7 @@ client.on('message', (message) => {
         }
         )
     } else {
-        dm(canvacord, client, con, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp)
+        dm(canvacord, client, con, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, translate, webp)
     }
 });
 
