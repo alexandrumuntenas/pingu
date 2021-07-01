@@ -6,7 +6,7 @@ module.exports = {
                 var array = message.mentions.users.array();
                 var warn = message.content;
                 warn.replace(global.prefix + 'warn ', '');
-                await array.forEach(user => {
+                array.forEach(user => {
                     warn = warn.replace('<@' + user.id + '>', '');
                 })
                 message.mentions.users.array().forEach(user => {
