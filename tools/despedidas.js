@@ -93,7 +93,7 @@ module.exports = {
                         { max: 1 }).then(collected => {
                             if (collected.first().mentions.channels.first()) {
                                 var channel = collected.first().mentions.channels.first();
-                                var updatechannel = "UPDATE `servidores` SET `bienvenida_canal_id` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
+                                var updatechannel = "UPDATE `servidores` SET `salida_canal` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
                                 con.query(updatechannel);
                                 message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida. Anunciaré allí los nuevos miembros :thumbsup:');
                                 indice();
