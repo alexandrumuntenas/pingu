@@ -8,7 +8,6 @@ module.exports = {
                     warn = warn.replace('<@!' + user.id + '>', '');
                     warn = warn.replace(`${global.prefix}warn`, '');
                 })
-                console.log(warn)
                 message.mentions.users.array().forEach(user => {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };
                     var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
