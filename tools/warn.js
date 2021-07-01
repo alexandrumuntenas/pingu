@@ -46,7 +46,7 @@ module.exports = {
                             }
                         });
                     } else {
-                        var infraccion = message.content.replace(global.prefix + 'mwarn ', '');
+                        var infraccion = message.content.replace(global.prefix + 'warn ', '');
                         array.forEach(user => {
                             infraccion = infraccion.replace('<@!' + user.id + '>', '');
                         })
