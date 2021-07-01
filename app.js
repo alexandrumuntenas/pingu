@@ -133,7 +133,7 @@ client.on('guildMemberRemove', member => {
 });
 client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
-    if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
+    if (message.author.bot || message.author === client.user) return;
 
     if (message.channel.type !== "dm") {
         global = [];
