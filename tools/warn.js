@@ -3,12 +3,13 @@ module.exports = {
     execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
-                var array = message.mentions.users.array();
                 var warn = message.content;
-                warn.replace(global.prefix + 'warn ', '');
-                array.forEach(user => {
+                warn.replace(global.prefix + 'warn', '');
+                console.log(warn)
+                message.mentions.users.array().forEach(user => {
                     warn = warn.replace('<@' + user.id + '>', '');
                 })
+                console.log(warn)
                 message.mentions.users.array().forEach(user => {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };
                     var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
