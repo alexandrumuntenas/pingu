@@ -15,7 +15,7 @@ module.exports = {
                 var response = 'activado';
             }
             con.query(sql);
-            message.channel.send(':white_check_mark: He ' + response + ' correctamente el módulo de moderación.');
+            message.channel.send(':white_check_mark: Se ha ' + response + ' correctamente el módulo de moderación.');
         } else {
             message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
