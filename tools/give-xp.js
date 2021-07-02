@@ -33,7 +33,7 @@ module.exports = {
                             message.channel.send(":information_source: El segundo argumento debe ser un @usuario :arrow_right: https://pingu.duoestudios.es/compromiso-diversion-y-aprendizaje/niveles#moderadores");
                         }
                     } else {
-                        message.channel.send(":scream: ¿A donde vás flipado? Introduce un valor númerico entre 0 - 9999 :arrow_right: https://pingu.duoestudios.es/compromiso-diversion-y-aprendizaje/niveles#moderadores");
+                        message.channel.send(":scream: Debe introducir un valor númerico entre 0 - 9999 :arrow_right: https://pingu.duoestudios.es/compromiso-diversion-y-aprendizaje/niveles#moderadores");
                     }
                 } else {
                     message.channel.send(":information_source: El primer argumento debe ser un valor númerico :arrow_right: https://pingu.duoestudios.es/compromiso-diversion-y-aprendizaje/niveles#moderadores");
