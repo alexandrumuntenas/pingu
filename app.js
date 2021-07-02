@@ -206,7 +206,7 @@ client.on('message', (message) => {
             // Respuestas personalizadas
             var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
             con.query(consultarespuestacustom, function (err, result) {
-                if (typeof result[0] !== 'undefined') {
+                if (result.hasOwnProperty(0)) {
                     var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
                     con.query(buscarrespuesta, function (err, result) {
                         if (typeof result[0] !== 'undefined') {
