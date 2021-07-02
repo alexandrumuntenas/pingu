@@ -131,7 +131,7 @@ module.exports = {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `servidores` SET `bienvenida_canal_id` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
                             con.query(updatechannel);
-                            message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida. Se anunciarán la llegada de los nuevos miembros :thumbsup:');
+                            message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida');
                             indice();
                         } else {
                             message.channel.send(':x: No ha mencionado un canal válido.')
@@ -146,7 +146,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         var updatemsg = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + global.id;
                         con.query(updatemsg);
-                        message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida correctamente.');
+                        message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida');
                         indice();
                     });
             }
@@ -159,7 +159,7 @@ module.exports = {
                             if (parseInt(collected.first().content) <= 20 || parseInt(collected.first().content) >= 1) {
                                 var updatemsg = "UPDATE `servidores` SET `bienvenida_fondo` = '" + collected.first().content + "' WHERE `servidores`.`guild` = " + global.id;
                                 con.query(updatemsg);
-                                message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida correctamente.');
+                                message.channel.send(':white_check_mark: Se ha actualizado el fondo de los carteles de bienvenida');
                                 indice();
                             } else {
                                 message.channel.send(':x: Ese fondo no existe, por favor, introduzca un ID válido.')
