@@ -41,7 +41,7 @@ module.exports = {
                 message.channel.send(embed);
             }
         } else {
-            message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }

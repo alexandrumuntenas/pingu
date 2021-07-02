@@ -22,7 +22,7 @@ module.exports = {
                     message.channel.send(':information_source: No has mencionado a ningún usuario. Uso: `' + global.prefix + 'delwarn <usuario> <id>`');
                 }
             } else {
-                message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+                message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
             }
         }
     }

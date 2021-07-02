@@ -28,7 +28,7 @@ module.exports = {
                 message.channel.send(':information_source: Menciona al menos un usuario para poder ejecutar este comando.');
             }
         } else {
-            message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }

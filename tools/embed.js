@@ -161,7 +161,7 @@ module.exports = {
             message.channel.send('<:info:858737080950718484> Bienvenido al constructor visual de mensajes enriquecidos. Le iremos haciendo una serie de preguntas para ir construyendo su mensaje enriquecido a medida.');
             indice();
         } else {
-            message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }

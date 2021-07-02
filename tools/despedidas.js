@@ -119,7 +119,7 @@ module.exports = {
                 indice();
             }
         } else {
-            message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }

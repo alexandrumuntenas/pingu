@@ -11,7 +11,7 @@ module.exports = {
                 message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'prefijo <prefijo>`');
             }
         } else {
-            message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }
