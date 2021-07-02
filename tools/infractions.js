@@ -18,7 +18,7 @@ module.exports = {
                                     var timeStamp = JSON.stringify(result[i].timestamp);
                                     var s = timeStamp;
                                     var m = moment(s, 'YYYY MM dd').format('MM-DD-YYYY');
-                                    embed.addFields({ name: 'Infracción #' + (i + 1), value: "**" + result[i].motivo + "** • " + s.slice(0, 11) + "\"" })
+                                    embed.addFields({ name: 'Infracción #' + (i + 1) + "(" + result[i].identificador + ")", value: "**" + result[i].motivo + "** • " + s.slice(0, 11) + "\"" })
                                 }
                                 message.channel.send(embed);
                             }
