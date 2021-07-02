@@ -48,7 +48,7 @@ module.exports = {
                         }
                         fa();
                     } else {
-                        message.reply(" no te he podido localizar en la base de datos. Escribe unos cuantos mensajes y vuelve a intentarlo.")
+                        message.channel.send(":x: No existen datos disponibles.")
                     }
                 })
             } else {
@@ -92,15 +92,15 @@ module.exports = {
                         }
                         fa();
                     } else {
-                        message.reply(" no te he podido localizar en la base de datos. Escribe unos cuantos mensajes y vuelve a intentarlo.")
+                        message.reply(" no le he podido localizar en la base de datos. Escriba unos cuantos mensajes y vuelva a intentarlo.")
                     }
                 })
             };
         } else {
             if (message.member.hasPermission('ADMINISTRATOR')) {
-                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utiliza el siguiente comando: `" + global.prefix + "niveles`");
+                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utilice el siguiente comando: `" + global.prefix + "niveles`");
             } else {
-                message.reply(" este servidor tiene desactivado los leveling");
+                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles");
             }
         }
     }
