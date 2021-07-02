@@ -20,12 +20,12 @@ module.exports = {
                                 message.channel.send(`:white_check_mark: Se ha expulsado correctamente a ${user.tag}`);
                             })
                             .catch(err => {
-                                message.channel.send(`:x: No he podido expulsar a ${user.tag}`);
+                                message.channel.send(`:x: No se podido expulsar a ${user.tag}`);
                             });
                     }
                 });
             } else {
-                message.channel.send(':information_source: Menciona al menos un usuario para poder ejecutar este comando.');
+                message.channel.send(':information_source: Mencione al menos un usuario para poder ejecutar este comando');
             }
         } else {
             message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
