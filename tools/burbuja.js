@@ -12,7 +12,7 @@ module.exports = {
                 var response = 'activado';
             }
             var sql = "UPDATE `servidores` SET `burbuja_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
-            message.channel.send(':white_check_mark: He ' + response + ' correctamente el modo burbuja.');
+            message.channel.send(':white_check_mark: Se ha ' + response + ' correctamente el modo burbuja.');
             con.query(sql);
         } else {
             message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
