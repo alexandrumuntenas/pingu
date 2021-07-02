@@ -62,7 +62,7 @@ module.exports = {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `servidores` SET `bienvenida_mensaje_activado` = '1' WHERE `servidores`.`guild` = " + global.id;
                             con.query(yes);
-                            message.channel.send(':white_check_mark: ¡Genial! A partir de ahora, enviaré mensajes de bienvenida a los recién llegados...');
+                            message.channel.send(':white_check_mark: Se enviarán mensajes de bienvenida...');
                             indice();
                         } else {
                             var no = "UPDATE `servidores` SET `bienvenida_mensaje_activado` = '0' WHERE `servidores`.`guild` = " + global.id;
@@ -80,7 +80,7 @@ module.exports = {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `servidores` SET `bienvenida_cartel` = '1' WHERE `servidores`.`guild` = " + global.id;
                             con.query(yes);
-                            message.channel.send(':white_check_mark: ¡Genial! A partir de ahora, enviaré también los carteles de bienvenida a los recién llegados...');
+                            message.channel.send(':white_check_mark: Se enviarán carteles de bienvenida...');
                             indice();
                         } else {
                             var no = "UPDATE `servidores` SET `bienvenida_cartel` = '0' WHERE `servidores`.`guild` = " + global.id;
@@ -92,7 +92,7 @@ module.exports = {
             }
 
             function dar_rol() {
-                message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
+                message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         switch (collected.first().content) {
@@ -124,24 +124,24 @@ module.exports = {
             }
 
             function u_canal() {
-                message.channel.send(':arrow_right: ¿Dónde deseas que se envíen los mensajes y carteles de bienvenida? ¡Menciona el canal!')
+                message.channel.send(':arrow_right: ¿Dónde desea que se envíen los mensajes y carteles de bienvenida? ¡Menciona el canal!')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().mentions.channels.first()) {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `servidores` SET `bienvenida_canal_id` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
                             con.query(updatechannel);
-                            message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida. Anunciaré allí los nuevos miembros :thumbsup:');
+                            message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida. Se anunciarán la llegada de los nuevos miembros :thumbsup:');
                             indice();
                         } else {
-                            message.channel.send(':x: No has mencionado un canal válido.')
+                            message.channel.send(':x: No ha mencionado un canal válido.')
                             u_canal();
                         }
                     });
             }
 
             function u_mensaje() {
-                message.channel.send(':arrow_right: ¿Qué mensaje deseas que envíe para recibir a los nuevos miembros? <:warn:858736919432527942> El mensaje de bienvenida no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.')
+                message.channel.send(':arrow_right: ¿Qué mensaje desea que envíe para recibir a los nuevos miembros? <:warn:858736919432527942> El mensaje de bienvenida no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         var updatemsg = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + global.id;
@@ -152,7 +152,7 @@ module.exports = {
             }
 
             function u_fondo() {
-                message.channel.send(':arrow_right: Introduce el ID del fondo que deseas establecer. Puedes consultar los fondos disponibles en este enlace: https://pingu.duoestudios.es/personalizacion/fondos')
+                message.channel.send(':arrow_right: Introduzca el ID del fondo que desea establecer. Puede consultar los fondos disponibles en este enlace: https://pingu.duoestudios.es/personalizacion/fondos')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (isInteger(collected.first().content)) {
@@ -162,7 +162,7 @@ module.exports = {
                                 message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida correctamente.');
                                 indice();
                             } else {
-                                message.channel.send(':x: Ese fondo no existe, por favor, introduce un ID válido.')
+                                message.channel.send(':x: Ese fondo no existe, por favor, introduzca un ID válido.')
                                 u_fondo();
                             }
                         } else {
