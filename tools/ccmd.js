@@ -20,12 +20,12 @@ module.exports = {
                         })
                         break;
                     default:
-                        message.channel.send(':information_source: No has indicado una opción correcta :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/comandos-personalizados')
+                        message.channel.send(':information_source: No ha indicado una opción correcta :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/comandos-personalizados')
                         break;
                 }
             }
         } else {
-            message.channel.send(':x: No tienes permisos suficientes para ejecutar este comando');
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando');
         }
     }
 }
