@@ -8,7 +8,7 @@ module.exports = {
                         if (message.mentions.channels.first()) {
                             var channel = message.mentions.channels.first();
                             var sql = "UPDATE `servidores` SET `salida_canal` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
-                            message.channel.send(':white_check_mark: Se ha actualizado el canal de despedidas. Anunciaré allí las salidas de miembros :thumbsup:');
+                            message.channel.send(':white_check_mark: Se ha actualizado el canal de despedidas');
                             con.query(sql);
                         } else {
                             message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'despedidas canal <canal>`');
@@ -19,14 +19,14 @@ module.exports = {
                             var mensaje = message.content.replace(global.prefix + 'despedidas mensaje ', '');
                             var mensaje = emojiStrip(mensaje);
                             var sql = "UPDATE `servidores` SET `salida_mensaje` = '" + mensaje + "' WHERE `servidores`.`guild` = " + global.id;
-                            message.channel.send(':white_check_mark: Se ha actualizado el mensaje correctamente.');
+                            message.channel.send(':white_check_mark: Se ha actualizado el mensaje correctamente');
                             con.query(sql);
                         } else {
                             message.channel.send(':information_source: Falta un argumento en el comando. Uso: `' + global.prefix + 'despedidas mensaje <message>"`');
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una configuración válida del módulo de despedidas :arrow_right:  https://pingu.duoestudios.es/gestion-del-servidor/despedidas');
+                        message.channel.send(':information_source: No se ha especificado una configuración válida del módulo de despedidas :arrow_right:  https://pingu.duoestudios.es/gestion-del-servidor/despedidas');
                         break;
                 }
             } else {
@@ -40,7 +40,7 @@ module.exports = {
                 }
 
                 function indice() {
-                    message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien abandona el servidor? \n **2.** Establecer mensaje de despedidas \n **3.** Establecer canal de despedida \n **4.** Salir');
+                    message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien abandona el servidor? \n **2.** Establecer mensaje de despedidas \n **3.** Establecer canal de despedida \n **4.** Salir');
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1, time: 30000, errors: ['time'] }).then(collected => {
                             switch (collected.first().content) {
@@ -70,7 +70,7 @@ module.exports = {
                 }
 
                 function t_mensaje() {
-                    message.channel.send(':arrow_right: ¿Enviar mensaje de bienvenida cuando se una un nuevo miembro? Respuestas disponibles: y(es) / n(o)');
+                    message.channel.send(':arrow_right: ¿Enviar mensaje de despedida cuando se una miembro abandone el servidor? Respuestas disponibles: y(es) / n(o)');
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1 }).then(collected => {
                             if (collected.first().content === "y" || collected.first().content === "yes") {
@@ -88,29 +88,29 @@ module.exports = {
                 }
 
                 function u_canal() {
-                    message.channel.send(':arrow_right: ¿Dónde deseas que se envíen los mensajes y carteles de bienvenida? ¡Menciona el canal!')
+                    message.channel.send(':arrow_right: ¿Dónde desea que se envíen los mensajes de despedidas? ¡Mencione el canal!')
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1 }).then(collected => {
                             if (collected.first().mentions.channels.first()) {
                                 var channel = collected.first().mentions.channels.first();
                                 var updatechannel = "UPDATE `servidores` SET `salida_canal` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
                                 con.query(updatechannel);
-                                message.channel.send(':white_check_mark: Se ha actualizado el canal de bienvenida. Anunciaré allí los nuevos miembros :thumbsup:');
+                                message.channel.send(':white_check_mark: Se ha actualizado el canal de despedidas');
                                 indice();
                             } else {
-                                message.channel.send(':x: No has mencionado un canal válido.')
+                                message.channel.send(':x: No ha mencionado un canal válido.')
                                 u_canal();
                             }
                         });
                 }
 
                 function u_mensaje() {
-                    message.channel.send(':arrow_right: ¿Qué mensaje deseas que envíe para recibir a los nuevos miembros? <:warn:858736919432527942> El mensaje de bienvenida no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.')
+                    message.channel.send(':arrow_right: ¿Qué mensaje desea que se envíe para recibir a los despedir a los miembros? <:warn:858736919432527942> El mensaje de despedidas no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.')
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1 }).then(collected => {
                             var updatemsg = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + global.id;
                             con.query(updatemsg);
-                            message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida correctamente.');
+                            message.channel.send(':white_check_mark: Se ha actualizado el mensaje de despedida');
                             indice();
                         });
                 }

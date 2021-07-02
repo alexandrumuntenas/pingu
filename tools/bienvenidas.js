@@ -124,7 +124,7 @@ module.exports = {
             }
 
             function u_canal() {
-                message.channel.send(':arrow_right: ¿Dónde desea que se envíen los mensajes y carteles de bienvenida? ¡Menciona el canal!')
+                message.channel.send(':arrow_right: ¿Dónde desea que se envíen los mensajes y carteles de bienvenida? ¡Mencione el canal!')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().mentions.channels.first()) {
