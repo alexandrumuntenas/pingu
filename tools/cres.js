@@ -16,12 +16,12 @@ module.exports = {
                 switch (args[1]) {
                     case 'crear':
                         var identificador = makeId(7);
-                        message.reply(':arrow_right: ¿A qué mensaje tengo que responder?')
+                        message.reply(':arrow_right: ¿A qué mensaje debo que responder?')
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
                                 var accionante = collected.first().content;
                                 accionante = accionante.toLowerCase();
-                                message.channel.send(':arrow_right: ¿Qué tengo que responder?')
+                                message.channel.send(':arrow_right: ¿Qué debo que responder?')
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
                                         var respuesta = collected.first().content;
@@ -50,7 +50,7 @@ module.exports = {
                 }
             }
         } else {
-            message.channel.send(':x: No tienes permisos suficientes para ejecutar este comando');
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando');
         }
     }
 }
