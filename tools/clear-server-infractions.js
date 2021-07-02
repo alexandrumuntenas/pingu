@@ -6,7 +6,7 @@ module.exports = {
                 var sql = "DELETE FROM `infracciones` WHERE guild = '" + global.id + "'";
                 con.query(sql, function (err) {
                     console.log(err)
-                    message.channel.send(':white_check_mark: Se han eliminado todas las infracciones de todos los usuarios de este servidor correctamente');
+                    message.channel.send(':white_check_mark: Se han eliminado las advertencias de todos los usuarios de este servidor');
                 })
             }
         } else {
