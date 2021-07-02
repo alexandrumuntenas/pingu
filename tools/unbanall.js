@@ -9,7 +9,7 @@ module.exports = {
                         message.guild.members.unban(ban.user.id);
                     })
                 }).then(() => message.channel.send(":white_check_mark: Se han desbaneado a todos los usuarios de este servidor.")).catch(e => console.log(e))
-            } else { message.channel.send(":x: No tienes suficientes permisos para ejecutar este comando.") }
+            } else { message.channel.send(":x: No dispone de permisos suficientes para ejecutar este comando") }
         } else { message.channel.send(":x: El módulo de moderación no está activado") }
     }
 }
