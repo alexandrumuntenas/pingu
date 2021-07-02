@@ -11,7 +11,7 @@ module.exports = {
                         message.channel.send(':white_check_mark: Se han eliminado todas las infracciones de <@!' + user.id + '> correctamente');
                     })
                 } else {
-                    message.channel.send(':white_check_mark: Debes mencionar un usuario para poder retirarle todas las infracciones.');
+                    message.channel.send(':white_check_mark: Debe mencionar un usuario para poder retirarle todas las infracciones');
                 }
             }
         } else {
