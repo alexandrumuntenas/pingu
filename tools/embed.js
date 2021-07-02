@@ -19,7 +19,7 @@ module.exports = {
                 }
             }
             function indice() {
-                message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** Establecer Título \n **2.** Establecer Descripción \n **3.** Establecer Thumbnail \n **4.** Añadir Nuevo Campo (hasta 25) \n **5.** Establecer Imagen \n **6.** Establecer color del borde \n **7.** Previsualizar mensaje \n **8.** Enviar mensaje \n **9.** Descartar mensaje');
+                message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** Establecer Título \n **2.** Establecer Descripción \n **3.** Establecer Thumbnail \n **4.** Añadir Nuevo Campo (hasta 25) \n **5.** Establecer Imagen \n **6.** Establecer color del borde \n **7.** Previsualizar mensaje \n **8.** Enviar mensaje \n **9.** Descartar mensaje');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         switch (collected.first().content) {
@@ -67,7 +67,7 @@ module.exports = {
             }
 
             function e_titulo() {
-                message.channel.send(':arrow_right: Introduce el título del mensaje enriquecido')
+                message.channel.send(':arrow_right: Introduzca el título del mensaje enriquecido')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         embed.setTitle(collected.first());
@@ -76,7 +76,7 @@ module.exports = {
             }
 
             function e_descrip() {
-                message.channel.send(':arrow_right: Introduce la descripción del mensaje enriquecido')
+                message.channel.send(':arrow_right: Introduzca la descripción del mensaje enriquecido')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         embed.setDescription(collected.first());
@@ -87,11 +87,11 @@ module.exports = {
             function a_field() {
                 ++addfields;
                 if (addfields == 0 || addfields <= 25) {
-                    message.channel.send(':arrow_right: Introduce el título del nuevo campo #' + addfields);
+                    message.channel.send(':arrow_right: Introduzca el título del nuevo campo #' + addfields);
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1 }).then(collected => {
                             var titulo = collected.first().content;
-                            message.channel.send(':arrow_right: Introduce la descripción del nuevo campo #' + addfields);
+                            message.channel.send(':arrow_right: Introduzca la descripción del nuevo campo #' + addfields);
                             message.channel.awaitMessages(m => m.author.id == message.author.id,
                                 { max: 1 }).then(collected => {
                                     var descrip = collected.first().content;
@@ -115,7 +115,7 @@ module.exports = {
             }
 
             function e_imagen() {
-                message.channel.send(':arrow_right: Introduce la URL de la imagen.')
+                message.channel.send(':arrow_right: Introduzca la URL de la imagen.')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         embed.setImage(collected.first().content);
@@ -124,7 +124,7 @@ module.exports = {
             }
 
             function e_thumbnail() {
-                message.channel.send(':arrow_right: Introduce la URL del Thumbnail.')
+                message.channel.send(':arrow_right: Introduzca la URL del Thumbnail.')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         embed.setThumbnail(collected.first().content);
@@ -133,7 +133,7 @@ module.exports = {
             }
 
             function e_color() {
-                message.channel.send(':arrow_right: Introduce el color que deseas en hexadecimal. (Es necesario poner # al principio)')
+                message.channel.send(':arrow_right: Introduzca el color que deseas en hexadecimal. (Es necesario poner # al principio)')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         embed.setColor(collected.first().content);
@@ -142,13 +142,13 @@ module.exports = {
             }
 
             function previsualizar() {
-                message.channel.send('<:info:858737080950718484> Así lucirá tu mensaje enriquecido.')
+                message.channel.send('<:info:858737080950718484> Así lucirá su mensaje enriquecido.')
                 message.channel.send(embed);
                 indice();
             }
 
             function enviar() {
-                message.channel.send(':arrow_right: Genial, solo nos falta una última cosa para enviar el mensaje enriquecido. ¿A dónde quieres enviarlo? ¡Menciona el canal!')
+                message.channel.send(':arrow_right: ¿A dónde desea enviarlo? ¡Mencione el canal!')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         var canal = collected.first().mentions.channels.first();
