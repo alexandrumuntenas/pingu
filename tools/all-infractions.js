@@ -26,7 +26,7 @@ module.exports = {
                             pdfDoc.on('end', function (err) {
                                 console.log(err)
                                 var attachament = new MessageAttachment('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf');
-                                message.author.send('Aquí está el reporte para el usuario `' + user.tag + '` en el servidor *' + global.name + '*', attachament);
+                                message.author.send('**Reporte de advertencias**\n Usuario: `' + user.tag + '`\n Servidor: `' + global.name + '` \n Fecha de Generación: `' + moment().format('MMMM Do YYYY, h:mm:ss a') + '`', attachament);
                             })
                         });
                     }
@@ -36,11 +36,11 @@ module.exports = {
                     }
                     cocina();
                 } else {
-                    message.channel.send(':information_source: ')
+                    message.channel.send(':information_source: Debe mencionar un usuario para poder realizar el reporte de advertencias. Uso: `' + global.prefix + 'all-infractions <@usuario>`');
                 }
             }
         } else {
-            message.channel.send(':x: No dispones de permisos suficientes para ejecutar este comando')
+            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }
