@@ -36,34 +36,7 @@ module.exports = {
                     }
                     cocina();
                 } else {
-                    var user = message.author;
-                    async function step1() {
-                        con.query('SELECT * FROM `infracciones` WHERE user = \'' + user.id + '\' AND guild = \'' + global.id + '\'', function (err, result) {
-                            console.log(err)
-                            var pdfDoc = new pdf;
-                            pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf'));
-                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Pingu ').moveDown(1);
-                            pdfDoc.font('./recursos/typography/Roboto-Regular.ttf', 12).text("Infracciones del usuario: " + user.tag);
-                            pdfDoc.text("Servidor: " + global.name);
-                            pdfDoc.text("Documento generado el: " + moment().format('MMMM Do YYYY, h:mm:ss a'));
-                            var i = 0;
-                            if (result.length != 0) {
-                                for (var i = 0; i < result.length; i++) {
-                                    pdfDoc.moveDown(1).font('./recursos/typography/Roboto-Regular.ttf').text('Infraccion #' + i).font('./recursos/typography/Roboto-Thin.ttf').text(result[i].motivo);
-                                }
-                            } else {
-                                pdfDoc.moveDown(1).text('El usuario no dispone de infracciones');
-                            }
-                            var attachament = new MessageAttachment('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf');
-                            message.author.send('Aquí está el reporte para el usuario `' + user.tag + '` en el servidor *' + global.name + '*', attachament);
-                            pdfDoc.end();
-                        });
-                    }
-                    async function cocina() {
-                        await step1();
-
-                    }
-                    cocina();
+                    message.channel.send(':information_source: ')
                 }
             }
         } else {
