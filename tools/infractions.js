@@ -5,7 +5,7 @@ module.exports = {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     const user = message.mentions.users.first();
-                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "' LIMIT 5";
+                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25";
                     var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "'";
 
                     con.query(verinfraccionescantidad, function (err, result) {
