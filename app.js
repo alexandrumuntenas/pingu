@@ -22,7 +22,6 @@ const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
-const dm = require('./services/dm');
 console.log('[OK] Services Workers Cargados');
 
 // Funciones globales
