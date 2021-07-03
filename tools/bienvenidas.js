@@ -212,7 +212,7 @@ module.exports = {
                 function bot_give_role() {
                     var msga = "A continuación se muestran los roles que se ofrecerán a los nuevos bots: \n";
                     var rolset = "";
-                    roles_user.forEach(element => {
+                    roles_bot.forEach(element => {
                         rolset = rolset + '<@&' + element + '> ';
                     });
                     message.channel.send(msga + rolset);
