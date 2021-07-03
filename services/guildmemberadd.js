@@ -1,4 +1,9 @@
-module.exports = function (client, con, Jimp, downloader, webp, fs, MessageAttachment, member) {
+const { MessageAttachment } = require('discord.js')
+const downloader = require('nodejs-file-downloader');
+const webp = require('webp-converter');
+const Jimp = require('jimp');
+
+module.exports = function (client, con, member) {
     var id = member.guild.id;
     var sql = "SELECT * FROM `servidores` WHERE guild = '" + id + "'";
     //Conectamos con el servidor
