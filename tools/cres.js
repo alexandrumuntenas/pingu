@@ -1,6 +1,6 @@
 module.exports = {
     name: 'cres',
-    execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, contenido, global, message, result) {
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             function makeId(length) {
                 var result = '';

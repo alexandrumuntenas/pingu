@@ -1,4 +1,9 @@
-module.exports = function (result, client, con, Jimp, downloader, webp, message, MessageAttachment, global) {
+const { MessageAttachment } = require('discord.js');
+const webp = require('webp-converter');
+const Jimp = require('jimp');
+const downloader = require('nodejs-file-downloader');
+
+module.exports = function (result, client, con, message, global) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
     var dif = result[0].niveles_dificultad;
     con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {

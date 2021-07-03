@@ -1,6 +1,11 @@
+const canvacord = require('canvacord');
+const downloader = require('nodejs-file-downloader');
+const { MessageAttachment } = require('discord.js');
+const webp = require('webp-converter');
+
 module.exports = {
     name: 'rank',
-    execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, contenido, global, message, result) {
         if (result[0].niveles_activado != 0) {
             var dif = result[0].niveles_dificultad;
             var cache = { "aspecto": result[0].niveles_fondo }

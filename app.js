@@ -1,18 +1,6 @@
 //https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
-const Math = require('mathjs');
-const Jimp = require('jimp');
-const downloader = require('nodejs-file-downloader');
-const webp = require('webp-converter');
-const fs = require('fs')
-const moment = require('moment');
-const pdf = require('pdfkit');
-const emojiStrip = require('emoji-strip');
-const msi = require('ms');
-const translate = require('translatte')
-const fetch = require('node-fetch');
-const canvacord = require('canvacord');
 const talkedRecently = new Set();
 
 //Services Workers
@@ -124,7 +112,7 @@ client.on('guildDelete', (guild) => {
 });
 
 client.on('guildMemberAdd', member => {
-    guildmemberadd(client, con, Jimp, downloader, webp, fs, MessageAttachment, member);
+    guildmemberadd(client, con, member);
 });
 
 client.on('guildMemberRemove', member => {
@@ -166,7 +154,7 @@ client.on('message', (message) => {
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp);
+                            client.commands.get(args[0]).execute(args, client, con, contenido, global, message, result);
                         } catch (e) {
                             console.log(e);
                             message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
@@ -174,10 +162,10 @@ client.on('message', (message) => {
                     } else {
                         var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
                         con.query(consultacomandoscustom, function (err, result) {
-                            if (typeof result[0] !== 'undefined') {
+                            if (result.hasOwnProperty(0)) {
                                 var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
                                 con.query(buscarcomando, function (err, result) {
-                                    if (typeof result[0] !== 'undefined') {
+                                    if (result.hasOwnProperty(0)) {
                                         message.channel.send("<:comandoscustom:858671400424046602>" + result[0].returns);
                                     }
                                 });
@@ -198,7 +186,7 @@ client.on('message', (message) => {
                         setTimeout(() => {
                             talkedRecently.delete(message.author.id);
                         }, 60000);
-                        leveling(result, client, con, Jimp, downloader, webp, message, MessageAttachment, global);
+                        leveling(result, client, con, message, global);
                     }
                 }
             }
@@ -209,7 +197,7 @@ client.on('message', (message) => {
                 if (result.hasOwnProperty(0)) {
                     var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
                     con.query(buscarrespuesta, function (err, result) {
-                        if (typeof result[0] !== 'undefined') {
+                        if (result.hasOwnProperty(0)) {
                             message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
                         }
                     });

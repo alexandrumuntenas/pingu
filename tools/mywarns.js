@@ -1,6 +1,9 @@
+const { MessageEmbed } = require('discord.js');
+const moment = require('moment');
+
 module.exports = {
     name: 'mywarns',
-    execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, contenido, global, message, result) {
         if (result[0].moderador_activado != 0) {
             const user = message.author;
             var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "' LIMIT 5";

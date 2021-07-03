@@ -1,6 +1,10 @@
+const fetch = require('node-fetch');
+const { MessageEmbed } = require('discord.js');
+const translate = require('translatte')
+
 module.exports = {
     name: 'nasa',
-    execute(args, canvacord, client, con, contenido, downloader, emojiStrip, fetch, fs, global, Intents, Jimp, Math, message, MessageAttachment, MessageCollector, MessageEmbed, MessageReaction, moment, msi, pdf, result, translate, webp) {
+    execute(args, client, con, contenido, global, message, result) {
 
         message.reply(' cargando imagen del día... ')
             .then(msg => {
