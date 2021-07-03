@@ -23,17 +23,13 @@ module.exports = {
                 role_user.forEach(element => {
                     roles_user.add(element);
                 });
-            } else {
-                var role_user = [];
             }
             if (result[0].bienvenida_roles_bot) {
                 var role_bot = botssss.split(',');
                 role_bot.forEach(element => {
                     roles_bot.add(element);
                 });
-            } else {
-                var role_bot = [];
-            };
+            }
 
             function indice() {
                 message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
