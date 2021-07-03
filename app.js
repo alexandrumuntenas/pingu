@@ -2,6 +2,7 @@
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const fs = require('fs');
+const webp = require('webp-converter');
 const talkedRecently = new Set();
 
 //Services Workers
