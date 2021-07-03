@@ -18,12 +18,23 @@ module.exports = {
             var roles_bot = new Set();
             var usersss = result[0].bienvenida_roles_user;
             var botssss = result[0].bienvenida_roles_bot;
-            var role_user = usersss.split(',');
-            var role_bot = botssss.split(',');
-            role_user.forEach(element => {
-                roles_user.add(element);
-            });
-            console.log(roles_user);
+            if (usersss) {
+                var role_user = usersss.split(',');
+                role_user.forEach(element => {
+                    roles_user.add(element);
+                });
+            } else {
+                var role_user = [];
+            }
+            if (result[0].bienvenida_roles_bot) {
+                var role_bot = botssss.split(',');
+                role_bot.forEach(element => {
+                    roles_bot.add(element);
+                });
+            } else {
+                var role_bot = [];
+            };
+
             function indice() {
                 message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
@@ -132,10 +143,6 @@ module.exports = {
                         });
                 }
                 function save_rol_users() {
-                    roles_user.forEach(element => {
-                        role_user.push('"' + element + '"');
-                    });
-                    var falsejson = "[" + role_user.toString() + "]";
                     con.query("UPDATE `servidores` SET `bienvenida_roles_user` = '" + Array.from(roles_user) + "' WHERE `servidores`.`guild` = " + global.id);
                     dar_rol();
                 }
@@ -199,10 +206,6 @@ module.exports = {
                         });
                 }
                 function save_rol_bot() {
-                    roles_user.forEach(element => {
-                        role_user.push('"' + element + '"');
-                    });
-                    var falsejson = "[" + role_user.toString() + "]";
                     con.query("UPDATE `servidores` SET `bienvenida_roles_bot` = '" + Array.from(roles_user) + "' WHERE `servidores`.`guild` = " + global.id);
                     dar_rol();
                 }
