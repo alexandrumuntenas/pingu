@@ -14,6 +14,16 @@ module.exports = {
                 }
             }
 
+            var roles_user = new Set();
+            var roles_bot = new Set();
+            var usersss = result[0].bienvenida_roles_user;
+            var botssss = result[0].bienvenida_roles_bot;
+            var role_user = usersss.split(',');
+            var role_bot = botssss.split(',');
+            role_user.forEach(element => {
+                roles_user.add(element);
+            });
+            console.log(roles_user);
             function indice() {
                 message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
@@ -93,17 +103,155 @@ module.exports = {
             }
 
             function dar_rol() {
-                message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Enviar mensaje cuando alguien se une al servidor? \n **2.** Establecer mensaje de bienvenida \n **3.** Establecer canal de bienvenida \n **4.** ¿Enviar cartel de bienvenida? \n **5.** Cambiar fondo del cartel de bienvenida \n **6.** Dar un rol a los nuevos usuarios \n **7.** Salir');
+                function add_rol_users() {
+                    message.channel.send(':arrow_right: Mencione todos los nuevos roles que desea ofrecer');
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                        { max: 1 }).then(collected => {
+                            collected.first().mentions.roles.array().forEach(
+                                element => {
+                                    roles_user.add(element.id);
+                                }
+                            );
+                        }).then(() => {
+                            purga();
+                            user_give_role();
+                        });
+                }
+                function del_rol_users() {
+                    message.channel.send(':arrow_right: Mencione todos los roles que desea dejar de ofrecer a los nuevos miembros');
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                        { max: 1 }).then(collected => {
+                            collected.first().mentions.roles.array().forEach(
+                                element => {
+                                    roles_user.delete(element.id);
+                                }
+                            );
+                        }).then(() => {
+                            purga();
+                            user_give_role();
+                        });
+                }
+                function save_rol_users() {
+                    roles_user.forEach(element => {
+                        role_user.push('"' + element + '"');
+                    });
+                    var falsejson = "[" + role_user.toString() + "]";
+                    con.query("UPDATE `servidores` SET `bienvenida_roles_user` = '" + Array.from(roles_user) + "' WHERE `servidores`.`guild` = " + global.id);
+                    dar_rol();
+                }
+                function user_give_role() {
+                    var msga = "A continuación se muestran los roles que se ofrecerán a los nuevos usuarios: \n";
+                    var rolset = "";
+                    roles_user.forEach(element => {
+                        rolset = rolset + '<@&' + element + '> ';
+                    });
+                    message.channel.send(msga + rolset);
+                    message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** Añadir Rol/es \n **2.** Eliminar rol/es \n **3.** Guardar cambios & volver \n **4.** Descartar & volver');
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                        { max: 1 }).then(collected => {
+                            switch (collected.first().content) {
+                                case '1':
+                                    purga()
+                                    add_rol_users();
+                                    break;
+                                case '2':
+                                    purga()
+                                    del_rol_users();
+                                    break;
+                                case '3':
+                                    purga();
+                                    save_rol_users();
+                                    break;
+                                default:
+                                    purga();
+                                    dar_rol();
+                                    break;
+                            }
+                        });
+
+                }
+                function add_rol_bot() {
+                    message.channel.send(':arrow_right: Mencione todos los nuevos roles que desea ofrecer');
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                        { max: 1 }).then(collected => {
+                            collected.first().mentions.roles.array().forEach(
+                                element => {
+                                    roles_user.add(element.id);
+                                }
+                            );
+                        }).then(() => {
+                            purga();
+                            user_give_role();
+                        });
+                }
+                function del_rol_bot() {
+                    message.channel.send(':arrow_right: Mencione todos los roles que desea dejar de ofrecer a los nuevos bots');
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                        { max: 1 }).then(collected => {
+                            collected.first().mentions.roles.array().forEach(
+                                element => {
+                                    roles_user.delete(element.id);
+                                }
+                            );
+                        }).then(() => {
+                            purga();
+                            bot_give_role();
+                        });
+                }
+                function save_rol_bot() {
+                    roles_user.forEach(element => {
+                        role_user.push('"' + element + '"');
+                    });
+                    var falsejson = "[" + role_user.toString() + "]";
+                    con.query("UPDATE `servidores` SET `bienvenida_roles_bot` = '" + Array.from(roles_user) + "' WHERE `servidores`.`guild` = " + global.id);
+                    dar_rol();
+                }
+                function bot_give_role() {
+                    var msga = "A continuación se muestran los roles que se ofrecerán a los nuevos bots: \n";
+                    var rolset = "";
+                    roles_user.forEach(element => {
+                        rolset = rolset + '<@&' + element + '> ';
+                    });
+                    message.channel.send(msga + rolset);
+                    message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** Añadir Rol/es \n **2.** Eliminar rol/es \n **3.** Guardar cambios & volver \n **4.** Descartar & volver');
+                    message.channel.awaitMessages(m => m.author.id == message.author.id,
+                        { max: 1 }).then(collected => {
+                            switch (collected.first().content) {
+                                case '1':
+                                    purga()
+                                    add_rol_bot();
+                                    break;
+                                case '2':
+                                    purga()
+                                    del_rol_bot();
+                                    break;
+                                case '3':
+                                    purga();
+                                    save_rol_bot();
+                                    break;
+                                default:
+                                    purga();
+                                    dar_rol();
+                                    break;
+                            }
+                        });
+
+                }
+                message.channel.send('Para ejecutar una opción, indique el número de la opción. \n \n ****Opciones Disponibles** \n **1.** Configurar roles que se establecerán a los usuarios \n **2.** Configurar roles que se establecerán a los bots \n **3.** Volver');
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         switch (collected.first().content) {
                             case '1':
                                 purga()
-                                dar_rol_inside('user');
+                                user_give_role();
                                 break;
                             case '2':
                                 purga()
-                                dar_rol_inside('bot');
+                                bot_give_role();
+                                break;
+                            case '3':
+                                purga();
+                                indice();
                                 break;
                             default:
                                 purga();
@@ -111,17 +259,6 @@ module.exports = {
                                 break;
                         }
                     })
-            }
-
-            function dar_rol_inside(type) {
-                if (result[0].bienvenida_roles_ + type) {
-                    var role = JSON.parse(result[0].bienvenida_roles_ + type);
-                    var identif = 0;
-                    var string = "";
-                    role.forEach(element => {
-                        member.roles.add(member.guild.roles.cache.find(role => role.id === element));
-                    })
-                }
             }
 
             function u_canal() {
