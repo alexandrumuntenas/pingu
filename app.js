@@ -1,6 +1,7 @@
 //https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
+const fs = require('fs');
 const talkedRecently = new Set();
 
 //Services Workers
