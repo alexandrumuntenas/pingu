@@ -183,7 +183,7 @@ module.exports = {
                         { max: 1 }).then(collected => {
                             collected.first().mentions.roles.array().forEach(
                                 element => {
-                                    roles_user.add(element.id);
+                                    roles_bot.add(element.id);
                                 }
                             );
                         }).then(() => {
@@ -197,7 +197,7 @@ module.exports = {
                         { max: 1 }).then(collected => {
                             collected.first().mentions.roles.array().forEach(
                                 element => {
-                                    roles_user.delete(element.id);
+                                    roles_bot.delete(element.id);
                                 }
                             );
                         }).then(() => {
@@ -206,7 +206,7 @@ module.exports = {
                         });
                 }
                 function save_rol_bot() {
-                    con.query("UPDATE `servidores` SET `bienvenida_roles_bot` = '" + Array.from(roles_user) + "' WHERE `servidores`.`guild` = " + global.id);
+                    con.query("UPDATE `servidores` SET `bienvenida_roles_bot` = '" + Array.from(roles_bot) + "' WHERE `servidores`.`guild` = " + global.id);
                     dar_rol();
                 }
                 function bot_give_role() {
