@@ -188,7 +188,7 @@ module.exports = {
                             );
                         }).then(() => {
                             purga();
-                            user_give_role();
+                            bot_give_role();
                         });
                 }
                 function del_rol_bot() {
