@@ -1,7 +1,6 @@
 const canvacord = require('canvacord');
 const downloader = require('nodejs-file-downloader');
 const { MessageAttachment } = require('discord.js');
-const webp = require('webp-converter');
 
 module.exports = {
     name: 'rank',
@@ -21,14 +20,13 @@ module.exports = {
                         var nivel = parseInt(result[0].nivel);
                         async function fa() {
                             const avatar = new downloader({
-                                url: user.avatarURL(),
+                                url: user.avatarURL({ format: 'jpg' }),
                                 directory: "./usuarios/avatares/",
-                                fileName: user.id + '_level.webp',
+                                fileName: user.id + '_level.jpg',
                                 cloneFiles: false,
                             });
                             try {
                                 await avatar.download();
-                                await webp.dwebp("./usuarios/avatares/" + user.id + "_level.webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
                                 var rank = new canvacord.Rank()
                                     .setAvatar("./usuarios/avatares/" + user.id + "_level.jpg")
                                     .setCurrentXP(experiencia)
@@ -65,14 +63,13 @@ module.exports = {
                         var nivel = parseInt(result[0].nivel);
                         async function fa() {
                             const avatar = new downloader({
-                                url: user.avatarURL(),
+                                url: user.avatarURL({ format: 'jpg' }),
                                 directory: "./usuarios/avatares/",
-                                fileName: user.id + '_level.webp',
+                                fileName: user.id + '_level.jpg',
                                 cloneFiles: false,
                             });
                             try {
                                 await avatar.download();
-                                await webp.dwebp("./usuarios/avatares/" + user.id + "_level.webp", "./usuarios/avatares/" + user.id + "_level.jpg", "-o", logging = "-v");
                                 var rank = new canvacord.Rank()
                                     .setAvatar("./usuarios/avatares/" + user.id + "_level.jpg")
                                     .setCurrentXP(experiencia)

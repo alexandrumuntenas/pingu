@@ -15,9 +15,9 @@ module.exports = function (client, con, member) {
                 var user = member.user;
                 async function paso1() {
                     const avatar = new downloader({
-                        url: user.avatarURL(),
+                        url: user.avatarURL({ format: 'jpg' }),
                         directory: "./usuarios/avatares/",
-                        fileName: user.id + '_join.webp',
+                        fileName: user.id + '_join.jpg',
                         cloneFiles: false,
                     });
                     try {
@@ -28,10 +28,6 @@ module.exports = function (client, con, member) {
                     }
                 }
                 async function paso2() {
-                    await webp.dwebp("./usuarios/avatares/" + user.id + "_join.webp", "./usuarios/avatares/" + user.id + "_join.jpg", "-o", logging = "-v");
-                    paso3();
-                }
-                async function paso3() {
                     const top = await Jimp.read("./usuarios/avatares/" + user.id + "_join.jpg");
                     top.circle();
 
