@@ -1,5 +1,5 @@
 const { MessageAttachment } = require('discord.js');
-const webp = require('webp-converter');
+
 const Jimp = require('jimp');
 const downloader = require('nodejs-file-downloader');
 
@@ -17,9 +17,9 @@ module.exports = function (result, client, con, message, global) {
                 var niv = niv + 1;
                 async function paso1() {
                     const avatar = new downloader({
-                        url: message.author.avatarURL(),
+                        url: message.author.avatarURL({ format: 'jpg' }),
                         directory: "./usuarios/avatares/",
-                        fileName: message.author.id + '.webp',
+                        fileName: message.author.id + '_rankup.jpg',
                         cloneFiles: false,
                     });
                     try {
@@ -29,10 +29,7 @@ module.exports = function (result, client, con, message, global) {
                     }
                 }
                 async function paso2() {
-                    await webp.dwebp("./usuarios/avatares/" + message.author.id + ".webp", "./usuarios/avatares/" + message.author.id + ".jpg", "-o", logging = "-v");
-                }
-                async function paso3() {
-                    const top = await Jimp.read("./usuarios/avatares/" + message.author.id + ".jpg");
+                    const top = await Jimp.read("./usuarios/avatares/" + message.author.id + "_rankup.jpg");
                     top.circle();
                     top.resize(220, 220);
                     const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
@@ -69,7 +66,6 @@ module.exports = function (result, client, con, message, global) {
                     if (cache.cartelactivado != 0) {
                         await paso1();
                         await paso2();
-                        await paso3();
 
                     } else {
                         enviar();

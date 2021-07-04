@@ -1,6 +1,6 @@
 const { MessageAttachment } = require('discord.js')
 const downloader = require('nodejs-file-downloader');
-const webp = require('webp-converter');
+
 const Jimp = require('jimp');
 
 module.exports = function (client, con, member) {
