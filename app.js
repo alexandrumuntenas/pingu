@@ -50,10 +50,10 @@ async function comprobarcarpetas() {
 
 // Bot
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "wiredpenguin",
-    password: "",
-    database: "wiredpenguin",
+    host: "104.128.239.45",
+    user: "u43502_Ipea7UopvX",
+    password: "T0^Y9yXARCuAa1.LfAzmWRRt",
+    database: "s43502_pingu",
     charset: "utf8_unicode_ci",
 });
 
