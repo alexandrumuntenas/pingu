@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js')
 module.exports = {
     name: 'warn',
     execute(args, client, con, contenido, global, message, result) {
