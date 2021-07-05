@@ -102,7 +102,6 @@ client.on('ready', () => {
             }
         })
     }, 3600000);
-    webp.grant_permission();
 });
 
 client.on('guildCreate', guild => {
