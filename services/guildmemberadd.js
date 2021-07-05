@@ -1,6 +1,6 @@
 const { MessageAttachment } = require('discord.js')
 const downloader = require('nodejs-file-downloader');
-
+const fs = require('fs');
 const Jimp = require('jimp');
 
 module.exports = function (client, con, member) {
@@ -48,7 +48,10 @@ module.exports = function (client, con, member) {
                         const userreplace = fromdb.replace('{user}', `<@${user.id}>`);
                         const toexport = userreplace.replace('{server}', `${member.guild.name}`);
                         var attachament = new MessageAttachment('./usuarios/bienvenidas/' + member.id + '_' + id + '_join.jpg');
-                        mensaje.send(toexport, attachament);
+                        mensaje.send(toexport, attachament).then(() => {
+                            fs.unlink('./usuarios/bienvenidas/' + member.id + '_' + id + '_join.jpg');
+                            fs.unlink("./usuarios/avatares/" + user.id + "_join.jpg");
+                        });
                     }
                 }
                 async function cocina() {

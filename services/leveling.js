@@ -50,7 +50,10 @@ module.exports = function (result, client, con, message, global) {
                         var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + global.id + '.jpg');
                         if (cache.canal_id) {
                             const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament).then(() => {
+                                fs.unlink('./usuarios/leveling/' + user.id + '_' + global.id + '.jpg');
+                                fs.unlink("./usuarios/avatares/" + message.author.id + "_rankup.jpg");
+                            });
                         } else {
                             message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
                         }
@@ -58,7 +61,7 @@ module.exports = function (result, client, con, message, global) {
                         if (cache.canal_id) {
                             mensaje.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
                         } else {
-                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`", attachament);
+                            message.channel.send(toexport + ". Puedes consultar tu rango usando `" + global.prefix + "rank`");
                         }
                     }
                 }
