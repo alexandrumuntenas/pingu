@@ -1,7 +1,7 @@
 const canvacord = require('canvacord');
 const downloader = require('nodejs-file-downloader');
 const { MessageAttachment } = require('discord.js');
-
+const fs = require('fs');
 module.exports = {
     name: 'rank',
     execute(args, client, con, contenido, global, message, result) {

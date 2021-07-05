@@ -1,5 +1,5 @@
 const { MessageAttachment } = require('discord.js');
-
+const fs = require('fs');
 const Jimp = require('jimp');
 const downloader = require('nodejs-file-downloader');
 
