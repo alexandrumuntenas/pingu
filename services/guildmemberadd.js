@@ -42,12 +42,14 @@ module.exports = function (client, con, member) {
                     });
                 }
                 function enviar() {
-                    //Reemplazamos valores como {user} o {server} para que nodejs pueda interpretarlo
-                    const fromdb = cache.canal_msg;
-                    const userreplace = fromdb.replace('{user}', `<@${user.id}>`);
-                    const toexport = userreplace.replace('{server}', `${member.guild.name}`);
-                    var attachament = new MessageAttachment('./usuarios/bienvenidas/' + member.id + '_' + id + '_join.jpg');
-                    mensaje.send(toexport, attachament);
+                    if (mensaje) {
+                        //Reemplazamos valores como {user} o {server} para que nodejs pueda interpretarlo
+                        const fromdb = cache.canal_msg;
+                        const userreplace = fromdb.replace('{user}', `<@${user.id}>`);
+                        const toexport = userreplace.replace('{server}', `${member.guild.name}`);
+                        var attachament = new MessageAttachment('./usuarios/bienvenidas/' + member.id + '_' + id + '_join.jpg');
+                        mensaje.send(toexport, attachament);
+                    }
                 }
                 async function cocina() {
                     paso1();

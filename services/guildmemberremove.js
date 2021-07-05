@@ -10,10 +10,12 @@ module.exports = function (client, con, member) {
             if (result[0].salida_mensaje_activado != 0) {
                 cache = { "canal_id": result[0].salida_canal, "canal_msg": result[0].salida_mensaje };
                 const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-                const fromdb = cache.canal_msg;
-                const userreplace = fromdb.replace('{user}', `${user.tag}`);
-                const toexport = userreplace.replace('{server}', `${member.guild.name}`);
-                mensaje.send(toexport)
+                if (mensaje) {
+                    const fromdb = cache.canal_msg;
+                    const userreplace = fromdb.replace('{user}', `${user.tag}`);
+                    const toexport = userreplace.replace('{server}', `${member.guild.name}`);
+                    mensaje.send(toexport);
+                }
             }
             con.query(sql1);
             con.query(sql2);
