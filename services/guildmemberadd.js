@@ -48,10 +48,7 @@ module.exports = function (client, con, member) {
                         const userreplace = fromdb.replace('{user}', `<@${user.id}>`);
                         const toexport = userreplace.replace('{server}', `${member.guild.name}`);
                         var attachament = new MessageAttachment('./usuarios/bienvenidas/' + member.id + '_' + id + '_join.jpg');
-                        mensaje.send(toexport, attachament).then(() => {
-                            fs.unlink('./usuarios/bienvenidas/' + member.id + '_' + id + '_join.jpg');
-                            fs.unlink("./usuarios/avatares/" + user.id + "_join.jpg");
-                        });
+                        mensaje.send(toexport, attachament);
                     }
                 }
                 async function cocina() {

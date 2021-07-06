@@ -43,10 +43,7 @@ module.exports = {
                                     .then(buffer => {
                                         canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
                                         var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament).then(() => {
-                                            fs.unlink('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                            fs.unlink("./usuarios/avatares/" + user.id + "_level.jpg");
-                                        });
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
                             } catch (e) {
                                 console.log(e);
@@ -89,10 +86,7 @@ module.exports = {
                                     .then(buffer => {
                                         canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
                                         var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament).then(() => {
-                                            fs.unlink('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                            fs.unlink("./usuarios/avatares/" + user.id + "_level.jpg");
-                                        });
+                                        message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
                             } catch (e) {
                                 console.log(e);
