@@ -80,7 +80,9 @@ module.exports = function (client, con, member) {
                 var botssss = result[0].bienvenida_roles_bot;
                 var role = botssss.split(',')
                 role.forEach(element => {
-                    member.roles.add(member.guild.roles.cache.find(role => role.id === element));
+                    if (member.guild.roles.cache.find(role => role.id === element)) {
+                        member.roles.add(member.guild.roles.cache.find(role => role.id === element));
+                    }
                 })
             }
         } else {
@@ -88,7 +90,9 @@ module.exports = function (client, con, member) {
                 var usersss = result[0].bienvenida_roles_user;
                 var role = usersss.split(',');
                 role.forEach(element => {
-                    member.roles.add(member.guild.roles.cache.find(role => role.id === element));
+                    if (member.guild.roles.cache.find(role => role.id === element)) {
+                        member.roles.add(member.guild.roles.cache.find(role => role.id === element));
+                    }
                 })
             }
         }
