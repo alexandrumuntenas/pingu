@@ -2,9 +2,8 @@
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const fs = require('fs');
-
 const talkedRecently = new Set();
-
+const client = new Client();
 //Services Workers
 const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
@@ -65,8 +64,7 @@ con.connect(function (err) {
     }
 });
 
-const client = new Client();
-
+client.login("ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU");
 //Cargar comandos
 console.log('Cargando comandos...');
 
@@ -220,6 +218,3 @@ client.on('message', (message) => {
     }
     )
 });
-
-client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
-
