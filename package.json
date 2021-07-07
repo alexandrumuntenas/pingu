@@ -11,6 +11,7 @@
     "discord.js": "^12.5.2",
     "emoji-strip": "^1.0.1",
     "ffmpeg-static": "^4.4.0",
+    "flipacoin": "^1.0.0",
     "jimp": "^0.16.1",
     "mariadb": "^2.5.3",
     "mathjs": "^9.3.2",
