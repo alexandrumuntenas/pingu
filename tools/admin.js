@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-
+const fs = require('fs');
 module.exports = {
     name: 'admin',
     execute(args, client, con, contenido, global, message, result) {
@@ -7,7 +7,16 @@ module.exports = {
             if (args[1]) {
                 switch (args[1]) {
                     case 'addmodule':
-                        exec(`npm i ${args[1]}`, (err, stdout, stderr) => {
+                        exec(`npm i ${args[2]}`, (err, stdout, stderr) => {
+                            if (err) {
+                                message.channel.send(':x:' + err);
+                            } else {
+                                message.channel.send(stdout);
+                            }
+                        });
+                        break;
+                    case 'rmodule':
+                        exec(`npm remove ${args[2]}`, (err, stdout, stderr) => {
                             if (err) {
                                 message.channel.send(':x:' + err);
                             } else {
@@ -71,7 +80,7 @@ module.exports = {
                         break;
                 }
             } else {
-                message.channel.send(':x: Debes especificar una acción: `addmodule`, `rcmd`, `rser`')
+                message.channel.send(':x: Debes especificar una acción: `addmodule`, `rcmd`, `rmodule`, `rser`')
             }
         } else {
             message.channel.send(':face_with_raised_eyebrow:')
