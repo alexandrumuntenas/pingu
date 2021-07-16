@@ -9,6 +9,7 @@ const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
 const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
+const nonsfw = require('./services/nonsfw');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
 console.log('[OK] Services Workers Cargados');
@@ -64,7 +65,10 @@ con.connect(function (err) {
     }
 });
 
-client.login("ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU");
+client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
+//client.login('ODQ3NTE3NTQxMDgwMzY3MTI0.YK_ONw.lX_psegfTcjglbokdP9qqAnoYgg');
+
+
 //Cargar comandos
 console.log('Cargando comandos...');
 
@@ -83,9 +87,9 @@ client.on('ready', () => {
     comprobarcarpetas()
     console.log('Yo también estoy listo! Ya puedo comenzar a trabajar...');
     client.user.setPresence({
-        status: 'idle',
+        status: 'online',
         activity: {
-            name: '1 y 0',
+            name: 'Discord',
             type: 'WATCHING',
             url: 'https://pingu.duoestudios.es'
         }
@@ -94,7 +98,7 @@ client.on('ready', () => {
         client.user.setPresence({
             status: 'idle',
             activity: {
-                name: 'pingu.duoestudios.es',
+                name: 'Discord',
                 type: 'WATCHING',
                 url: 'https://pingu.duoestudios.es'
             }
@@ -188,6 +192,10 @@ client.on('message', (message) => {
                         leveling(result, client, con, message, global);
                     }
                 }
+            }
+
+            if (result[0].nonsfw != "0") {
+                nonsfw(con, message);
             }
 
             // Respuestas personalizadas
