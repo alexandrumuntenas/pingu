@@ -8,6 +8,7 @@
     "@jimp/plugin-circle": "^0.16.1",
     "canvacord": "^5.2.1",
     "canvas": "^2.8.0",
+    "discord-buttons": "^4.0.0",
     "discord.js": "^12.5.2",
     "emoji-strip": "^1.0.1",
     "ffmpeg-static": "^4.4.0",

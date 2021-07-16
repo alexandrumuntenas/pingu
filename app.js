@@ -9,7 +9,6 @@ const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
 const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
-const nonsfw = require('./services/nonsfw');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
 console.log('[OK] Services Workers Cargados');
@@ -192,10 +191,6 @@ client.on('message', (message) => {
                         leveling(result, client, con, message, global);
                     }
                 }
-            }
-
-            if (result[0].nonsfw != "0") {
-                nonsfw(con, message);
             }
 
             // Respuestas personalizadas
