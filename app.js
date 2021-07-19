@@ -2,8 +2,29 @@
 const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const fs = require('fs');
+const winston = require('winston');
+const Sentry = require("winston-transport-sentry-node").default;
+
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    defaultMeta: { service: 'user-service' },
+    transports: [
+        new winston.transports.File({ filename: 'error.log', level: 'error' }),
+        new winston.transports.File({ filename: 'combined.log' }),
+    ],
+});
+logger.add(new Sentry({
+    sentry: {
+        dsn: 'https://428ebb1b4ccc4d4d81806506a6064bdb@o923346.ingest.sentry.io/5870573',
+    },
+    level: { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6 }
+}));
 const talkedRecently = new Set();
+require('discord-reply');
 const client = new Client();
+require('discord-buttons')(client);
+
 //Services Workers
 const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
@@ -11,40 +32,41 @@ const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
+const clickmenu = require('./services/clickmenu');
 console.log('[OK] Services Workers Cargados');
 
 // Funciones globales
 async function comprobarcarpetas() {
-    console.log('Comprobando carpetas...');
+    console.log('[··] Comprobando carpetas');
     if (!fs.existsSync('./usuarios')) {
         fs.mkdirSync('./usuarios/');
-        console.log('Carpeta usuarios no existe >> creando...');
+        console.log('[··] Carpeta usuarios no existe >> creando...');
         fs.mkdirSync('./usuarios/moderacion');
-        console.log('Carpeta moderacion no existe >> creando...');
+        console.log('[··] Carpeta moderacion no existe >> creando...');
         fs.mkdirSync('./usuarios/avatares');
-        console.log('Carpeta avatares no existe >> creando...');
+        console.log('[··] Carpeta avatares no existe >> creando...');
         fs.mkdirSync('./usuarios/leveling');
-        console.log('Carpeta leveling no existe >> creando...');
+        console.log('[··] Carpeta leveling no existe >> creando...');
         fs.mkdirSync('./usuarios/bievenidas');
-        console.log('Carpeta bienvenidas no existe >> creando...');
+        console.log('[··] Carpeta bienvenidas no existe >> creando...');
     }
     if (!fs.existsSync('./usuarios/moderacion')) {
-        console.log('Carpeta moderacion no existe >> creando...');
+        console.log('[··] Carpeta moderacion no existe >> creando...');
         fs.mkdirSync('./usuarios/moderacion');
     }
     if (!fs.existsSync('./usuarios/avatares')) {
-        console.log('Carpeta avatares no existe >> creando...');
+        console.log('[··] Carpeta avatares no existe >> creando...');
         fs.mkdirSync('./usuarios/avatares');
     }
     if (!fs.existsSync('./usuarios/leveling')) {
-        console.log('Carpeta leveling no existe >> creando...');
+        console.log('[··] Carpeta leveling no existe >> creando...');
         fs.mkdirSync('./usuarios/leveling');
     }
     if (!fs.existsSync('./usuarios/bienvenidas')) {
-        console.log('Carpeta bienvenidas no existe >> creando...');
+        console.log('[··] Carpeta bienvenidas no existe >> creando...');
         fs.mkdirSync('./usuarios/bienvenidas');
     }
-    console.log('Comprobación finalizada...');
+    console.log('[OK] Existen todas las carpetas necesarias');
 }
 
 // Bot
@@ -57,10 +79,11 @@ var con = mysql.createConnection({
 });
 
 con.connect(function (err) {
+    console.log('[··] Conectando a MariaDB');
     if (err) {
         console.log(err)
     } else {
-        console.log('Me he conectado a MariaDB! Continuando el inicio del script...');
+        console.log('[OK] Conexión establecida con MariaDB');
     }
 });
 
@@ -69,7 +92,7 @@ client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
 
 
 //Cargar comandos
-console.log('Cargando comandos...');
+console.log('--Cargando comandos--');
 
 client.commands = new Collection();
 
@@ -84,7 +107,7 @@ for (const file of commandFiles) {
 
 client.on('ready', () => {
     comprobarcarpetas()
-    console.log('Yo también estoy listo! Ya puedo comenzar a trabajar...');
+    console.log('[OK] Bot inicializado...');
     client.user.setPresence({
         status: 'online',
         activity: {
@@ -119,6 +142,10 @@ client.on('guildMemberAdd', member => {
 
 client.on('guildMemberRemove', member => {
     guildmemberremove(client, con, member);
+});
+
+client.on('clickMenu', async (menu) => {
+    clickmenu(menu, client, con);
 });
 client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
