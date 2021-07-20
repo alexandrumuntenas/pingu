@@ -4,7 +4,7 @@ const Jimp = require('jimp');
 const downloader = require('nodejs-file-downloader');
 
 module.exports = function (result, client, con, message, global) {
-    var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo };
+    var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo, "cartelactivado": result[0].niveles_cartel };
     var dif = result[0].niveles_dificultad;
     con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + message.author.id + "'", function (err, result) {
         if (result[0]) {
