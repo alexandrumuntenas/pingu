@@ -4,31 +4,33 @@ module.exports = {
     name: 'sobre',
     execute(args, client, con, contenido, global, message, result) {
         const embed = new MessageEmbed()
-            .setAuthor(
-                `Información sobre ${client.user.username}`,
-                client.user.displayAvatarURL())
             .addFields(
                 {
-                    name: '¿Quiere añadirme a su servidor?',
-                    value: 'https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands',
+                    name: '<:Document_Folder:867318660679073812> Documentación',
+                    value: `https://bit.ly/pingu_docs`,
+                    inline: true
                 },
                 {
-                    name: 'Documentación',
-                    value: `https://pingu.duoestudios.es`,
+                    name: '<:upvote:867318329651888128> Votar en TOP.GG',
+                    value: 'https://bit.ly/pingu_topgg',
+                    inline: true
                 },
                 {
-                    name: 'Desarrollado por',
-                    value: '<@722810818823192629>'
+                    name: ':tools: Reportar errores',
+                    value: 'https://bit.ly/pingu_dbug',
+                    inline: true
                 },
                 {
-                    name: 'Ayudando a más de',
-                    value: client.guilds.cache.size + ' servidores'
+                    name: ':satellite: ¿Quiere añadirme a su servidor?',
+                    value: 'https://bit.ly/pingu_invite',
+                    inline: true
                 },
                 {
-                    name: 'Tiempo conectado...',
-                    value: `${process.uptime().toFixed(2)}s`,
+                    name: ':speech_balloon: Servidor de soporte',
+                    value: 'https://bit.ly/pingu_support',
+                    inline: true
                 },
-            )
+            ).setFooter(`👪 Ayudando a más de ${client.guilds.cache.size} servidores`);
         message.channel.send(embed)
     }
 }
