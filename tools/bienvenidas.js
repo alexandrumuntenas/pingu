@@ -19,7 +19,7 @@ module.exports = {
                         break;
                     case 'mensaje':
                         if (args[2]) {
-                            var mensaje = message.content.replace(global.prefix + 'bienvenidas mensaje ', '');
+                            var mensaje = message.content.replace(`${global.prefix}bienvenidas mensaje `, '');
                             var mensaje = emojiStrip(mensaje);
                             var sql = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + mensaje + "' WHERE `servidores`.`guild` = " + global.id;
                             message.channel.send(':white_check_mark: Se ha actualizado el mensaje de bienvenida correctamente.');
