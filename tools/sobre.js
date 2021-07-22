@@ -4,6 +4,7 @@ module.exports = {
     name: 'sobre',
     execute(args, client, con, contenido, global, message, result) {
         const embed = new MessageEmbed()
+            .setColor('#FFFFFF')
             .addFields(
                 {
                     name: '<:Document_Folder:867318660679073812> Documentación',
