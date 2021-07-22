@@ -26,8 +26,9 @@ const client = new Client();
 // Servicios de TOP.GG
 const { AutoPoster } = require('topgg-autoposter')
 const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyNzE5OTUzOTE4NTk3NTQxNyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI2OTc2NzkzfQ.hXeX11LMvSjuyn2YIm7r8zBE-HL0OaaTkL-DkItzlKs', client)
+console.log('[··] Publicando Estadísticas a Top.GG')
 ap.on('posted', () => {
-    console.log('Posted stats to Top.gg!')
+    console.log('[OK] Estadísticas publicadas en Top.GG')
 })
 
 //Services Workers
