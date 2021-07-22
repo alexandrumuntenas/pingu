@@ -210,28 +210,36 @@ module.exports = {
                         message.channel.send(':arrow_right: Mencione todos los nuevos roles que desea ofrecer');
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_user.add(element.id);
-                                    }
-                                );
-                            }).then(() => {
-                                purga();
-                                user_give_role();
-                            });
+                                if (collected.first().mentions.roles.first()) {
+                                    collected.first().mentions.roles.array().forEach(
+                                        element => {
+                                            roles_user.add(element.id);
+                                        }
+                                    );
+                                    purga();
+                                    user_give_role();
+                                } else {
+                                    message.channel.send(':information_source: ¡Debe mencionar roles!');
+                                    add_rol_users();
+                                }
+                            })
                     }
                     function del_rol_users() {
                         message.channel.send(':arrow_right: Mencione todos los roles que desea dejar de ofrecer a los nuevos miembros');
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_user.delete(element.id);
-                                    }
-                                );
-                            }).then(() => {
-                                purga();
-                                user_give_role();
+                                if (collected.first().mentions.roles.first()) {
+                                    collected.first().mentions.roles.array().forEach(
+                                        element => {
+                                            roles_user.delete(element.id);
+                                        }
+                                    );
+                                    purga();
+                                    user_give_role();
+                                } else {
+                                    message.channel.send(':information_source: ¡Debe mencionar roles!');
+                                    del_rol_users();
+                                }
                             });
                     }
                     function save_rol_users() {
@@ -273,28 +281,36 @@ module.exports = {
                         message.channel.send(':arrow_right: Mencione todos los nuevos roles que desea ofrecer');
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_bot.add(element.id);
-                                    }
-                                );
-                            }).then(() => {
-                                purga();
-                                bot_give_role();
+                                if (collected.first().mentions.roles.first()) {
+                                    collected.first().mentions.roles.array().forEach(
+                                        element => {
+                                            roles_bot.add(element.id);
+                                        }
+                                    );
+                                    purga();
+                                    bot_give_role();
+                                } else {
+                                    message.channel.send(':information_source: ¡Debe mencionar roles!');
+                                    add_rol_bot();
+                                }
                             });
                     }
                     function del_rol_bot() {
                         message.channel.send(':arrow_right: Mencione todos los roles que desea dejar de ofrecer a los nuevos bots');
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_bot.delete(element.id);
-                                    }
-                                );
-                            }).then(() => {
-                                purga();
-                                bot_give_role();
+                                if (collected.first().mentions.roles.first()) {
+                                    collected.first().mentions.roles.array().forEach(
+                                        element => {
+                                            roles_bot.delete(element.id);
+                                        }
+                                    );
+                                    purga();
+                                    bot_give_role();
+                                } else {
+                                    message.channel.send(':information_source: ¡Debe mencionar roles!');
+                                    del_rol_bot();
+                                }
                             });
                     }
                     function save_rol_bot() {
