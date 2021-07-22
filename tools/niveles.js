@@ -48,7 +48,7 @@ module.exports = {
                         }
                         break;
                     default:
-                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://pingu.duoestudios.es/utilidades/mensajes-enriquecidos#comandos');
+                        message.channel.send(':information_source: No has especificado una opción válida de configuración deseas modificar en el módulo de leveling :arrow_right: https://pingu.duoestudios.es/compromiso-diversion-y-aprendizaje/niveles');
                         break;
                 }
             } else {
