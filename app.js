@@ -85,14 +85,25 @@ console.log('--Cargando comandos--');
 
 client.commands = new Collection();
 
-const commandFiles = fs.readdirSync('./tools').filter(file => file.endsWith('.js'));
+loadCommands(client.commands, './tools');
 
-for (const file of commandFiles) {
-    console.log('[··] Cargando ' + file);
-    const command = require(`./tools/${file}`);
-    client.commands.set(command.name, command);
-    console.log('[OK] Cargado ' + file);
-}
+function loadCommands(collection, directory) {
+    const files = fs.readdirSync(directory);
+
+    for (const file of files) {
+        const path = `${directory}/${file}`;
+
+        if (file.endsWith('.js')) {
+            const command = require(path);
+            console.log(`[··] Cargando ${command.name}`);
+            collection.set(command.name, command);
+            console.log(`[OK] Cargado ${command.name}`);
+        }
+        else if (fs.lstatSync(path).isDirectory()) {
+            loadCommands(collection, path);
+        }
+    }
+};
 
 var con = mysql.createConnection({
     host: "104.128.239.45",
