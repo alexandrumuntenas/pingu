@@ -385,7 +385,7 @@ module.exports = {
                 }
 
                 function u_fondo() {
-                    message.channel.send(':arrow_right: Introduzca el ID del fondo que desea establecer. Puede consultar los fondos disponibles en este enlace: https://pingu.duoestudios.es/personalizacion/fondos')
+                    message.channel.send(':arrow_right: Introduzca el ID del fondo que desea establecer. Puede consultar los fondos disponibles en este enlace: https://pingu.duoestudios.es/personalizacion/fondos. <:warn:858736919432527942> No debe incluír el `#`')
                     message.channel.awaitMessages(m => m.author.id == message.author.id,
                         { max: 1 }).then(collected => {
                             if (isInteger(collected.first().content)) {
