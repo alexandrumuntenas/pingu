@@ -20,8 +20,8 @@ module.exports = {
                             var canal = collected.first().mentions.channels.first();
                             const mensaje = client.channels.cache.find(channel => channel.id === canal.id);
                             mensaje.send(embed).then((message) => {
-                                message.react('👍').then(() => {
-                                    message.react('👎');
+                                message.react('867318329651888128').then(() => {
+                                    message.react('867830954541449306');
                                 })
                             });
                             message.channel.send(':white_check_mark: Se ha enviado correctamente el *poll* a <#' + canal.id + '>.');
