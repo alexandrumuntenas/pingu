@@ -6,6 +6,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "@jimp/plugin-circle": "^0.16.1",
+    "@top-gg/sdk": "^3.1.2",
     "canvacord": "^5.2.1",
     "canvas": "^2.8.0",
     "discord-buttons": "^4.0.0",
@@ -27,6 +28,7 @@
     "pdfkit": "^0.12.1",
     "rss-parser": "^3.12.0",
     "superagent": "^6.1.0",
+    "topgg-autoposter": "^2.0.0",
     "translatte": "^3.0.1",
     "webp-converter": "^2.3.3",
     "winston": "^3.3.3",

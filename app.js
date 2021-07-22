@@ -23,6 +23,13 @@ logger.add(new Sentry({
 const talkedRecently = new Set();
 const client = new Client();
 
+// Servicios de TOP.GG
+const { AutoPoster } = require('topgg-autoposter')
+const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyNzE5OTUzOTE4NTk3NTQxNyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI2OTc2NzkzfQ.hXeX11LMvSjuyn2YIm7r8zBE-HL0OaaTkL-DkItzlKs', client)
+ap.on('posted', () => {
+    console.log('Posted stats to Top.gg!')
+})
+
 //Services Workers
 const guildcreate = require('./services/guildcreate');
 const guilddelete = require('./services/guilddelete');
