@@ -1,5 +1,5 @@
 //https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
-const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
+const { Client, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const fs = require('fs');
 const winston = require('winston');
@@ -21,9 +21,7 @@ logger.add(new Sentry({
     level: { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6 }
 }));
 const talkedRecently = new Set();
-require('discord-reply');
 const client = new Client();
-require('discord-buttons')(client);
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
@@ -32,7 +30,6 @@ const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
-const clickmenu = require('./services/clickmenu');
 console.log('[OK] Services Workers Cargados');
 
 // Funciones globales
@@ -70,22 +67,6 @@ async function comprobarcarpetas() {
 }
 
 // Bot
-var con = mysql.createConnection({
-    host: "104.128.239.45",
-    user: "u43502_Ipea7UopvX",
-    password: "T0^Y9yXARCuAa1.LfAzmWRRt",
-    database: "s43502_pingu",
-    charset: "utf8_unicode_ci",
-});
-
-con.connect(function (err) {
-    console.log('[··] Conectando a MariaDB');
-    if (err) {
-        console.log(err)
-    } else {
-        console.log('[OK] Conexión establecida con MariaDB');
-    }
-});
 
 client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
 //client.login('ODQ3NTE3NTQxMDgwMzY3MTI0.YK_ONw.lX_psegfTcjglbokdP9qqAnoYgg');
@@ -104,6 +85,23 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
     console.log('[OK] Cargado ' + file);
 }
+
+var con = mysql.createConnection({
+    host: "104.128.239.45",
+    user: "u43502_Ipea7UopvX",
+    password: "T0^Y9yXARCuAa1.LfAzmWRRt",
+    database: "s43502_pingu",
+    charset: "utf8_unicode_ci",
+});
+con.connect(function (err) {
+    console.log('[··] Conectando a MariaDB');
+    if (err) {
+        console.log(err)
+    } else {
+        console.log('[OK] Conexión establecida con MariaDB');
+    }
+});
+console.log('[··] Obteniendo últimas actualizaciones de GitHub');
 
 client.on('ready', () => {
     comprobarcarpetas()
@@ -144,9 +142,6 @@ client.on('guildMemberRemove', member => {
     guildmemberremove(client, con, member);
 });
 
-client.on('clickMenu', async (menu) => {
-    clickmenu(menu, client, con);
-});
 client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
     if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
