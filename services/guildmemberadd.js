@@ -23,8 +23,8 @@ module.exports = function (client, con, member) {
                     try {
                         await avatar.download();
                         paso2();
-                    } catch (e) {
-                        console.log(e);
+                    } catch (err) {
+                        console.log(err);
                     }
                 }
                 async function paso2() {
