@@ -1,31 +1,35 @@
 module.exports = {
-    name: 'ccmd',
+    name: 'command',
     execute(args, client, con, contenido, global, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.config.command;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
                 switch (args[1]) {
-                    case 'crear':
+                    case 'create':
                         var motivo = message.content.replace(global.prefix + 'ccmd crear ' + args[2] + '', '');
                         var crearccmd = "INSERT INTO `comandos_custom` (`guild`, `cmd`, `returns`) VALUES ('" + global.id + "', '" + args[2] + "', '" + motivo + "')";
                         con.query(crearccmd, function (err) {
                             console.log(err)
-                            message.channel.send(':white_check_mark: Se ha creado correctamente el comando personalizado `' + args[2] + '`. Este devolverá el valor especificado `' + motivo + '`');
+                            message.channel.send(`:white_check_mark: ${lan.create.before}\`${args[2]}\`. ${lan.create.after} \`${motivo}\``);
                         })
                         break;
-                    case 'eliminar':
+                    case 'remove':
                         var delcmd = "DELETE FROM `comandos_custom` WHERE `cmd` = '" + args[2] + "' AND `guild` = " + global.id;
                         con.query(delcmd, function (err) {
                             console.log(err)
-                            message.channel.send(':white_check_mark: Se ha eliminado correctamente el comando personalizado `' + args[2] + '`');
+                            message.channel.send(`:white_check_mark: ${lan.remove}: \`'${args[2]}\``);
                         })
                         break;
                     default:
-                        message.channel.send(':information_source: No ha indicado una opción correcta :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/comandos-personalizados')
+                        message.channel.send(`:information_source: ${lan.invalid} :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/comandos-personalizados`)
                         break;
                 }
+            } else {
+                message.channel.send(`:information_source: ${lan.missing_args}: \`create\` \`remove\``);
             }
         } else {
-            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando');
+            message.channel.send(`:x: ${lan.permerror}`);
         }
     }
 }
