@@ -4,8 +4,10 @@ const pdf = require('pdfkit');
 const fs = require('fs')
 
 module.exports = {
-    name: 'all-infractions',
+    name: 'all-warns',
     execute(args, client, con, contenido, global, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.security.allinfractions;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
@@ -15,23 +17,23 @@ module.exports = {
                             if (err) console.log(err)
                             var pdfDoc = new pdf;
                             pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf'));
-                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text('Servicios de Moderación · Pingu ').moveDown(1);
-                            pdfDoc.font('./recursos/typography/Roboto-Regular.ttf', 12).text("Infracciones del usuario: " + user.tag);
-                            pdfDoc.text("Servidor: " + global.name);
-                            pdfDoc.text("Documento generado el: " + moment().format('MMMM Do YYYY, h:mm:ss a'));
+                            pdfDoc.font('./recursos/typography/Roboto-Bold.ttf', 20).text(`${lan.pdf.header} · Pingu`).moveDown(1);
+                            pdfDoc.font('./recursos/typography/Roboto-Regular.ttf', 12).text(`${lan.pdf.user}: ${user.tag}`);
+                            pdfDoc.text(`${lan.pdf.server}: ${global.name}`);
+                            pdfDoc.text(`${lan.pdf.gen_date}: ${moment().format('MMMM Do YYYY, h:mm:ss a')}`);
                             var i = 0;
                             if (result.length != 0) {
                                 for (var i = 0; i < result.length; i++) {
-                                    pdfDoc.moveDown(1).font('./recursos/typography/Roboto-Regular.ttf').text('Infraccion #' + i).font('./recursos/typography/Roboto-Thin.ttf').text(result[i].motivo);
+                                    pdfDoc.moveDown(1).font('./recursos/typography/Roboto-Regular.ttf').text('Advertencia #' + i).font('./recursos/typography/Roboto-Thin.ttf').text(result[i].motivo);
                                 }
                             } else {
-                                pdfDoc.moveDown(1).text('El usuario no dispone de infracciones');
+                                pdfDoc.moveDown(1).text(lan.pdf.no_infractions);
                             }
                             pdfDoc.end();
                             pdfDoc.on('end', function (err) {
                                 if (err) console.log(err)
                                 var attachament = new MessageAttachment('./usuarios/moderacion/' + user.id + '_' + global.id + '.pdf');
-                                message.author.send('**Reporte de advertencias**\n Usuario: `' + user.tag + '`\n Servidor: `' + global.name + '` \n Fecha de Generación: `' + moment().format('MMMM Do YYYY, h:mm:ss a') + '`', attachament);
+                                message.author.send(`**${lan.dm.header}**\n ${lan.dm.user}: ${user.tag}\n ${lan.dm.server}: ${message.guild.name} \n ${lan.dm.gen_date} ${moment().format('MMMM Do YYYY, h: mm: ss a')}`, attachament);
                             })
                         });
                     }
@@ -41,11 +43,11 @@ module.exports = {
                     }
                     cocina();
                 } else {
-                    message.channel.send(':information_source: Debe mencionar un usuario para poder realizar el reporte de advertencias. Uso: `' + global.prefix + 'all-infractions <@usuario>`');
+                    message.channel.send(`:information_source: ${lan.missing_param}`);
                 }
             }
         } else {
-            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
+            message.channel.send(`:x: ${lan.permerror}`)
         }
     }
 }
