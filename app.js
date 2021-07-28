@@ -5,14 +5,38 @@ const fs = require('fs');
 const winston = require('winston');
 const Sentry = require("winston-transport-sentry-node").default;
 
+console.log('-- Redirección de consola a --');
+
+function makeId(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() *
+            charactersLength));
+    }
+    return result;
+}
+
+const log = require('simple-node-logger').createRollingFileLogger({
+    logDirectory: `./log`,
+    fileNamePattern: `<date>_${makeId(5)}.log`,
+    dateFormat: 'YYYY.MM.DD',
+});
+
+// Redireccionar console.log a @package/simple-node-logger
+console.log = function (d) { //
+    log.info(d);
+};
+
+process.on('uncaughtException', function (err) {
+    log.warn((err && err.stack) ? err.stack : err);
+});
+
 const logger = winston.createLogger({
-    level: 'info',
+    level: { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6 },
     format: winston.format.json(),
     defaultMeta: { service: 'user-service' },
-    transports: [
-        new winston.transports.File({ filename: 'error.log', level: 'error' }),
-        new winston.transports.File({ filename: 'combined.log' }),
-    ],
 });
 logger.add(new Sentry({
     sentry: {
@@ -24,12 +48,12 @@ const talkedRecently = new Set();
 const client = new Client();
 
 // Servicios de TOP.GG
-const { AutoPoster } = require('topgg-autoposter')
+/*const { AutoPoster } = require('topgg-autoposter')
 const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyNzE5OTUzOTE4NTk3NTQxNyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI2OTc2NzkzfQ.hXeX11LMvSjuyn2YIm7r8zBE-HL0OaaTkL-DkItzlKs', client)
-console.log('[··] Publicando Estadísticas a Top.GG')
+log.info('[··] Publicando Estadísticas a Top.GG')
 ap.on('posted', () => {
-    console.log('[OK] Estadísticas publicadas en Top.GG')
-})
+    log.info('[OK] Estadísticas publicadas en Top.GG')
+})*/
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
@@ -38,40 +62,40 @@ const guildmemberadd = require('./services/guildmemberadd');
 const guildmemberremove = require('./services/guildmemberremove');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
-console.log('[OK] Services Workers Cargados');
+log.info('[OK] Services Workers Cargados');
 
 // Funciones globales
 async function comprobarcarpetas() {
-    console.log('[··] Comprobando carpetas');
+    log.info('[··] Comprobando carpetas');
     if (!fs.existsSync('./usuarios')) {
         fs.mkdirSync('./usuarios/');
-        console.log('[··] Carpeta usuarios no existe >> creando...');
+        log.info('[··] Carpeta usuarios no existe >> creando...');
         fs.mkdirSync('./usuarios/moderacion');
-        console.log('[··] Carpeta moderacion no existe >> creando...');
+        log.info('[··] Carpeta moderacion no existe >> creando...');
         fs.mkdirSync('./usuarios/avatares');
-        console.log('[··] Carpeta avatares no existe >> creando...');
+        log.info('[··] Carpeta avatares no existe >> creando...');
         fs.mkdirSync('./usuarios/leveling');
-        console.log('[··] Carpeta leveling no existe >> creando...');
+        log.info('[··] Carpeta leveling no existe >> creando...');
         fs.mkdirSync('./usuarios/bievenidas');
-        console.log('[··] Carpeta bienvenidas no existe >> creando...');
+        log.info('[··] Carpeta bienvenidas no existe >> creando...');
     }
     if (!fs.existsSync('./usuarios/moderacion')) {
-        console.log('[··] Carpeta moderacion no existe >> creando...');
+        log.info('[··] Carpeta moderacion no existe >> creando...');
         fs.mkdirSync('./usuarios/moderacion');
     }
     if (!fs.existsSync('./usuarios/avatares')) {
-        console.log('[··] Carpeta avatares no existe >> creando...');
+        log.info('[··] Carpeta avatares no existe >> creando...');
         fs.mkdirSync('./usuarios/avatares');
     }
     if (!fs.existsSync('./usuarios/leveling')) {
-        console.log('[··] Carpeta leveling no existe >> creando...');
+        log.info('[··] Carpeta leveling no existe >> creando...');
         fs.mkdirSync('./usuarios/leveling');
     }
     if (!fs.existsSync('./usuarios/bienvenidas')) {
-        console.log('[··] Carpeta bienvenidas no existe >> creando...');
+        log.info('[··] Carpeta bienvenidas no existe >> creando...');
         fs.mkdirSync('./usuarios/bienvenidas');
     }
-    console.log('[OK] Existen todas las carpetas necesarias');
+    log.info('[OK] Existen todas las carpetas necesarias');
 }
 
 // Bot
@@ -81,7 +105,7 @@ client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
 
 
 //Cargar comandos
-console.log('--Cargando comandos--');
+log.info('--Cargando comandos--');
 
 client.commands = new Collection();
 
@@ -95,9 +119,9 @@ function loadCommands(collection, directory) {
 
         if (file.endsWith('.js')) {
             const command = require(path);
-            console.log(`[··] Cargando ${command.name}`);
+            log.info(`[··] Cargando ${command.name}`);
             collection.set(command.name, command);
-            console.log(`[OK] Cargado ${command.name}`);
+            log.info(`[OK] Cargado ${command.name}`);
         }
         else if (fs.lstatSync(path).isDirectory()) {
             loadCommands(collection, path);
@@ -113,18 +137,18 @@ var con = mysql.createConnection({
     charset: "utf8_unicode_ci",
 });
 con.connect(function (err) {
-    console.log('[··] Conectando a MariaDB');
+    log.info('[··] Conectando a MariaDB');
     if (err) {
-        console.log(err)
+        log.warn(err)
     } else {
-        console.log('[OK] Conexión establecida con MariaDB');
+        log.info('[OK] Conexión establecida con MariaDB');
     }
 });
-console.log('[··] Obteniendo últimas actualizaciones de GitHub');
+log.info('[··] Obteniendo últimas actualizaciones de GitHub');
 
 client.on('ready', () => {
     comprobarcarpetas()
-    console.log('[OK] Bot inicializado...');
+    log.info('[OK] Bot inicializado...');
     client.user.setPresence({
         status: 'online',
         activity: {
@@ -198,8 +222,8 @@ client.on('message', (message) => {
                     if (client.commands.has(args[0])) {
                         try {
                             client.commands.get(args[0]).execute(args, client, con, contenido, global, message, result);
-                        } catch (e) {
-                            console.log(e);
+                        } catch (err) {
+                            log.warn(err);
                             message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
                         }
                     } else {
@@ -223,11 +247,11 @@ client.on('message', (message) => {
             }
             //Leveling
             if (!contenido.startsWith(global.prefix)) {
-                if (!talkedRecently.has(message.author.id)) {
+                if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
                     if (result[0].niveles_activado != "0") {
-                        talkedRecently.add(message.author.id);
+                        talkedRecently.add(`${message.author.id}_${message.guild.id}`);
                         setTimeout(() => {
-                            talkedRecently.delete(message.author.id);
+                            talkedRecently.delete(`${message.author.id}_${message.guild.id}`);
                         }, 60000);
                         leveling(result, client, con, message, global);
                     }
@@ -256,7 +280,7 @@ client.on('message', (message) => {
             var id = global.id;
             var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
             con.query(sql, function (err, result) {
-                if (err) console.log(err);
+                if (err) log.warn(err);
             });
         }
     }
