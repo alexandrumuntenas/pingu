@@ -1,0 +1,64 @@
+{
+    "inapp": {},
+    "tools": {
+        "config": {
+            "antispam": {},
+            "bienvenidas": {},
+            "burbuja": {},
+            "command": {},
+            "despedidas": {},
+            "moderador": {},
+            "niveles": {},
+            "prefijo": {},
+            "response": {}
+        },
+        "functions": {
+            "ayuda": {},
+            "embed": {},
+            "poll": {},
+            "sobre": {}
+        },
+        "leveling": {
+            "give-xp": {},
+            "levels": {},
+            "rank": {},
+            "remove-xp": {}
+        },
+        "misc": {
+            "anime": {},
+            "flip": {},
+            "id": {},
+            "nasa": {},
+            "ping": {},
+            "server-info": {},
+            "tirar": {}
+        },
+        "security": {
+            "all-infractions": {},
+            "ban": {},
+            "clear-all-warns": {},
+            "clear-server-warns": {},
+            "del": {},
+            "delwarn": {},
+            "kick": {},
+            "lock": {},
+            "mywarns": {},
+            "slowmode": {},
+            "unbanall": {},
+            "unlock": {},
+            "user-info": {},
+            "vwarns": {},
+            "warn": {}
+        }
+    },
+    "services": [
+        {
+            "antispam": {},
+            "guildcreate": {},
+            "guilddelete": {},
+            "guildmemberadd": {},
+            "guildmemberremove": {},
+            "leveling": {}
+        }
+    ]
+}
