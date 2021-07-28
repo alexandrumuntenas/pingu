@@ -1,6 +1,8 @@
 module.exports = {
     name: 'ban',
     execute(args, client, con, contenido, global, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.security.ban;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 var reason = message.content.replace(global.prefix + 'ban ', '');
@@ -17,18 +19,18 @@ module.exports = {
                                 reason: reason,
                             })
                             .then(() => {
-                                message.channel.send(`:white_check_mark: Se ha baneado correctamente a ${user.tag}`);
+                                message.channel.send(`:white_check_mark: ${lan.success} ${user.tag}`);
                             })
                             .catch(err => {
-                                message.channel.send(`:x: No se ha podido banear a ${user.tag}`);
+                                message.channel.send(`:x: ${lan.fail} ${user.tag}`);
                             });
                     }
                 });
             } else {
-                message.channel.send(':information_source: Mencione al menos un usuario para poder ejecutar este comando');
+                message.channel.send(`:information_source: ${lan.missing_param}`);
             }
         } else {
-            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
+            message.channel.send(`:x: ${lan.permerror}`)
         }
     }
 }
