@@ -2,6 +2,7 @@
 /usuarios
 /brand
 /.vscode
-package-lock.json
 /panel
 /services/update.js
+/log/*
+package-lock.json
