@@ -31,6 +31,11 @@ module.exports = {
                     value: 'https://bit.ly/pingu_support',
                     inline: true
                 },
+                {
+                    name: '<:language:868233627136315462> Mejorar traducciones',
+                    value: 'https://bit.ly/pingu_languages',
+                    inline: true
+                }
             ).setFooter(`👪 Ayudando a más de ${client.guilds.cache.size} servidores`);
         message.channel.send(embed)
     }
