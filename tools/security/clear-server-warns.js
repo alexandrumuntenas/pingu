@@ -1,7 +1,7 @@
 module.exports = {
-    name: 'clear-server-infractions',
+    name: 'clear-server-warns',
     execute(args, client, con, contenido, global, message, result) {
-        if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
+        if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 var sql = "DELETE FROM `infracciones` WHERE guild = '" + global.id + "'";
                 con.query(sql, function (err) {
