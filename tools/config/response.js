@@ -18,7 +18,7 @@ module.exports = {
                 switch (args[1]) {
                     case 'create':
                         var identificador = makeId(7);
-                        message.reply(`:arrow_right: ${lan.create.question_a}`)
+                        message.channel.send(`:arrow_right: ${lan.create.question_a}`)
                         message.channel.awaitMessages(m => m.author.id == message.author.id,
                             { max: 1 }).then(collected => {
                                 var accionante = collected.first().content;
