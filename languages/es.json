@@ -177,7 +177,7 @@
         "misc": {
             "anime": {},
             "flip": {},
-            "id": {},
+            "id": "El ID del servidor es ",
             "nasa": {},
             "ping": {},
             "server-info": {},

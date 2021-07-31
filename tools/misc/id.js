@@ -1,7 +1,9 @@
 module.exports = {
     name: 'id',
     execute(args, client, con, contenido, global, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.misc.id;
         let server = message.guild.id;
-        message.channel.send(":information_source: El `ID` del servidor es `" + server + "`");
+        message.channel.send(`:information_source: ${lan} \`${server}\``);
     }
 }
