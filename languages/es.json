@@ -209,7 +209,7 @@
             },
             "clearallwarns": {},
             "clearserverwarns": {},
-            "del": {
+            "clear": {
                 "success": "mensajes han sido eliminado",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "missing_arg": "Falta un argumento en el comando. Uso"
