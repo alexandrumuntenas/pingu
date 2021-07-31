@@ -228,7 +228,10 @@
             "mywarns": {},
             "slowmode": {},
             "unbanall": {},
-            "unlock": {},
+            "unlock": {
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
+                "success": "Se ha desbloqueado el canal. "
+            },
             "userinfo": {
                 "usertag": "Tag del Usuario",
                 "userid": "ID del Usuario",
