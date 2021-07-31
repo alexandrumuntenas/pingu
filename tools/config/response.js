@@ -46,6 +46,8 @@ module.exports = {
                         message.channel.send(`:information_source: ${lan.invalid} :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/respuestas-personalizadas`)
                         break;
                 }
+            } else {
+                message.channel.send(`:information_source: ${lan.missing_args}: \`create\` \`remove\``);
             }
         } else {
             message.channel.send(`:x: ${lan.permerror}`);

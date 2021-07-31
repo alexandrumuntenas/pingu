@@ -202,7 +202,8 @@
                 "remove": {
                     "success": "Se ha eliminado correctamente la respuesta personalizada con identificador"
                 },
-                "invalid": "No ha indicado una opción correcta"
+                "invalid": "No ha indicado una opción correcta",
+                "missing_args": "Las opciones disponibles son"
             }
         },
         "functions": {
