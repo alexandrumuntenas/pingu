@@ -7,7 +7,7 @@ module.exports = {
             if (args[1]) {
                 switch (args[1]) {
                     case 'create':
-                        var motivo = message.content.replace(result[0].prefix + 'ccmd crear ' + args[2] + '', '');
+                        var motivo = message.content.replace(`${result[0].prefix}command create ${args[2]}`, '');
                         var crearccmd = "INSERT INTO `comandos_custom` (`guild`, `cmd`, `returns`) VALUES ('" + message.guild.id + "', '" + args[2] + "', '" + motivo + "')";
                         con.query(crearccmd, function (err) {
                             console.log(err)
@@ -18,7 +18,7 @@ module.exports = {
                         var delcmd = "DELETE FROM `comandos_custom` WHERE `cmd` = '" + args[2] + "' AND `guild` = " + message.guild.id;
                         con.query(delcmd, function (err) {
                             console.log(err)
-                            message.channel.send(`:white_check_mark: ${lan.remove}: \`'${args[2]}\``);
+                            message.channel.send(`:white_check_mark: ${lan.remove}: \`${args[2]}\``);
                         })
                         break;
                     default:
