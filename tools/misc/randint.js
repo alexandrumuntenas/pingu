@@ -1,14 +1,16 @@
 const Math = require('mathjs');
 
 module.exports = {
-    name: 'tirar',
+    name: 'randint',
     execute(args, client, con, contenido, global, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.misc.randint;
         if (args[1]) {
             var aleatorio = Math.round(Math.random(1, parseInt(args[1])));
-            message.channel.send(':teacher: Tras varias cuentas supercomplicadas, el número generado es `' + aleatorio + '`');
+            message.channel.send(`:teacher: ${lan} **${aleatorio}**`);
         } else {
             var aleatorio = Math.round(Math.random(1, 100));
-            message.channel.send(':teacher: Tras varias cuentas supercomplicadas, el número generado es `' + aleatorio + '`');
+            message.channel.send(`:teacher: ${lan} **${aleatorio}**`);
         }
     }
 }
