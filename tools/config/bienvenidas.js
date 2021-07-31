@@ -284,7 +284,7 @@ module.exports = {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `servidores` SET `bienvenida_canal_id` = '" + channel.id + "' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
-                            message.channel.send(`:white_check_mark:  ${lan.update_channel.response}`);
+                            message.channel.send(`:white_check_mark: ${lan.update_channel.response}`);
                             indice();
                         } else {
                             message.channel.send(`:x: ${lan.update_channel.response}`)
