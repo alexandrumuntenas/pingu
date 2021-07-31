@@ -65,7 +65,7 @@ module.exports = {
                     result[0].moderador_warn_expulsion_activado = 0;
                 } else {
                     var fin = 1;
-                    var response = lan.toggle_moderator.response_b;
+                    var response = lan.toggle_modwarn.response_b;
                     result[0].moderador_warn_expulsion_activado = 1;
                 }
                 var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + message.guild.id;
