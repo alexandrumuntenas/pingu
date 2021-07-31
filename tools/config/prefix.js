@@ -10,7 +10,7 @@ module.exports = {
                 });
                 message.channel.send(`:white_check_mark: ${lan.response}: \`${args[1]}\``);
             } else {
-                message.channel.send(`:information_source: ${lan.missing_arg}: \`${result[0].prefix}prefijo <prefijo>\``);
+                message.channel.send(`:information_source: ${lan.missing_arg}: \`${result[0].prefix}prefix <new prefix>\``);
             }
         } else {
             message.channel.send(`:x: ${lan.permerror}`)
