@@ -127,6 +127,8 @@
                 }
             },
             "moderador": {
+                "startup": "Configuración del módulo de **MODERACIÓN**",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "index": {
                     "before": "Para ejecutar una opción, indica el número de la opción.",
                     "avaliable": "Opciones disponibles",
@@ -134,11 +136,34 @@
                         "first": "¿Activar comandos de moderación? (Alterna entre sí y no)",
                         "second": "Expulsar/banear usuario al alcanzar cierta cantidad de infracciones",
                         "third": "Salir"
-                    },
-                    "time_error": "Se ha cerrado la configuración del módulo de moderación",
-                    "toggle_moderator": {
-                        "response_a": "Se ha desactivado correctamente los comandos de moderación",
-                        "response_b": "Se ha activado correctamente los comandos de moderación"
+                    }
+                },
+                "time_error": "Se ha cerrado la configuración del módulo de moderación",
+                "toggle_moderator": {
+                    "response_a": "Se ha desactivado correctamente los comandos de moderación",
+                    "response_b": "Se ha activado correctamente los comandos de moderación"
+                },
+                "toggle_modwarn": {
+                    "response_a": "Ya no se tomarán medidas automáticas de expulsión cuando un usuario alcance el límite especificado.",
+                    "response_b": "Se tomarán medidas automáticas de expulsión cuando un usuario alcance el límite especificado."
+                },
+                "e_limite": {
+                    "question": "¿Cuántos warns debe tener un usuario para tomar medidas de forma automática?",
+                    "success": "Se ha actualizado la cantidad correctamente.",
+                    "notinteger": "Debe introducir un valor alfanumérico."
+                },
+                "toggle_medida": {
+                    "response_a": "Se expulsarán aquellos miembros que alcance/supere el límite de advertencias establecido.",
+                    "response_b": "Se banearán aquellos miembros que alcance/supere el límite de advertencias establecido."
+                },
+                "e_modwarn": {
+                    "before": "Para ejecutar una opción, indica el número de la opción.",
+                    "avaliable": "Opciones disponibles",
+                    "options": {
+                        "first": "¿Activar función?",
+                        "second": "Configurar medida que se tomará si un usuario alcanza el límite de advertencias.",
+                        "third": "Modificar límite de warns (predeterminado => 5)",
+                        "fourth": "Volver"
                     }
                 }
             },
