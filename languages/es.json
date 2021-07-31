@@ -179,7 +179,10 @@
         },
         "misc": {
             "anime": {},
-            "flip": {},
+            "flip": {
+                "cara": "Ha salido cara",
+                "cruz": "Ha salido cruz"
+            },
             "id": "El ID del servidor es ",
             "nasa": {},
             "ping": {},
