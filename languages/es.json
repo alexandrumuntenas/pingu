@@ -165,7 +165,10 @@
         "functions": {
             "ayuda": {},
             "embed": {},
-            "poll": {},
+            "qpoll": {
+                "missingquestion": "Uso del comando",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando."
+            },
             "sobre": {}
         },
         "leveling": {
