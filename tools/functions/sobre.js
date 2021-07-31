@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'sobre',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         const embed = new MessageEmbed()
             .setColor('#FFFFFF')
             .addFields(

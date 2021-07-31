@@ -1,6 +1,6 @@
 module.exports = {
     name: 'unlock',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.security.unlock;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {

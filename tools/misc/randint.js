@@ -2,7 +2,7 @@ const Math = require('mathjs');
 
 module.exports = {
     name: 'randint',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.misc.randint;
         if (args[1]) {

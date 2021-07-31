@@ -3,13 +3,13 @@ const moment = require('moment');
 
 module.exports = {
     name: 'vwarns',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     const user = message.mentions.users.first();
-                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25";
-                    var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `infracciones` WHERE `guild` = '" + global.id + "' AND `user` = '" + user.id + "'";
+                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25";
+                    var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `infracciones` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "'";
 
                     con.query(verinfraccionescantidad, function (err, result) {
                         var ultimas = result[0].total;
@@ -29,7 +29,7 @@ module.exports = {
                         })
                     })
                 } else {
-                    message.channel.send(':information_source: no ha mencionado a ningún usuario. Uso: `' + global.prefix + 'vwarns <usuario>`');
+                    message.channel.send(':information_source: no ha mencionado a ningún usuario. Uso: `' + result[0].prefix + 'vwarns <usuario>`');
                 }
             }
         } else {

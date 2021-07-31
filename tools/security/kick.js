@@ -1,11 +1,11 @@
 module.exports = {
     name: 'kick',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.security.kick;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
-                var reason = message.content.replace(global.prefix + 'kick ', '');
+                var reason = message.content.replace(result[0].prefix + 'kick ', '');
                 var array = message.mentions.users.array();
                 var infraccion = message.content;
                 array.forEach(user => {

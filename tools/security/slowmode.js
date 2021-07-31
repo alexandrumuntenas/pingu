@@ -2,10 +2,10 @@ var parse = require('parse-duration')
 
 module.exports = {
     name: 'slowmode',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
-                var timeslowmo1 = message.content.replace(`${global.prefix}slowmode `, '');
+                var timeslowmo1 = message.content.replace(`${result[0].prefix}slowmode `, '');
                 timeslowmo = parse(timeslowmo1, 's');
                 message.channel.setRateLimitPerUser(timeslowmo, "Slowmode");
                 message.reply(' se ha establecido un slowmode de `' + timeslowmo1 + '` :clock1:');

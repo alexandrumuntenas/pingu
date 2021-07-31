@@ -4,7 +4,7 @@ const translate = require('translatte')
 
 module.exports = {
     name: 'nasa',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
 
         message.reply(' cargando imagen del día... ')
             .then(msg => {

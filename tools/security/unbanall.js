@@ -1,6 +1,6 @@
 module.exports = {
     name: 'unbanall',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (result[0].moderador_activado != 0) {
             if (message.member.hasPermission("ADMINISTRATOR")) {
                 message.guild.fetchBans().then(bans => {

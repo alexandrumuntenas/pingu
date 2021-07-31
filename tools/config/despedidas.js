@@ -2,7 +2,7 @@ const emojiStrip = require('emoji-strip');
 
 module.exports = {
     name: 'despedidas',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.config.despedidas;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
@@ -50,12 +50,12 @@ module.exports = {
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
-                            var yes = "UPDATE `servidores` SET `salida_mensaje_activado` = '1' WHERE `servidores`.`guild` = " + global.id;
+                            var yes = "UPDATE `servidores` SET `salida_mensaje_activado` = '1' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(yes);
                             message.channel.send(`:white_check_mark: ${lan.toggle_message.response_b}`);
                             indice();
                         } else {
-                            var no = "UPDATE `servidores` SET `salida_mensaje_activado` = '0' WHERE `servidores`.`guild` = " + global.id;
+                            var no = "UPDATE `servidores` SET `salida_mensaje_activado` = '0' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(no);
                             message.channel.send(`:white_check_mark: ${lan.toggle_message.response_a}`);
                             indice();
@@ -69,7 +69,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         if (collected.first().mentions.channels.first()) {
                             var channel = collected.first().mentions.channels.first();
-                            var updatechannel = "UPDATE `servidores` SET `salida_canal` = '" + channel.id + "' WHERE `servidores`.`guild` = " + global.id;
+                            var updatechannel = "UPDATE `servidores` SET `salida_canal` = '" + channel.id + "' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
                             message.channel.send(`:white_check_mark: ${lan.update_channel.success}`);
                             indice();
@@ -84,7 +84,7 @@ module.exports = {
                 message.channel.send(`:arrow_right: ${lan.update_message.question} <:warn:858736919432527942> ${lan.update_message.emoji_remover}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
-                        var updatemsg = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + global.id;
+                        var updatemsg = "UPDATE `servidores` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
                         message.channel.send(`:white_check_mark: ${lan.update_message.success}`);
                         indice();

@@ -4,7 +4,7 @@ const { MessageAttachment } = require('discord.js');
 const fs = require('fs');
 module.exports = {
     name: 'rank',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (result[0].niveles_activado != 0) {
             var dif = result[0].niveles_dificultad;
             var cache = { "aspecto": result[0].niveles_fondo }
@@ -14,7 +14,7 @@ module.exports = {
                     message.reply(' los bots no reciben experiencia por que son, pues eso, bots.');
                     return
                 }
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'", function (err, result) {
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + user.id + "'", function (err, result) {
                     if (result[0]) {
                         var experiencia = parseInt(result[0].experiencia);
                         var nivel = parseInt(result[0].nivel);
@@ -41,8 +41,8 @@ module.exports = {
 
                                 rank.build()
                                     .then(buffer => {
-                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + message.guild.id + '_rank.jpg');
+                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + message.guild.id + '_rank.jpg');
                                         message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
                             } catch (e) {
@@ -57,7 +57,7 @@ module.exports = {
             } else {
                 // Si no coincide con ningún comando, pasamos al system de leveling
                 user = message.author;
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'", function (err, result) {
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + user.id + "'", function (err, result) {
                     if (result[0]) {
                         var experiencia = parseInt(result[0].experiencia);
                         var nivel = parseInt(result[0].nivel);
@@ -84,8 +84,8 @@ module.exports = {
 
                                 rank.build()
                                     .then(buffer => {
-                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
-                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + global.id + '_rank.jpg');
+                                        canvacord.write(buffer, './usuarios/leveling/' + user.id + '_' + message.guild.id + '_rank.jpg');
+                                        var attachament = new MessageAttachment('./usuarios/leveling/' + user.id + '_' + message.guild.id + '_rank.jpg');
                                         message.channel.send(" <@" + user.id + "> se encuentra en el nivel `" + nivel + "` y dispone de `" + (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) + "` puntos de experiencia", attachament);
                                     });
                             } catch (e) {
@@ -100,7 +100,7 @@ module.exports = {
             };
         } else {
             if (message.member.hasPermission('ADMINISTRATOR')) {
-                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utilice el siguiente comando: `" + global.prefix + "niveles`");
+                message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles. Para activarlos, utilice el siguiente comando: `" + result[0].prefix + "niveles`");
             } else {
                 message.channel.send(":information_source: Este servidor tiene desactivado el sistema de niveles");
             }

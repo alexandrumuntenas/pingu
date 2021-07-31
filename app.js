@@ -103,7 +103,6 @@ async function comprobarcarpetas() {
 client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
 //client.login('ODQ3NTE3NTQxMDgwMzY3MTI0.YK_ONw.lX_psegfTcjglbokdP9qqAnoYgg');
 
-
 //Cargar comandos
 log.info('--Cargando comandos--');
 
@@ -189,22 +188,18 @@ client.on('message', (message) => {
     //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
     if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
 
-    global = [];
-    global.id = message.guild.id;
-    global.name = message.guild.name;
     //Conectamos con Mariadb y obtenemos datos del servidor
-    con.query("SELECT * FROM `servidores` WHERE guild = '" + global.id + "'", function (err, result, rows) {
+    con.query(`SELECT * FROM \`servidores\` WHERE guild =${message.guild.id}`, function (err, result, rows) {
         if (result.hasOwnProperty(0)) {
-            global.prefix = result[0].prefix;
-            var id = global.id;
+            var id = message.guild.id;
             //Comprobamos si el mensaje ha comenzado con prefijo
-            if (message.content.startsWith(global.prefix) && message.content != global.prefix) {
+            if (message.content.startsWith(result[0].prefix) && message.content != result[0].prefix) {
 
                 //Retirar el comandomsg.content.split(' ').splice(1).join(' ')
                 var cortar = message.content.trim().split(' ');
 
                 //Solo retira el prefijo del comando, por lo que cuenta también la acción deseada en el array
-                var mensajeprocesado = message.content.replace(global.prefix, '');
+                var mensajeprocesado = message.content.replace(result[0].prefix, '');
                 //Regex para los argumentos con ""
 
                 const regex = new RegExp('"[^"]+"|[\\S]+', 'g');
@@ -217,20 +212,20 @@ client.on('message', (message) => {
             }
             var tolower = message.content;
             var contenido = tolower.toLowerCase();
-            if (message.content.startsWith(global.prefix)) {
+            if (message.content.startsWith(result[0].prefix)) {
                 if (args) {
                     if (client.commands.has(args[0])) {
                         try {
-                            client.commands.get(args[0]).execute(args, client, con, contenido, global, message, result);
+                            client.commands.get(args[0]).execute(args, client, con, contenido, message, result);
                         } catch (err) {
                             log.warn(err);
                             message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
                         }
                     } else {
-                        var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
+                        var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + message.guild.id;
                         con.query(consultacomandoscustom, function (err, result) {
                             if (result.hasOwnProperty(0)) {
-                                var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
+                                var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + message.guild.id + "' AND `cmd` = '" + args[0] + "'";
                                 con.query(buscarcomando, function (err, result) {
                                     if (result.hasOwnProperty(0)) {
                                         message.channel.send("<:comandoscustom:858671400424046602>" + result[0].returns);
@@ -246,7 +241,7 @@ client.on('message', (message) => {
                 antispamworker(message);
             }
             //Leveling
-            if (!contenido.startsWith(global.prefix)) {
+            if (!contenido.startsWith(result[0].prefix)) {
                 if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
                     if (result[0].niveles_activado != "0") {
                         talkedRecently.add(`${message.author.id}_${message.guild.id}`);
@@ -259,11 +254,11 @@ client.on('message', (message) => {
             }
 
             // Respuestas personalizadas
-            var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
+            var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + message.guild.id;
             con.query(consultarespuestacustom, function (err, result) {
                 if (result) {
                     if (result.hasOwnProperty(0)) {
-                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
+                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + message.guild.id + "' AND `action` = '" + contenido + "'";
                         con.query(buscarrespuesta, function (err, result) {
                             if (result) {
                                 if (result.hasOwnProperty(0)) {
@@ -277,7 +272,7 @@ client.on('message', (message) => {
         }
         else {
             var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
-            var id = global.id;
+            var id = message.guild.id;
             var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
             con.query(sql, function (err, result) {
                 if (err) log.warn(err);

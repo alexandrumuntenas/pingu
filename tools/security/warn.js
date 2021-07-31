@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 module.exports = {
     name: 'warn',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 function makeId(length) {
@@ -18,16 +18,15 @@ module.exports = {
                 message.mentions.users.array().forEach(user => {
                     warn = warn.replace('<@!' + user.id + '>', '');
                     warn = warn.replace('<@' + user.id + '>', '');
-                    warn = warn.replace(`${global.prefix}warn`, '');
+                    warn = warn.replace(`${result[0].prefix}warn`, '');
                 })
                 message.mentions.users.array().forEach(user => {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };
-                    var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + global.id + "'";
+                    var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + message.guild.id + "'";
                     con.query(consultarcantidad, function (err, result) {
-                        var nuevainfraccion = "INSERT INTO `infracciones` (`identificador`,`user`, `guild`,`motivo`) VALUES ('" + makeId(7) + "', '" + user.id + "', '" + global.id + "','" + warn + "')";
+                        var nuevainfraccion = "INSERT INTO `infracciones` (`identificador`,`user`, `guild`,`motivo`) VALUES ('" + makeId(7) + "', '" + user.id + "', '" + message.guild.id + "','" + warn + "')";
                         con.query(nuevainfraccion);
-                        var embed = new MessageEmbed().setAuthor(user.tag + " usted ha sido advertido", user.displayAvatarURL()).setTitle('Detalles de infracción').setDescription(warn);
-                        message.channel.send(embed);
+                        message.channel.send(`:warning: ${user} ha sido advertido \nRazón: \`${warn}\``);
                         const member = message.guild.member(user);
                         if (cache.activado != 0) {
                             if (parseInt(result[0].itotal) + 1 >= cache.cantidad) {

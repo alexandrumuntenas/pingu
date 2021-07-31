@@ -1,6 +1,6 @@
 module.exports = {
     name: 'clear',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.security.clear;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
@@ -32,7 +32,7 @@ module.exports = {
                                     });;
                             });
                     } else {
-                        message.channel.send(`:information_source: ${lan.missing_arg} \`${global.prefix}del <cantidad> \``);
+                        message.channel.send(`:information_source: ${lan.missing_arg} \`${result[0].prefix}del <cantidad> \``);
                     }
                 }
             }

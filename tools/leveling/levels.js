@@ -2,16 +2,16 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     name: 'levels',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (result[0].niveles_activado != 0) {
             var dif = result[0].niveles_dificultad;
-            var lookupfortop10 = "SELECT * FROM leveling WHERE guild = " + global.id + " ORDER BY nivel DESC, experiencia DESC LIMIT 10";
+            var lookupfortop10 = "SELECT * FROM leveling WHERE guild = " + message.guild.id + " ORDER BY nivel DESC, experiencia DESC LIMIT 10";
             con.query(lookupfortop10, function (err, rows, result) {
                 if (result) {
                     if (result.hasOwnProperty(0)) {
                         var embed = new MessageEmbed();
                         embed.setTitle('Ranking')
-                        embed.setAuthor(global.name);
+                        embed.setAuthor(message.guild.name);
                         rows.forEach(function (row) {
                             var usuario = client.users.cache.find(user => user.id === row.user);
                             var nivel = parseInt(row.nivel);

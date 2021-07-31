@@ -1,6 +1,6 @@
 module.exports = {
     name: 'burbuja',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.config.burbuja;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
@@ -12,7 +12,7 @@ module.exports = {
                 var fin = 1;
                 var response = lan.response_b;
             }
-            var sql = "UPDATE `servidores` SET `burbuja_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + global.id;
+            var sql = "UPDATE `servidores` SET `burbuja_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + message.guild.id;
             message.channel.send(`:white_check_mark: ${response}`);
             con.query(sql);
         } else {

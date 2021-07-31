@@ -2,11 +2,11 @@ const Math = require('mathjs');
 
 module.exports = {
     name: 'remove-xp',
-    execute(args, client, con, contenido, global, message, result) {
+    execute(args, client, con, contenido, message, result) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].niveles_activado != 0) {
                 function mf2(nivel, experiencia, user) {
-                    var sql_actualizar_xp_quitar = "UPDATE `leveling` SET `experiencia` = '" + experiencia + "', `nivel` = '" + nivel + "' WHERE `leveling`.`user` = " + user.id + " AND `leveling`.`guild` = " + global.id;
+                    var sql_actualizar_xp_quitar = "UPDATE `leveling` SET `experiencia` = '" + experiencia + "', `nivel` = '" + nivel + "' WHERE `leveling`.`user` = " + user.id + " AND `leveling`.`guild` = " + message.guild.id;
                     con.query(sql_actualizar_xp_quitar);
                 }
                 if (parseInt(args[1])) {
@@ -14,7 +14,7 @@ module.exports = {
                         if (args[2]) {
                             const user = message.mentions.users.first();
                             var dif = result[0].niveles_dificultad;
-                            var sql_niveles_quitar = "SELECT * FROM `leveling` WHERE guild = '" + global.id + "' AND user = '" + user.id + "'";
+                            var sql_niveles_quitar = "SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + user.id + "'";
                             con.query(sql_niveles_quitar, function (err, result) {
                                 var exp = parseInt(result[0].experiencia) + (parseInt(result[0].nivel * (dif * 100)))
                                 var exp = exp - parseInt(args[1]);
