@@ -22,19 +22,19 @@ module.exports = {
         };
 
         const regions = {
-            brazil: 'Brazil',
-            europe: 'Europe',
-            hongkong: 'Hong Kong',
-            india: 'India',
-            japan: 'Japan',
-            russia: 'Russia',
-            singapore: 'Singapore',
-            southafrica: 'South Africa',
-            sydeny: 'Sydeny',
-            'us-central': 'US Central',
-            'us-east': 'US East',
-            'us-west': 'US West',
-            'us-south': 'US South'
+            brazil: ':flag_br: Brazil',
+            europe: ':flag_eu: Europe',
+            hongkong: ':flag_hk: Hong Kong',
+            india: ':flag_in: India',
+            japan: ':flag_jp: Japan',
+            russia: ':flag_ru: Russia',
+            singapore: ':flag_sg: Singapore',
+            southafrica: ':flag_za: South Africa',
+            sydeny: ':flag_au: Sydeny',
+            'us-central': ':flag_us: US Central',
+            'us-east': ':flag_us: US East',
+            'us-west': ':flag_us: US West',
+            'us-south': ':flag_us: US South'
         };
         const embed = new MessageEmbed()
             .setDescription(`**Server Info**`)
