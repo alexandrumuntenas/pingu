@@ -305,7 +305,7 @@ module.exports = {
             }
 
             function u_fondo() {
-                message.channel.send(':arrow_right: : https://pingu.duoestudios.es/personalizacion/fondos. <:warn:858736919432527942> No debe incluír el `#`')
+                message.channel.send(':arrow_right: https://pingu.duoestudios.es/personalizacion/fondos. <:warn:858736919432527942> No debe incluír el `#`')
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (isInteger(collected.first().content)) {
