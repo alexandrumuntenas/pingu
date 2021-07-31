@@ -4,6 +4,8 @@ const { isInteger } = require('mathjs');
 module.exports = {
     name: 'niveles',
     execute(args, client, con, contenido, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.config.niveles;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             ftime = 0;
             function purga() {
@@ -14,7 +16,7 @@ module.exports = {
                 }
             }
             function indice() {
-                message.channel.send('Para ejecutar una opción, indica el número de la opción. \n \n ****Opciones Disponibles** \n **1.** ¿Habilitar sistema de niveles? \n **2.** Establecer mensaje de avance de nivel \n **3.** ¿Establecer canal de avance de nivel? \n **4.** ¿Enviar cartel de notificación de avance de nivel? \n **5.** Cambiar fondo de los carteles de ranking \n **6.** Cambia la dificultad de avanzar de nivel \n **7.** Dar X rol/es a los usuarios cuando alcancen X nivel :construction:\n **8.** Salir');
+                message.channel.send(`${lan.index.before} \n \n **${lan.index.avaliable}** \n **1.** ${lan.index.options.first} \n **2.** ${lan.index.options.second} \n **3.** ${lan.index.options.third} \n **4.** ${lan.index.options.fourth} \n **5.** ${lan.index.options.fifth} \n **6.** ${lan.index.options.sixth} \n **7.** ${lan.index.options.seventh} \n **8.** ${lan.index.options.eighth} `);
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1, time: 30000, errors: ['time'] }).then(collected => {
                         if (isInteger(collected.first().content)) {
@@ -49,7 +51,7 @@ module.exports = {
                                     indice();
                                     break;
                                 case '8':
-                                    message.channel.send(':information_source: Se ha cerrado la configuración del módulo de **NIVELES**');
+                                    message.channel.send(`:information_source: ${lan.time_error}`);
                                     break;
                                 default:
                                     purga();
@@ -57,11 +59,11 @@ module.exports = {
                                     break;
                             }
                         } else {
-                            message.channel.send(':information_source: El valor especificado debe ser alfanumérico');
+                            message.channel.send(`:information_source: ${lan.isinteger}`);
                             indice();
                         }
                     }).catch(error => {
-                        message.channel.send(':information_source: Se ha cerrado la configuración del módulo de **NIVELES**');
+                        message.channel.send(`:information_source: ${lan.time_error}`);
                     });
             }
 
