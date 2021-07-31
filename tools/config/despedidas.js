@@ -91,7 +91,7 @@ module.exports = {
                     });
             }
 
-            message.channel.send(`<:info: 858737080950718484 > ${lan.startup}`);
+            message.channel.send(`<:info:858737080950718484> ${lan.startup}`);
             indice();
         } else {
             message.channel.send(`:x: ${lan.permerror}`);

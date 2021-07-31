@@ -106,9 +106,9 @@
                         "second": "Establecer mensaje de despedidas",
                         "third": "Establecer canal de despedida",
                         "fourth": "Salir"
-                    },
-                    "time_error": "Se ha cerrado la configuración del módulo de despedidas."
+                    }
                 },
+                "time_error": "Se ha cerrado la configuración del módulo de despedidas.",
                 "toggle_message": {
                     "question": "¿Enviar mensaje de despedida cuando se una miembro abandone el servidor?",
                     "avaliable_responses": "Respuestas disponibles",
