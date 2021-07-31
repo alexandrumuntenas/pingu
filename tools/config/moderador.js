@@ -28,7 +28,7 @@ module.exports = {
                                 e_modwarn();
                                 break;
                             case '3':
-                                message.channel.send(`:information_source: ${lan.index.time_error}`);
+                                message.channel.send(`:information_source: ${lan.time_error}`);
                                 break;
                             default:
                                 purga()
@@ -36,7 +36,7 @@ module.exports = {
                                 break;
                         }
                     }).catch(collected => {
-                        message.channel.send(`:information_source: ${lan.index.time_error}`);
+                        message.channel.send(`:information_source: ${lan.time_error}`);
                     });;
             }
 
