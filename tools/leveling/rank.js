@@ -57,7 +57,7 @@ module.exports = {
                     }
                 })
             } else {
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + user.id + "'", function (err, result) {
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", function (err, result) {
                     if (result[0]) {
                         var experiencia = parseInt(result[0].experiencia);
                         var nivel = parseInt(result[0].nivel);
