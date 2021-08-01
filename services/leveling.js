@@ -21,6 +21,7 @@ module.exports = function (result, client, con, message, global) {
                 const nivold = member.replace('{nivel-antiguo}', `${niv - 1}`);
                 const toexport = nivold.replace('{nivel-nuevo}', `${niv}`);
                 if (cache.canal_id) {
+                    const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
                     mensaje.send(toexport);
                 } else {
                     message.channel.send(toexport);
