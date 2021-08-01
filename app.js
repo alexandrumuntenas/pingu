@@ -1,4 +1,9 @@
-//https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
+/* * * * * * * * * * * * * * * *
+ * Pingu                       *   
+ * Versión: 2108               *
+ * Actualización: 2108.011404  *
+ * * * * * * * * * * * * * * * */
+
 const { Client, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const fs = require('fs');
@@ -48,12 +53,12 @@ const talkedRecently = new Set();
 const client = new Client();
 
 // Servicios de TOP.GG
-/*const { AutoPoster } = require('topgg-autoposter')
+const { AutoPoster } = require('topgg-autoposter')
 const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyNzE5OTUzOTE4NTk3NTQxNyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI2OTc2NzkzfQ.hXeX11LMvSjuyn2YIm7r8zBE-HL0OaaTkL-DkItzlKs', client)
 log.info('[··] Publicando Estadísticas a Top.GG')
 ap.on('posted', () => {
     log.info('[OK] Estadísticas publicadas en Top.GG')
-})*/
+})
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
