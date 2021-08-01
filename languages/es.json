@@ -184,7 +184,14 @@
                     }
                 },
                 "isinteger": "El valor especificado debe ser alfanumérico.",
-                "time_error": "Se ha cerrado la configuración del módulo de niveles."
+                "time_error": "Se ha cerrado la configuración del módulo de niveles.",
+                "toggle_niveles": {},
+                "toggle_cartel": {},
+                "update_message": {},
+                "update_channel": {},
+                "update_fondo": {},
+                "update_dificultad": {},
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando."
             },
             "prefix": {
                 "missing_arg": "Falta un argumento en el comando. Uso",
