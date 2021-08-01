@@ -3,7 +3,10 @@ module.exports = {
     execute(args, client, con, contenido, message, result) {
         console.log(args);
         if (args[1]) {
-            message.channel.send(args);
+            switch (args[1]) {
+                case 'bienvenidas':
+                    break;
+            }
         } else {
         }
     }
