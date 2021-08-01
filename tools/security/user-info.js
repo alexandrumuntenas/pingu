@@ -18,7 +18,7 @@ module.exports = {
                             inline: true
                         },
                         {
-                            name: lan.id,
+                            name: lan.userid,
                             value: user.id,
                             inline: true
                         },
