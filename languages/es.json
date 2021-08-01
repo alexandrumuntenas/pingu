@@ -206,7 +206,12 @@
                     "invalid": "Ese fondo no existe, por favor, introduzca un ID válido.",
                     "notinteger": "Debe introducir un valor alfanumérico."
                 },
-                "update_dificultad": {},
+                "update_dificultad": {
+                    "question": "Indique la dificultad de subir de nivel. (Dificultad máxima = 5)",
+                    "success": "Se ha actualizado la dificultad correctamente.",
+                    "invalid": "Debe introducir un valor entre 1-5. No se pueden emplear decimales...",
+                    "notinteger": "Debe introducir un valor alfanumérico."
+                },
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
             },
             "prefix": {

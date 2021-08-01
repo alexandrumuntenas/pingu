@@ -131,21 +131,21 @@ module.exports = {
             }
 
             function u_dificultad() {
-                message.channel.send(':arrow_right: Indique la dificultad de subir de nivel')
+                message.channel.send(`:arrow_right: ${lan.update_dificultad.question}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (isInteger(collected.first().content)) {
                             if (parseInt(collected.first().content) < 5 && parseInt(collected.first().content) > 0) {
                                 var updatemsg = "UPDATE `servidores` SET `niveles_dificultad` = '" + collected.first().content + "' WHERE `servidores`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
-                                message.channel.send(':white_check_mark: Se ha actualizado la dificultad correctamente');
+                                message.channel.send(`:white_check_mark: ${lan.update_dificultad.success}`);
                                 indice();
                             } else {
-                                message.channel.send(':information_source: Debe introducir un valor entre 1-5. No se pueden emplear decimales...');
+                                message.channel.send(`:information_source: ${lan.update_dificultad.invalid}`);
                                 u_dificultad();
                             }
                         } else {
-                            message.channel.send(':x: El valor introducido debe ser alfanumérico.')
+                            message.channel.send(`:x: ${lan.update_dificultad.notinteger}`);
                             u_fondo();
                         }
                     });
