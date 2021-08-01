@@ -247,12 +247,16 @@
         "leveling": {
             "give-xp": {},
             "levels": {
-                "ranking": "Ranking",
+                "ranking": "Clasificación",
                 "nodata": "No hay datos suficientes para mostrar el ranking.",
                 "level": "Nivel",
                 "xp": "Experiencia"
             },
-            "rank": {},
+            "rank": {
+                "isbot": "Los bots no reciben experiencia por que son, pues eso, bots.",
+                "level": "Nivel",
+                "norank": "Aún no estás clasificado. Primero envía algunos mensajes y luego vuelve a intentarlo."
+            },
             "remove-xp": {}
         },
         "misc": {
