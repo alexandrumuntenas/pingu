@@ -16,63 +16,15 @@ module.exports = function (result, client, con, message, global) {
             if (exp >= (((niv * niv) * dif) * 100)) {
                 var exp = 0;
                 var niv = niv + 1;
-                async function paso1() {
-                    const avatar = new downloader({
-                        url: message.author.avatarURL({ format: 'jpg' }),
-                        directory: "./usuarios/avatares/",
-                        fileName: message.author.id + '_rankup.jpg',
-                        cloneFiles: false,
-                    });
-                    try {
-                        await avatar.download();
-                    } catch (error) {
-                        console.log(error);
-                    }
+                const fromdb = cache.canal_msg;
+                const member = fromdb.replace('{user}', `<@${message.author.id}>`);
+                const nivold = member.replace('{nivel-antiguo}', `${niv - 1}`);
+                const toexport = nivold.replace('{nivel-nuevo}', `${niv}`);
+                if (cache.canal_id) {
+                    mensaje.send(toexport);
+                } else {
+                    message.channel.send(toexport);
                 }
-                async function paso2() {
-                    const top = await Jimp.read("./usuarios/avatares/" + message.author.id + "_rankup.jpg");
-                    top.circle();
-                    top.resize(220, 220);
-                    const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
-                    await Jimp.read('./recursos/carteles/' + cache.aspecto + '.png', function (err, image) {
-                        image.composite(top, 39, 32);
-                        image.print(font, 300, 55, (niv - 1) + " -> " + niv);
-                        image.print(font, 300, 155, 'Nuevo nivel');
-                        image.writeAsync('./usuarios/leveling/' + message.author.id + '_' + message.guild.id + '.jpg');
-                        enviar();
-                    });
-                }
-                function enviar() {
-                    const fromdb = cache.canal_msg;
-                    const member = fromdb.replace('{user}', `<@${message.author.id}>`);
-                    const nivold = member.replace('{nivel-antiguo}', `${niv - 1}`);
-                    const toexport = nivold.replace('{nivel-nuevo}', `${niv}`);
-                    if (cache.cartelactivado != 0) {
-                        var attachament = new MessageAttachment('./usuarios/leveling/' + message.author.id + '_' + message.guild.id + '.jpg');
-                        if (cache.canal_id) {
-                            const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-                            mensaje.send(toexport, attachament);
-                        } else {
-                            message.channel.send(toexport, attachament);
-                        }
-                    } else {
-                        if (cache.canal_id) {
-                            mensaje.send(toexport + ".");
-                        } else {
-                            message.channel.send(toexport + ".");
-                        }
-                    }
-                }
-                async function cocina() {
-                    if (cache.cartelactivado != 0) {
-                        await paso1();
-                        await paso2();
-
-                    } else {
-                        enviar();
-                    }
-                }
-                cocina();
             }
             var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + message.guild.id + "'";
             con.query(actualizardatos);
