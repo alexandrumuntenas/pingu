@@ -19,44 +19,39 @@ module.exports = {
                 message.channel.send(`${lan.index.before} \n \n **${lan.index.avaliable}** \n **1.** ${lan.index.options.first} \n **2.** ${lan.index.options.second} \n **3.** ${lan.index.options.third} \n **4.** ${lan.index.options.fourth} \n **5.** ${lan.index.options.fifth} \n **6.** ${lan.index.options.sixth} \n **7.** ${lan.index.options.seventh}`);
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1, time: 30000, errors: ['time'] }).then(collected => {
-                        if (isInteger(collected.first().content)) {
-                            switch (collected.first().content) {
-                                case '1':
-                                    purga();
-                                    t_niveles();
-                                    break;
-                                case '2':
-                                    purga();
-                                    u_mensaje();
-                                    break;
-                                case '3':
-                                    purga();
-                                    u_canal();
-                                    break;
-                                case '4':
-                                    purga();
-                                    u_fondo();
-                                    break;
-                                case '5':
-                                    purga();
-                                    u_dificultad();
-                                    break;
-                                case '6':
-                                    purga();
-                                    message.channel.send('Configuración en desarrollo...');
-                                    indice();
-                                    break;
-                                case '7':
-                                    message.channel.send(`:information_source: ${lan.time_error}`);
-                                    break;
-                                default:
-                                    purga();
-                                    indice();
-                                    break;
-                            }
-                        } else {
-                            message.channel.send(`:information_source: ${lan.isinteger}`);
-                            indice();
+                        switch (collected.first().content) {
+                            case '1':
+                                purga();
+                                t_niveles();
+                                break;
+                            case '2':
+                                purga();
+                                u_mensaje();
+                                break;
+                            case '3':
+                                purga();
+                                u_canal();
+                                break;
+                            case '4':
+                                purga();
+                                u_fondo();
+                                break;
+                            case '5':
+                                purga();
+                                u_dificultad();
+                                break;
+                            case '6':
+                                purga();
+                                message.channel.send('Configuración en desarrollo...');
+                                indice();
+                                break;
+                            case '7':
+                                message.channel.send(`:information_source: ${lan.time_error}`);
+                                break;
+                            default:
+                                purga();
+                                indice();
+                                break;
                         }
                     }).catch(error => {
                         message.channel.send(`:information_source: ${lan.time_error}`);
@@ -151,7 +146,7 @@ module.exports = {
                     });
             }
 
-            message.channel.send(`:info:858737080950718484> ${lan.startup}`);
+            message.channel.send(`<:info:858737080950718484> ${lan.startup}`);
             indice();
         } else {
             message.channel.send(`:x: ${lan.permerror}`);
