@@ -148,7 +148,6 @@ con.connect(function (err) {
         log.info('[OK] Conexión establecida con MariaDB');
     }
 });
-log.info('[··] Obteniendo últimas actualizaciones de GitHub');
 
 client.on('ready', () => {
     comprobarcarpetas()
