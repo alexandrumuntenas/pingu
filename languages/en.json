@@ -1,6 +1,7 @@
 {
     "inapp": {},
     "tools": {
+        "noavaliable": "Este comando no está activado en este momento.",
         "config": {
             "antispam": {
                 "response_a": "Se ha desactivado el módulo anti-spam correctamente.",
@@ -106,9 +107,9 @@
                         "second": "Establecer mensaje de despedidas",
                         "third": "Establecer canal de despedida",
                         "fourth": "Salir"
-                    },
-                    "time_error": "Se ha cerrado la configuración del módulo de despedidas."
+                    }
                 },
+                "time_error": "Se ha cerrado la configuración del módulo de despedidas.",
                 "toggle_message": {
                     "question": "¿Enviar mensaje de despedida cuando se una miembro abandone el servidor?",
                     "avaliable_responses": "Respuestas disponibles",
@@ -167,7 +168,53 @@
                     }
                 }
             },
-            "niveles": {},
+            "niveles": {
+                "startup": "Configuración del módulo de **NIVELES**",
+                "index": {
+                    "before": "Para ejecutar una opción, indica el número de la opción.",
+                    "avaliable": "Opciones disponibles",
+                    "options": {
+                        "first": "¿Habilitar sistema de niveles?",
+                        "second": "Establecer mensaje de avance de nivel",
+                        "third": "¿Establecer canal de avance de nivel?",
+                        "fourth": "Cambiar fondo de los carteles de ranking",
+                        "fifth": "Cambia la dificultad de avanzar de nivel",
+                        "sixth": "Dar X rol/es a los usuarios cuando alcancen X nivel",
+                        "seventh": "Salir"
+                    }
+                },
+                "isinteger": "El valor especificado debe ser alfanumérico.",
+                "time_error": "Se ha cerrado la configuración del módulo de niveles.",
+                "toggle_niveles": {
+                    "question": "¿Activar módulo de niveles?",
+                    "avaliable_responses": "Respuestas disponibles",
+                    "response_a": "Se ha activado el módulo de niveles.",
+                    "response_b": "Se ha desactivado el módulo de niveles."
+                },
+                "update_message": {
+                    "question": "¿Qué mensaje desea que se envíe para notificar el avance de nivel?",
+                    "emoji_remover": "El mensaje de avance de nivel no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.",
+                    "success": "Se ha actualizado el mensaje de avance de nivel."
+                },
+                "update_channel": {
+                    "question": "¿Dónde desea que se envíen los mensajes de avance de nivel? ¡Mencione el canal!",
+                    "success": "Se ha actualizado el canal de avance de nivel.",
+                    "invalid": "No ha mencionado un canal válido."
+                },
+                "update_fondo": {
+                    "question": "Introduzca el ID del fondo que desea establecer.",
+                    "success": "Se ha actualizado el fondo de los carteles de rank y avance de nivel.",
+                    "invalid": "Ese fondo no existe, por favor, introduzca un ID válido.",
+                    "notinteger": "Debe introducir un valor alfanumérico."
+                },
+                "update_dificultad": {
+                    "question": "Indique la dificultad de subir de nivel. (Dificultad máxima = 5)",
+                    "success": "Se ha actualizado la dificultad correctamente.",
+                    "invalid": "Debe introducir un valor entre 1-5. No se pueden emplear decimales...",
+                    "notinteger": "Debe introducir un valor alfanumérico."
+                },
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando."
+            },
             "prefix": {
                 "missing_arg": "Falta un argumento en el comando. Uso",
                 "response": "Nuevo prefijo",
@@ -184,7 +231,8 @@
                 "remove": {
                     "success": "Se ha eliminado correctamente la respuesta personalizada con identificador"
                 },
-                "invalid": "No ha indicado una opción correcta"
+                "invalid": "No ha indicado una opción correcta",
+                "missing_args": "Las opciones disponibles son"
             }
         },
         "functions": {
@@ -198,8 +246,17 @@
         },
         "leveling": {
             "give-xp": {},
-            "levels": {},
-            "rank": {},
+            "levels": {
+                "ranking": "Clasificación",
+                "nodata": "No hay datos suficientes para mostrar el ranking.",
+                "level": "Nivel",
+                "xp": "Experiencia"
+            },
+            "rank": {
+                "isbot": "Los bots no reciben experiencia por que son, pues eso, bots.",
+                "level": "Nivel",
+                "norank": "Aún no estás clasificado. Primero envía algunos mensajes y luego vuelve a intentarlo."
+            },
             "remove-xp": {}
         },
         "misc": {
@@ -234,7 +291,7 @@
             },
             "ban": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
-                "success": "Se ha expulsado permanentemente a ",
+                "success": "Se ha expulsado permanentemente a",
                 "fail": "No se ha podido expulsar permanentemente a",
                 "missing_param": "Mencione al menos un usuario para poder ejecutar este comando"
             },
@@ -257,7 +314,11 @@
                 "success": "Se ha bloqueado el canal. Para desbloquearlo, ejecute"
             },
             "mywarns": {},
-            "slowmode": {},
+            "slowmode": {
+                "success": "Se ha establecido un slowmode de",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
+                "missing_args": "Debe especificar un tiempo determinado."
+            },
             "unbanall": {},
             "unlock": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
