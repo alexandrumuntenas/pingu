@@ -176,20 +176,36 @@
                         "first": "¿Habilitar sistema de niveles?",
                         "second": "Establecer mensaje de avance de nivel",
                         "third": "¿Establecer canal de avance de nivel?",
-                        "fourth": "¿Enviar cartel de notificación de avance de nivel?",
-                        "fifth": "Cambiar fondo de los carteles de ranking",
-                        "sixth": "Cambia la dificultad de avanzar de nivel",
-                        "seventh": "Dar X rol/es a los usuarios cuando alcancen X nivel",
-                        "eighth": "Salir"
+                        "fourth": "Cambiar fondo de los carteles de ranking",
+                        "fifth": "Cambia la dificultad de avanzar de nivel",
+                        "sixth": "Dar X rol/es a los usuarios cuando alcancen X nivel",
+                        "seventh": "Salir"
                     }
                 },
                 "isinteger": "El valor especificado debe ser alfanumérico.",
                 "time_error": "Se ha cerrado la configuración del módulo de niveles.",
-                "toggle_niveles": {},
-                "toggle_cartel": {},
-                "update_message": {},
-                "update_channel": {},
-                "update_fondo": {},
+                "toggle_niveles": {
+                    "question": "¿Activar módulo de niveles?",
+                    "avaliable_responses": "Respuestas disponibles",
+                    "response_a": "Se ha activado el módulo de niveles.",
+                    "response_b": "Se ha desactivado el módulo de niveles."
+                },
+                "update_message": {
+                    "question": "¿Qué mensaje desea que se envíe para notificar el avance de nivel?",
+                    "emoji_remover": "El mensaje de avance de nivel no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.",
+                    "success": "Se ha actualizado el mensaje de avance de nivel."
+                },
+                "update_channel": {
+                    "question": "¿Dónde desea que se envíen los mensajes de avance de nivel? ¡Mencione el canal!",
+                    "success": "Se ha actualizado el canal de avance de nivel.",
+                    "invalid": "No ha mencionado un canal válido."
+                },
+                "update_fondo": {
+                    "question": "Introduzca el ID del fondo que desea establecer.",
+                    "success": "Se ha actualizado el fondo de los carteles de rank y avance de nivel.",
+                    "invalid": "Ese fondo no existe, por favor, introduzca un ID válido.",
+                    "notinteger": "Debe introducir un valor alfanumérico."
+                },
                 "update_dificultad": {},
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
             },

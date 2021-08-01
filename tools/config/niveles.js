@@ -64,67 +64,67 @@ module.exports = {
             }
 
             function t_niveles() {
-                message.channel.send(':arrow_right: ¿Activar módulo de niveles? Respuestas disponibles: y(es) / n(o)');
+                message.channel.send(`:arrow_right: ${lan.toggle_niveles.question} ${lan.toggle_niveles.avaliable_responses}: y(es) / n(o)`);
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `servidores` SET `niveles_activado` = '1' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(yes);
-                            message.channel.send(':white_check_mark: Se ha activado el módulo de niveles...');
+                            message.channel.send(`:white_check_mark: ${lan.toggle_niveles.response_a}`);
                             indice();
                         } else {
                             var no = "UPDATE `servidores` SET `niveles_activado` = '0' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(no);
-                            message.channel.send(':white_check_mark: Se ha desactivado el módulo de niveles...');
+                            message.channel.send(`:white_check_mark: ${lan.toggle_niveles.response_b}`);
                             indice();
                         }
                     });
             }
 
             function u_mensaje() {
-                message.channel.send(':arrow_right: ¿Qué mensaje desea que se envíe para notificar el avance de nivel? <:warn:858736919432527942> El mensaje de avance de nivel no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.')
+                message.channel.send(`:arrow_right: ${lan.update_message.question} <:warn:858736919432527942> ${lan.update_message.success}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         var updatemsg = "UPDATE `servidores` SET `niveles_canal_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
-                        message.channel.send(':white_check_mark: Se ha actualizado el mensaje de avance de nivel');
+                        message.channel.send(`:white_check_mark: ${lan.update_message.success}`);
                         indice();
                     });
             }
 
             function u_canal() {
-                message.channel.send(':arrow_right: ¿Dónde desea que se envíen los mensajes de avance de nivel? ¡Mencione el canal!')
+                message.channel.send(`:arrow_right: ${lan.update_channel}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().mentions.channels.first()) {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `servidores` SET `niveles_canal_id` = '" + channel.id + "' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
-                            message.channel.send(':white_check_mark: Se ha actualizado el canal de avance de nivel');
+                            message.channel.send(`:white_check_mark: ${lan.update_channel.success}`);
                             indice();
                         } else {
-                            message.channel.send(':x: No ha mencionado un canal válido')
+                            message.channel.send(`:x: ${lan.update_channel.invalid}`)
                             u_canal();
                         }
                     });
             }
 
             function u_fondo() {
-                message.channel.send(':arrow_right: Introduzca el ID del fondo que desea establecer. Puede consultar los fondos disponibles en este enlace: https://pingu.duoestudios.es/personalizacion/fondos')
+                message.channel.send(`:arrow_right: ${lan.update_fondo.question}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (isInteger(collected.first().content)) {
                             if (parseInt(collected.first().content) <= 20 && parseInt(collected.first().content) >= 1) {
                                 var updatemsg = "UPDATE `servidores` SET `niveles_fondo` = '" + collected.first().content + "' WHERE `servidores`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
-                                message.channel.send(':white_check_mark: Se ha actualizado el fondo de los carteles de rank y avance de nivel');
+                                message.channel.send(`:white_check_mark: ${lan.update_fondo.success}`);
                                 indice();
                             } else {
-                                message.channel.send(':x: Ese fondo no existe, por favor, introduzca un ID válido.')
+                                message.channel.send(`:x: ´${lan.update_fondo.invalid}`);
                                 u_fondo();
                             }
                         } else {
-                            message.channel.send(':x: El valor introducido debe ser alfanumérico.')
+                            message.channel.send(`:x: ${lan.update_fondo.notinteger}`)
                             u_fondo();
                         }
                     });
@@ -151,10 +151,10 @@ module.exports = {
                     });
             }
 
-            message.channel.send('<:info:858737080950718484> Configuración del módulo de **NIVELES**');
+            message.channel.send(`:info:858737080950718484> ${lan.startup}`);
             indice();
         } else {
-            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando');
+            message.channel.send(`:x: ${lan.permerror}`);
         }
     }
 }
