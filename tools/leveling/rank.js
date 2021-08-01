@@ -12,11 +12,11 @@ module.exports = {
             var dif = result[0].niveles_dificultad;
             var cache = { "aspecto": result[0].niveles_fondo }
             if (message.mentions.users.first()) {
-                if (user.bot) {
+                if (message.mentions.users.first().bot) {
                     message.channel.send(`:information_source: ${lan.isbot}`);
                     return
                 }
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + user.id + "'", function (err, result) {
+                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", function (err, result) {
                     if (result[0]) {
                         var experiencia = parseInt(result[0].experiencia);
                         var nivel = parseInt(result[0].nivel);
