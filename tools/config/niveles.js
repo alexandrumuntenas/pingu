@@ -16,7 +16,7 @@ module.exports = {
                 }
             }
             function indice() {
-                message.channel.send(`${lan.index.before} \n \n **${lan.index.avaliable}** \n **1.** ${lan.index.options.first} \n **2.** ${lan.index.options.second} \n **3.** ${lan.index.options.third} \n **4.** ${lan.index.options.fourth} \n **5.** ${lan.index.options.fifth} \n **6.** ${lan.index.options.sixth} \n **7.** ${lan.index.options.seventh} \n **8.** ${lan.index.options.eighth} `);
+                message.channel.send(`${lan.index.before} \n \n **${lan.index.avaliable}** \n **1.** ${lan.index.options.first} \n **2.** ${lan.index.options.second} \n **3.** ${lan.index.options.third} \n **4.** ${lan.index.options.fourth} \n **5.** ${lan.index.options.fifth} \n **6.** ${lan.index.options.sixth} \n **7.** ${lan.index.options.seventh}`);
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1, time: 30000, errors: ['time'] }).then(collected => {
                         if (isInteger(collected.first().content)) {
@@ -35,22 +35,18 @@ module.exports = {
                                     break;
                                 case '4':
                                     purga();
-                                    t_cartel();
+                                    u_fondo();
                                     break;
                                 case '5':
                                     purga();
-                                    u_fondo();
-                                    break;
-                                case '6':
-                                    purga();
                                     u_dificultad();
                                     break;
-                                case '7':
+                                case '6':
                                     purga();
                                     message.channel.send('Configuración en desarrollo...');
                                     indice();
                                     break;
-                                case '8':
+                                case '7':
                                     message.channel.send(`:information_source: ${lan.time_error}`);
                                     break;
                                 default:
@@ -80,24 +76,6 @@ module.exports = {
                             var no = "UPDATE `servidores` SET `niveles_activado` = '0' WHERE `servidores`.`guild` = " + message.guild.id;
                             con.query(no);
                             message.channel.send(':white_check_mark: Se ha desactivado el módulo de niveles...');
-                            indice();
-                        }
-                    });
-            }
-
-            function t_cartel() {
-                message.channel.send(':arrow_right: ¿Enviar cartel de avance de nivel? Respuestas disponibles: y(es) / n(o)');
-                message.channel.awaitMessages(m => m.author.id == message.author.id,
-                    { max: 1 }).then(collected => {
-                        if (collected.first().content === "y" || collected.first().content === "yes") {
-                            var yes = "UPDATE `servidores` SET `niveles_cartel` = '1' WHERE `servidores`.`guild` = " + message.guild.id;
-                            con.query(yes);
-                            message.channel.send(':white_check_mark: Se enviará el cartel de avance de nivel...');
-                            indice();
-                        } else {
-                            var no = "UPDATE `servidores` SET `niveles_cartel` = '0' WHERE `servidores`.`guild` = " + message.guild.id;
-                            con.query(no);
-                            message.channel.send(':white_check_mark: No se enviará el cartel de avance de nivel...');
                             indice();
                         }
                     });
