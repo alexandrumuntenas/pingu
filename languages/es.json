@@ -272,7 +272,7 @@
             "randint": "Tras varias cuentas supercomplicadas, el número generado es"
         },
         "security": {
-            "allinfractions": {
+            "allwarns": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "missing_param": "Debe mencionar un usuario para poder realizar el reporte de advertencias.",
                 "pdf": {
@@ -313,7 +313,6 @@
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "success": "Se ha bloqueado el canal. Para desbloquearlo, ejecute"
             },
-            "mywarns": {},
             "slowmode": {
                 "success": "Se ha establecido un slowmode de",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
