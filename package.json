@@ -4,7 +4,6 @@
   "description": "Bot de Discord by Alexandru Theodor Muntenas",
   "main": "app.js",
   "dependencies": {
-    "@discordjs/opus": "^0.5.3",
     "@jimp/plugin-circle": "^0.16.1",
     "@top-gg/sdk": "^3.1.2",
     "canvacord": "^5.2.1",
@@ -13,6 +12,7 @@
     "discord-reply": "^0.1.2",
     "discord.js": "^12.5.3",
     "discord.js-buttons": "^1.0.0",
+    "dotenv": "^10.0.0",
     "emoji-strip": "^1.0.1",
     "ffmpeg-static": "^4.4.0",
     "flipacoin": "^1.0.0",

@@ -3,14 +3,12 @@
  * Versión: 2108               *
  * Actualización: 2108.031233  *
  * * * * * * * * * * * * * * * */
-
+require('dotenv').config()
 const { Client, Collection } = require('discord.js');
 const mysql = require('mysql2');
 const fs = require('fs');
 const winston = require('winston');
 const Sentry = require("winston-transport-sentry-node").default;
-
-console.log('-- Redirección de consola a --');
 
 function makeId(length) {
   var result = '';
@@ -18,7 +16,7 @@ function makeId(length) {
   var charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() *
-    charactersLength));
+      charactersLength));
   }
   return result;
 }
@@ -30,9 +28,9 @@ const log = require('simple-node-logger').createRollingFileLogger({
 });
 
 // Redireccionar console.log a @package/simple-node-logger
-console.log = function (d) { //
+/*console.log = function (d) { //
   log.info(d);
-};
+};*/
 
 process.on('uncaughtException', function (err) {
   log.warn((err && err.stack) ? err.stack : err);
@@ -52,13 +50,6 @@ logger.add(new Sentry({
 const talkedRecently = new Set();
 const client = new Client();
 
-// Servicios de TOP.GG
-const { AutoPoster } = require('topgg-autoposter')
-const ap = AutoPoster('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgyNzE5OTUzOTE4NTk3NTQxNyIsImJvdCI6dHJ1ZSwiaWF0IjoxNjI2OTc2NzkzfQ.hXeX11LMvSjuyn2YIm7r8zBE-HL0OaaTkL-DkItzlKs', client)
-log.info('[··] Publicando Estadísticas a Top.GG')
-ap.on('posted', () => {
-  log.info('[OK] Estadísticas publicadas en Top.GG')
-})
 
 //Services Workers
 const guildcreate = require('./services/guildcreate');
@@ -104,9 +95,18 @@ async function comprobarcarpetas() {
 }
 
 // Bot
-
-client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
-//client.login('ODQ3NTE3NTQxMDgwMzY3MTI0.YK_ONw.lX_psegfTcjglbokdP9qqAnoYgg');
+if (process.env.ENTORNO !== "desarrollo") {
+  console.log(process.env.TOPGG);
+  const { AutoPoster } = require('topgg-autoposter')
+  const ap = AutoPoster(process.env.TOPGG, client)
+  log.info('[··] Publicando Estadísticas a Top.GG')
+  ap.on('posted', () => {
+    log.info('[OK] Estadísticas publicadas en Top.GG')
+  })
+  client.login(process.env.PUBLIC_TOKEN);
+} else {
+  client.login(process.env.INSIDER_TOKEN)
+}
 
 //Cargar comandos
 log.info('--Cargando comandos--');
@@ -193,7 +193,7 @@ client.on('message', (message) => {
   //Conectamos con Mariadb y obtenemos datos del servidor
   con.query(`SELECT * FROM \`servidores\` WHERE guild =${message.guild.id}`, function (err, result, rows) {
     if (result.hasOwnProperty(0)) {
-      if(message.mentions.users.first() === client.user){
+      if (message.mentions.users.first() === client.user) {
         client.commands.get('about').execute(args, client, con, contenido, message, result);
       }
       var id = message.guild.id;
@@ -284,5 +284,5 @@ client.on('message', (message) => {
       });
     }
   }
-)
+  )
 });
