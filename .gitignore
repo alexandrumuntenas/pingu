@@ -6,3 +6,4 @@
 /services/update.js
 /log/*
 package-lock.json
+.env
