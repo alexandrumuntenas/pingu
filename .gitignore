@@ -4,6 +4,6 @@
 /.vscode
 /panel
 /services/update.js
-/log/*
+/logs/*
 package-lock.json
 .env
