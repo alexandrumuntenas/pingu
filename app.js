@@ -4,7 +4,8 @@
  * Actualización: 2108.031233  *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
-const { Client, Collection } = require('discord.js');
+const { Client, Collection, Intents } = require('discord.js');
+const { AutoPoster } = require('topgg-autoposter');
 const mysql = require('mysql2');
 const fs = require('fs');
 const makeId = require('./gen/makeId');
@@ -28,29 +29,29 @@ process.on('uncaughtException', function (err) {
 const talkedRecently = new Set();
 const client = new Client();
 
+console.log('[··] Cargando Eventos');
 const guildcreate = require('./events/guildCreate');
 const guilddelete = require('./events/guildDelete');
 const guildmemberadd = require('./events/guildMemberAdd');
 const guildmemberremove = require('./events/guildMemberRemove');
-const leveling = require('./services/leveling');
-const antispamworker = require('./services/antispam');
 console.log('[OK] Eventos Cargados');
 
-// Funciones globales
-async function comprobarcarpetas() {
-
-}
+console.log('[··] Cargando Servicios');
+const leveling = require('./services/leveling');
+const antispamworker = require('./services/antispam');
+const freshpinghook = require('./services/freshping');
+console.log('[OK] Servicios Cargados');
 
 // Bot
 if (process.env.ENTORNO !== "desarrollo") {
   console.log(process.env.TOPGG);
-  const { AutoPoster } = require('topgg-autoposter')
   const ap = AutoPoster(process.env.TOPGG, client)
   console.log('[··] Publicando Estadísticas a Top.GG')
   ap.on('posted', () => {
     console.log('[OK] Estadísticas publicadas en Top.GG')
   })
   client.login(process.env.PUBLIC_TOKEN);
+  freshpinghook(25699);
 } else {
   client.login(process.env.INSIDER_TOKEN)
 }
@@ -97,8 +98,8 @@ con.connect(function (err) {
 });
 
 client.on('ready', () => {
-  comprobarcarpetas()
   console.log('[OK] Bot inicializado...');
+  console.log(`[IF] Logged in as ${client.user.tag}!`);
   client.user.setPresence({
     status: 'idle',
     activity: {
@@ -115,7 +116,7 @@ client.on('ready', () => {
       }
     })
   }, 3600000);
-});
+})
 
 client.on('guildCreate', guild => {
   guildcreate(con, guild);
