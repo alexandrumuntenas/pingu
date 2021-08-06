@@ -4,6 +4,8 @@ const moment = require('moment');
 module.exports = {
     name: 'vwarns',
     execute(args, client, con, contenido, message, result) {
+        var lan = require(`../../languages/${result[0].idioma}.json`);
+        lan = lan.tools.security.vwarns;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
@@ -14,14 +16,14 @@ module.exports = {
                     con.query(verinfraccionescantidad, function (err, result) {
                         var ultimas = result[0].total;
                         con.query(verinfracciones5, function (err, result) {
-                            var embed = new MessageEmbed().setAuthor("Advertencias de " + user.tag, user.displayAvatarURL()).setTitle('Advertencias totales: ' + ultimas);
+                            var embed = new MessageEmbed().setAuthor(user.tag, user.displayAvatarURL()).setTitle(lan.title).setDescription('Advertencias totales: ' + ultimas);
                             async function infraccionestotales() {
                                 var i = 0;
                                 for (var i = 0; i < result.length; i++) {
                                     var timeStamp = JSON.stringify(result[i].timestamp);
                                     var s = timeStamp;
                                     var m = moment(s, 'YYYY MM dd').format('MM-DD-YYYY');
-                                    embed.addFields({ name: 'Advertencia #' + (i + 1) + "(" + result[i].identificador + ")", value: "**" + result[i].motivo + "** • " + s.slice(0, 11) + "\"" })
+                                    embed.addFields({ name: `${lan.warning} (${result[i].identificador})`, value: "**" + result[i].motivo + "** • " + s.slice(0, 11) + "\"" }).setTimestamp()
                                 }
                                 message.channel.send(embed);
                             }
@@ -29,11 +31,11 @@ module.exports = {
                         })
                     })
                 } else {
-                    message.channel.send(':information_source: no ha mencionado a ningún usuario. Uso: `' + result[0].prefix + 'vwarns <usuario>`');
+                    message.channel.send(`:information_source: ${lan.newdmpromotion}`);
                 }
             }
         } else {
-            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
+            message.channel.send(`:x: ${lan.permerror}`)
         }
     }
 }

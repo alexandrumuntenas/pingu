@@ -273,8 +273,6 @@
                 "cruz": "Ha salido cruz"
             },
             "id": "El ID del servidor es ",
-            "nasa": {},
-            "ping": {},
             "serverinfo": {
                 "title": "Información del servidor",
                 "main": "General",
@@ -364,7 +362,12 @@
                 "joineddiscord": "Fecha de creación de la cuenta",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
             },
-            "vwarns": {},
+            "vwarns": {
+                "newdmpromotion": "Para consultar tus propias infracciones, mándeme un MD.",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
+                "warning": "Advertencia",
+                "title": "Reporte de advertencias"
+            },
             "warn": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "reason": "Razón",
