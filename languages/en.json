@@ -365,7 +365,28 @@
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
             },
             "vwarns": {},
-            "warn": {}
+            "warn": {
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
+                "reason": "Razón",
+                "success": "ha sido advertido.",
+                "automod": {
+                    "reason": "Acumulación de advertencias.",
+                    "kick": "expulsado temporalmente",
+                    "ban": "expulsado permanentemente",
+                    "error": {
+                        "a": "Se ha intentado",
+                        "b": "el usuario",
+                        "c": "por acumular más de",
+                        "d": "advertencias, pero se ha producido un error..."
+                    },
+                    "success": {
+                        "a": "El usuario",
+                        "b": "ha sido",
+                        "c": "del servidor por acumular más de",
+                        "d": "advertencias."
+                    }
+                }
+            }
         }
     },
     "services": [
