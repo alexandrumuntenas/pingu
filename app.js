@@ -44,7 +44,6 @@ console.log('[OK] Servicios Cargados');
 
 // Bot
 if (process.env.ENTORNO !== "desarrollo") {
-  console.log(process.env.TOPGG);
   const ap = AutoPoster(process.env.TOPGG, client)
   console.log('[··] Publicando Estadísticas a Top.GG')
   ap.on('posted', () => {
