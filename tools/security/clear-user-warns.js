@@ -1,5 +1,5 @@
 module.exports = {
-    name: 'clear-all-warns',
+    name: 'clear-user-warns',
     execute(args, client, con, contenido, message, result) {
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
