@@ -1,7 +1,7 @@
 {
   "inapp": {},
   "tools": {
-    "noavaliable": "Este comando no está activado en este momento.",
+    "noavaliable": "Este comando no está activo en este momento.",
     "config": {
       "antispam": {
         "response_a": "Se ha desactivado el módulo anti-spam correctamente.",
