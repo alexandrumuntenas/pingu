@@ -236,13 +236,20 @@
             }
         },
         "functions": {
-            "ayuda": {},
+            "help": {},
             "embed": {},
             "qpoll": {
                 "missingquestion": "Uso del comando",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
             },
-            "sobre": {}
+            "about": {
+                "docs": "Documentación",
+                "topgg": "Votar en Top.GG",
+                "dbug": "Reportar errores",
+                "guildcreate": "¿Quiere añadirme a su servidor?",
+                "support": "Servidor de soporte",
+                "languages": "Mejorar traducciones"
+            }
         },
         "leveling": {
             "give-xp": {},
@@ -272,7 +279,7 @@
             "randint": "Tras varias cuentas supercomplicadas, el número generado es"
         },
         "security": {
-            "allinfractions": {
+            "allwarns": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "missing_param": "Debe mencionar un usuario para poder realizar el reporte de advertencias.",
                 "pdf": {
@@ -298,7 +305,7 @@
             "clearallwarns": {},
             "clearserverwarns": {},
             "clear": {
-                "success": "mensajes han sido eliminado",
+                "success": "mensajes han sido eliminados",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "missing_arg": "Falta un argumento en el comando. Uso"
             },
@@ -313,13 +320,16 @@
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "success": "Se ha bloqueado el canal. Para desbloquearlo, ejecute"
             },
-            "mywarns": {},
             "slowmode": {
                 "success": "Se ha establecido un slowmode de",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "missing_args": "Debe especificar un tiempo determinado."
             },
-            "unbanall": {},
+            "unbanall": {
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
+                "nousers": "No hay usuarios baneados",
+                "success": "Se han desbaneado a todos los usuarios de este servidor."
+            },
             "unlock": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "success": "Se ha desbloqueado el canal. "
