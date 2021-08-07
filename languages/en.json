@@ -321,7 +321,11 @@
                 "fail": "No se ha podido expulsar permanentemente a",
                 "missing_param": "Mencione al menos un usuario para poder ejecutar este comando"
             },
-            "clearallwarns": {},
+            "clearuserwarns": {
+                "success": "Se han eliminado todas las advertencias de",
+                "atleastoneuser": "Debe mencionar al menos un usuario para poder retirarle todas las advertencias.",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando."
+            },
             "clearserverwarns": {
                 "success": "Se han eliminado las advertencias de todos los usuarios de este servidor.",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
