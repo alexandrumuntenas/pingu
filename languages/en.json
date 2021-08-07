@@ -322,7 +322,10 @@
                 "missing_param": "Mencione al menos un usuario para poder ejecutar este comando"
             },
             "clearallwarns": {},
-            "clearserverwarns": {},
+            "clearserverwarns": {
+                "success": "Se han eliminado las advertencias de todos los usuarios de este servidor.",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando."
+            },
             "clear": {
                 "success": "mensajes han sido eliminados",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
