@@ -1,4 +1,4 @@
-module.exports = function (client, con, member) {
+module.exports = function (con, guild) {
     var id = guild.id;
     var sql = "DELETE FROM `servidores` WHERE guild = '" + id + "'";
     var sql1 = "DELETE FROM `leveling` WHERE guild = '" + id + "'";
