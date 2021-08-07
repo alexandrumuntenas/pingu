@@ -29,7 +29,7 @@ module.exports = {
                         },
                         {
                             name: lan.hasnick,
-                            value: member.nickname || 'No tiene',
+                            value: member.nickname || lan.nonick,
                             inline: true
                         },
                         {

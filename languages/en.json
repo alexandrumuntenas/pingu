@@ -358,6 +358,7 @@
                 "userid": "ID del Usuario",
                 "isabot": "¿Es un bot?",
                 "hasnick": "Nickname",
+                "nonick": "No tiene un nick",
                 "joinedguild": "Se unió al servidor el",
                 "joineddiscord": "Fecha de creación de la cuenta",
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando."
