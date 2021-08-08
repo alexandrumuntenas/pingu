@@ -335,7 +335,16 @@
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "missing_arg": "Falta un argumento en el comando. Uso"
             },
-            "delwarn": {},
+            "delwarn": {
+                "success": "Se ha eliminado la advertencia",
+                "userNoHasWarn": "no dispone de la advertencia",
+                "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
+                "usage": {
+                    "param1": "usuario",
+                    "param2": "id"
+                },
+                "missing_args": "Uso"
+            },
             "kick": {
                 "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
                 "success": "Se ha expulsado a ",
