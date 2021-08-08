@@ -4,7 +4,7 @@ module.exports = function (pwd) {
     const port = pwd;
 
     app.get('/', (req, res) => {
-        res.send('Pingu is online!')
+        res.send('Pingu is online!');
     })
 
     app.listen(port, () => {

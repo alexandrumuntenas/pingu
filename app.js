@@ -39,7 +39,7 @@ console.log('[OK] Eventos Cargados');
 console.log('[··] Cargando Servicios');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
-const freshpinghook = require('./services/freshping');
+const webping = require('./services/webping');
 console.log('[OK] Servicios Cargados');
 
 // Bot
@@ -50,8 +50,9 @@ if (process.env.ENTORNO !== "desarrollo") {
     console.log('[OK] Estadísticas publicadas en Top.GG')
   })
   client.login(process.env.PUBLIC_TOKEN);
-  freshpinghook(25699);
+  webping(25699);
 } else {
+  webping(25699);
   client.login(process.env.INSIDER_TOKEN)
 }
 
