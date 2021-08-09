@@ -20,9 +20,14 @@ module.exports = function (app, client) {
         con.query("SELECT * FROM sessions_apolo WHERE Clave_de_Acceso = '" + req.body.uj49kfl + "' LIMIT 1", function (err, result, rows) {
             if (result.hasOwnProperty(0)) {
                 var guild = client.guilds.cache.find(guild => guild.id == result[0].Guild_ID);
+                var channels = new Set();
+                var roles = new Set();
                 con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
                     if (result.hasOwnProperty(0)) {
-                        res.render('panel', { lan: lan, guild: guild, bbdd: result[0] });
+                        console.log(guild.roles);
+                        guild.roles.map(r => roles.add({ "role_name": r.name, "role_id": r.id }));
+                        guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
+                        res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles });
                     } else {
                         res.render('login', { err: true });
                     }
