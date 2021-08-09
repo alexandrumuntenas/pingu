@@ -8,7 +8,7 @@ module.exports = {
         lan = lan.tools.leveling.levels;
         if (result[0].niveles_activado != 0) {
             var dif = result[0].niveles_dificultad;
-            var lookupfortop10 = "SELECT * FROM leveling WHERE guild = " + message.guild.id + " ORDER BY nivel DESC, experiencia DESC LIMIT 10";
+            var lookupfortop10 = "SELECT * FROM `guild_levels` WHERE guild = " + message.guild.id + " ORDER BY nivel DESC, experiencia DESC LIMIT 10";
             con.query(lookupfortop10, function (err, rows, result) {
                 if (result) {
                     if (result.hasOwnProperty(0)) {

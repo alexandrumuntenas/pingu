@@ -2,7 +2,7 @@ module.exports = function (client, con, member) {
     var id = member.guild.id;
     var uid = member.user.id;
     var sql = "SELECT * FROM `guild_data` WHERE guild = '" + id + "'";
-    var sql1 = "DELETE FROM `leveling` WHERE user = '" + uid + "' AND guild = '" + id + "'";
+    var sql1 = "DELETE FROM `guild_levels` WHERE user = '" + uid + "' AND guild = '" + id + "'";
     var sql2 = "DELETE FROM `guild_warns` WHERE user = '" + uid + "' AND guild = '" + id + "'";
     var user = member.user;
     if (member.user.id != client.user.id) {

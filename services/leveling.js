@@ -5,7 +5,7 @@ const downloader = require('nodejs-file-downloader');
 module.exports = function (result, client, con, message, global) {
     var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo, "cartelactivado": result[0].niveles_cartel };
     var dif = result[0].niveles_dificultad;
-    con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", function (err, result) {
+    con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", function (err, result) {
         if (result[0]) {
             var exp = parseInt(result[0].experiencia);
             var niv = parseInt(result[0].nivel);
@@ -27,10 +27,10 @@ module.exports = function (result, client, con, message, global) {
                     message.channel.send(toexport);
                 }
             }
-            var actualizardatos = "UPDATE `leveling` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + message.guild.id + "'";
+            var actualizardatos = "UPDATE `guild_levels` SET `experiencia` = '" + exp + "', `nivel` = '" + niv + "' WHERE `user` = '" + message.author.id + "' AND `guild` = '" + message.guild.id + "'";
             con.query(actualizardatos);
         } else {
-            var newuser = "INSERT INTO `leveling` (`user`, `guild`) VALUES ('" + message.author.id + "', '" + message.guild.id + "')";
+            var newuser = "INSERT INTO `guild_levels` (`user`, `guild`) VALUES ('" + message.author.id + "', '" + message.guild.id + "')";
             con.query(newuser);
         }
     });

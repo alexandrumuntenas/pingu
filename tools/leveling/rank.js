@@ -16,7 +16,7 @@ module.exports = {
                     message.channel.send(`:information_source: ${lan.isbot}`);
                     return
                 }
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", function (err, result) {
+                con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", function (err, result) {
                     if (result[0]) {
                         var experiencia = parseInt(result[0].experiencia);
                         var nivel = parseInt(result[0].nivel);
@@ -57,7 +57,7 @@ module.exports = {
                     }
                 })
             } else {
-                con.query("SELECT * FROM `leveling` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", function (err, result) {
+                con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", function (err, result) {
                     if (result[0]) {
                         var experiencia = parseInt(result[0].experiencia);
                         var nivel = parseInt(result[0].nivel);
