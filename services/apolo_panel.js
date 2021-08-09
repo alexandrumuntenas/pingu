@@ -1,4 +1,4 @@
-module.exports = function (pwd, con) {
+module.exports = function (pwd, client) {
     const express = require('express');
     const bodyParser = require('body-parser');
     const app = express()
@@ -11,7 +11,7 @@ module.exports = function (pwd, con) {
     app.use('*/dist', express.static('./services/web'));
     app.use('*/plugins', express.static('./services/web/plugins'));
 
-    require('./routes')(app, con);
+    require('./routes')(app, client);
 
     app.listen(pwd, () => {
         console.log(`[OK] Running web-server`);

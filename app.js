@@ -50,9 +50,9 @@ if (process.env.ENTORNO !== "desarrollo") {
     console.log('[OK] Estadísticas publicadas en Top.GG')
   })
   client.login(process.env.PUBLIC_TOKEN);
-  apolo_panel(25699);
+  apolo_panel(25699, client);
 } else {
-  apolo_panel(25699);
+  apolo_panel(8000, client);
   client.login(process.env.INSIDER_TOKEN)
 }
 
