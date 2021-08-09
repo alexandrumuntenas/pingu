@@ -39,7 +39,7 @@ console.log('[OK] Eventos Cargados');
 console.log('[··] Cargando Servicios');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
-const webping = require('./services/webping');
+const apolo_panel = require('./services/apolo_panel');
 console.log('[OK] Servicios Cargados');
 
 // Bot
@@ -50,9 +50,9 @@ if (process.env.ENTORNO !== "desarrollo") {
     console.log('[OK] Estadísticas publicadas en Top.GG')
   })
   client.login(process.env.PUBLIC_TOKEN);
-  webping(25699, con);
+  apolo_panel(25699);
 } else {
-  webping(25699, con);
+  apolo_panel(25699);
   client.login(process.env.INSIDER_TOKEN)
 }
 
