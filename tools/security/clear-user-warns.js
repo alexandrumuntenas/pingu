@@ -7,7 +7,7 @@ module.exports = {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     var user = message.mentions.users.first();
-                    var sql = "DELETE FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + message.guild.id + "'";
+                    var sql = "DELETE FROM `guild_warns` WHERE user = '" + user.id + "' AND guild = '" + message.guild.id + "'";
                     con.query(sql, function (err) {
                         console.log(err)
                         message.channel.send(`:white_check_mark: ${lan.success} ${user}`);

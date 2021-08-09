@@ -10,8 +10,8 @@ module.exports = {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     const user = message.mentions.users.first();
-                    var verinfracciones5 = "SELECT * FROM `infracciones` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25";
-                    var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `infracciones` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "'";
+                    var verinfracciones5 = "SELECT * FROM `guild_warns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25";
+                    var verinfraccionescantidad = "SELECT COUNT(*) as total FROM `guild_warns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "'";
 
                     con.query(verinfraccionescantidad, function (err, result) {
                         var ultimas = result[0].total;

@@ -7,8 +7,8 @@ module.exports = {
             if (result[0].moderador_activado != 0) {
                 if (message.mentions.users.first()) {
                     if (args[2]) {
-                        var borrarwarn = "DELETE FROM infracciones WHERE guild = " + message.guild.id + " AND user = " + message.mentions.users.first().id + " AND identificador = '" + args[2] + "'";
-                        var existewarn = "SELECT * FROM infracciones WHERE guild = " + message.guild.id + " AND user = " + message.mentions.users.first().id + " AND identificador = '" + args[2] + "'";
+                        var borrarwarn = "DELETE FROM guild_warns WHERE guild = " + message.guild.id + " AND user = " + message.mentions.users.first().id + " AND identificador = '" + args[2] + "'";
+                        var existewarn = "SELECT * FROM guild_warns WHERE guild = " + message.guild.id + " AND user = " + message.mentions.users.first().id + " AND identificador = '" + args[2] + "'";
                         con.query(existewarn, function (err, result) {
                             if (result.hasOwnProperty(0)) {
                                 con.query(borrarwarn);

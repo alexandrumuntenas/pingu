@@ -13,7 +13,7 @@ module.exports = {
                 if (message.mentions.users.first()) {
                     var user = message.mentions.users.first()
                     async function step1() {
-                        con.query('SELECT * FROM `infracciones` WHERE user = \'' + user.id + '\' AND guild = \'' + message.guild.id + '\'', function (err, result) {
+                        con.query('SELECT * FROM `guild_warns` WHERE user = \'' + user.id + '\' AND guild = \'' + message.guild.id + '\'', function (err, result) {
                             if (err) console.log(err)
                             var pdfDoc = new pdf;
                             pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + user.id + '_' + message.guild.id + '.pdf'));

@@ -13,9 +13,9 @@ module.exports = {
                 })
                 message.mentions.users.array().forEach(user => {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };
-                    var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `infracciones` WHERE user = '" + user.id + "' AND guild = '" + message.guild.id + "'";
+                    var consultarcantidad = "SELECT COUNT(*) AS itotal FROM `guild_warns` WHERE user = '" + user.id + "' AND guild = '" + message.guild.id + "'";
                     con.query(consultarcantidad, function (err, result) {
-                        var nuevainfraccion = "INSERT INTO `infracciones` (`identificador`,`user`, `guild`,`motivo`) VALUES ('" + makeId(7) + "', '" + user.id + "', '" + message.guild.id + "','" + warn + "')";
+                        var nuevainfraccion = "INSERT INTO `guild_warns` (`identificador`,`user`, `guild`,`motivo`) VALUES ('" + makeId(7) + "', '" + user.id + "', '" + message.guild.id + "','" + warn + "')";
                         con.query(nuevainfraccion);
                         if (warn.trim().length > 0) {
                             message.channel.send(`:warning: ${user} ${lan.success} \n${lan.reason}: \`${warn.trim()}\``);
