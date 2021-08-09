@@ -51,7 +51,7 @@ module.exports = {
                     var response = lan.toggle_moderator.response_b;
                     result[0].moderador_activado = 1;
                 }
-                var sql = "UPDATE `servidores` SET `moderador_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                var sql = "UPDATE `guild_data` SET `moderador_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                 con.query(sql);
                 message.channel.send(`:white_check_mark: ${response}`);
                 indice();
@@ -68,7 +68,7 @@ module.exports = {
                     var response = lan.toggle_modwarn.response_b;
                     result[0].moderador_warn_expulsion_activado = 1;
                 }
-                var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                var sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                 message.channel.send(`:white_check_mark: ${response}`);
                 con.query(sql, function () {
                     e_modwarn();
@@ -82,7 +82,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         if (isInteger(parseInt(collected.first().content))) {
                             var cantidad = parseInt(collected.first().content);
-                            var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                            var sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(sql);
                             message.channel.send(`:white_check_mark: ${lan.e_limite.success}`);
                             e_modwarn();
@@ -104,7 +104,7 @@ module.exports = {
                     var response = lan.toggle_medida.response_b;
                     result[0].moderador_warn_expulsion_accion = 1;
                 }
-                var sql = "UPDATE `servidores` SET `moderador_warn_expulsion_accion` = '" + fin + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                var sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_accion` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                 message.channel.send(`:white_check_mark: ${response}`);
                 con.query(sql);
                 e_modwarn();

@@ -12,7 +12,7 @@ module.exports = {
                 var fin = 1;
                 var response = lan.response_b;
             }
-            var sql = "UPDATE `servidores` SET `burbuja_activado` = '" + fin + "' WHERE `servidores`.`guild` = " + message.guild.id;
+            var sql = "UPDATE `guild_data` SET `burbuja_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
             message.channel.send(`:white_check_mark: ${response}`);
             con.query(sql);
         } else {

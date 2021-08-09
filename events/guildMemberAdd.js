@@ -5,7 +5,7 @@ const Jimp = require('jimp');
 
 module.exports = function (client, con, member) {
     var id = member.guild.id;
-    var sql = "SELECT * FROM `servidores` WHERE guild = '" + id + "'";
+    var sql = "SELECT * FROM `guild_data` WHERE guild = '" + id + "'";
     //Conectamos con el servidor
     con.query(sql, function (err, result) {
         if (result[0].bienvenida_mensaje_activado != 0) {

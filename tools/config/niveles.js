@@ -63,12 +63,12 @@ module.exports = {
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
-                            var yes = "UPDATE `servidores` SET `niveles_activado` = '1' WHERE `servidores`.`guild` = " + message.guild.id;
+                            var yes = "UPDATE `guild_data` SET `niveles_activado` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(yes);
                             message.channel.send(`:white_check_mark: ${lan.toggle_niveles.response_a}`);
                             indice();
                         } else {
-                            var no = "UPDATE `servidores` SET `niveles_activado` = '0' WHERE `servidores`.`guild` = " + message.guild.id;
+                            var no = "UPDATE `guild_data` SET `niveles_activado` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(no);
                             message.channel.send(`:white_check_mark: ${lan.toggle_niveles.response_b}`);
                             indice();
@@ -80,7 +80,7 @@ module.exports = {
                 message.channel.send(`:arrow_right: ${lan.update_message.question} <:warn:858736919432527942> ${lan.update_message.success}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
-                        var updatemsg = "UPDATE `servidores` SET `niveles_canal_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                        var updatemsg = "UPDATE `guild_data` SET `niveles_canal_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
                         message.channel.send(`:white_check_mark: ${lan.update_message.success}`);
                         indice();
@@ -93,7 +93,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         if (collected.first().mentions.channels.first()) {
                             var channel = collected.first().mentions.channels.first();
-                            var updatechannel = "UPDATE `servidores` SET `niveles_canal_id` = '" + channel.id + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                            var updatechannel = "UPDATE `guild_data` SET `niveles_canal_id` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
                             message.channel.send(`:white_check_mark: ${lan.update_channel.success}`);
                             indice();
@@ -110,7 +110,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         if (isInteger(collected.first().content)) {
                             if (parseInt(collected.first().content) <= 20 && parseInt(collected.first().content) >= 1) {
-                                var updatemsg = "UPDATE `servidores` SET `niveles_fondo` = '" + collected.first().content + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                                var updatemsg = "UPDATE `guild_data` SET `niveles_fondo` = '" + collected.first().content + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
                                 message.channel.send(`:white_check_mark: ${lan.update_fondo.success}`);
                                 indice();
@@ -131,7 +131,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         if (isInteger(collected.first().content)) {
                             if (parseInt(collected.first().content) < 5 && parseInt(collected.first().content) > 0) {
-                                var updatemsg = "UPDATE `servidores` SET `niveles_dificultad` = '" + collected.first().content + "' WHERE `servidores`.`guild` = " + message.guild.id;
+                                var updatemsg = "UPDATE `guild_data` SET `niveles_dificultad` = '" + collected.first().content + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
                                 message.channel.send(`:white_check_mark: ${lan.update_dificultad.success}`);
                                 indice();

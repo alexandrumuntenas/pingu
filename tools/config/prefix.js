@@ -5,7 +5,7 @@ module.exports = {
         lan = lan.tools.config.prefix;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (args[1]) {
-                var sql = "UPDATE `servidores` SET `prefix` = '" + args[1] + "' WHERE `servidores`.`guild` = '" + message.guild.id + "'";
+                var sql = "UPDATE `guild_data` SET `prefix` = '" + args[1] + "' WHERE `guild_data`.`guild` = '" + message.guild.id + "'";
                 con.query(sql, function (err) {
                 });
                 message.channel.send(`:white_check_mark: ${lan.response}: \`${args[1]}\``);

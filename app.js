@@ -139,7 +139,7 @@ client.on('message', (message) => {
   if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
 
   //Conectamos con Mariadb y obtenemos datos del servidor
-  con.query(`SELECT * FROM \`servidores\` WHERE guild =${message.guild.id}`, function (err, result, rows) {
+  con.query(`SELECT * FROM \`guild_data\` WHERE guild =${message.guild.id}`, function (err, result, rows) {
     if (result.hasOwnProperty(0)) {
       if (message.mentions.users.first() === client.user) {
         client.commands.get('about').execute(args, client, con, contenido, message, result);
@@ -226,7 +226,7 @@ client.on('message', (message) => {
     else {
       var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
       var id = message.guild.id;
-      var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
+      var sql = "INSERT INTO `guild_data` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
       con.query(sql, function (err, result) {
         if (err) log.warn(err);
       });
