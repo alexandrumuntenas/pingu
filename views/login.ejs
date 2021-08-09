@@ -33,14 +33,19 @@
             <div class="card-body">
                 <h5 class="card-title">Pingu · Panel de Configuración</h5>
                 <p class="card-text">
+                    Introduzca la clave/token que Pingu le ha ofrecido por el MD de Discord
                 <div class="form-outline">
                     <input type="text" id="uj49kfl" name="uj49kfl" class="form-control" required minlength="25"
                         maxlength="25" />
                     <label class="form-label" for="uj49kfl">Clave de Acceso</label>
                 </div>
                 </p>
-
-                <button type="submit" class="btn btn-primary">Acceder</button>
+                <% if(err==true) { %>
+                    <div class="alert alert-danger" role="alert">
+                        Clave de acceso invalida o inexistente.
+                    </div>
+                    <% } %>
+                        <button type="submit" class="btn btn-primary">Acceder</button>
             </div>
         </form>
     </div>
