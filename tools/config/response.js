@@ -27,7 +27,7 @@ module.exports = {
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
                                         var respuesta = collected.first().content;
-                                        var crearcres = "INSERT INTO `respuestas_custom` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + message.guild.id + "', '" + accionante + "', '" + respuesta + "')";
+                                        var crearcres = "INSERT INTO `guild_responses` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + message.guild.id + "', '" + accionante + "', '" + respuesta + "')";
                                         con.query(crearcres, function (err) {
                                             console.log(err)
                                             message.channel.send(`:white_check_mark: ${lan.create.success}: \`${identificador}\``);
@@ -36,7 +36,7 @@ module.exports = {
                             });
                         break;
                     case 'remove':
-                        var delcmd = "DELETE FROM `respuestas_custom` WHERE `identificador` = '" + args[2] + "' AND `guild` = " + message.guild.id;
+                        var delcmd = "DELETE FROM `guild_responses` WHERE `identificador` = '" + args[2] + "' AND `guild` = " + message.guild.id;
                         con.query(delcmd, function (err) {
                             console.log(err)
                             message.channel.send(`:white_check_mark: ${lan.remove.success}: \`${args[2]}\``);

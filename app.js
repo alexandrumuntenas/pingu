@@ -207,11 +207,11 @@ client.on('message', (message) => {
       }
 
       // Respuestas personalizadas
-      var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + message.guild.id;
+      var consultarespuestacustom = "SELECT * FROM `guild_responses` WHERE `guild` = " + message.guild.id;
       con.query(consultarespuestacustom, function (err, result) {
         if (result) {
           if (result.hasOwnProperty(0)) {
-            var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + message.guild.id + "' AND `action` = '" + contenido + "'";
+            var buscarrespuesta = "SELECT * FROM `guild_responses` WHERE `guild` = '" + message.guild.id + "' AND `action` = '" + contenido + "'";
             con.query(buscarrespuesta, function (err, result) {
               if (result) {
                 if (result.hasOwnProperty(0)) {
