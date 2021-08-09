@@ -175,10 +175,10 @@ client.on('message', (message) => {
               message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
             }
           } else {
-            var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + message.guild.id;
+            var consultacomandoscustom = "SELECT * FROM `guild_commands` WHERE `guild` = " + message.guild.id;
             con.query(consultacomandoscustom, function (err, result) {
               if (result.hasOwnProperty(0)) {
-                var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + message.guild.id + "' AND `cmd` = '" + args[0] + "'";
+                var buscarcomando = "SELECT * FROM `guild_commands` WHERE `guild` = '" + message.guild.id + "' AND `cmd` = '" + args[0] + "'";
                 con.query(buscarcomando, function (err, result) {
                   if (result.hasOwnProperty(0)) {
                     message.channel.send("<:comandoscustom:858671400424046602>" + result[0].returns);

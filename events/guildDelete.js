@@ -3,7 +3,7 @@ module.exports = function (con, guild) {
     var sql = "DELETE FROM `guild_data` WHERE guild = '" + id + "'";
     var sql1 = "DELETE FROM `guild_levels` WHERE guild = '" + id + "'";
     var sql2 = "DELETE FROM `guild_warns` WHERE guild = '" + id + "'";
-    var sql3 = "DELETE FROM `comandos_custom` WHERE guild = '" + id + "'";
+    var sql3 = "DELETE FROM `guild_commands` WHERE guild = '" + id + "'";
     var sql4 = "DELETE FROM `guild_responses` WHERE guild = '" + id + "'";
     con.query(sql, function (err, result) {
         if (err) console.log(err);
