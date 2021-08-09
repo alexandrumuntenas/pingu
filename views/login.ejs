@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-color-mode="dark" data-dark-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -7,54 +7,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pingu</title>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+    <link href="https://unpkg.com/@primer/css@^17.5.2/dist/primer.css" rel="stylesheet" />
 </head>
 
 <style>
-    html,
-    body {
-        background: #FBFBFB
-    }
-
     .vertical-center {
         min-height: 100%;
         min-height: 100vh;
         display: flex;
         align-items: center;
+        width: 100%;
+        margin: auto;
+        align-items: center;
+        justify-content: center;
     }
 </style>
 
 <body>
-    <div class="vertical-center h-100 d-flex justify-content-center align-items-center">
-        <form class="card text-center" method="POST" action="">
-            <div class="card-body">
-                <h5 class="card-title">Pingu · Panel de Configuración</h5>
-                <p class="card-text">
-                    Introduzca la clave/token que Pingu le ha ofrecido por el MD de Discord
-                <div class="form-outline">
-                    <input type="text" id="uj49kfl" name="uj49kfl" class="form-control" required minlength="25"
-                        maxlength="25" />
+    <div class="vertical-center">
+        <form class="Box text-center" method="POST" action="" autocomplete="off">
+            <div class="Box-header">
+                <h5 class="Box-title">Pingu · Panel de Configuración</h5>
+                Introduzca la clave que Pingu le ha ofrecido por el MD de Discord
+            </div>
+            <div class="Box-body shadow-0 border">
+                <p class="Box-text">
                     <label class="form-label" for="uj49kfl">Clave de Acceso</label>
+                <div class="form-group">
+                    <input type="text" id="uj49kfl" name="uj49kfl" class="form-control input-monospace" required
+                        minlength="25" maxlength="25" placeholder="Clave de Acceso" />
+                </div>
+                <label class="form-label" for="bPX9orL">Clave de Autorización</label>
+                <div class="form-group">
+                    <input type="text" id="bPX9orL" name="bPX9orL" class="form-control input-monospace" required
+                        minlength="12" maxlength="12" placeholder="Clave de Autorización" />
                 </div>
                 </p>
                 <% if(err==true) { %>
-                    <div class="alert alert-danger" role="alert">
-                        Clave de acceso invalida o inexistente.
+                    <div class="flash mt-3 flash-error" style="max-width:460px;" role="alert">
+                        <% if(noGuild==false) { %>
+                            <% if(twoFa==false){ %>
+                                Clave de acceso invalida o inexistente.
+                                <% } else { %>
+                                    La clave de acceso es válida, pero la clave de autorización no. Por motivos de
+                                    seguridad, la clave de acceso ha sido invalidado. Puede volver a solicitar una nueva
+                                    clave de acceso.
+                                    <% } %>
+                                        <% } else { %>
+                                            Esto es un poco... embarazoso. No podemos encontrar los datos del servidor
+                                            solicitado.
+                                            <% } %>
                     </div>
                     <% } %>
-                        <button type="submit" class="btn btn-primary">Acceder</button>
+            </div>
+            <div class="Box-footer">
+                <button type="submit" class="btn btn-primary">Acceder</button>
             </div>
         </form>
     </div>
 </body>
-
-<script>
-    document.querySelectorAll('.form-outline').forEach((formOutline) => {
-        new mdb.Input(formOutline).init();
-    });
-</script>
 
 </html>

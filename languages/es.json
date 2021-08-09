@@ -24,8 +24,10 @@
     "config": {
       "configPanel": "Panel de configuración",
       "configToken": "Clave de Acceso",
+      "configAdmin": "Clave de Autorización",
       "configUrl": "URL del Panel",
-      "configIntructions": "Introduzca la clave/token que Pingu le ha ofrecido por el MD de Discord. Esta clave dejará de tener validez traspasados 10 minutos.",
+      "configInstructions": "Introduzca la *clave de acceso* y la *clave de autorización* que Pingu le ha ofrecido por el MD de Discord. La clave de autorización se lo deberá proveer el dueño del servidor.",
+      "configAdminInstructions": "está intentando acceder al panel de configuración, para autorizar su acceso, por favor, provéale este código de autorización",
       "antispam": {
         "response_a": "Se ha desactivado el módulo anti-spam correctamente.",
         "response_b": "Se ha activado el módulo anti-spam correctamente.",
