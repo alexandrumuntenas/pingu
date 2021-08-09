@@ -1,4 +1,23 @@
 {
+  "web": {
+    "system": {
+      "title": "Sistema",
+      "prefix": "Prefijo de comandos"
+    },
+    "welcome": {
+      "title": "Bienvenidas",
+      "message": "Mensaje de Bienvenida",
+      "channel": "Canal de Mensaje de Bienvenida",
+      "imageOnJoin": "Enviar una tarjeta de bienvenida cuando un usuario se une al servidor",
+      "imageBackground": "Cambiar fondo de la tarjeta de bienvenida",
+      "giveRole": "Dar Rol/es cuando entre un nuevo miembro"
+    },
+    "farewell": {
+      "title": "Despedidas",
+      "message": "Mensaje de Despedida",
+      "channel": "Canal de Mensaje de Despedida"
+    }
+  },
   "inapp": {},
   "tools": {
     "noavaliable": "Este comando no está activo en este momento.",

@@ -1,13 +1,19 @@
-module.exports = function (pwd) {
-    const express = require('express')
+module.exports = function (pwd, con) {
+    const express = require('express');
+    const bodyParser = require('body-parser');
     const app = express()
-    const port = pwd;
+    app.set('view engine', 'ejs');
 
-    app.get('/', (req, res) => {
-        res.send('Pingu is online!');
-    })
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+    app.use(bodyParser.raw());
 
-    app.listen(port, () => {
+    app.use('*/dist', express.static('./services/web'));
+    app.use('*/plugins', express.static('./services/web/plugins'));
+
+    require('./routes')(app, con);
+
+    app.listen(pwd, () => {
         console.log(`[OK] Running web-server`);
     })
 }

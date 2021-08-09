@@ -50,9 +50,9 @@ if (process.env.ENTORNO !== "desarrollo") {
     console.log('[OK] Estadísticas publicadas en Top.GG')
   })
   client.login(process.env.PUBLIC_TOKEN);
-  webping(25699);
+  webping(25699, con);
 } else {
-  webping(25699);
+  webping(25699, con);
   client.login(process.env.INSIDER_TOKEN)
 }
 
