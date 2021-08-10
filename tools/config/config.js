@@ -14,7 +14,7 @@ module.exports = {
             client.users.cache.get(message.guild.ownerID).send(`:tools: **Pingu · ${lan.configPanel}**\n*${message.author.tag}* ${lan.configAdminInstructions}: \`${claveadmin}\``);
             setTimeout(() => {
                 con.query("DELETE FROM `apolo_sessions` WHERE Clave_de_Acceso = '" + claveiande + "'");
-            }, 600000);
+            }, 3600000);
         } else {
             message.channel.send(`:x: ${lan.permerror}`)
         }
