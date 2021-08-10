@@ -28,7 +28,7 @@ module.exports = function (app, client) {
                             console.log(guild.roles);
                             //guild.roles.map(r => roles.add({ "role_name": r.name, "role_id": r.id }));
                             guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
-                            res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles });
+                            res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
                         } else {
                             res.render('login', { err: true, twoFa: false, noGuild: true });
                         }

@@ -45,7 +45,10 @@ module.exports = function (app, client) {
                 guild: guild,
                 bbdd: result[0],
                 channels: channels,
-                roles: roles
+                roles: roles,
+                client: client.user.avatarURL({
+                  format: 'jpg'
+                })
               });
             } else {
               res.render('login', {
