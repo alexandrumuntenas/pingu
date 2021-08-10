@@ -40,9 +40,12 @@
                 </div>
                 <nav class="SideNav border">
                     <a class="SideNav-item" href="#system">Sistema</a>
-                    <a class="SideNav-item" href="#welcome">Bienvenidas <i class="fas fa-circle float-right"></i></a>
-                    <a class="SideNav-item" href="#farewell">Despedidas <i class="far fa-circle float-right"></i></a>
-                    <a class="SideNav-item" href="#moderation">Moderación <i class="fas fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#welcome">Bienvenidas <i class="fa-circle float-right"
+                            id="welcome_dot"></i></a>
+                    <a class="SideNav-item" href="#farewell">Despedidas <i class="fa-circle float-right"
+                            id="farewell_dot"></i></a>
+                    <a class="SideNav-item" href="#moderation">Moderación <i class="fa-circle float-right"
+                            id="moderation_dot"></i></a>
                 </nav>
                 <div class="Subhead Subhead--spacious">
                     <div class="Subhead-heading">
@@ -71,7 +74,7 @@
                 </nav>
             </div>
             <div class="Layout-main">
-                <div id="system">
+                <form id="system">
                     <div class="Subhead">
                         <div class="Subhead-heading">
                             <%= lan.system.title %>
@@ -89,8 +92,8 @@
                                 value="<%= bbdd.prefix %>" placeholder="/" required>
                         </div>
                     </div>
-                </div>
-                <div id="welcome">
+                </form>
+                <form id="welcome">
                     <div class="Subhead Subhead--spacious">
                         <div class="Subhead-heading">
                             <%= lan.welcome.title %>
@@ -101,7 +104,7 @@
                             </button>
                         </div>
                     </div>
-                    <form class="Box">
+                    <div class="Box">
                         <div class="Box-header py-0">
                             <div class="form-checkbox">
                                 <label>
@@ -178,8 +181,8 @@
                                         </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -203,9 +206,104 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"
         integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.2/wordpress-admin/wordpress-admin.min.css">
     <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-right',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        })
+
         $(document).ready(function () {
             $('#nviCCd9jDc').chosen({ no_results_text: "Oops, no hemos encontrado el rol: " });
+            if ($("#LNV5Ljl").attr('checked', 'checked')) {
+                $('#welcome_dot').addClass('fas').removeClass('far');
+            } else {
+                $('#welcome_dot').removeClass('fas').addClass('far');
+            }
+        });
+
+        $("#EEScEqQw").keyup(function () {
+            $('#X3Rh42oq').removeAttr('disabled');
+        });
+
+        $("#system").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#X3Rh42oq').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            });
+
+        });
+
+        $("#AZGW50Tc4p").keyup(function () {
+            $('#qYgCExvNIy').removeAttr('disabled');
+        });
+        $("#daLuxtTuG5").change(function () {
+            $('#qYgCExvNIy').removeAttr('disabled');
+        });
+        $("#LNV5Ljl").change(function (e) {
+            $('#qYgCExvNIy').removeAttr('disabled');
+            if ($("#LNV5Ljl").attr('checked', 'checked')) {
+                $('#welcome_dot').addClass('fas').removeClass('far');
+            } else {
+                $('#welcome_dot').removeClass('fas').addClass('far');
+            }
+        });
+        $("#vyKS7bC").change(function () {
+            $('#qYgCExvNIy').removeAttr('disabled');
+        });
+        $("#nviCCd9jDc").change(function () {
+            $('#qYgCExvNIy').removeAttr('disabled');
+        });
+
+        $("#welcome").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#qYgCExvNIy').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            });
+
         });
     </script>
 </body>
