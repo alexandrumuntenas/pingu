@@ -39,8 +39,6 @@ module.exports = function (pwd, client) {
         usernameField: 'uj49kfl',
         passwordField: 'bPX9orL'
     }, function (uj49kfl, bPX9orL, done) {
-        console.log(uj49kfl);
-        console.log(bPX9orL);
         con.query("SELECT * FROM `apolo_sessions` WHERE Clave_de_Acceso = ? LIMIT 1", [uj49kfl], function (err, result, rows) {
             if (result.hasOwnProperty(0)) {
                 if (bPX9orL == result[0].Clave_de_Autorizacion) {
@@ -82,7 +80,18 @@ module.exports = function (pwd, client) {
     });
 
     app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
-        res.send('Panel');
+        var guild = client.guilds.cache.find(guild => guild.id == req.user.Guild_ID);
+        var channels = new Set();
+        var roles = new Set();
+        con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
+            if (result.hasOwnProperty(0)) {
+                var lan = require(`../languages/${result[0].idioma}.json`);
+                lan = lan.web;
+                guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
+                guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
+                res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
+            }
+        });
     });
 
     app.get('/status', (req, res) => {
