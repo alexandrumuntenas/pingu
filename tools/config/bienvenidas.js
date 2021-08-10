@@ -6,6 +6,7 @@ module.exports = {
     execute(args, client, con, contenido, message, result) {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.config.bienvenidas;
+        message.channel.send(':warning: El comando `prefix` será removido en la actualización 2109, que será implementada el 01/09/2021. (EOS 2109, más info en nuestro servidor de soporte)')
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             ftime = 0;
             function purga() {
