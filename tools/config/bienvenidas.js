@@ -17,19 +17,12 @@ module.exports = {
             }
 
             var roles_user = new Set();
-            var roles_bot = new Set();
             var usersss = result[0].bienvenida_roles_user;
             var botssss = result[0].bienvenida_roles_bot;
             if (usersss) {
                 var role_user = usersss.split(',');
                 role_user.forEach(element => {
                     roles_user.add(element);
-                });
-            }
-            if (result[0].bienvenida_roles_bot) {
-                var role_bot = botssss.split(',');
-                role_bot.forEach(element => {
-                    roles_bot.add(element);
                 });
             }
 
@@ -60,7 +53,7 @@ module.exports = {
                                 break;
                             case '6':
                                 purga()
-                                dar_rol();
+                                user_give_role();
                                 break;
                             case '7':
                                 message.channel.send(`:information_source: ${lan.index.time_error}`);
@@ -110,170 +103,75 @@ module.exports = {
                         }
                     });
             }
-
-            function dar_rol() {
-                function add_rol_users() {
-                    message.channel.send(`:arrow_right: ${lan.dar_rol.add_rol.question}`);
-                    message.channel.awaitMessages(m => m.author.id == message.author.id,
-                        { max: 1 }).then(collected => {
-                            if (collected.first().mentions.roles.first()) {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_user.add(element.id);
-                                    }
-                                );
-                                purga();
-                                user_give_role();
-                            } else {
-                                message.channel.send(`:information_source: ${lan.dar_rol.add_rol.invalid_message}`);
-                                add_rol_users();
-                            }
-                        })
-                }
-                function del_rol_users() {
-                    message.channel.send(`:arrow_right: ${lan.dar_rol.del_rol.question}`);
-                    message.channel.awaitMessages(m => m.author.id == message.author.id,
-                        { max: 1 }).then(collected => {
-                            if (collected.first().mentions.roles.first()) {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_user.delete(element.id);
-                                    }
-                                );
-                                purga();
-                                user_give_role();
-                            } else {
-                                message.channel.send(`:information_source: ${lan.dar_rol.del_rol.invalid_message}`);
-                                del_rol_users();
-                            }
-                        });
-                }
-                function save_rol_users() {
-                    con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = '" + Array.from(roles_user) + "' WHERE `guild_data`.`guild` = " + message.guild.id);
-                    dar_rol();
-                }
-                function user_give_role() {
-                    var rolset = "";
-                    roles_user.forEach(element => {
-                        rolset = rolset + '<@&' + element + '> ';
+            function add_rol_users() {
+                message.channel.send(`:arrow_right: ${lan.dar_rol.add_rol.question}`);
+                message.channel.awaitMessages(m => m.author.id == message.author.id,
+                    { max: 1 }).then(collected => {
+                        if (collected.first().mentions.roles.first()) {
+                            collected.first().mentions.roles.array().forEach(
+                                element => {
+                                    roles_user.add(element.id);
+                                }
+                            );
+                            purga();
+                            user_give_role();
+                        } else {
+                            message.channel.send(`:information_source: ${lan.dar_rol.add_rol.invalid_message}`);
+                            add_rol_users();
+                        }
+                    })
+            }
+            function del_rol_users() {
+                message.channel.send(`:arrow_right: ${lan.dar_rol.del_rol.question}`);
+                message.channel.awaitMessages(m => m.author.id == message.author.id,
+                    { max: 1 }).then(collected => {
+                        if (collected.first().mentions.roles.first()) {
+                            collected.first().mentions.roles.array().forEach(
+                                element => {
+                                    roles_user.delete(element.id);
+                                }
+                            );
+                            purga();
+                            user_give_role();
+                        } else {
+                            message.channel.send(`:information_source: ${lan.dar_rol.del_rol.invalid_message}`);
+                            del_rol_users();
+                        }
                     });
-                    message.channel.send(`${lan.dar_rol.give_role.showcase}\n${rolset}`);
-                    message.channel.send(`${lan.dar_rol.give_role.before} \n \n **${lan.dar_rol.give_role.avaliable}** \n **1.** ${lan.dar_rol.give_role.options.first}\n **2.** ${lan.dar_rol.give_role.options.second}\n **3.** ${lan.dar_rol.give_role.options.third} \n **4.** ${lan.dar_rol.give_role.options.fourth}`);
-                    message.channel.awaitMessages(m => m.author.id == message.author.id,
-                        { max: 1 }).then(collected => {
-                            switch (collected.first().content) {
-                                case '1':
-                                    purga()
-                                    add_rol_users();
-                                    break;
-                                case '2':
-                                    purga()
-                                    del_rol_users();
-                                    break;
-                                case '3':
-                                    purga();
-                                    save_rol_users();
-                                    break;
-                                default:
-                                    purga();
-                                    dar_rol();
-                                    break;
-                            }
-                        });
-
-                }
-                function add_rol_bot() {
-                    message.channel.send(`:arrow_right: ${lan.dar_rol.add_rol.question}`);
-                    message.channel.awaitMessages(m => m.author.id == message.author.id,
-                        { max: 1 }).then(collected => {
-                            if (collected.first().mentions.roles.first()) {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_bot.add(element.id);
-                                    }
-                                );
-                                purga();
-                                bot_give_role();
-                            } else {
-                                message.channel.send(':information_source: ¡Debe mencionar roles!');
-                                add_rol_bot();
-                            }
-                        });
-                }
-                function del_rol_bot() {
-                    message.channel.send(`:arrow_right: ${lan.dar_rol.del_rol.question}`);
-                    message.channel.awaitMessages(m => m.author.id == message.author.id,
-                        { max: 1 }).then(collected => {
-                            if (collected.first().mentions.roles.first()) {
-                                collected.first().mentions.roles.array().forEach(
-                                    element => {
-                                        roles_bot.delete(element.id);
-                                    }
-                                );
-                                purga();
-                                bot_give_role();
-                            } else {
-                                message.channel.send(':information_source: ¡Debe mencionar roles!');
-                                del_rol_bot();
-                            }
-                        });
-                }
-                function save_rol_bot() {
-                    con.query("UPDATE `guild_data` SET `bienvenida_roles_bot` = '" + Array.from(roles_bot) + "' WHERE `guild_data`.`guild` = " + message.guild.id);
-                    dar_rol();
-                }
-                function bot_give_role() {
-                    var rolset = "";
-                    roles_bot.forEach(element => {
-                        rolset = rolset + '<@&' + element + '> ';
-                    });
-                    message.channel.send(`${lan.dar_rol.give_role.showcase_bot}\n${rolset}`);
-                    message.channel.send(`${lan.dar_rol.give_role.before} \n \n **${lan.dar_rol.give_role.avaliable}** \n **1.** ${lan.dar_rol.give_role.options.first}\n **2.** ${lan.dar_rol.give_role.options.second}\n **3.** ${lan.dar_rol.give_role.options.third} \n **4.** ${lan.dar_rol.give_role.options.fourth}`);
-                    message.channel.awaitMessages(m => m.author.id == message.author.id,
-                        { max: 1 }).then(collected => {
-                            switch (collected.first().content) {
-                                case '1':
-                                    purga()
-                                    add_rol_bot();
-                                    break;
-                                case '2':
-                                    purga()
-                                    del_rol_bot();
-                                    break;
-                                case '3':
-                                    purga();
-                                    save_rol_bot();
-                                    break;
-                                default:
-                                    purga();
-                                    dar_rol();
-                                    break;
-                            }
-                        });
-
-                }
-                message.channel.send(`${lan.dar_rol.before} \n \n **${lan.dar_rol.avaliable}** \n **1.** ${lan.dar_rol.options.first}\n **2.** ${lan.dar_rol.options.second}\n **3.** ${lan.dar_rol.options.third}`);
+            }
+            function save_rol_users() {
+                con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = '" + Array.from(roles_user) + "' WHERE `guild_data`.`guild` = " + message.guild.id);
+                dar_rol();
+            }
+            function user_give_role() {
+                var rolset = "";
+                roles_user.forEach(element => {
+                    rolset = rolset + '<@&' + element + '> ';
+                });
+                message.channel.send(`${lan.dar_rol.give_role.showcase}\n${rolset}`);
+                message.channel.send(`${lan.dar_rol.give_role.before} \n \n **${lan.dar_rol.give_role.avaliable}** \n **1.** ${lan.dar_rol.give_role.options.first}\n **2.** ${lan.dar_rol.give_role.options.second}\n **3.** ${lan.dar_rol.give_role.options.third} \n **4.** ${lan.dar_rol.give_role.options.fourth}`);
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         switch (collected.first().content) {
                             case '1':
                                 purga()
-                                user_give_role();
+                                add_rol_users();
                                 break;
                             case '2':
                                 purga()
-                                bot_give_role();
+                                del_rol_users();
                                 break;
                             case '3':
                                 purga();
-                                indice();
+                                save_rol_users();
                                 break;
                             default:
                                 purga();
-                                dar_rol();
+                                indice();
                                 break;
                         }
-                    })
+                    });
+
             }
 
             function u_canal() {
