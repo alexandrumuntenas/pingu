@@ -17,7 +17,7 @@ const log = require('simple-node-logger').createRollingFileLogger({
 });
 
 // Redireccionar console.log a @package/simple-node-logger
-console.log = function (d) {
+console.log = function (d, f) {
   process.stdout.write(`${d}\n`);
   log.info(d);
 };

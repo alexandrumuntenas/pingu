@@ -39,11 +39,10 @@
                     </div>
                 </div>
                 <nav class="SideNav border">
-                    <a class="SideNav-item" href="#sistema">Sistema</a>
-                    <a class="SideNav-item" href="#bienvenidas">Bienvenidas <i
-                            class="fas fa-circle float-right"></i></a>
-                    <a class="SideNav-item" href="#url">Despedidas <i class="far fa-circle float-right"></i></a>
-                    <a class="SideNav-item" href="#url">Moderación <i class="fas fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#system">Sistema</a>
+                    <a class="SideNav-item" href="#welcome">Bienvenidas <i class="fas fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#farewell">Despedidas <i class="far fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#moderation">Moderación <i class="fas fa-circle float-right"></i></a>
                 </nav>
                 <div class="Subhead Subhead--spacious">
                     <div class="Subhead-heading">
@@ -51,8 +50,8 @@
                     </div>
                 </div>
                 <nav class="SideNav border">
-                    <a class="SideNav-item" href="#niveles">Niveles <i class="fas fa-circle float-right"></i></a>
-                    <a class="SideNav-item" href="#economia">Economía <i class="fas fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#leveling">Niveles <i class="fas fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#economy">Economía <i class="fas fa-circle float-right"></i></a>
                 </nav>
                 <div class="Subhead Subhead--spacious">
                     <div class="Subhead-heading">
@@ -72,7 +71,7 @@
                 </nav>
             </div>
             <div class="Layout-main">
-                <div id="sistema">
+                <div id="system">
                     <div class="Subhead">
                         <div class="Subhead-heading">
                             <%= lan.system.title %>
@@ -91,22 +90,27 @@
                         </div>
                     </div>
                 </div>
-                <div id="bienvenidas">
+                <div id="welcome">
                     <div class="Subhead Subhead--spacious">
                         <div class="Subhead-heading">
                             <%= lan.welcome.title %>
                         </div>
                         <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="qYgCExvNIy"
-                                disabled>Guardar</button>
+                            <button class="btn btn-sm btn-primary" role="button" id="qYgCExvNIy" disabled>
+                                <%= lan.save %>
+                            </button>
                         </div>
                     </div>
                     <form class="Box">
                         <div class="Box-header py-0">
                             <div class="form-checkbox">
                                 <label>
-                                    <input type="checkbox" checked="checked" />
-                                    Activar módulo
+                                    <% if(bbdd.bienvenida_mensaje_activado===1 ) {%>
+                                        <input type="checkbox" checked="checked" id="LNV5Ljl" />
+                                        <% } else { %>
+                                            <input type="checkbox" id="LNV5Ljl" />
+                                            <% } %>
+                                                <%= lan.enableModule %>
                                 </label>
                             </div>
                         </div>
@@ -143,40 +147,35 @@
                         <div class="Box-row py-0">
                             <div class="form-group">
                                 <div class="form-checkbox">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        <%= lan.welcome.imageOnJoin %>
-                                    </label>
+                                    <% if(bbdd.bienvenida_cartel===1 ) {%>
+                                        <input type="checkbox" checked="checked" id="vyKS7bC" />
+                                        <% } else { %>
+                                            <input type="checkbox" id="vyKS7bC" />
+                                            <% } %> <label class="form-check-label" for="vyKS7bC">
+                                                    <%= lan.welcome.imageOnJoin %>
+                                                </label>
                                 </div>
                             </div>
                         </div>
                         <div class="Box-row py-0">
                             <div class="form-group">
-                                <div class="form-checkbox">
-                                    <label>
-                                        <input type="checkbox" checked="checked"
-                                            aria-describedby="help-text-for-checkbox" />
-                                        Dar un rol a los nuevos usuarios
-                                    </label>
-                                    <p class="note" id="help-text-for-checkbox">
-                                        Los roles se otorgan a los usuarios cuando aceptan las reglas del servidor
-                                    </p>
-                                    <div class="form-group">
-                                        <label for="nviCCd9jDc">Roles que dar</label>
-                                        <select name="nviCCd9jDc" id="nviCCd9jDc" class="input-block"
-                                            multiple="multiple" data-placeholder="Escriba para buscar roles...">
-                                            <% roles.forEach(r=> {
-                                                if(r.roles_id == bbdd.bienvenida_roles_user){
-                                                %>
-                                                <option value="<%= r.role_id %>" selected>@<%= r.role_name %>
-                                                </option>
-                                                <% } else { %>
-                                                    <option value="<%= r.role_id %>">@<%= r.role_name %>
+                                <%= lan.welcome.giveRole %>
+                                    <%= lan.welcome.giveRoleHelp %>
+                                        <div class="form-group">
+                                            <label for="nviCCd9jDc">Roles que dar</label>
+                                            <select name="nviCCd9jDc" id="nviCCd9jDc" class="input-block"
+                                                multiple="multiple" data-placeholder="Escriba para buscar roles...">
+                                                <% roles.forEach(r=> {
+                                                    if(r.roles_id == bbdd.bienvenida_roles_user){
+                                                    %>
+                                                    <option value="<%= r.role_id %>" selected>@<%= r.role_name %>
                                                     </option>
-                                                    <% }}) %>
-                                        </select>
-                                    </div>
-                                </div>
+                                                    <% } else { %>
+                                                        <option value="<%= r.role_id %>">@<%= r.role_name %>
+                                                        </option>
+                                                        <% }}) %>
+                                            </select>
+                                        </div>
                             </div>
                         </div>
                     </form>

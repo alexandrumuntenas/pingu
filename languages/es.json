@@ -1,5 +1,7 @@
 {
   "web": {
+    "enableModule": "Activar módulo",
+    "save": "Guardar",
     "system": {
       "title": "Sistema",
       "prefix": "Prefijo de comandos"
@@ -10,7 +12,8 @@
       "channel": "Canal de Mensaje de Bienvenida",
       "imageOnJoin": "Enviar una tarjeta de bienvenida cuando un usuario se une al servidor",
       "imageBackground": "Cambiar fondo de la tarjeta de bienvenida",
-      "giveRole": "Dar Rol/es cuando entre un nuevo miembro"
+      "giveRole": "Dar un rol a los nuevos usuarios",
+      "giveRoleHelp": "Los roles se otorgan a los usuarios cuando aceptan las reglas del servidor"
     },
     "farewell": {
       "title": "Despedidas",
