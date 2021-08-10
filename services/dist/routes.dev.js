@@ -30,8 +30,15 @@ module.exports = function (app, client) {
           var roles = new Set();
           con.query("SELECT * FROM `guild_data` WHERE guild LIKE '".concat(guild.id, "'"), function (err, result, rows) {
             if (result.hasOwnProperty(0)) {
-              console.log(guild.roles); //guild.roles.map(r => roles.add({ "role_name": r.name, "role_id": r.id }));
-
+              guild.roles.cache.filter(function (r) {
+                return r.managed === false && r.id !== guild.id;
+              }).map(function (r) {
+                return roles.add({
+                  "role_name": r.name,
+                  "role_id": r.id,
+                  "role_editable": r.editable
+                });
+              });
               guild.channels.cache.filter(function (c) {
                 return c.type === 'text';
               }).map(function (c) {

@@ -25,8 +25,7 @@ module.exports = function (app, client) {
                     var roles = new Set();
                     con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
                         if (result.hasOwnProperty(0)) {
-                            console.log(guild.roles);
-                            //guild.roles.map(r => roles.add({ "role_name": r.name, "role_id": r.id }));
+                            guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
                             guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
                             res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
                         } else {
