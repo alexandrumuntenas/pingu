@@ -75,26 +75,14 @@ module.exports = function (client, con, member) {
                 }
             }
         }
-        if (member.user.bot) {
-            if (result[0].bienvenida_roles_bot) {
-                var botssss = result[0].bienvenida_roles_bot;
-                var role = botssss.split(',')
-                role.forEach(element => {
-                    if (member.guild.roles.cache.find(role => role.id === element)) {
-                        member.roles.add(member.guild.roles.cache.find(role => role.id === element));
-                    }
-                })
-            }
-        } else {
-            if (result[0].bienvenida_roles_user) {
-                var usersss = result[0].bienvenida_roles_user;
-                var role = usersss.split(',');
-                role.forEach(element => {
-                    if (member.guild.roles.cache.find(role => role.id === element)) {
-                        member.roles.add(member.guild.roles.cache.find(role => role.id === element));
-                    }
-                })
-            }
+        if (result[0].bienvenida_roles_user) {
+            var usersss = result[0].bienvenida_roles_user;
+            var role = usersss.split(',');
+            role.forEach(element => {
+                if (member.guild.roles.cache.find(role => role.id === element)) {
+                    member.roles.add(member.guild.roles.cache.find(role => role.id === element));
+                }
+            })
         }
     });
 }
