@@ -1,4 +1,6 @@
 module.exports = function (pwd, client) {
+    require('dotenv').config()
+
     const express = require('express');
 
     const mysql = require('mysql2');
@@ -9,6 +11,7 @@ module.exports = function (pwd, client) {
     const session = require('express-session');
 
     const makeId = require('../gen/makeId');
+    const emojiStrip = require('emoji-strip');
 
     var con = mysql.createConnection({
         host: "104.128.239.45",
@@ -24,13 +27,21 @@ module.exports = function (pwd, client) {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.text());
-
-    app.use(cookieParser(makeId(256)))
-    app.use(session({
-        secret: makeId(256),
-        resave: true,
-        saveUninitialized: true
-    }))
+    if (process.env.ENTORNO !== "desarrollo") {
+        app.use(cookieParser(makeId(256)))
+        app.use(session({
+            secret: makeId(256),
+            resave: true,
+            saveUninitialized: true
+        }))
+    } else {
+        app.use(cookieParser('b'))
+        app.use(session({
+            secret: makeId('b'),
+            resave: true,
+            saveUninitialized: true
+        }))
+    }
 
     app.use(passport.initialize());
     app.use(passport.session());
@@ -92,6 +103,39 @@ module.exports = function (pwd, client) {
                 res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
             }
         });
+    });
+
+    app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.status(403); res.send('Forbidden') }, (req, res) => {
+        if (req.body.EEScEqQw) {
+            con.query("UPDATE `guild_data` SET `prefix` = ? WHERE `guild` = ?", [req.body.EEScEqQw, req.user.Guild_ID], function (err) {
+                if (err) { res.status(500); res.send('Internal Server Error :( ' + err) } else {
+                    res.status(200); res.send('Good to Go :)')
+                }
+            });
+        }
+        if (req.body.AZGW50Tc4p) {
+            if (req.body.hasOwnProperty('LNV5Ljl')) {
+                con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+            } else {
+                con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+            }
+            if (req.body.hasOwnProperty('AZGW50Tc4p')) {
+                con.query("UPDATE `guild_data` SET `bienvenida_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID]);
+            }
+            if (req.body.hasOwnProperty('daLuxtTuG5')) {
+                con.query("UPDATE `guild_data` SET `bienvenida_canal_id` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID]);
+            }
+            if (req.body.hasOwnProperty('vyKS7bC')) {
+                con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+            } else {
+                con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+            }
+            if (req.body.hasOwnProperty('nviCCd9jDc')) {
+                con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = ? WHERE `guild_data`.`guild` = ?", [req.body.nviCCd9jDc, req.user.Guild_ID]);
+            }
+            res.status(200);
+            res.send('Good to Go :)')
+        }
     });
 
     app.get('/status', (req, res) => {
