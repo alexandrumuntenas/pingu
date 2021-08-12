@@ -190,6 +190,111 @@
                         </div>
                     </div>
                 </form>
+                <form id="farewell">
+                    <div class="Subhead Subhead--spacious">
+                        <div class="Subhead-heading">Despedidas</div>
+                        <div class="Subhead-actions">
+                            <button class="btn btn-sm btn-primary" role="button" id="zbjt55v" disabled>
+                                <%= lan.save %>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="Box">
+                        <div class="Box-header py-0">
+                            <div class="form-checkbox">
+                                <label>
+                                    <% if(bbdd.salida_mensaje_activado===1 ) {%>
+                                        <input type="checkbox" checked="checked" id="noLp3EI" name="noLp3EI"
+                                            value="noLp3EI" />
+                                        <% } else { %>
+                                            <input type="checkbox" id="noLp3EI" name="noLp3EI" value="noLp3EI" />
+                                            <% } %>
+                                                <%= lan.enableModule %>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="Box-row py-0">
+                            <div class="form-group">
+                                <label for="pfeZmgU">
+                                    <%= lan.farewell.message %>
+                                </label>
+                                <textarea name="pfeZmgU" id="pfeZmgU"
+                                    class="form-control"><%= bbdd.salida_mensaje %></textarea>
+                            </div>
+                        </div>
+                        <div class="Box-row py-0">
+                            <div class="form-group">
+                                <label for="daLuxtTuG5">
+                                    <%= lan.farewell.channel %>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <select class="SelectMenu-input form-select" name="daLuxtTuG5" id="daLuxtTuG5">
+                                    <% channels.forEach(c=> {
+                                        if(c.channel_id == bbdd.salida_canal_id){
+                                        %>
+                                        <option value="<%= c.channel_id %>" selected>#
+                                            <%= c.channel_name %>
+                                        </option>
+                                        <% } else { %>
+                                            <option value="<%= c.channel_id %>">#<%= c.channel_name %>
+                                            </option>
+                                            <% }}) %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form id="moderation">
+                    <div class="Subhead Subhead--spacious">
+                        <div class="Subhead-heading">Moderación</div>
+                        <div class="Subhead-actions">
+                            <button class="btn btn-sm btn-primary" role="button" id="DJxuG8K" disabled>
+                                <%= lan.save %>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="custom_cmds">
+                    <div class="Subhead Subhead--spacious">
+                        <div class="Subhead-heading">Comandos personalizados</div>
+                        <div class="Subhead-actions">
+                            <button class="btn btn-sm btn-primary" role="button" id="HgIODwj" disabled>
+                                <%= lan.save %>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="custom_responses">
+                    <div class="Subhead Subhead--spacious">
+                        <div class="Subhead-heading">Respuestas personalizados</div>
+                        <div class="Subhead-actions">
+                            <button class="btn btn-sm btn-primary" role="button" id="SXGTkCy" disabled>
+                                <%= lan.save %>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="leveling">
+                    <div class="Subhead Subhead--spacious">
+                        <div class="Subhead-heading">Niveles</div>
+                        <div class="Subhead-actions">
+                            <button class="btn btn-sm btn-primary" role="button" id="Fw3w5X4" disabled>
+                                <%= lan.save %>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <form id="economy">
+                    <div class="Subhead Subhead--spacious">
+                        <div class="Subhead-heading">Economía</div>
+                        <div class="Subhead-actions">
+                            <button class="btn btn-sm btn-primary" role="button" id="fsvoRzN" disabled>
+                                <%= lan.save %>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
