@@ -15,6 +15,7 @@ module.exports = {
             setTimeout(() => {
                 con.query("DELETE FROM `apolo_sessions` WHERE Clave_de_Acceso = '" + claveiande + "'");
             }, 3600000);
+            message.delete();
         } else {
             message.channel.send(`:x: ${lan.permerror}`)
         }
