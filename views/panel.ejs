@@ -11,7 +11,9 @@
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://unpkg.com/@primer/css@^17.5.2/dist/primer.css" rel="stylesheet" />
 </head>
 
@@ -203,8 +205,9 @@
         rights
         reserved.
     </footer>
-    <script src="plugins/jquery/jquery.min.js"></script>
-    <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
         integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -215,14 +218,6 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.2/wordpress-admin/wordpress-admin.min.css">
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'bottom-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        })
-
         $(document).ready(function () {
             $('#nviCCd9jDc').chosen({ no_results_text: "Oops, no hemos encontrado el rol: " });
             if ($("#LNV5Ljl").attr('checked', 'checked')) {
@@ -289,7 +284,13 @@
             e.preventDefault();
 
             var form = $(this);
-
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-right',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            })
             $.ajax({
                 type: "POST",
                 url: '/dashboard',
