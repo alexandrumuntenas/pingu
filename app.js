@@ -88,6 +88,7 @@ var con = mysql.createConnection({
   database: "s43502_pingu",
   charset: "utf8_unicode_ci",
 });
+
 con.connect(function (err) {
   console.log('[··] Conectando a MariaDB');
   if (err) {

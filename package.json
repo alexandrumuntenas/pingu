@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "flipacoin": "^1.0.0",
+    "helmet": "^4.6.0",
     "jimp": "^0.16.1",
     "mathjs": "^9.4.4",
     "moment": "^2.29.1",

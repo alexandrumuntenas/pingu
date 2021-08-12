@@ -1,7 +1,11 @@
 module.exports = function (pwd, client) {
     require('dotenv').config()
-
     const express = require('express');
+    const fs = require('fs');
+
+    //const helmet = require('helmet');
+    //const https = require("https");
+
 
     const mysql = require('mysql2');
     const passport = require('passport');
@@ -24,15 +28,26 @@ module.exports = function (pwd, client) {
     con.config.namedPlaceholders = true;
     const app = express()
 
+
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.text());
     if (process.env.ENTORNO !== "desarrollo") {
+        /*app.use(helmet())
+        app.disable('x-powered-by');*/
         app.use(cookieParser(makeId(256)))
         app.use(session({
             secret: makeId(256),
             resave: true,
-            saveUninitialized: true
+            saveUninitialized: true,
+            name: makeId(2048),
+            /*cookie: {
+                secure: true,
+                httpOnly: true,
+                domain: 'pingu.duoestudios.com',
+                path: '/',
+                expires: new Date(Date.now() + 60 * 60 * 1000)
+            }*/
         }))
     } else {
         app.use(cookieParser('b'))
@@ -89,6 +104,10 @@ module.exports = function (pwd, client) {
     app.post('/login', passport.authenticate('local'), (req, res) => {
         res.redirect('/dashboard');
     });
+    app.post('/login', passport.authenticate('local'), (req, res) => {
+        req.logout();
+        res.redirect('/dashboard');
+    });
 
     app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
         var guild = client.guilds.cache.find(guild => guild.id == req.user.Guild_ID);
@@ -106,40 +125,46 @@ module.exports = function (pwd, client) {
     });
 
     app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.status(403); res.send('Forbidden') }, (req, res) => {
-        if (req.body.EEScEqQw) {
-            con.query("UPDATE `guild_data` SET `prefix` = ? WHERE `guild` = ?", [req.body.EEScEqQw, req.user.Guild_ID], function (err) {
-                if (err) { res.status(500); res.send('Internal Server Error :( ' + err) } else {
-                    res.status(200); res.send('Good to Go :)')
-                }
-            });
+        if (req.body.hasOwnProperty('EEScEqQw')) {
+            con.query("UPDATE `guild_data` SET `prefix` = ? WHERE `guild` = ?", [req.body.EEScEqQw, req.user.Guild_ID]);
         }
-        if (req.body.AZGW50Tc4p) {
-            if (req.body.hasOwnProperty('LNV5Ljl')) {
-                con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
-            } else {
-                con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
-            }
-            if (req.body.hasOwnProperty('AZGW50Tc4p')) {
-                con.query("UPDATE `guild_data` SET `bienvenida_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID]);
-            }
-            if (req.body.hasOwnProperty('daLuxtTuG5')) {
-                con.query("UPDATE `guild_data` SET `bienvenida_canal_id` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID]);
-            }
-            if (req.body.hasOwnProperty('vyKS7bC')) {
-                con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
-            } else {
-                con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
-            }
-            if (req.body.hasOwnProperty('nviCCd9jDc')) {
-                con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = ? WHERE `guild_data`.`guild` = ?", [req.body.nviCCd9jDc, req.user.Guild_ID]);
-            }
-            res.status(200);
-            res.send('Good to Go :)')
+        if (req.body.hasOwnProperty('LNV5Ljl')) {
+            con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+        } else {
+            con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
         }
+        if (req.body.hasOwnProperty('AZGW50Tc4p')) {
+            con.query("UPDATE `guild_data` SET `bienvenida_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID]);
+        }
+        if (req.body.hasOwnProperty('daLuxtTuG5')) {
+            con.query("UPDATE `guild_data` SET `bienvenida_canal_id` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID]);
+        }
+        if (req.body.hasOwnProperty('vyKS7bC')) {
+            con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+        } else {
+            con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+        }
+        if (req.body.hasOwnProperty('nviCCd9jDc')) {
+            var roles = new Set();
+            if (Array.isArray(req.body.nviCCd9jDc)) {
+                req.body.nviCCd9jDc.forEach(r => roles.add(r))
+            } else {
+                roles.add(req.body.nviCCd9jDc);
+            }
+            con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = ? WHERE `guild_data`.`guild` = ?", ['' + Array.from(roles) + '', req.user.Guild_ID]);
+        }
+        res.status(200);
+        res.send('Good to Go :)')
     });
 
     app.get('/status', (req, res) => {
         res.send('Pingu is online!');
+    });
+
+    //Middleware errores
+    app.use(function (err, req, res, next) {
+        console.error(err.stack);
+        res.status(500).send('Something didn\'t work :(');
     });
 
     app.listen(pwd, () => {

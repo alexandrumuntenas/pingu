@@ -31,6 +31,9 @@
                         width="32" height="32">
             </div>
         </div>
+        <div class="flash">
+            El panel de configuración puede ser inestable o no funcionar de forma correcta.
+        </div>
         <div class="Layout p-5">
             <div class="Layout-sidebar">
                 <div class="Subhead">
@@ -109,9 +112,10 @@
                             <div class="form-checkbox">
                                 <label>
                                     <% if(bbdd.bienvenida_mensaje_activado===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="LNV5Ljl" />
+                                        <input type="checkbox" checked="checked" id="LNV5Ljl" name="LNV5Ljl"
+                                            value="LNV5Ljl" />
                                         <% } else { %>
-                                            <input type="checkbox" id="LNV5Ljl" />
+                                            <input type="checkbox" id="LNV5Ljl" name="LNV5Ljl" value="LNV5Ljl" />
                                             <% } %>
                                                 <%= lan.enableModule %>
                                 </label>
@@ -151,9 +155,10 @@
                             <div class="form-group">
                                 <div class="form-checkbox">
                                     <% if(bbdd.bienvenida_cartel===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="vyKS7bC" />
+                                        <input type="checkbox" checked="checked" id="vyKS7bC" name="vyKS7bC"
+                                            value="vyKS7bC" />
                                         <% } else { %>
-                                            <input type="checkbox" id="vyKS7bC" />
+                                            <input type="checkbox" id="vyKS7bC" name="vyKS7bC" value="vyKS7bC" />
                                             <% } %> <label class="form-check-label" for="vyKS7bC">
                                                     <%= lan.welcome.imageOnJoin %>
                                                 </label>
@@ -289,6 +294,7 @@
                 type: "POST",
                 url: '/dashboard',
                 data: form.serialize(),
+                timeout: 60,
                 beforeSend: function () {
                     Toast.fire({
                         icon: 'warning',
@@ -302,6 +308,12 @@
                         title: 'Cambios Guardados'
                     });
                 }
+            }).fail(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha producido un error al guardar...'
+                });
+                $('#qYgCExvNIy').removeAttr('disabled');
             });
 
         });
