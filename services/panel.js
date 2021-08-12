@@ -144,6 +144,7 @@ app.post('/login', passport.authenticate('local'), (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
+    con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
     req.logout();
     res.redirect('/');
 });
