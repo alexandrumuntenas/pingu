@@ -39,7 +39,7 @@ console.log('[OK] Eventos Cargados');
 console.log('[··] Cargando Servicios');
 const leveling = require('./services/leveling');
 const antispamworker = require('./services/antispam');
-const apolo_panel = require('./services/apolo_panel');
+const apolo_panel = require('./services/freshping');
 console.log('[OK] Servicios Cargados');
 
 // Bot
