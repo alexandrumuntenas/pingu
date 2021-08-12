@@ -187,6 +187,17 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
         }
         con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = ? WHERE `guild_data`.`guild` = ?", ['' + Array.from(roles) + '', req.user.Guild_ID]);
     }
+    if (req.body.hasOwnProperty('LNV5Ljl')) {
+        con.query("UPDATE `guild_data` SET `salida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+    } else {
+        con.query("UPDATE `guild_data` SET `salida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+    }
+    if (req.body.hasOwnProperty('pfeZmgU')) {
+        con.query("UPDATE `guild_data` SET `salida_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.pfeZmgU), req.user.Guild_ID]);
+    }
+    if (req.body.hasOwnProperty('tKDIdy1')) {
+        con.query("UPDATE `guild_data` SET `salida_canal` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID]);
+    }
     res.status(200);
     res.send('Good to Go :)')
 });
