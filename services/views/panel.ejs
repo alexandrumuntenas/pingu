@@ -224,12 +224,12 @@
                         </div>
                         <div class="Box-row py-0">
                             <div class="form-group">
-                                <label for="daLuxtTuG5">
+                                <label for="tKDIdy1">
                                     <%= lan.farewell.channel %>
                                 </label>
                             </div>
                             <div class="form-group">
-                                <select class="SelectMenu-input form-select" name="daLuxtTuG5" id="daLuxtTuG5">
+                                <select class="SelectMenu-input form-select" name="tKDIdy1" id="tKDIdy1">
                                     <% channels.forEach(c=> {
                                         if(c.channel_id == bbdd.salida_canal_id){
                                         %>
@@ -323,7 +323,6 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.2/wordpress-admin/wordpress-admin.min.css">
     <script>
-
         const Toast = Swal.mixin({
             toast: true,
             position: 'bottom-right',
@@ -331,7 +330,6 @@
             timer: 3000,
             timerProgressBar: true
         })
-
         $(document).ready(function () {
             $('#nviCCd9jDc').chosen({ no_results_text: "Oops, no hemos encontrado el rol: " });
             if ($("#LNV5Ljl").attr('checked', 'checked')) {
@@ -340,11 +338,9 @@
                 $('#welcome_dot').removeClass('fas').addClass('far');
             }
         });
-
         $("#EEScEqQw").keyup(function () {
             $('#X3Rh42oq').removeAttr('disabled');
         });
-
         $("#system").submit(function (e) {
 
             e.preventDefault();
@@ -371,7 +367,6 @@
             });
 
         });
-
         $("#AZGW50Tc4p").keyup(function () {
             $('#qYgCExvNIy').removeAttr('disabled');
         });
@@ -392,7 +387,6 @@
         $("#nviCCd9jDc").change(function () {
             $('#qYgCExvNIy').removeAttr('disabled');
         });
-
         $("#welcome").submit(function (e) {
 
             e.preventDefault();
@@ -423,6 +417,48 @@
                     title: 'Se ha producido un error al guardar...'
                 });
                 $('#qYgCExvNIy').removeAttr('disabled');
+            });
+
+        });
+        $("#noLp3EI").change(function () {
+            $('#zbjt55v').removeAttr('disabled');
+        });
+        $("#pfeZmgU").change(function () {
+            $('#zbjt55v').removeAttr('disabled');
+        });
+        $("#tKDIdy1").change(function () {
+            $('#zbjt55v').removeAttr('disabled');
+        });
+        $("#farewell").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                timeout: 60,
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#zbjt55v').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            }).fail(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha producido un error al guardar...'
+                });
+                $('#zbjt55v').removeAttr('disabled');
             });
 
         });
