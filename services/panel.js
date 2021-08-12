@@ -143,6 +143,11 @@ app.post('/login', passport.authenticate('local'), (req, res) => {
     res.redirect('/dashboard');
 });
 
+app.post('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+});
+
 app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
     var guild = client.guilds.cache.find(guild => guild.id == req.user.Guild_ID);
     var channels = new Set();
@@ -187,7 +192,7 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
         }
         con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = ? WHERE `guild_data`.`guild` = ?", ['' + Array.from(roles) + '', req.user.Guild_ID]);
     }
-    if (req.body.hasOwnProperty('LNV5Ljl')) {
+    if (req.body.hasOwnProperty('noLp3EI')) {
         con.query("UPDATE `guild_data` SET `salida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
     } else {
         con.query("UPDATE `guild_data` SET `salida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);

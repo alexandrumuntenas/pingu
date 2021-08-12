@@ -45,12 +45,9 @@
                 </div>
                 <nav class="SideNav border">
                     <a class="SideNav-item" href="#system">Sistema</a>
-                    <a class="SideNav-item" href="#welcome">Bienvenidas <i class="fa-circle float-right"
-                            id="welcome_dot"></i></a>
-                    <a class="SideNav-item" href="#farewell">Despedidas <i class="fa-circle float-right"
-                            id="farewell_dot"></i></a>
-                    <a class="SideNav-item" href="#moderation">Moderación <i class="fa-circle float-right"
-                            id="moderation_dot"></i></a>
+                    <a class="SideNav-item" href="#welcome">Bienvenidas</a>
+                    <a class="SideNav-item" href="#farewell">Despedidas</a>
+                    <a class="SideNav-item" href="#moderation">Moderación</a>
                 </nav>
                 <div class="Subhead Subhead--spacious">
                     <div class="Subhead-heading">
@@ -58,7 +55,7 @@
                     </div>
                 </div>
                 <nav class="SideNav border">
-                    <a class="SideNav-item" href="#leveling">Niveles <i class="fas fa-circle float-right"></i></a>
+                    <a class="SideNav-item" href="#leveling">Niveles</a>
                     <a class="SideNav-item" href="#economy">Economía <i class="fas fa-circle float-right"></i></a>
                 </nav>
                 <div class="Subhead Subhead--spacious">
@@ -76,6 +73,8 @@
                             class="fas fa-external-link-alt float-right"></i></a>
                     <a class="SideNav-item" href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reportar problemas <i
                             class="fas fa-bug float-right"></i></a>
+                    <button class="SideNav-item" id="MSwl3yH">Cerrar Sesión<i
+                            class="fas fa-sign-out-alt float-right"></i></button>
                 </nav>
             </div>
             <div class="Layout-main">
@@ -462,6 +461,27 @@
             });
 
         });
+        $('#MSwl3yH').click(function () {
+            $.ajax({
+                type: "POST",
+                url: '/logout',
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Cerrando sesión...'
+                    });
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Redireccionando...'
+                    });
+                    setTimeout(function () {
+                        location.reload();
+                    }, 3000);
+                }
+            });
+        })
     </script>
 </body>
 
