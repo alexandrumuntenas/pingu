@@ -218,6 +218,15 @@
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.2/wordpress-admin/wordpress-admin.min.css">
     <script>
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-right',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        })
+
         $(document).ready(function () {
             $('#nviCCd9jDc').chosen({ no_results_text: "Oops, no hemos encontrado el rol: " });
             if ($("#LNV5Ljl").attr('checked', 'checked')) {
@@ -284,13 +293,7 @@
             e.preventDefault();
 
             var form = $(this);
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'bottom-right',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-            })
+
             $.ajax({
                 type: "POST",
                 url: '/dashboard',
