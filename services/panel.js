@@ -160,6 +160,10 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
             guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
             guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
             res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
+        } else {
+            con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
+            req.logout();
+            res.redirect('/');
         }
     });
 });
