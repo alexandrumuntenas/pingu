@@ -22,8 +22,11 @@
         <div class="Header">
             <div class="Header-item Header-item--full">
                 <a href="#" class="Header-link f4 d-flex flex-items-center">
-                    <img src="<%= client %>" class="mr-2" style="width: 32px; height: 32px; border-radius: 100%;">
-                    <span>Pingu</span>
+                    <img src="<%= client.avatarURL({ format: 'jpg' }) %>" class="mr-2"
+                        style="width: 32px; height: 32px; border-radius: 100%;">
+                    <span>
+                        <%= client.username %>
+                    </span>
                 </a>
             </div>
             <div class="Header-item mr-0">
@@ -34,7 +37,8 @@
             </div>
         </div>
         <div class="flash">
-            El panel de configuración puede ser inestable o no funcionar de forma correcta.
+            ¿Problemas con el panel? <a href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reporta aquí los problemas para
+                solucionarlos.</a>
         </div>
         <div class="Layout p-5">
             <div class="Layout-sidebar">
@@ -138,12 +142,11 @@
                                 </label>
                             </div>
                             <div class="form-group">
-                                <select class="SelectMenu-input form-select" name="daLuxtTuG5" id="daLuxtTuG5">
+                                <select class="form-select" name="daLuxtTuG5" id="daLuxtTuG5">
                                     <% channels.forEach(c=> {
                                         if(c.channel_id == bbdd.bienvenida_canal_id){
                                         %>
-                                        <option value="<%= c.channel_id %>" selected>#
-                                            <%= c.channel_name %>
+                                        <option value="<%= c.channel_id %>" selected>#<%= c.channel_name %>
                                         </option>
                                         <% } else { %>
                                             <option value="<%= c.channel_id %>">#<%= c.channel_name %>
@@ -228,7 +231,7 @@
                                 </label>
                             </div>
                             <div class="form-group">
-                                <select class="SelectMenu-input form-select" name="tKDIdy1" id="tKDIdy1">
+                                <select class="form-select" name="tKDIdy1" id="tKDIdy1">
                                     <% channels.forEach(c=> {
                                         if(c.channel_id == bbdd.salida_canal_id){
                                         %>
@@ -251,6 +254,63 @@
                             <button class="btn btn-sm btn-primary" role="button" id="DJxuG8K" disabled>
                                 <%= lan.save %>
                             </button>
+                        </div>
+                    </div>
+                    <div class="Box">
+                        <div class="Box-header py-0">
+                            <div class="form-checkbox">
+                                <label>
+                                    <% if(bbdd.moderador_activado===1 ) {%>
+                                        <input type="checkbox" checked="checked" id="Y2adeog" name="Y2adeog"
+                                            value="Y2adeog" />
+                                        <% } else { %>
+                                            <input type="checkbox" id="Y2adeog" name="Y2adeog" value="Y2adeog" />
+                                            <% } %>
+                                                <%= lan.enableModule %>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="Box-row py-0">
+                            <div class="form-checkbox">
+                                <label>
+                                    <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
+                                        <input type="checkbox" checked="checked" id="OxV1juz" name="OxV1juz"
+                                            value="OxV1juz" />
+                                        <% } else { %>
+                                            <input type="checkbox" id="OxV1juz" name="OxV1juz" value="OxV1juz" />
+                                            <% } %>
+                                                Tomar acciones automáticamente si un usuario alcanza una cierta cantidad
+                                                de infracciones
+                                </label>
+                            </div>
+                        </div>
+                        <div class="Box-row py-0">
+                            <div class="form-group">
+                                <label for="DHLJ2YI" class="form-label">
+                                    Cantidad necesaria de advertencias para tomar acciones
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
+                                    value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1" placeholder="10"
+                                    required>
+                            </div>
+                            <label for="AkeMlvn" class="form-label">
+                                ¿Qué acción tomar?
+                            </label>
+                            <div class="form-group">
+                                <select class="form-select" name="AkeMlvn" id="AkeMlvn">
+                                    <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
+                                        <option value="ban" selected>Expulsión Permanente</option>
+                                        <option value="tempban" disabled>Expulsión Temporal</option>
+                                        <option value="kick">Expulsión</option>
+                                        <% } else { %>
+                                            <option value="ban">Expulsión Permanente</option>
+                                            <option value="tempban" disabled>Expulsión Temporal</option>
+                                            <option value="kick" selected>Expulsión</option>
+                                            <% } %>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -331,11 +391,6 @@
         })
         $(document).ready(function () {
             $('#nviCCd9jDc').chosen({ no_results_text: "Oops, no hemos encontrado el rol: " });
-            if ($("#LNV5Ljl").attr('checked', 'checked')) {
-                $('#welcome_dot').addClass('fas').removeClass('far');
-            } else {
-                $('#welcome_dot').removeClass('fas').addClass('far');
-            }
         });
         $("#EEScEqQw").keyup(function () {
             $('#X3Rh42oq').removeAttr('disabled');
@@ -457,6 +512,50 @@
                     title: 'Se ha producido un error al guardar...'
                 });
                 $('#zbjt55v').removeAttr('disabled');
+            });
+
+        });
+        $("#Y2adeog").change(function () {
+            $('#DJxuG8K').removeAttr('disabled');
+        });
+        $("#OxV1juz").change(function () {
+            $('#DJxuG8K').removeAttr('disabled');
+        });
+        $("#DHLJ2YI").change(function () {
+            $('#DJxuG8K').removeAttr('disabled');
+        });
+        $("#AkeMlvn").change(function () {
+            $('#DJxuG8K').removeAttr('disabled');
+        });
+        $("#moderation").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#DJxuG8K').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            }).fail(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha producido un error al guardar...'
+                });
+                $('#DJxuG8K').removeAttr('disabled');
             });
 
         });
