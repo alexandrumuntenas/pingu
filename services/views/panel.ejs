@@ -360,7 +360,8 @@
 
     <footer class="p-6">
         <div class="float-right d-none d-sm-inline">
-            Code with ❤️ in Spain
+
+            Code with <button class="btn-link" id="darkswitch">❤️</button> in Spain
         </div>
         <strong>Copyright &copy; <%= new Date().getFullYear() %> <a
                     href="https://github.com/alexandrumuntenas">Alexandru
@@ -579,6 +580,18 @@
                     }, 3000);
                 }
             });
+        })
+        $('#darkswitch').click(function () {
+            if ($('html').attr('data-color-mode') == 'dark') {
+                if ($('html').attr('data-dark-theme') == 'dark') {
+                    $('html').attr('data-dark-theme', 'dark_dimmed');
+                } else {
+                    $('html').attr('data-color-mode', 'light');
+                    $('html').attr('data-dark-theme', 'dark');
+                }
+            } else {
+                $('html').attr('data-color-mode', 'dark');
+            }
         })
     </script>
 </body>
