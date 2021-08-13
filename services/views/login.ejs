@@ -11,47 +11,48 @@
 </head>
 
 <body>
-    <div class="blankslate">
-        <form class="Box text-center" id="xbfo2eH" method="POST" action="/login" autocomplete="off">
-            <div class="Box-header">
-                <h5 class="Box-title">Pingu · Panel de Configuración</h5>
-                Introduzca la clave que Pingu le ha ofrecido por el MD de Discord
-            </div>
-            <div class="Box-body">
-                <p class="Box-text">
-                    <label class="form-label" for="uj49kfl">Clave de Acceso</label>
-                <div class="form-group">
-                    <input type="text" id="uj49kfl" name="uj49kfl" class="form-control input-monospace" required
-                        minlength="25" maxlength="25" placeholder="Clave de Acceso" />
-                </div>
-                <label class="form-label" for="bPX9orL">Clave de Autorización</label>
-                <div class="form-group">
-                    <input type="text" id="bPX9orL" name="bPX9orL" class="form-control input-monospace" required
-                        minlength="12" maxlength="12" placeholder="Clave de Autorización" />
-                </div>
-                </p>
-                <% if(err==true) { %>
-                    <div class="flash mt-3 flash-error" style="max-width:460px;" role="alert">
-                        <% if(noGuild==false) { %>
-                            <% if(twoFa==false){ %>
-                                Clave de acceso invalida o inexistente.
-                                <% } else { %>
-                                    La clave de acceso es válida, pero la clave de autorización no. Por motivos de
-                                    seguridad, la clave de acceso ha sido invalidado. Puede volver a solicitar una nueva
-                                    clave de acceso.
-                                    <% } %>
-                                        <% } else { %>
-                                            Esto es un poco... embarazoso. No podemos encontrar los datos del servidor
-                                            solicitado.
-                                            <% } %>
+    <% if(err==true) { %>
+        <div class="flash flash-banner flash-error" role="alert">
+            <% if(noGuild==false) { %>
+                <% if(twoFa==false){ %>
+                    Clave de acceso invalida o inexistente.
+                    <% } else { %>
+                        La clave de acceso es válida, pero la clave de autorización no. Por motivos de
+                        seguridad, la clave de acceso ha sido invalidado. Puede volver a solicitar una nueva
+                        clave de acceso.
+                        <% } %>
+                            <% } else { %>
+                                Esto es un poco... embarazoso. No podemos encontrar los datos del servidor
+                                solicitado.
+                                <% } %>
+        </div>
+        <% } %>
+            <div class="p-5"></div>
+            <div class="blankslate">
+                <form class="Box text-center" id="xbfo2eH" method="POST" action="/login" autocomplete="off">
+                    <div class="Box-header">
+                        <h5 class="Box-title">Pingu · Panel de Configuración</h5>
+                        Introduzca la clave que Pingu le ha ofrecido por el MD de Discord
                     </div>
-                    <% } %>
+                    <div class="Box-body">
+                        <p class="Box-text">
+                            <label class="form-label" for="uj49kfl">Clave de Acceso</label>
+                        <div class="form-group">
+                            <input type="text" id="uj49kfl" name="uj49kfl" class="form-control input-monospace" required
+                                minlength="25" maxlength="25" placeholder="Clave de Acceso" />
+                        </div>
+                        <label class="form-label" for="bPX9orL">Clave de Autorización</label>
+                        <div class="form-group">
+                            <input type="text" id="bPX9orL" name="bPX9orL" class="form-control input-monospace" required
+                                minlength="12" maxlength="12" placeholder="Clave de Autorización" />
+                        </div>
+                        </p>
+                    </div>
+                    <div class="Box-footer">
+                        <button type="submit" class="btn btn-primary">Acceder</button>
+                    </div>
+                </form>
             </div>
-            <div class="Box-footer">
-                <button type="submit" class="btn btn-primary">Acceder</button>
-            </div>
-        </form>
-    </div>
 </body>
 
 </html>

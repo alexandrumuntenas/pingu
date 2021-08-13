@@ -105,12 +105,11 @@ passport.use(new passportLocal({
                 return done(null, result[0]);
             } else {
                 con.query("DELETE FROM `apolo_sessions` WHERE Clave_de_Acceso = ?", [uj49kfl]);
-                return done('La clave de acceso es válida, pero la clave de autorización no. Por motivos de seguridad, la clave de acceso ha sido invalidado.Puede volver a solicitar una nueva clave de acceso.', null);
-                //res.render('login', { err: true, twoFa: true, noGuild: false });
+                return done(2, null);
+                res.render('login', { err: true, twoFa: true, noGuild: false });
             }
         } else {
-            return done('Clave de acceso inválida.', null)
-            //res.render('login', { err: true, twoFa: false, noGuild: false });
+            return done(1, null)
         };
     })
 }));
@@ -135,9 +134,25 @@ app.get('/login', (req, res) => {
     res.render('login', { err: false });
 })
 
-app.post('/login', passport.authenticate('local'), (req, res) => {
-    res.redirect('/dashboard');
+app.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            if (err === 1) {
+                return res.render('login', { err: true, twoFa: false, noGuild: false });
+            } else {
+                return res.render('login', { err: true, twoFa: true, noGuild: false });
+            }
+        }
+        if (!user) {
+            return res.render('login', { err: true, twoFa: false, noGuild: false });
+        }
+        req.logIn(user, function (err) {
+            if (err) { console.log(err); return next(err); }
+            return res.redirect('/dashboard');
+        });
+    })(req, res, next)
 });
+
 app.post('/login', passport.authenticate('local'), (req, res) => {
     req.logout();
     res.redirect('/dashboard');
@@ -151,21 +166,27 @@ app.post('/logout', (req, res) => {
 
 app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
     var guild = client.guilds.cache.find(guild => guild.id == req.user.Guild_ID);
+    console.log(guild);
     var channels = new Set();
     var roles = new Set();
-    con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
-        if (result.hasOwnProperty(0)) {
-            var lan = require(`../languages/${result[0].idioma}.json`);
-            lan = lan.web;
-            guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
-            guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
-            res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
-        } else {
-            con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
-            req.logout();
-            res.redirect('/');
-        }
-    });
+    if (Array.isArray(guild)) {
+        con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
+            if (result.hasOwnProperty(0)) {
+                var lan = require(`../languages/${result[0].idioma}.json`);
+                lan = lan.web;
+                guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
+                guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
+                res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user.avatarURL({ format: 'jpg' }) });
+            } else {
+                con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
+                req.logout();
+                res.redirect('/');
+            }
+        });
+    } else {
+        req.logout();
+        res.redirect('/');
+    }
 });
 
 app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.status(403); res.send('Forbidden') }, (req, res) => {
@@ -217,8 +238,8 @@ app.get('/status', (req, res) => {
 });
 
 //Middleware errores
-app.use(function (err, req, res, next) {
-    console.error(err.stack);
+app.use((err, req, res, next) => {
+    console.error(err);
     res.status(500).send('Something didn\'t work :(');
 });
 
