@@ -71,10 +71,10 @@ if (process.env.ENTORNO !== "desarrollo") {
     app.disable('x-powered-by');*/
     app.use(cookieParser(makeId(256)))
     app.use(session({
-        secret: makeId(256),
+        secret: makeId(1024),
         resave: true,
         saveUninitialized: true,
-        name: makeId(2048),
+        name: makeId(256),
         /*cookie: {
             secure: true,
             httpOnly: true,

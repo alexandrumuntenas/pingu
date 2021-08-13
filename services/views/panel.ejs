@@ -84,7 +84,7 @@
                             <%= lan.system.title %>
                         </div>
                         <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="X3Rh42oq" disabled>Guardar</button>
+                            <button class="btn btn-sm btn-primary" type="submit" id="X3Rh42oq" disabled>Guardar</button>
                         </div>
                     </div>
                     <div class="Box">
@@ -396,7 +396,7 @@
                 type: "POST",
                 url: '/dashboard',
                 data: form.serialize(),
-                timeout: 60,
+                crossDomain: true,
                 beforeSend: function () {
                     Toast.fire({
                         icon: 'warning',
@@ -438,7 +438,6 @@
                 type: "POST",
                 url: '/dashboard',
                 data: form.serialize(),
-                timeout: 60,
                 beforeSend: function () {
                     Toast.fire({
                         icon: 'warning',
