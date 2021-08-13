@@ -1,4 +1,4 @@
-require('dotenv').config({ 'path': '../.env' })
+require('dotenv').config();
 const { Client } = require('discord.js');
 
 const client = new Client();
@@ -166,10 +166,9 @@ app.post('/logout', (req, res) => {
 
 app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
     var guild = client.guilds.cache.find(guild => guild.id == req.user.Guild_ID);
-    console.log(guild);
     var channels = new Set();
     var roles = new Set();
-    if (Array.isArray(guild)) {
+    if (guild) {
         con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
             if (result.hasOwnProperty(0)) {
                 var lan = require(`../languages/${result[0].idioma}.json`);
