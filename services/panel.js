@@ -228,6 +228,22 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
     if (req.body.hasOwnProperty('tKDIdy1')) {
         con.query("UPDATE `guild_data` SET `salida_canal` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID]);
     }
+    if (req.body.hasOwnProperty('Y2adeog')) {
+        con.query("UPDATE `guild_data` SET `moderador_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+    } else {
+        con.query("UPDATE `guild_data` SET `moderador_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+    }
+    if (req.body.hasOwnProperty('OxV1juz')) {
+        con.query("UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+    } else {
+        con.query("UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+    }
+    if (req.body.hasOwnProperty('DHLJ2YI')) {
+        con.query("UPDATE `guild_data` SET `moderador_warn_expulsion_cantidad` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.DHLJ2YI), req.user.Guild_ID]);
+    }
+    if (req.body.hasOwnProperty('AkeMlvn')) {
+        con.query("UPDATE `guild_data` SET `moderador_warn_expulsion_accion` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID]);
+    }
     res.status(200);
     res.send('Good to Go :)')
 });

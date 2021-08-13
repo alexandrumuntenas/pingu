@@ -301,13 +301,13 @@
                             <div class="form-group">
                                 <select class="form-select" name="AkeMlvn" id="AkeMlvn">
                                     <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                        <option value="ban" selected>Expulsión Permanente</option>
-                                        <option value="tempban" disabled>Expulsión Temporal</option>
-                                        <option value="kick">Expulsión</option>
+                                        <option value="1" selected>Expulsión Permanente</option>
+                                        <option value="0" disabled>Expulsión Temporal</option>
+                                        <option value="0">Expulsión</option>
                                         <% } else { %>
-                                            <option value="ban">Expulsión Permanente</option>
-                                            <option value="tempban" disabled>Expulsión Temporal</option>
-                                            <option value="kick" selected>Expulsión</option>
+                                            <option value="1">Expulsión Permanente</option>
+                                            <option value="0" disabled>Expulsión Temporal</option>
+                                            <option value="0" selected>Expulsión</option>
                                             <% } %>
                                 </select>
                             </div>
