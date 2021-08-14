@@ -11,7 +11,7 @@ module.exports = {
                 });
                 message.channel.send(`<:pingu_check:876104161794596964> ${lan.response}: \`${args[1]}\``);
             } else {
-                message.channel.send(`<:win_information:876119543968305233> ${lan.missing_arg}: \`${result[0].prefix}prefix <new prefix>\``);
+                message.channel.send(`<:win_information:876119543968305233> ${lan.missing_arg}: \`${result[0].guild_prefix}prefix <new prefix>\``);
             }
         } else {
             message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)

@@ -147,13 +147,13 @@ client.on('message', (message) => {
       }
       var id = message.guild.id;
       //Comprobamos si el mensaje ha comenzado con prefijo
-      if (message.content.startsWith(result[0].prefix) && message.content != result[0].prefix) {
+      if (message.content.startsWith(result[0].guild_prefix) && message.content != result[0].guild_prefix) {
 
         //Retirar el comandomsg.content.split(' ').splice(1).join(' ')
         var cortar = message.content.trim().split(' ');
 
         //Solo retira el prefijo del comando, por lo que cuenta también la acción deseada en el array
-        var mensajeprocesado = message.content.replace(result[0].prefix, '');
+        var mensajeprocesado = message.content.replace(result[0].guild_prefix, '');
         //Regex para los argumentos con ""
 
         const regex = new RegExp('"[^"]+"|[\\S]+', 'g');
@@ -166,7 +166,7 @@ client.on('message', (message) => {
       }
       var tolower = message.content;
       var contenido = tolower.toLowerCase();
-      if (message.content.startsWith(result[0].prefix)) {
+      if (message.content.startsWith(result[0].guild_prefix)) {
         if (args) {
           if (client.commands.has(args[0])) {
             try {
@@ -195,7 +195,7 @@ client.on('message', (message) => {
         antispamworker(message);
       }
       //Leveling
-      if (!contenido.startsWith(result[0].prefix)) {
+      if (!contenido.startsWith(result[0].guild_prefix)) {
         if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
           if (result[0].niveles_activado != "0") {
             talkedRecently.add(`${message.author.id}_${message.guild.id}`);

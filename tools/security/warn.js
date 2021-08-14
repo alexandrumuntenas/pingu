@@ -9,7 +9,7 @@ module.exports = {
                 lan = lan.tools.security.warn;
                 var warn = message.content;
                 message.mentions.users.array().forEach(user => {
-                    warn = warn.replace('<@!' + user.id + '>', '').replace('<@' + user.id + '>', '').replace(`${result[0].prefix}warn`, '');
+                    warn = warn.replace('<@!' + user.id + '>', '').replace('<@' + user.id + '>', '').replace(`${result[0].guild_prefix}warn`, '');
                 })
                 message.mentions.users.array().forEach(user => {
                     var cache = { "activado": result[0].moderador_warn_expulsion_activado, "cantidad": result[0].moderador_warn_expulsion_cantidad, "accion": result[0].moderador_warn_expulsion_accion };

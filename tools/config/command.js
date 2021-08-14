@@ -8,7 +8,7 @@ module.exports = {
             if (args[1]) {
                 switch (args[1]) {
                     case 'create':
-                        var motivo = message.content.replace(`${result[0].prefix}command create ${args[2]}`, '');
+                        var motivo = message.content.replace(`${result[0].guild_prefix}command create ${args[2]}`, '');
                         var crearccmd = "INSERT INTO `guild_commands` (`guild`, `cmd`, `returns`) VALUES ('" + message.guild.id + "', '" + args[2] + "', '" + motivo + "')";
                         con.query(crearccmd, function (err) {
                             console.log(err)

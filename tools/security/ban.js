@@ -5,7 +5,7 @@ module.exports = {
         lan = lan.tools.security.ban;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {
-                var reason = message.content.replace(`${result[0].prefix}ban `, '');
+                var reason = message.content.replace(`${result[0].guild_prefix}ban `, '');
                 var array = message.mentions.users.array();
                 var infraccion = message.content;
                 array.forEach(user => {
