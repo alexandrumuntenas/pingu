@@ -8,7 +8,7 @@ module.exports = function (client, con, member) {
     var sql = "SELECT * FROM `guild_data` WHERE guild = '" + id + "'";
     //Conectamos con el servidor
     con.query(sql, function (err, result) {
-        if (result[0].bienvenida_mensaje_activado != 0) {
+        if (result[0].welcome_enabled != 0) {
             cache = { "canal_id": result[0].bienvenida_canal_id, "canal_msg": result[0].bienvenida_mensaje, "aspecto": result[0].bienvenida_fondo };
             const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
             if (result[0].bienvenida_cartel != 0) {
