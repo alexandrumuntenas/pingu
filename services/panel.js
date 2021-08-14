@@ -190,25 +190,25 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
         switch (req.body.frmname) {
             case 'system':
                 if (req.body.hasOwnProperty('EEScEqQw')) {
-                    con.query("UPDATE `guild_data` SET `prefix` = ? WHERE `guild` = ?", [req.body.EEScEqQw, req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `guild_prefix` = ? WHERE `guild` = ?", [req.body.EEScEqQw, req.user.Guild_ID]);
                 }
                 break;
             case 'welcome':
                 if (req.body.hasOwnProperty('LNV5Ljl')) {
-                    con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 } else {
-                    con.query("UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('AZGW50Tc4p')) {
-                    con.query("UPDATE `guild_data` SET `bienvenida_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_message` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('daLuxtTuG5')) {
-                    con.query("UPDATE `guild_data` SET `bienvenida_canal_id` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_channel` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('vyKS7bC')) {
-                    con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_image` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 } else {
-                    con.query("UPDATE `guild_data` SET `bienvenida_cartel` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_image` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('nviCCd9jDc')) {
                     var roles = new Set();
@@ -217,27 +217,27 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
                     } else {
                         roles.add(req.body.nviCCd9jDc);
                     }
-                    con.query("UPDATE `guild_data` SET `bienvenida_roles_user` = ? WHERE `guild_data`.`guild` = ?", ['' + Array.from(roles) + '', req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `welcome_roles` = ? WHERE `guild_data`.`guild` = ?", ['' + Array.from(roles) + '', req.user.Guild_ID]);
                 }
                 break;
             case 'farewell':
                 if (req.body.hasOwnProperty('noLp3EI')) {
-                    con.query("UPDATE `guild_data` SET `salida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `farewell_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 } else {
-                    con.query("UPDATE `guild_data` SET `salida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `farewell_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('pfeZmgU')) {
-                    con.query("UPDATE `guild_data` SET `salida_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.pfeZmgU), req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `farewell_message` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.pfeZmgU), req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('tKDIdy1')) {
-                    con.query("UPDATE `guild_data` SET `salida_canal` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `farewell_channel` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID]);
                 }
                 break;
             case 'moderation':
                 if (req.body.hasOwnProperty('Y2adeog')) {
-                    con.query("UPDATE `guild_data` SET `moderador_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `moderator_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 } else {
-                    con.query("UPDATE `guild_data` SET `moderador_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `moderator_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('OxV1juz')) {
                     con.query("UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
@@ -253,15 +253,15 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
                 break;
             case 'leveling':
                 if (req.body.hasOwnProperty('QTMVmdD')) {
-                    con.query("UPDATE `guild_data` SET `niveles_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `leveling_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 } else {
-                    con.query("UPDATE `guild_data` SET `niveles_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `leveling_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('Q8xq8vO')) {
-                    con.query("UPDATE `guild_data` SET `niveles_canal_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.Q8xq8vO), req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `leveling_rankup_message` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.Q8xq8vO), req.user.Guild_ID]);
                 }
                 if (req.body.hasOwnProperty('ELMb9ge')) {
-                    con.query("UPDATE `guild_data` SET `niveles_canal_id` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.ELMb9ge), req.user.Guild_ID]);
+                    con.query("UPDATE `guild_data` SET `leveling_rankup_channel` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.ELMb9ge), req.user.Guild_ID]);
                 }
                 break;
             default:
