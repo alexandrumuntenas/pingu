@@ -6,7 +6,7 @@ const fs = require('fs')
 module.exports = {
     name: 'all-warns',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.security.allwarns;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {

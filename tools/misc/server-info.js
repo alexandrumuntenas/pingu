@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 module.exports = {
     name: 'server-info',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.misc.serverinfo;
         const roles = message.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString());
         const members = message.guild.members.cache;

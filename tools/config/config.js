@@ -3,7 +3,7 @@ const makeId = require('../../gen/makeId');
 module.exports = {
     name: 'config',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.config;
         if (message.guild.ownerID == message.author.id) {
             con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE " + message.guild.id);

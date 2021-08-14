@@ -1,7 +1,7 @@
 module.exports = {
     name: 'clear-server-warns',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.security.clearserverwarns;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
             if (result[0].moderador_activado != 0) {

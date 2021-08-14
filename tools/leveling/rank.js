@@ -5,7 +5,7 @@ const fs = require('fs');
 module.exports = {
     name: 'rank',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         var noavaliable = lan.tools.noavaliable;
         lan = lan.tools.leveling.rank;
         if (result[0].niveles_activado != 0) {

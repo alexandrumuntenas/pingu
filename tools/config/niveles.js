@@ -4,7 +4,7 @@ const { isInteger } = require('mathjs');
 module.exports = {
     name: 'niveles',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.config.niveles;
         message.channel.send(':warning: El comando `niveles` será removido en la actualización 2109, que será implementada el 01/09/2021. (EOS 2109, más info en nuestro servidor de soporte)')
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {

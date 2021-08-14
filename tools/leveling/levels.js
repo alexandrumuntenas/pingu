@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'levels',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         var noavaliable = lan.tools.noavaliable;
         lan = lan.tools.leveling.levels;
         if (result[0].niveles_activado != 0) {

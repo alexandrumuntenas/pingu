@@ -3,7 +3,7 @@ var flip = require('flipacoin')
 module.exports = {
     name: 'flip',
     execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].idioma}.json`);
+        var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.misc.flip;
         var flipdata = flip();
         if (flipdata == "head") {

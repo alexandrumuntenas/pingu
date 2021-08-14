@@ -166,7 +166,7 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
     if (guild) {
         con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE '${guild.id}'`, function (err, result, rows) {
             if (result.length != 0) {
-                var lan = require(`../languages/${result[0].idioma}.json`);
+                var lan = require(`../languages/${result[0].guild_language}.json`);
                 lan = lan.web;
                 guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
                 guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
