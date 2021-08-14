@@ -9,9 +9,9 @@ module.exports = function (client, con, member) {
     //Conectamos con el servidor
     con.query(sql, function (err, result) {
         if (result[0].welcome_enabled != 0) {
-            cache = { "canal_id": result[0].welcome_channel, "canal_msg": result[0].welcome_message, "aspecto": result[0].bienvenida_fondo };
+            cache = { "canal_id": result[0].welcome_channel, "canal_msg": result[0].welcome_message, "aspecto": result[0].welcome_image_background };
             const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
-            if (result[0].bienvenida_cartel != 0) {
+            if (result[0].welcome_image != 0) {
                 var user = member.user;
                 async function paso1() {
                     const avatar = new downloader({
@@ -75,8 +75,8 @@ module.exports = function (client, con, member) {
                 }
             }
         }
-        if (result[0].bienvenida_roles_user) {
-            var usersss = result[0].bienvenida_roles_user;
+        if (result[0].welcome_roles) {
+            var usersss = result[0].welcome_roles;
             var role = usersss.split(',');
             role.forEach(element => {
                 if (member.guild.roles.cache.find(role => role.id === element)) {
