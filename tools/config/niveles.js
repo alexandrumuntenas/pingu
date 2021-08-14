@@ -147,7 +147,7 @@ module.exports = {
                     });
             }
 
-            message.channel.send(`<:info:858737080950718484> ${lan.startup}`);
+            message.channel.send(`<:win_information:876119543968305233> ${lan.startup}`);
             indice();
         } else {
             message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);

@@ -111,7 +111,7 @@ module.exports = {
                                 });
                         });
                 } else {
-                    message.channel.send('<:prohibited:858736864176242718> No se pueden agregar más campos. El máximo son 25.')
+                    message.channel.send('<:pingu_cross:876104109256769546> No se pueden agregar más campos. El máximo son 25.')
                     indice();
                 }
             }
@@ -144,7 +144,7 @@ module.exports = {
             }
 
             function previsualizar() {
-                message.channel.send('<:info:858737080950718484> Así lucirá su mensaje enriquecido.')
+                message.channel.send('<:win_information:876119543968305233> Así lucirá su mensaje enriquecido.')
                 message.channel.send(embed);
                 indice();
             }
@@ -160,7 +160,7 @@ module.exports = {
                         message.channel.send(embed);
                     });
             }
-            message.channel.send('<:info:858737080950718484> Bienvenido al constructor visual de mensajes enriquecidos. Le iremos haciendo una serie de preguntas para ir construyendo su mensaje enriquecido a medida.');
+            message.channel.send('<:win_information:876119543968305233> Bienvenido al constructor visual de mensajes enriquecidos. Le iremos haciendo una serie de preguntas para ir construyendo su mensaje enriquecido a medida.');
             indice();
         } else {
             message.channel.send('<:pingu_cross:876104109256769546> No dispone de permisos suficientes para ejecutar este comando')
