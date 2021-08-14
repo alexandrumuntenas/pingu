@@ -34,7 +34,7 @@ module.exports = {
                                 u_canal();
                                 break;
                             case '4':
-                                message.channel.send(`:information_source: ${lan.time_error}`)
+                                message.channel.send(`<:win_information:876119543968305233> ${lan.time_error}`)
                                 break;
                             default:
                                 purga();
@@ -42,7 +42,7 @@ module.exports = {
                                 break;
                         }
                     }).catch(collected => {
-                        message.channel.send(`:information_source: ${lan.time_error}`)
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.time_error}`)
                     });
             }
 

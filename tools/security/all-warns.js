@@ -43,7 +43,7 @@ module.exports = {
                     }
                     cocina();
                 } else {
-                    message.channel.send(`:information_source: ${lan.missing_param}`);
+                    message.channel.send(`<:win_information:876119543968305233> ${lan.missing_param}`);
                 }
             }
         } else {

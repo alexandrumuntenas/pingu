@@ -57,7 +57,7 @@ module.exports = {
                                 user_give_role();
                                 break;
                             case '7':
-                                message.channel.send(`:information_source: ${lan.index.time_error}`);
+                                message.channel.send(`<:win_information:876119543968305233> ${lan.index.time_error}`);
                                 break;
                             default:
                                 purga();
@@ -65,7 +65,7 @@ module.exports = {
                                 break;
                         }
                     }).catch(collected => {
-                        message.channel.send(`:information_source: ${lan.index.time_error}`);
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.index.time_error}`);
                     });
             }
 
@@ -117,7 +117,7 @@ module.exports = {
                             purga();
                             user_give_role();
                         } else {
-                            message.channel.send(`:information_source: ${lan.dar_rol.add_rol.invalid_message}`);
+                            message.channel.send(`<:win_information:876119543968305233> ${lan.dar_rol.add_rol.invalid_message}`);
                             add_rol_users();
                         }
                     })
@@ -135,7 +135,7 @@ module.exports = {
                             purga();
                             user_give_role();
                         } else {
-                            message.channel.send(`:information_source: ${lan.dar_rol.del_rol.invalid_message}`);
+                            message.channel.send(`<:win_information:876119543968305233> ${lan.dar_rol.del_rol.invalid_message}`);
                             del_rol_users();
                         }
                     });

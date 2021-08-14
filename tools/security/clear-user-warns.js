@@ -13,7 +13,7 @@ module.exports = {
                         message.channel.send(`<:pingu_check:876104161794596964> ${lan.success} ${user}`);
                     })
                 } else {
-                    message.channel.send(`:information_source: ${lan.atleastoneuser}`);
+                    message.channel.send(`<:win_information:876119543968305233> ${lan.atleastoneuser}`);
                 }
             }
         } else {

@@ -14,14 +14,14 @@ module.exports = {
                                 con.query(borrarwarn);
                                 message.channel.send(`<:pingu_check:876104161794596964> ${lan.success} (\`${args[2]}\`)`);
                             } else {
-                                message.channel.send(`:information_source: \`${message.mentions.users.first().tag}\` ${lan.userNoHasWarn} \`${args[2]}\``);
+                                message.channel.send(`<:win_information:876119543968305233> \`${message.mentions.users.first().tag}\` ${lan.userNoHasWarn} \`${args[2]}\``);
                             }
                         });
                     } else {
-                        message.channel.send(`:information_source: ${lan.missing_args}: \`${result[0].prefix}delwarn <${lan.usage.param1}> <${lan.usage.param2}>\``);
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.missing_args}: \`${result[0].prefix}delwarn <${lan.usage.param1}> <${lan.usage.param2}>\``);
                     }
                 } else {
-                    message.channel.send(`:information_source: ${lan.missing_args}: \`${result[0].prefix}delwarn <${lan.usage.param1}> <${lan.usage.param2}>\``);
+                    message.channel.send(`<:win_information:876119543968305233> ${lan.missing_args}: \`${result[0].prefix}delwarn <${lan.usage.param1}> <${lan.usage.param2}>\``);
                 }
             } else {
                 message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);

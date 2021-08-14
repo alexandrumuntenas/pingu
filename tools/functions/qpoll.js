@@ -14,7 +14,7 @@ module.exports = {
                 });
                 message.delete();
             } else {
-                message.channel.send(`:information_source: ${lan.missingquestion}\`${result[0].prefix}qpoll <question>\``)
+                message.channel.send(`<:win_information:876119543968305233> ${lan.missingquestion}\`${result[0].prefix}qpoll <question>\``)
             }
         } else {
             message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)

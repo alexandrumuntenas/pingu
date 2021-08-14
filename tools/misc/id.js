@@ -4,6 +4,6 @@ module.exports = {
         var lan = require(`../../languages/${result[0].idioma}.json`);
         lan = lan.tools.misc.id;
         let server = message.guild.id;
-        message.channel.send(`:information_source: ${lan} \`${server}\``);
+        message.channel.send(`<:win_information:876119543968305233> ${lan} \`${server}\``);
     }
 }

@@ -13,7 +13,7 @@ module.exports = {
             var cache = { "aspecto": result[0].niveles_fondo }
             if (message.mentions.users.first()) {
                 if (message.mentions.users.first().bot) {
-                    message.channel.send(`:information_source: ${lan.isbot}`);
+                    message.channel.send(`<:win_information:876119543968305233> ${lan.isbot}`);
                     return
                 }
                 con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", function (err, result) {
@@ -94,7 +94,7 @@ module.exports = {
                         }
                         fa();
                     } else {
-                        message.channel.send(`:information_source: ${lan.norank}`);
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.norank}`);
                     }
                 })
             };

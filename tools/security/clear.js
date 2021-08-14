@@ -32,7 +32,7 @@ module.exports = {
                                     });;
                             });
                     } else {
-                        message.channel.send(`:information_source: ${lan.missing_arg} \`${result[0].prefix}del <cantidad> \``);
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.missing_arg} \`${result[0].prefix}del <cantidad> \``);
                     }
                 }
             }

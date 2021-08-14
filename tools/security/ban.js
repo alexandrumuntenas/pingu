@@ -27,7 +27,7 @@ module.exports = {
                     }
                 });
             } else {
-                message.channel.send(`:information_source: ${lan.missing_param}`);
+                message.channel.send(`<:win_information:876119543968305233> ${lan.missing_param}`);
             }
         } else {
             message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)

@@ -44,11 +44,11 @@ module.exports = {
                         })
                         break;
                     default:
-                        message.channel.send(`:information_source: ${lan.invalid} :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/respuestas-personalizadas`)
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.invalid} :arrow_right: https://pingu.duoestudios.es/gestion-del-servidor/respuestas-personalizadas`)
                         break;
                 }
             } else {
-                message.channel.send(`:information_source: ${lan.missing_args}: \`create\` \`remove\``);
+                message.channel.send(`<:win_information:876119543968305233> ${lan.missing_args}: \`create\` \`remove\``);
             }
         } else {
             message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);

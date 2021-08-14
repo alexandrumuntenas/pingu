@@ -29,7 +29,7 @@ module.exports = {
                                 e_modwarn();
                                 break;
                             case '3':
-                                message.channel.send(`:information_source: ${lan.time_error}`);
+                                message.channel.send(`<:win_information:876119543968305233> ${lan.time_error}`);
                                 break;
                             default:
                                 purga()
@@ -37,7 +37,7 @@ module.exports = {
                                 break;
                         }
                     }).catch(collected => {
-                        message.channel.send(`:information_source: ${lan.time_error}`);
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.time_error}`);
                     });;
             }
 
@@ -88,7 +88,7 @@ module.exports = {
                             message.channel.send(`<:pingu_check:876104161794596964> ${lan.e_limite.success}`);
                             e_modwarn();
                         } else {
-                            message.channel.send(`:information_source:  ${lan.e_limite.notinteger}`);
+                            message.channel.send(`<:win_information:876119543968305233>  ${lan.e_limite.notinteger}`);
                             e_limite();
                         }
                     })

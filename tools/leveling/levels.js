@@ -23,7 +23,7 @@ module.exports = {
                         });
                         message.channel.send(embed);
                     } else {
-                        message.channel.send(`:information_source: ${lan.nodata}`)
+                        message.channel.send(`<:win_information:876119543968305233> ${lan.nodata}`)
                     };
                 }
             });

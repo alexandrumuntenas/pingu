@@ -31,7 +31,7 @@ module.exports = {
                         })
                     })
                 } else {
-                    message.channel.send(`:information_source: ${lan.newdmpromotion}`);
+                    message.channel.send(`<:win_information:876119543968305233> ${lan.newdmpromotion}`);
                 }
             }
         } else {

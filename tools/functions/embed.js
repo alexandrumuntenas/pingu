@@ -58,7 +58,7 @@ module.exports = {
                                 enviar();
                                 break;
                             case '9':
-                                message.channel.send(':information_source: Se ha descartado el mensaje enriquecido.')
+                                message.channel.send('<:win_information:876119543968305233> Se ha descartado el mensaje enriquecido.')
                                 break;
                             default:
                                 purga()
