@@ -13,10 +13,10 @@ module.exports = {
                 var response = lan.response_b;
             }
             var sql = "UPDATE `guild_data` SET `burbuja_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
-            message.channel.send(`:white_check_mark: ${response}`);
+            message.channel.send(`<:pingu_check:876104161794596964> ${response}`);
             con.query(sql);
         } else {
-            message.channel.send(`:x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
         }
     }
 }

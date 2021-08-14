@@ -66,12 +66,12 @@ module.exports = {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `guild_data` SET `niveles_activado` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(yes);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_niveles.response_a}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_niveles.response_a}`);
                             indice();
                         } else {
                             var no = "UPDATE `guild_data` SET `niveles_activado` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(no);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_niveles.response_b}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_niveles.response_b}`);
                             indice();
                         }
                     });
@@ -83,7 +83,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         var updatemsg = "UPDATE `guild_data` SET `niveles_canal_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
-                        message.channel.send(`:white_check_mark: ${lan.update_message.success}`);
+                        message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_message.success}`);
                         indice();
                     });
             }
@@ -96,10 +96,10 @@ module.exports = {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `guild_data` SET `niveles_canal_id` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
-                            message.channel.send(`:white_check_mark: ${lan.update_channel.success}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_channel.success}`);
                             indice();
                         } else {
-                            message.channel.send(`:x: ${lan.update_channel.invalid}`)
+                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.update_channel.invalid}`)
                             u_canal();
                         }
                     });
@@ -113,14 +113,14 @@ module.exports = {
                             if (parseInt(collected.first().content) <= 20 && parseInt(collected.first().content) >= 1) {
                                 var updatemsg = "UPDATE `guild_data` SET `niveles_fondo` = '" + collected.first().content + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
-                                message.channel.send(`:white_check_mark: ${lan.update_fondo.success}`);
+                                message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_fondo.success}`);
                                 indice();
                             } else {
-                                message.channel.send(`:x: ´${lan.update_fondo.invalid}`);
+                                message.channel.send(`<:pingu_cross:876104109256769546> ´${lan.update_fondo.invalid}`);
                                 u_fondo();
                             }
                         } else {
-                            message.channel.send(`:x: ${lan.update_fondo.notinteger}`)
+                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.update_fondo.notinteger}`)
                             u_fondo();
                         }
                     });
@@ -134,14 +134,14 @@ module.exports = {
                             if (parseInt(collected.first().content) < 5 && parseInt(collected.first().content) > 0) {
                                 var updatemsg = "UPDATE `guild_data` SET `niveles_dificultad` = '" + collected.first().content + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
-                                message.channel.send(`:white_check_mark: ${lan.update_dificultad.success}`);
+                                message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_dificultad.success}`);
                                 indice();
                             } else {
                                 message.channel.send(`:information_source: ${lan.update_dificultad.invalid}`);
                                 u_dificultad();
                             }
                         } else {
-                            message.channel.send(`:x: ${lan.update_dificultad.notinteger}`);
+                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.update_dificultad.notinteger}`);
                             u_fondo();
                         }
                     });
@@ -150,7 +150,7 @@ module.exports = {
             message.channel.send(`<:info:858737080950718484> ${lan.startup}`);
             indice();
         } else {
-            message.channel.send(`:x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
         }
     }
 }

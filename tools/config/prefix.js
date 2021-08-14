@@ -9,12 +9,12 @@ module.exports = {
                 var sql = "UPDATE `guild_data` SET `prefix` = '" + args[1] + "' WHERE `guild_data`.`guild` = '" + message.guild.id + "'";
                 con.query(sql, function (err) {
                 });
-                message.channel.send(`:white_check_mark: ${lan.response}: \`${args[1]}\``);
+                message.channel.send(`<:pingu_check:876104161794596964> ${lan.response}: \`${args[1]}\``);
             } else {
                 message.channel.send(`:information_source: ${lan.missing_arg}: \`${result[0].prefix}prefix <new prefix>\``);
             }
         } else {
-            message.channel.send(`:x: ${lan.permerror}`)
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
         }
     }
 }

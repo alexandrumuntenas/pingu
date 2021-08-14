@@ -19,10 +19,10 @@ module.exports = {
                                 reason: reason,
                             })
                             .then(() => {
-                                message.channel.send(`:white_check_mark: ${lan.success} ${user.tag}`);
+                                message.channel.send(`<:pingu_check:876104161794596964> ${lan.success} ${user.tag}`);
                             })
                             .catch(err => {
-                                message.channel.send(`:x: ${lan.fail} ${user.tag}`);
+                                message.channel.send(`<:pingu_cross:876104109256769546> ${lan.fail} ${user.tag}`);
                             });
                     }
                 });
@@ -30,7 +30,7 @@ module.exports = {
                 message.channel.send(`:information_source: ${lan.missing_param}`);
             }
         } else {
-            message.channel.send(`:x: ${lan.permerror}`)
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
         }
     }
 }

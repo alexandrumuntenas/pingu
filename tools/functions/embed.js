@@ -156,14 +156,14 @@ module.exports = {
                         var canal = collected.first().mentions.channels.first();
                         const mensaje = client.channels.cache.find(channel => channel.id === canal.id);
                         mensaje.send(embed);
-                        message.channel.send(':white_check_mark: Se ha enviado correctamente el mensaje enriquecido a <#' + canal.id + '>. Así luce:');
+                        message.channel.send('<:pingu_check:876104161794596964> Se ha enviado correctamente el mensaje enriquecido a <#' + canal.id + '>. Así luce:');
                         message.channel.send(embed);
                     });
             }
             message.channel.send('<:info:858737080950718484> Bienvenido al constructor visual de mensajes enriquecidos. Le iremos haciendo una serie de preguntas para ir construyendo su mensaje enriquecido a medida.');
             indice();
         } else {
-            message.channel.send(':x: No dispone de permisos suficientes para ejecutar este comando')
+            message.channel.send('<:pingu_cross:876104109256769546> No dispone de permisos suficientes para ejecutar este comando')
         }
     }
 }

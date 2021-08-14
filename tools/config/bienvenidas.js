@@ -76,12 +76,12 @@ module.exports = {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(yes);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_message.response_b}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_b}`);
                             indice();
                         } else {
                             var no = "UPDATE `guild_data` SET `bienvenida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(no);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_message.response_a}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_a}`);
                             indice();
                         }
                     });
@@ -94,12 +94,12 @@ module.exports = {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `guild_data` SET `bienvenida_cartel` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(yes);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_cartel.response_b}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_cartel.response_b}`);
                             indice();
                         } else {
                             var no = "UPDATE `guild_data` SET `bienvenida_cartel` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(no);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_cartel.response_a}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_cartel.response_a}`);
                             indice();
                         }
                     });
@@ -183,10 +183,10 @@ module.exports = {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `guild_data` SET `bienvenida_canal_id` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
-                            message.channel.send(`:white_check_mark: ${lan.update_channel.response}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_channel.response}`);
                             indice();
                         } else {
-                            message.channel.send(`:x: ${lan.update_channel.response}`)
+                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.update_channel.response}`)
                             u_canal();
                         }
                     });
@@ -198,7 +198,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         var updatemsg = "UPDATE `guild_data` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
-                        message.channel.send(`:white_check_mark: ${lan.update_message.response}`);
+                        message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_message.response}`);
                         indice();
                     });
             }
@@ -211,14 +211,14 @@ module.exports = {
                             if (parseInt(collected.first().content) <= 20 || parseInt(collected.first().content) >= 1) {
                                 var updatemsg = "UPDATE `guild_data` SET `bienvenida_fondo` = '" + collected.first().content + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                                 con.query(updatemsg);
-                                message.channel.send(':white_check_mark: Se ha actualizado el fondo de los carteles de bienvenida');
+                                message.channel.send('<:pingu_check:876104161794596964> Se ha actualizado el fondo de los carteles de bienvenida');
                                 indice();
                             } else {
-                                message.channel.send(':x: Ese fondo no existe, por favor, introduzca un ID válido.')
+                                message.channel.send('<:pingu_cross:876104109256769546> Ese fondo no existe, por favor, introduzca un ID válido.')
                                 u_fondo();
                             }
                         } else {
-                            message.channel.send(':x: El valor introducido debe ser alfanumérico.')
+                            message.channel.send('<:pingu_cross:876104109256769546> El valor introducido debe ser alfanumérico.')
                             u_fondo();
                         }
                     });
@@ -227,7 +227,7 @@ module.exports = {
             message.channel.send(`<:info:858737080950718484> ${lan.startup}`);
             indice();
         } else {
-            message.channel.send(`:x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
         }
     }
 }

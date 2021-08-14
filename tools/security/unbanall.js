@@ -11,12 +11,12 @@ module.exports = {
                     bans.forEach(ban => {
                         message.guild.members.unban(ban.user.id);
                     })
-                }).then(() => message.channel.send(`:white_check_mark: ${lan.success}`)).catch(e => console.log(e))
+                }).then(() => message.channel.send(`<:pingu_check:876104161794596964> ${lan.success}`)).catch(e => console.log(e))
             } else {
-                message.channel.send(`:x: ${lan.permerror}`);
+                message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
             }
         } else {
-            message.channel.send(`:x: ${noavaliable}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${noavaliable}`);
         }
     }
 }

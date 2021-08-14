@@ -54,7 +54,7 @@ module.exports = {
                 }
                 var sql = "UPDATE `guild_data` SET `moderador_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                 con.query(sql);
-                message.channel.send(`:white_check_mark: ${response}`);
+                message.channel.send(`<:pingu_check:876104161794596964> ${response}`);
                 indice();
             }
 
@@ -70,7 +70,7 @@ module.exports = {
                     result[0].moderador_warn_expulsion_activado = 1;
                 }
                 var sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
-                message.channel.send(`:white_check_mark: ${response}`);
+                message.channel.send(`<:pingu_check:876104161794596964> ${response}`);
                 con.query(sql, function () {
                     e_modwarn();
 
@@ -85,7 +85,7 @@ module.exports = {
                             var cantidad = parseInt(collected.first().content);
                             var sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(sql);
-                            message.channel.send(`:white_check_mark: ${lan.e_limite.success}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.e_limite.success}`);
                             e_modwarn();
                         } else {
                             message.channel.send(`:information_source:  ${lan.e_limite.notinteger}`);
@@ -106,7 +106,7 @@ module.exports = {
                     result[0].moderador_warn_expulsion_accion = 1;
                 }
                 var sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_accion` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
-                message.channel.send(`:white_check_mark: ${response}`);
+                message.channel.send(`<:pingu_check:876104161794596964> ${response}`);
                 con.query(sql);
                 e_modwarn();
             }
@@ -142,7 +142,7 @@ module.exports = {
 
 
         } else {
-            message.channel.send(`:x: ${lan.permerror}`)
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
         }
     }
 }

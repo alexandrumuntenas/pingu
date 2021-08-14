@@ -28,7 +28,7 @@ module.exports = {
                 }
             });
         } else {
-            message.channel.send(`:x: ${noavaliable}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${noavaliable}`);
         }
     }
 }

@@ -12,14 +12,14 @@ module.exports = {
                         var crearccmd = "INSERT INTO `guild_commands` (`guild`, `cmd`, `returns`) VALUES ('" + message.guild.id + "', '" + args[2] + "', '" + motivo + "')";
                         con.query(crearccmd, function (err) {
                             console.log(err)
-                            message.channel.send(`:white_check_mark: ${lan.create.before}\`${args[2]}\`. ${lan.create.after} \`${motivo}\``);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.create.before}\`${args[2]}\`. ${lan.create.after} \`${motivo}\``);
                         })
                         break;
                     case 'remove':
                         var delcmd = "DELETE FROM `guild_commands` WHERE `cmd` = '" + args[2] + "' AND `guild` = " + message.guild.id;
                         con.query(delcmd, function (err) {
                             console.log(err)
-                            message.channel.send(`:white_check_mark: ${lan.remove}: \`${args[2]}\``);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.remove}: \`${args[2]}\``);
                         })
                         break;
                     default:
@@ -30,7 +30,7 @@ module.exports = {
                 message.channel.send(`:information_source: ${lan.missing_args}: \`create\` \`remove\``);
             }
         } else {
-            message.channel.send(`:x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
         }
     }
 }

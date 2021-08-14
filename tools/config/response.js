@@ -31,7 +31,7 @@ module.exports = {
                                         var crearcres = "INSERT INTO `guild_responses` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + message.guild.id + "', '" + accionante + "', '" + respuesta + "')";
                                         con.query(crearcres, function (err) {
                                             console.log(err)
-                                            message.channel.send(`:white_check_mark: ${lan.create.success}: \`${identificador}\``);
+                                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.create.success}: \`${identificador}\``);
                                         })
                                     })
                             });
@@ -40,7 +40,7 @@ module.exports = {
                         var delcmd = "DELETE FROM `guild_responses` WHERE `identificador` = '" + args[2] + "' AND `guild` = " + message.guild.id;
                         con.query(delcmd, function (err) {
                             console.log(err)
-                            message.channel.send(`:white_check_mark: ${lan.remove.success}: \`${args[2]}\``);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.remove.success}: \`${args[2]}\``);
                         })
                         break;
                     default:
@@ -51,7 +51,7 @@ module.exports = {
                 message.channel.send(`:information_source: ${lan.missing_args}: \`create\` \`remove\``);
             }
         } else {
-            message.channel.send(`:x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
         }
     }
 }

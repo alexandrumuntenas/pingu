@@ -37,7 +37,7 @@ module.exports = {
                 }
             }
         } else {
-            message.channel.send(`: x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_false:876103413526564924> ${lan.permerror}`);
         }
     }
 }

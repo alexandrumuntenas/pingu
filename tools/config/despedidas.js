@@ -53,12 +53,12 @@ module.exports = {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
                             var yes = "UPDATE `guild_data` SET `salida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(yes);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_message.response_b}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_b}`);
                             indice();
                         } else {
                             var no = "UPDATE `guild_data` SET `salida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(no);
-                            message.channel.send(`:white_check_mark: ${lan.toggle_message.response_a}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_a}`);
                             indice();
                         }
                     });
@@ -72,10 +72,10 @@ module.exports = {
                             var channel = collected.first().mentions.channels.first();
                             var updatechannel = "UPDATE `guild_data` SET `salida_canal` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
-                            message.channel.send(`:white_check_mark: ${lan.update_channel.success}`);
+                            message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_channel.success}`);
                             indice();
                         } else {
-                            message.channel.send(`:x: ${lan.update_channel.invalid}`)
+                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.update_channel.invalid}`)
                             u_canal();
                         }
                     });
@@ -87,7 +87,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         var updatemsg = "UPDATE `guild_data` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
-                        message.channel.send(`:white_check_mark: ${lan.update_message.success}`);
+                        message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_message.success}`);
                         indice();
                     });
             }
@@ -95,7 +95,7 @@ module.exports = {
             message.channel.send(`<:info:858737080950718484> ${lan.startup}`);
             indice();
         } else {
-            message.channel.send(`:x: ${lan.permerror}`);
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
         }
     }
 }

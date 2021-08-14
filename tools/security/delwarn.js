@@ -12,7 +12,7 @@ module.exports = {
                         con.query(existewarn, function (err, result) {
                             if (result.hasOwnProperty(0)) {
                                 con.query(borrarwarn);
-                                message.channel.send(`:white_check_mark: ${lan.success} (\`${args[2]}\`)`);
+                                message.channel.send(`<:pingu_check:876104161794596964> ${lan.success} (\`${args[2]}\`)`);
                             } else {
                                 message.channel.send(`:information_source: \`${message.mentions.users.first().tag}\` ${lan.userNoHasWarn} \`${args[2]}\``);
                             }
@@ -24,7 +24,7 @@ module.exports = {
                     message.channel.send(`:information_source: ${lan.missing_args}: \`${result[0].prefix}delwarn <${lan.usage.param1}> <${lan.usage.param2}>\``);
                 }
             } else {
-                message.channel.send(`:x: ${lan.permerror}`);
+                message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`);
             }
         }
     }

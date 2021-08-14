@@ -35,7 +35,7 @@ module.exports = {
                                         })
                                         .catch(err => {
                                             console.log(err);
-                                            message.channel.send(`:x: ${lan.automod.error.a} ${lan.automod.ban} ${lan.automod.error.b} (${user.tag}) ${lan.automod.error.c} \`${cache.cantidad}\` ${lan.automod.error.d}`);
+                                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.automod.error.a} ${lan.automod.ban} ${lan.automod.error.b} (${user.tag}) ${lan.automod.error.c} \`${cache.cantidad}\` ${lan.automod.error.d}`);
                                         });
                                 } else {
                                     member
@@ -45,7 +45,7 @@ module.exports = {
                                         })
                                         .catch(err => {
                                             console.log(err);
-                                            message.channel.send(`:x: ${lan.automod.error.a} ${lan.automod.kick} ${lan.automod.error.b} (${user.tag}) ${lan.automod.error.c} \`${cache.cantidad}\` ${lan.automod.error.d}`);
+                                            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.automod.error.a} ${lan.automod.kick} ${lan.automod.error.b} (${user.tag}) ${lan.automod.error.c} \`${cache.cantidad}\` ${lan.automod.error.d}`);
                                         });
                                 }
                             }
@@ -54,7 +54,7 @@ module.exports = {
                 });
             }
         } else {
-            message.channel.send(`:x: ${lan.permerror}`)
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
         }
     }
 }

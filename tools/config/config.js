@@ -17,7 +17,7 @@ module.exports = {
             }, 3600000);
             message.delete();
         } else {
-            message.channel.send(`:x: ${lan.permerror}`)
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
         }
     }
 }

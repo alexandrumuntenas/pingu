@@ -26,10 +26,10 @@ module.exports = {
                 `:speech_balloon: ${lan.guildChannels}: ${lan.guildTextChannel} = \`${channels.filter(channel => channel.type === 'text').size}\` | ${lan.guildVoiceChannel} = \`${channels.filter(channel => channel.type === 'voice').size}\``,
             ], true)
             .addField(lan.guildActivity, [
-                `<:online:868213340894298112> ${lan.online}: \`${members.filter(member => member.presence.status === 'online').size}\``,
-                `<:idle:868213497731891261> ${lan.idle}: \`${members.filter(member => member.presence.status === 'idle').size}\``,
-                `<:dnd:868213585136980079> ${lan.dnd}: \`${members.filter(member => member.presence.status === 'dnd').size}\``,
-                `<:offline:868213543441403954> ${lan.offline}: \`${members.filter(member => member.presence.status === 'offline').size}\``,
+                `<:discord_online:876102925129236481> ${lan.online}: \`${members.filter(member => member.presence.status === 'online').size}\``,
+                `<:discord_idle:876102826273673296> ${lan.idle}: \`${members.filter(member => member.presence.status === 'idle').size}\``,
+                `<:discord_dnd:876102877255454791> ${lan.dnd}: \`${members.filter(member => member.presence.status === 'dnd').size}\``,
+                `<:discord_offline:876102753821278238> ${lan.offline}: \`${members.filter(member => member.presence.status === 'offline').size}\``,
             ], true)
             .setTimestamp();
         message.channel.send(embed);

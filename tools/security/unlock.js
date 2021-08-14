@@ -7,10 +7,10 @@ module.exports = {
             message.channel.updateOverwrite(message.channel.guild.roles.everyone, {
                 SEND_MESSAGES: true
             }).then(() => {
-                message.channel.send(`:white_check_mark: ${lan.success}`);
+                message.channel.send(`<:pingu_check:876104161794596964> ${lan.success}`);
             });
         } else {
-            message.channel.send(`:x: ${lan.permerror}`)
+            message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
         }
     }
 }
