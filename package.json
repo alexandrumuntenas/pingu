@@ -31,7 +31,7 @@
     "pdfkit": "^0.12.1",
     "random-int": "^3.0.0",
     "rss-parser": "^3.12.0",
-    "simple-node-logger": "^18.12.24",
+    "simple-node-logger": "^21.8.12",
     "topgg-autoposter": "^2.0.0",
     "translatte": "^3.0.1"
   },
