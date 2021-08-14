@@ -18,7 +18,7 @@ module.exports = {
             }
 
             var roles_user = new Set();
-            var usersss = result[0].bienvenida_roles_user;
+            var usersss = result[0].welcome_roles;
             var botssss = result[0].bienvenida_roles_bot;
             if (usersss) {
                 var role_user = usersss.split(',');
