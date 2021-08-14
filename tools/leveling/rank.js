@@ -8,9 +8,9 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         var noavaliable = lan.tools.noavaliable;
         lan = lan.tools.leveling.rank;
-        if (result[0].niveles_activado != 0) {
-            var dif = result[0].niveles_dificultad;
-            var cache = { "aspecto": result[0].niveles_fondo }
+        if (result[0].leveling_enabled != 0) {
+            var dif = result[0].leveling_rankup_difficulty;
+            var cache = { "aspecto": result[0].leveling_rankup_image_background }
             if (message.mentions.users.first()) {
                 if (message.mentions.users.first().bot) {
                     message.channel.send(`<:win_information:876119543968305233> ${lan.isbot}`);

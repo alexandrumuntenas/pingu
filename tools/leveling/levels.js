@@ -6,8 +6,8 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         var noavaliable = lan.tools.noavaliable;
         lan = lan.tools.leveling.levels;
-        if (result[0].niveles_activado != 0) {
-            var dif = result[0].niveles_dificultad;
+        if (result[0].leveling_enabled != 0) {
+            var dif = result[0].leveling_rankup_difficulty;
             var lookupfortop10 = "SELECT * FROM `guild_levels` WHERE guild = " + message.guild.id + " ORDER BY nivel DESC, experiencia DESC LIMIT 10";
             con.query(lookupfortop10, function (err, rows, result) {
                 if (result) {

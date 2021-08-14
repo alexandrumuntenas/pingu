@@ -3,8 +3,8 @@ const fs = require('fs');
 const Jimp = require('jimp');
 const downloader = require('nodejs-file-downloader');
 module.exports = function (result, client, con, message, global) {
-    var cache = { "canal_id": result[0].niveles_canal_id, "canal_msg": result[0].niveles_canal_mensaje, "aspecto": result[0].niveles_fondo, "cartelactivado": result[0].niveles_cartel };
-    var dif = result[0].niveles_dificultad;
+    var cache = { "canal_id": result[0].leveling_rankup_channel, "canal_msg": result[0].leveling_rankup_message, "aspecto": result[0].leveling_rankup_image_background, "cartelactivado": result[0].leveling_rankup_image };
+    var dif = result[0].leveling_rankup_difficulty;
     con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", function (err, result) {
         if (result[0]) {
             var exp = parseInt(result[0].experiencia);
