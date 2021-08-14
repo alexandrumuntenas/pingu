@@ -131,7 +131,7 @@ app.use('*/plugins', express.static('./services/web/plugins'));
 app.get('/', (req, res) => { res.redirect('/dashboard') });
 
 app.get('/login', (req, res) => {
-    res.render('login', { err: false });
+    res.render('login', { err: false, claveiande: req.query.iande || '', claveauth: req.query.auth || '' });
 })
 
 app.post('/login', (req, res, next) => {
@@ -151,11 +151,6 @@ app.post('/login', (req, res, next) => {
             return res.redirect('/dashboard');
         });
     })(req, res, next)
-});
-
-app.post('/login', passport.authenticate('local'), (req, res) => {
-    req.logout();
-    res.redirect('/dashboard');
 });
 
 app.post('/logout', (req, res) => {
