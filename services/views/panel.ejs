@@ -123,7 +123,7 @@
                         <div class="Box-header py-0">
                             <div class="form-checkbox">
                                 <label>
-                                    <% if(bbdd.bienvenida_mensaje_activado===1 ) {%>
+                                    <% if(bbdd.welcome_enabled===1 ) {%>
                                         <input type="checkbox" checked="checked" id="LNV5Ljl" name="LNV5Ljl"
                                             value="LNV5Ljl" />
                                         <% } else { %>
@@ -139,7 +139,7 @@
                                     <%= lan.welcome.message %>
                                 </label>
                                 <textarea name="AZGW50Tc4p" id="AZGW50Tc4p"
-                                    class="form-control"><%= bbdd.bienvenida_mensaje %></textarea>
+                                    class="form-control"><%= bbdd.welcome_message %></textarea>
                             </div>
                         </div>
                         <div class="Box-row py-0">
@@ -151,7 +151,7 @@
                             <div class="form-group">
                                 <select class="form-select" name="daLuxtTuG5" id="daLuxtTuG5">
                                     <% channels.forEach(c=> {
-                                        if(c.channel_id == bbdd.bienvenida_canal_id){
+                                        if(c.channel_id == bbdd.welcome_channel){
                                         %>
                                         <option value="<%= c.channel_id %>" selected>#<%= c.channel_name %>
                                         </option>
@@ -165,7 +165,7 @@
                         <div class="Box-row py-0">
                             <div class="form-group">
                                 <div class="form-checkbox">
-                                    <% if(bbdd.bienvenida_cartel===1 ) {%>
+                                    <% if(bbdd.welcome_image===1 ) {%>
                                         <input type="checkbox" checked="checked" id="vyKS7bC" name="vyKS7bC"
                                             value="vyKS7bC" />
                                         <% } else { %>
@@ -185,7 +185,7 @@
                                             <select name="nviCCd9jDc" id="nviCCd9jDc" class="input-block"
                                                 multiple="multiple" data-placeholder="Escriba para buscar roles...">
                                                 <% roles.forEach(r=> {
-                                                    if(r.roles_id == bbdd.bienvenida_roles_user){
+                                                    if(r.roles_id == bbdd.welcome_roles){
                                                     %>
                                                     <option value="<%= r.role_id %>" selected>@<%= r.role_name %>
                                                     </option>
@@ -213,7 +213,7 @@
                         <div class="Box-header py-0">
                             <div class="form-checkbox">
                                 <label>
-                                    <% if(bbdd.salida_mensaje_activado===1 ) {%>
+                                    <% if(bbdd.farewell_enabled===1 ) {%>
                                         <input type="checkbox" checked="checked" id="noLp3EI" name="noLp3EI"
                                             value="noLp3EI" />
                                         <% } else { %>
@@ -229,7 +229,7 @@
                                     <%= lan.farewell.message %>
                                 </label>
                                 <textarea name="pfeZmgU" id="pfeZmgU"
-                                    class="form-control"><%= bbdd.salida_mensaje %></textarea>
+                                    class="form-control"><%= bbdd.farewell_message %></textarea>
                             </div>
                         </div>
                         <div class="Box-row py-0">
@@ -269,7 +269,7 @@
                         <div class="Box-header py-0">
                             <div class="form-checkbox">
                                 <label>
-                                    <% if(bbdd.moderador_activado===1 ) {%>
+                                    <% if(bbdd.moderator_enabled===1 ) {%>
                                         <input type="checkbox" checked="checked" id="Y2adeog" name="Y2adeog"
                                             value="Y2adeog" />
                                         <% } else { %>
@@ -365,7 +365,7 @@
                         <div class="Box-header py-0">
                             <div class="form-checkbox">
                                 <label>
-                                    <% if(bbdd.niveles_activado===1 ) {%>
+                                    <% if(bbdd.leveling_enabled===1 ) {%>
                                         <input type="checkbox" checked="checked" id="QTMVmdD" name="QTMVmdD"
                                             value="QTMVmdD" />
                                         <% } else { %>
@@ -381,7 +381,7 @@
                                     Mensaje de Anuncios de Subida de Nivel
                                 </label>
                                 <textarea name="Q8xq8vO" id="Q8xq8vO"
-                                    class="form-control"><%= bbdd.niveles_canal_mensaje %></textarea>
+                                    class="form-control"><%= bbdd.leveling_rankup_message %></textarea>
                             </div>
                         </div>
                         <div class="Box-row py-0">
@@ -395,7 +395,7 @@
 
                                     <% channels.add({ "channel_name" : "Canal Actual" , "channel_id" : "0" });
                                         channels.forEach(c=> {
-                                        if(c.channel_id==bbdd.niveles_canal_id){ %>
+                                        if(c.channel_id==bbdd.leveling_rankup_channel){ %>
                                         <option value="<%= c.channel_id %>" selected>#
                                             <%= c.channel_name %>
                                         </option>

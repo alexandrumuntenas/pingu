@@ -52,7 +52,7 @@ module.exports = {
                     var response = lan.toggle_moderator.response_b;
                     result[0].moderator_enabled = 1;
                 }
-                var sql = "UPDATE `guild_data` SET `moderador_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
+                var sql = "UPDATE `guild_data` SET `moderator_enabled` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                 con.query(sql);
                 message.channel.send(`<:pingu_check:876104161794596964> ${response}`);
                 indice();

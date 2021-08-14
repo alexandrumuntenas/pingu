@@ -51,12 +51,12 @@ module.exports = {
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
                         if (collected.first().content === "y" || collected.first().content === "yes") {
-                            var yes = "UPDATE `guild_data` SET `salida_mensaje_activado` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
+                            var yes = "UPDATE `guild_data` SET `farewell_enabled` = '1' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(yes);
                             message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_b}`);
                             indice();
                         } else {
-                            var no = "UPDATE `guild_data` SET `salida_mensaje_activado` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
+                            var no = "UPDATE `guild_data` SET `farewell_enabled` = '0' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(no);
                             message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_a}`);
                             indice();
@@ -70,7 +70,7 @@ module.exports = {
                     { max: 1 }).then(collected => {
                         if (collected.first().mentions.channels.first()) {
                             var channel = collected.first().mentions.channels.first();
-                            var updatechannel = "UPDATE `guild_data` SET `salida_canal` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id;
+                            var updatechannel = "UPDATE `guild_data` SET `farewell_channel` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                             con.query(updatechannel);
                             message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_channel.success}`);
                             indice();
@@ -85,7 +85,7 @@ module.exports = {
                 message.channel.send(`:arrow_right: ${lan.update_message.question} <:warn:858736919432527942> ${lan.update_message.emoji_remover}`)
                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                     { max: 1 }).then(collected => {
-                        var updatemsg = "UPDATE `guild_data` SET `bienvenida_mensaje` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id;
+                        var updatemsg = "UPDATE `guild_data` SET `welcome_message` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                         con.query(updatemsg);
                         message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_message.success}`);
                         indice();
