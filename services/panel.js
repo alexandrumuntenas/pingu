@@ -138,13 +138,13 @@ app.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
             if (err === 1) {
-                return res.render('login', { err: true, twoFa: false, noGuild: false });
+                return res.render('login', { err: true, twoFa: false, noGuild: false, claveiande: '', claveauth: '' });
             } else {
-                return res.render('login', { err: true, twoFa: true, noGuild: false });
+                return res.render('login', { err: true, twoFa: true, noGuild: false, claveiande: '', claveauth: '' });
             }
         }
         if (!user) {
-            return res.render('login', { err: true, twoFa: false, noGuild: false });
+            return res.render('login', { err: true, twoFa: false, noGuild: false, claveiande: '', claveauth: '' });
         }
         req.logIn(user, function (err) {
             if (err) { console.log(err); return next(err); }
@@ -249,6 +249,19 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
                 }
                 if (req.body.hasOwnProperty('AkeMlvn')) {
                     con.query("UPDATE `guild_data` SET `moderador_warn_expulsion_accion` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID]);
+                }
+                break;
+            case 'leveling':
+                if (req.body.hasOwnProperty('QTMVmdD')) {
+                    con.query("UPDATE `guild_data` SET `niveles_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                } else {
+                    con.query("UPDATE `guild_data` SET `niveles_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID]);
+                }
+                if (req.body.hasOwnProperty('Q8xq8vO')) {
+                    con.query("UPDATE `guild_data` SET `niveles_canal_mensaje` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.Q8xq8vO), req.user.Guild_ID]);
+                }
+                if (req.body.hasOwnProperty('ELMb9ge')) {
+                    con.query("UPDATE `guild_data` SET `niveles_canal_id` = ? WHERE `guild_data`.`guild` = ?", [emojiStrip(req.body.ELMb9ge), req.user.Guild_ID]);
                 }
                 break;
             default:

@@ -36,9 +36,14 @@
                         width="32" height="32">
             </div>
         </div>
-        <div class="flash">
+        <div class="flash flash-full">
             ¿Problemas con el panel? <a href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reporta aquí los problemas para
                 solucionarlos.</a>
+        </div>
+        <div class="flash flash-full flash-warn">
+            Las configuraciones relacionadas con los aspectos de los recursos gráficos generados, la configuración de
+            los comandos y respuestas personalizadas estarán próximamente
+            disponible... El módulo de niveles tendrá su página independiente próximamente.
         </div>
         <div class="Layout p-5">
             <div class="Layout-sidebar">
@@ -356,6 +361,52 @@
                             </button>
                         </div>
                     </div>
+                    <div class="Box">
+                        <div class="Box-header py-0">
+                            <div class="form-checkbox">
+                                <label>
+                                    <% if(bbdd.niveles_activado===1 ) {%>
+                                        <input type="checkbox" checked="checked" id="QTMVmdD" name="QTMVmdD"
+                                            value="QTMVmdD" />
+                                        <% } else { %>
+                                            <input type="checkbox" id="QTMVmdD" name="QTMVmdD" value="QTMVmdD" />
+                                            <% } %>
+                                                <%= lan.enableModule %>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="Box-row py-0">
+                            <div class="form-group">
+                                <label for="pfeZmgU">
+                                    Mensaje de Anuncios de Subida de Nivel
+                                </label>
+                                <textarea name="Q8xq8vO" id="Q8xq8vO"
+                                    class="form-control"><%= bbdd.niveles_canal_mensaje %></textarea>
+                            </div>
+                        </div>
+                        <div class="Box-row py-0">
+                            <div class="form-group">
+                                <label for="ELMb9ge">
+                                    Anuncios de Subida de Nivel
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-select" name="ELMb9ge" id="ELMb9ge">
+
+                                    <% channels.add({ "channel_name" : "Canal Actual" , "channel_id" : "0" });
+                                        channels.forEach(c=> {
+                                        if(c.channel_id==bbdd.niveles_canal_id){ %>
+                                        <option value="<%= c.channel_id %>" selected>#
+                                            <%= c.channel_name %>
+                                        </option>
+                                        <% } else { %>
+                                            <option value="<%= c.channel_id %>">#<%= c.channel_name %>
+                                            </option>
+                                            <% }}) %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 <form id="economy">
                     <input type="hidden" name="frmname" value="economy" />
@@ -571,6 +622,47 @@
                     title: 'Se ha producido un error al guardar...'
                 });
                 $('#DJxuG8K').removeAttr('disabled');
+            });
+
+        });
+        $("#QTMVmdD").change(function () {
+            $('#Fw3w5X4').removeAttr('disabled');
+        });
+        $("#Q8xq8vO").change(function () {
+            $('#Fw3w5X4').removeAttr('disabled');
+        });
+        $("#ELMb9ge").change(function () {
+            $('#Fw3w5X4').removeAttr('disabled');
+        });
+        $("#leveling").submit(function (e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#Fw3w5X4').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            }).fail(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha producido un error al guardar...'
+                });
+                $('#Fw3w5X4').removeAttr('disabled');
             });
 
         });

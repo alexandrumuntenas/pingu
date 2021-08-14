@@ -20,7 +20,7 @@ module.exports = function (result, client, con, message, global) {
                 const member = fromdb.replace('{user}', `<@${message.author.id}>`);
                 const nivold = member.replace('{nivel-antiguo}', `${niv - 1}`);
                 const toexport = nivold.replace('{nivel-nuevo}', `${niv}`);
-                if (cache.canal_id) {
+                if (cache.canal_id !== '0') {
                     const mensaje = client.channels.cache.find(channel => channel.id === cache.canal_id);
                     mensaje.send(toexport);
                 } else {
