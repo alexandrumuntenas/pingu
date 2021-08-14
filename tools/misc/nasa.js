@@ -6,7 +6,7 @@ module.exports = {
     name: 'nasa',
     execute(args, client, con, contenido, message, result) {
 
-        message.channel.send('<a:loader:871389840904695838>')
+        message.channel.send('<a:win_loading:876111904353959936>')
             .then(msg => {
                 fetch('https://api.nasa.gov/planetary/apod?api_key=ezowSxroDnhKvjzojV9SXx7LmZ6P7OndGYLGXuE9')
                     .then(response => response.json())
