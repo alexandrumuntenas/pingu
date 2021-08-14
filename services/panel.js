@@ -178,11 +178,13 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
                 res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user });
             } else {
                 con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
+                req.session.destroy();
                 req.logout();
                 res.redirect('/');
             }
         });
     } else {
+        req.session.destroy();
         req.logout();
         res.redirect('/');
     }
