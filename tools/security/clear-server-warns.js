@@ -4,7 +4,7 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.security.clearserverwarns;
         if (message.guild.ownerID == message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
-            if (result[0].moderador_activado != 0) {
+            if (result[0].moderator_enabled != 0) {
                 var sql = "DELETE FROM `guild_warns` WHERE guild = '" + message.guild.id + "'";
                 con.query(sql, function (err) {
                     console.log(err)

@@ -4,7 +4,7 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.security.delwarn;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
-            if (result[0].moderador_activado != 0) {
+            if (result[0].moderator_enabled != 0) {
                 if (message.mentions.users.first()) {
                     if (args[2]) {
                         var borrarwarn = "DELETE FROM guild_warns WHERE guild = " + message.guild.id + " AND user = " + message.mentions.users.first().id + " AND identificador = '" + args[2] + "'";

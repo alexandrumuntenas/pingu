@@ -7,7 +7,7 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.security.vwarns;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
-            if (result[0].moderador_activado != 0) {
+            if (result[0].moderator_enabled != 0) {
                 if (message.mentions.users.first()) {
                     const user = message.mentions.users.first();
                     var verinfracciones5 = "SELECT * FROM `guild_warns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25";

@@ -4,7 +4,7 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         var noavaliable = lan.tools.noavaliable;
         lan = lan.tools.security.unbanall;
-        if (result[0].moderador_activado != 0) {
+        if (result[0].moderator_enabled != 0) {
             if (message.member.hasPermission("ADMINISTRATOR")) {
                 message.guild.fetchBans().then(bans => {
                     if (bans.size == 0) { message.channel.send(`:neutral_face: ${lan.nousers}`); };

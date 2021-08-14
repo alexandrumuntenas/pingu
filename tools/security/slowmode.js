@@ -6,7 +6,7 @@ module.exports = {
         var lan = require(`../../languages/${result[0].guild_language}.json`);
         lan = lan.tools.security.slowmode;
         if (message.member.hasPermission('MANAGE_MESSAGES') && message.member.hasPermission('KICK_MEMBERS') && message.member.hasPermission('BAN_MEMBERS') || message.member.hasPermission('ADMINISTRATOR')) {
-            if (result[0].moderador_activado != 0) {
+            if (result[0].moderator_enabled != 0) {
                 if (args[1]) {
                     var timeslowmo1 = message.content.replace(`${result[0].guild_prefix}slowmode `, '');
                     timeslowmo = parse(timeslowmo1, 's');

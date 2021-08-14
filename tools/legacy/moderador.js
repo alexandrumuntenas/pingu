@@ -42,15 +42,15 @@ module.exports = {
             }
 
             function t_mod() {
-                var valor = result[0].moderador_activado;
+                var valor = result[0].moderator_enabled;
                 if (valor == 1) {
                     var fin = 0;
                     var response = lan.toggle_moderator.response_a;
-                    result[0].moderador_activado = 0;
+                    result[0].moderator_enabled = 0;
                 } else {
                     var fin = 1;
                     var response = lan.toggle_moderator.response_b;
-                    result[0].moderador_activado = 1;
+                    result[0].moderator_enabled = 1;
                 }
                 var sql = "UPDATE `guild_data` SET `moderador_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id;
                 con.query(sql);
