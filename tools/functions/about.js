@@ -9,12 +9,12 @@ module.exports = {
       .setColor('#FFFFFF')
       .addFields(
         {
-          name: `<:Document_Folder:867318660679073812> ${lan.docs}`,
+          name: `:notebook_with_decorative_cover:  ${lan.docs}`,
           value: `https://bit.ly/pingu_docs`,
           inline: true
         },
         {
-          name: `<:upvote:867318329651888128> ${lan.topgg}`,
+          name: `<:reddit_upvote:876106253355585627> ${lan.topgg}`,
           value: 'https://bit.ly/pingu_topgg',
           inline: true
         },
@@ -34,7 +34,7 @@ module.exports = {
           inline: true
         },
         {
-          name: `<:language:868233627136315462> ${lan.languages}`,
+          name: `<:pingu_language:876103568006971433> ${lan.languages}`,
           value: 'https://bit.ly/pingu_languages',
           inline: true
         }
