@@ -225,7 +225,7 @@ client.on('message', (message) => {
       });
     }
     else {
-      guildcreate(con, message);
+      guildcreate(con, message.guild);
     }
   }
   )
