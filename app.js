@@ -225,12 +225,7 @@ client.on('message', (message) => {
       });
     }
     else {
-      var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
-      var id = message.guild.id;
-      var sql = "INSERT INTO `guild_data` (`guild`, `prefix`,`welcome_channel`,`welcome_message`,`farewell_channel`,`farewell_message`,`leveling_rankup_channel`,`leveling_rankup_message`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
-      con.query(sql, function (err, result) {
-        if (err) log.warn(err);
-      });
+      guildcreate(con, guild);
     }
   }
   )
