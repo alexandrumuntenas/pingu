@@ -1,657 +1,630 @@
-<!DOCTYPE html>
-<html lang="es" data-color-mode="dark" data-dark-theme="dark">
-
+<!doctype html>
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/jpeg" href="<%= client.avatarURL({ format: 'jpg' }) %>" />
     <title>
         <%= guild.name %> | Pingu
     </title>
-
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta3/dist/css/tabler.min.css">
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://unpkg.com/@primer/css@^17.5.2/dist/primer.css" rel="stylesheet" />
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 </head>
 
-<body class="hold-transition sidebar-mini">
+<body class="antialiased theme-dark">
     <div class="wrapper">
-        <div class="Header">
-            <div class="Header-item Header-item--full">
-                <a href="#" class="Header-link f4 d-flex flex-items-center">
-                    <img src="<%= client.avatarURL({ format: 'jpg' }) %>" class="mr-2"
-                        style="width: 32px; height: 32px; border-radius: 100%;">
-                    <span>
-                        <%= client.username %>
-                    </span>
-                </a>
-            </div>
-            <div class="Header-item mr-0">
-                <%= guild.name %>
-                    <img style="margin-left: 8px;" class="avatar" alt="Guild Icon"
-                        src="<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>"
-                        width="32" height="32">
-            </div>
-        </div>
-        <div class="flash flash-full">
-            ¿Problemas con el panel? <a href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reporta aquí los problemas para
-                solucionarlos.</a>
-        </div>
-        <div class="Layout p-5">
-            <div class="Layout-sidebar">
-                <div class="Subhead">
-                    <div class="Subhead-heading">
-                        Gestión del servidor
+        <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h1 class="navbar-brand">
+                    <img src="<%= client.avatarURL({ format: 'jpg' }) %>" width="110" height="110" alt="Tabler"
+                        class="navbar-brand-image" style="margin-right: 10px;">
+                    <%= client.username %>
+                </h1>
+                <div class="navbar-nav flex-row d-lg-none">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                            aria-label="Open user menu">
+                            <span class="avatar avatar-sm"
+                                style="background-image: url(<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>)"></span>
+                            <div class="d-none d-xl-block ps-2">
+                                <div>
+                                    <%= guild.name %>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <button onclick="lightMeUp()" class="dropdown-item">Toggle Light</button>
+                            <a href="#" class="dropdown-item">Logout</a>
+                        </div>
                     </div>
                 </div>
-                <nav class="SideNav border">
-                    <a class="SideNav-item" href="#system">Sistema</a>
-                    <a class="SideNav-item" href="#welcome">Bienvenidas</a>
-                    <a class="SideNav-item" href="#farewell">Despedidas</a>
-                    <a class="SideNav-item" href="#moderation">Moderación</a>
-                    <a class="SideNav-item" href="custom/responses">Respuestas Custom</a>
-                    <a class="SideNav-item" href="/dashboard/custom/commands">Comandos Custom</a>
-                </nav>
-                <div class="Subhead Subhead--spacious">
-                    <div class="Subhead-heading">
-                        Compromiso y Diversión
-                    </div>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="navbar-nav pt-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <polyline points="5 12 3 12 12 3 21 12 19 12" />
+                                        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+                                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Overview
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#system">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-settings" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                            d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                        </path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    System
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#arrivals">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-plane-arrival" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M15 12h5a2 2 0 0 1 0 4h-15l-3 -6h3l2 2h3l-2 -7h3z"
+                                            transform="rotate(15 12 12) translate(0 -1)"></path>
+                                        <line x1="3" y1="21" x2="21" y2="21"></line>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Arrivals
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/departures">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-plane-departure" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M15 12h5a2 2 0 0 1 0 4h-15l-3 -6h3l2 2h3l-2 -7h3z"
+                                            transform="rotate(-15 12 12) translate(0 -1)"></path>
+                                        <line x1="3" y1="21" x2="21" y2="21"></line>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Departures
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/moderation">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tools"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4"></path>
+                                        <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"></line>
+                                        <polyline points="12 8 7 3 3 7 8 12"></polyline>
+                                        <line x1="7" y1="8" x2="5.5" y2="9.5"></line>
+                                        <polyline points="16 12 21 17 17 21 12 16"></polyline>
+                                        <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Moderation
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/customcommands">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-terminal-2" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M8 9l3 3l-3 3"></path>
+                                        <line x1="13" y1="15" x2="16" y2="15"></line>
+                                        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Custom Commands
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/autoresponder">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-settings-automation" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path
+                                            d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+                                        </path>
+                                        <path d="M10 9v6l5 -3z"></path>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Autoresponder
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/leveling">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-message-circle" width="24" height="24"
+                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 20l1.3 -3.9a9 8 0 1 1 3.4 2.9l-4.7 1"></path>
+                                        <line x1="12" y1="12" x2="12" y2="12.01"></line>
+                                        <line x1="8" y1="12" x2="8" y2="12.01"></line>
+                                        <line x1="16" y1="12" x2="16" y2="12.01"></line>
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                    Leveling
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <nav class="SideNav border">
-                    <a class="SideNav-item" href="#leveling" aria-current="page">Niveles</a>
-                </nav>
-                <div class="Subhead Subhead--spacious">
-                    <div class="Subhead-heading">
-                        Enlaces de interés
-                    </div>
-                </div>
-                <nav class="SideNav border">
-                    <a class="SideNav-item"
-                        href="https://discord.com/oauth2/authorize?client_id=827199539185975417&scope=bot+applications.commands&permissions=1933044831&redirect_uri=https%3A%2F%2Fpingu.duoestudios.es&response_type=code">Nuevo
-                        Servidor <i class="fab fa-discord float-right"></i></a>
-                    <a class="SideNav-item" href="https://discord.gg/pyJhaS7nP7">Servidor de Soporte <i
-                            class="fas fa-hands-helping float-right"></i></a>
-                    <a class="SideNav-item" href="https://top.gg/bot/827199539185975417/">Pingu en Top.GG <i
-                            class="fas fa-external-link-alt float-right"></i></a>
-                    <a class="SideNav-item" href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reportar problemas <i
-                            class="fas fa-bug float-right"></i></a>
-                    <button class="SideNav-item" id="MSwl3yH">Cerrar Sesión<i
-                            class="fas fa-sign-out-alt float-right"></i></button>
-                </nav>
             </div>
-            <div class="Layout-main">
-                <form id="system">
-                    <input type="hidden" name="frmname" value="system" />
-                    <div class="Subhead">
-                        <div class="Subhead-heading">
-                            <%= lan.system.title %>
-                        </div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" type="submit" id="X3Rh42oq" disabled>Guardar</button>
+        </aside>
+        <header class="navbar navbar-expand-md navbar-light d-none d-lg-flex d-print-none">
+            <div class="container-xl">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-nav flex-row order-md-last">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
+                            aria-label="Open user menu">
+                            <div class="d-none d-xl-block p-2">
+                                <div>
+                                    <%= guild.name %>
+                                </div>
+                            </div>
+                            <span class="avatar avatar-sm"
+                                style="background-image: url(<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>)"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <button onclick="lightMeUp()" class="dropdown-item">Toggle Light</button>
+                            <button onclick="getMeOut()" class="dropdown-item">Log Out</button>
                         </div>
                     </div>
-                    <div class="Box">
-                        <div class="Box-body">
-                            <label for="EEScEqQw" class="form-label">
-                                <%= lan.system.prefix %>
-                            </label>
-                            <input type="text" id="EEScEqQw" name="EEScEqQw" class="form-control"
-                                value="<%= bbdd.prefix %>" placeholder="/" required>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                </div>
+            </div>
+        </header>
+        <div class="page-wrapper">
+            <div class="container-xl">
+                <div class="page-header">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <span class="avatar avatar-md"
+                                style="background-image: url(<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>)"></span>
                         </div>
-                    </div>
-                </form>
-                <form id="welcome">
-                    <input type="hidden" name="frmname" value="welcome" />
-                    <div class="Subhead Subhead--spacious">
-                        <div class="Subhead-heading">
-                            <%= lan.welcome.title %>
-                        </div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="qYgCExvNIy" disabled>
-                                <%= lan.save %>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="Box">
-                        <div class="Box-header py-0">
-                            <div class="form-checkbox">
-                                <label>
-                                    <% if(bbdd.welcome_enabled===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="LNV5Ljl" name="LNV5Ljl"
-                                            value="LNV5Ljl" />
-                                        <% } else { %>
-                                            <input type="checkbox" id="LNV5Ljl" name="LNV5Ljl" value="LNV5Ljl" />
-                                            <% } %>
-                                                <%= lan.enableModule %>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="AZGW50Tc4p">
-                                    <%= lan.welcome.message %>
-                                </label>
-                                <textarea name="AZGW50Tc4p" id="AZGW50Tc4p"
-                                    class="form-control"><%= bbdd.welcome_message %></textarea>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="daLuxtTuG5">
-                                    <%= lan.welcome.channel %>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-select" name="daLuxtTuG5" id="daLuxtTuG5">
-                                    <% channels.forEach(c=> {
-                                        if(c.channel_id == bbdd.welcome_channel){
-                                        %>
-                                        <option value="<%= c.channel_id %>" selected>#<%= c.channel_name %>
-                                        </option>
-                                        <% } else { %>
-                                            <option value="<%= c.channel_id %>">#<%= c.channel_name %>
-                                            </option>
-                                            <% }}) %>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <div class="form-checkbox">
-                                    <% if(bbdd.welcome_image===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="vyKS7bC" name="vyKS7bC"
-                                            value="vyKS7bC" />
-                                        <% } else { %>
-                                            <input type="checkbox" id="vyKS7bC" name="vyKS7bC" value="vyKS7bC" />
-                                            <% } %> <label class="form-check-label" for="vyKS7bC">
-                                                    <%= lan.welcome.imageOnJoin %>
-                                                </label>
+                        <div class="col">
+                            <h2 class="page-title">
+                                <%= guild.name %>
+                            </h2>
+                            <div class="page-subtitle">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-users" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <circle cx="9" cy="7" r="4"></circle>
+                                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                                        </svg>
+                                        <a href="#" class="text-reset">
+                                            <%= guild.memberCount %> members
+                                        </a>
+                                    </div>
+                                    <div class="col-auto">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-messages" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path
+                                                d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10">
+                                            </path>
+                                            <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
+                                        </svg>
+                                        <%= guild.channels.cache.filter(channel=> channel.type === 'text').size %> text
+                                            channels
+                                    </div>
+                                    <div class="col-auto">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-volume" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M15 8a5 5 0 0 1 0 8"></path>
+                                            <path d="M17.7 5a9 9 0 0 1 0 14"></path>
+                                            <path
+                                                d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a0.8 .8 0 0 1 1.5 .5v14a0.8 .8 0 0 1 -1.5 .5l-3.5 -4.5">
+                                            </path>
+                                        </svg>
+                                        <%= guild.channels.cache.filter(channel=> channel.type === 'voice').size %>
+                                            voice
+                                            channels
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <%= lan.welcome.giveRole %>
-                                    <%= lan.welcome.giveRoleHelp %>
-                                        <div class="form-group">
-                                            <label for="nviCCd9jDc">Roles que dar</label>
-                                            <select name="nviCCd9jDc" id="nviCCd9jDc" class="input-block"
-                                                multiple="multiple" data-placeholder="Escriba para buscar roles...">
-                                                <% roles.forEach(r=> {
-                                                    if(r.roles_id == bbdd.welcome_roles){
-                                                    %>
-                                                    <option value="<%= r.role_id %>" selected>@<%= r.role_name %>
-                                                    </option>
-                                                    <% } else { %>
-                                                        <option value="<%= r.role_id %>">@<%= r.role_name %>
-                                                        </option>
-                                                        <% }}) %>
-                                            </select>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="container-xl">
+                    <div class="row row-deck row-cards">
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card" id="totalGuildMembers">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subheader">Total Users</div>
+                                    </div>
+                                    <div class="h1 mb-3">
+                                        <%= guild.memberCount %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-success" id="onlineGuildMembers">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subheader text-white">Total Online Members</div>
+                                    </div>
+                                    <div class="h1 mb-3">
+                                        <%= guild.members.cache.filter(m=> m.presence.status === 'online').size %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-warning" id="idleGuildMembers">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subheader text-white">Total Idle Members</div>
+                                    </div>
+                                    <div class="h1 mb-3">
+                                        <%= guild.members.cache.filter(m=> m.presence.status === 'idle').size %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card text-white bg-danger" id="dndGuildMembers">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subheader text-white">Total DND Members</div>
+                                    </div>
+                                    <div class="h1 mb-3">
+                                        <%= guild.members.cache.filter(m=> m.presence.status === 'dnd').size %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row row-cards">
+                                <div class="col-12">
+                                    <div class="card" id="system">
+                                        <div class="card-body" style="position: relative;">
+                                            <h3 class="card-title">
+                                                System Settings
+                                            </h3>
+                                            <div class="mb-3">
+                                                <label class="form-label">Commands prefix</label>
+                                                <input type="text" class="form-control" name="example-text-input"
+                                                    placeholder="!" value="<%= bbdd.guild_prefix %>">
+                                                <div class="form-text">You can change the prefix used to trigger the
+                                                    bot.</div>
+                                            </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row row-cards">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header container-fluid">
+                                            <h3 class="card-title">Arrivals Settings</h3>
+                                        </div>
+                                        <div class="card-body" style="position: relative;">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label" for="AZGW50Tc4p">
+                                                    Welcome Message
+                                                </label>
+                                                <textarea name="AZGW50Tc4p" id="AZGW50Tc4p"
+                                                    class="form-control"><%= bbdd.welcome_message %></textarea>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label class="form-label" for="daLuxtTuG5">
+                                                    Welcome Message Channel
+                                                </label>
+                                                <select class="form-select" name="daLuxtTuG5" id="daLuxtTuG5">
+                                                    <% channels.forEach(c=> {
+                                                        if(c.channel_id == bbdd.welcome_channel){
+                                                        %>
+                                                        <option value="<%= c.channel_id %>" selected>#<%= c.channel_name
+                                                                %>
+                                                        </option>
+                                                        <% } else { %>
+                                                            <option value="<%= c.channel_id %>">#<%= c.channel_name %>
+                                                            </option>
+                                                            <% }}) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row row-cards">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body" style="position: relative;">
+                                            <h3 class="card-title">Departures Settings</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="row row-cards">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body" style="position: relative;">
+                                            <h3 class="card-title">Moderation Settings</h3>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </form>
-                <form id="farewell">
-                    <input type="hidden" name="frmname" value="farewell" />
-                    <div class="Subhead Subhead--spacious">
-                        <div class="Subhead-heading">Despedidas</div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="zbjt55v" disabled>
-                                <%= lan.save %>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="Box">
-                        <div class="Box-header py-0">
-                            <div class="form-checkbox">
-                                <label>
-                                    <% if(bbdd.farewell_enabled===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="noLp3EI" name="noLp3EI"
-                                            value="noLp3EI" />
-                                        <% } else { %>
-                                            <input type="checkbox" id="noLp3EI" name="noLp3EI" value="noLp3EI" />
-                                            <% } %>
-                                                <%= lan.enableModule %>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="pfeZmgU">
-                                    <%= lan.farewell.message %>
-                                </label>
-                                <textarea name="pfeZmgU" id="pfeZmgU"
-                                    class="form-control"><%= bbdd.farewell_message %></textarea>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="tKDIdy1">
-                                    <%= lan.farewell.channel %>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-select" name="tKDIdy1" id="tKDIdy1">
-                                    <% channels.forEach(c=> {
-                                        if(c.channel_id == bbdd.salida_canal_id){
-                                        %>
-                                        <option value="<%= c.channel_id %>" selected>#
-                                            <%= c.channel_name %>
-                                        </option>
-                                        <% } else { %>
-                                            <option value="<%= c.channel_id %>">#<%= c.channel_name %>
-                                            </option>
-                                            <% }}) %>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <form id="moderation">
-                    <input type="hidden" name="frmname" value="moderation" />
-                    <div class="Subhead Subhead--spacious">
-                        <div class="Subhead-heading">Moderación</div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="DJxuG8K" disabled>
-                                <%= lan.save %>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="Box">
-                        <div class="Box-header py-0">
-                            <div class="form-checkbox">
-                                <label>
-                                    <% if(bbdd.moderator_enabled===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="Y2adeog" name="Y2adeog"
-                                            value="Y2adeog" />
-                                        <% } else { %>
-                                            <input type="checkbox" id="Y2adeog" name="Y2adeog" value="Y2adeog" />
-                                            <% } %>
-                                                <%= lan.enableModule %>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-checkbox">
-                                <label>
-                                    <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="OxV1juz" name="OxV1juz"
-                                            value="OxV1juz" />
-                                        <% } else { %>
-                                            <input type="checkbox" id="OxV1juz" name="OxV1juz" value="OxV1juz" />
-                                            <% } %>
-                                                Tomar acciones automáticamente si un usuario alcanza una cierta cantidad
-                                                de infracciones
-                                </label>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="DHLJ2YI" class="form-label">
-                                    Cantidad necesaria de advertencias para tomar acciones
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                    value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1" placeholder="10"
-                                    required>
-                            </div>
-                            <label for="AkeMlvn" class="form-label">
-                                ¿Qué acción tomar?
-                            </label>
-                            <div class="form-group">
-                                <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                    <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                        <option value="1" selected>Expulsión Permanente</option>
-                                        <option value="0" disabled>Expulsión Temporal</option>
-                                        <option value="0">Expulsión</option>
-                                        <% } else { %>
-                                            <option value="1">Expulsión Permanente</option>
-                                            <option value="0" disabled>Expulsión Temporal</option>
-                                            <option value="0" selected>Expulsión</option>
-                                            <% } %>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <form id="custom_cmds">
-                    <input type="hidden" name="frmname" value="ccmd" />
-                    <div class="Subhead Subhead--spacious">
-                        <div class="Subhead-heading">Comandos personalizados</div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="HgIODwj" disabled>
-                                <%= lan.save %>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flash mt-3 flash-warn">
-                        Los Comandos Personalizados tienen su propia página...
-                    </div>
-                </form>
-                <form id="custom_responses">
-                    <input type="hidden" name="frmname" value="cres" />
-                    <div class="Subhead Subhead--spacious">
-                        <div class="Subhead-heading">Respuestas personalizados</div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="SXGTkCy" disabled>
-                                <%= lan.save %>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flash mt-3 flash-warn">
-                        Las Respuestas Personalizadas tienen su propia página...
-                    </div>
-                </form>
-                <form id="leveling">
-                    <input type="hidden" name="frmname" value="leveling" />
-                    <div class="Subhead Subhead--spacious">
-                        <div class="Subhead-heading">Niveles</div>
-                        <div class="Subhead-actions">
-                            <button class="btn btn-sm btn-primary" role="button" id="Fw3w5X4" disabled>
-                                <%= lan.save %>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="Box">
-                        <div class="Box-header py-0">
-                            <div class="form-checkbox">
-                                <label>
-                                    <% if(bbdd.leveling_enabled===1 ) {%>
-                                        <input type="checkbox" checked="checked" id="QTMVmdD" name="QTMVmdD"
-                                            value="QTMVmdD" />
-                                        <% } else { %>
-                                            <input type="checkbox" id="QTMVmdD" name="QTMVmdD" value="QTMVmdD" />
-                                            <% } %>
-                                                <%= lan.enableModule %>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="pfeZmgU">
-                                    Mensaje de Anuncios de Subida de Nivel
-                                </label>
-                                <textarea name="Q8xq8vO" id="Q8xq8vO"
-                                    class="form-control"><%= bbdd.leveling_rankup_message %></textarea>
-                            </div>
-                        </div>
-                        <div class="Box-row py-0">
-                            <div class="form-group">
-                                <label for="ELMb9ge">
-                                    Anuncios de Subida de Nivel
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <select class="form-select" name="ELMb9ge" id="ELMb9ge">
+                </div>
+            </div>
+            <footer class="footer footer-transparent d-print-none">
+                <div class="container">
+                    <div class="row text-center align-items-center flex-row-reverse">
 
-                                    <% channels.add({ "channel_name" : "Canal Actual" , "channel_id" : "0" });
-                                        channels.forEach(c=> {
-                                        if(c.channel_id==bbdd.leveling_rankup_channel){ %>
-                                        <option value="<%= c.channel_id %>" selected>#
-                                            <%= c.channel_name %>
-                                        </option>
-                                        <% } else { %>
-                                            <option value="<%= c.channel_id %>">#<%= c.channel_name %>
-                                            </option>
-                                            <% }}) %>
+                        <div class="col-lg-auto ms-lg-auto">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item">
+                                    <a href="https://discord.com/oauth2/authorize?client_id=827199539185975417&scope=bot+applications.commands&permissions=1933044831&redirect_uri=https%3A%2F%2Fpingu.duoestudios.es&response_type=code"
+                                        class="link-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-apps" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+                                            <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+                                            <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+                                            <line x1="14" y1="7" x2="20" y2="7"></line>
+                                            <line x1="17" y1="4" x2="17" y2="10"></line>
+                                        </svg>
+                                        Add Pingu
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="https://discord.gg/pyJhaS7nP7" class="link-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-help" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <circle cx="12" cy="12" r="9"></circle>
+                                            <line x1="12" y1="17" x2="12" y2="17.01"></line>
+                                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4"></path>
+                                        </svg>
+                                        Pingu Support Guild
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="https://top.gg/bot/827199539185975417/" class="link-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-thumb-up" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path
+                                                d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3">
+                                            </path>
+                                        </svg>
+                                        Vote Pingu
+                                    </a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="https://forms.gle/DJhA7Hbp9fPTXNuR8" class="link-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-code" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <polyline points="7 8 3 12 7 16"></polyline>
+                                            <polyline points="17 8 21 12 17 16"></polyline>
+                                            <line x1="14" y1="4" x2="10" y2="20"></line>
+                                        </svg>
+                                        Report Problems</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                            <ul class="list-inline list-inline-dots mb-0">
+                                <li class="list-inline-item">
+                                    Copyright &copy; <%= new Date().getFullYear() %> <a
+                                            href="https://github.com/alexandrumuntenas">Alexandru
+                                            Theodor Muntenas</a>.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">New report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" name="example-text-input"
+                            placeholder="Your report name">
+                    </div>
+                    <label class="form-label">Report type</label>
+                    <div class="form-selectgroup-boxes row mb-3">
+                        <div class="col-lg-6">
+                            <label class="form-selectgroup-item">
+                                <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
+                                <span class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <span class="me-3">
+                                        <span class="form-selectgroup-check"></span>
+                                    </span>
+                                    <span class="form-selectgroup-label-content">
+                                        <span class="form-selectgroup-title strong mb-1">Simple</span>
+                                        <span class="d-block text-muted">Provide only basic data needed for the
+                                            report</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-selectgroup-item">
+                                <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <span class="me-3">
+                                        <span class="form-selectgroup-check"></span>
+                                    </span>
+                                    <span class="form-selectgroup-label-content">
+                                        <span class="form-selectgroup-title strong mb-1">Advanced</span>
+                                        <span class="d-block text-muted">Insert charts and additional advanced analyses
+                                            to be inserted in the report</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="mb-3">
+                                <label class="form-label">Report url</label>
+                                <div class="input-group input-group-flat">
+                                    <span class="input-group-text">
+                                        https://tabler.io/reports/
+                                    </span>
+                                    <input type="text" class="form-control ps-0" value="report-01" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label">Visibility</label>
+                                <select class="form-select">
+                                    <option value="1" selected>Private</option>
+                                    <option value="2">Public</option>
+                                    <option value="3">Hidden</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                </form>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Client name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Reporting period</label>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label class="form-label">Additional information</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancel
+                    </a>
+                    <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Create new report
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-
-    <footer class="p-6">
-        <div class="float-right d-none d-sm-inline">
-
-            Code with <button class="btn-link" id="darkswitch">❤️</button> in Spain
-        </div>
-        <strong>Copyright &copy; <%= new Date().getFullYear() %> <a
-                    href="https://github.com/alexandrumuntenas">Alexandru
-                    Theodor Muntenas</a>.</strong>
-        All
-        rights
-        reserved.
-    </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"
-        integrity="sha512-rMGGF4wg1R73ehtnxXBt5mbUfN9JUJwbk21KMlnLZDJh7BkPmeovBuddZCENJddHYYMkCh9hPFnPmS9sspki8g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css"
-        integrity="sha512-yVvxUQV0QESBt1SyZbNJMAwyKvFTLMyXSyBHDO4BG5t7k/Lw34tyqlSDlKIrIENIzCl+RVUNjmCPG+V/GMesRw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.2/wordpress-admin/wordpress-admin.min.css">
+    <script src="https://unpkg.com/@tabler/core@1.0.0-beta3/dist/js/tabler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script>
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'bottom-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true
-        })
-        $(document).ready(function () {
-            $('#nviCCd9jDc').chosen({ no_results_text: "Oops, no hemos encontrado el rol: " });
-        });
-        $("#EEScEqQw").keyup(function () {
-            $('#X3Rh42oq').removeAttr('disabled');
-        });
-        $("#system").submit(function (e) {
-
-            e.preventDefault();
-
-            var form = $(this);
-
-            $.ajax({
-                type: "POST",
-                url: '/dashboard',
-                data: form.serialize(),
-                beforeSend: function () {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Guardando...'
-                    });
-                    $('#X3Rh42oq').attr('disabled', 'disabled');
-                },
-                success: function (data) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cambios Guardados'
-                    });
-                }
-            });
-
-        });
-        $("#AZGW50Tc4p").keyup(function () {
-            $('#qYgCExvNIy').removeAttr('disabled');
-        });
-        $("#daLuxtTuG5").change(function () {
-            $('#qYgCExvNIy').removeAttr('disabled');
-        });
-        $("#LNV5Ljl").change(function (e) {
-            $('#qYgCExvNIy').removeAttr('disabled');
-            if ($("#LNV5Ljl").attr('checked', 'checked')) {
-                $('#welcome_dot').addClass('fas').removeClass('far');
+        function lightMeUp() {
+            if ($('body').hasClass('theme-dark')) {
+                $('body').removeClass('theme-dark');
             } else {
-                $('#welcome_dot').removeClass('fas').addClass('far');
+                $('body').addClass('theme-dark');
             }
-        });
-        $("#vyKS7bC").change(function () {
-            $('#qYgCExvNIy').removeAttr('disabled');
-        });
-        $("#nviCCd9jDc").change(function () {
-            $('#qYgCExvNIy').removeAttr('disabled');
-        });
-        $("#welcome").submit(function (e) {
-
-            e.preventDefault();
-
-            var form = $(this);
-
-            $.ajax({
-                type: "POST",
-                url: '/dashboard',
-                data: form.serialize(),
-                crossDomain: true,
-                beforeSend: function () {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Guardando...'
-                    });
-                    $('#qYgCExvNIy').attr('disabled', 'disabled');
-                },
-                success: function (data) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cambios Guardados'
-                    });
-                }
-            }).fail(function () {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Se ha producido un error al guardar...'
-                });
-                $('#qYgCExvNIy').removeAttr('disabled');
-            });
-
-        });
-        $("#noLp3EI").change(function () {
-            $('#zbjt55v').removeAttr('disabled');
-        });
-        $("#pfeZmgU").change(function () {
-            $('#zbjt55v').removeAttr('disabled');
-        });
-        $("#tKDIdy1").change(function () {
-            $('#zbjt55v').removeAttr('disabled');
-        });
-        $("#farewell").submit(function (e) {
-
-            e.preventDefault();
-
-            var form = $(this);
-
-            $.ajax({
-                type: "POST",
-                url: '/dashboard',
-                data: form.serialize(),
-                beforeSend: function () {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Guardando...'
-                    });
-                    $('#zbjt55v').attr('disabled', 'disabled');
-                },
-                success: function (data) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cambios Guardados'
-                    });
-                }
-            }).fail(function () {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Se ha producido un error al guardar...'
-                });
-                $('#zbjt55v').removeAttr('disabled');
-            });
-
-        });
-        $("#Y2adeog").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#OxV1juz").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#DHLJ2YI").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#AkeMlvn").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#moderation").submit(function (e) {
-
-            e.preventDefault();
-
-            var form = $(this);
-
-            $.ajax({
-                type: "POST",
-                url: '/dashboard',
-                data: form.serialize(),
-                beforeSend: function () {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Guardando...'
-                    });
-                    $('#DJxuG8K').attr('disabled', 'disabled');
-                },
-                success: function (data) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cambios Guardados'
-                    });
-                }
-            }).fail(function () {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Se ha producido un error al guardar...'
-                });
-                $('#DJxuG8K').removeAttr('disabled');
-            });
-
-        });
-        $("#QTMVmdD").change(function () {
-            $('#Fw3w5X4').removeAttr('disabled');
-        });
-        $("#Q8xq8vO").change(function () {
-            $('#Fw3w5X4').removeAttr('disabled');
-        });
-        $("#ELMb9ge").change(function () {
-            $('#Fw3w5X4').removeAttr('disabled');
-        });
-        $("#leveling").submit(function (e) {
-
-            e.preventDefault();
-
-            var form = $(this);
-
-            $.ajax({
-                type: "POST",
-                url: '/dashboard',
-                data: form.serialize(),
-                beforeSend: function () {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Guardando...'
-                    });
-                    $('#Fw3w5X4').attr('disabled', 'disabled');
-                },
-                success: function (data) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cambios Guardados'
-                    });
-                }
-            }).fail(function () {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Se ha producido un error al guardar...'
-                });
-                $('#Fw3w5X4').removeAttr('disabled');
-            });
-
-        });
-        $('#MSwl3yH').click(function () {
+        };
+        function getMeOut() {
             $.ajax({
                 type: "POST",
                 url: '/logout',
@@ -671,19 +644,7 @@
                     }, 3000);
                 }
             });
-        })
-        $('#darkswitch').click(function () {
-            if ($('html').attr('data-color-mode') == 'dark') {
-                if ($('html').attr('data-dark-theme') == 'dark') {
-                    $('html').attr('data-dark-theme', 'dark_dimmed');
-                } else {
-                    $('html').attr('data-color-mode', 'light');
-                    $('html').attr('data-dark-theme', 'dark');
-                }
-            } else {
-                $('html').attr('data-color-mode', 'dark');
-            }
-        })
+        }
     </script>
 </body>
 
