@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es" data-color-mode="dark" data-dark-theme="dark">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        <%= guild.name %> | Pingu
+    </title>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://unpkg.com/@github/details-dialog-element/dist/index.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@primer/css@^17.5.2/dist/primer.css" rel="stylesheet" />
+</head>
+
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <div class="Header">
+            <div class="Header-item Header-item--full">
+                <a href="#" class="Header-link f4 d-flex flex-items-center">
+                    <img src="<%= client.avatarURL({ format: 'jpg' }) %>" class="mr-2"
+                        style="width: 32px; height: 32px; border-radius: 100%;">
+                    <span>
+                        <%= client.username %>
+                    </span>
+                </a>
+            </div>
+            <div class="Header-item mr-0">
+                <%= guild.name %>
+                    <img style="margin-left: 8px;" class="avatar" alt="Guild Icon"
+                        src="<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>"
+                        width="32" height="32">
+            </div>
+        </div>
+        <div class="flash flash-full">
+            ¿Problemas con el panel? <a href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reporta aquí los problemas para
+                solucionarlos.</a>
+        </div>
+        <div class="Layout p-5">
+            <div class="Layout-sidebar">
+                <div class="Subhead">
+                    <div class="Subhead-heading">
+                        Gestión del servidor
+                    </div>
+                </div>
+                <nav class="SideNav border">
+                    <a class="SideNav-item" href="/dashboard/#system">Sistema</a>
+                    <a class="SideNav-item" href="/dashboard/#welcome">Bienvenidas</a>
+                    <a class="SideNav-item" href="/dashboard/#farewell">Despedidas</a>
+                    <a class="SideNav-item" href="/dashboard/#moderation">Moderación</a>
+                    <a class="SideNav-item" href="/dashboard/custom/responses">Respuestas Custom</a>
+                    <a class="SideNav-item" href="/dashboard/custom/commands" aria-current="page">Comandos Custom</a>
+                </nav>
+                <div class="Subhead Subhead--spacious">
+                    <div class="Subhead-heading">
+                        Compromiso y Diversión
+                    </div>
+                </div>
+                <nav class="SideNav border">
+                    <a class="SideNav-item" href="/dashboard/#leveling">Niveles</a>
+                </nav>
+                <div class="Subhead Subhead--spacious">
+                    <div class="Subhead-heading">
+                        Enlaces de interés
+                    </div>
+                </div>
+                <nav class="SideNav border">
+                    <a class="SideNav-item"
+                        href="https://discord.com/oauth2/authorize?client_id=827199539185975417&scope=bot+applications.commands&permissions=1933044831&redirect_uri=https%3A%2F%2Fpingu.duoestudios.es&response_type=code">Nuevo
+                        Servidor <i class="fab fa-discord float-right"></i></a>
+                    <a class="SideNav-item" href="https://discord.gg/pyJhaS7nP7">Servidor de Soporte <i
+                            class="fas fa-hands-helping float-right"></i></a>
+                    <a class="SideNav-item" href="https://top.gg/bot/827199539185975417/">Pingu en Top.GG <i
+                            class="fas fa-external-link-alt float-right"></i></a>
+                    <a class="SideNav-item" href="https://forms.gle/DJhA7Hbp9fPTXNuR8">Reportar problemas <i
+                            class="fas fa-bug float-right"></i></a>
+                    <button class="SideNav-item" id="MSwl3yH">Cerrar Sesión<i
+                            class="fas fa-sign-out-alt float-right"></i></button>
+                </nav>
+            </div>
+            <div class="Layout-main markdown-body">
+                <input type="hidden" name="frmname" value="ccmd" />
+                <div class="Subhead">
+                    <div class="Subhead-heading">Comandos personalizados</div>
+                    <button class="btn btn-primary" type="button">Añadir Comando</button>
+                </div>
+                <div class="Layout">
+                    <div class="Layout-sidebar">
+                        <div class="Box">
+                            <form class="Box-row pt-0" id="editor">
+                                <div class="form-group">
+                                    <div class="form-group-header">
+                                        <label for="AcYRpLv">Comando</label>
+                                    </div>
+                                    <div class="form-group-body">
+                                        <input class="form-control" type="text" maxlength="20" id="AcYRpLv" name="AcYRpLv"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-group-header">
+                                        <label for="MM1yeYO">Respuesta</label>                   
+                                    </div>
+                                    <div class="form-group-body">
+                                        <textarea class="form-control" id="MM1yeYO" name="MM1yeYO"></textarea>
+                                    </div>
+                                </div>
+                                <button class="btn btn-block btn-primary" type="submit">Guardar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="Layout-main">
+                        <% commands.forEach(c=> { %>
+                            <div class="Box Box--condensed mb-4">
+                                <div class="Box-header d-flex flex-items-center">
+                                    <div class="overflow-hidden flex-auto">
+                                        <%= c.cmd %>
+                                    </div>
+                                    <div class="BtnGroup">
+                                        <button class="BtnGroup-item btn btn-sm" type="button"
+                                            onclick="getToTheEditor({cmd: " <%=c.cmd %>", response: "<%= c.returns %>
+                                                "})">Editar</button>
+                                        <button class="BtnGroup-item btn btn-sm btn-danger"
+                                            onclick="deleteMePlease('<%= c.cmd %>_<%= c.guild %>')">Eliminar</button>
+                                    </div>
+                                </div>
+                                <div class="Box-body">
+                                    <%= c.returns %>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="p-6">
+            <div class="float-right d-none d-sm-inline">
+
+                Code with <button class="btn-link" id="darkswitch">❤️</button> in Spain
+            </div>
+            <strong>Copyright &copy; <%= new Date().getFullYear() %> <a
+                        href="https://github.com/alexandrumuntenas">Alexandru
+                        Theodor Muntenas</a>.</strong>
+            All
+            rights
+            reserved.
+        </footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@sweetalert2/themes@5.0.2/wordpress-admin/wordpress-admin.min.css">
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-right',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            })
+
+            function forceLower(strInput) {
+                strInput.value = strInput.value.toLowerCase();
+            }
+
+            $('form').submit(function (e) {
+                $.ajax({
+                    type: "POST",
+                    url: '/dashboard',
+                    data: form.serialize(),
+                    beforeSend: function () {
+                        Toast.fire({
+                            icon: 'warning',
+                            title: 'Guardando...'
+                        });
+                        $('#X3Rh42oq').attr('disabled', 'disabled');
+                    },
+                    success: function (data) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Cambios Guardados'
+                        });
+                    }
+                });
+            });
+
+            $('#MSwl3yH').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '/logout',
+                    beforeSend: function () {
+                        Toast.fire({
+                            icon: 'warning',
+                            title: 'Cerrando sesión...'
+                        });
+                    },
+                    success: function (data) {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Redireccionando...'
+                        });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
+                    }
+                });
+            })
+            $('#darkswitch').click(function () {
+                if ($('html').attr('data-color-mode') == 'dark') {
+                    if ($('html').attr('data-dark-theme') == 'dark') {
+                        $('html').attr('data-dark-theme', 'dark_dimmed');
+                    } else {
+                        $('html').attr('data-color-mode', 'light');
+                        $('html').attr('data-dark-theme', 'dark');
+                    }
+                } else {
+                    $('html').attr('data-color-mode', 'dark');
+                }
+            })
+        </script>
+</body>
+
+</html>

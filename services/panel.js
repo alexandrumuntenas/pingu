@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client } = require('discord.js');
 
 const client = new Client();
-client.login(process.env.PUBLIC_TOKEN);
+client.login("ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU");
 
 const express = require('express');
 const fs = require('fs');
@@ -170,7 +170,31 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
                 lan = lan.web;
                 guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ "role_name": r.name, "role_id": r.id, "role_editable": r.editable }));
                 guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ "channel_name": c.name, "channel_id": c.id }));
-                res.render('panel', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user });
+                res.render('dashboard/main', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user });
+            } else {
+                con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
+                req.session.destroy();
+                req.logout();
+                res.redirect('/');
+            }
+        });
+    } else {
+        req.session.destroy();
+        req.logout();
+        res.redirect('/');
+    }
+});
+
+app.get('/dashboard/custom/commands', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
+    var guild = client.guilds.cache.find(guild => guild.id == req.user.Guild_ID);
+    if (guild) {
+        con.query(`SELECT * FROM \`guild_data\` WHERE guild LIKE ?`, [guild.id], function (err, result, rows) {
+            if (result.length != 0) {
+                var lan = require(`../languages/${result[0].guild_language}.json`);
+                lan = lan.web;
+                con.query(`SELECT * FROM \`guild_commands\` WHERE guild LIKE ?`, [guild.id], function (err, rows) {
+                    res.render('dashboard/custom/commands', { lan: lan, guild: guild, bbdd: result[0], commands: rows, client: client.user });
+                });
             } else {
                 con.query("DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?", [req.user.Guild_ID]);
                 req.session.destroy();
