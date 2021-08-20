@@ -1,16 +1,9 @@
-module.exports = function (con, guild) {
-    var id = guild.id;
-    var sql = "DELETE FROM `guild_data` WHERE guild = '" + id + "'";
-    var sql1 = "DELETE FROM `guild_levels` WHERE guild = '" + id + "'";
-    var sql2 = "DELETE FROM `guild_warns` WHERE guild = '" + id + "'";
-    var sql3 = "DELETE FROM `guild_commands` WHERE guild = '" + id + "'";
-    var sql4 = "DELETE FROM `guild_responses` WHERE guild = '" + id + "'";
-    con.query(sql, function (err, result) {
-        if (err) console.log(err);
-        con.query(sql1);
-        con.query(sql2);
-        con.query(sql2);
-        con.query(sql3);
-        con.query(sql4);
-    });
+module.exports = (con, guild) => {
+  con.query('DELETE FROM `guild_data` WHERE guild = ?', [guild.id], (err, result) => {
+    if (err) console.log(err)
+    con.query('DELETE FROM `guild_levels` WHERE guild = ?', [guild.id])
+    con.query('DELETE FROM `guild_warns` WHERE guild = ?', [guild.id])
+    con.query('DELETE FROM `guild_commands` WHERE guild = ?', [guild.id])
+    con.query('DELETE FROM `guild_responses` WHERE guild = ?', [guild.id])
+  })
 }
