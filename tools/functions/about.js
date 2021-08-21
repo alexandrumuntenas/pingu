@@ -1,16 +1,15 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'about',
-  execute(args, client, con, contenido, message, result) {
-    var lan = require(`../../languages/${result[0].guild_language}.json`);
-    lan = lan.tools.functions.about;
+  execute (args, client, con, contenido, message, result) {
+    const lan = require(`../../languages/${result[0].guild_language}.json`).tools.functions.about
     const embed = new MessageEmbed()
       .setColor('#FFFFFF')
       .addFields(
         {
           name: `:notebook_with_decorative_cover:  ${lan.docs}`,
-          value: `https://bit.ly/pingu_docs`,
+          value: 'https://bit.ly/pingu_docs',
           inline: true
         },
         {
@@ -38,7 +37,7 @@ module.exports = {
           value: 'https://bit.ly/pingu_languages',
           inline: true
         }
-      ).setFooter(`👪 ${client.guilds.cache.size} guilds`);
+      ).setFooter(`👪 ${client.guilds.cache.size} guilds`)
     message.channel.send(embed)
   }
 }
