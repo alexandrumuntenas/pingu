@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * *
  * Pingu                       *
  * Versión: 2108               *
- * Actualización: 2108.031233  *
+ * Actualización: 2108.212305  *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const makeId = require('./gen/makeId')
@@ -9,6 +9,7 @@ const { Client, Collection } = require('discord.js')
 const topgg = require('topgg-autoposter')
 const mysql = require('mysql2')
 const fs = require('fs')
+const express = require('express')
 const log = require('simple-node-logger').createRollingFileLogger({
   logDirectory: './logs',
   fileNamePattern: `<date>_${makeId(5)}.log`,
@@ -38,7 +39,6 @@ console.log('[OK] Eventos Cargados')
 console.log('[··] Cargando Servicios')
 const levelingRankUp = require('./modules/levelingRankUp')
 const noMoreInvites = require('./modules/noMoreInvites')
-const freshping = require('./services/freshping')
 console.log('[OK] Servicios Cargados')
 
 // Bot
@@ -50,9 +50,14 @@ if (process.env.ENTORNO !== 'desarrollo') {
     console.log('[OK] Estadísticas publicadas en Top.GG')
   })
   client.login(process.env.PUBLIC_TOKEN)
-  freshping(25699, client)
+  const app = express()
+  app.get('/', (req, res) => {
+    res.send('Pingu is online!')
+  })
+  app.listen(25699, () => {
+    console.log('[OK] Running web-server')
+  })
 } else {
-  freshping(8000, client)
   client.login(process.env.INSIDER_TOKEN)
 }
 
