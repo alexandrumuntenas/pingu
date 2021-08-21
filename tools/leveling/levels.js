@@ -1,34 +1,35 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js')
 
 module.exports = {
-    name: 'levels',
-    execute(args, client, con, contenido, message, result) {
-        var lan = require(`../../languages/${result[0].guild_language}.json`);
-        var noavaliable = lan.tools.noavaliable;
-        lan = lan.tools.leveling.levels;
-        if (result[0].leveling_enabled != 0) {
-            var dif = result[0].leveling_rankup_difficulty;
-            var lookupfortop10 = "SELECT * FROM `guild_levels` WHERE guild = " + message.guild.id + " ORDER BY nivel DESC, experiencia DESC LIMIT 10";
-            con.query(lookupfortop10, function (err, rows, result) {
-                if (result) {
-                    if (result.hasOwnProperty(0)) {
-                        var embed = new MessageEmbed();
-                        embed.setTitle(lan.ranking)
-                        embed.setAuthor(message.guild.name);
-                        rows.forEach(function (row) {
-                            var usuario = client.users.cache.find(user => user.id === row.user);
-                            var nivel = parseInt(row.nivel);
-                            var experiencia = parseInt(row.experiencia);
-                            embed.addFields({ name: usuario.tag, value: `${lan.level}: ${row.nivel} | ${lan.xp}: ${(((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia)}` })
-                        });
-                        message.channel.send(embed);
-                    } else {
-                        message.channel.send(`<:win_information:876119543968305233> ${lan.nodata}`)
-                    };
-                }
-            });
-        } else {
-            message.channel.send(`<:pingu_cross:876104109256769546> ${noavaliable}`);
+  name: 'levels',
+  execute (args, client, con, contenido, message, result) {
+    let lan = require(`../../languages/${result[0].guild_language}.json`)
+    const noavaliable = lan.tools.noavaliable
+    lan = lan.tools.leveling.levels
+    if (result[0].leveling_enabled !== 0) {
+      const dif = result[0].leveling_rankup_difficulty
+      const lookupfortop10 = 'SELECT * FROM `guild_levels` WHERE guild = ' + message.guild.id + ' ORDER BY nivel DESC, experiencia DESC LIMIT 10'
+      con.query(lookupfortop10, (err, rows, result) => {
+        if (err) console.log(err)
+        if (result) {
+          if (Object.prototype.hasOwnProperty.call(result, 0)) {
+            const embed = new MessageEmbed()
+            embed.setTitle(lan.ranking)
+            embed.setAuthor(message.guild.name)
+            rows.forEach(function (row) {
+              const usuario = client.users.cache.find(user => user.id === row.user)
+              const nivel = parseInt(row.nivel)
+              const experiencia = parseInt(row.experiencia)
+              embed.addFields({ name: usuario.tag, value: `${lan.level}: ${row.nivel} | ${lan.xp}: ${(((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia)}` })
+            })
+            message.channel.send(embed)
+          } else {
+            message.channel.send(`<:win_information:876119543968305233> ${lan.nodata}`)
+          };
         }
+      })
+    } else {
+      message.channel.send(`<:pingu_cross:876104109256769546> ${noavaliable}`)
     }
+  }
 }
