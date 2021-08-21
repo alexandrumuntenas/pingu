@@ -36,8 +36,8 @@ const guildmemberremove = require('./events/guildMemberRemove')
 console.log('[OK] Eventos Cargados')
 
 console.log('[··] Cargando Servicios')
-const leveling = require('./services/leveling')
-const antispamworker = require('./services/antispam')
+const levelingRankUp = require('./modules/levelingRankUp')
+const noMoreInvites = require('./modules/noMoreInvites')
 const freshping = require('./services/freshping')
 console.log('[OK] Servicios Cargados')
 
@@ -182,7 +182,7 @@ client.on('message', (message) => {
       }
 
       if (result[0].aspam_activado !== 0) {
-        antispamworker(message)
+        noMoreInvites(message)
       }
       // Leveling
       if (!contenido.startsWith(result[0].guild_prefix)) {
@@ -192,7 +192,7 @@ client.on('message', (message) => {
             setTimeout(() => {
               talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
             }, 60000)
-            leveling(result, client, con, message, global)
+            levelingRankUp(result, client, con, message, global)
           }
         }
       }
