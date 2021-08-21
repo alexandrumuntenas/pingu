@@ -30,13 +30,14 @@ const talkedRecently = new Set()
 const client = new Client()
 
 console.log('[··] Cargando Eventos')
-const guildcreate = require('./events/guildCreate')
-const guilddelete = require('./events/guildDelete')
-const guildmemberadd = require('./events/guildMemberAdd')
-const guildmemberremove = require('./events/guildMemberRemove')
+const guildCreate = require('./events/guildCreate')
+const guildDelete = require('./events/guildDelete')
+const guildMemberAdd = require('./events/guildMemberAdd')
+const guildMemberRemove = require('./events/guildMemberRemove')
+const checkFolder = require('./events/checkFolders')
 console.log('[OK] Eventos Cargados')
 
-console.log('[··] Cargando Servicios')
+console.log('[··] Cargando Módulos')
 const levelingRankUp = require('./modules/levelingRankUp')
 const noMoreInvites = require('./modules/noMoreInvites')
 console.log('[OK] Servicios Cargados')
@@ -110,6 +111,7 @@ con.connect(function (err) {
 con.config.namedPlaceholders = true
 
 client.on('ready', () => {
+  checkFolder()
   console.log('[OK] Bot inicializado...')
   console.log(`[IF] Logged in as ${client.user.tag}!`)
   client.user.setPresence({
@@ -131,19 +133,19 @@ client.on('ready', () => {
 })
 
 client.on('guildCreate', (guild) => {
-  guildcreate(con, guild)
+  guildCreate(con, guild)
 })
 
 client.on('guildDelete', (guild) => {
-  guilddelete(con, guild)
+  guildDelete(con, guild)
 })
 
 client.on('guildMemberAdd', (member) => {
-  guildmemberadd(client, con, member)
+  guildMemberAdd(client, con, member)
 })
 
 client.on('guildMemberRemove', (member) => {
-  guildmemberremove(client, con, member)
+  guildMemberRemove(client, con, member)
 })
 
 client.on('message', (message) => {
@@ -220,7 +222,7 @@ client.on('message', (message) => {
         }
       })
     } else {
-      guildcreate(con, message.guild)
+      guildCreate(con, message.guild)
     }
   }
   )
