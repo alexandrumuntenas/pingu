@@ -23,7 +23,7 @@ const pool = mysql.createPool({
   database: 's43502_pingu',
   charset: 'utf8_unicode_ci',
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 1000,
   queueLimit: 0
 })
 
