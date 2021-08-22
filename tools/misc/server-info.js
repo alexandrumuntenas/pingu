@@ -18,7 +18,7 @@ module.exports = {
                 `:calendar: ${lan.guildCreationDate}: \`${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} [${moment(message.guild.createdTimestamp).fromNow()}]\``,
                 `:crown: ${lan.guildOwner}: \`${message.guild.owner.user.tag}\``,
                 `:id: ${lan.guildId}: \`${message.guild.id}\``,
-                `<a:nitro_boost:868214436178046976> ${lan.guildBoost}: \`${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : 'None'} (${message.guild.premiumSubscriptionCount || '0'})\``
+                `<a:nitro_boost:868214436178046976> ${lan.guildBoost}: \`${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : lan.guildBoostNone} (${message.guild.premiumSubscriptionCount || '0'})\``
       ], false)
       .addField('Estadísticas', [
                 `<:roles:868216667858174013> ${lan.guildRoles}: \`${roles.length}\``,

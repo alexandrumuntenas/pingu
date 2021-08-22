@@ -317,6 +317,7 @@
         "guildTextChannel": "Texto",
         "guildVoiceChannel": "Voz",
         "guildBoost": "Nivel de boost",
+        "guildBoostNone": "Ninguno",
         "guildActivity": "Actividad",
         "online": "En Línea",
         "idle": "Ausente",

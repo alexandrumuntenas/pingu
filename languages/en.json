@@ -1,8 +1,36 @@
 {
+    "web": {
+        "enableModule": "Activar módulo",
+        "save": "Guardar",
+        "system": {
+            "title": "Sistema",
+            "prefix": "Prefijo de comandos"
+        },
+        "welcome": {
+            "title": "Bienvenidas",
+            "message": "Mensaje de Bienvenida",
+            "channel": "Canal de Mensaje de Bienvenida",
+            "imageOnJoin": "Enviar una tarjeta de bienvenida cuando un usuario se une al servidor",
+            "imageBackground": "Cambiar fondo de la tarjeta de bienvenida",
+            "giveRole": "Dar un rol a los nuevos usuarios",
+            "giveRoleHelp": "Los roles se otorgan a los usuarios cuando aceptan las reglas del servidor"
+        },
+        "farewell": {
+            "title": "Despedidas",
+            "message": "Mensaje de Despedida",
+            "channel": "Canal de Mensaje de Despedida"
+        }
+    },
     "inapp": {},
     "tools": {
         "noavaliable": "Este comando no está activo en este momento.",
         "config": {
+            "configPanel": "Panel de configuración",
+            "configToken": "Clave de Acceso",
+            "configAdmin": "Clave de Autorización",
+            "configUrl": "URL del Panel",
+            "configInstructions": "Introduzca la *clave de acceso* y la *clave de autorización* que Pingu le ha ofrecido por el MD de Discord. La clave de autorización se lo deberá proveer el dueño del servidor.",
+            "configAdminInstructions": "está intentando acceder al panel de configuración, para autorizar su acceso, por favor, provéale este código de autorización",
             "antispam": {
                 "response_a": "Se ha desactivado el módulo anti-spam correctamente.",
                 "response_b": "Se ha activado el módulo anti-spam correctamente.",
@@ -289,6 +317,7 @@
                 "guildTextChannel": "Texto",
                 "guildVoiceChannel": "Voz",
                 "guildBoost": "Nivel de boost",
+                "guildBoostNone": "Ninguno",
                 "guildActivity": "Actividad",
                 "online": "En Línea",
                 "idle": "Ausente",
