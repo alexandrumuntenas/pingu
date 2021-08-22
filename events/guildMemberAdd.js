@@ -29,7 +29,7 @@ module.exports = (client, con, member) => {
               image.print(font, 300, 141, `Miembro #${member.guild.memberCount}`)
               image.writeAsync(`./usuarios/bienvenidas/${member.user.id}_${member.guild.id}_join.jpg`)
               if (mensaje) {
-                mensaje.send(result[0].welcome_message.replace('{member.user}', `<@${member.member.user.id}>`).replace('{server}', `${member.guild.name}`), MessageAttachment('./usuarios/bienvenidas/' + member.id + '_' + member.guild.id + '_join.jpg'))
+                mensaje.send(result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`), MessageAttachment('./usuarios/bienvenidas/' + member.id + '_' + member.guild.id + '_join.jpg'))
               }
             })
           } catch (err) {
@@ -38,7 +38,7 @@ module.exports = (client, con, member) => {
         }
         run()
       } else {
-        mensaje.send(result[0].welcome_message.replace('{member.user}', `<@${member.member.user.id}>`).replace('{server}', `${member.guild.name}`))
+        mensaje.send(result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`))
       }
       if (result[0].burbuja_activado === 1) {
         if (member) {
