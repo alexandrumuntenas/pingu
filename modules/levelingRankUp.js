@@ -13,7 +13,11 @@ module.exports = function (result, client, con, message, global) {
         const messageToSend = cache.canal_msg.replace('{user}', `<@${message.author.id}>`).replace('{nivel-antiguo}', `${niv - 1}`).replace('{nivel-nuevo}', `${niv}`)
         if (cache.canal_id !== '0') {
           const customChannel = client.channels.cache.find(channel => channel.id === cache.canal_id)
-          customChannel.send(messageToSend)
+          if (customChannel) {
+            customChannel.send(messageToSend)
+          } else {
+            message.channel.send(messageToSend)
+          }
         } else {
           message.channel.send(messageToSend)
         }
