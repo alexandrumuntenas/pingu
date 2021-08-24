@@ -39,9 +39,9 @@ client.on('ready', () => {
   })
   setInterval(() => {
     client.user.setPresence({
-      status: 'online',
+      status: 'idle',
       activity: {
-        name: 'cpanel',
+        name: 'Control Panel',
         type: 'WATCHING'
       }
     })
@@ -148,15 +148,19 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
   const guild = client.guilds.cache.find(guild => guild.id === req.user.Guild_ID)
   const channels = new Set()
   const roles = new Set()
+  const savedRoles = new Set()
   if (guild) {
     pool.query('SELECT * FROM `guild_data` WHERE guild LIKE ?', [guild.id], function (err, result, rows) {
       if (err) console.log(err)
       if (result.length !== 0) {
+        result[0].welcome_roles.split(',').forEach(element => {
+          savedRoles.add(element)
+        })
         let lan = require(`../languages/${result[0].guild_language}.json`)
         lan = lan.web
         guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ role_name: r.name, role_id: r.id, role_editable: r.editable }))
         guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ channel_name: c.name, channel_id: c.id }))
-        res.render('dashboard/main', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, client: client.user })
+        res.render('dashboard/main', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, savedRoles: savedRoles, client: client.user })
       } else {
         pool.query('DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
         req.session.destroy()
@@ -296,7 +300,9 @@ app.get('/status', (req, res) => {
 // Middleware errores
 app.use((err, req, res, next) => {
   console.error(err)
-  res.session.destroy()
+  if (err.code !== 'ERR_HTTP_HEADERS_SENT') {
+    req.session.destroy()
+  }
   res.status(500).send('Something didn\'t work :(')
 })
 
