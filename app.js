@@ -91,21 +91,15 @@ function loadCommands (collection, directory) {
   }
 };
 
-const con = mysql.createConnection({
+const con = mysql.createPool({
   host: '104.128.239.45',
   user: 'u43502_Ipea7UopvX',
   password: 'T0^Y9yXARCuAa1.LfAzmWRRt',
   database: 's43502_pingu',
-  charset: 'utf8_unicode_ci'
-})
-
-con.connect(function (err) {
-  console.log('[··] Conectando a MariaDB')
-  if (err) {
-    log.warn(err)
-  } else {
-    console.log('[OK] Conexión establecida con MariaDB')
-  }
+  charset: 'utf8_unicode_ci',
+  waitForConnections: true,
+  connectionLimit: 1000,
+  queueLimit: 0
 })
 
 con.config.namedPlaceholders = true
