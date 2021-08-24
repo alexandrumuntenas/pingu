@@ -51,13 +51,11 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().content === 'y' || collected.first().content === 'yes') {
-            const yes = "UPDATE `guild_data` SET `farewell_enabled` = '1' WHERE `guild_data`.`guild` = " + message.guild.id
-            con.query(yes)
+            con.query('UPDATE `guild_data` SET `farewell_enabled` = \'1\' WHERE `guild_data`.`guild` = ?', [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_b}`)
             indice()
           } else {
-            const no = "UPDATE `guild_data` SET `farewell_enabled` = '0' WHERE `guild_data`.`guild` = " + message.guild.id
-            con.query(no)
+            con.query('UPDATE `guild_data` SET `farewell_enabled` = \'0\' WHERE `guild_data`.`guild` = ?', [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${lan.toggle_message.response_a}`)
             indice()
           }
@@ -69,9 +67,7 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().mentions.channels.first()) {
-            const channel = collected.first().mentions.channels.first()
-            const updatechannel = "UPDATE `guild_data` SET `farewell_channel` = '" + channel.id + "' WHERE `guild_data`.`guild` = " + message.guild.id
-            con.query(updatechannel)
+            con.query('UPDATE `guild_data` SET `farewell_channel` = ? WHERE `guild_data`.`guild` = ?', [collected.first().mentions.channels.first().id, message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_channel.success}`)
             indice()
           } else {
@@ -85,8 +81,7 @@ module.exports = {
         message.channel.send(`:arrow_right: ${lan.update_message.question} <:warn:858736919432527942> ${lan.update_message.emoji_remover}`)
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
-          const updatemsg = "UPDATE `guild_data` SET `welcome_message` = '" + emojiStrip(collected.first().content) + "' WHERE `guild_data`.`guild` = " + message.guild.id
-          con.query(updatemsg)
+          con.query('UPDATE `guild_data` SET `welcome_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${lan.update_message.success}`)
           indice()
         })
