@@ -9,32 +9,32 @@ module.exports = {
       .addFields(
         {
           name: `:notebook_with_decorative_cover:  ${lan.docs}`,
-          value: 'https://bit.ly/pingu_docs',
+          value: 'https://rebrand.ly/pinguWiki',
           inline: true
         },
         {
           name: `<:reddit_upvote:876106253355585627> ${lan.topgg}`,
-          value: 'https://bit.ly/pingu_topgg',
+          value: 'https://rebrand.ly/pinguWiki',
           inline: true
         },
         {
           name: `:tools: ${lan.dbug}`,
-          value: 'https://bit.ly/pingu_dbug',
+          value: 'https://rebrand.ly/pinguWiki',
           inline: true
         },
         {
           name: `:satellite: ${lan.guildcreate}`,
-          value: 'https://bit.ly/pingu_invite',
+          value: 'https://rebrand.ly/pingu',
           inline: true
         },
         {
           name: `:speech_balloon: ${lan.support}`,
-          value: 'https://bit.ly/pingu_support',
+          value: 'https://rebrand.ly/pinguSupport',
           inline: true
         },
         {
           name: `<:pingu_language:876103568006971433> ${lan.languages}`,
-          value: 'https://bit.ly/pingu_languages',
+          value: 'https://rebrand.ly/pinguRepository',
           inline: true
         }
       ).setFooter(`👪 ${client.guilds.cache.size} guilds`)
