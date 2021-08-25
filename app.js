@@ -186,7 +186,7 @@ client.on('message', (message) => {
       // Leveling
       if (!contenido.startsWith(result[0].guild_prefix)) {
         if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
-          if (result[0].leveling_enabled !== '0') {
+          if (result[0].leveling_enabled !== 0) {
             talkedRecently.add(`${message.author.id}_${message.guild.id}`)
             setTimeout(() => {
               talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
