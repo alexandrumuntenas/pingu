@@ -30,5 +30,8 @@ module.exports = function () {
     console.log('[··] Carpeta bienvenidas no existe >> creando...')
     fs.mkdirSync('./usuarios/bienvenidas')
   }
+  if (!fs.existsSync('./logs')) {
+    console.log('[··] Carpeta de registros no existe >> creando...')
+  }
   console.log('[OK] Existen todas las carpetas necesarias')
 }
