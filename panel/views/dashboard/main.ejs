@@ -46,8 +46,12 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <button onclick="lightMeUp()" class="dropdown-item">Toggle Light</button>
-                            <a href="#" class="dropdown-item">Logout</a>
+                            <button onclick="lightMeUp()" class="dropdown-item">
+                                <%= i18n.nav.lightMeUp %>
+                            </button>
+                            <a href="#" class="dropdown-item">
+                                <%= i18n.nav.getMeOut %>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -66,7 +70,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Overview
+                                    <%= i18n.sidebar.overview %>
                                 </span>
                             </a>
                         </li>
@@ -85,7 +89,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    System
+                                    <%= i18n.sidebar.system %>
                                 </span>
                             </a>
                         </li>
@@ -103,7 +107,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Arrivals
+                                    <%= i18n.sidebar.welcome %>
                                 </span>
                             </a>
                         </li>
@@ -121,7 +125,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Departures
+                                    <%= i18n.sidebar.farewell %>
                                 </span>
                             </a>
                         </li>
@@ -142,7 +146,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Moderation
+                                    <%= i18n.sidebar.moderation %>
                                 </span>
                             </a>
                         </li>
@@ -160,7 +164,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Custom Commands
+                                    <%= i18n.sidebar.customCommands %>
                                 </span>
                             </a>
                         </li>
@@ -179,12 +183,12 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Autoresponder
+                                    <%= i18n.sidebar.autoResponder %>
                                 </span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/dashboard/leveling">
+                            <a class="nav-link" href="#leveling">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-message-circle" width="24" height="24"
@@ -198,7 +202,7 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    Leveling
+                                    <%= i18n.sidebar.leveling %>
                                 </span>
                             </a>
                         </li>
@@ -224,8 +228,8 @@
                                 style="background-image: url(<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>)"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <button onclick="lightMeUp()" class="dropdown-item">Toggle Light</button>
-                            <button onclick="getMeOut()" class="dropdown-item">Log Out</button>
+                            <button onclick="lightMeUp()" class="dropdown-item"><%= i18n.nav.lightMeUp %></button>
+                            <button onclick="getMeOut()" class="dropdown-item"><%= i18n.nav.getMeOut %></button>
                         </div>
                     </div>
                 </div>
@@ -259,7 +263,7 @@
                                             <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                                         </svg>
                                         <a href="#" class="text-reset">
-                                            <%= guild.memberCount %> members
+                                            <%= guild.memberCount %> <%= i18n.main.header.members %>
                                         </a>
                                     </div>
                                     <div class="col-auto">
@@ -273,8 +277,7 @@
                                             </path>
                                             <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
                                         </svg>
-                                        <%= guild.channels.cache.filter(channel=> channel.type === 'text').size %> text
-                                            channels
+                                        <%= guild.channels.cache.filter(channel=> channel.type === 'text').size %> <%= i18n.main.header.textChannels %>
                                     </div>
                                     <div class="col-auto">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -288,9 +291,7 @@
                                                 d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a0.8 .8 0 0 1 1.5 .5v14a0.8 .8 0 0 1 -1.5 .5l-3.5 -4.5">
                                             </path>
                                         </svg>
-                                        <%= guild.channels.cache.filter(channel=> channel.type === 'voice').size %>
-                                            voice
-                                            channels
+                                        <%= guild.channels.cache.filter(channel=> channel.type === 'voice').size %> <%= i18n.main.header.voiceChannels %>
                                     </div>
                                 </div>
                             </div>
@@ -305,7 +306,7 @@
                             <div class="card" id="totalGuildMembers">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <div class="subheader">Total Users</div>
+                                        <div class="subheader"><%= i18n.main.stats.members %></div>
                                     </div>
                                     <div class="h1 mb-3">
                                         <%= guild.memberCount %>
@@ -317,7 +318,7 @@
                             <div class="card text-white bg-success" id="onlineGuildMembers">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <div class="subheader text-white">Total Online Members</div>
+                                        <div class="subheader text-white"><%= i18n.main.stats.onlineMembers %></div>
                                     </div>
                                     <div class="h1 mb-3">
                                         <%= guild.members.cache.filter(m=> m.presence.status === 'online').size %>
@@ -329,7 +330,7 @@
                             <div class="card text-white bg-warning" id="idleGuildMembers">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <div class="subheader text-white">Total Idle Members</div>
+                                        <div class="subheader text-white"><%= i18n.main.stats.idleMembers %></div>
                                     </div>
                                     <div class="h1 mb-3">
                                         <%= guild.members.cache.filter(m=> m.presence.status === 'idle').size %>
@@ -341,7 +342,7 @@
                             <div class="card text-white bg-danger" id="dndGuildMembers">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
-                                        <div class="subheader text-white">Total DND Members</div>
+                                        <div class="subheader text-white"><%= i18n.main.stats.dndMembers %></div>
                                     </div>
                                     <div class="h1 mb-3">
                                         <%= guild.members.cache.filter(m=> m.presence.status === 'dnd').size %>
@@ -366,21 +367,20 @@
                                                 <circle cx="12" cy="12" r="3"></circle>
                                             </svg>
                                             <h3 class="card-title">
-                                                System Settings
+                                                <%= i18n.main.settings.system.cardTitle %>
                                             </h3>
                                         </div>
                                         <div class="card-body" style="position: relative;">
                                             <div class="mb-3">
-                                                <label class="form-label">Commands prefix</label>
+                                                <label class="form-label"><%= i18n.main.settings.system.cardBody.EEScEqQw.formLabel %></label>
                                                 <input type="text" class="form-control" id="EEScEqQw" name="EEScEqQw"
                                                     placeholder="!" value="<%= bbdd.guild_prefix %>" required>
-                                                <div class="form-text">You can change the prefix used to trigger the
-                                                    bot.</div>
+                                                <div class="form-text"><%= i18n.main.settings.system.cardBody.EEScEqQw.formSmall %></div>
                                             </div>
                                         </div>
                                         <div class="card-footer">
                                             <button class="btn btn-primary" type="submit" id="X3Rh42oq"
-                                                disabled>Save</button>
+                                                disabled><%= i18n.main.save %></button>
                                         </div>
                                     </form>
                                 </div>
@@ -402,7 +402,7 @@
                                                 <line x1="3" y1="21" x2="21" y2="21"></line>
                                             </svg>
                                             <h3 class="card-title">
-                                                Arrivals Settings
+                                                <%= i18n.main.settings.welcome.cardTitle %>
                                             </h3>
                                         </div>
                                         <div class="card-body" style="position: relative;">
@@ -415,21 +415,19 @@
                                                             <input type="checkbox" class="form-check-input" id="LNV5Ljl"
                                                                 name="LNV5Ljl" value="LNV5Ljl" />
                                                             <% } %>
-                                                                <label class="form-check-label" for="LNV5Ljl">Send a
-                                                                    message when a
-                                                                    user joins the server</label>
+                                                                <label class="form-check-label" for="LNV5Ljl"><%= i18n.main.settings.welcome.cardBody.LNV5Ljl.formLabel %></label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label class="form-label" for="AZGW50Tc4p">
-                                                    Welcome Message
+                                                    <%= i18n.main.settings.welcome.cardBody.AZGW50Tc4p.formLabel %>
                                                 </label>
                                                 <textarea name="AZGW50Tc4p" id="AZGW50Tc4p" class="form-control"
                                                     required><%= bbdd.welcome_message %></textarea>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label class="form-label" for="daLuxtTuG5">
-                                                    Channel where the Welcome Message is sent
+                                                    <%= i18n.main.settings.welcome.cardBody.daLuxtTuG5.formLabel %>
                                                 </label>
                                                 <select class="form-select" name="daLuxtTuG5" id="daLuxtTuG5" required>
                                                     <% channels.forEach(c=> {
@@ -454,14 +452,12 @@
                                                             <input type="checkbox" class="form-check-input" id="vyKS7bC"
                                                                 name="vyKS7bC" value="vyKS7bC" />
                                                             <% } %>
-                                                                <label class="form-check-label" for="vyKS7bC">Send a
-                                                                    welcome card
-                                                                    when a user joins the server</label>
+                                                                <label class="form-check-label" for="vyKS7bC"><%= i18n.main.settings.welcome.cardBody.vyKS7bC.formLabel %></label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="nviCCd9jDc" class="form-label">
-                                                    Roles are given to users when they accept the server rules
+                                                    <%= i18n.main.settings.welcome.cardBody.nviCCd9jDc.formLabel %>
                                                 </label>
                                                 <div class="form-group">
                                                     <select name="nviCCd9jDc" id="nviCCd9jDc" class="form-select"
@@ -483,7 +479,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <button class="btn btn-primary" id="qYgCExvNIy" type="submit"
-                                                disabled>Save</button>
+                                                disabled><%= i18n.main.save %></button>
                                         </div>
                                     </form>
                                 </div>
@@ -506,7 +502,7 @@
                                                 <line x1="3" y1="21" x2="21" y2="21"></line>
                                             </svg>
                                             <h3 class="card-title">
-                                                Departures Settings
+                                                <%= i18n.main.settings.farewell.cardTitle %>
                                             </h3>
                                         </div>
                                         <div class="card-body" style="position: relative;">
@@ -521,22 +517,20 @@
                                                                 <input type="checkbox" id="noLp3EI" name="noLp3EI"
                                                                     value="noLp3EI" class="form-check-input" />
                                                                 <% } %>
-                                                                    <label class="form-check-label" for="noLp3EI">Send a
-                                                                        message
-                                                                        when a user leaves the server</label>
+                                                                    <label class="form-check-label" for="noLp3EI"><%= i18n.main.settings.farewell.cardBody.noLp3EI.formLabel %></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="pfeZmgU" class="form-label">
-                                                    Goodbye Message
+                                                    <%= i18n.main.settings.farewell.cardBody.pfeZmgU.formLabel %>
                                                 </label>
                                                 <textarea name="pfeZmgU" id="pfeZmgU" class="form-control"
                                                     required><%= bbdd.farewell_message %></textarea>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="tKDIdy1" class="form-label">
-                                                    Channel where the Goodbye Message
+                                                    <%= i18n.main.settings.farewell.cardBody.tKDIdy1.formLabel %>
                                                 </label>
                                                 <select class="form-select" name="tKDIdy1" id="tKDIdy1">
                                                     <% channels.forEach(c=> {
@@ -554,7 +548,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <button class="btn btn-primary" role="button" id="zbjt55v"
-                                                disabled>Save</button>
+                                                disabled><%= i18n.main.save %></button>
                                         </div>
                                     </form>
                                 </div>
@@ -579,7 +573,7 @@
                                                 <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
                                             </svg>
                                             <h3 class="card-title">
-                                                Moderation Settings
+                                                <%= i18n.main.settings.moderation.cardTitle %>
                                             </h3>
                                         </div>
                                         <div class="card-body" style="position: relative;">
@@ -592,8 +586,7 @@
                                                             <input type="checkbox" id="Y2adeog" name="Y2adeog"
                                                                 value="Y2adeog" class="form-check-input" />
                                                             <% } %>
-                                                                <label class="form-check-label" for="Y2adeog">Enable
-                                                                    moderator commands</label>
+                                                                <label class="form-check-label" for="Y2adeog"><%= i18n.main.settings.moderation.cardBody.Y2adeog.formLabel %></label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
@@ -606,14 +599,12 @@
                                                             <input type="checkbox" class="form-check-input" id="OxV1juz"
                                                                 name="OxV1juz" value="OxV1juz" />
                                                             <% } %>
-                                                                <label class="form-check-label" for="OxV1juz">Take
-                                                                    action automatically if a user reaches a certain
-                                                                    amount of violations</label>
+                                                                <label class="form-check-label" for="OxV1juz"><%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel %></label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="DHLJ2YI" class="form-label">
-                                                    Cantidad necesaria de advertencias para tomar acciones
+                                                    <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
                                                 </label>
                                                 <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
                                                     value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
@@ -621,7 +612,7 @@
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="AkeMlvn" class="form-label">
-                                                    ¿Qué acción tomar?
+                                                    <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
                                                 </label>
                                                 <select class="form-select" name="AkeMlvn" id="AkeMlvn">
                                                     <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
@@ -638,7 +629,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
-                                                Save
+                                                <%= i18n.main.save %>
                                             </button>
                                         </div>
                                     </form>
@@ -649,7 +640,7 @@
                             <div class="row row-cards">
                                 <div class="col-12">
                                     <form class="card" id="leveling">
-                                        <input type="hidden" name="frmname" value="leveling"/>
+                                        <input type="hidden" name="frmname" value="leveling" />
                                         <div class="card-header">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                 class="icon icon-tabler icon-tabler-message-circle me-1" width="24"
@@ -662,7 +653,7 @@
                                                 <line x1="16" y1="12" x2="16" y2="12.01"></line>
                                             </svg>
                                             <h3 class="card-title">
-                                                Leveling
+                                                <%= i18n.main.settings.leveling.cardTitle %>
                                             </h3>
                                         </div>
                                         <div class="card-body">
@@ -675,20 +666,19 @@
                                                             <input type="checkbox" id="QTMVmdD" name="QTMVmdD"
                                                                 value="QTMVmdD" class="form-check-input" />
                                                             <% } %>
-                                                                <label for="QTMVmdD" class="form-check-label">Enable
-                                                                    this module</label>
+                                                                <label for="QTMVmdD" class="form-check-label"><%= i18n.main.settings.leveling.cardBody.QTMVmdD.formLabel %></label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
-                                                <label for="pfeZmgU" class="form-label">
-                                                    Level Up Announcement Message
+                                                <label for="Q8xq8vO" class="form-label">
+                                                    <%= i18n.main.settings.leveling.cardBody.Q8xq8vO.formLabel %>
                                                 </label>
                                                 <textarea name="Q8xq8vO" id="Q8xq8vO" class="form-control"
                                                     required><%= bbdd.leveling_rankup_message %></textarea>
                                             </div>
                                             <div class="form-group mb-3">
                                                 <label for="ELMb9ge" class="form-label">
-                                                    Level Up Announcement
+                                                    <%= i18n.main.settings.leveling.cardBody.ELMb9ge.formLabel %>
                                                 </label>
                                                 <select class="form-select" name="ELMb9ge" id="ELMb9ge">
                                                     <% channels.add({ "channel_name" : "Canal Actual" , "channel_id"
@@ -706,7 +696,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <button class="btn btn-primary" role="button" id="Fw3w5X4" disabled>
-                                                Save
+                                                <%= i18n.main.save %>
                                             </button>
                                         </div>
                                     </form>

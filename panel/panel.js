@@ -156,11 +156,10 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
         result[0].welcome_roles.split(',').forEach(element => {
           savedRoles.add(element)
         })
-        let lan = require(`../languages/${result[0].guild_language}.json`)
-        lan = lan.web
+        const i18n = require(`./i18n/${result[0].guild_language}.json`)
         guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ role_name: r.name, role_id: r.id, role_editable: r.editable }))
         guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ channel_name: c.name, channel_id: c.id }))
-        res.render('dashboard/main', { lan: lan, guild: guild, bbdd: result[0], channels: channels, roles: roles, savedRoles: savedRoles, client: client.user })
+        res.render('dashboard/main', { i18n: i18n, guild: guild, bbdd: result[0], channels: channels, roles: roles, savedRoles: savedRoles, client: client.user })
       } else {
         pool.query('DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
         req.session.destroy()
