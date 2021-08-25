@@ -6,7 +6,6 @@
 require('dotenv').config()
 const makeId = require('./gen/makeId')
 const { Client, Collection } = require('discord.js')
-const topgg = require('topgg-autoposter')
 const mysql = require('mysql2')
 const fs = require('fs')
 const express = require('express')
@@ -40,16 +39,15 @@ console.log('[OK] Eventos Cargados')
 console.log('[··] Cargando Módulos')
 const levelingRankUp = require('./modules/levelingRankUp')
 const noMoreInvites = require('./modules/noMoreInvites')
-console.log('[OK] Servicios Cargados')
+console.log('[OK] Módulos Cargados')
+
+console.log('[··] Cargando Servicios Third-Party')
+const topggSDK = require('./modules/third-party/topggSDK')
+console.log('[OK] Servicios Third-Party Cargados')
 
 // Bot
 if (process.env.ENTORNO !== 'desarrollo') {
-  // eslint-disable-next-line new-cap
-  const ap = topgg.AutoPoster(process.env.TOPGG, client)
-  console.log('[··] Publicando Estadísticas a Top.GG')
-  ap.on('posted', () => {
-    console.log('[OK] Estadísticas publicadas en Top.GG')
-  })
+  topggSDK(client)
   client.login(process.env.PUBLIC_TOKEN)
   const app = express()
   app.get('/', (req, res) => {
