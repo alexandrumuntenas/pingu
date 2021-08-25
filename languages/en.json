@@ -437,15 +437,5 @@
                 }
             }
         }
-    },
-    "services": [
-        {
-            "antispam": {},
-            "guildcreate": {},
-            "guilddelete": {},
-            "guildmemberadd": {},
-            "guildmemberremove": {},
-            "leveling": {}
-        }
-    ]
+    }
 }
