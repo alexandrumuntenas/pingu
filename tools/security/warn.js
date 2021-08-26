@@ -2,7 +2,7 @@ const makeId = require('../../gen/makeId')
 module.exports = {
   name: 'warn',
   execute (con, message, result) {
-    const lan = require(`../../languages/${result[0].guild_language}.json`).tools.security.warn
+    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.warn
     if (message.member.hasPermission(['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS']) || message.member.hasPermission('ADMINISTRATOR')) {
       if (result[0].moderator_enabled !== 0) {
         let warn = message.content
@@ -15,9 +15,9 @@ module.exports = {
             if (err) console.log(err)
             con.query('INSERT INTO `guild_warns` (`identificador`,`user`, `guild`,`motivo`) VALUES (?, ?, ?, ?)', [makeId(7), user.id, message.guild.id, warn])
             if (warn.trim().length > 0) {
-              message.channel.send(`:warning: ${user} ${lan.success} \n${lan.reason}: \`${warn.trim()}\``)
+              message.channel.send(`:warning: ${user} ${i18n.success} \n${i18n.reason}: \`${warn.trim()}\``)
             } else {
-              message.channel.send(`:warning: ${user} ${lan.success}`)
+              message.channel.send(`:warning: ${user} ${i18n.success}`)
             }
             const member = message.guild.member(user)
             if (cache.activado === 0) {
@@ -25,24 +25,24 @@ module.exports = {
                 if (cache.accion !== 0) {
                   member
                     .ban({
-                      reason: lan.automod.reason
+                      reason: i18n.automod.reason
                     })
                     .then(() => {
-                      message.channel.send(`:police_officer: ${lan.automod.success.a} ${user.tag} ${lan.automod.success.b} ${lan.automod.ban} ${lan.automod.success.c} \`${cache.cantidad}\` ${lan.automod.success.d}`)
+                      message.channel.send(`:police_officer: ${i18n.automod.success.a} ${user.tag} ${i18n.automod.success.b} ${i18n.automod.ban} ${i18n.automod.success.c} \`${cache.cantidad}\` ${i18n.automod.success.d}`)
                     })
                     .catch(err => {
                       console.log(err)
-                      message.channel.send(`<:pingu_cross:876104109256769546> ${lan.automod.error.a} ${lan.automod.ban} ${lan.automod.error.b} (${user.tag}) ${lan.automod.error.c} \`${cache.cantidad}\` ${lan.automod.error.d}`)
+                      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.automod.error.a} ${i18n.automod.ban} ${i18n.automod.error.b} (${user.tag}) ${i18n.automod.error.c} \`${cache.cantidad}\` ${i18n.automod.error.d}`)
                     })
                 } else {
                   member
-                    .kick(lan.automod.reason)
+                    .kick(i18n.automod.reason)
                     .then(() => {
-                      message.channel.send(`:police_officer: ${lan.automod.success.a} ${user.tag} ${lan.automod.success.b} ${lan.automod.kick} ${lan.automod.success.c} \`${cache.cantidad}\` ${lan.automod.success.d}`)
+                      message.channel.send(`:police_officer: ${i18n.automod.success.a} ${user.tag} ${i18n.automod.success.b} ${i18n.automod.kick} ${i18n.automod.success.c} \`${cache.cantidad}\` ${i18n.automod.success.d}`)
                     })
                     .catch(err => {
                       console.log(err)
-                      message.channel.send(`<:pingu_cross:876104109256769546> ${lan.automod.error.a} ${lan.automod.kick} ${lan.automod.error.b} (${user.tag}) ${lan.automod.error.c} \`${cache.cantidad}\` ${lan.automod.error.d}`)
+                      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.automod.error.a} ${i18n.automod.kick} ${i18n.automod.error.b} (${user.tag}) ${i18n.automod.error.c} \`${cache.cantidad}\` ${i18n.automod.error.d}`)
                     })
                 }
               }
@@ -51,7 +51,7 @@ module.exports = {
         })
       }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
+      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
     }
   }
 }

@@ -180,11 +180,11 @@ app.get('/dashboard/custom/commands', (req, res, next) => { if (req.isAuthentica
     pool.query('SELECT * FROM `guild_data` WHERE guild LIKE ?', [guild.id], (err, result, rows) => {
       if (err) console.log(err)
       if (result.length !== 0) {
-        let lan = require(`../languages/${result[0].guild_language}.json`)
-        lan = lan.web
+        let i18n = require(`../languages/${result[0].guild_language}.json`)
+        i18n = i18n.web
         pool.query('SELECT * FROM `guild_commands` WHERE guild LIKE ?', [guild.id], (err, rows) => {
           if (err) console.log(err)
-          res.render('dashboard/custom/commands', { lan: lan, guild: guild, bbdd: result[0], commands: rows, client: client.user })
+          res.render('dashboard/custom/commands', { i18n: i18n, guild: guild, bbdd: result[0], commands: rows, client: client.user })
         })
       } else {
         pool.query('DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])

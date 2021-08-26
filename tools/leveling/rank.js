@@ -4,15 +4,15 @@ const { MessageAttachment } = require('discord.js')
 module.exports = {
   name: 'rank',
   execute (args, client, con, contenido, message, result) {
-    let lan = require(`../../languages/${result[0].guild_language}.json`)
-    const noavaliable = lan.tools.noavaliable
-    lan = lan.tools.leveling.rank
+    let i18n = require(`../../i18n/${result[0].guild_language}.json`)
+    const noavaliable = i18n.tools.noavaliable
+    i18n = i18n.tools.leveling.rank
     if (result[0].leveling_enabled !== 0) {
       const dif = result[0].leveling_rankup_difficulty
       const cache = { aspecto: result[0].leveling_rankup_image_background }
       if (message.mentions.users.first()) {
         if (message.mentions.users.first().bot) {
-          message.channel.send(`<:win_information:876119543968305233> ${lan.isbot}`)
+          message.channel.send(`<:win_information:876119543968305233> ${i18n.isbot}`)
           return
         }
         con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", (err, result) => {
@@ -34,7 +34,7 @@ module.exports = {
                   .setCurrentXP(experiencia)
                   .setRequiredXP(((nivel * nivel) * dif) * 100)
                   .setStatus(message.mentions.users.first().presence.status, true)
-                  .setLevel(nivel, lan.level)
+                  .setLevel(nivel, i18n.level)
                   .setProgressBar('#FFFFFF', 'COLOR')
                   .setUsername(message.mentions.users.first().username)
                   .setDiscriminator(message.mentions.users.first().discriminator)
@@ -76,7 +76,7 @@ module.exports = {
                   .setCurrentXP(experiencia)
                   .setRequiredXP(((nivel * nivel) * dif) * 100)
                   .setStatus(message.author.presence.status, true)
-                  .setLevel(nivel, lan.level)
+                  .setLevel(nivel, i18n.level)
                   .setProgressBar('#FFFFFF', 'COLOR')
                   .setUsername(message.author.username)
                   .setDiscriminator(message.author.discriminator)
@@ -95,7 +95,7 @@ module.exports = {
             }
             fa()
           } else {
-            message.channel.send(`<:win_information:876119543968305233> ${lan.norank}`)
+            message.channel.send(`<:win_information:876119543968305233> ${i18n.norank}`)
           }
         })
       };

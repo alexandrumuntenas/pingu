@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 module.exports = {
   name: 'user-info',
   execute (args, client, con, contenido, message, result) {
-    const lan = require(`../../languages/${result[0].guild_language}.json`).tools.security.userinfo
+    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.userinfo
     if (message.member.hasPermission(['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS']) || message.member.hasPermission('ADMINISTRATOR')) {
       if (result[0].moderator_enabled !== 0) {
         const user = message.mentions.users.first() || message.member.user
@@ -12,32 +12,32 @@ module.exports = {
           .setThumbnail(user.displayAvatarURL())
           .addFields(
             {
-              name: lan.usertag,
+              name: i18n.usertag,
               value: user.tag,
               inline: true
             },
             {
-              name: lan.userid,
+              name: i18n.userid,
               value: user.id,
               inline: true
             },
             {
-              name: lan.isabot,
+              name: i18n.isabot,
               value: user.bot,
               inline: true
             },
             {
-              name: lan.hasnick,
-              value: member.nickname || lan.nonick,
+              name: i18n.hasnick,
+              value: member.nickname || i18n.nonick,
               inline: true
             },
             {
-              name: lan.joinedguild,
+              name: i18n.joinedguild,
               value: new Date(member.joinedTimestamp).toLocaleDateString(),
               inline: true
             },
             {
-              name: lan.joineddiscord,
+              name: i18n.joineddiscord,
               value: new Date(user.createdTimestamp).toLocaleDateString(),
               inline: true
             }
@@ -45,7 +45,7 @@ module.exports = {
         message.channel.send(embed)
       } // ??
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${lan.permerror}`)
+      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
     }
   }
 }
