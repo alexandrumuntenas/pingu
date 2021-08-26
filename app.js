@@ -1,7 +1,6 @@
 /* * * * * * * * * * * * * * * *
  * Pingu                       *
  * Versión: 2108               *
- * Actualización: 2108.212305  *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const makeId = require('./gen/makeId')
@@ -90,10 +89,10 @@ function loadCommands (collection, directory) {
 };
 
 const con = mysql.createPool({
-  host: '104.128.239.45',
-  user: 'u43502_Ipea7UopvX',
-  password: 'T0^Y9yXARCuAa1.LfAzmWRRt',
-  database: 's43502_pingu',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATA,
   charset: 'utf8_unicode_ci',
   waitForConnections: true,
   connectionLimit: 1000,
