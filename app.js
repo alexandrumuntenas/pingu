@@ -153,12 +153,14 @@ client.on('message', (message) => {
       if (message.content.startsWith(result[0].guild_prefix) && message.content !== result[0].guild_prefix) {
         args = message.content.slice(result[0].guild_prefix.length).trim().split(/ +/)
       }
+      const command = args[0]
+      args.shift()
       const contenido = message.content.toLowerCase()
       if (message.content.startsWith(result[0].guild_prefix)) {
         if (args) {
-          if (client.commands.has(args[0])) {
+          if (client.commands.has(command)) {
             try {
-              client.commands.get(args[0]).execute(args, client, con, contenido, message, result)
+              client.commands.get(command).execute(args, client, con, contenido, message, result)
             } catch (err) {
               log.warn(err)
               message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...')

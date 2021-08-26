@@ -11,6 +11,7 @@
     "canvas": "^2.8.0",
     "cookie-parser": "^1.4.5",
     "discord.js": "^12.5.3",
+    "discord.js-poll": "^1.0.4",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "emoji-strip": "^1.0.1",
