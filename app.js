@@ -168,8 +168,7 @@ client.on('message', (message) => {
             con.query('SELECT * FROM `guild_commands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
               if (err) console.log(err)
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                const buscarcomando = 'SELECT * FROM `guild_commands` WHERE `guild` = \'' + message.guild.id + '\' AND `cmd` = \'' + args[0] + '\''
-                con.query(buscarcomando, (err, result) => {
+                con.query('SELECT * FROM `guild_commands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
                   if (err) console.log(err)
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
                     message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns)
@@ -202,8 +201,7 @@ client.on('message', (message) => {
         if (err) console.log(err)
         if (result) {
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            const buscarrespuesta = 'SELECT * FROM `guild_responses` WHERE `guild` = \'' + message.guild.id + '\' AND `action` = \'' + contenido + '\''
-            con.query(buscarrespuesta, (err, result) => {
+            con.query('SELECT * FROM `guild_responses` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
               if (err) console.log(err)
               if (result) {
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {
