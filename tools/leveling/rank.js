@@ -22,7 +22,7 @@ module.exports = {
             const nivel = parseInt(result[0].nivel)
             async function fa () {
               const avatar = new Downloader({
-                url: message.mentions.users.first().avatarURL({ format: 'jpg' }),
+                url: message.mentions.users.first().avatarURL({ format: 'jpg' }) || message.mentions.users.first().defaultAvatarURL,
                 directory: './usuarios/avatares/',
                 fileName: message.mentions.users.first().id + '_level.jpg',
                 cloneFiles: false
@@ -64,7 +64,7 @@ module.exports = {
             const nivel = parseInt(result[0].nivel)
             async function fa () {
               const avatar = new Downloader({
-                url: message.author.avatarURL({ format: 'jpg' }),
+                url: message.author.avatarURL({ format: 'jpg' }) || message.author.defaultAvatarURL,
                 directory: './usuarios/avatares/',
                 fileName: message.author.id + '_level.jpg',
                 cloneFiles: false
