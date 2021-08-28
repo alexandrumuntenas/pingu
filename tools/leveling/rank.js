@@ -15,7 +15,7 @@ module.exports = {
           message.channel.send(`<:win_information:876119543968305233> ${i18n.isbot}`)
           return
         }
-        con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", (err, result) => {
+        con.query("SELECT * FROM `guildLevels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.mentions.users.first().id + "'", (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const experiencia = parseInt(result[0].experiencia)
@@ -57,7 +57,7 @@ module.exports = {
           }
         })
       } else {
-        con.query("SELECT * FROM `guild_levels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", (err, result) => {
+        con.query("SELECT * FROM `guildLevels` WHERE guild = '" + message.guild.id + "' AND user = '" + message.author.id + "'", (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const experiencia = parseInt(result[0].experiencia)

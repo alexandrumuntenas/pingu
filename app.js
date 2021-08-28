@@ -145,7 +145,7 @@ client.on('message', (message) => {
     message.author.bot ||
     message.author === client.user
   ) return
-  con.query('SELECT * FROM `guild_data` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
+  con.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
     if (err) throw console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       let args = []
@@ -165,10 +165,10 @@ client.on('message', (message) => {
               message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...')
             }
           } else {
-            con.query('SELECT * FROM `guild_commands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+            con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
               if (err) console.log(err)
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                con.query('SELECT * FROM `guild_commands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
+                con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
                   if (err) console.log(err)
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
                     message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns)
@@ -197,11 +197,11 @@ client.on('message', (message) => {
       }
 
       // Respuestas personalizadas
-      con.query('SELECT * FROM `guild_responses` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+      con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
         if (err) console.log(err)
         if (result) {
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            con.query('SELECT * FROM `guild_responses` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
+            con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
               if (err) console.log(err)
               if (result) {
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {

@@ -28,7 +28,7 @@ module.exports = {
                                 message.channel.awaitMessages(m => m.author.id == message.author.id,
                                     { max: 1 }).then(collected => {
                                         const respuesta = collected.first().content
-                                        const crearcres = "INSERT INTO `guild_responses` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + message.guild.id + "', '" + accionante + "', '" + respuesta + "')"
+                                        const crearcres = "INSERT INTO `guildAutoResponder` (`identificador`,`guild`, `action`, `returns`) VALUES ('" + identificador + "','" + message.guild.id + "', '" + accionante + "', '" + respuesta + "')"
                                         con.query(crearcres, function (err) {
                                             console.log(err)
                                             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.create.success}: \`${identificador}\``)
@@ -37,7 +37,7 @@ module.exports = {
                             })
                         break
                     case 'remove':
-                        var delcmd = "DELETE FROM `guild_responses` WHERE `identificador` = '" + args[2] + "' AND `guild` = " + message.guild.id
+                        var delcmd = "DELETE FROM `guildAutoResponder` WHERE `identificador` = '" + args[2] + "' AND `guild` = " + message.guild.id
                         con.query(delcmd, function (err) {
                             console.log(err)
                             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.remove.success}: \`${args[2]}\``)

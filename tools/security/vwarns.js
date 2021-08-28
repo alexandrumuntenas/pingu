@@ -8,8 +8,8 @@ module.exports = {
       if (result[0].moderator_enabled !== 0) {
         if (message.mentions.users.first()) {
           const user = message.mentions.users.first()
-          const verinfracciones5 = "SELECT * FROM `guild_warns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25"
-          const verinfraccionescantidad = "SELECT COUNT(*) as total FROM `guild_warns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "'"
+          const verinfracciones5 = "SELECT * FROM `guildWarns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "' ORDER BY timestamp DESC LIMIT 25"
+          const verinfraccionescantidad = "SELECT COUNT(*) as total FROM `guildWarns` WHERE `guild` = '" + message.guild.id + "' AND `user` = '" + user.id + "'"
 
           con.query(verinfraccionescantidad, (err, result) => {
             if (err) console.log(err)

@@ -11,7 +11,7 @@ module.exports = {
       if (result[0].moderator_enabled !== 0) {
         if (message.mentions.users.first()) {
           async function step1 () {
-            con.query('SELECT * FROM `guild_warns` WHERE user = ? AND guild = ?', [message.mentions.users.first().id, message.guild.id], (err, result) => {
+            con.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ?', [message.mentions.users.first().id, message.guild.id], (err, result) => {
               if (err) console.log(err)
               const pdfDoc = new Pdf()
               pdfDoc.pipe(fs.createWriteStream('./usuarios/moderacion/' + message.mentions.users.first().id + '_' + message.guild.id + '.pdf'))

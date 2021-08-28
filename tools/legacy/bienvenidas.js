@@ -73,11 +73,11 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().content === 'y' || collected.first().content === 'yes') {
-            con.query("UPDATE `guild_data` SET `welcome_enabled` = '1' WHERE `guild_data`.`guild` = ?", [message.guild.id])
+            con.query("UPDATE `guildData` SET `welcome_enabled` = '1' WHERE `guildData`.`guild` = ?", [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_message.response_b}`)
             indice()
           } else {
-            con.query("UPDATE `guild_data` SET `welcome_enabled` = '0' WHERE `guild_data`.`guild` = ?", [message.guild.id])
+            con.query("UPDATE `guildData` SET `welcome_enabled` = '0' WHERE `guildData`.`guild` = ?", [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_message.response_a}`)
             indice()
           }
@@ -89,11 +89,11 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().content === 'y' || collected.first().content === 'yes') {
-            con.query("UPDATE `guild_data` SET `welcome_image` = '1' WHERE `guild_data`.`guild` = ?" + [message.guild.id])
+            con.query("UPDATE `guildData` SET `welcome_image` = '1' WHERE `guildData`.`guild` = ?" + [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_cartel.response_b}`)
             indice()
           } else {
-            con.query("UPDATE `guild_data` SET `welcome_image` = '0' WHERE `guild_data`.`guild` = ?", [message.guild.id])
+            con.query("UPDATE `guildData` SET `welcome_image` = '0' WHERE `guildData`.`guild` = ?", [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_cartel.response_a}`)
             indice()
           }
@@ -136,7 +136,7 @@ module.exports = {
         })
       }
       function saveRolUsers () {
-        con.query('UPDATE `guild_data` SET `welcome_roles` = ? WHERE `guild_data`.`guild` = ?' + message.guild.id, [Array.from(rolesUserSet), message.guild.id])
+        con.query('UPDATE `guildData` SET `welcome_roles` = ? WHERE `guildData`.`guild` = ?' + message.guild.id, [Array.from(rolesUserSet), message.guild.id])
         userGiveRole()
       }
       function userGiveRole () {
@@ -174,7 +174,7 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().mentions.channels.first()) {
-            con.query('UPDATE `guild_data` SET `welcome_channel` = ? WHERE `guild_data`.`guild` = ?' + message.guild.id, [collected.first().mentions.channels.first().id, message.guild.id])
+            con.query('UPDATE `guildData` SET `welcome_channel` = ? WHERE `guildData`.`guild` = ?' + message.guild.id, [collected.first().mentions.channels.first().id, message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_channel.response}`)
             indice()
           } else {
@@ -188,7 +188,7 @@ module.exports = {
         message.channel.send(`:arrow_right: ${i18n.update_message.question} <:warn:858736919432527942> ${i18n.update_message.emoji_remover}`)
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
-          con.query('UPDATE `guild_data` SET `welcome_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
+          con.query('UPDATE `guildData` SET `welcome_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_message.response}`)
           indice()
         })
@@ -200,7 +200,7 @@ module.exports = {
           { max: 1 }).then(collected => {
           if (isInteger(collected.first().content)) {
             if (parseInt(collected.first().content) <= 20 || parseInt(collected.first().content) >= 1) {
-              con.query('UPDATE `guild_data` SET `bienvenida_fondo` = ? WHERE `guild_data`.`guild` = ?' + message.guild.id, [collected.first().content, message.guild.id])
+              con.query('UPDATE `guildData` SET `bienvenida_fondo` = ? WHERE `guildData`.`guild` = ?' + message.guild.id, [collected.first().content, message.guild.id])
               message.channel.send('<:pingu_check:876104161794596964> Se ha actualizado el fondo de los carteles de bienvenida')
               indice()
             } else {

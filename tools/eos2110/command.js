@@ -8,13 +8,13 @@ module.exports = {
       if (args[1]) {
         switch (args[1]) {
           case 'create':
-            con.query('INSERT INTO `guild_commands` (`guild`, `cmd`, `returns`) VALUES (?,?,?)', [message.guild.id, args[2], message.content.replace(`${result[0].guild_prefix}command create ${args[2]}`, '')], function (err) {
+            con.query('INSERT INTO `guildCustomCommands` (`guild`, `cmd`, `returns`) VALUES (?,?,?)', [message.guild.id, args[2], message.content.replace(`${result[0].guild_prefix}command create ${args[2]}`, '')], function (err) {
               console.log(err)
               message.channel.send(`<:pingu_check:876104161794596964> ${i18n.create.before}\`${args[2]}\`. ${i18n.create.after} \`${message.content.replace(`${result[0].guild_prefix}command create ${args[2]}`, '')}\``)
             })
             break
           case 'remove':
-            con.query('DELETE FROM `guild_commands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, args[2]], function (err) {
+            con.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, args[2]], function (err) {
               console.log(err)
               message.channel.send(`<:pingu_check:876104161794596964> ${i18n.remove}: \`${args[2]}\``)
             })

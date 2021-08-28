@@ -6,7 +6,7 @@ module.exports = {
       if (result[0].moderator_enabled !== 0) {
         if (message.mentions.users.first()) {
           const user = message.mentions.users.first()
-          con.query('DELETE FROM `guild_warns` WHERE user = ? AND guild = ?', [message.mentios.users.first().id, message.guild.id], function (err) {
+          con.query('DELETE FROM `guildWarns` WHERE user = ? AND guild = ?', [message.mentios.users.first().id, message.guild.id], function (err) {
             console.log(err)
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.success} ${user}`)
           })

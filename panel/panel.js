@@ -87,13 +87,13 @@ passport.use(new PassportLocal({
   usernameField: 'uj49kfl',
   passwordField: 'bPX9orL'
 }, function (uj49kfl, bPX9orL, done) {
-  pool.query('SELECT * FROM `apolo_sessions` WHERE Clave_de_Acceso = ? LIMIT 1', [uj49kfl], function (err, result, rows) {
+  pool.query('SELECT * FROM `apoloSessions` WHERE Clave_de_Acceso = ? LIMIT 1', [uj49kfl], function (err, result, rows) {
     if (err) console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       if (bPX9orL === result[0].Clave_de_Autorizacion) {
         return done(null, result[0])
       } else {
-        pool.query('DELETE FROM `apolo_sessions` WHERE Clave_de_Acceso = ?', [uj49kfl])
+        pool.query('DELETE FROM `apoloSessions` WHERE Clave_de_Acceso = ?', [uj49kfl])
         return done(2, null)
       }
     } else {
@@ -139,7 +139,7 @@ app.post('/login', (req, res, next) => {
 })
 
 app.post('/logout', (req, res) => {
-  pool.query('DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
+  pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
   req.logout()
   res.redirect('/')
 })
@@ -150,7 +150,7 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
   const roles = new Set()
   const savedRoles = new Set()
   if (guild) {
-    pool.query('SELECT * FROM `guild_data` WHERE guild LIKE ?', [guild.id], function (err, result, rows) {
+    pool.query('SELECT * FROM `guildData` WHERE guild LIKE ?', [guild.id], function (err, result, rows) {
       if (err) console.log(err)
       if (result.length !== 0) {
         result[0].welcome_roles.split(',').forEach(element => {
@@ -161,7 +161,7 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
         guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ channel_name: c.name, channel_id: c.id }))
         res.render('dashboard/main', { i18n: i18n, guild: guild, bbdd: result[0], channels: channels, roles: roles, savedRoles: savedRoles, client: client.user })
       } else {
-        pool.query('DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
+        pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
         req.session.destroy()
         req.logout()
         res.redirect('/')
@@ -177,17 +177,17 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
 app.get('/dashboard/custom/commands', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
   const guild = client.guilds.cache.find(guild => guild.id === req.user.Guild_ID)
   if (guild) {
-    pool.query('SELECT * FROM `guild_data` WHERE guild LIKE ?', [guild.id], (err, result, rows) => {
+    pool.query('SELECT * FROM `guildData` WHERE guild LIKE ?', [guild.id], (err, result, rows) => {
       if (err) console.log(err)
       if (result.length !== 0) {
         let i18n = require(`../languages/${result[0].guild_language}.json`)
         i18n = i18n.web
-        pool.query('SELECT * FROM `guild_commands` WHERE guild LIKE ?', [guild.id], (err, rows) => {
+        pool.query('SELECT * FROM `guildCustomCommands` WHERE guild LIKE ?', [guild.id], (err, rows) => {
           if (err) console.log(err)
           res.render('dashboard/custom/commands', { i18n: i18n, guild: guild, bbdd: result[0], commands: rows, client: client.user })
         })
       } else {
-        pool.query('DELETE FROM `apolo_sessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
+        pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
         req.session.destroy()
         req.logout()
         res.redirect('/')
@@ -205,25 +205,25 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
     switch (req.body.frmname) {
       case 'system':
         if (Object.prototype.hasOwnProperty.call(req.body, 'EEScEqQw')) {
-          pool.query('UPDATE `guild_data` SET `guild_prefix` = ? WHERE `guild` = ?', [req.body.EEScEqQw, req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', [req.body.EEScEqQw, req.user.Guild_ID])
         }
         break
       case 'welcome':
         if (Object.prototype.hasOwnProperty.call(req.body, 'LNV5Ljl')) {
-          pool.query("UPDATE `guild_data` SET `welcome_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `welcome_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guild_data` SET `welcome_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `welcome_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'AZGW50Tc4p')) {
-          pool.query('UPDATE `guild_data` SET `welcome_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `welcome_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'daLuxtTuG5')) {
-          pool.query('UPDATE `guild_data` SET `welcome_channel` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `welcome_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'vyKS7bC')) {
-          pool.query("UPDATE `guild_data` SET `welcome_image` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `welcome_image` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guild_data` SET `welcome_image` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `welcome_image` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'nviCCd9jDc')) {
           const roles = new Set()
@@ -232,51 +232,51 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
           } else {
             roles.add(req.body.nviCCd9jDc)
           }
-          pool.query('UPDATE `guild_data` SET `welcome_roles` = ? WHERE `guild_data`.`guild` = ?', ['' + Array.from(roles) + '', req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `welcome_roles` = ? WHERE `guildData`.`guild` = ?', ['' + Array.from(roles) + '', req.user.Guild_ID])
         }
         break
       case 'farewell':
         if (Object.prototype.hasOwnProperty.call(req.body, 'noLp3EI')) {
-          pool.query("UPDATE `guild_data` SET `farewell_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `farewell_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guild_data` SET `farewell_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `farewell_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'pfeZmgU')) {
-          pool.query('UPDATE `guild_data` SET `farewell_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.pfeZmgU), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `farewell_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.pfeZmgU), req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'tKDIdy1')) {
-          pool.query('UPDATE `guild_data` SET `farewell_channel` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `farewell_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID])
         }
         break
       case 'moderation':
         if (Object.prototype.hasOwnProperty.call(req.body, 'Y2adeog')) {
-          pool.query("UPDATE `guild_data` SET `moderator_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `moderator_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guild_data` SET `moderator_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `moderator_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'OxV1juz')) {
-          pool.query("UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `moderador_warn_expulsion_activado` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guild_data` SET `moderador_warn_expulsion_activado` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `moderador_warn_expulsion_activado` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'DHLJ2YI')) {
-          pool.query('UPDATE `guild_data` SET `moderador_warn_expulsion_cantidad` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.DHLJ2YI), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `moderador_warn_expulsion_cantidad` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.DHLJ2YI), req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'AkeMlvn')) {
-          pool.query('UPDATE `guild_data` SET `moderador_warn_expulsion_accion` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `moderador_warn_expulsion_accion` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID])
         }
         break
       case 'leveling':
         if (Object.prototype.hasOwnProperty.call(req.body, 'QTMVmdD')) {
-          pool.query("UPDATE `guild_data` SET `leveling_enabled` = '1' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `leveling_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guild_data` SET `leveling_enabled` = '0' WHERE `guild_data`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `leveling_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'Q8xq8vO')) {
-          pool.query('UPDATE `guild_data` SET `leveling_rankup_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.Q8xq8vO), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `leveling_rankup_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.Q8xq8vO), req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'ELMb9ge')) {
-          pool.query('UPDATE `guild_data` SET `leveling_rankup_channel` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(req.body.ELMb9ge), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `leveling_rankup_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.ELMb9ge), req.user.Guild_ID])
         }
         break
       default:

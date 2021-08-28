@@ -8,7 +8,7 @@ module.exports = {
     i18n = i18n.tools.leveling.levels
     if (result[0].leveling_enabled !== 0) {
       const dif = result[0].leveling_rankup_difficulty
-      const lookupfortop10 = 'SELECT * FROM `guild_levels` WHERE guild = ' + message.guild.id + ' ORDER BY nivel DESC, experiencia DESC LIMIT 10'
+      const lookupfortop10 = 'SELECT * FROM `guildLevels` WHERE guild = ' + message.guild.id + ' ORDER BY nivel DESC, experiencia DESC LIMIT 10'
       con.query(lookupfortop10, (err, rows, result) => {
         if (err) console.log(err)
         if (result) {

@@ -51,11 +51,11 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().content === 'y' || collected.first().content === 'yes') {
-            con.query('UPDATE `guild_data` SET `farewell_enabled` = \'1\' WHERE `guild_data`.`guild` = ?', [message.guild.id])
+            con.query('UPDATE `guildData` SET `farewell_enabled` = \'1\' WHERE `guildData`.`guild` = ?', [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_message.response_b}`)
             indice()
           } else {
-            con.query('UPDATE `guild_data` SET `farewell_enabled` = \'0\' WHERE `guild_data`.`guild` = ?', [message.guild.id])
+            con.query('UPDATE `guildData` SET `farewell_enabled` = \'0\' WHERE `guildData`.`guild` = ?', [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_message.response_a}`)
             indice()
           }
@@ -67,7 +67,7 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().mentions.channels.first()) {
-            con.query('UPDATE `guild_data` SET `farewell_channel` = ? WHERE `guild_data`.`guild` = ?', [collected.first().mentions.channels.first().id, message.guild.id])
+            con.query('UPDATE `guildData` SET `farewell_channel` = ? WHERE `guildData`.`guild` = ?', [collected.first().mentions.channels.first().id, message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_channel.success}`)
             indice()
           } else {
@@ -81,7 +81,7 @@ module.exports = {
         message.channel.send(`:arrow_right: ${i18n.update_message.question} <:warn:858736919432527942> ${i18n.update_message.emoji_remover}`)
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
-          con.query('UPDATE `guild_data` SET `welcome_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
+          con.query('UPDATE `guildData` SET `welcome_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_message.success}`)
           indice()
         })

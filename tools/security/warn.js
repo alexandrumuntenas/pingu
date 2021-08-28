@@ -11,9 +11,9 @@ module.exports = {
         })
         message.mentions.users.array().forEach(user => {
           const cache = { activado: result[0].moderador_warn_expulsion_activado, cantidad: result[0].moderador_warn_expulsion_cantidad, accion: result[0].moderador_warn_expulsion_accion }
-          con.query('SELECT COUNT(*) AS itotal FROM `guild_warns` WHERE user = ? AND guild = ?', [user.id, message.guild.id], (err, result) => {
+          con.query('SELECT COUNT(*) AS itotal FROM `guildWarns` WHERE user = ? AND guild = ?', [user.id, message.guild.id], (err, result) => {
             if (err) console.log(err)
-            con.query('INSERT INTO `guild_warns` (`identificador`,`user`, `guild`,`motivo`) VALUES (?, ?, ?, ?)', [makeId(7), user.id, message.guild.id, warn])
+            con.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`,`motivo`) VALUES (?, ?, ?, ?)', [makeId(7), user.id, message.guild.id, warn])
             if (warn.trim().length > 0) {
               message.channel.send(`:warning: ${user} ${i18n.success} \n${i18n.reason}: \`${warn.trim()}\``)
             } else {

@@ -44,11 +44,11 @@ module.exports = {
       function toggleModule () {
         const valor = result[0].moderator_enabled
         if (valor === 1) {
-          con.query('UPDATE `guild_data` SET `moderator_enabled` = 0 WHERE `guild` = ?', [message.guild.id])
+          con.query('UPDATE `guildData` SET `moderator_enabled` = 0 WHERE `guild` = ?', [message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_moderator.response_a}`)
           result[0].moderator_enabled = 0
         } else {
-          con.query('UPDATE `guild_data` SET `moderator_enabled` = 0 WHERE `guild` = ?', [message.guild.id])
+          con.query('UPDATE `guildData` SET `moderator_enabled` = 0 WHERE `guild` = ?', [message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_moderator.response_b}`)
           result[0].moderator_enabled = 1
         }
@@ -59,11 +59,11 @@ module.exports = {
       function toggleModWarn () {
         const valor = result[0].moderador_warn_expulsion_activado
         if (valor === 1) {
-          con.query('UPDATE `guild_data` SET `moderator_war_expulsion_activado` = 0 WHERE `guild` = ?', [message.guild.id])
+          con.query('UPDATE `guildData` SET `moderator_war_expulsion_activado` = 0 WHERE `guild` = ?', [message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_modwarn.response_a}`)
           result[0].moderador_warn_expulsion_activado = 0
         } else {
-          con.query('UPDATE `guild_data` SET `moderator_war_expulsion_activado` = 1 WHERE `guild` = ?', [message.guild.id])
+          con.query('UPDATE `guildData` SET `moderator_war_expulsion_activado` = 1 WHERE `guild` = ?', [message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_modwarn.response_b}`)
           result[0].moderador_warn_expulsion_activado = 1
         }
@@ -76,7 +76,7 @@ module.exports = {
           { max: 1 }).then(collected => {
           if (isInteger(parseInt(collected.first().content))) {
             const cantidad = parseInt(collected.first().content)
-            const sql = "UPDATE `guild_data` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `guild_data`.`guild` = " + message.guild.id
+            const sql = "UPDATE `guildData` SET `moderador_warn_expulsion_cantidad` = '" + cantidad + "' WHERE `guildData`.`guild` = " + message.guild.id
             con.query(sql)
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.e_limite.success}`)
             menuModwarn()
@@ -90,11 +90,11 @@ module.exports = {
       function changeAction () {
         const valor = result[0].moderador_warn_expulsion_accion
         if (valor === 1) {
-          con.query('UPDATE `guild_data` SET `moderador_war_expulsion_accion` = 0 WHERE `guild` = ?', [message.guild.id])
+          con.query('UPDATE `guildData` SET `moderador_war_expulsion_accion` = 0 WHERE `guild` = ?', [message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_medida.response_a}`)
           result[0].moderador_warn_expulsion_accion = 0
         } else {
-          con.query('UPDATE `guild_data` SET `moderador_war_expulsion_accion` = 1 WHERE `guild` = ?', [message.guild.id])
+          con.query('UPDATE `guildData` SET `moderador_war_expulsion_accion` = 1 WHERE `guild` = ?', [message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_medida.response_b}`)
           result[0].moderador_warn_expulsion_accion = 1
         }

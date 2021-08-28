@@ -14,7 +14,7 @@ module.exports = {
                 var fin = 1
                 var response = i18n.response_b
             }
-            const sql = "UPDATE `guild_data` SET `aspam_activado` = '" + fin + "' WHERE `guild_data`.`guild` = " + message.guild.id
+            const sql = "UPDATE `guildData` SET `aspam_activado` = '" + fin + "' WHERE `guildData`.`guild` = " + message.guild.id
             message.channel.send(`<:pingu_check:876104161794596964> ${response}`)
             con.query(sql)
         } else {

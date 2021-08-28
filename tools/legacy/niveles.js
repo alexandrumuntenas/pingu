@@ -65,11 +65,11 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().content === 'y' || collected.first().content === 'yes') {
-            con.query('UPDATE `guild_data` SET `leveling_enabled` = 1 WHERE `guild` = ?', [message.guild.id])
+            con.query('UPDATE `guildData` SET `leveling_enabled` = 1 WHERE `guild` = ?', [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_niveles.response_a}`)
             indice()
           } else {
-            con.query('UPDATE `guild_data` SET `leveling_enabled` = 0 WHERE `guild` = ?', [message.guild.id])
+            con.query('UPDATE `guildData` SET `leveling_enabled` = 0 WHERE `guild` = ?', [message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.toggle_niveles.response_b}`)
             indice()
           }
@@ -80,7 +80,7 @@ module.exports = {
         message.channel.send(`:arrow_right: ${i18n.update_message.question} <:warn:858736919432527942> ${i18n.update_message.success}`)
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
-          con.query('UPDATE `guild_data` SET `leveling_rankup_message` = ? WHERE `guild_data`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
+          con.query('UPDATE `guildData` SET `leveling_rankup_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(collected.first().content), message.guild.id])
           message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_message.success}`)
           indice()
         })
@@ -91,7 +91,7 @@ module.exports = {
         message.channel.awaitMessages(m => m.author.id === message.author.id,
           { max: 1 }).then(collected => {
           if (collected.first().mentions.channels.first()) {
-            con.query('UPDATE `guild_data` SET `leveling_rankup_channel` = ? WHERE `guild_data`.`guild` = ?', [collected.first().mentions.channels.first().id, message.guild.id])
+            con.query('UPDATE `guildData` SET `leveling_rankup_channel` = ? WHERE `guildData`.`guild` = ?', [collected.first().mentions.channels.first().id, message.guild.id])
             message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_channel.success}`)
             indice()
           } else {
@@ -107,7 +107,7 @@ module.exports = {
           { max: 1 }).then(collected => {
           if (isInteger(collected.first().content)) {
             if (parseInt(collected.first().content) <= 20 && parseInt(collected.first().content) >= 1) {
-              con.query('UPDATE `guild_data` SET `leveling_rankup_image_background` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id])
+              con.query('UPDATE `guildData` SET `leveling_rankup_image_background` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id])
               message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_fondo.success}`)
               indice()
             } else {
@@ -127,7 +127,7 @@ module.exports = {
           { max: 1 }).then(collected => {
           if (isInteger(collected.first().content)) {
             if (parseInt(collected.first().content) < 5 && parseInt(collected.first().content) > 0) {
-              con.query('UPDATE `guild_data` SET `leveling_rankup_difficulty` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id])
+              con.query('UPDATE `guildData` SET `leveling_rankup_difficulty` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id])
               message.channel.send(`<:pingu_check:876104161794596964> ${i18n.update_dificultad.success}`)
               indice()
             } else {

@@ -3,7 +3,7 @@ const Downloader = require('nodejs-file-downloader')
 const Jimp = require('jimp')
 
 module.exports = (client, con, member) => {
-  con.query('SELECT * FROM `guild_data` WHERE guild = ?', [member.guild.id], (err, result) => {
+  con.query('SELECT * FROM `guildData` WHERE guild = ?', [member.guild.id], (err, result) => {
     if (err) console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 'welcome_enabled')) {
       if (result[0].welcome_enabled !== 0) {
