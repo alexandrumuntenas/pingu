@@ -38,6 +38,6 @@ module.exports = {
           inline: true
         }
       ).setFooter(`👪 ${client.guilds.cache.size} guilds`)
-    message.channel.send(embed)
+    message.channel.send({ embeds: [embed] })
   }
 }

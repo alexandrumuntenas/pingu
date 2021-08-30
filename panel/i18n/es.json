@@ -77,13 +77,13 @@
                         "formLabel": "Habilitar los comandos de moderación"
                     },
                     "OxV1juz": {
-                        "formLabel": "Actuar automáticamente si un usuario alcanza una cierta cantidad de advertencias"
+                        "formLabel": "Habilitar Límite de Advertencias"
                     },
                     "DHLJ2YI": {
-                        "formLabel": "Cantidad necesaria de advertencias para tomar acciones"
+                        "formLabel": "Límite de Advertencias"
                     },
                     "AkeMlvn": {
-                        "formLabel": "¿Qué acción se ha de tomar cuando un usuario alcanza una cierta cantidad de advertencias?"
+                        "formLabel": "Acción a tomar cuando se supere el límite"
                     }
 
                 }

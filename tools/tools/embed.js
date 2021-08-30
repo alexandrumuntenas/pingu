@@ -1,9 +1,9 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, Permissions } = require('discord.js')
 
 module.exports = {
   name: 'embed',
   execute (args, client, con, contenido, message, result) {
-    if (message.member.hasPermission(['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS']) || message.member.hasPermission('ADMINISTRATOR')) {
+    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       // Menú
       const embed = new MessageEmbed()
       embed.setAuthor(message.author.username, message.author.avatarURL())

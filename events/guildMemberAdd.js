@@ -5,9 +5,9 @@ const Jimp = require('jimp')
 module.exports = (client, con, member) => {
   con.query('SELECT * FROM `guildData` WHERE guild = ?', [member.guild.id], (err, result) => {
     if (err) console.log(err)
-    if (Object.prototype.hasOwnProperty.call(result, 'welcome_enabled')) {
+    if (Object.prototype.hasOwnProperty.call(result, 0)) {
       if (result[0].welcome_enabled !== 0) {
-        const mensaje = client.channels.cache.find(channel => channel.id === result[0].welcome_channel)
+        const mensaje = client.channels.cache.get(result[0].welcome_channel)
         if (mensaje) {
           if (result[0].welcome_image !== 0) {
             const run = async () => {
@@ -43,22 +43,18 @@ module.exports = (client, con, member) => {
           }
         }
       }
-    }
-    if (Object.prototype.hasOwnProperty.call(result, 'burbuja_activado')) {
-      if (result[0].burbuja_activado === 1) {
+      if (result[0].moderator_noMoreUsers_enabled === 1) {
         if (member) {
           member
-            .kick('El servidor al que intentas acceder dispone del modo burbuja activado.')
+            .kick(result[0].moderator_noMoreUsers_message || 'noMoreUsers enabled on this guild · Powered by Pingu')
         }
       }
-    }
-    if (Object.prototype.hasOwnProperty.call(result, 'welcome_roles')) {
       if (result[0].welcome_roles) {
         const welcomeRoles = result[0].welcome_roles
-        const role = welcomeRoles.split(',')
-        role.forEach(element => {
-          if (member.guild.roles.cache.find(role => role.id === element)) {
-            member.roles.add(member.guild.roles.cache.find(role => role.id === element))
+        const roleArray = welcomeRoles.split(',')
+        roleArray.forEach(element => {
+          if (member.guild.roles.cache.get(element)) {
+            member.roles.add(member.guild.roles.cache.get(element))
           }
         })
       }

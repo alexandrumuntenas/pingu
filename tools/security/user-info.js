@@ -1,10 +1,10 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed, Permissions } = require('discord.js')
 
 module.exports = {
   name: 'user-info',
   execute (args, client, con, contenido, message, result) {
     const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.userinfo
-    if (message.member.hasPermission(['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS']) || message.member.hasPermission('ADMINISTRATOR')) {
+    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (result[0].moderator_enabled !== 0) {
         const user = message.mentions.users.first() || message.member.user
         const member = message.guild.members.cache.get(user.id)

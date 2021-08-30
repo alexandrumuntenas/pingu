@@ -1,10 +1,12 @@
+const { Permissions } = require('discord.js')
+
 module.exports = {
   name: 'command',
   execute (args, client, con, contenido, message, result) {
     let i18n = require(`../../i18n/${result[0].guild_language}.json`)
     i18n = i18n.tools.config.command
     message.channel.send(':warning: El comando `command` será removido en la actualización 2110, que será implementada el 01/09/2021. (EOS 2110, más info en nuestro servidor de soporte)')
-    if (message.guild.ownerID === message.author.id || message.member.hasPermission('ADMINISTRATOR')) {
+    if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (args[1]) {
         switch (args[1]) {
           case 'create':

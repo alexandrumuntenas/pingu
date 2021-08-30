@@ -13,79 +13,6 @@
         "response_b": "Se ha activado el módulo anti-spam correctamente.",
         "permerror": "No dispone de permisos suficientes para ejecutar este comando."
       },
-      "bienvenidas": {
-        "startup": "Configuración del módulo de **BIENVENIDAS**",
-        "index": {
-          "before": "Para ejecutar una opción, indica el número de la opción.",
-          "avaliable": "Opciones disponibles",
-          "options": {
-            "first": "¿Enviar mensaje cuando alguien se une al servidor?",
-            "second": "Establecer mensaje de bienvenida",
-            "third": "Establecer canal de bienvenida",
-            "fourth": "¿Enviar cartel de bienvenida?",
-            "fifth": "Cambiar fondo del cartel de bienvenida",
-            "sixth": "Dar rol/es a los nuevos usuarios",
-            "seventh": "Salir"
-          },
-          "time_error": "Se ha cerrado la configuración del módulo de bienvenidas."
-        },
-        "toggle_message": {
-          "question": "¿Enviar mensaje de bienvenida cuando se una un nuevo miembro?",
-          "avaliable_responses": "Respuestas disponibles",
-          "response_a": "No se enviarán mensajes de bienvenida.",
-          "response_b": " Se enviarán mensajes de bienvenida."
-        },
-        "toggle_cartel": {
-          "question": "¿Enviar cartel de bienvenida cuando se una un nuevo miembro?",
-          "avaliable_responses": "Respuestas disponibles",
-          "response_a": "No se enviarán carteles de bienvenida.",
-          "response_b": "Se enviarán carteles de bienvenida."
-        },
-        "dar_rol": {
-          "give_role": {
-            "showcase": "A continuación se muestran los roles que se ofrecerán a los nuevos usuarios",
-            "showcase_bot": "A continuación se muestran los roles que se ofrecerán a los nuevos bots",
-            "before": "",
-            "avaliable": "Opciones disponibles",
-            "options": {
-              "first": "Añadir rol/es",
-              "second": "Eliminar rol/es",
-              "third": "Guardar cambios y volver",
-              "fourth": "Descartar cambios y volver"
-            }
-          },
-          "add_rol": {
-            "question": "Mencione todos los nuevos roles que desea ofrecer.",
-            "invalid_message": "Debe mencionar al menos un rol"
-          },
-          "del_rol": {
-            "question": "Mencione todos los roles que desea dejar de ofrecer a los nuevos miembros",
-            "invalid_message": "Debe mencionar al menos un rol"
-          },
-          "before": "Para ejecutar una opción, indique el número de la opción.",
-          "avaliable": "Opciones disponibles",
-          "options": {
-            "first": "Configurar roles que se establecerán a los usuarios",
-            "second": "Configurar roles que se establecerán a los bots",
-            "third": "Volver"
-          }
-        },
-        "update_channel": {
-          "question": "¿Dónde desea que se envíen los mensajes y carteles de bienvenida? ¡Mencione el canal!",
-          "response": " Se ha actualizado el canal de bienvenida.",
-          "invalid_channel": "No ha mencionado un canal válido."
-        },
-        "update_message": {
-          "question": "¿Qué mensaje desea que envíe para recibir a los nuevos miembros?",
-          "emoji_remover": "El mensaje de bienvenida no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.",
-          "response": "Se ha actualizado el mensaje de bienvenida."
-        },
-        "update_background": {
-          "question": "Introduzca el ID del fondo que desea establecer.",
-          "link_checkout": "Puede consultar los fondos disponibles en este enlace"
-        },
-        "permerror": "No dispone de permisos suficientes para ejecutar este comando."
-      },
       "burbuja": {
         "response_a": "Se ha desactivado correctamente el modo burbuja.",
         "response_b": "Se ha activado correctamente el modo burbuja.",
@@ -100,130 +27,6 @@
         },
         "remove": "Se ha eliminado correctamente el comando personalizado",
         "invalid": "No ha indicado una opción correcta"
-      },
-      "despedidas": {
-        "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
-        "startup": "Configuración del módulo de **DESPEDIDAS / SALIDAS**",
-        "index": {
-          "before": "Para ejecutar una opción, indique el número de la opción.",
-          "avaliable": "Opciones disponibles",
-          "options": {
-            "first": "¿Enviar mensaje cuando alguien abandona el servidor?",
-            "second": "Establecer mensaje de despedidas",
-            "third": "Establecer canal de despedida",
-            "fourth": "Salir"
-          }
-        },
-        "time_error": "Se ha cerrado la configuración del módulo de despedidas.",
-        "toggle_message": {
-          "question": "¿Enviar mensaje de despedida cuando se una miembro abandone el servidor?",
-          "avaliable_responses": "Respuestas disponibles",
-          "response_a": "No se enviarán mensajes de despedida...",
-          "response_b": "A partir de ahora se enviarán mensajes de despedidas..."
-        },
-        "update_channel": {
-          "question": "¿Dónde desea que se envíen los mensajes de despedidas? ¡Mencione el canal!",
-          "invalid": "No ha mencionado un canal válido.",
-          "success": "Se ha actualizado el canal de despedidas."
-        },
-        "update_message": {
-          "question": "¿Qué mensaje desea que se envíe para recibir a los despedir a los miembros?",
-          "emoji_remover": "El mensaje de despedida no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.",
-          "success": "Se ha actualizado el mensaje de despedida"
-        }
-      },
-      "moderador": {
-        "startup": "Configuración del módulo de **MODERACIÓN**",
-        "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
-        "index": {
-          "before": "Para ejecutar una opción, indica el número de la opción.",
-          "avaliable": "Opciones disponibles",
-          "options": {
-            "first": "¿Activar comandos de moderación? (Alterna entre sí y no)",
-            "second": "Expulsar/banear usuario al alcanzar cierta cantidad de infracciones",
-            "third": "Salir"
-          }
-        },
-        "time_error": "Se ha cerrado la configuración del módulo de moderación",
-        "toggle_moderator": {
-          "response_a": "Se ha desactivado correctamente los comandos de moderación",
-          "response_b": "Se ha activado correctamente los comandos de moderación"
-        },
-        "toggle_modwarn": {
-          "response_a": "Ya no se tomarán medidas automáticas de expulsión cuando un usuario alcance el límite especificado.",
-          "response_b": "Se tomarán medidas automáticas de expulsión cuando un usuario alcance el límite especificado."
-        },
-        "e_limite": {
-          "question": "¿Cuántos warns debe tener un usuario para tomar medidas de forma automática?",
-          "success": "Se ha actualizado la cantidad correctamente.",
-          "notinteger": "Debe introducir un valor alfanumérico."
-        },
-        "toggle_medida": {
-          "response_a": "Se expulsarán aquellos miembros que alcance/supere el límite de advertencias establecido.",
-          "response_b": "Se banearán aquellos miembros que alcance/supere el límite de advertencias establecido."
-        },
-        "e_modwarn": {
-          "before": "Para ejecutar una opción, indica el número de la opción.",
-          "avaliable": "Opciones disponibles",
-          "options": {
-            "first": "¿Activar función?",
-            "second": "Configurar medida que se tomará si un usuario alcanza el límite de advertencias.",
-            "third": "Modificar límite de warns (predeterminado => 5)",
-            "fourth": "Volver"
-          }
-        }
-      },
-      "niveles": {
-        "startup": "Configuración del módulo de **NIVELES**",
-        "index": {
-          "before": "Para ejecutar una opción, indica el número de la opción.",
-          "avaliable": "Opciones disponibles",
-          "options": {
-            "first": "¿Habilitar sistema de niveles?",
-            "second": "Establecer mensaje de avance de nivel",
-            "third": "¿Establecer canal de avance de nivel?",
-            "fourth": "Cambiar fondo de los carteles de ranking",
-            "fifth": "Cambia la dificultad de avanzar de nivel",
-            "sixth": "Dar X rol/es a los usuarios cuando alcancen X nivel",
-            "seventh": "Salir"
-          }
-        },
-        "isinteger": "El valor especificado debe ser alfanumérico.",
-        "time_error": "Se ha cerrado la configuración del módulo de niveles.",
-        "toggle_niveles": {
-          "question": "¿Activar módulo de niveles?",
-          "avaliable_responses": "Respuestas disponibles",
-          "response_a": "Se ha activado el módulo de niveles.",
-          "response_b": "Se ha desactivado el módulo de niveles."
-        },
-        "update_message": {
-          "question": "¿Qué mensaje desea que se envíe para notificar el avance de nivel?",
-          "emoji_remover": "El mensaje de avance de nivel no soporta emojis. Si se incluyen, serán retirados automáticamente del texto.",
-          "success": "Se ha actualizado el mensaje de avance de nivel."
-        },
-        "update_channel": {
-          "question": "¿Dónde desea que se envíen los mensajes de avance de nivel? ¡Mencione el canal!",
-          "success": "Se ha actualizado el canal de avance de nivel.",
-          "invalid": "No ha mencionado un canal válido."
-        },
-        "update_fondo": {
-          "question": "Introduzca el ID del fondo que desea establecer.",
-          "success": "Se ha actualizado el fondo de los carteles de rank y avance de nivel.",
-          "invalid": "Ese fondo no existe, por favor, introduzca un ID válido.",
-          "notinteger": "Debe introducir un valor alfanumérico."
-        },
-        "update_dificultad": {
-          "question": "Indique la dificultad de subir de nivel. (Dificultad máxima = 5)",
-          "success": "Se ha actualizado la dificultad correctamente.",
-          "invalid": "Debe introducir un valor entre 1-5. No se pueden emplear decimales...",
-          "notinteger": "Debe introducir un valor alfanumérico."
-        },
-        "permerror": "No dispone de permisos suficientes para ejecutar este comando."
-      },
-      "prefix": {
-        "missing_arg": "Falta un argumento en el comando. Uso",
-        "response": "Nuevo prefijo",
-        "permerror": "No dispone de permisos suficientes para ejecutar este comando."
       },
       "response": {
         "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
@@ -323,7 +126,7 @@
       },
       "ban": {
         "permerror": "No dispone de permisos suficientes para ejecutar este comando.",
-        "success": "Se ha expulsado permanentemente a",
+        "success": "ha sido expulsado permanentemente",
         "fail": "No se ha podido expulsar permanentemente a",
         "missing_param": "Mencione al menos un usuario para poder ejecutar este comando"
       },

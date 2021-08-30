@@ -1,3 +1,4 @@
+const { Permissions } = require('discord.js')
 const parse = require('parse-duration')
 
 module.exports = {
@@ -5,7 +6,7 @@ module.exports = {
   execute (args, client, con, contenido, message, result) {
     let i18n = require(`../../i18n/${result[0].guild_language}.json`)
     i18n = i18n.tools.security.slowmode
-    if (message.member.hasPermission(['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS']) || message.member.hasPermission('ADMINISTRATOR')) {
+    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (result[0].moderator_enabled !== 0) {
         if (args[1]) {
           const timeslowmo1 = message.content.replace(`${result[0].guild_prefix}slowmode `, '')

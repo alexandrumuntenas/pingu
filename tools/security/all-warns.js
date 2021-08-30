@@ -1,4 +1,4 @@
-const { MessageAttachment } = require('discord.js')
+const { MessageAttachment, Permissions } = require('discord.js')
 const moment = require('moment')
 const Pdf = require('pdfkit')
 const fs = require('fs')
@@ -6,9 +6,11 @@ const fs = require('fs')
 module.exports = {
   name: 'all-warns',
   execute (args, client, con, contenido, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.allwarns
-    if (message.member.hasPermission(['MANAGE_MESSAGES', 'KICK_MEMBERS', 'BAN_MEMBERS']) || message.member.hasPermission('ADMINISTRATOR')) {
-      if (result[0].moderator_enabled !== 0) {
+    let i18n = require(`../../i18n/${result[0].guild_language}.json`)
+    const noavaliable = i18n.tools.noavaliable
+    i18n = i18n.tools.security.allwarns
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         if (message.mentions.users.first()) {
           async function step1 () {
             con.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ?', [message.mentions.users.first().id, message.guild.id], (err, result) => {
@@ -41,9 +43,11 @@ module.exports = {
         } else {
           message.channel.send(`<:win_information:876119543968305233> ${i18n.missing_param}`)
         }
+      } else {
+        message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
       }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+      message.channel.send(`<:pingu_cross:876104109256769546> ${noavaliable}`)
     }
   }
 }

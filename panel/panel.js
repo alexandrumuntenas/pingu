@@ -1,10 +1,11 @@
 require('dotenv').config()
-const { Client } = require('discord.js')
+const { Client, Intents } = require('discord.js')
 
-const client = new Client()
-client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU')
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES] })
+client.login(process.env.PUBLIC_TOKEN)
 
 const express = require('express')
+const helmet = require('helmet')
 
 const mysql = require('mysql2')
 const passport = require('passport')
@@ -13,14 +14,14 @@ const PassportLocal = require('passport-local').Strategy
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 
-const makeId = require('../gen/makeId')
+const makeId = require('../modules/makeId')
 const emojiStrip = require('emoji-strip')
 
 const pool = mysql.createPool({
-  host: '104.128.239.45',
-  user: 'u43502_Ipea7UopvX',
-  password: 'T0^Y9yXARCuAa1.LfAzmWRRt',
-  database: 's43502_pingu',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATA,
   charset: 'utf8_unicode_ci',
   waitForConnections: true,
   connectionLimit: 1000,
@@ -55,21 +56,21 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.text())
 if (process.env.ENTORNO !== 'desarrollo') {
-  /* app.use(helmet())
-    app.disable('x-powered-by'); */
+  app.use(helmet())
+  app.disable('x-powered-by')
   app.use(cookieParser(makeId(256)))
   app.use(session({
     secret: makeId(1024),
     resave: true,
     saveUninitialized: true,
-    name: makeId(256)
-    /* cookie: {
-            secure: true,
-            httpOnly: true,
-            domain: 'pingu.duoestudios.com',
-            path: '/',
-            expires: new Date(Date.now() + 60 * 60 * 1000)
-        } */
+    name: makeId(256),
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      domain: 'pingu.duoestudios.com',
+      path: '/',
+      expires: new Date(Date.now() + 60 * 60 * 1000)
+    }
   }))
 } else {
   app.use(cookieParser('b'))
@@ -158,8 +159,30 @@ app.get('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return ne
         })
         const i18n = require(`./i18n/${result[0].guild_language}.json`)
         guild.roles.cache.filter(r => r.managed === false && r.id !== guild.id).map(r => roles.add({ role_name: r.name, role_id: r.id, role_editable: r.editable }))
-        guild.channels.cache.filter(c => c.type === 'text').map(c => channels.add({ channel_name: c.name, channel_id: c.id }))
-        res.render('dashboard/main', { i18n: i18n, guild: guild, bbdd: result[0], channels: channels, roles: roles, savedRoles: savedRoles, client: client.user })
+        guild.channels.cache.filter(c => c.type === 'GUILD_TEXT').map(c => channels.add({ channel_name: c.name, channel_id: c.id }))
+        res.render('dashboard/overview', { i18n: i18n, guild: guild, bbdd: result[0], channels: channels, roles: roles, savedRoles: savedRoles, client: client.user })
+      } else {
+        pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
+        req.session.destroy()
+        req.logout()
+        res.redirect('/')
+      }
+    })
+  } else {
+    req.session.destroy()
+    req.logout()
+    res.redirect('/')
+  }
+})
+
+app.get('/dashboard/moderation', (req, res, next) => { if (req.isAuthenticated()) return next(); res.redirect('/login') }, (req, res) => {
+  const guild = client.guilds.cache.find(guild => guild.id === req.user.Guild_ID)
+  if (guild) {
+    pool.query('SELECT * FROM `guildData` WHERE guild LIKE ?', [guild.id], function (err, result, rows) {
+      if (err) console.log(err)
+      if (result.length !== 0) {
+        const i18n = require(`./i18n/${result[0].guild_language}.json`)
+        res.render('dashboard/modules/moderation', { i18n: i18n, guild: guild, bbdd: result[0], client: client.user })
       } else {
         pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [req.user.Guild_ID])
         req.session.destroy()
@@ -206,6 +229,8 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
       case 'system':
         if (Object.prototype.hasOwnProperty.call(req.body, 'EEScEqQw')) {
           pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', [req.body.EEScEqQw, req.user.Guild_ID])
+        } else {
+          pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', ['!', req.user.Guild_ID])
         }
         break
       case 'welcome':
@@ -248,22 +273,24 @@ app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return n
           pool.query('UPDATE `guildData` SET `farewell_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID])
         }
         break
-      case 'moderation':
+      case 'moderation_main':
         if (Object.prototype.hasOwnProperty.call(req.body, 'Y2adeog')) {
           pool.query("UPDATE `guildData` SET `moderator_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
           pool.query("UPDATE `guildData` SET `moderator_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
+        break
+      case 'moderator_warnlimit':
         if (Object.prototype.hasOwnProperty.call(req.body, 'OxV1juz')) {
-          pool.query("UPDATE `guildData` SET `moderador_warn_expulsion_activado` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `moderator_warnLimit_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         } else {
-          pool.query("UPDATE `guildData` SET `moderador_warn_expulsion_activado` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
+          pool.query("UPDATE `guildData` SET `moderator_warnLimit_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'DHLJ2YI')) {
-          pool.query('UPDATE `guildData` SET `moderador_warn_expulsion_cantidad` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.DHLJ2YI), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `moderator_warnLimit_limit` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.DHLJ2YI), req.user.Guild_ID])
         }
         if (Object.prototype.hasOwnProperty.call(req.body, 'AkeMlvn')) {
-          pool.query('UPDATE `guildData` SET `moderador_warn_expulsion_accion` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID])
+          pool.query('UPDATE `guildData` SET `moderator_warnLimit_action` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID])
         }
         break
       case 'leveling':

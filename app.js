@@ -3,8 +3,8 @@
  * Versión: 2108               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
-const makeId = require('./gen/makeId')
-const { Client, Collection } = require('discord.js')
+const makeId = require('./modules/makeId')
+const { Client, Collection, Intents } = require('discord.js')
 const mysql = require('mysql2')
 const fs = require('fs')
 const express = require('express')
@@ -25,19 +25,20 @@ process.on('uncaughtException', function (err) {
 })
 
 const talkedRecently = new Set()
-const client = new Client()
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES] })
 
 console.log('[··] Cargando Eventos')
 const guildCreate = require('./events/guildCreate')
 const guildDelete = require('./events/guildDelete')
 const guildMemberAdd = require('./events/guildMemberAdd')
 const guildMemberRemove = require('./events/guildMemberRemove')
-const checkFolder = require('./events/checkFolders')
 console.log('[OK] Eventos Cargados')
 
 console.log('[··] Cargando Módulos')
 const levelingRankUp = require('./modules/levelingRankUp')
 const noMoreInvites = require('./modules/noMoreInvites')
+const checkFolder = require('./modules/checkFolders')
 console.log('[OK] Módulos Cargados')
 
 console.log('[··] Cargando Servicios Third-Party')
@@ -45,7 +46,7 @@ const topggSDK = require('./modules/third-party/topggSDK')
 console.log('[OK] Servicios Third-Party Cargados')
 
 // Bot
-if (process.env.ENTORNO !== 'desarrollo') {
+if (process.env.ENTORNO === 'public') {
   topggSDK(client)
   client.login(process.env.PUBLIC_TOKEN)
   const app = express()
@@ -107,18 +108,18 @@ client.on('ready', () => {
   console.log(`[IF] Logged in as ${client.user.tag}!`)
   client.user.setPresence({
     status: 'idle',
-    activity: {
+    activities: [{
       name: 'Discord',
       type: 'WATCHING'
-    }
+    }]
   })
   setInterval(() => {
     client.user.setPresence({
       status: 'idle',
-      activity: {
+      activities: [{
         name: 'Discord',
         type: 'WATCHING'
-      }
+      }]
     })
   }, 3600000)
 })
@@ -139,7 +140,7 @@ client.on('guildMemberRemove', (member) => {
   guildMemberRemove(client, con, member)
 })
 
-client.on('message', (message) => {
+client.on('messageCreate', (message) => {
   if (
     message.channel.type === 'dm' ||
     message.author.bot ||
@@ -161,8 +162,11 @@ client.on('message', (message) => {
             try {
               client.commands.get(command).execute(args, client, con, contenido, message, result)
             } catch (err) {
-              log.warn(err)
-              message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...')
+              if (process.env.ENTORNO !== 'desarrollo') {
+                message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
+              } else {
+                message.reply(err)
+              }
             }
           } else {
             con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
@@ -180,8 +184,8 @@ client.on('message', (message) => {
         }
       }
 
-      if (result[0].aspam_activado !== 0) {
-        noMoreInvites(message)
+      if (result[0].moderator_noMoreInvites_enabled !== 0) {
+        noMoreInvites(message, result, con)
       }
       // Leveling
       if (!contenido.startsWith(result[0].guild_prefix)) {

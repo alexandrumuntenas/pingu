@@ -28,7 +28,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <h1 class="navbar-brand">
+                <h1 class="navbar-brand" onclick="lightMeUp()">
                     <img src="<%= client.avatarURL({ format: 'jpg' }) %>" width="110" height="110" alt="Tabler"
                         class="navbar-brand-image" style="margin-right: 10px;">
                     <%= client.username %>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="navbar-nav pt-lg-3">
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" href="/dashboard">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
@@ -130,7 +130,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#moderation">
+                            <a class="nav-link" href="/dashboard/moderation">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tools"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -151,7 +151,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/dashboard/customcommands">
+                            <a class="nav-link disabled" href="#">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-terminal-2" width="24" height="24"
@@ -169,7 +169,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/dashboard/autoresponder">
+                            <a class="nav-link disabled" href="#">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-settings-automation" width="24" height="24"
@@ -210,33 +210,6 @@
                 </div>
             </div>
         </aside>
-        <header class="navbar navbar-expand-md navbar-light d-none d-lg-flex d-print-none">
-            <div class="container-xl">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-nav flex-row order-md-last">
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
-                            aria-label="Open user menu">
-                            <div class="d-none d-xl-block p-2">
-                                <div>
-                                    <%= guild.name %>
-                                </div>
-                            </div>
-                            <span class="avatar avatar-sm"
-                                style="background-image: url(<%= guild.iconURL({ dynamic: true, format: 'jpg' }) || 'https://cdn.discordapp.com/embed/avatars/0.png'%>)"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <button onclick="lightMeUp()" class="dropdown-item"><%= i18n.nav.lightMeUp %></button>
-                            <button onclick="getMeOut()" class="dropdown-item"><%= i18n.nav.getMeOut %></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="collapse navbar-collapse" id="navbar-menu">
-                </div>
-            </div>
-        </header>
         <div class="page-wrapper">
             <div class="container-xl">
                 <div class="page-header">
@@ -263,7 +236,8 @@
                                             <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                                         </svg>
                                         <a href="#" class="text-reset">
-                                            <%= guild.memberCount %> <%= i18n.main.header.members %>
+                                            <%= guild.memberCount %>
+                                                <%= i18n.main.header.members %>
                                         </a>
                                     </div>
                                     <div class="col-auto">
@@ -277,7 +251,8 @@
                                             </path>
                                             <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
                                         </svg>
-                                        <%= guild.channels.cache.filter(channel=> channel.type === 'text').size %> <%= i18n.main.header.textChannels %>
+                                        <%= guild.channels.cache.filter(channel=> channel.type === 'text').size %> <%=
+                                                i18n.main.header.textChannels %>
                                     </div>
                                     <div class="col-auto">
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -291,7 +266,8 @@
                                                 d="M6 15h-2a1 1 0 0 1 -1 -1v-4a1 1 0 0 1 1 -1h2l3.5 -4.5a0.8 .8 0 0 1 1.5 .5v14a0.8 .8 0 0 1 -1.5 .5l-3.5 -4.5">
                                             </path>
                                         </svg>
-                                        <%= guild.channels.cache.filter(channel=> channel.type === 'voice').size %> <%= i18n.main.header.voiceChannels %>
+                                        <%= guild.channels.cache.filter(channel=> channel.type === 'voice').size %> <%=
+                                                i18n.main.header.voiceChannels %>
                                     </div>
                                 </div>
                             </div>
@@ -302,54 +278,6 @@
             <div class="page-body">
                 <div class="container-xl">
                     <div class="row row-deck row-cards">
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card" id="totalGuildMembers">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="subheader"><%= i18n.main.stats.members %></div>
-                                    </div>
-                                    <div class="h1 mb-3">
-                                        <%= guild.memberCount %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card text-white bg-success" id="onlineGuildMembers">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="subheader text-white"><%= i18n.main.stats.onlineMembers %></div>
-                                    </div>
-                                    <div class="h1 mb-3">
-                                        <%= guild.members.cache.filter(m=> m.presence.status === 'online').size %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card text-white bg-warning" id="idleGuildMembers">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="subheader text-white"><%= i18n.main.stats.idleMembers %></div>
-                                    </div>
-                                    <div class="h1 mb-3">
-                                        <%= guild.members.cache.filter(m=> m.presence.status === 'idle').size %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-lg-3">
-                            <div class="card text-white bg-danger" id="dndGuildMembers">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="subheader text-white"><%= i18n.main.stats.dndMembers %></div>
-                                    </div>
-                                    <div class="h1 mb-3">
-                                        <%= guild.members.cache.filter(m=> m.presence.status === 'dnd').size %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-lg-6">
                             <div class="row row-cards">
                                 <div class="col-12">
@@ -372,15 +300,28 @@
                                         </div>
                                         <div class="card-body" style="position: relative;">
                                             <div class="mb-3">
-                                                <label class="form-label"><%= i18n.main.settings.system.cardBody.EEScEqQw.formLabel %></label>
+                                                <label class="form-label">
+                                                    <%= i18n.main.settings.system.cardBody.EEScEqQw.formLabel %>
+                                                </label>
                                                 <input type="text" class="form-control" id="EEScEqQw" name="EEScEqQw"
                                                     placeholder="!" value="<%= bbdd.guild_prefix %>" required>
-                                                <div class="form-text"><%= i18n.main.settings.system.cardBody.EEScEqQw.formSmall %></div>
+                                                <div class="form-text">
+                                                    <%= i18n.main.settings.system.cardBody.EEScEqQw.formSmall %>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button class="btn btn-primary" type="submit" id="X3Rh42oq"
-                                                disabled><%= i18n.main.save %></button>
+                                            <button class="btn btn-primary" type="submit" id="X3Rh42oq" disabled>
+                                                <%= i18n.main.save %>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-12">
+                                    <form class="card" id="moderation">
+                                        <div class="card-body">
+                                            Los ajustes de moderación ahora tienen su propia página. <a
+                                                href="/dashboard/moderation">¡Compruébalo!</a>
                                         </div>
                                     </form>
                                 </div>
@@ -415,7 +356,10 @@
                                                             <input type="checkbox" class="form-check-input" id="LNV5Ljl"
                                                                 name="LNV5Ljl" value="LNV5Ljl" />
                                                             <% } %>
-                                                                <label class="form-check-label" for="LNV5Ljl"><%= i18n.main.settings.welcome.cardBody.LNV5Ljl.formLabel %></label>
+                                                                <label class="form-check-label" for="LNV5Ljl">
+                                                                    <%= i18n.main.settings.welcome.cardBody.LNV5Ljl.formLabel
+                                                                        %>
+                                                                </label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
@@ -452,7 +396,10 @@
                                                             <input type="checkbox" class="form-check-input" id="vyKS7bC"
                                                                 name="vyKS7bC" value="vyKS7bC" />
                                                             <% } %>
-                                                                <label class="form-check-label" for="vyKS7bC"><%= i18n.main.settings.welcome.cardBody.vyKS7bC.formLabel %></label>
+                                                                <label class="form-check-label" for="vyKS7bC">
+                                                                    <%= i18n.main.settings.welcome.cardBody.vyKS7bC.formLabel
+                                                                        %>
+                                                                </label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
@@ -478,8 +425,9 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button class="btn btn-primary" id="qYgCExvNIy" type="submit"
-                                                disabled><%= i18n.main.save %></button>
+                                            <button class="btn btn-primary" id="qYgCExvNIy" type="submit" disabled>
+                                                <%= i18n.main.save %>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -517,7 +465,10 @@
                                                                 <input type="checkbox" id="noLp3EI" name="noLp3EI"
                                                                     value="noLp3EI" class="form-check-input" />
                                                                 <% } %>
-                                                                    <label class="form-check-label" for="noLp3EI"><%= i18n.main.settings.farewell.cardBody.noLp3EI.formLabel %></label>
+                                                                    <label class="form-check-label" for="noLp3EI">
+                                                                        <%= i18n.main.settings.farewell.cardBody.noLp3EI.formLabel
+                                                                            %>
+                                                                    </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -547,88 +498,7 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button class="btn btn-primary" role="button" id="zbjt55v"
-                                                disabled><%= i18n.main.save %></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row row-cards">
-                                <div class="col-12">
-                                    <form class="card" id="moderation">
-                                        <input type="hidden" name="frmname" value="moderation" />
-                                        <div class="card-header">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4"></path>
-                                                <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"></line>
-                                                <polyline points="12 8 7 3 3 7 8 12"></polyline>
-                                                <line x1="7" y1="8" x2="5.5" y2="9.5"></line>
-                                                <polyline points="16 12 21 17 17 21 12 16"></polyline>
-                                                <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
-                                            </svg>
-                                            <h3 class="card-title">
-                                                <%= i18n.main.settings.moderation.cardTitle %>
-                                            </h3>
-                                        </div>
-                                        <div class="card-body" style="position: relative;">
-                                            <div class="form-group mb-3">
-                                                <div class="form-check form-switch">
-                                                    <% if(bbdd.moderator_enabled===1 ) {%>
-                                                        <input type="checkbox" checked="checked" id="Y2adeog"
-                                                            name="Y2adeog" value="Y2adeog" class="form-check-input" />
-                                                        <% } else { %>
-                                                            <input type="checkbox" id="Y2adeog" name="Y2adeog"
-                                                                value="Y2adeog" class="form-check-input" />
-                                                            <% } %>
-                                                                <label class="form-check-label" for="Y2adeog"><%= i18n.main.settings.moderation.cardBody.Y2adeog.formLabel %></label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <div class="form-check form-switch">
-                                                    <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
-                                                        <input type="checkbox" checked="checked"
-                                                            class="form-check-input" id="OxV1juz" name="OxV1juz"
-                                                            value="OxV1juz" />
-                                                        <% } else { %>
-                                                            <input type="checkbox" class="form-check-input" id="OxV1juz"
-                                                                name="OxV1juz" value="OxV1juz" />
-                                                            <% } %>
-                                                                <label class="form-check-label" for="OxV1juz"><%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel %></label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <label for="DHLJ2YI" class="form-label">
-                                                    <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
-                                                </label>
-                                                <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                                    value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                                    placeholder="10" required>
-                                            </div>
-                                            <div class="form-group mb-3">
-                                                <label for="AkeMlvn" class="form-label">
-                                                    <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
-                                                </label>
-                                                <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                                    <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                        <option value="1" selected>Expulsión Permanente</option>
-                                                        <option value="0" disabled>Expulsión Temporal</option>
-                                                        <option value="0">Expulsión</option>
-                                                        <% } else { %>
-                                                            <option value="1">Expulsión Permanente</option>
-                                                            <option value="0" disabled>Expulsión Temporal</option>
-                                                            <option value="0" selected>Expulsión</option>
-                                                            <% } %>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
+                                            <button class="btn btn-primary" role="button" id="zbjt55v" disabled>
                                                 <%= i18n.main.save %>
                                             </button>
                                         </div>
@@ -666,7 +536,10 @@
                                                             <input type="checkbox" id="QTMVmdD" name="QTMVmdD"
                                                                 value="QTMVmdD" class="form-check-input" />
                                                             <% } %>
-                                                                <label for="QTMVmdD" class="form-check-label"><%= i18n.main.settings.leveling.cardBody.QTMVmdD.formLabel %></label>
+                                                                <label for="QTMVmdD" class="form-check-label">
+                                                                    <%= i18n.main.settings.leveling.cardBody.QTMVmdD.formLabel
+                                                                        %>
+                                                                </label>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3">
@@ -1030,46 +903,7 @@
                 $('#zbjt55v').removeAttr('disabled');
             });
         });
-        $("#Y2adeog").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#OxV1juz").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#DHLJ2YI").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#AkeMlvn").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#moderation").submit(function (e) {
-            e.preventDefault();
-            var form = $(this);
-            $.ajax({
-                type: "POST",
-                url: '/dashboard',
-                data: form.serialize(),
-                beforeSend: function () {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Guardando...'
-                    });
-                    $('#DJxuG8K').attr('disabled', 'disabled');
-                },
-                success: function (data) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Cambios Guardados'
-                    });
-                }
-            }).fail(function () {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Se ha producido un error al guardar...'
-                });
-                $('#DJxuG8K').removeAttr('disabled');
-            });
-        });
+
         $("#QTMVmdD").change(function () {
             $('#Fw3w5X4').removeAttr('disabled');
         });
