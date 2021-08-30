@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'levels',
-  execute (args, client, con, contenido, message, result) {
+  execute (args, client, con, locale, message, result) {
     let i18n = require(`../../i18n/${result[0].guild_language}.json`)
     const noavaliable = i18n.tools.noavaliable
     i18n = i18n.tools.leveling.levels

@@ -1,12 +1,13 @@
-const { Permissions } = require('discord.js')
+const { Permissions, MessageEmbed } = require('discord.js')
+const genericMessages = require('../../modules/genericMessages')
 const makeId = require('../../modules/makeId')
+const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'warn',
-  execute (args, client, con, contenido, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.warn
-    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      if (result[0].moderator_enabled !== 0) {
+  execute (args, client, con, locale, message, result) {
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const dataSplit = message.content.replace(`${result[0].guild_prefix}warn`, '').trim().split('|')
         // const beforeSeparator = message.content.replace(`${options.result.guild_prefix}${options.command}`, '').split(result[0].separator)
         const guilty = dataSplit[0] || message.content.replace(`${result[0].guild_prefix}warn`, '').trim()// Obtenemos los culpables de dataSplit
@@ -22,26 +23,42 @@ module.exports = {
             con.query('SELECT COUNT(*) AS itotal FROM `guildWarns` WHERE user = ? AND guild = ?', [resolvableUser.id, message.guild.id], (err, result) => {
               if (err) console.log(err)
               con.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`,`motivo`) VALUES (?, ?, ?, ?)', [makeId(7), resolvableUser.id, message.guild.id, reason])
-              message.channel.send(`:warning: ${resolvableUser} ${i18n.success} \n${i18n.reason}: \`${reason}\``)
+              const sent = new MessageEmbed()
+                .setColor('#FFC107')
+                .setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: resolvableUser.tag }), resolvableUser.displayAvatarURL())
+                .setDescription(getLocales(locale, 'WARN_EMBED_SUCCESS_REASON', { REASON: reason }))
+              message.channel.send({ embeds: [sent] })
               if (cache.activado === 0) {
                 if (parseInt(result[0].itotal) + 1 >= cache.cantidad) {
                   if (cache.accion !== 0) {
                     message.guild.members.ban(resolvableUser, { reason })
                       .then(() => {
-                        message.channel.send(`:police_officer: ${i18n.automod.success.a} ${resolvableUser.tag} ${i18n.automod.success.b} ${i18n.automod.ban} ${i18n.automod.success.c} \`${cache.cantidad}\` ${i18n.automod.success.d}`)
+                        const sent2 = new MessageEmbed()
+                          .setColor('#28A745')
+                          .setAuthor(getLocales(locale, 'WARNLIMIT_OVERLIMIT', { USER: resolvableUser.tag, ACTION: 'baneado' }), resolvableUser.displayAvatarURL())
+                        message.channel.send({ embeds: [sent2] })
                       })
                       .catch(err => {
                         console.log(err)
-                        message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.automod.error.a} ${i18n.automod.ban} ${i18n.automod.error.b} (${resolvableUser.tag}) ${i18n.automod.error.c} \`${cache.cantidad}\` ${i18n.automod.error.d}`)
+                        const sent2 = new MessageEmbed()
+                          .setColor('#DC3545')
+                          .setAuthor(getLocales(locale, 'WARNLIMIT_OVERLIMIT_ERROR', { USER: resolvableUser.tag, ACTION: 'baneado' }), resolvableUser.displayAvatarURL())
+                        message.channel.send({ embeds: [sent2] })
                       })
                   } else {
                     message.guild.members.kick(resolvableUser, { reason })
                       .then(() => {
-                        message.channel.send(`:police_officer: ${i18n.automod.success.a} ${resolvableUser.tag} ${i18n.automod.success.b} ${i18n.automod.kick} ${i18n.automod.success.c} \`${cache.cantidad}\` ${i18n.automod.success.d}`)
+                        const sent2 = new MessageEmbed()
+                          .setColor('#28A745')
+                          .setAuthor(getLocales(locale, 'WARNLIMIT_OVERLIMIT', { USER: resolvableUser.tag, ACTION: 'baneado' }), resolvableUser.displayAvatarURL())
+                        message.channel.send({ embeds: [sent2] })
                       })
                       .catch(err => {
                         console.log(err)
-                        message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.automod.error.a} ${i18n.automod.kick} ${i18n.automod.error.b} (${resolvableUser.tag}) ${i18n.automod.error.c} \`${cache.cantidad}\` ${i18n.automod.error.d}`)
+                        const sent2 = new MessageEmbed()
+                          .setColor('#DC3545')
+                          .setAuthor(getLocales(locale, 'WARNLIMIT_OVERLIMIT_ERROR', { USER: resolvableUser.tag, ACTION: 'baneado' }), resolvableUser.displayAvatarURL())
+                        message.channel.send({ embeds: [sent2] })
                       })
                   }
                 }
@@ -49,9 +66,11 @@ module.exports = {
             })
           }
         })
+      } else {
+        genericMessages.Error.permerror(message, locale)
       }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+      genericMessages.Error.no_avaliable(message, locale)
     }
   }
 }

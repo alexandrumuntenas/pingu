@@ -1,18 +1,22 @@
-const { Permissions } = require('discord.js')
+const { Permissions, MessageEmbed } = require('discord.js')
 const makeId = require('../../modules/makeId')
+const genericMessages = require('../../modules/genericMessages')
+const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'config',
-  execute (args, client, con, contenido, message, result) {
-    let i18n = require(`../../i18n/${result[0].guild_language}.json`)
-    i18n = i18n.tools.config
+  execute (args, client, con, locale, message, result) {
     const claveiande = makeId(25)
     const claveadmin = makeId(12)
     if (message.guild.ownerId === message.author.id) {
       con.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [message.guild.id], (err) => {
         if (err) console.log(err)
         con.query('INSERT INTO `apoloSessions` (`Clave_de_Acceso`,`Guild_ID`,`Solicitante_ID`, `Clave_de_Autorizacion`) VALUES ( ?, ?, ?, ?)', [claveiande, message.guild.id, message.author.id, claveadmin])
-        message.author.send(`:tools: **Pingu · ${i18n.configPanel}**\n${i18n.configToken}: \`${claveiande}\`\n${i18n.configAdmin}: \`${claveadmin}\`\n${i18n.configUrl}: https://pingu.duoestudios.com/login/?iande=${claveiande}&auth=${claveadmin}\n${i18n.configInstructions}`)
+        const sent = new MessageEmbed()
+          .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
+          .setTitle(getLocales(locale, 'CONFIG_EMBED_TITLE'))
+          .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS', { CLAVEIANDE: claveiande, CLAVEAUTH: claveadmin, PANELVALID: `https://pingu.duoestudios.com/login/?iande=${claveiande}&auth=${claveadmin}` }))
+        message.author.send({ embeds: [sent] })
         setTimeout(() => {
           con.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` = ?', [message.guild.id])
         }, 3600000)
@@ -23,15 +27,23 @@ module.exports = {
         con.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [message.guild.id], (err) => {
           if (err) console.log(err)
           con.query('INSERT INTO `apoloSessions` (`Clave_de_Acceso`,`Guild_ID`,`Solicitante_ID`, `Clave_de_Autorizacion`) VALUES ( ?, ?, ?, ?)', [claveiande, message.guild.id, message.author.id, claveadmin])
-          message.author.send(`:tools: **Pingu · ${i18n.configPanel}**\n${i18n.configToken}: \`${claveiande}\`\n${i18n.configUrl}: https://pingu.duoestudios.com/login/?iande=${claveiande}\n${i18n.configInstructions}`)
-          client.users.cache.get(message.guild.ownerId).send(`:tools: **Pingu · ${i18n.configPanel}**\n*${message.author.tag}* ${i18n.configAdminInstructions}: \`${claveadmin}\``)
+          const sent = new MessageEmbed()
+            .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
+            .setTitle(getLocales(locale, 'CONFIG_EMBED_TITLE'))
+            .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS_NO_ADMIN', { CLAVEIANDE: claveiande, PANELVALID: `https://pingu.duoestudios.com/login/?iande=${claveiande}` }))
+          message.author.send({ embeds: [sent] })
+          const sentAdmin = new MessageEmbed()
+            .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
+            .setTitle(getLocales(locale, 'CONFIG_EMBED_TITLE'))
+            .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS_NO_ADMIN_TO_ADMIN', { USER: message.member.tag, CLAVEAUTH: claveadmin }))
+          message.author.send({ embeds: [sentAdmin] })
           setTimeout(() => {
             con.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` = ?', [message.guild.id])
           }, 3600000)
         })
         message.delete()
       } else {
-        message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+        genericMessages.Error.permerror(message, locale)
       }
     }
   }

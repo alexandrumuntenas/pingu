@@ -2,7 +2,7 @@ const { Permissions, MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'noMoreUsers',
-  execute (args, client, con, contenido, message, result) {
+  execute (args, client, con, locale, message, result) {
     const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.config.burbuja
     // const i18n = require(`../../i18n/${result[0].guildLanguage}.json`)
     const messageSent = new MessageEmbed()

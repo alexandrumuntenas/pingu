@@ -8,7 +8,7 @@ const { Permissions, MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'poll',
-  execute (args, client, con, contenido, message, result) {
+  execute (args, client, con, locale, message, result) {
     let i18n = require(`../../i18n/${result[0].guild_language}.json`)
     i18n = i18n.tools.functions.qpoll
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

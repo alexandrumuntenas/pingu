@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'server-info',
-  execute (args, client, con, contenido, message, result) {
+  execute (args, client, con, locale, message, result) {
     const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.misc.serverinfo
     const embed = new MessageEmbed()
       .setTitle(i18n.title)

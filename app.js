@@ -160,7 +160,7 @@ client.on('messageCreate', (message) => {
         if (args) {
           if (client.commands.has(command)) {
             try {
-              client.commands.get(command).execute(args, client, con, contenido, message, result)
+              client.commands.get(command).execute(args, client, con, result[0].guild_language || 'en', message, result)
             } catch (err) {
               if (process.env.ENTORNO !== 'desarrollo') {
                 message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')

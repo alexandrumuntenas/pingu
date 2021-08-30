@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'about',
-  execute (args, client, con, contenido, message, result) {
+  execute (args, client, con, locale, message, result) {
     const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.functions.about
     const embed = new MessageEmbed()
       .setColor('#FFFFFF')

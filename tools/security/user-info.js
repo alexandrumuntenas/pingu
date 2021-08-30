@@ -1,14 +1,14 @@
 const { MessageEmbed, Permissions } = require('discord.js')
+const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'user-info',
-  execute (args, client, con, contenido, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.userinfo
-    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      if (result[0].moderator_enabled !== 0) {
+  execute (args, client, con, locale, message, result) {
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const user = message.mentions.users.first() || message.member.user
         const member = message.guild.members.cache.get(user.id)
-        const embed = new MessageEmbed()
+        /* const embed = new MessageEmbed()
           .setThumbnail(user.displayAvatarURL())
           .addFields(
             {
@@ -41,11 +41,13 @@ module.exports = {
               value: new Date(user.createdTimestamp).toLocaleDateString(),
               inline: true
             }
-          )
-        message.channel.send(embed)
-      } // ??
+          ) */
+        message.channel.send('This command is under construction :tools:')
+      } else {
+        genericMessages.Error.permerror(message, locale)
+      }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+      genericMessages.Error.no_avaliable(message, locale)
     }
   }
 }

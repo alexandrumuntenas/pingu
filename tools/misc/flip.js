@@ -1,15 +1,15 @@
 const { MessageEmbed } = require('discord.js')
 const flip = require('flipacoin')
+const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'flip',
-  execute (args, client, con, contenido, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.misc.flip
-    const embed = new MessageEmbed().setColor('#3984BD')
+  execute (args, client, con, locale, message, result) {
+    const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n.cara}`)
+      embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_HEAD')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n.cruz}`)
+      embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_CROSS')}`)
     }
     message.reply({ embeds: [embed] })
   }

@@ -35,8 +35,11 @@
     "random-int": "^3.0.0",
     "rss-parser": "^3.12.0",
     "simple-node-logger": "^21.8.12",
+    "sort-object": "^3.0.3",
+    "string-placeholder": "^1.0.2",
     "topgg-autoposter": "^2.0.0",
     "translatte": "^3.0.1",
+    "unix-time": "^1.0.1",
     "valid-url": "^1.0.9"
   },
   "scripts": {
@@ -55,7 +58,7 @@
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.24.1",
+    "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0"
   }

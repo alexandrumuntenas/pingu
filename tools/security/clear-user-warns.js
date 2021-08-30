@@ -1,23 +1,27 @@
-const { Permissions } = require('discord.js')
+const { Permissions, MessageEmbed } = require('discord.js')
+const genericMessages = require('../../modules/genericMessages')
+const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'clear-user-warns',
-  execute (args, client, con, contenido, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.security.clearuserwarns
-    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      if (result[0].moderator_enabled !== 0) {
+  execute (args, client, con, locale, message, result) {
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         if (message.mentions.users.first()) {
           const user = message.mentions.users.first()
-          con.query('DELETE FROM `guildWarns` WHERE user = ? AND guild = ?', [message.mentios.users.first().id, message.guild.id], function (err) {
-            console.log(err)
-            message.channel.send(`<:pingu_check:876104161794596964> ${i18n.success} ${user}`)
+          con.query('DELETE FROM `guildWarns` WHERE user = ? AND guild = ?', [message.mentions.users.first().id, message.guild.id], function (err) {
+            if (err) console.log(err)
+            const sent = new MessageEmbed().setColor('#28A745').setAuthor(getLocales(locale, 'CLEAR_USER_WARNS_EMBED_TITLE', { USER: user.tag }), user.displayAvatarURL())
+            message.reply({ embeds: [sent] })
           })
         } else {
-          message.channel.send(`<:win_information:876119543968305233> ${i18n.atleastoneuser}`)
+          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}clear-user-warns <@user>`)
         }
+      } else {
+        genericMessages.Error.permerror(message, locale)
       }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+      genericMessages.Error.no_avaliable(message, locale)
     }
   }
 }

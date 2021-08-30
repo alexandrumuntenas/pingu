@@ -1,23 +1,25 @@
-const { Permissions } = require('discord.js')
+const { Permissions, MessageEmbed } = require('discord.js')
 const parse = require('parse-duration')
+const genericMessages = require('../../modules/genericMessages')
+const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'slowmode',
-  execute (args, client, con, contenido, message, result) {
-    let i18n = require(`../../i18n/${result[0].guild_language}.json`)
-    i18n = i18n.tools.security.slowmode
-    if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      if (result[0].moderator_enabled !== 0) {
-        if (args[1]) {
-          const timeslowmo1 = message.content.replace(`${result[0].guild_prefix}slowmode `, '')
-          message.channel.setRateLimitPerUser(parse(timeslowmo1, 's'), 'Slowmode')
-          message.channel.send(`:clock1: ${i18n.success} **${timeslowmo1}**`)
-        } // ??
+  execute (args, client, con, locale, message, result) {
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+        if (parse(args[0], 's')) {
+          message.channel.setRateLimitPerUser(parse(args[0], 's'), 'Slowmode')
+          const sent = new MessageEmbed().setColor('#28A745').setDescription(getLocales(locale, 'SLOWMODE', { SLOWMO: args[0] }))
+          message.channel.send({ embeds: [sent] })
+        } else {
+          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}slowmode <time s/m/h>`)
+        }
       } else {
-        message.channel.send(`<:win_information:876119543968305233> ${i18n.missing_args}`)
+        genericMessages.Error.permerror(message, locale)
       }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+      genericMessages.Error.no_avaliable(message, locale)
     }
   }
 }

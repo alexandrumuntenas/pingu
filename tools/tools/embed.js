@@ -2,7 +2,7 @@ const { MessageEmbed, Permissions } = require('discord.js')
 
 module.exports = {
   name: 'embed',
-  execute (args, client, con, contenido, message, result) {
+  execute (args, client, con, locale, message, result) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       // Menú
       const embed = new MessageEmbed()

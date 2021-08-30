@@ -3,8 +3,8 @@ const Math = require('mathjs')
 
 module.exports = {
   name: 'randint',
-  execute (args, client, con, contenido, message, result) {
-    const messageSent = new MessageEmbed().setColor('#3984BD')
+  execute (args, client, con, locale, message, result) {
+    const messageSent = new MessageEmbed().setColor('#007BFF')
     if (args[0]) {
       const specifiedRandom = Math.round(Math.random(1, parseInt(args[0])))
       messageSent.setDescription(`:abacus: **${specifiedRandom}**`)
