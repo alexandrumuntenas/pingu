@@ -165,7 +165,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/Random_hentai_gif')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
               noNSFWonSFW(result[0].moderator_noNsfwOnSfw_action, result[0].moderator_noNsfwOnSfw_message, message, con)
@@ -177,7 +177,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/pussy')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
               noNSFWonSFW(result[0].moderator_noNsfwOnSfw_action, result[0].moderator_noNsfwOnSfw_message, message, con)
@@ -189,7 +189,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/nsfw_neko_gif')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -202,7 +202,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/lewd')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -215,7 +215,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/les')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -228,7 +228,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/kuni')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -241,7 +241,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/cum')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -254,7 +254,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/classic')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -267,7 +267,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/boobs')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -280,7 +280,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/bj')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -293,7 +293,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/anal')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -306,7 +306,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/nsfw_avatar')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -319,7 +319,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/yuri')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -332,7 +332,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/trap')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -345,7 +345,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/tits')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -358,7 +358,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/solog')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -371,7 +371,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/solo')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -384,7 +384,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/pwankg')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -397,7 +397,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/pussy_jpg')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -410,7 +410,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/lewdkemo')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -423,7 +423,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/lewdk')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -436,7 +436,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/lewdk')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -449,7 +449,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/hololewd')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -462,7 +462,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/holoero')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -475,7 +475,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/hentai')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -488,7 +488,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/futanari')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -501,7 +501,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/femdom')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -514,7 +514,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/feetg')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -527,7 +527,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/erofeet')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -540,7 +540,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/feet')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -553,7 +553,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/ero')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -566,7 +566,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/erok')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -579,7 +579,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/erokemo')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -592,7 +592,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/eron')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -605,7 +605,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/eroyuri')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -618,7 +618,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/cum_jpg')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -631,7 +631,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/blowjob')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -644,7 +644,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/spank')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
@@ -657,7 +657,7 @@ module.exports = {
           if (message.channel.nsfw) {
             fetch('https://nekos.life/api/v2/img/gasm')
               .then(response => response.json())
-              .then(fetched => sendImageEmbed(fetched, 'waifu.pics'))
+              .then(fetched => sendImageEmbed(fetched, 'nekos.life'))
             break
           } else {
             if (result[0].moderator_noNsfwOnSfw_enabled === 1) {
