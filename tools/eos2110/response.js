@@ -1,6 +1,5 @@
 const { Permissions } = require('discord.js')
 const makeId = require('../../modules/makeId')
-
 module.exports = {
   name: 'response',
   execute (args, client, con, contenido, message, result) {

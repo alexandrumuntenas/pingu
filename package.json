@@ -19,7 +19,6 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "flipacoin": "^1.0.0",
-    "get-urls": "^10.0.0",
     "helmet": "^4.6.0",
     "is-discord-invitation": "^1.0.4",
     "jimp": "^0.16.1",
