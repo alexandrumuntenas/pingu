@@ -11,7 +11,7 @@ module.exports = {
         if (message.mentions.users.first()) {
           con.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ? LIMIT 25', [message.mentions.users.first().id, message.guild.id], (err, result) => {
             if (err) console.log(err)
-            const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'BAN_EMBED_SUCCESS_TITLE', { USER: message.mentions.users.first().tag }), message.mentions.users.first().displayAvatarURL())
+            const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: message.mentions.users.first().tag }), message.mentions.users.first().displayAvatarURL())
             if (result.length !== 0) {
               for (let i = 0; i < result.length; i++) {
                 allwarnsEmbed.addField(`:stopwatch: <t:${unixTime(result[i].timestamp)}>`, getLocales(locale, 'VIEW_WARNS_EMBED_REASON', { ID: result[0].identificador, REASON: result[i].motivo.trim() }))

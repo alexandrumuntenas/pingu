@@ -1,4 +1,5 @@
 const { Permissions, MessageEmbed } = require('discord.js')
+const genericMessages = require('../../modules/genericMessages')
 
 /** Idea: Volver a hacer el array de argumentos, pero esta vez, que sea separado por el separador.
  *  Eliminar el prefijo + comando y dejar solo la pregunta con las opciones. Para así permitir que
@@ -9,12 +10,10 @@ const { Permissions, MessageEmbed } = require('discord.js')
 module.exports = {
   name: 'poll',
   execute (args, client, con, locale, message, result) {
-    let i18n = require(`../../i18n/${result[0].guild_language}.json`)
-    i18n = i18n.tools.functions.qpoll
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (Object.prototype.hasOwnProperty.call(args, 0)) {
         // poll(message, args, '/', '#965E89')
-        const separator = '/' // const separator = result[0].pollSeparator || Se sustituyen todos los separators por result[0].pollSeparator
+        const separator = '|' // const separator = result[0].pollSeparator || Se sustituyen todos los separators por result[0].pollSeparator
         const findSep = args.find(char => char.includes(separator))
         // const findSep = args.find(char => char.includes(result[0].pollSeparator))
 
@@ -58,7 +57,8 @@ module.exports = {
           }
 
           const alphabet = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱',
-            '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
+            '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿', '0️⃣',
+            '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 
           const arr = []
           options[j] = args
@@ -92,7 +92,7 @@ module.exports = {
         message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${result[0].guild_prefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${result[0].guild_prefix}poll Do you like Pingu?`)
       }
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${i18n.permerror}`)
+      genericMessages.Error.permerror(message, locale)
     }
   }
 }

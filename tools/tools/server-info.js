@@ -1,15 +1,15 @@
-const moment = require('moment')
 const { MessageEmbed } = require('discord.js')
+const getLocales = require('../../modules/getLocales')
+const unixTime = require('unix-time')
 
 module.exports = {
   name: 'server-info',
   execute (args, client, con, locale, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.misc.serverinfo
     const embed = new MessageEmbed()
-      .setTitle(i18n.title)
+      .setTitle(getLocales(locale, 'SERVER_INFO_EMBED_TITLE'))
       .setColor('#FFFFFF')
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
-      .setDescription(`:pencil2: ${i18n.guildName}: \`${message.guild.name}\`\n:calendar: ${i18n.guildCreationDate}: \`${moment(message.guild.createdTimestamp).format('LT')} ${moment(message.guild.createdTimestamp).format('LL')} [${moment(message.guild.createdTimestamp).fromNow()}]\`\n:crown: ${i18n.guildOwner}: \`${client.users.cache.get(message.guild.ownerId).tag}\`\n:id: ${i18n.guildId}: \`${message.guild.id}\`\n<a:nitro_boost:868214436178046976> ${i18n.guildBoost}: \`${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : i18n.guildBoostNone} (${message.guild.premiumSubscriptionCount || '0'})\``, false)
+      .setDescription(`:credit_card: ${getLocales(locale, 'SERVER_INFO_EMBED_GUILD_NAME', { GUILDNAME: message.guild.name })}\n:calendar: ${getLocales(locale, 'SERVER_INFO_EMBED_GUILD_CREATED_TIMESTAMP', { GUILDCREATEDTIMESTAMP: `<t:${unixTime(message.guild.createdTimestamp)}>` })}\n:crown: ${getLocales(locale, 'SERVER_INFO_EMBED_GUILD_OWNER', { USER: client.users.cache.get(message.guild.ownerId).tag })}\n<a:nitro_boost:868214436178046976> ${getLocales(locale, 'SERVER_INFO_EMBED_GUILD_BOOST', { GUILDBOOST: `${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : getLocales(locale, 'SERVER_INFO_BOOST_NONE')} (${message.guild.premiumSubscriptionCount || '0'})` })}`)
       .setTimestamp()
     message.reply({ embeds: [embed] })
   }
