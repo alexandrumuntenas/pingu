@@ -4,6 +4,8 @@
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const { Client, Collection, Intents } = require('discord.js')
+const Sentry = require('@sentry/node')
+const Tracing = require('@sentry/tracing')
 const mysql = require('mysql2')
 const fs = require('fs')
 const express = require('express')
@@ -11,6 +13,15 @@ const express = require('express')
 const talkedRecently = new Set()
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES] })
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0
+})
 
 console.log('[··] Cargando Eventos')
 const guildCreate = require('./events/guildCreate')
@@ -143,19 +154,30 @@ client.on('messageCreate', (message) => {
       if (message.content.startsWith(result[0].guild_prefix)) {
         if (args) {
           if (client.commands.has(command)) {
+            const mCeIC = Sentry.startTransaction({
+              op: 'messageCreate/executeInternalCommand',
+              name: `Execute Internal Command (${command})`
+            })
             try {
               client.commands.get(command).execute(args, client, con, result[0].guild_language || 'en', message, result)
             } catch (err) {
+              Sentry.captureException(err)
               message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
+            } finally {
+              mCeIC.finish()
             }
           } else {
+            const mCeEC = Sentry.startTransaction({
+              op: 'messageCreate/executeExternalCommand',
+              name: `Execute External Command (${command})`
+            })
             con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
-              if (err) console.log(err)
+              if (err) Sentry.captureException(err)
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
                 con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
-                  if (err) console.log(err)
+                  if (err) Sentry.captureException(err)
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                    message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns)
+                    message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns).catch((err) => Sentry.captureException(err)).finally(mCeEC.finish())
                   }
                 })
               }
@@ -167,32 +189,50 @@ client.on('messageCreate', (message) => {
       if (result[0].moderator_noMoreInvites_enabled !== 0) {
         noMoreInvites(message, result, con)
       }
-      // Leveling
-      if (!contenido.startsWith(result[0].guild_prefix)) {
-        if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
-          if (result[0].leveling_enabled !== 0) {
-            talkedRecently.add(`${message.author.id}_${message.guild.id}`)
-            setTimeout(() => {
-              talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
-            }, 60000)
-            levelingRankUp(result, client, con, message, global)
+      if (result[0].leveling_enabled !== 0) {
+        const mClRU = Sentry.startTransaction({
+          op: 'messageCreate/levelingRankUp',
+          name: 'Leveling Rank Up'
+        })
+        try {
+          if (!contenido.startsWith(result[0].guild_prefix)) {
+            if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
+              talkedRecently.add(`${message.author.id}_${message.guild.id}`)
+              setTimeout(() => {
+                talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
+              }, 60000)
+              levelingRankUp(result, client, con, message, global)
+            }
           }
+        } catch (err) {
+          Sentry.captureException(err)
+        } finally {
+          mClRU.finish()
         }
       }
 
-      // Respuestas personalizadas
+      const mCgAR = Sentry.startTransaction({
+        op: 'messageCreate/guildAutoResponder',
+        name: 'Auto Responder'
+      })
       con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
-        if (err) console.log(err)
+        if (err) Sentry.captureException(err)
         if (result) {
-          if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
-              if (err) console.log(err)
-              if (result) {
-                if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                  message.channel.send('<:respuestacustom:858671300024074240> ' + result[0].returns)
+          try {
+            if (Object.prototype.hasOwnProperty.call(result, 0)) {
+              con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
+                if (err) Sentry.captureException(err)
+                if (result) {
+                  if (Object.prototype.hasOwnProperty.call(result, 0)) {
+                    message.channel.send('<:respuestacustom:858671300024074240> ' + result[0].returns)
+                  }
                 }
-              }
-            })
+              })
+            }
+          } catch (err) {
+            Sentry.captureException(err)
+          } finally {
+            mCgAR.finish()
           }
         }
       })
