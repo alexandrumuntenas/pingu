@@ -19,7 +19,7 @@ module.exports = {
               const usuario = message.guild.members.cache.get(row.user)
               const nivel = parseInt(row.nivel)
               const experiencia = parseInt(row.experiencia)
-              embed.addFields({ name: usuario.nickname || usuario.displayName || 'Lost User#0000', value: `${i18n.level}: ${row.nivel} | ${i18n.xp}: ${(((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia)}` })
+              embed.addFields({ name: usuario.nickname || usuario.displayName || 'Lost User#0000', value: `${getLocales(locale, 'LEVELS_ENTRY', { LEVEL: row.nivel, XP: (((((nivel - 1) * (nivel - 1)) * dif) * 100) + experiencia) })}` })
             })
             message.channel.send({ embeds: [embed] })
           } else {

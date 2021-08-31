@@ -25,6 +25,7 @@
   "KICK_EMBED_SUCCESS_REASON": "**Motivo:** %REASON%",
   "LEVELS_TITLE": "Clasificación",
   "LEVELS_NODATA": "No existen datos",
+  "LEVELS_ENTRY": "**Nivel**: %LEVEL% | **Experiencia**: %XP%",
   "LOCK": "%CHANNEL% ha sido bloqueado.",
   "RANK_IS_A_BOT": "Los bots no reciben experiencia por que son, pues eso, bots.",
   "RANK_LEVEL": "Nivel",
