@@ -1,3 +1,7 @@
+/**
+ * Generar Identificador Único
+ * @param {number} longitud La longitud del identificador generado
+ */
 module.exports = function (length) {
   let result = ''
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
