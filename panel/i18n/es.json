@@ -1,0 +1,113 @@
+{
+    "nav": {
+        "lightMeUp": "Cambiar modo de color",
+        "getMeOut": "Cerrar Sesión"
+    },
+    "sidebar": {
+        "overview": "Inicio",
+        "system": "Sistema",
+        "welcome": "Bienvenidas",
+        "farewell": "Despedidas",
+        "moderation": "Moderación",
+        "customCommands": "Comandos personalizados",
+        "autoResponder": "Auto Respondedor",
+        "leveling": "Niveles"
+    },
+    "main": {
+        "header": {
+            "members": "miembros",
+            "textChannels": "canales de texto",
+            "voiceChannels": "canales de voz"
+        },
+        "stats": {
+            "members": "Miembros",
+            "onlineMembers": "Miembros En-Línea",
+            "idleMembers": "Miembros Ausentes",
+            "dndMembers": "Miembros DND"
+        },
+        "save": "Guardar",
+        "settings": {
+            "system": {
+                "cardTitle": "Sistema",
+                "cardBody": {
+                    "EEScEqQw": {
+                        "formLabel": "Prefijo de comandos",
+                        "formSmall": "Puede cambiar el prefijo utilizado para activar el bot."
+                    }
+                }
+            },
+            "welcome": {
+                "cardTitle": "Bienvenidas",
+                "cardBody": {
+                    "LNV5Ljl": {
+                        "formLabel": "Enviar un mensaje cuando un usuario se une al servidor"
+                    },
+                     "AZGW50Tc4p": {
+                         "formLabel": "Mensaje de bienvenida"
+                     },
+                     "daLuxtTuG5":{
+                        "formLabel": "Canal donde se envía el mensaje de bienvenida"
+                     },
+                     "vyKS7bC": {
+                         "formLabel": "Enviar una tarjeta de bienvenida cuando un usuario se une al servidor"
+                     },
+                     "nviCCd9jDc": {
+                         "formLabel": "Los roles se otorgan a los usuarios cuando aceptan las reglas del servidor"
+                     }
+                }
+            },
+            "farewell": {
+                "cardTitle": "Despedidas",
+                "cardBody":{
+                    "noLp3EI": {
+                        "formLabel": "Envía un mensaje cuando un usuario abandona el servidor"
+                    },
+                    "pfeZmgU": {
+                        "formLabel": "Mensaje de despedida"
+                    },
+                    "tKDIdy1": {
+                        "formLabel": "Canal donde se envía el mensaje de despedida"
+                    }
+                }
+            },
+            "moderation": {
+                "cardTitle": "Moderación",
+                "cardBody": {
+                    "Y2adeog": {
+                        "formLabel": "Habilitar los comandos de moderación"
+                    },
+                    "OxV1juz": {
+                        "formLabel": "Habilitar Límite de Advertencias"
+                    },
+                    "DHLJ2YI": {
+                        "formLabel": "Límite de Advertencias"
+                    },
+                    "AkeMlvn": {
+                        "formLabel": "Acción a tomar cuando se supere el límite"
+                    }
+
+                }
+            },
+            "leveling": {
+                "cardTitle": "Niveles",
+                "cardBody": {
+                    "QTMVmdD": {
+                        "formLabel": "Activar este módulo"
+                    },
+                    "Q8xq8vO": {
+                        "formLabel": "Mensaje de avance de nivel"
+                    },
+                    "ELMb9ge": {
+                        "formLabel": "Canal donde se envía el mensaje de avance de nivel"
+                    }
+                }
+            }
+        }
+    },
+    "footer": {
+        "addPingu": "Añadir Pingu",
+        "pinguSupport": "Servidor de soporte de Pingu",
+        "votePingu": "Vota a Pingu",
+        "pinguIssues": "Reportar Problema"
+    }
+}

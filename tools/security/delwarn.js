@@ -1,0 +1,36 @@
+const { Permissions, MessageEmbed } = require('discord.js')
+const genericMessages = require('../../modules/genericMessages')
+const getLocales = require('../../modules/getLocales')
+
+module.exports = {
+  name: 'delwarn',
+  execute (args, client, con, locale, message, result) {
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+        if (message.mentions.users.first()) {
+          if (args[1]) {
+            con.query('SELECT * FROM guildWarns WHERE guild = ? AND user = ? AND identificador = ?', [message.guild.id, message.mentions.users.first().id, args[1]], (err, result) => {
+              if (err) console.log(err)
+              if (Object.prototype.hasOwnProperty.call(result, 0)) {
+                con.query('DELETE FROM guildWarns WHERE guild = ? AND user = ? AND identificador = ?', [message.guild.id, message.mentions.users.first().id, args[1]])
+                const sentTrue = new MessageEmbed().setColor('#28A745').setDescription(getLocales(locale, 'DELWARN_EMBED_SUCCESS', { WARNID: args[1], USER: message.mentions.users.first().tag }))
+                message.channel.send({ embeds: [sentTrue] })
+              } else {
+                const sentTrue = new MessageEmbed().setColor('#DC3545').setDescription(getLocales(locale, 'DELWARN_EMBED_USER_NO_HAS_WARN', { WARNID: args[1], USER: message.mentions.users.first().tag }))
+                message.channel.send({ embeds: [sentTrue] })
+              }
+            })
+          } else {
+            genericMessages.Info.help(message, locale, `${result[0].guild_prefix}delwarn <@user> <warnID>`)
+          }
+        } else {
+          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}delwarn <@user> <warnID>`)
+        }
+      } else {
+        genericMessages.Error.permerror(message, locale)
+      }
+    } else {
+      genericMessages.Error.no_avaliable(message, locale)
+    }
+  }
+}

@@ -1,0 +1,25 @@
+const { Permissions, MessageEmbed } = require('discord.js')
+const parse = require('parse-duration')
+const genericMessages = require('../../modules/genericMessages')
+const getLocales = require('../../modules/getLocales')
+
+module.exports = {
+  name: 'slowmode',
+  execute (args, client, con, locale, message, result) {
+    if (result[0].moderator_enabled !== 0) {
+      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+        if (parse(args[0], 's')) {
+          message.channel.setRateLimitPerUser(parse(args[0], 's'), 'Slowmode')
+          const sent = new MessageEmbed().setColor('#28A745').setDescription(getLocales(locale, 'SLOWMODE', { SLOWMO: args[0] }))
+          message.channel.send({ embeds: [sent] })
+        } else {
+          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}slowmode <time s/m/h>`)
+        }
+      } else {
+        genericMessages.Error.permerror(message, locale)
+      }
+    } else {
+      genericMessages.Error.no_avaliable(message, locale)
+    }
+  }
+}
