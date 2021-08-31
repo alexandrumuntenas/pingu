@@ -1,11 +1,10 @@
 const { MessageEmbed } = require('discord.js')
+const getLocales = require('../../modules/getLocales')
+const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'levels',
   execute (args, client, con, locale, message, result) {
-    let i18n = require(`../../i18n/${result[0].guild_language}.json`)
-    const noavaliable = i18n.tools.noavaliable
-    i18n = i18n.tools.leveling.levels
     if (result[0].leveling_enabled !== 0) {
       const dif = result[0].leveling_rankup_difficulty
       con.query('SELECT * FROM `guildLevels` WHERE guild = ? ORDER BY nivel DESC, experiencia DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
@@ -13,7 +12,7 @@ module.exports = {
         if (result) {
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const embed = new MessageEmbed()
-              .setTitle(i18n.ranking)
+              .setTitle(getLocales(locale, 'LEVELS_TITLE'))
               .setAuthor(message.guild.name)
               .setColor('#FFD700')
             rows.forEach(function (row) {
@@ -24,12 +23,12 @@ module.exports = {
             })
             message.channel.send({ embeds: [embed] })
           } else {
-            message.channel.send(`<:win_information:876119543968305233> ${i18n.nodata}`)
+            genericMessages.Error.customerror(message, locale, 'LEVELS_NODATA')
           };
         }
       })
     } else {
-      message.channel.send(`<:pingu_cross:876104109256769546> ${noavaliable}`)
+      genericMessages.Error.no_avaliable(message, locale)
     }
   }
 }

@@ -23,6 +23,8 @@
   "KICK_EMBED_SUCCESS_TITLE": "%USER% ha sido expulsado",
   "KICK_EMBED_ERROR_TITLE": "%USER% no se ha podido expulsar",
   "KICK_EMBED_SUCCESS_REASON": "**Motivo:** %REASON%",
+  "LEVELS_TITLE": "Clasificación",
+  "LEVELS_NODATA": "No existen datos",
   "LOCK": "%CHANNEL% ha sido bloqueado.",
   "RANK_IS_A_BOT": "Los bots no reciben experiencia por que son, pues eso, bots.",
   "RANK_LEVEL": "Nivel",
