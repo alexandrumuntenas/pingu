@@ -12,6 +12,8 @@ module.exports = {
       'clear-user-warns',
       'config',
       'delwarn',
+      'dog',
+      'duck',
       'flip',
       'goose',
       'kick',
