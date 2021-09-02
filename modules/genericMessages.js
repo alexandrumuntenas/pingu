@@ -6,7 +6,7 @@ module.exports = {
     no_avaliable: (message, locale) => {
       const sent = new MessageEmbed()
         .setColor('#DC3545')
-        .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMNAD_NO_AVALIABLE')}`)
+        .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_NO_AVALIABLE')}`)
       message.reply({ embeds: [sent] })
     },
     permerror: (message, locale) => {
