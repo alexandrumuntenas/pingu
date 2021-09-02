@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const fetch = require('superagent')
 const getLocales = require('../../modules/getLocales')
 const { MessageEmbed } = require('discord.js')
 
@@ -11,7 +11,7 @@ module.exports = {
       message.reply({ embeds: [embed] })
     }
     fetch('https://random-d.uk/api/v2/random')
-      .then((response) => response.json())
+      .then((response) => response.body)
       .then((fetched) => sendImageEmbed(fetched, 'Random-d.uk'))
   }
 }

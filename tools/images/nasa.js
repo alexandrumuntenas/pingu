@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const fetch = require('superagent')
 const { MessageEmbed } = require('discord.js')
 const translate = require('translatte')
 const getLocales = require('../../modules/getLocales')
@@ -8,8 +8,8 @@ module.exports = {
   execute (args, client, con, locale, message, result) {
     message.reply('<a:loading:880765834774073344>')
       .then(msg => {
-        fetch('https://api.nasa.gov/planetary/apod?api_key=ezowSxroDnhKvjzojV9SXx7LmZ6P7OndGYLGXuE9')
-          .then(response => response.json())
+        fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
+          .then(response => response.body)
           .then(quote => {
             translate(quote.explanation, { to: result[0].guild_language }).then(res => {
               if (quote.media_type === 'image') {

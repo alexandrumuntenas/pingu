@@ -1,4 +1,4 @@
-const fetch = require('node-fetch')
+const fetch = require('superagent')
 const getLocales = require('../../modules/getLocales')
 const { MessageEmbed } = require('discord.js')
 
@@ -11,7 +11,7 @@ module.exports = {
       message.reply({ embeds: [embed] })
     }
     fetch('https://nekos.life/api/v2/img/lizard')
-      .then((response) => response.json())
+      .then((response) => response.body)
       .then((fetched) => sendImageEmbed(fetched, 'nekos.life'))
   }
 }
