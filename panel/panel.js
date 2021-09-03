@@ -15,7 +15,6 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 
 const makeId = require('../modules/makeId')
-const emojiStrip = require('emoji-strip')
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -223,100 +222,10 @@ app.get('/dashboard/custom/commands', (req, res, next) => { if (req.isAuthentica
   }
 })
 
+const MainSaveController = require('./controllers/MainSaveController')
+
 app.post('/dashboard', (req, res, next) => { if (req.isAuthenticated()) return next(); res.status(403); res.send('Forbidden') }, (req, res) => {
-  if (Object.prototype.hasOwnProperty.call(req.body, 'frmname')) {
-    switch (req.body.frmname) {
-      case 'system':
-        if (Object.prototype.hasOwnProperty.call(req.body, 'EEScEqQw')) {
-          pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', [req.body.EEScEqQw, req.user.Guild_ID])
-        } else {
-          pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', ['!', req.user.Guild_ID])
-        }
-        break
-      case 'welcome':
-        if (Object.prototype.hasOwnProperty.call(req.body, 'LNV5Ljl')) {
-          pool.query("UPDATE `guildData` SET `welcome_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        } else {
-          pool.query("UPDATE `guildData` SET `welcome_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'AZGW50Tc4p')) {
-          pool.query('UPDATE `guildData` SET `welcome_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.AZGW50Tc4p), req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'daLuxtTuG5')) {
-          pool.query('UPDATE `guildData` SET `welcome_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.daLuxtTuG5), req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'vyKS7bC')) {
-          pool.query("UPDATE `guildData` SET `welcome_image` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        } else {
-          pool.query("UPDATE `guildData` SET `welcome_image` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'nviCCd9jDc')) {
-          const roles = new Set()
-          if (Array.isArray(req.body.nviCCd9jDc)) {
-            req.body.nviCCd9jDc.forEach(r => roles.add(r))
-          } else {
-            roles.add(req.body.nviCCd9jDc)
-          }
-          pool.query('UPDATE `guildData` SET `welcome_roles` = ? WHERE `guildData`.`guild` = ?', ['' + Array.from(roles) + '', req.user.Guild_ID])
-        }
-        break
-      case 'farewell':
-        if (Object.prototype.hasOwnProperty.call(req.body, 'noLp3EI')) {
-          pool.query("UPDATE `guildData` SET `farewell_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        } else {
-          pool.query("UPDATE `guildData` SET `farewell_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'pfeZmgU')) {
-          pool.query('UPDATE `guildData` SET `farewell_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.pfeZmgU), req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'tKDIdy1')) {
-          pool.query('UPDATE `guildData` SET `farewell_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.tKDIdy1), req.user.Guild_ID])
-        }
-        break
-      case 'moderation_main':
-        if (Object.prototype.hasOwnProperty.call(req.body, 'Y2adeog')) {
-          pool.query("UPDATE `guildData` SET `moderator_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        } else {
-          pool.query("UPDATE `guildData` SET `moderator_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        }
-        break
-      case 'moderator_warnlimit':
-        if (Object.prototype.hasOwnProperty.call(req.body, 'OxV1juz')) {
-          pool.query("UPDATE `guildData` SET `moderator_warnLimit_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        } else {
-          pool.query("UPDATE `guildData` SET `moderator_warnLimit_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'DHLJ2YI')) {
-          pool.query('UPDATE `guildData` SET `moderator_warnLimit_limit` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.DHLJ2YI), req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'AkeMlvn')) {
-          pool.query('UPDATE `guildData` SET `moderator_warnLimit_action` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.AkeMlvn), req.user.Guild_ID])
-        }
-        break
-      case 'leveling':
-        if (Object.prototype.hasOwnProperty.call(req.body, 'QTMVmdD')) {
-          pool.query("UPDATE `guildData` SET `leveling_enabled` = '1' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        } else {
-          pool.query("UPDATE `guildData` SET `leveling_enabled` = '0' WHERE `guildData`.`guild` = ?", [req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'Q8xq8vO')) {
-          pool.query('UPDATE `guildData` SET `leveling_rankup_message` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.Q8xq8vO), req.user.Guild_ID])
-        }
-        if (Object.prototype.hasOwnProperty.call(req.body, 'ELMb9ge')) {
-          pool.query('UPDATE `guildData` SET `leveling_rankup_channel` = ? WHERE `guildData`.`guild` = ?', [emojiStrip(req.body.ELMb9ge), req.user.Guild_ID])
-        }
-        break
-      default:
-        res.status(406)
-        res.send('You modified something important for the server.')
-        break
-    }
-  } else {
-    res.status(406)
-    res.send('You modified something important for the server.')
-  }
-  res.status(200)
-  res.send('Good to Go :)')
+  MainSaveController(req, res, pool)
 })
 
 app.get('/status', (req, res) => {
