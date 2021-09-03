@@ -14,15 +14,6 @@ const talkedRecently = new Set()
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES] })
 
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 1.0
-})
-
 console.log('[··] Cargando Eventos')
 const guildCreate = require('./events/guildCreate')
 const guildDelete = require('./events/guildDelete')
@@ -42,6 +33,12 @@ console.log('[OK] Servicios Third-Party Cargados')
 
 // Bot
 if (process.env.ENTORNO === 'public') {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    environment: 'production'
+  })
+
   topggSDK(client)
   client.login(process.env.PUBLIC_TOKEN)
   const app = express()
@@ -52,8 +49,15 @@ if (process.env.ENTORNO === 'public') {
     console.log('[OK] Running web-server')
   })
 } else {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    environment: 'development'
+  })
   client.login(process.env.INSIDER_TOKEN)
 }
+
+client.Sentry = Sentry
 
 // Cargar comandos
 console.log('--Cargando comandos--')
@@ -120,7 +124,7 @@ client.on('ready', () => {
 })
 
 client.on('guildCreate', (guild) => {
-  guildCreate(con, guild)
+  guildCreate(con, guild, client)
 })
 
 client.on('guildDelete', (guild) => {
@@ -169,7 +173,7 @@ client.on('messageCreate', (message) => {
           } else {
             const mCeEC = Sentry.startTransaction({
               op: 'messageCreate/executeExternalCommand',
-              name: `Execute External Command (${command})`
+              name: 'Execute External Command'
             })
             con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
               if (err) Sentry.captureException(err)
