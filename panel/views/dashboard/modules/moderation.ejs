@@ -289,8 +289,8 @@
                 <div class="container-xl">
                     <div class="row row-deck row-cards">
                         <div class="col-lg-6">
-                            <form class="card" id="moderation_main">
-                                <input type="hidden" name="frmname" value="moderation" />
+                            <form class="card" id="moderation_warnlimit">
+                                <input type="hidden" name="frmname" value="moderation_warnlimit" />
                                 <div class="card-header">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
@@ -311,7 +311,7 @@
                                 <div class="card-body" style="position: relative;">
                                     <div class="form-group mb-3">
                                         <div class="form-check form-switch">
-                                            <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
+                                            <% if(bbdd.moderator_warnLimit_enabled===1 ) {%>
                                                 <input type="checkbox" checked="checked" class="form-check-input"
                                                     id="OxV1juz" name="OxV1juz" value="OxV1juz" />
                                                 <% } else { %>
@@ -329,17 +329,17 @@
                                             <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
                                         </label>
                                         <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                            value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                            placeholder="10" required>
+                                            value="<%= bbdd.moderator_warnLimit_limit    %>" min="1" placeholder="10"
+                                            required>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="AkeMlvn" class="form-label">
                                             <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
                                         </label>
                                         <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                            <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                <option value="1" selected>Expulsión Permanente</option>
-                                                <option value="0">Expulsión</option>
+                                            <% if(bbdd.moderator_warnLimit_action===1){ %>
+                                                <option value="1">Expulsión Permanente (Ban)</option>
+                                                <option value="0" selected>Expulsión (Kick)</option>
                                                 <% } else { %>
                                                     <option value="1">Expulsión Permanente (Ban)</option>
                                                     <option value="0" selected>Expulsión (Kick)</option>
@@ -348,15 +348,15 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
+                                    <button class="btn btn-primary" role="button" id="d04tRFO" disabled>
                                         <%= i18n.main.save %>
                                     </button>
                                 </div>
                             </form>
                         </div>
                         <div class="col-lg-6">
-                            <form class="card" id="moderator_warnlimit">
-                                <input type="hidden" name="frmname" value="moderator_warnlimit" />
+                            <form class="card" id="moderation_noNSFWonSFW">
+                                <input type="hidden" name="frmname" value="moderation_noNSFWonSFW" />
                                 <div class="card-header">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
@@ -377,39 +377,44 @@
                                 <div class="card-body" style="position: relative;">
                                     <div class="form-group mb-3">
                                         <div class="form-check form-switch">
-                                            <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
+                                            <% if(bbdd.moderator_noNsfwOnSfw_enabled===1 ) {%>
                                                 <input type="checkbox" checked="checked" class="form-check-input"
-                                                    id="OxV1juz" name="OxV1juz" value="OxV1juz" />
+                                                    id="VIIkgwa" name="VIIkgwa" value="VIIkgwa" />
                                                 <% } else { %>
-                                                    <input type="checkbox" class="form-check-input" id="OxV1juz"
-                                                        name="OxV1juz" value="OxV1juz" />
+                                                    <input type="checkbox" class="form-check-input" id="VIIkgwa"
+                                                        name="VIIkgwa" value="VIIkgwa" />
                                                     <% } %>
-                                                        <label class="form-check-label" for="OxV1juz">
-                                                            <%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel
-                                                                %>
+                                                        <label class="form-check-label" for="VIIkgwa">
+                                                            Prohibir comandos NSFW en canales SFW
                                                         </label>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="DHLJ2YI" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
+                                        <label for="r5Cl5vu" class="form-label">
+                                            Acción a tomar cuando se presente el caso
                                         </label>
-                                        <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                            value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                            placeholder="10" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="AkeMlvn" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
-                                        </label>
-                                        <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                            <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                <option value="1" selected>Expulsión Permanente</option>
-                                                <option value="0">Expulsión</option>
-                                                <% } else { %>
-                                                    <option value="1">Expulsión Permanente (Ban)</option>
-                                                    <option value="0" selected>Expulsión (Kick)</option>
-                                                    <% } %>
+                                        <select class="form-select" name="r5Cl5vu" id="r5Cl5vu">
+                                            <% switch(bbdd.moderator_noNsfwOnSfw_action){ case 0: {%>
+                                                <option value="0" selected>No tomar acción</option>
+                                                <option value="1">Advertencia</option>
+                                                <option value="2">Expulsión</option>
+                                                <option value="3">Baneo</option>
+                                                <% break; } case 1: { %>
+                                                    <option value="0">No tomar acción</option>
+                                                    <option value="1" selected>Advertencia</option>
+                                                    <option value="2">Expulsión</option>
+                                                    <option value="3">Baneo</option>
+                                                    <% break; } case 2: { %>
+                                                        <option value="0">No tomar acción</option>
+                                                        <option value="1">Advertencia</option>
+                                                        <option value="2" selected>Expulsión</option>
+                                                        <option value="3">Baneo</option>
+                                                        <% break; } case 3: { %>
+                                                            <option value="0">No tomar acción</option>
+                                                            <option value="1">Advertencia</option>
+                                                            <option value="2">Expulsión</option>
+                                                            <option value="3" selected>Baneo</option>
+                                                            <% }} %>
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
@@ -417,283 +422,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
-                                        <%= i18n.main.save %>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-6 card-disabled">
-                            <form class="card" id="moderator_warnlimit">
-                                <input type="hidden" name="frmname" value="moderator_warnlimit" />
-                                <div class="card-header">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4"></path>
-                                        <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"></line>
-                                        <polyline points="12 8 7 3 3 7 8 12"></polyline>
-                                        <line x1="7" y1="8" x2="5.5" y2="9.5"></line>
-                                        <polyline points="16 12 21 17 17 21 12 16"></polyline>
-                                        <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
-                                    </svg>
-                                    <h3 class="card-title">
-                                        No More Invites
-                                    </h3>
-                                </div>
-                                <div class="card-body" style="position: relative;">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
-                                                <input type="checkbox" checked="checked" class="form-check-input"
-                                                    id="OxV1juz" name="OxV1juz" value="OxV1juz" />
-                                                <% } else { %>
-                                                    <input type="checkbox" class="form-check-input" id="OxV1juz"
-                                                        name="OxV1juz" value="OxV1juz" />
-                                                    <% } %>
-                                                        <label class="form-check-label" for="OxV1juz">
-                                                            <%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel
-                                                                %>
-                                                        </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="DHLJ2YI" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
-                                        </label>
-                                        <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                            value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                            placeholder="10" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="AkeMlvn" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
-                                        </label>
-                                        <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                            <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                <option value="1" selected>Expulsión Permanente</option>
-                                                <option value="0">Expulsión</option>
-                                                <% } else { %>
-                                                    <option value="1">Expulsión Permanente (Ban)</option>
-                                                    <option value="0" selected>Expulsión (Kick)</option>
-                                                    <% } %>
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-3">
-
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
-                                        <%= i18n.main.save %>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-6 card-disabled">
-                            <form class="card" id="moderator_warnlimit">
-                                <input type="hidden" name="frmname" value="moderator_warnlimit" />
-                                <div class="card-header">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4"></path>
-                                        <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"></line>
-                                        <polyline points="12 8 7 3 3 7 8 12"></polyline>
-                                        <line x1="7" y1="8" x2="5.5" y2="9.5"></line>
-                                        <polyline points="16 12 21 17 17 21 12 16"></polyline>
-                                        <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
-                                    </svg>
-                                    <h3 class="card-title">
-                                        Anti Links
-                                    </h3>
-                                </div>
-                                <div class="card-body" style="position: relative;">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
-                                                <input type="checkbox" checked="checked" class="form-check-input"
-                                                    id="OxV1juz" name="OxV1juz" value="OxV1juz" />
-                                                <% } else { %>
-                                                    <input type="checkbox" class="form-check-input" id="OxV1juz"
-                                                        name="OxV1juz" value="OxV1juz" />
-                                                    <% } %>
-                                                        <label class="form-check-label" for="OxV1juz">
-                                                            <%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel
-                                                                %>
-                                                        </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="DHLJ2YI" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
-                                        </label>
-                                        <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                            value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                            placeholder="10" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="AkeMlvn" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
-                                        </label>
-                                        <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                            <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                <option value="1" selected>Expulsión Permanente</option>
-                                                <option value="0">Expulsión</option>
-                                                <% } else { %>
-                                                    <option value="1">Expulsión Permanente (Ban)</option>
-                                                    <option value="0" selected>Expulsión (Kick)</option>
-                                                    <% } %>
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-3">
-
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
-                                        <%= i18n.main.save %>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-6 card-disabled">
-                            <form class="card" id="moderator_warnlimit">
-                                <input type="hidden" name="frmname" value="moderator_warnlimit" />
-                                <div class="card-header">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4"></path>
-                                        <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"></line>
-                                        <polyline points="12 8 7 3 3 7 8 12"></polyline>
-                                        <line x1="7" y1="8" x2="5.5" y2="9.5"></line>
-                                        <polyline points="16 12 21 17 17 21 12 16"></polyline>
-                                        <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
-                                    </svg>
-                                    <h3 class="card-title">
-                                        Anti Emoji Spam
-                                    </h3>
-                                </div>
-                                <div class="card-body" style="position: relative;">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
-                                                <input type="checkbox" checked="checked" class="form-check-input"
-                                                    id="OxV1juz" name="OxV1juz" value="OxV1juz" />
-                                                <% } else { %>
-                                                    <input type="checkbox" class="form-check-input" id="OxV1juz"
-                                                        name="OxV1juz" value="OxV1juz" />
-                                                    <% } %>
-                                                        <label class="form-check-label" for="OxV1juz">
-                                                            <%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel
-                                                                %>
-                                                        </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="DHLJ2YI" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
-                                        </label>
-                                        <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                            value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                            placeholder="10" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="AkeMlvn" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
-                                        </label>
-                                        <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                            <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                <option value="1" selected>Expulsión Permanente</option>
-                                                <option value="0">Expulsión</option>
-                                                <% } else { %>
-                                                    <option value="1">Expulsión Permanente (Ban)</option>
-                                                    <option value="0" selected>Expulsión (Kick)</option>
-                                                    <% } %>
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-3">
-
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
-                                        <%= i18n.main.save %>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-6 card-disabled">
-                            <form class="card" id="moderator_warnlimit">
-                                <input type="hidden" name="frmname" value="moderator_warnlimit" />
-                                <div class="card-header">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-tools me-1" width=" 24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M3 21h4l13 -13a1.5 1.5 0 0 0 -4 -4l-13 13v4"></path>
-                                        <line x1="14.5" y1="5.5" x2="18.5" y2="9.5"></line>
-                                        <polyline points="12 8 7 3 3 7 8 12"></polyline>
-                                        <line x1="7" y1="8" x2="5.5" y2="9.5"></line>
-                                        <polyline points="16 12 21 17 17 21 12 16"></polyline>
-                                        <line x1="16" y1="17" x2="14.5" y2="18.5"></line>
-                                    </svg>
-                                    <h3 class="card-title">
-                                        Anti Caps Spam
-                                    </h3>
-                                </div>
-                                <div class="card-body" style="position: relative;">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <% if(bbdd.moderador_warn_expulsion_activado===1 ) {%>
-                                                <input type="checkbox" checked="checked" class="form-check-input"
-                                                    id="OxV1juz" name="OxV1juz" value="OxV1juz" />
-                                                <% } else { %>
-                                                    <input type="checkbox" class="form-check-input" id="OxV1juz"
-                                                        name="OxV1juz" value="OxV1juz" />
-                                                    <% } %>
-                                                        <label class="form-check-label" for="OxV1juz">
-                                                            <%= i18n.main.settings.moderation.cardBody.OxV1juz.formLabel
-                                                                %>
-                                                        </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="DHLJ2YI" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.DHLJ2YI.formLabel %>
-                                        </label>
-                                        <input type="number" id="DHLJ2YI" name="DHLJ2YI" class="form-control"
-                                            value="<%= bbdd.moderador_warn_expulsion_cantidad %>" min="1"
-                                            placeholder="10" required>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="AkeMlvn" class="form-label">
-                                            <%= i18n.main.settings.moderation.cardBody.AkeMlvn.formLabel %>
-                                        </label>
-                                        <select class="form-select" name="AkeMlvn" id="AkeMlvn">
-                                            <% if(bbdd.moderador_warn_expulsion_accion===1){ %>
-                                                <option value="1" selected>Expulsión Permanente</option>
-                                                <option value="0">Expulsión</option>
-                                                <% } else { %>
-                                                    <option value="1">Expulsión Permanente (Ban)</option>
-                                                    <option value="0" selected>Expulsión (Kick)</option>
-                                                    <% } %>
-                                        </select>
-                                    </div>
-                                    <div class="form-group mb-3">
-
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <button class="btn btn-primary" role="button" id="DJxuG8K" disabled>
+                                    <button class="btn btn-primary" role="button" id="z6YTgiy" disabled>
                                         <%= i18n.main.save %>
                                     </button>
                                 </div>
@@ -912,15 +641,6 @@
         $("#Y2adeog").change(function () {
             $('#DJxuG8K').removeAttr('disabled');
         });
-        $("#OxV1juz").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#DHLJ2YI").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
-        $("#AkeMlvn").change(function () {
-            $('#DJxuG8K').removeAttr('disabled');
-        });
         $("#moderation_main").submit(function (e) {
             e.preventDefault();
             var form = $(this);
@@ -947,6 +667,77 @@
                     title: 'Se ha producido un error al guardar...'
                 });
                 $('#DJxuG8K').removeAttr('disabled');
+            });
+        });
+        $("#OxV1juz").change(function () {
+            $('#d04tRFO').removeAttr('disabled');
+        });
+        $("#DHLJ2YI").change(function () {
+            $('#d04tRFO').removeAttr('disabled');
+        });
+        $("#AkeMlvn").change(function () {
+            $('#d04tRFO').removeAttr('disabled');
+        });
+        $("#moderation_warnlimit").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#d04tRFO').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            }).fail(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha producido un error al guardar...'
+                });
+                $('#d04tRFO').removeAttr('disabled');
+            });
+        });
+        $("#VIIkgwa").change(function () {
+            $('#z6YTgiy').removeAttr('disabled');
+        });
+        $("#r5Cl5vu").change(function () {
+            $('#z6YTgiy').removeAttr('disabled');
+        });
+        $("#moderation_noNSFWonSFW").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                type: "POST",
+                url: '/dashboard',
+                data: form.serialize(),
+                beforeSend: function () {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Guardando...'
+                    });
+                    $('#z6YTgiy').attr('disabled', 'disabled');
+                },
+                success: function (data) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Cambios Guardados'
+                    });
+                }
+            }).fail(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Se ha producido un error al guardar...'
+                });
+                $('#z6YTgiy').removeAttr('disabled');
             });
         });
         function lightMeUp() {
