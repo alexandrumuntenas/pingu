@@ -15,7 +15,7 @@ module.exports = {
         const sent = new MessageEmbed()
           .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
           .setTitle(getLocales(locale, 'CONFIG_EMBED_TITLE'))
-          .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS', { CLAVEIANDE: claveiande, CLAVEAUTH: claveadmin, PANELVALID: `https://pingu.duoestudios.com/login/?iande=${claveiande}&auth=${claveadmin}` }))
+          .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS', { CLAVEIANDE: claveiande, CLAVEAUTH: claveadmin, PANELVALID: `https://botpingu.herokuapp.com/login/?iande=${claveiande}&auth=${claveadmin}` }))
         message.author.send({ embeds: [sent] })
         setTimeout(() => {
           con.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` = ?', [message.guild.id])
@@ -30,7 +30,7 @@ module.exports = {
           const sent = new MessageEmbed()
             .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
             .setTitle(getLocales(locale, 'CONFIG_EMBED_TITLE'))
-            .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS_NO_ADMIN', { CLAVEIANDE: claveiande, PANELVALID: `https://pingu.duoestudios.com/login/?iande=${claveiande}` }))
+            .setDescription(getLocales(locale, 'CONFIG_EMBED_ACCESS_NO_ADMIN', { CLAVEIANDE: claveiande, PANELVALID: `https://botpingu.herokuapp.com/login/?iande=${claveiande}` }))
           message.author.send({ embeds: [sent] })
           const sentAdmin = new MessageEmbed()
             .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
