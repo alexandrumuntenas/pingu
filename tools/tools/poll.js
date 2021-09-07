@@ -9,16 +9,16 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'poll',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      if (Object.prototype.hasOwnProperty.call(args, 0)) {
-        // poll(message, args, '/', '#965E89')
+      if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
+        // poll(message, message.args, '/', '#965E89')
         const separator = '|' // const separator = result[0].pollSeparator || Se sustituyen todos los separators por result[0].pollSeparator
-        const findSep = args.find(char => char.includes(separator))
-        // const findSep = args.find(char => char.includes(result[0].pollSeparator))
+        const findSep = message.args.find(char => char.includes(separator))
+        // const findSep = message.args.find(char => char.includes(result[0].pollSeparator))
 
         if (findSep === undefined) {
-          const question = args.join(' ')
+          const question = message.args.join(' ')
           if (!question) {
             return message.channel.send('Please enter a question')
           }
@@ -38,19 +38,19 @@ module.exports = {
           const embed = new MessageEmbed()
           const options = []
           let j = 0
-          for (let i = 0; i < args.length; i++) {
-            if (args[i] === separator) {
-              args.splice(i, 1)
-              const question = args.splice(0, i)
+          for (let i = 0; i < message.args.length; i++) {
+            if (message.args[i] === separator) {
+              message.args.splice(i, 1)
+              const question = message.args.splice(0, i)
               embed.setTitle('📊 ' + question.join(' '))
               break
             }
           }
 
-          for (let i = 0; i < args.length; i++) {
-            if (args[i] === separator) {
-              args.splice(i, 1)
-              options[j] = args.splice(0, i)
+          for (let i = 0; i < message.args.length; i++) {
+            if (message.args[i] === separator) {
+              message.args.splice(i, 1)
+              options[j] = message.args.splice(0, i)
               j++
               i = 0
             }
@@ -61,7 +61,7 @@ module.exports = {
             '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 
           const arr = []
-          options[j] = args
+          options[j] = message.args
 
           if (options.length > alphabet.length) {
             return message.channel.send('Please don\'t input more than 26 options.').then(sent => {

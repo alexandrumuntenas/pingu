@@ -4,7 +4,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'flip',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
       embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_HEAD')}`)

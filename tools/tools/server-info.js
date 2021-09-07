@@ -4,7 +4,7 @@ const unixTime = require('unix-time')
 
 module.exports = {
   name: 'server-info',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     const embed = new MessageEmbed()
       .setTitle(getLocales(locale, 'SERVER_INFO_EMBED_TITLE'))
       .setColor('#FFFFFF')

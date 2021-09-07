@@ -2,7 +2,7 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'help',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     const options = [
       'about',
       'all-warns',

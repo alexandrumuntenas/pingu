@@ -5,7 +5,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'nasa',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     message.reply('<a:loading:880765834774073344>')
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)

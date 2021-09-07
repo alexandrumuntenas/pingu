@@ -3,12 +3,12 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'i18n',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     if (message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR]) || message.guild.ownerId === message.author.id) {
       const languages = ['en', 'es', 'ro']
-      if (args[0]) {
-        if (languages.includes(args[0])) {
-          con.query('UPDATE `guildData` SET `guild_language` = ? WHERE `guildData`.`guild` = ?', [args[0], message.guild.id])
+      if (message.args[0]) {
+        if (languages.includes(message.args[0])) {
+          client.pool.query('UPDATE `guildData` SET `guild_language` = ? WHERE `guildData`.`guild` = ?', [message.args[0], message.guild.id])
         } else {
           message.reply('The language you specified is not in our database.')
         }

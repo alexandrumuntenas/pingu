@@ -4,10 +4,10 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'levels',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     if (result[0].leveling_enabled !== 0) {
       const dif = result[0].leveling_rankup_difficulty
-      con.query('SELECT * FROM `guildLevels` WHERE guild = ? ORDER BY nivel DESC, experiencia DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
+      client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? ORDER BY nivel DESC, experiencia DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
         if (err) console.log(err)
         if (result) {
           if (Object.prototype.hasOwnProperty.call(result, 0)) {

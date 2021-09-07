@@ -88,7 +88,7 @@ function loadCommands (collection, directory) {
   }
 };
 
-const con = mysql.createPool({
+client.pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
@@ -99,7 +99,7 @@ const con = mysql.createPool({
   queueLimit: 0
 })
 
-con.config.namedPlaceholders = true
+client.pool.config.namedPlaceholders = true
 
 client.on('ready', () => {
   checkFolder()
@@ -124,19 +124,19 @@ client.on('ready', () => {
 })
 
 client.on('guildCreate', (guild) => {
-  guildCreate(con, guild, client)
+  guildCreate(guild, client)
 })
 
 client.on('guildDelete', (guild) => {
-  guildDelete(con, guild, client)
+  guildDelete(guild, client)
 })
 
 client.on('guildMemberAdd', (member) => {
-  guildMemberAdd(client, con, member)
+  guildMemberAdd(client, member)
 })
 
 client.on('guildMemberRemove', (member) => {
-  guildMemberRemove(client, con, member)
+  guildMemberRemove(client, member)
 })
 
 client.on('messageCreate', (message) => {
@@ -145,27 +145,27 @@ client.on('messageCreate', (message) => {
     message.author.bot ||
     message.author === client.user
   ) return
-  con.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
+  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
     if (err) throw console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
-      let args = []
       if (message.content.startsWith(result[0].guild_prefix) && message.content !== result[0].guild_prefix) {
-        args = message.content.slice(result[0].guild_prefix.length).trim().split(/ +/)
+        message.args = message.content.slice(result[0].guild_prefix.length).trim().split(/ +/)
       }
-      const command = args[0]
-      args.shift()
+      const command = message.args[0]
+      message.args.shift()
       const contenido = message.content.toLowerCase()
       if (message.content.startsWith(result[0].guild_prefix)) {
-        if (args) {
+        if (message.args) {
           if (client.commands.has(command)) {
             const mCeIC = Sentry.startTransaction({
               op: 'messageCreate/executeInternalCommand',
               name: `Execute Internal Command (${command})`
             })
             try {
-              client.commands.get(command).execute(args, client, con, result[0].guild_language || 'en', message, result)
+              client.commands.get(command).execute(client, result[0].guild_language || 'en', message, result)
             } catch (err) {
               Sentry.captureException(err)
+              console.log(err)
               message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
             } finally {
               mCeIC.finish()
@@ -175,10 +175,10 @@ client.on('messageCreate', (message) => {
               op: 'messageCreate/executeExternalCommand',
               name: 'Execute External Command'
             })
-            con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+            client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
               if (err) Sentry.captureException(err)
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
+                client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
                   if (err) Sentry.captureException(err)
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
                     message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns).catch((err) => Sentry.captureException(err)).finally(mCeEC.finish())
@@ -191,7 +191,7 @@ client.on('messageCreate', (message) => {
       }
 
       if (result[0].moderator_noMoreInvites_enabled !== 0) {
-        noMoreInvites(message, result, con)
+        noMoreInvites(message, result, client)
       }
       if (result[0].leveling_enabled !== 0) {
         const mClRU = Sentry.startTransaction({
@@ -205,7 +205,7 @@ client.on('messageCreate', (message) => {
               setTimeout(() => {
                 talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
               }, 60000)
-              levelingRankUp(result, client, con, message, global)
+              levelingRankUp(result, client, message, global)
             }
           }
         } catch (err) {
@@ -219,12 +219,12 @@ client.on('messageCreate', (message) => {
         op: 'messageCreate/guildAutoResponder',
         name: 'Auto Responder'
       })
-      con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+      client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
         if (err) Sentry.captureException(err)
         if (result) {
           try {
             if (Object.prototype.hasOwnProperty.call(result, 0)) {
-              con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
+              client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
                 if (err) Sentry.captureException(err)
                 if (result) {
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
@@ -241,7 +241,7 @@ client.on('messageCreate', (message) => {
         }
       })
     } else {
-      guildCreate(con, message.guild)
+      guildCreate(message.guild)
     }
   }
   )

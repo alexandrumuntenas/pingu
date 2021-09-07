@@ -5,7 +5,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'warn',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     if (result[0].moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const dataSplit = message.content.replace(`${result[0].guild_prefix}warn`, '').trim().split('|')
@@ -20,9 +20,9 @@ module.exports = {
           if (user.trim().startsWith('<@!')) {
             const resolvableUser = client.users.cache.get(user.trim().replace('<@!', '').trim())
             const cache = { activado: result[0].moderador_warn_expulsion_activado, cantidad: result[0].moderador_warn_expulsion_cantidad, accion: result[0].moderador_warn_expulsion_accion }
-            con.query('SELECT COUNT(*) AS itotal FROM `guildWarns` WHERE user = ? AND guild = ?', [resolvableUser.id, message.guild.id], (err, result) => {
+            client.pool.query('SELECT COUNT(*) AS itotal FROM `guildWarns` WHERE user = ? AND guild = ?', [resolvableUser.id, message.guild.id], (err, result) => {
               if (err) console.log(err)
-              con.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`,`motivo`) VALUES (?, ?, ?, ?)', [makeId(7), resolvableUser.id, message.guild.id, reason])
+              client.pool.query('INSERT INTO `guildWarns` (`identificador`, `user`, `guild`, `motivo`, `moderator`) VALUES (?, ?, ?, ?, ?)', [makeId(7), resolvableUser.id, message.guild.id, reason, message.author.id])
               const sent = new MessageEmbed()
                 .setColor('#FFC107')
                 .setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: resolvableUser.tag }), resolvableUser.displayAvatarURL())

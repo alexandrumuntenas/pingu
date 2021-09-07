@@ -1,6 +1,6 @@
 module.exports = {
     name: 'lock',
-    execute(args, client, con, locale, message, result) {
+    execute(client, locale, message, result) {
 
     }
 }

@@ -2,8 +2,8 @@ const { MessageAttachment } = require('discord.js')
 const Downloader = require('nodejs-file-downloader')
 const Jimp = require('jimp')
 
-module.exports = (client, con, member) => {
-  con.query('SELECT * FROM `guildData` WHERE guild = ?', [member.guild.id], (err, result) => {
+module.exports = (client, member) => {
+  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [member.guild.id], (err, result) => {
     if (err) console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       if (result[0].welcome_enabled !== 0) {

@@ -9,14 +9,14 @@ const commandNSFWCategory = ['waifu', 'randomHentaiGif', 'pussy', 'nsfwNekoGif',
 
 module.exports = {
   name: 'anime',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     function sendImageEmbed (url, provider) {
       const embed = new MessageEmbed()
         .setImage(url.url).setDescription(`<a:ultimahora:876105976573472778> ${getLocales(locale, 'ANIME_IMAGE_API', { API_PROVIDER: provider })}`)
       message.reply({ embeds: [embed] })
     }
-    if (Object.prototype.hasOwnProperty.call(args, 0)) {
-      switch (args[0]) {
+    if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
+      switch (message.args[0]) {
         case 'quote': {
           function quoteEmbed (quote) {
             const embed = new MessageEmbed()

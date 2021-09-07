@@ -11,7 +11,7 @@ module.exports = function (message, result, con) {
         if (result[0].moderator_noMoreInvites_enabled === 1) {
           switch (result[0].moderator_noMoreInvites_action) {
             case 1: {
-              con.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`, `motivo`) VALUES (?, ?, ?, ?)', [makeId(7), message.member.id, message.guild.id, result[0].moderator_noMoreInvites_message || 'You have sent a link and it wasn\'t allowed'])
+              client.pool.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`, `motivo`) VALUES (?, ?, ?, ?)', [makeId(7), message.member.id, message.guild.id, result[0].moderator_noMoreInvites_message || 'You have sent a link and it wasn\'t allowed'])
               message.channel.send(`:warning: ${message.member} Warned: \`${message || 'You have sent a link'}\``)
               break
             }

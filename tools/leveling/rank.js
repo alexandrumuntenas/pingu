@@ -6,7 +6,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'rank',
-  execute (args, client, con, locale, message, result) {
+  execute (client, locale, message, result) {
     if (result[0].leveling_enabled !== 0) {
       const dif = result[0].leveling_rankup_difficulty
       const cache = { aspecto: result[0].leveling_rankup_image_background }
@@ -15,7 +15,7 @@ module.exports = {
           genericMessages.Error.customerror(message, locale, 'RANK_IS_A_BOT')
           return
         }
-        con.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.mentions.users.first().id], (err, result) => {
+        client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.mentions.users.first().id], (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const experiencia = parseInt(result[0].experiencia)
@@ -57,7 +57,7 @@ module.exports = {
           }
         })
       } else {
-        con.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
+        client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const experiencia = parseInt(result[0].experiencia)
