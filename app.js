@@ -151,10 +151,10 @@ client.on('messageCreate', (message) => {
       if (message.content.startsWith(result[0].guild_prefix) && message.content !== result[0].guild_prefix) {
         message.args = message.content.slice(result[0].guild_prefix.length).trim().split(/ +/)
       }
-      const command = message.args[0]
-      message.args.shift()
       const contenido = message.content.toLowerCase()
       if (message.content.startsWith(result[0].guild_prefix)) {
+        const command = message.args[0]
+        message.args.shift()
         if (message.args) {
           if (client.commands.has(command)) {
             const mCeIC = Sentry.startTransaction({
