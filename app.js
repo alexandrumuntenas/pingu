@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * *
  * Pingu                       *
- * Versión: 2108               *
+ * Versión: 2109               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const { Client, Collection, Intents } = require('discord.js')
@@ -128,7 +128,7 @@ client.on('guildCreate', (guild) => {
 })
 
 client.on('guildDelete', (guild) => {
-  guildDelete(guild, client)
+  guildDelete(client, guild)
 })
 
 client.on('guildMemberAdd', (member) => {

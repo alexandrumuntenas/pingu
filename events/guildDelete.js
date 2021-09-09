@@ -1,4 +1,4 @@
-module.exports = (con, guild, client) => {
+module.exports = (client, guild) => {
   const gD = client.Sentry.startTransaction({
     op: 'guildDelete',
     name: 'Guild Delete'
