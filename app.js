@@ -203,7 +203,7 @@ client.on('messageCreate', (message) => {
               setTimeout(() => {
                 talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
               }, 60000)
-              levelingRankUp(result, client, message, global)
+              levelingRankUp(client, message, result)
             }
           }
         } catch (err) {

@@ -1,4 +1,4 @@
-module.exports = function (result, client, con, message, global) {
+module.exports = function (client, message, result) {
   const cache = { canal_id: result[0].leveling_rankup_channel, canal_msg: result[0].leveling_rankup_message, aspecto: result[0].leveling_rankup_image_background, cartelactivado: result[0].leveling_rankup_image }
   const dif = result[0].leveling_rankup_difficulty
   client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
