@@ -5,7 +5,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'config',
-  execute (client, locale, message, result) {
+  execute (client, locale, message) {
     const claveiande = makeId(25)
     const claveadmin = makeId(12)
     if (message.guild.ownerId === message.author.id) {

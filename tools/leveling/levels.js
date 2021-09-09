@@ -4,8 +4,8 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'levels',
-  execute (client, locale, message, result) {
-    if (result[0].leveling_enabled !== 0) {
+  execute (client, locale, message) {
+    if (message.database.leveling_enabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? ORDER BY nivel DESC, experiencia DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
         if (err) console.log(err)
         if (result) {

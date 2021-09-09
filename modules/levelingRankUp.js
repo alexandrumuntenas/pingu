@@ -1,11 +1,11 @@
-module.exports = function (client, message, result) {
-  const cache = { canal_id: result[0].leveling_rankup_channel, canal_msg: result[0].leveling_rankup_message, aspecto: result[0].leveling_rankup_image_background, cartelactivado: result[0].leveling_rankup_image }
-  const dif = result[0].leveling_rankup_difficulty
+module.exports = function (client, message) {
+  const cache = { canal_id: message.database.leveling_rankup_channel, canal_msg: message.database.leveling_rankup_message, aspecto: message.database.leveling_rankup_image_background, cartelactivado: message.database.leveling_rankup_image }
+  const dif = message.database.leveling_rankup_difficulty
   client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
     if (err) console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
-      let exp = parseInt(result[0].experiencia)
-      let niv = parseInt(result[0].nivel)
+      let exp = parseInt(message.database.experiencia)
+      let niv = parseInt(message.database.nivel)
       exp = exp + Math.round(Math.random() * (25 - 15) + 15)
       if (exp >= (((niv * niv) * dif) * 100)) {
         exp = exp - (((niv * niv) * dif) * 100)

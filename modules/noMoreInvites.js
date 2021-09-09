@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const makeId = require('./makeId')
 
-module.exports = function (message, result, con) {
+module.exports = function (client, message, result) {
   if (!message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || !message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
     if (message.content.includes('discord.gg/' || 'discordapp.com/invite/')) { // if it contains an invite link
       message.delete()

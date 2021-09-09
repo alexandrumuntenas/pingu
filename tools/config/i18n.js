@@ -3,7 +3,7 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'i18n',
-  execute (client, locale, message, result) {
+  execute (client, locale, message) {
     if (message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR]) || message.guild.ownerId === message.author.id) {
       const languages = ['en', 'es', 'ro']
       if (message.args[0]) {

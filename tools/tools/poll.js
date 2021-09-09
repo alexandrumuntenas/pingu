@@ -9,7 +9,7 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'poll',
-  execute (client, locale, message, result) {
+  execute (client, locale, message) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
         // poll(message, message.args, '/', '#965E89')

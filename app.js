@@ -148,11 +148,12 @@ client.on('messageCreate', (message) => {
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
     if (err) throw console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (message.content.startsWith(result[0].guild_prefix) && message.content !== result[0].guild_prefix) {
-        message.args = message.content.slice(result[0].guild_prefix.length).trim().split(/ +/)
+      message.database = result[0]
+      if (message.content.startsWith(message.database.guild_prefix) && message.content !== message.database.guild_prefix) {
+        message.args = message.content.slice(message.database.guild_prefix.length).trim().split(/ +/)
       }
       const contenido = message.content.toLowerCase()
-      if (message.content.startsWith(result[0].guild_prefix) && message.args) {
+      if (message.content.startsWith(message.database.guild_prefix) && message.args) {
         const command = message.args[0]
         message.args.shift()
         if (client.commands.has(command)) {
@@ -161,7 +162,7 @@ client.on('messageCreate', (message) => {
             name: `Execute Internal Command (${command})`
           })
           try {
-            client.commands.get(command).execute(client, result[0].guild_language || 'en', message, result)
+            client.commands.get(command).execute(client, message.database.guild_language || 'en', message, result)
           } catch (err) {
             Sentry.captureException(err)
             console.log(err)
@@ -180,7 +181,7 @@ client.on('messageCreate', (message) => {
               client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
                 if (err) Sentry.captureException(err)
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                  message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns).catch((err) => Sentry.captureException(err)).finally(mCeEC.finish())
+                  message.channel.send('<:comandoscustom:858671400424046602>' + message.database.returns).catch((err) => Sentry.captureException(err)).finally(mCeEC.finish())
                 }
               })
             }
@@ -188,16 +189,16 @@ client.on('messageCreate', (message) => {
         };
       }
 
-      if (result[0].moderator_noMoreInvites_enabled !== 0) {
-        noMoreInvites(message, result, client)
+      if (message.database.moderator_noMoreInvites_enabled !== 0) {
+        noMoreInvites(client, message, result)
       }
-      if (result[0].leveling_enabled !== 0) {
+      if (message.database.leveling_enabled !== 0) {
         const mClRU = Sentry.startTransaction({
           op: 'messageCreate/levelingRankUp',
           name: 'Leveling Rank Up'
         })
         try {
-          if (!contenido.startsWith(result[0].guild_prefix)) {
+          if (!contenido.startsWith(message.database.guild_prefix)) {
             if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
               talkedRecently.add(`${message.author.id}_${message.guild.id}`)
               setTimeout(() => {
@@ -226,7 +227,7 @@ client.on('messageCreate', (message) => {
                 if (err) Sentry.captureException(err)
                 if (result) {
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                    message.channel.send('<:respuestacustom:858671300024074240> ' + result[0].returns)
+                    message.channel.send('<:respuestacustom:858671300024074240> ' + message.database.returns)
                   }
                 }
               })
@@ -239,7 +240,7 @@ client.on('messageCreate', (message) => {
         }
       })
     } else {
-      guildCreate(message.guild)
+      guildCreate(client, message.guild)
     }
   }
   )

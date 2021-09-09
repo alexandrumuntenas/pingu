@@ -2,12 +2,12 @@ const { Permissions, MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'noMoreUsers',
-  execute (client, locale, message, result) {
-    const i18n = require(`../../i18n/${result[0].guild_language}.json`).tools.config.burbuja
-    // const i18n = require(`../../i18n/${result[0].guildLanguage}.json`)
+  execute (client, locale, message) {
+    const i18n = require(`../../i18n/${message.database.guild_language}.json`).tools.config.burbuja
+    // const i18n = require(`../../i18n/${message.database.guildLanguage}.json`)
     const messageSent = new MessageEmbed()
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      const valor = result[0].moderator_noMoreUsers_enabled
+      const valor = message.database.moderator_noMoreUsers_enabled
       if (valor === 1) {
         messageSent.setColor('#F85149')
         client.pool.query("UPDATE `guildData` SET `moderator_noMoreUsers_enabled` = '0' WHERE `guildData`.`guild` = ?", [message.guild.id])

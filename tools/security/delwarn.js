@@ -4,8 +4,8 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'delwarn',
-  execute (client, locale, message, result) {
-    if (result[0].moderator_enabled !== 0) {
+  execute (client, locale, message) {
+    if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         if (message.mentions.users.first()) {
           if (message.args[1]) {
@@ -21,10 +21,10 @@ module.exports = {
               }
             })
           } else {
-            genericMessages.Info.help(message, locale, `${result[0].guild_prefix}delwarn <@user> <warnID>`)
+            genericMessages.Info.help(message, locale, `${message.database.guild_prefix}delwarn <@user> <warnID>`)
           }
         } else {
-          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}delwarn <@user> <warnID>`)
+          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}delwarn <@user> <warnID>`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

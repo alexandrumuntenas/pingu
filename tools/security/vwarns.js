@@ -5,8 +5,8 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'vwarns',
-  execute (client, locale, message, result) {
-    if (result[0].moderator_enabled !== 0) {
+  execute (client, locale, message) {
+    if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         if (message.mentions.users.first()) {
           client.pool.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ? LIMIT 25', [message.mentions.users.first().id, message.guild.id], (err, result) => {

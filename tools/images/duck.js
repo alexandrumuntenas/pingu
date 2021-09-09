@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js')
 
 module.exports = {
   name: 'duck',
-  execute (client, locale, message, result) {
+  execute (client, locale, message) {
     function sendImageEmbed (url, provider) {
       const embed = new MessageEmbed()
         .setImage(url.url).setDescription(`<a:ultimahora:876105976573472778> ${getLocales(locale, 'ANIME_IMAGE_API', { API_PROVIDER: provider })}`)

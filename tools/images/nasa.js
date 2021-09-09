@@ -5,13 +5,13 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'nasa',
-  execute (client, locale, message, result) {
+  execute (client, locale, message) {
     message.reply('<a:loading:880765834774073344>')
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)
           .then(quote => {
-            translate(quote.explanation, { to: result[0].guild_language }).then(res => {
+            translate(quote.explanation, { to: message.database.guild_language }).then(res => {
               if (quote.media_type === 'image') {
                 const embed = new MessageEmbed()
                   .setTitle(quote.title)

@@ -4,8 +4,8 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'clear',
-  execute (client, locale, message, result) {
-    if (result[0].moderator_enabled !== 0) {
+  execute (client, locale, message) {
+    if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         message.args[0] = parseInt(message.args[0].replace(/\D/g, ''))
         if (message.args[0] && parseInt(message.args[0]) <= 100) {
@@ -44,7 +44,7 @@ module.exports = {
               })
           }
         } else {
-          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}clear <number <= 100> (@user)`)
+          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}clear <number <= 100> (@user)`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

@@ -6,10 +6,10 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'rank',
-  execute (client, locale, message, result) {
-    if (result[0].leveling_enabled !== 0) {
-      const dif = result[0].leveling_rankup_difficulty
-      const cache = { aspecto: result[0].leveling_rankup_image_background }
+  execute (client, locale, message) {
+    if (message.database.leveling_enabled !== 0) {
+      const dif = message.database.leveling_rankup_difficulty
+      const cache = { aspecto: message.database.leveling_rankup_image_background }
       if (message.mentions.users.first()) {
         if (message.mentions.users.first().bot) {
           genericMessages.Error.customerror(message, locale, 'RANK_IS_A_BOT')
@@ -18,8 +18,8 @@ module.exports = {
         client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.mentions.users.first().id], (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            const experiencia = parseInt(result[0].experiencia)
-            const nivel = parseInt(result[0].nivel)
+            const experiencia = parseInt(message.database.experiencia)
+            const nivel = parseInt(message.database.nivel)
             async function fa () {
               const avatar = new Downloader({
                 url: message.mentions.users.first().displayAvatarURL({ format: 'jpg', size: 512 }),
@@ -60,8 +60,8 @@ module.exports = {
         client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            const experiencia = parseInt(result[0].experiencia)
-            const nivel = parseInt(result[0].nivel)
+            const experiencia = parseInt(message.database.experiencia)
+            const nivel = parseInt(message.database.nivel)
             async function fa () {
               const avatar = new Downloader({
                 url: message.author.displayAvatarURL({ format: 'jpg', size: 512 }),
