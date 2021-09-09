@@ -1,18 +1,17 @@
 module.exports = function (client, message) {
-  const cache = { canal_id: message.database.leveling_rankup_channel, canal_msg: message.database.leveling_rankup_message, aspecto: message.database.leveling_rankup_image_background, cartelactivado: message.database.leveling_rankup_image }
-  const dif = message.database.leveling_rankup_difficulty
   client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
     if (err) console.log(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
-      let exp = parseInt(message.database.experiencia)
-      let niv = parseInt(message.database.nivel)
+      let exp = parseInt(result[0].experiencia)
+      let niv = parseInt(result[0].nivel)
+      const dif = parseInt(message.database.leveling_rankup_difficulty)
       exp = exp + Math.round(Math.random() * (25 - 15) + 15)
       if (exp >= (((niv * niv) * dif) * 100)) {
         exp = exp - (((niv * niv) * dif) * 100)
         niv++
-        const messageToSend = cache.canal_msg.replace('{user}', `<@${message.author.id}>`).replace('{nivel-antiguo}', `${niv - 1}`).replace('{nivel-nuevo}', `${niv}`)
-        if (cache.canal_id !== '0') {
-          const customChannel = client.channels.cache.find(channel => channel.id === cache.canal_id)
+        const messageToSend = message.database.leveling_rankup_message.replace('{user}', `<@${message.author.id}>`).replace('{nivel-antiguo}', `${niv - 1}`).replace('{nivel-nuevo}', `${niv}`)
+        if (message.database.leveling_rankup_channel !== '0') {
+          const customChannel = client.channels.cache.find(channel => channel.id === message.database.leveling_rankup_channel)
           if (customChannel) {
             customChannel.send(messageToSend)
           } else {
