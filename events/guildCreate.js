@@ -1,4 +1,4 @@
-module.exports = (guild, client) => {
+module.exports = (client, guild) => {
   const gC = client.Sentry.startTransaction({
     op: 'guildCreate',
     name: 'Guild Create'

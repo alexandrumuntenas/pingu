@@ -124,7 +124,7 @@ client.on('ready', () => {
 })
 
 client.on('guildCreate', (guild) => {
-  guildCreate(guild, client)
+  guildCreate(client, guild)
 })
 
 client.on('guildDelete', (guild) => {
