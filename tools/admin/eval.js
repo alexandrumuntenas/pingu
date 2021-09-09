@@ -10,7 +10,7 @@ module.exports = {
         const code = message.args.join(' ')
         const messageSent = new MessageEmbed().setTitle('Evaluado correctamente').addField(':inbox_tray: Entrada', codeBlock('js', code))
         try {
-          const evaled = eval (code)
+          const evaled = eval(code)
           messageSent.addField(':outbox_tray: Salida', codeBlock('js', evaled || 'No se ha devuelto nada...')).setColor('GREEN')
         } catch (err) {
           messageSent.addField(':outbox_tray: Salida', codeBlock('js', err || 'No se ha devuelto nada...')).setColor('RED')
