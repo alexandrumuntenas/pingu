@@ -36,7 +36,10 @@ if (process.env.ENTORNO === 'public') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
-    environment: 'production'
+    environment: 'production',
+    integrations: [
+      new Tracing.Integrations.Mysql()
+    ]
   })
 
   topggSDK(client)
@@ -52,7 +55,10 @@ if (process.env.ENTORNO === 'public') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
-    environment: 'development'
+    environment: 'development',
+    integrations: [
+      new Tracing.Integrations.Mysql()
+    ]
   })
   client.login(process.env.INSIDER_TOKEN)
 }
@@ -106,7 +112,7 @@ client.on('ready', () => {
   console.log('[OK] Bot inicializado...')
   console.log(`[IF] Logged in as ${client.user.tag}!`)
   client.user.setPresence({
-    status: 'idle',
+    status: 'online',
     activities: [{
       name: 'Discord',
       type: 'WATCHING'
@@ -114,7 +120,7 @@ client.on('ready', () => {
   })
   setInterval(() => {
     client.user.setPresence({
-      status: 'idle',
+      status: 'online',
       activities: [{
         name: 'Discord',
         type: 'WATCHING'
