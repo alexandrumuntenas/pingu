@@ -31,8 +31,8 @@ module.exports = {
 
       if (options) {
         let avaliableOptions = ''
-        options.forEach((option) => {
-          avaliableOptions = avaliableOptions + ` \`${option}\``
+        options.forEach((object) => {
+          avaliableOptions = avaliableOptions + ` \`${object.option}\``
         })
         sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_SUBCATEGORIES'), avaliableOptions)
       }
@@ -43,8 +43,8 @@ module.exports = {
         sentEmbed.setColor('#B23CFD')
         if (nsfwOptions) {
           let avaliableOptions = ''
-          nsfwOptions.forEach((option) => {
-            avaliableOptions = avaliableOptions + ` \`${option}\``
+          nsfwOptions.forEach((object) => {
+            avaliableOptions = avaliableOptions + ` \`${object.option}\``
           })
           sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_NSFW_OPTIONS'), avaliableOptions)
         }
