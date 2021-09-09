@@ -4,8 +4,8 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'clear-user-warns',
-  execute (client, locale, message, result) {
-    if (result[0].moderator_enabled !== 0) {
+  execute (client, locale, message) {
+    if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         if (message.mentions.users.first()) {
           const user = message.mentions.users.first()
@@ -15,7 +15,7 @@ module.exports = {
             message.reply({ embeds: [sent] })
           })
         } else {
-          genericMessages.Info.help(message, locale, `${result[0].guild_prefix}clear-user-warns <@user>`)
+          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}clear-user-warns <@user>`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)
