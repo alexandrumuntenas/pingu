@@ -71,7 +71,7 @@ loadCommands(client.commands, './tools')
  * @param {collection} collection Discord Collection for Commands
  * @param {directory} directory The Directory Where Commands are stored
  */
-function loadCommands(collection, directory) {
+function loadCommands (collection, directory) {
   const files = fs.readdirSync(directory)
 
   for (const file of files) {

@@ -1,22 +1,22 @@
 const makeId = require('./makeId')
 
-module.exports = function (action, message, messageDiscord, con) {
-  if (action !== 0) {
-    switch (action) {
+module.exports = function (client, message, parameters) {
+  if (parameters.actionToTake !== 0) {
+    switch (parameters.actionToTake) {
       case 1: {
-        client.pool.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`, `motivo`) VALUES (?, ?, ?, ?)', [makeId(7), messageDiscord.member.id, messageDiscord.guild.id, message || 'Using NSFW command in SFW channel.'])
-        messageDiscord.channel.send(`:warning: ${messageDiscord.member} Warned: \`${message || 'Using NSFW command in SFW channel.'}\``)
+        client.pool.query('INSERT INTO `guildWarns` (`identificador`,`user`, `guild`, `motivo`) VALUES (?, ?, ?, ?)', [makeId(7), message.member.id, message.guild.id, parameters.messageToSend || 'Using NSFW command in SFW channel.'])
+        message.channel.send(`:warning: ${message.member} Warned: \`${parameters.messageToSend || 'Using NSFW command in SFW channel.'}\``)
         break
       }
       case 2: {
-        messageDiscord.member.kick(message)
+        message.member.kick(parameters.messageToSend)
         break
       }
       case 3: {
-        messageDiscord.member.ban(message)
+        message.member.ban(parameters.messageToSend)
         break
       }
     }
   }
-  messageDiscord.delete()
+  message.delete()
 }
