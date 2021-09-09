@@ -13,9 +13,9 @@ module.exports = {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
         // poll(message, message.args, '/', '#965E89')
-        const separator = '|' // const separator = result[0].pollSeparator || Se sustituyen todos los separators por result[0].pollSeparator
+        const separator = '|' // const separator = message.database.pollSeparator || Se sustituyen todos los separators por message.database.pollSeparator
         const findSep = message.args.find(char => char.includes(separator))
-        // const findSep = message.args.find(char => char.includes(result[0].pollSeparator))
+        // const findSep = message.args.find(char => char.includes(message.database.pollSeparator))
 
         if (findSep === undefined) {
           const question = message.args.join(' ')
@@ -89,7 +89,7 @@ module.exports = {
           })
         }
       } else {
-        message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${result[0].guild_prefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${result[0].guild_prefix}poll Do you like Pingu?`)
+        message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${message.database.guild_prefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${message.database.guild_prefix}poll Do you like Pingu?`)
       }
     } else {
       genericMessages.Error.permerror(message, locale)
