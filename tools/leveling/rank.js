@@ -8,8 +8,6 @@ module.exports = {
   name: 'rank',
   execute (client, locale, message) {
     if (message.database.leveling_enabled !== 0) {
-      const dif = message.database.leveling_rankup_difficulty
-      const cache = { aspecto: message.database.leveling_rankup_image_background }
       if (message.mentions.users.first()) {
         if (message.mentions.users.first().bot) {
           genericMessages.Error.customerror(message, locale, 'RANK_IS_A_BOT')
@@ -18,40 +16,37 @@ module.exports = {
         client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.mentions.users.first().id], (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            const experiencia = parseInt(message.database.experiencia)
-            const nivel = parseInt(message.database.nivel)
-            async function fa () {
-              const avatar = new Downloader({
-                url: message.mentions.users.first().displayAvatarURL({ format: 'jpg', size: 512 }),
-                directory: './usuarios/avatares/',
-                fileName: `${message.mentions.users.first().id}_level.jpg`,
-                cloneFiles: false
-              })
-              try {
-                await avatar.download()
-                const rank = new canvacord.Rank()
-                  .setAvatar(`./usuarios/avatares/${message.mentions.users.first().id}_level.jpg`)
-                  .setCurrentXP(experiencia)
-                  .setRequiredXP(((nivel * nivel) * dif) * 100)
-                  .setStatus(message.guild.members.cache.get(message.mentions.users.first().id).presence.status || 'offline', false)
-                  .setLevel(nivel, getLocales(locale, 'RANK_LEVEL'))
-                  .setProgressBar('#FFFFFF', 'COLOR')
-                  .setUsername(message.mentions.users.first().username)
-                  .setDiscriminator(message.mentions.users.first().discriminator)
-                  .setRank(0, '', false)
-                  .setBackground('IMAGE', `./recursos/carteles/${cache.aspecto}.png`)
+            const experiencia = parseInt(result[0].experiencia)
+            const nivel = parseInt(result[0].nivel)
+            const avatar = new Downloader({
+              url: message.mentions.users.first().displayAvatarURL({ format: 'jpg', size: 512 }),
+              directory: './usuarios/avatares/',
+              fileName: `${message.mentions.users.first().id}_level.jpg`,
+              cloneFiles: false
+            })
+            try {
+              avatar.download()
+              const rank = new canvacord.Rank()
+                .setAvatar(`./usuarios/avatares/${message.mentions.users.first().id}_level.jpg`)
+                .setCurrentXP(experiencia)
+                .setRequiredXP(((nivel * nivel) * message.database.leveling_rankup_difficulty) * 100)
+                .setStatus(message.guild.members.cache.get(message.mentions.users.first().id).presence.status || 'offline', false)
+                .setLevel(nivel, getLocales(locale, 'RANK_LEVEL'))
+                .setProgressBar('#FFFFFF', 'COLOR')
+                .setUsername(message.mentions.users.first().username)
+                .setDiscriminator(message.mentions.users.first().discriminator)
+                .setRank(0, '', false)
+                .setBackground('IMAGE', `./recursos/carteles/${message.database.leveling_rankup_image_background}.png`)
 
-                rank.build()
-                  .then(buffer => {
-                    canvacord.write(buffer, `./usuarios/leveling/${message.mentions.users.first().id}_${message.guild.id}_rank.jpg`)
-                    const attachament = new MessageAttachment(`./usuarios/leveling/${message.mentions.users.first().id}_${message.guild.id}_rank.jpg`)
-                    message.reply({ files: [attachament] })
-                  })
-              } catch (e) {
-                console.log(e)
-              }
+              rank.build()
+                .then(buffer => {
+                  canvacord.write(buffer, `./usuarios/leveling/${message.mentions.users.first().id}_${message.guild.id}_rank.jpg`)
+                  const attachament = new MessageAttachment(`./usuarios/leveling/${message.mentions.users.first().id}_${message.guild.id}_rank.jpg`)
+                  message.reply({ files: [attachament] })
+                })
+            } catch (e) {
+              console.log(e)
             }
-            fa()
           } else {
             genericMessages.Error.customerror(message, locale, 'RANK_NO_CLASSIFIED_MENTIONED')
           }
@@ -60,40 +55,37 @@ module.exports = {
         client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
           if (err) console.log(err)
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
-            const experiencia = parseInt(message.database.experiencia)
-            const nivel = parseInt(message.database.nivel)
-            async function fa () {
-              const avatar = new Downloader({
-                url: message.author.displayAvatarURL({ format: 'jpg', size: 512 }),
-                directory: './usuarios/avatares/',
-                fileName: `${message.author.id}_level.jpg`,
-                cloneFiles: false
-              })
-              try {
-                await avatar.download()
-                const rank = new canvacord.Rank()
-                  .setAvatar(`./usuarios/avatares/${message.author.id}_level.jpg`)
-                  .setCurrentXP(experiencia)
-                  .setRequiredXP(((nivel * nivel) * dif) * 100)
-                  .setStatus(message.member.presence.status || 'offline', false)
-                  .setLevel(nivel, getLocales(locale, 'RANK_LEVEL'))
-                  .setProgressBar('#FFFFFF', 'COLOR')
-                  .setUsername(message.author.username)
-                  .setDiscriminator(message.author.discriminator)
-                  .setRank(0, '', false)
-                  .setBackground('IMAGE', `./recursos/carteles/${cache.aspecto}.png`)
+            const experiencia = parseInt(result[0].experiencia)
+            const nivel = parseInt(result[0].nivel)
+            const avatar = new Downloader({
+              url: message.author.displayAvatarURL({ format: 'jpg', size: 512 }),
+              directory: './usuarios/avatares/',
+              fileName: `${message.author.id}_level.jpg`,
+              cloneFiles: false
+            })
+            try {
+              avatar.download()
+              const rank = new canvacord.Rank()
+                .setAvatar(`./usuarios/avatares/${message.author.id}_level.jpg`)
+                .setCurrentXP(experiencia)
+                .setRequiredXP(((nivel * nivel) * message.database.leveling_rankup_difficulty) * 100)
+                .setStatus(message.member.presence.status || 'offline', false)
+                .setLevel(nivel, getLocales(locale, 'RANK_LEVEL'))
+                .setProgressBar('#FFFFFF', 'COLOR')
+                .setUsername(message.author.username)
+                .setDiscriminator(message.author.discriminator)
+                .setRank(0, '', false)
+                .setBackground('IMAGE', `./recursos/carteles/${message.database.leveling_rankup_image_background}.png`)
 
-                rank.build()
-                  .then(buffer => {
-                    canvacord.write(buffer, `./usuarios/leveling/${message.author.id}_${message.guild.id}_rank.jpg`)
-                    const attachament = new MessageAttachment(`./usuarios/leveling/${message.author.id}_${message.guild.id}_rank.jpg`)
-                    message.reply({ files: [attachament] })
-                  })
-              } catch (err) {
-                console.log(err)
-              }
+              rank.build()
+                .then(buffer => {
+                  canvacord.write(buffer, `./usuarios/leveling/${message.author.id}_${message.guild.id}_rank.jpg`)
+                  const attachament = new MessageAttachment(`./usuarios/leveling/${message.author.id}_${message.guild.id}_rank.jpg`)
+                  message.reply({ files: [attachament] })
+                })
+            } catch (err) {
+              console.log(err)
             }
-            fa()
           } else {
             genericMessages.Error.customerror(message, locale, 'RANK_NO_CLASSIFIED')
           }
