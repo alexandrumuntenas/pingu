@@ -5,10 +5,10 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'vwarns',
-  execute (client, locale, message) {
+  execute(client, locale, message) {
     if (message.database.moderator_enabled !== 0) {
-      if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-        if (message.mentions.users.first()) {
+      if (message.mentions.users.first()) {
+        if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
           client.pool.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ? LIMIT 25', [message.mentions.users.first().id, message.guild.id], (err, result) => {
             if (err) console.log(err)
             const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: message.mentions.users.first().tag }), message.mentions.users.first().displayAvatarURL())
@@ -22,21 +22,21 @@ module.exports = {
             message.channel.send({ embeds: [allwarnsEmbed] })
           })
         } else {
-          const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'VIEW_WARNS_EMBED_TITLE', { USER: message.author.tag }), message.author.displayAvatarURL())
-          client.pool.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ? LIMIT 25', [message.author.id, message.guild.id], (err, result) => {
-            if (err) console.log(err)
-            if (result.length !== 0) {
-              for (let i = 0; i < result.length; i++) {
-                allwarnsEmbed.addField(`:stopwatch: <t:${unixTime(result[i].timestamp)}>`, getLocales(locale, 'VIEW_WARNS_EMBED_REASON', { ID: result[0].identificador, REASON: result[i].motivo.trim() }))
-              }
-            } else {
-              allwarnsEmbed.setDescription(getLocales(locale, 'VIEW_WARNS_EMBED_NORESULTS'))
-            }
-            message.channel.send({ embeds: [allwarnsEmbed] })
-          })
+          genericMessages.Error.permerror(message, locale)
         }
       } else {
-        genericMessages.Error.permerror(message, locale)
+        const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'VIEW_WARNS_EMBED_TITLE', { USER: message.author.tag }), message.author.displayAvatarURL())
+        client.pool.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ? LIMIT 25', [message.author.id, message.guild.id], (err, result) => {
+          if (err) console.log(err)
+          if (result.length !== 0) {
+            for (let i = 0; i < result.length; i++) {
+              allwarnsEmbed.addField(`:stopwatch: <t:${unixTime(result[i].timestamp)}>`, getLocales(locale, 'VIEW_WARNS_EMBED_REASON', { ID: result[0].identificador, REASON: result[i].motivo.trim() }))
+            }
+          } else {
+            allwarnsEmbed.setDescription(getLocales(locale, 'VIEW_WARNS_EMBED_NORESULTS'))
+          }
+          message.channel.send({ embeds: [allwarnsEmbed] })
+        })
       }
     } else {
       genericMessages.Error.no_avaliable(message, locale)
