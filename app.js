@@ -187,7 +187,7 @@ client.on('messageCreate', (message) => {
               client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
                 if (err) Sentry.captureException(err)
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                  message.channel.send('<:comandoscustom:858671400424046602>' + message.database.returns).catch((err) => Sentry.captureException(err)).finally(mCeEC.finish())
+                  message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns).catch((err) => Sentry.captureException(err)).finally(mCeEC.finish())
                 }
               })
             }
