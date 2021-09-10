@@ -233,7 +233,7 @@ client.on('messageCreate', (message) => {
                 if (err) Sentry.captureException(err)
                 if (result) {
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                    message.channel.send('<:respuestacustom:858671300024074240> ' + message.database.returns)
+                    message.channel.send('<:respuestacustom:858671300024074240> ' + result[0].returns)
                   }
                 }
               })
