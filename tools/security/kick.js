@@ -27,7 +27,10 @@ module.exports = {
                   message.channel.send({ embeds: [sent] })
                 })
                 .catch(err => {
-                  if (err) console.log(err)
+                  if (err) {
+                    client.Sentry.captureException(err)
+                    client.log.error(err)
+                  }
                   const sent = new MessageEmbed()
                     .setColor('#DC3545')
                     .setAuthor(getLocales(locale, 'KICK_EMBED_ERROR_TITLE', { USER: resolvableUser.tag }), resolvableUser.displayAvatarURL())

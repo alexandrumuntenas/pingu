@@ -10,7 +10,6 @@ module.exports = {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const user = message.mentions.users.first() || message.author
         const member = message.guild.members.cache.get(user.id)
-        console.log(member.nickname)
         const sent = new MessageEmbed()
           .setAuthor(user.tag, user.displayAvatarURL())
           .addField(getLocales(locale, 'USER_INFO_EMBED_USER_TAG'), user.tag)

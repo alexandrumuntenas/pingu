@@ -21,7 +21,10 @@ module.exports = {
             const resolvableUser = client.users.cache.get(user.trim().replace('<@!', '').trim())
             const cache = { activado: message.database.moderador_warn_expulsion_activado, cantidad: message.database.moderador_warn_expulsion_cantidad, accion: message.database.moderador_warn_expulsion_accion }
             client.pool.query('SELECT COUNT(*) AS itotal FROM `guildWarns` WHERE user = ? AND guild = ?', [resolvableUser.id, message.guild.id], (err, result) => {
-              if (err) console.log(err)
+              if (err) {
+                client.Sentry.captureException(err)
+                client.log.error(err)
+              }
               client.pool.query('INSERT INTO `guildWarns` (`identificador`, `user`, `guild`, `motivo`, `moderator`) VALUES (?, ?, ?, ?, ?)', [makeId(7), resolvableUser.id, message.guild.id, reason, message.author.id])
               const sent = new MessageEmbed()
                 .setColor('#FFC107')
@@ -39,7 +42,8 @@ module.exports = {
                         message.channel.send({ embeds: [sent2] })
                       })
                       .catch(err => {
-                        console.log(err)
+                        client.Sentry.captureException(err)
+                        client.log.error(err)
                         const sent2 = new MessageEmbed()
                           .setColor('#DC3545')
                           .setAuthor(getLocales(locale, 'WARNLIMIT_OVERLIMIT_ERROR', { USER: resolvableUser.tag, ACTION: 'baneado' }), resolvableUser.displayAvatarURL())
@@ -54,7 +58,8 @@ module.exports = {
                         message.channel.send({ embeds: [sent2] })
                       })
                       .catch(err => {
-                        console.log(err)
+                        client.Sentry.captureException(err)
+                        client.log.error(err)
                         const sent2 = new MessageEmbed()
                           .setColor('#DC3545')
                           .setAuthor(getLocales(locale, 'WARNLIMIT_OVERLIMIT_ERROR', { USER: resolvableUser.tag, ACTION: 'baneado' }), resolvableUser.displayAvatarURL())

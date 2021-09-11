@@ -10,7 +10,10 @@ module.exports = {
         if (message.mentions.users.first()) {
           const user = message.mentions.users.first()
           client.pool.query('DELETE FROM `guildWarns` WHERE user = ? AND guild = ?', [message.mentions.users.first().id, message.guild.id], function (err) {
-            if (err) console.log(err)
+            if (err) {
+              client.Sentry.captureException(err)
+              client.log.error(err)
+            }
             const sent = new MessageEmbed().setColor('#28A745').setAuthor(getLocales(locale, 'CLEAR_USER_WARNS_EMBED_TITLE', { USER: user.tag }), user.displayAvatarURL())
             message.reply({ embeds: [sent] })
           })
