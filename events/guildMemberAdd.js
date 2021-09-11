@@ -16,7 +16,7 @@ module.exports = (client, member) => {
       if (result[0].welcome_enabled !== 0) {
         const mensaje = client.channels.cache.get(result[0].welcome_channel)
         if (mensaje) {
-          if (result[0].welcome_image !== 0) {
+          /* if (result[0].welcome_image !== 0) {
             const avatar = new Downloader({
               url: member.user.avatarURL({ format: 'jpg' }),
               directory: './usuarios/avatares/',
@@ -47,8 +47,8 @@ module.exports = (client, member) => {
               client.log.error(err)
             }
           } else {
-            mensaje.send(result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`))
-          }
+          } */
+          mensaje.send(result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`))
         }
       }
       if (result[0].moderator_noMoreUsers_enabled === 1) {
