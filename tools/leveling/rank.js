@@ -14,7 +14,10 @@ module.exports = {
           return
         }
         client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.mentions.users.first().id], (err, result) => {
-          if (err) console.log(err)
+          if (err) {
+            client.Sentry.captureException(err)
+            client.log.error(err)
+          }
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const experiencia = parseInt(result[0].experiencia)
             const nivel = parseInt(result[0].nivel)
@@ -44,8 +47,9 @@ module.exports = {
                   const attachament = new MessageAttachment(`./usuarios/leveling/${message.mentions.users.first().id}_${message.guild.id}_rank.jpg`)
                   message.reply({ files: [attachament] })
                 })
-            } catch (e) {
-              console.log(e)
+            } catch (err) {
+              client.Sentry.captureException(err)
+              client.log.error(err)
             }
           } else {
             genericMessages.Error.customerror(message, locale, 'RANK_NO_CLASSIFIED_MENTIONED')
@@ -53,7 +57,10 @@ module.exports = {
         })
       } else {
         client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
-          if (err) console.log(err)
+          if (err) {
+            client.Sentry.captureException(err)
+            client.log.error(err)
+          }
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const experiencia = parseInt(result[0].experiencia)
             const nivel = parseInt(result[0].nivel)
@@ -84,7 +91,8 @@ module.exports = {
                   message.reply({ files: [attachament] })
                 })
             } catch (err) {
-              console.log(err)
+              client.Sentry.captureException(err)
+              client.log.error(err)
             }
           } else {
             genericMessages.Error.customerror(message, locale, 'RANK_NO_CLASSIFIED')

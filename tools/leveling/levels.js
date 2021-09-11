@@ -7,7 +7,10 @@ module.exports = {
   execute (client, locale, message) {
     if (message.database.leveling_enabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? ORDER BY nivel DESC, experiencia DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
-        if (err) console.log(err)
+        if (err) {
+          client.Sentry.captureException(err)
+          client.log.error(err)
+        }
         if (result) {
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const embed = new MessageEmbed()

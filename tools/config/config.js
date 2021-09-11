@@ -10,7 +10,10 @@ module.exports = {
     const claveadmin = makeId(12)
     if (message.guild.ownerId === message.author.id) {
       client.pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [message.guild.id], (err) => {
-        if (err) console.log(err)
+        if (err) {
+          client.Sentry.captureException(err)
+          client.log.error(err)
+        }
         client.pool.query('INSERT INTO `apoloSessions` (`Clave_de_Acceso`,`Guild_ID`,`Solicitante_ID`, `Clave_de_Autorizacion`) VALUES ( ?, ?, ?, ?)', [claveiande, message.guild.id, message.author.id, claveadmin])
         const sent = new MessageEmbed()
           .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
@@ -25,7 +28,10 @@ module.exports = {
     } else {
       if (message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         client.pool.query('DELETE FROM `apoloSessions` WHERE `Guild_ID` LIKE ?', [message.guild.id], (err) => {
-          if (err) console.log(err)
+          if (err) {
+            client.Sentry.captureException(err)
+            client.log.error(err)
+          }
           client.pool.query('INSERT INTO `apoloSessions` (`Clave_de_Acceso`,`Guild_ID`,`Solicitante_ID`, `Clave_de_Autorizacion`) VALUES ( ?, ?, ?, ?)', [claveiande, message.guild.id, message.author.id, claveadmin])
           const sent = new MessageEmbed()
             .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))

@@ -10,7 +10,10 @@ module.exports = {
         if (message.mentions.users.first()) {
           if (message.args[1]) {
             client.pool.query('SELECT * FROM guildWarns WHERE guild = ? AND user = ? AND identificador = ?', [message.guild.id, message.mentions.users.first().id, message.args[1]], (err, result) => {
-              if (err) console.log(err)
+              if (err) {
+                client.Sentry.captureException(err)
+                client.log.error(err)
+              }
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
                 client.pool.query('DELETE FROM guildWarns WHERE guild = ? AND user = ? AND identificador = ?', [message.guild.id, message.mentions.users.first().id, message.args[1]])
                 const sentTrue = new MessageEmbed().setColor('#28A745').setDescription(getLocales(locale, 'DELWARN_EMBED_SUCCESS', { WARNID: message.args[1], USER: message.mentions.users.first().tag }))

@@ -1,6 +1,13 @@
 module.exports = function (client, message) {
+  const lRU = client.Sentry.startTransaction({
+    op: 'levelingRankUp',
+    name: 'Leveling Rank Up'
+  })
   client.pool.query('SELECT * FROM `guildLevels` WHERE guild = ? AND user = ?', [message.guild.id, message.author.id], (err, result) => {
-    if (err) console.log(err)
+    if (err) {
+      client.Sentry.captureException(err)
+      client.log.error(err)
+    }
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       let exp = parseInt(result[0].experiencia)
       let niv = parseInt(result[0].nivel)
@@ -21,9 +28,15 @@ module.exports = function (client, message) {
           message.channel.send(messageToSend)
         }
       }
-      client.pool.query('UPDATE `guildLevels` SET `experiencia` = ?, `nivel` = ? WHERE `user` = ? AND `guild` = ?', [exp, niv, message.author.id, message.guild.id], (err) => { if (err) console.log(err) })
+      client.pool.query('UPDATE `guildLevels` SET `experiencia` = ?, `nivel` = ? WHERE `user` = ? AND `guild` = ?', [exp, niv, message.author.id, message.guild.id], (err) => {
+        if (err) {
+          client.Sentry.captureException(err)
+          client.log.error(err)
+        }
+      })
     } else {
       client.pool.query('INSERT INTO `guildLevels` (`user`, `guild`, `experiencia`) VALUES (?, ?, ?)', [message.author.id, message.guild.id, Math.round(Math.random() * (25 - 15) + 15)])
     }
   })
+  lRU.finish()
 }
