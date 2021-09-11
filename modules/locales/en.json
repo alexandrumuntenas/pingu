@@ -54,5 +54,6 @@
   "WARN_EMBED_SUCCESS_TITLE": "%USER% has been warned",
   "WARN_EMBED_SUCCESS_REASON": "**Reason:** %REASON%",
   "WARNLIMIT_OVERLIMIT": "%USER% was %ACTION% for exceeding the warning limit.",
-  "WARNLIMIT_OVERLIMIT_ERROR": "%USER% could not be %ACTION% due to exceeding the warning limit due to an error."
+  "WARNLIMIT_OVERLIMIT_ERROR": "%USER% could not be %ACTION% due to exceeding the warning limit due to an error.",
+  "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% just joined the server"
 }
