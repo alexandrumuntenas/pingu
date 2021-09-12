@@ -1,6 +1,6 @@
 const { MessageAttachment } = require('discord.js')
-const tempFileRemover = require('../../modules/tempFileRemover')
-const { welcomeCard } = require('../../modules/canvasProcessing')
+const tempFileRemover = require('../modules/tempFileRemover')
+const { welcomeCard } = require('../modules/canvasProcessing')
 
 module.exports = (client, member) => {
   const gMA = client.Sentry.startTransaction({
