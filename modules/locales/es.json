@@ -55,5 +55,6 @@
   "WARN_EMBED_SUCCESS_REASON": "**Motivo:** %REASON%",
   "WARNLIMIT_OVERLIMIT": "%USER% ha sido %ACTION% por haber superado el límite de advertencias.",
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% ha sido %ACTION% por haber superado el límite de advertencias debido a un error.",
-  "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% acaba de unirse al servidor"
+  "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% acaba de unirse al servidor",
+  "GUILDMEMBERADD_MEMBER_COUNT": "Miembro #%COUNT%"
 }
