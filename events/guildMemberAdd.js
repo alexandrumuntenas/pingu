@@ -1,4 +1,6 @@
 const { MessageAttachment } = require('discord.js')
+const tempFileRemover = require('../../modules/tempFileRemover')
+const { welcomeCard } = require('../../modules/canvasProcessing')
 
 module.exports = (client, member) => {
   const gMA = client.Sentry.startTransaction({
@@ -14,7 +16,14 @@ module.exports = (client, member) => {
       if (result[0].welcome_enabled !== 0) {
         const mensaje = client.channels.cache.get(result[0].welcome_channel)
         if (mensaje) {
-          mensaje.send(result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`))
+          if (result[0].welcome_image !== 0) {
+            welcomeCard(client, member, result[0].guild_language || 'en').then((paths) => {
+              const attachmentSent = new MessageAttachment(paths.attachmentSent)
+              mensaje.send({ content: result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`), files: [attachmentSent] }).then(() => {
+                tempFileRemover(paths)
+              })
+            })
+          }
         }
       }
       if (result[0].moderator_noMoreUsers_enabled === 1) {
