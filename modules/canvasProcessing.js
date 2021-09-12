@@ -1,4 +1,4 @@
-const { registerFont, createCanvas, Image, loadImage } = require('canvas')
+const { registerFont, createCanvas, loadImage } = require('canvas')
 const { writeFileSync } = require('fs')
 const StackBlur = require('stackblur-canvas')
 const randomstring = require('randomstring')
@@ -6,7 +6,7 @@ const getLocales = require('./getLocales')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
 module.exports = {
-  welcomeCard: async (client, member, locale) => {
+  welcomeCard: async (client, member, locale, backgroundId) => {
     const uniqueIdentifiers = {
       userAvatar: randomstring.generate({ charset: 'alphabetic' }),
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
@@ -20,7 +20,7 @@ module.exports = {
     const ctx = canvas.getContext('2d')
 
     // Establecer fondo del canvas
-    const background = await loadImage('./modules/sources/defaultBackgrounds/7.png')
+    const background = await loadImage(`./modules/sources/defaultBackgrounds/${backgroundId}.png`)
     const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
     ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
     // background.src = './modules/sources/defaultBackgrounds/7.png'
