@@ -1,10 +1,9 @@
-/node_modules
-/usuarios
-/brand
-/.vscode
-/services/update.js
-/logs/*
-package-lock.json
 .env
+package-lock.json
+/.vscode
+/node_modules
+/modules/temp
+/modules/sources/fonts
+/modules/sources/customBackgrounds
 */dist/
 *.dev.js
