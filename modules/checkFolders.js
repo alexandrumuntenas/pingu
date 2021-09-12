@@ -6,4 +6,3 @@ module.exports = function () {
     mkdirSync('./modules/temp')
   }
 }
-
