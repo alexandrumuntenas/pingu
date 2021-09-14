@@ -8,7 +8,7 @@ module.exports = {
   loadCommands: (client) => {
     const commands = new Collection()
 
-    load('./tools')
+    load('./commands/common')
 
     /**
      * Load Pingu Commands
@@ -40,7 +40,7 @@ module.exports = {
 
     const slashCommands = []
 
-    load('./tools')
+    load('./commands/slash')
 
     function load (directory) {
       const files = fs.readdirSync(directory)
