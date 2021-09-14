@@ -139,11 +139,11 @@ client.on('messageCreate', (message) => {
             name: `Execute Internal Command (${command})`
           })
           try {
-            client.commands.get(command).execute(client, message.database.guild_language || 'en', message, result)
+            client.commands.get(command).execute(client, message.database.guild_language || 'en', message)
           } catch (err) {
             Sentry.captureException(err)
             client.log.error(err)
-            message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
+            message.channel.send('Se ha producido un error cuando ha intentado ejecutar este comando...')
           } finally {
             mCeIC.finish()
           }
