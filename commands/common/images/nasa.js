@@ -1,7 +1,7 @@
 const fetch = require('superagent')
 const { MessageEmbed } = require('discord.js')
 const translate = require('translatte')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../../modules/getLocales')
 
 module.exports = {
   name: 'nasa',

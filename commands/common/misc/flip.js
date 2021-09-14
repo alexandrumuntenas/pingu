@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const flip = require('flipacoin')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../../modules/getLocales')
 
 module.exports = {
   name: 'flip',

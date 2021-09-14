@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const genericMessages = require('../../../modules/genericMessages')
+const getLocales = require('../../../modules/getLocales')
 
 module.exports = {
   name: 'clear-user-warns',

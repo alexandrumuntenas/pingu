@@ -1,4 +1,4 @@
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../../modules/genericMessages')
 
 module.exports = {
   name: 'help',

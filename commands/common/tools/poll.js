@@ -1,5 +1,5 @@
 const { Permissions, MessageEmbed } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../../modules/genericMessages')
 
 /** Idea: Volver a hacer el array de argumentos, pero esta vez, que sea separado por el separador.
  *  Eliminar el prefijo + comando y dejar solo la pregunta con las opciones. Para así permitir que

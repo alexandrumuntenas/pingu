@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
-const getLocales = require('../../modules/getLocales')
-const genericMessages = require('../../modules/genericMessages')
+const getLocales = require('../../../modules/getLocales')
+const genericMessages = require('../../../modules/genericMessages')
 
 module.exports = {
   name: 'levels',

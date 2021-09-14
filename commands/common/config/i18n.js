@@ -1,5 +1,5 @@
 const { Permissions } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../../modules/genericMessages')
 
 module.exports = {
   name: 'i18n',

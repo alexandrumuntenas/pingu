@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const parse = require('parse-duration')
-const genericMessages = require('../../modules/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const genericMessages = require('../../../modules/genericMessages')
+const getLocales = require('../../../modules/getLocales')
 
 module.exports = {
   name: 'slowmode',

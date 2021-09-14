@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
-const makeId = require('../../modules/makeId')
-const getLocales = require('../../modules/getLocales')
+const genericMessages = require('../../../modules/genericMessages')
+const makeId = require('../../../modules/makeId')
+const getLocales = require('../../../modules/getLocales')
 
 module.exports = {
   name: 'warn',
