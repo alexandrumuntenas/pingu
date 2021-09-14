@@ -8,11 +8,11 @@ module.exports = {
     .setName('ping')
     .setDescription('Comprueba el tiempo de respuesta de Pingu hacia Discord'),
   execute (client, locale, message, isInteraction) {
-    const embed = new MessageEmbed().setColor('#9DF63F').setTitle('🏓 Pong!').setDescription(`🕑 Bot: **${Date.now() - message.createdTimestamp}ms** \n📨 API: **${Math.round(client.ws.ping)}ms**\n ⌛ Total: **${Math.round(client.ws.ping + (Date.now() - message.createdTimestamp))}ms**`).setTimestamp().setFooter('Hey!')
-    if (isInteraction) {
-      message.channel.send({ embeds: [embed] })
+    const messageSent = new MessageEmbed().setColor('#9DF63F').setTitle('🏓 Pong!').setDescription(`🕑 Bot: **${Date.now() - message.createdTimestamp}ms** \n📨 API: **${Math.round(client.ws.ping)}ms**\n ⌛ Total: **${Math.round(client.ws.ping + (Date.now() - message.createdTimestamp))}ms**`).setTimestamp().setFooter('Hey!')
+    if (!isInteraction) {
+      message.channel.send({ embeds: [messageSent] })
     } else {
-      message.editReply({ embeds: [embed] })
+      message.editReply({ embeds: [messageSent] })
     }
   }
 }
