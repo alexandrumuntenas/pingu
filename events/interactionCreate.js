@@ -4,7 +4,7 @@ module.exports = async (client, interaction) => {
     if (err) client.log.error(err)
     await interaction.deferReply()
 
-    const command = client.commands.get(interaction.commandName)
+    const command = client.slashCommands.get(interaction.commandName)
 
     if (!command) return
 
