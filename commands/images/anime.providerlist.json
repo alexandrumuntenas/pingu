@@ -122,196 +122,235 @@
   {
     "option": "waifuNsfw",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://waifu.pics/api/nsfw/waifu"
   },
   {
     "option": "randomHentaiGif",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/Random_hentai_gif"
   },
   {
     "option": "pussy",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/pussy"
   },
   {
     "option": "nsfwNekoGif",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/nsfw_neko_gif"
   },
   {
     "option": "nsfwNeko",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/lewd"
   },
   {
     "option": "lesbian",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/les"
   },
   {
     "option": "kuni",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/kuni"
   },
   {
     "option": "cum",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/cum"
   },
   {
     "option": "classic",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/classic"
   },
   {
     "option": "boobs",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/boobs"
   },
   {
     "option": "bj",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/bj"
   },
   {
     "option": "anal",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/anal"
   },
   {
     "option": "nsfwAvatar",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/nsfw_avatar"
   },
   {
     "option": "yuri",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/yuri"
   },
   {
     "option": "trap",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/trap"
   },
   {
     "option": "tits",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/tits"
   },
   {
     "option": "solog",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/solog"
   },
   {
     "option": "solo",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/solo"
   },
   {
     "option": "pwankg",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/pwankg"
   },
   {
     "option": "pussyArt",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/pussy_jpg"
   },
   {
     "option": "lewdkemo",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/lewdkemo"
   },
   {
     "option": "lewdk",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/lewdk"
   },
   {
     "option": "hololewd",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/hololewd"
   },
   {
     "option": "holoero",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/holoero"
   },
   {
     "option": "hentai",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/hentai"
   },
   {
     "option": "futanari",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/futanari"
   },
   {
     "option": "femdom",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/femdom"
   },
   {
     "option": "feetg",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/feetg"
   },
   {
     "option": "erofeet",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/erofeet"
   },
   {
     "option": "feet",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/feet"
   },
   {
     "option": "ero",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/ero"
   },
   {
     "option": "erok",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/erok"
   },
   {
     "option": "erokemo",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/erokemo"
   },
   {
     "option": "eron",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/eron"
   },
   {
     "option": "eroyuri",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/eroyuri"
   },
   {
     "option": "cumArts",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/cum_jpg"
   },
   {
     "option": "blowjob",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/blowjob"
   },
   {
     "option": "spank",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/spank"
   },
   {
     "option": "gasm",
     "nsfw": true,
+    "type": "image",
     "endpoint": "https://nekos.life/api/v2/img/gasm"
   }
 ]
