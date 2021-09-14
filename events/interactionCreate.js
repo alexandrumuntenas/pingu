@@ -4,12 +4,12 @@ module.exports = async (client, interaction) => {
     if (err) client.log.error(err)
     await interaction.deferReply()
 
-    const command = client.slashCommands.get(interaction.commandName)
+    const command = client.commands.get(interaction.commandName)
 
     if (!command) return
 
     try {
-      await command.execute(client, result[0].guild_language || 'en', interaction)
+      await command.execute(client, result[0].guild_language || 'en', interaction, true)
     } catch (error) {
       console.error(error)
       await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true })

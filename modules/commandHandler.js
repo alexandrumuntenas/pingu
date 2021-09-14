@@ -8,7 +8,7 @@ module.exports = {
   loadCommands: (client) => {
     const commands = new Collection()
 
-    load('./commands/common')
+    load('./commands')
 
     /**
      * Load Pingu Commands
@@ -33,35 +33,6 @@ module.exports = {
     }
 
     return commands
-  },
-  loadSlashCommands: (client) => {
-    const slashCommands = new Collection()
-
-    load('./commands/slash')
-
-    /**
-     * Load Pingu Commands
-     * @param {collection} collection Discord Collection for Commands
-     * @param {directory} directory The Directory Where Commands are stored
-     */
-    function load (directory) {
-      const files = fs.readdirSync(directory)
-
-      for (const file of files) {
-        const path = `${directory}/${file}`
-
-        if (file.endsWith('.js')) {
-          const command = require(`.${path}`)
-          client.log.info(`Cargando ${command.name}`)
-          slashCommands.set(command.name, command)
-          client.log.success(`Cargado ${command.name}`)
-        } else if (fs.lstatSync(path).isDirectory()) {
-          load(path)
-        }
-      }
-    }
-
-    return slashCommands
   },
   deploySlashCommands: (client, guild) => {
     client.log.info(`Desplegando comandos slash a ${chalk.yellowBright(guild.name)}`)
