@@ -3,10 +3,12 @@ const { writeFileSync } = require('fs')
 const StackBlur = require('stackblur-canvas')
 const randomstring = require('randomstring')
 const getLocales = require('./getLocales')
+const isValidUrl = require('is-valid-http-url')
+const color = require('dominant-color')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
 module.exports = {
-  welcomeCard: async (client, member, locale, backgroundId) => {
+  welcomeCard: async (client, member, locale, database) => {
     const uniqueIdentifiers = {
       userAvatar: randomstring.generate({ charset: 'alphabetic' }),
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
@@ -20,10 +22,20 @@ module.exports = {
     const ctx = canvas.getContext('2d')
 
     // Establecer fondo del canvas
-    const background = await loadImage(`./modules/sources/defaultBackgrounds/${backgroundId}.png`)
+    let imgPath = ''
+    console.log(database.welcome_image_customBackground)
+    if (database.welcome_image_customBackground && isValidUrl(database.welcome_image_customBackground)) {
+      imgPath = database.welcome_image_customBackground
+    } else {
+      imgPath = `./modules/sources/defaultBackgrounds/${database.backgroundId}.png`
+    }
+    const background = await loadImage(imgPath)
     const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
     ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
-    // background.src = './modules/sources/defaultBackgrounds/7.png'
+
+    color(imgPath, { format: 'rgb' }, function (err, color) {
+      console.log(color) // ['91', '108', '110']
+    })
 
     // Establecer blured overlay
     ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'
