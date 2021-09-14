@@ -1,6 +1,6 @@
 /* eslint-disable no-eval */
-const genericMessages = require('../../modules/genericMessages')
-const { deploySlashCommands } = require('../../modules/commandHandler')
+const genericMessages = require('../../../modules/genericMessages')
+const { deploySlashCommands } = require('../../../modules/commandHandler')
 module.exports = {
   name: 'deploy',
   execute: async (client, locale, message) => { // eslint-disable-line no-unused-vars

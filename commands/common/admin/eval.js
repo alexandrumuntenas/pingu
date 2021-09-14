@@ -1,7 +1,7 @@
 /* eslint-disable no-eval */
 const { MessageEmbed } = require('discord.js')
 const { codeBlock } = require('@discordjs/builders')
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../../modules/genericMessages')
 
 module.exports = {
   name: 'eval',
