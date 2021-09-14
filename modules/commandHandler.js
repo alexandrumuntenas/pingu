@@ -40,7 +40,7 @@ module.exports = {
 
     const slashCommands = []
 
-    load('./commands/slash')
+    load('./commands')
 
     function load (directory) {
       const files = fs.readdirSync(directory)
