@@ -35,7 +35,7 @@ module.exports = {
     return commands
   },
   deploySlashCommands: (client, guild) => {
-    client.log.info(`Desplegando comandos slash a ${chalk.yellowBright(guild.name)}`)
+    client.log.warn(`Solicitud de despliegue de SlashCommands para ${chalk.yellowBright(guild.name)}`)
     const rest = new REST({ version: '9' }).setToken(client.token)
 
     const slashCommands = []
