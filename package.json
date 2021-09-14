@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "@blac-sheep/character-count": "^0.1.2",
+    "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@hapi/hapi": "^20.1.5",
     "@jimp/plugin-circle": "^0.16.1",
