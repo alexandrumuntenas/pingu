@@ -73,6 +73,7 @@ if (process.env.ENTORNO === 'public') {
 client.Sentry = Sentry
 
 client.commands = commandHandler.loadCommands(client)
+client.slashCommands = commandHandler.loadSlashCommands(client)
 
 client.on('ready', () => {
   checkFolder()
