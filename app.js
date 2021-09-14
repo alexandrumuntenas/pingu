@@ -142,7 +142,7 @@ client.on('messageCreate', (message) => {
     message.author === client.user
   ) return
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
-    if (err) throw client.log(err)
+    if (err) throw client.log.error(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       message.database = result[0]
       if (message.content.startsWith(message.database.guild_prefix) && message.content !== message.database.guild_prefix) {
