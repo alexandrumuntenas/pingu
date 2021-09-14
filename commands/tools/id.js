@@ -6,7 +6,7 @@ module.exports = {
   name: 'id',
   data: new SlashCommandBuilder()
     .setName('id')
-    .setDescription('Returns guild ID'),
+    .setDescription('Shows the server ID'),
   execute (client, locale, message, isInteraction) {
     const messageSent = new MessageEmbed().setColor('#3984BD').setDescription(`<:win_information:876119543968305233> ${getLocales(locale, 'ID', { ID: message.guild.id })}`)
     if (!isInteraction) {
