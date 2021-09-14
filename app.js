@@ -3,11 +3,10 @@
  * Versión: 2109               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
-const { Client, Collection, Intents } = require('discord.js')
+const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
 const mysql = require('mysql2')
-const fs = require('fs')
 
 const talkedRecently = new Set()
 
@@ -43,6 +42,8 @@ client.log.success('Módulos Cargados')
 
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
+const commandHandler = require('./modules/commandHandler')
+const interactionCreate = require('./events/interactionCreate')
 client.log.success('Servicios Third-Party Cargados')
 
 // Bot
@@ -71,31 +72,7 @@ if (process.env.ENTORNO === 'public') {
 
 client.Sentry = Sentry
 
-client.commands = new Collection()
-
-loadCommands(client.commands, './tools')
-
-/**
- * Load Pingu Commands
- * @param {collection} collection Discord Collection for Commands
- * @param {directory} directory The Directory Where Commands are stored
- */
-function loadCommands (collection, directory) {
-  const files = fs.readdirSync(directory)
-
-  for (const file of files) {
-    const path = `${directory}/${file}`
-
-    if (file.endsWith('.js')) {
-      const command = require(path)
-      client.log.info(`Cargando ${command.name}`)
-      collection.set(command.name, command)
-      client.log.success(`Cargado ${command.name}`)
-    } else if (fs.lstatSync(path).isDirectory()) {
-      loadCommands(collection, path)
-    }
-  }
-};
+client.commands = commandHandler.loadCommands(client)
 
 client.on('ready', () => {
   checkFolder()
@@ -133,6 +110,10 @@ client.on('guildMemberAdd', (member) => {
 
 client.on('guildMemberRemove', (member) => {
   guildMemberRemove(client, member)
+})
+
+client.on('interactionCreate', async interaction => {
+  interactionCreate(client, interaction)
 })
 
 client.on('messageCreate', (message) => {

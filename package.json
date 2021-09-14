@@ -5,6 +5,8 @@
   "main": "app.js",
   "dependencies": {
     "@blac-sheep/character-count": "^0.1.2",
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
     "@hapi/hapi": "^20.1.5",
     "@jimp/plugin-circle": "^0.16.1",
     "@sentry/node": "^6.11.0",
@@ -15,6 +17,7 @@
     "canvas": "^2.8.0",
     "chalk": "^4.1.2",
     "cookie-parser": "^1.4.5",
+    "discord-api-types": "^0.23.1",
     "discord-emoji-converter": "^1.2.3",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
