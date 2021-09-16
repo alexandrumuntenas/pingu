@@ -7,15 +7,18 @@ const { MessageAttachment } = require('discord.js')
 module.exports = {
   name: 'wt',
   execute: async (client, locale, message) => { // eslint-disable-line no-unused-vars
-    if (message.author.id === '722810818823192629') {
-      welcomeCard(client, message.member, locale, message.database).then((paths) => {
-        const attachmentSent = new MessageAttachment(paths.attachmentSent)
-        message.channel.send({ files: [attachmentSent] }).then(() => {
-          tempFileRemover(paths)
+    client.pool.query('SELECT * FROM `guildWelcomerConfig` WHERE guild = ?', [message.guild.id], (err, result) => {
+      if (err) throw err
+      if (message.author.id === '722810818823192629') {
+        welcomeCard(client, message.member, locale, result[0]).then((paths) => {
+          const attachmentSent = new MessageAttachment(paths.attachmentSent)
+          message.channel.send({ files: [attachmentSent] }).then(() => {
+            tempFileRemover(paths)
+          })
         })
-      })
-    } else {
-      genericMessages.Error.permerror(message, locale)
-    }
+      } else {
+        genericMessages.Error.permerror(message, locale)
+      }
+    })
   }
 }
