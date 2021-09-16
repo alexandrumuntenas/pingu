@@ -7,17 +7,17 @@ module.exports = (client, member) => {
     op: 'guildMemberAdd',
     name: 'Guild Member Add'
   })
-  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [member.guild.id], (err, result) => {
+  client.pool.query('SELECT * FROM `guildWelcomerConfig` WHERE guild = ?', [member.guild.id], (err, result) => {
     if (err) {
       client.Sentry.captureException(err)
       client.log.error(err)
     }
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (result[0].welcome_enabled !== 0) {
-        const mensaje = client.channels.cache.get(result[0].welcome_channel)
+      if (result[0].welcomeEnabled !== 0) {
+        const mensaje = client.channels.cache.get(result[0].welcomeChannel)
         if (mensaje) {
-          if (result[0].welcome_image !== 0) {
-            welcomeCard(client, member, result[0].guild_language || 'en', result[0].welcome_image_background).then((paths) => {
+          if (result[0].welcomeImage !== 0) {
+            welcomeCard(client, member, result[0].guild_language || 'en', result[0].welcomeImageBackground).then((paths) => {
               const attachmentSent = new MessageAttachment(paths.attachmentSent)
               mensaje.send({ content: result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`), files: [attachmentSent] }).then(() => {
                 tempFileRemover(paths)
