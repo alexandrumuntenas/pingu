@@ -5,7 +5,6 @@
 require('dotenv').config()
 const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')
-const Tracing = require('@sentry/tracing')
 const mysql = require('mysql2')
 
 const talkedRecently = new Set()
