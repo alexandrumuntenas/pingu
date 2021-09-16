@@ -56,5 +56,6 @@
   "WARNLIMIT_OVERLIMIT": "%USER% was %ACTION% for exceeding the warning limit.",
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% could not be %ACTION% due to exceeding the warning limit due to an error.",
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% just joined the server",
-  "GUILDMEMBERADD_MEMBER_COUNT": "Member #%COUNT%"
+  "GUILDMEMBERADD_MEMBER_COUNT": "Member #%COUNT%",
+  "PLAYTOGETHER_NOVC": "In order to run this command, you must be in a voice channel. Please, join one and execute this command again."
 }

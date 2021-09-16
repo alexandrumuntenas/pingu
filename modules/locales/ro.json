@@ -56,5 +56,6 @@
   "WARNLIMIT_OVERLIMIT": "%USER% a fost %ACTION% pentru că ați depășit limita de avertizare.",
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% nu a putut fi %ACTION% pentru depășirea limitei de avertizare din cauza unei erori.",
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% tocmai s-a alăturat serverului",
-  "GUILDMEMBERADD_MEMBER_COUNT": "Membrul #%COUNT%"
+  "GUILDMEMBERADD_MEMBER_COUNT": "Membrul #%COUNT%",
+  "PLAYTOGETHER_NOVC": "Pentru a rula această comandă, trebuie să vă aflați într-un canal vocal. Vă rugăm să vă alăturați uneia și să executați din nou această comandă."
 }
