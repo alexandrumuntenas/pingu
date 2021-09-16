@@ -4,7 +4,6 @@ const StackBlur = require('stackblur-canvas')
 const randomstring = require('randomstring')
 const getLocales = require('./getLocales')
 const isValidUrl = require('is-valid-http-url')
-const color = require('dominant-color')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
 module.exports = {
@@ -23,19 +22,14 @@ module.exports = {
 
     // Establecer fondo del canvas
     let imgPath = ''
-    console.log(database.welcome_image_customBackground)
-    if (database.welcome_image_customBackground && isValidUrl(database.welcome_image_customBackground)) {
-      imgPath = database.welcome_image_customBackground
+    if (database.welcomeImageCustomBackground && isValidUrl(database.welcomeImageCustomBackground)) {
+      imgPath = database.welcomeImageCustomBackground
     } else {
-      imgPath = `./modules/sources/defaultBackgrounds/${database.backgroundId}.png`
+      imgPath = `./modules/sources/defaultBackgrounds/${database.welcomeImageBackground || 1}.png`
     }
     const background = await loadImage(imgPath)
     const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
     ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
-
-    color(imgPath, { format: 'rgb' }, function (err, color) {
-      console.log(color) // ['91', '108', '110']
-    })
 
     // Establecer blured overlay
     ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'
@@ -55,26 +49,24 @@ module.exports = {
 
     // Añadir backdrop en avatar de usuario
 
-    // Type 1 with Circles
-    /*
-    ctx.beginPath()
-    ctx.arc(canvas.width / 2, 160, 110, 0, Math.PI * 2, true) // 110 es el radio de la figura
-    ctx.closePath()
-    ctx.clip()
-    */
+    if (database.welcomeImageRoundAvatar === 1) {
+      ctx.beginPath()
+      ctx.arc(canvas.width / 2, 160, 110, 0, Math.PI * 2, true) // 110 es el radio de la figura
+      ctx.closePath()
+      ctx.clip()
+    }
 
     ctx.fillStyle = 'rgb(255,255,255)'
     ctx.fillRect(canvas.width / 2 - 110, 50, 220, 220) // canvas.width - 110 para obtener el centrado de la figura
 
     // Añadir avatar de usuario
 
-    // Type 1 with Circles
-    /*
-    ctx.beginPath()
-    ctx.arc(canvas.width / 2, 160, 100, 0, Math.PI * 2, true)
-    ctx.closePath()
-    ctx.clip()
-    */
+    if (database.welcomeImageRoundAvatar === 1) {
+      ctx.beginPath()
+      ctx.arc(canvas.width / 2, 160, 100, 0, Math.PI * 2, true)
+      ctx.closePath()
+      ctx.clip()
+    }
 
     const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
     ctx.drawImage(avatar, canvas.width / 2 - 100, 60, 200, 200)
