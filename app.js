@@ -51,10 +51,7 @@ if (process.env.ENTORNO === 'public') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
-    environment: 'production',
-    integrations: [
-      new Tracing.Integrations.Mysql()
-    ]
+    environment: 'production'
   })
   topggSDK(client)
   client.login(process.env.PUBLIC_TOKEN)
@@ -62,10 +59,7 @@ if (process.env.ENTORNO === 'public') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
-    environment: 'development',
-    integrations: [
-      new Tracing.Integrations.Mysql()
-    ]
+    environment: 'development'
   })
   client.login(process.env.INSIDER_TOKEN)
 }
