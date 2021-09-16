@@ -6,7 +6,6 @@
   "dependencies": {
     "@blac-sheep/character-count": "^0.1.2",
     "@discordjs/builders": "^0.6.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
     "@hapi/hapi": "^20.1.5",
     "@jimp/plugin-circle": "^0.16.1",
     "@sentry/node": "^6.11.0",
@@ -28,6 +27,7 @@
     "flipacoin": "^1.0.0",
     "helmet": "^4.6.0",
     "is-discord-invitation": "^1.0.4",
+    "is-valid-http-url": "^1.0.3",
     "mathjs": "^9.4.4",
     "moment": "^2.29.1",
     "ms": "^2.1.3",

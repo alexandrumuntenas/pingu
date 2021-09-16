@@ -19,7 +19,7 @@ module.exports = (client, member) => {
           if (result[0].welcomeImage !== 0) {
             welcomeCard(client, member, result[0].guild_language || 'en', result[0].welcomeImageBackground).then((paths) => {
               const attachmentSent = new MessageAttachment(paths.attachmentSent)
-              mensaje.send({ content: result[0].welcome_message.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`), files: [attachmentSent] }).then(() => {
+              mensaje.send({ content: result[0].welcomeMessage.replace('{user}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`), files: [attachmentSent] }).then(() => {
                 tempFileRemover(paths)
               })
             })
