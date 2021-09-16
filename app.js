@@ -3,11 +3,10 @@
  * Versión: 2109               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
-const { Client, Collection, Intents } = require('discord.js')
+const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')
 const Tracing = require('@sentry/tracing')
 const mysql = require('mysql2')
-const fs = require('fs')
 
 const talkedRecently = new Set()
 
@@ -43,6 +42,8 @@ client.log.success('Módulos Cargados')
 
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
+const commandHandler = require('./modules/commandHandler')
+const interactionCreate = require('./events/interactionCreate')
 client.log.success('Servicios Third-Party Cargados')
 
 // Bot
@@ -50,10 +51,7 @@ if (process.env.ENTORNO === 'public') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
-    environment: 'production',
-    integrations: [
-      new Tracing.Integrations.Mysql()
-    ]
+    environment: 'production'
   })
   topggSDK(client)
   client.login(process.env.PUBLIC_TOKEN)
@@ -61,41 +59,14 @@ if (process.env.ENTORNO === 'public') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     tracesSampleRate: 1.0,
-    environment: 'development',
-    integrations: [
-      new Tracing.Integrations.Mysql()
-    ]
+    environment: 'development'
   })
   client.login(process.env.INSIDER_TOKEN)
 }
 
 client.Sentry = Sentry
 
-client.commands = new Collection()
-
-loadCommands(client.commands, './tools')
-
-/**
- * Load Pingu Commands
- * @param {collection} collection Discord Collection for Commands
- * @param {directory} directory The Directory Where Commands are stored
- */
-function loadCommands (collection, directory) {
-  const files = fs.readdirSync(directory)
-
-  for (const file of files) {
-    const path = `${directory}/${file}`
-
-    if (file.endsWith('.js')) {
-      const command = require(path)
-      client.log.info(`Cargando ${command.name}`)
-      collection.set(command.name, command)
-      client.log.success(`Cargado ${command.name}`)
-    } else if (fs.lstatSync(path).isDirectory()) {
-      loadCommands(collection, path)
-    }
-  }
-};
+client.commands = commandHandler.loadCommands(client)
 
 client.on('ready', () => {
   checkFolder()
@@ -135,6 +106,10 @@ client.on('guildMemberRemove', (member) => {
   guildMemberRemove(client, member)
 })
 
+client.on('interactionCreate', async interaction => {
+  interactionCreate(client, interaction)
+})
+
 client.on('messageCreate', (message) => {
   if (
     message.channel.type === 'dm' ||
@@ -142,7 +117,7 @@ client.on('messageCreate', (message) => {
     message.author === client.user
   ) return
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
-    if (err) throw client.log(err)
+    if (err) throw client.log.error(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       message.database = result[0]
       if (message.content.startsWith(message.database.guild_prefix) && message.content !== message.database.guild_prefix) {
