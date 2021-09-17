@@ -1,6 +1,7 @@
 const guildCreate = require('./guildCreate')
 const levelingRankUp = require('../modules/levelingRankUp')
 const noMoreInvites = require('../modules/noMoreInvites')
+const economy = require('../modules/economyModule')
 
 const talkedRecently = new Set()
 
@@ -86,6 +87,29 @@ module.exports = (client, message) => {
           client.log.error(err)
         } finally {
           mClRU.finish()
+        }
+      }
+
+      if (message.database.economyEnabled !== 0) {
+        const mCeGM = client.Sentry.startTransaction({
+          op: 'messageCreate/economyGetMoney',
+          name: 'Economy (getMoney)'
+        })
+        try {
+          if (!contenido.startsWith(message.database.guild_prefix)) {
+            if (!talkedRecently.has(`${message.author.id}_${message.guild.id}_eco`)) {
+              talkedRecently.add(`${message.author.id}_${message.guild.id_eco}`)
+              setTimeout(() => {
+                talkedRecently.delete(`${message.author.id}_${message.guild.id}_eco`)
+              }, 60000)
+              economy.getMoney(client, message)
+            }
+          }
+        } catch (err) {
+          client.Sentry.captureException(err)
+          client.log.error(err)
+        } finally {
+          mCeGM.finish()
         }
       }
 
