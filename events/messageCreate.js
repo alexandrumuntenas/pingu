@@ -1,6 +1,6 @@
-const guildCreate = require('./events/guildCreate')
-const levelingRankUp = require('./modules/levelingRankUp')
-const noMoreInvites = require('./modules/noMoreInvites')
+const guildCreate = require('./guildCreate')
+const levelingRankUp = require('../modules/levelingRankUp')
+const noMoreInvites = require('../modules/noMoreInvites')
 
 const talkedRecently = new Set()
 
