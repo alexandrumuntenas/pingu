@@ -21,6 +21,9 @@ module.exports = {
           const secondMessageSent = new MessageEmbed()
             .setTitle(getLocales(locale, 'MYBANK_LATESTTRANSACTIONS'))
             .setColor('#009FE3')
+            .setAuthor(getLocales(locale, 'MYBANK_ACCOUNT_OF', { USER: message.author.username }), message.author.displayAvatarURL())
+            .setThumbnail(config.bankLogo)
+            .setFooter(config.bankName)
 
           fetchLatestTransactions(client, message, (latestTransactions) => {
             latestTransactions.forEach((transaction) => {
