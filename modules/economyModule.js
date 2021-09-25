@@ -33,8 +33,20 @@ module.exports = {
     })
     EgM.finish()
   },
-  getBankTransferBook: (client, message) => {
+  fetchMoney: (client, message) => {
+    const EfM = client.Sentry.startTransaction({
+      op: 'economy.fetchMoney',
+      name: 'Economy (fetchMoney)'
+    })
+    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [message.guild.id, message.author.id], (err, rows) => {
+      if (err) {
+        client.Sentry.captureException(err)
+        client.log.error(err)
+      }
 
+      return { money: rows[0].amount || 0, status: 200 }
+    })
+    EfM.finish()
   },
   getTranstactionInformation: (client, message) => {
 
