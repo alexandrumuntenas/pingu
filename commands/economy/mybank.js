@@ -30,7 +30,7 @@ module.exports = {
               } else {
                 emisor = client.users.cache.get(transaction.emisor).tag
               }
-              secondMessageSent.addField(`:stopwatch: <t:${unixTime(transaction.timeStamp)}>`, `:bookmark_tabs: ${getLocales(locale, 'MYBANK_TRANSACTION_ID', { TRANSACTION_ID: `\`${transaction.transactionID.substring(0, 9)}\`` })}\n:arrow_left: ${getLocales(locale, 'MYBANK_TRANSACTION_EMISOR', { TRANSACTION_EMISOR: emisor })}`)
+              secondMessageSent.addField(`:stopwatch: <t:${unixTime(transaction.timeStamp)}>`, `:mag_right: ${getLocales(locale, 'MYBANK_TRANSACTION_ID', { TRANSACTION_ID: `\`${transaction.transactionID.substring(0, 9)}\`` })}\n:mag_right: ${getLocales(locale, 'MYBANK_TRANSACTION_EMISOR', { TRANSACTION_EMISOR: emisor })}\n:mag_right: ${getLocales(locale, 'MYBANK_TRANSACTION_TYPE', { TRANSACTION_TYPE: getLocales(locale, `TRANSACTION_TYPE_${transaction.type}`) })}\n:moneybag: ${getLocales(locale, 'MYBANK_TRANSACTION_QUANTITY', { TRANSACTION_QUANTITY: `\`${parseInt(transaction.newQuantity) - parseInt(transaction.previousQuantity)} ${config.currency}\`` })}`)
             })
             message.channel.send({ embeds: [firstMessageSent, secondMessageSent] })
           })

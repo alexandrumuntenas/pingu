@@ -64,5 +64,11 @@
   "MYBANK_TRANSACTION_ID": "ID de la transacción: %TRANSACTION_ID%",
   "MYBANK_TRANSACTION_EMISOR": "Emisor de la transacción: %TRANSACTION_EMISOR%",
   "MYBANK_TRANSACTION_RECEPTOR": "Receptor de la transacción: %TRANSACTION_RECEPTOR%",
-  "SERVER": "Servidor"
+  "MYBANK_TRANSACTION_TYPE": "Tipo de movimiento: %TRANSACTION_TYPE%",
+  "MYBANK_TRANSACTION_QUANTITY": "Cantidad: %TRANSACTION_QUANTITY%",
+  "SERVER": "Servidor",
+  "TRANSACTION_TYPE_0": "Cancelado",
+  "TRANSACTION_TYPE_1": "Ingreso",
+  "TRANSACTION_TYPE_2": "Retirar",
+  "TRANSACTION_TYPE_3": "Transferencia"
 }
