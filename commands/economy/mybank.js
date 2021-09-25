@@ -1,36 +1,44 @@
 const { MessageEmbed } = require('discord.js')
+const unixTime = require('unix-time')
+const { fetchConfig, fetchUserAccount, fetchLatestTransactions } = require('../../modules/economyModule')
+const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'mybank',
   execute (client, locale, message, isInteraction) {
-    client.pool.query('SELECT * FROM `guildEconomyConfig` WHERE guild = ?', [message.guild.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
-      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        const economyConfig = rows[0]
-        client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [message.guild.id, message.author.id], (err, rows) => {
-          if (err) {
-            client.Sentry.captureException(err)
-            client.log.error(err)
-          }
-
+    fetchConfig(client, message.guild, (config) => {
+      if (config) {
+        fetchUserAccount(client, message, (user) => {
           const firstMessageSent = new MessageEmbed()
-            .setAuthor(economyConfig.bankName)
-            .setThumbnail(economyConfig.bankLogo)
-            .setTitle(getLocales(locale, 'MYBANK_ACCOUNT_OF', { USER: message.author.username }))
+            .setAuthor(getLocales(locale, 'MYBANK_ACCOUNT_OF', { USER: message.author.username }), message.author.displayAvatarURL())
+            .setThumbnail(config.bankLogo)
+            .setFooter(config.bankName)
             .setColor('#009FE3')
-            .setDescription(getLocales(locale, 'MYBANK_MONEY', { BANK_NAME: economyConfig.bankName, BANK_CURRENCY: economyConfig.currency, BANK_ACCOUNT_MONEY: rows[0].amount || 0 }))
+            .addField(getLocales(locale, 'MYBANK_ACCOUNT_MONEY'), `\`${user.amount || 0} ${config.currency}\``, true)
+            .addField(getLocales(locale, 'MYBANK_ACCOUNT_EBAN'), `\`${user.eban}\``, true)
 
-          /* const secondMessageSent = new MessageEmbed()
-            .setTitle('Últimos movimientos')
+          const secondMessageSent = new MessageEmbed()
+            .setTitle(getLocales(locale, 'MYBANK_LATESTTRANSACTIONS'))
             .setColor('#009FE3')
-            .addField('FETCH HERE DATA', 'A') */
 
-          message.channel.send({ embeds: [firstMessageSent] })
+          fetchLatestTransactions(client, message, (latestTransactions) => {
+            latestTransactions.forEach((transaction) => {
+              let emisor = ''
+              if (client.guilds.cache.get(transaction.emisor)) {
+                emisor = getLocales(locale, 'SERVER')
+              } else {
+                emisor = client.users.cache.get(transaction.emisor).tag
+              }
+              secondMessageSent.addField(`:stopwatch: <t:${unixTime(transaction.timeStamp)}>`, `:bookmark_tabs: ${getLocales(locale, 'MYBANK_TRANSACTION_ID', { TRANSACTION_ID: `\`${transaction.transactionID.substring(0, 9)}\`` })}\n:arrow_left: ${getLocales(locale, 'MYBANK_TRANSACTION_EMISOR', { TRANSACTION_EMISOR: emisor })}`)
+            })
+            message.channel.send({ embeds: [firstMessageSent, secondMessageSent] })
+          })
         })
       } else {
-        message.channel.send('This guild doesn\'t have the Economy module configured')
+        genericMessages.Error.no_avaliable(message, locale)
       }
-    })
+    }
+    )
   }
 }

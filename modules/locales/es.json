@@ -58,5 +58,11 @@
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% acaba de unirse al servidor",
   "GUILDMEMBERADD_MEMBER_COUNT": "Miembro #%COUNT%",
   "MYBANK_ACCOUNT_OF": "Cuenta de %USER%",
-  "MYBANK_MONEY": "Dinero en %BANK_NAME%: %BANK_ACCOUNT_MONEY% %BANK_CURRENCY%"
+  "MYBANK_ACCOUNT_MONEY": "Dinero",
+  "MYBANK_ACCOUNT_EBAN": "EBAN",
+  "MYBANK_LATESTTRANSACTIONS": "Últimos movimientos",
+  "MYBANK_TRANSACTION_ID": "ID de la transacción: %TRANSACTION_ID%",
+  "MYBANK_TRANSACTION_EMISOR": "Emisor de la transacción: %TRANSACTION_EMISOR%",
+  "MYBANK_TRANSACTION_RECEPTOR": "Receptor de la transacción: %TRANSACTION_RECEPTOR%",
+  "SERVER": "Servidor"
 }
