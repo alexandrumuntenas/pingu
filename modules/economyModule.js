@@ -63,6 +63,21 @@ module.exports = {
     })
     EfM.finish()
   },
+  fetchLatestTransactions: (client, message, callback) => {
+    const EfLT = client.Sentry.startTransaction({
+      op: 'economy.fetchLatestTransactions',
+      name: 'Economy (fetchLatestTransactions)'
+    })
+    client.pool.query('SELECT * FROM `guildEconomyBankTransferBook` WHERE `emisor` LIKE ? AND `member` LIKE ? ORDER BY `timeStamp` ASC LIMIT 5', [message.guild.id, message.author.id], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows.length > 0) {
+        callback(rows)
+      } else {
+        callback({ error: 'NO TRANSACTIONS HISTORY' })
+      }
+    })
+    EfLT.finish()
+  },
   getTranstactionInformation: (client, message) => {
 
   },
