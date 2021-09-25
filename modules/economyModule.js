@@ -33,18 +33,33 @@ module.exports = {
     })
     EgM.finish()
   },
-  fetchMoney: (client, message) => {
+  fetchConfig: (client, guild, callback) => {
+    const EfC = client.Sentry.startTransaction({
+      op: 'economy.fetchConfig',
+      name: 'Economy (fetchConfig)'
+    })
+    client.pool.query('SELECT * FROM `guildEconomyConfig` WHERE guild = ?', [guild.id], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
+        const data = { bankName: rows[0].bankName, bankLogo: rows[0].bankLogo, useGlobalBank: rows[0].useGlobalBank, currency: rows[0].currency }
+        callback(data)
+      } else {
+        callback({ status: 'NO_DATA' })
+      }
+    })
+    EfC.finish()
+  },
+  fetchUserAccount: (client, message, callback) => {
     const EfM = client.Sentry.startTransaction({
-      op: 'economy.fetchMoney',
-      name: 'Economy (fetchMoney)'
+      op: 'economy.fetchUserAccount',
+      name: 'Economy (fetchUserAccount)'
     })
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [message.guild.id, message.author.id], (err, rows) => {
       if (err) {
         client.Sentry.captureException(err)
         client.log.error(err)
       }
-
-      return { money: rows[0].amount || 0, status: 200 }
+      callback(rows[0] || null)
     })
     EfM.finish()
   },
