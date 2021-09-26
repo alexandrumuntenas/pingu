@@ -1,6 +1,7 @@
 const guildCreate = require('./guildCreate')
 const levelingRankUp = require('../modules/levelingRankUp')
 const noMoreInvites = require('../modules/noMoreInvites')
+const genericMessages = require('../modules/genericMessages')
 
 const talkedRecently = new Set()
 
@@ -31,7 +32,7 @@ module.exports = (client, message) => {
           } catch (err) {
             client.Sentry.captureException(err)
             client.log.error(err)
-            message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
+            genericMessages.Error.customerror(message, message.database.guild_language || 'en', 'COMMAND_ERROR')
           } finally {
             mCeIC.finish()
           }
