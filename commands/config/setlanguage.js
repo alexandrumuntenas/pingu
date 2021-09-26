@@ -6,7 +6,7 @@ const avaliableLanguages = ['en', 'es', 'ro']
 
 module.exports = {
   name: 'setlanguage',
-  execute(client, locale, message, isInteraction) {
+  execute (client, locale, message, isInteraction) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0] && avaliableLanguages.includes(message.args[0])) {
         client.pool.query('UPDATE `guildData` SET `guild_language` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
