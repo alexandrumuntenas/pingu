@@ -39,7 +39,7 @@ module.exports = {
                 .setUsername(message.mentions.users.first().username)
                 .setDiscriminator(message.mentions.users.first().discriminator)
                 .setRank(0, '', false)
-                .setBackground('IMAGE', `./modules/source/defaultBackgrounds/${message.database.leveling_rankup_image_background}.png`)
+                .setBackground('IMAGE', `./modules/sources/defaultBackgrounds/${message.database.leveling_rankup_image_background}.png`)
 
               rank.build()
                 .then(buffer => {
@@ -82,7 +82,7 @@ module.exports = {
                 .setUsername(message.author.username)
                 .setDiscriminator(message.author.discriminator)
                 .setRank(0, '', false)
-                .setBackground('IMAGE', `./modules/source/defaultBackgrounds/${message.database.leveling_rankup_image_background}.png`)
+                .setBackground('IMAGE', `./modules/sources/defaultBackgrounds/${message.database.leveling_rankup_image_background}.png`)
 
               rank.build()
                 .then(buffer => {
