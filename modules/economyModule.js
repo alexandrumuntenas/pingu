@@ -44,7 +44,7 @@ module.exports = {
         const data = { bankName: rows[0].bankName, bankLogo: rows[0].bankLogo, useGlobalBank: rows[0].useGlobalBank, currency: rows[0].currency }
         callback(data)
       } else {
-        callback({ status: 'NO_DATA' })
+        callback(new Error('NO_DATA'))
       }
     })
     EfC.finish()
@@ -68,12 +68,12 @@ module.exports = {
       op: 'economy.fetchLatestTransactions',
       name: 'Economy (fetchLatestTransactions)'
     })
-    client.pool.query('SELECT * FROM `guildEconomyBankTransferBook` WHERE `emisor` LIKE ? AND `member` LIKE ? ORDER BY `timeStamp` ASC LIMIT 5', [message.guild.id, message.author.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyBankTransferBook` WHERE `emisor` LIKE ? AND `member` LIKE ? ORDER BY `timeStamp` DESC LIMIT 5', [message.guild.id, message.author.id], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows.length > 0) {
         callback(rows)
       } else {
-        callback({ error: 'NO TRANSACTIONS HISTORY' })
+        callback(new Error('NO_DATA'))
       }
     })
     EfLT.finish()
