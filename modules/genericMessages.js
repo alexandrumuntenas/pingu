@@ -26,13 +26,13 @@ module.exports = {
     help: (message, locale, syntax, options, nsfw, nsfwOptions) => {
       const sentEmbed = new MessageEmbed().setTitle('Help Tray')
       if (syntax) {
-        sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_SYNTAX'), syntax)
+        sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_SYNTAX'), `\`${syntax}\``)
       }
 
       if (options) {
         let avaliableOptions = ''
         options.forEach((object) => {
-          avaliableOptions = avaliableOptions + ` \`${object.option | object}\``
+          avaliableOptions = avaliableOptions + ` \`${object.option || object}\``
         })
         sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_SUBCATEGORIES'), avaliableOptions)
       }
@@ -44,7 +44,7 @@ module.exports = {
         if (nsfwOptions) {
           let avaliableOptions = ''
           nsfwOptions.forEach((object) => {
-            avaliableOptions = avaliableOptions + ` \`${object.option | object}\``
+            avaliableOptions = avaliableOptions + ` \`${object.option || object}\``
           })
           sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_NSFW_OPTIONS'), avaliableOptions)
         }
@@ -53,5 +53,11 @@ module.exports = {
       sentEmbed.setFooter(`<> => ${getLocales(locale, 'PARAMETER_NECESSARY')} | () => ${getLocales(locale, 'PAREMETER_OPTIONAL')}`)
       message.reply({ embeds: [sentEmbed] })
     }
+  },
+  Success: (message, text) => {
+    const sent = new MessageEmbed()
+      .setColor('#28A745')
+      .setDescription(`<:pingu_on:876103503561502730> ${text}`)
+    message.reply({ embeds: [sent] })
   }
 }
