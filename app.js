@@ -67,19 +67,11 @@ client.on('ready', () => {
   checkFolder()
   client.log.info(`Conectado como ${client.user.tag}!`)
   client.user.setPresence({
-    status: 'online',
-    activities: [{
-      name: 'Discord',
-      type: 'WATCHING'
-    }]
+    status: 'idle'
   })
   setInterval(() => {
     client.user.setPresence({
-      status: 'online',
-      activities: [{
-        name: 'Discord',
-        type: 'WATCHING'
-      }]
+      status: 'idle'
     })
     client.log.info('Presencia refrescada')
   }, 3600000)
