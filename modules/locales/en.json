@@ -1,4 +1,5 @@
 {
+  "SETLANGUAGE_SUCCESS": "Language has been updated to %GUILD_LANGUAGE%",
   "PARAMETER_NECESSARY": "Necessary",
   "PAREMETER_OPTIONAL": "Optional",
   "COMMAND_NO_AVALIABLE": "The command is not active.",

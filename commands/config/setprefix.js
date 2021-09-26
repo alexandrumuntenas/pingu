@@ -10,7 +10,7 @@ module.exports = {
         client.pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)
         })
-        genericMessages.Success(message, getLocales(locale, 'SETPREFIX_SUCCESS', { GUILD_PREFIX: message.args[0] }))
+        genericMessages.Success(message, getLocales(locale, 'SETPREFIX_SUCCESS', { GUILD_PREFIX: `\`${message.args[0]}\`` }))
       } else {
         genericMessages.Info.help(message, locale, `${message.database.guild_prefix}setprefix <newprefix>`)
       }
