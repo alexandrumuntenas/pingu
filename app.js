@@ -39,7 +39,6 @@ client.log.success('Módulos Cargados')
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
 const commandHandler = require('./modules/commandHandler')
-const interactionCreate = require('./events/interactionCreate')
 client.log.success('Servicios Third-Party Cargados')
 
 // Bot
@@ -100,10 +99,6 @@ client.on('guildMemberAdd', (member) => {
 
 client.on('guildMemberRemove', (member) => {
   guildMemberRemove(client, member)
-})
-
-client.on('interactionCreate', async interaction => {
-  interactionCreate(client, interaction)
 })
 
 client.on('messageCreate', (message) => {
