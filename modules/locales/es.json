@@ -1,4 +1,6 @@
 {
+  "SETPREFIX_SUCCESS": "Se ha actualizado el prefijo a %GUILD_PREFIX%",
+  "COMMAND_ERROR": "Se ha producido al intentar ejecutar este comando. El error ha sido reportado y pronto aplicaremos una solución. Disculpe las molestias.",
   "PARAMETER_NECESSARY": "Necesario",
   "PAREMETER_OPTIONAL": "Opcional",
   "COMMAND_NO_AVALIABLE": "El comando no se encuentra activo.",
