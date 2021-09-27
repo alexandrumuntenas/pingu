@@ -4,7 +4,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'kick',
-  execute (client, locale, message, isInteraction) {
+  execute (client, locale, message) {
     if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.kick_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const dataSplit = message.content.replace(`${message.database.guild_prefix}kick`, '').trim().split('|')

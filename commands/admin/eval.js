@@ -5,7 +5,7 @@ const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
   name: 'eval',
-  execute: async (client, locale, message, isInteraction) => { // eslint-disable-line no-unused-vars
+  execute: async (client, locale, message) => { // eslint-disable-line no-unused-vars
     if (message.author.id === '722810818823192629') {
       if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
         const code = message.args.join(' ')

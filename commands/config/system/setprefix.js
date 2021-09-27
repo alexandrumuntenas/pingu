@@ -4,7 +4,7 @@ const getLocales = require('../../../modules/getLocales')
 
 module.exports = {
   name: 'setprefix',
-  execute (client, locale, message, isInteraction) {
+  execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
         client.pool.query('UPDATE `guildData` SET `guild_prefix` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {

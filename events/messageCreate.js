@@ -28,7 +28,7 @@ module.exports = (client, message) => {
             name: `Execute Internal Command (${command})`
           })
           try {
-            client.commands.get(command).execute(client, message.database.guild_language || 'en', message, result)
+            client.commands.get(command).execute(client, message.database.guild_language || 'en', message)
           } catch (err) {
             client.Sentry.captureException(err)
             client.log.error(err)

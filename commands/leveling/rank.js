@@ -6,7 +6,7 @@ const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'rank',
-  execute (client, locale, message, isInteraction) {
+  execute (client, locale, message) {
     if (message.database.leveling_enabled !== 0) {
       if (message.mentions.users.first()) {
         if (message.mentions.users.first().bot) {
