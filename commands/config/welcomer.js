@@ -85,6 +85,28 @@ module.exports = {
                 }
                 break
               }
+              case 'overlayOpacity': {
+                if (message.args[1]) {
+                  client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                    if (err) client.Sentry.captureException(err)
+                    genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))
+                  })
+                } else {
+                  genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: data.welcomeImageCustomOpacity }))
+                }
+                break
+              }
+              case 'overlayBlur': {
+                if (message.args[1]) {
+                  client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                    if (err) client.Sentry.captureException(err)
+                    genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))
+                  })
+                } else {
+                  genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: data.welcomeImageCustomBlur }))
+                }
+                break
+              }
             }
           } else {
             helpTray(message, locale)
