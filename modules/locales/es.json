@@ -59,5 +59,10 @@
   "WARNLIMIT_OVERLIMIT": "%USER% ha sido %ACTION% por haber superado el límite de advertencias.",
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% ha sido %ACTION% por haber superado el límite de advertencias debido a un error.",
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% acaba de unirse al servidor",
-  "GUILDMEMBERADD_MEMBER_COUNT": "Miembro #%COUNT%"
+  "GUILDMEMBERADD_MEMBER_COUNT": "Miembro #%COUNT%",
+  "WELCOMER_INITIALIZE": "Se ha inicializado la configuración del módulo de bienvenidas. Vuelva a ejecutar el comando para tener acceso a la configuración.",
+  "WELCOMER_CHANNEL_SUCCESS": "Se enviarán a %WELCOMER_CHANNEL% los mensajes de recepción.",
+  "WELCOMER_CHANNEL_MISSING_ARGS": "El canal actual de recepción es %WELCOMER_CHANNEL%. Para modificarlo, mencione un canal.",
+  "WELCOMER_MESSAGE_PREUPDATE": "",
+  "WELCOMER_MESSAGE_SUCCESS": "%WELCOMER_MESSAGE% será el nuevo mensaje de bienvenida."
 }
