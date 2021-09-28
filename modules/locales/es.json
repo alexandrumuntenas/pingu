@@ -93,5 +93,6 @@
   "ENABLED": "Habilitado",
   "DISABLED": "Deshabilitado",
   "WELCOMER_ROUNDAVATAR_MISSING_ARGS": "El avatar redondeado está %WELCOMER_ROUNDAVATAR%.",
-  "WELCOMER_ROUNDAVATAR_SUCCESS": "El avatar redondeado se ha %WELCOMER_ROUNDAVATAR%."
+  "WELCOMER_ROUNDAVATAR_SUCCESS": "El avatar redondeado se ha %WELCOMER_ROUNDAVATAR%.",
+  "WELCOMER_SIMULATE_SUCCESS": "Simulando evento GuildMemberAdd. Por favor, espere."
 }

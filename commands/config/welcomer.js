@@ -5,6 +5,7 @@ const getLocales = require('../../modules/getLocales')
 const { fetchConfig } = require('../../modules/welcomerModule')
 const emojiStrip = require('emoji-strip')
 const tempFileRemover = require('../../modules/tempFileRemover')
+const guildMemberAdd = require('../../events/guildMemberAdd')
 
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 
@@ -112,12 +113,12 @@ module.exports = {
               case 'roundAvatar': {
                 if (message.args[1]) {
                   if (message.args[1] === 'true') {
-                    client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageRoundAvatar` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
+                    client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
                       if (err) client.Sentry.captureException(err)
                       genericMessages.Success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'ENABLED') }))
                     })
                   } else {
-                    client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
+                    client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageRoundAvatar` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
                       if (err) client.Sentry.captureException(err)
                       genericMessages.Success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'DISABLED') }))
                     })
@@ -134,6 +135,12 @@ module.exports = {
                     tempFileRemover(paths)
                   })
                 })
+                break
+              }
+              case 'simulate': {
+                genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_SIMULATE_SUCCESS'))
+                guildMemberAdd(client, message.member)
+                break
               }
             }
           } else {
