@@ -83,5 +83,7 @@
   "WELCOMER_MESSAGE_PREUPDATE": "El siguiente mensaje que mande será el nuevo mensaje de bienvenida. No hay límite de tiempo.",
   "WELCOMER_MESSAGE_SUCCESS": "%WELCOMER_MESSAGE% será el nuevo mensaje de bienvenida.",
   "WELCOMER_DEFAULTBACKGROUND_MISSING_ARGS": "El fondo predeterminado actual es %WELCOMER_DEFAULTBACKGROUND%.",
-  "WELCOMER_DEFAULTBACKGROUND_SUCCESS": "%WELCOMER_DEFAULTBACKGROUND% será el nuevo fondo predeterminado para las tarjetas de bienvenida."
+  "WELCOMER_DEFAULTBACKGROUND_SUCCESS": "%WELCOMER_DEFAULTBACKGROUND% será el nuevo fondo predeterminado para las tarjetas de bienvenida.",
+  "WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS": "El fondo personalizado actual es %WELCOMER_CUSTOMBACKGROUND%.",
+  "WELCOMER_CUSTOMBACKGROUND_SUCCESS": "%WELCOMER_CUSTOMBACKGROUND% será el nuevo fondo personalizado para las tarjetas de bienvenida."
 }
