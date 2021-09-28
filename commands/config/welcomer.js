@@ -63,6 +63,17 @@ module.exports = {
                 })
                 break
               }
+              case 'defaultBackground': {
+                if (message.args[1]) {
+                  client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                    if (err) client.Sentry.captureException(err)
+                    genericMessages.Success(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_SUCCESS', { WELCOMER_DEFAULTBACKGROUND: message.args[1] }))
+                  })
+                } else {
+                  genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_MISSING_ARGS', { WELCOMER_DEFAULTBACKGROUND: data.welcomeImageBackground }))
+                }
+                break
+              }
             }
           } else {
             helpTray(message, locale)
