@@ -1,8 +1,10 @@
-const { Permissions, MessageEmbed } = require('discord.js')
+const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
+const { welcomeCard } = require('../../modules/canvasProcessing')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 const { fetchConfig } = require('../../modules/welcomerModule')
 const emojiStrip = require('emoji-strip')
+const tempFileRemover = require('../../modules/tempFileRemover')
 
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 
@@ -124,6 +126,14 @@ module.exports = {
                   genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_MISSING_ARGS', { WELCOMER_ROUNDAVATAR: emojiRelationship[data.welcomeImageRoundAvatar] }))
                 }
                 break
+              }
+              case 'test': {
+                welcomeCard(client, message.member, locale, data).then((paths) => {
+                  const attachmentSent = new MessageAttachment(paths.attachmentSent)
+                  message.channel.send({ files: [attachmentSent] }).then(() => {
+                    tempFileRemover(paths)
+                  })
+                })
               }
             }
           } else {
