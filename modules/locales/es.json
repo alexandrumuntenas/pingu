@@ -80,6 +80,6 @@
   "WELCOMER_VIEWCONFIG_WELCOMECARD_NOROLES": "¿Avatar redondeado?: %WELCOMER_ROUNDAVATAR%",
   "WELCOMER_CHANNEL_SUCCESS": "Se enviarán a %WELCOMER_CHANNEL% los mensajes de recepción.",
   "WELCOMER_CHANNEL_MISSING_ARGS": "El canal actual de recepción es %WELCOMER_CHANNEL%. Para modificarlo, mencione un canal.",
-  "WELCOMER_MESSAGE_NO_UPDATE": "El mensaje actual de recepción es %WELCOMER_MESSAGE%.",
+  "WELCOMER_MESSAGE_PREUPDATE": "El siguiente mensaje que mande será el nuevo mensaje de bienvenida. No hay límite de tiempo.",
   "WELCOMER_MESSAGE_SUCCESS": "%WELCOMER_MESSAGE% será el nuevo mensaje de bienvenida."
 }

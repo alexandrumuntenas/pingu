@@ -54,6 +54,7 @@ module.exports = {
               }
               case 'message': {
                 const filter = m => m.author.id === message.author.id
+                genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_MESSAGE_PREUPDATE'))
                 message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
                   client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
@@ -77,5 +78,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `\`${message.database.guild_prefix}welcomer <option>\``, ['channel <channel>', 'message', 'enableCards', 'disableCards', 'defaultBackground <background ID>', 'customBackground <background URL>', 'overlayOpacity <quantity>', 'overlayBlur <quantity>', 'roundAvatar <true/false>', 'test', 'simulate'])
+  genericMessages.Info.help(message, locale, `\`${message.database.guild_prefix}welcomer <option>\``, ['viewconfig', 'channel <channel>', 'message', 'enableCards', 'disableCards', 'defaultBackground <background ID>', 'customBackground <background URL>', 'overlayOpacity <quantity>', 'overlayBlur <quantity>', 'roundAvatar <true/false>', 'test', 'simulate'])
 }
