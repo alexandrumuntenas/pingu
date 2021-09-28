@@ -107,6 +107,24 @@ module.exports = {
                 }
                 break
               }
+              case 'roundAvatar': {
+                if (message.args[1]) {
+                  if (message.args[1] === 'true') {
+                    client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageRoundAvatar` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
+                      if (err) client.Sentry.captureException(err)
+                      genericMessages.Success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'ENABLED') }))
+                    })
+                  } else {
+                    client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
+                      if (err) client.Sentry.captureException(err)
+                      genericMessages.Success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'DISABLED') }))
+                    })
+                  }
+                } else {
+                  genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_MISSING_ARGS', { WELCOMER_ROUNDAVATAR: emojiRelationship[data.welcomeImageRoundAvatar] }))
+                }
+                break
+              }
             }
           } else {
             helpTray(message, locale)
