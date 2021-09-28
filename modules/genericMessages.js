@@ -52,12 +52,18 @@ module.exports = {
 
       sentEmbed.setFooter(`<> => ${getLocales(locale, 'PARAMETER_NECESSARY')} | () => ${getLocales(locale, 'PAREMETER_OPTIONAL')}`)
       message.reply({ embeds: [sentEmbed] })
+    },
+    status: (message, text) => {
+      const sentEmbed = new MessageEmbed()
+        .setColor('#17A2B8')
+        .setDescription(`<:pingu_null:876103457860370442> ${text}`)
+      message.reply({ embeds: [sentEmbed] })
     }
   },
   Success: (message, text) => {
-    const sent = new MessageEmbed()
+    const sentEmbed = new MessageEmbed()
       .setColor('#28A745')
       .setDescription(`<:pingu_on:876103503561502730> ${text}`)
-    message.reply({ embeds: [sent] })
+    message.reply({ embeds: [sentEmbed] })
   }
 }
