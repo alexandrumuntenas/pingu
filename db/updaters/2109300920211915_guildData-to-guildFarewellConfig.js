@@ -20,8 +20,7 @@ con.query('SELECT * FROM `guildData`', async (err, rows) => {
   if (err) console.log(err)
   rows.forEach(element => {
     console.log('Inserted ' + element.guild)
-    con.query('INSERT INTO `guildWelcomerConfig` (`guild`, `farewellEnabled`, `farewellChannel`, `farewellMessage`) VALUES (?, ?, ?, ?)', [element.guild, element.farewell_enabled, element.farewell_channel, element.farewell_message])
+    con.query('INSERT INTO `guildFarewellConfig` (`guild`, `farewellEnabled`, `farewellChannel`, `farewellMessage`) VALUES (?, ?, ?, ?)', [element.guild, element.farewell_enabled, element.farewell_channel, element.farewell_message])
   })
+  process.exit()
 })
-
-process.exit()
