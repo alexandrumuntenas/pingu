@@ -94,5 +94,13 @@
   "DISABLED": "Disabled",
   "WELCOMER_ROUNDAVATAR_MISSING_ARGS": "The rounded avatar is %WELCOMER_ROUNDAVATAR%.",
   "WELCOMER_ROUNDAVATAR_SUCCESS": "The rounded avatar has been %WELCOMER_ROUNDAVATAR%.",
-  "WELCOMER_SIMULATE_SUCCESS": "Simulating GuildMemberAdd event. Please wait."
+  "WELCOMER_SIMULATE_SUCCESS": "Simulating GuildMemberAdd event. Please wait.",
+  "FAREWELL_INITIALIZE": "The configuration of the goodbye module has been initialized. Run the command again to access the settings.",
+  "FAREWELL_VIEWCONFIG_TITLE": "Farewell module configuration",
+  "FAREWELL_VIEWCONFIG_DESCRIPTION": "Below is how the goodbye module has been configured on your server.",
+  "FAREWELL_SIMULATE_SUCCESS": "Simulating GuildMemberRemove event. Please wait.",
+  "FAREWELL_CHANNEL_SUCCESS": "Goodbye messages will be sent to %FAREWELL_CHANNEL%.",
+  "FAREWELL_CHANNEL_MISSING_ARGS": "The current goodbye channel is %FAREWELL_CHANNEL%. To modify it, mention a channel.",
+  "FAREWELL_MESSAGE_PREUPDATE": "The next message I send will be the new farewell message. There is no time limit.",
+  "FAREWELL_MESSAGE_SUCCESS": "%FAREWELL_MESSAGE% will be the new farewell message."
 }
