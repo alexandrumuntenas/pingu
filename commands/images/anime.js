@@ -7,7 +7,7 @@ const animeProviderList = require('./anime.providerlist.json')
 
 module.exports = {
   name: 'anime',
-  execute (client, locale, message, isInteraction) {
+  execute (client, locale, message) {
     if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
       const provider = animeProviderList.find(provider => provider.option === message.args[0])
       if (provider) {
