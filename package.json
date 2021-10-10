@@ -10,7 +10,6 @@
     "@sentry/tracing": "^6.11.0",
     "@top-gg/sdk": "^3.1.2",
     "boxen": "^5.0.1",
-    "canvacord": "^5.2.1",
     "canvas": "^2.8.0",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.23.1",
