@@ -1,5 +1,6 @@
 const farewellModule = require('../modules/farewellModule')
 const welcomerModule = require('../modules/welcomerModule')
+const levelsModule = require('../modules/levelsModule')
 
 module.exports = (client, guild) => {
   const gC = client.Sentry.startTransaction({
@@ -8,6 +9,7 @@ module.exports = (client, guild) => {
   })
   welcomerModule.fetchConfig(client, guild, (data) => {})
   farewellModule.fetchConfig(client, guild, (data) => {})
+  levelsModule.fetchConfig(client, guild, (data) => {})
   const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0)
   client.pool.query('SELECT * FROM `guildData` WHERE `guild` LIKE ?', [guild.id], (err, result) => {
     if (err) {
