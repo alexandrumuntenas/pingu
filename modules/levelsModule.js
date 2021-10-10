@@ -94,7 +94,7 @@ module.exports = {
               }
               module.exports.updateMember(client, message.member, { memberExperience: exp, memberLevel: niv }, () => { })
             } else {
-              client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`,`memberExperience`) VALUES (?, ?, ?)', [message.member.guild.id, message.member.id], (err) => {
+              client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [message.member.guild.id, message.member.id], (err) => {
                 if (err) {
                   client.Sentry.captureException(err)
                   client.log.error(err)
