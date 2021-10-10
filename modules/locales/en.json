@@ -60,6 +60,7 @@
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% could not be %ACTION% due to exceeding the warning limit due to an error.",
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% just joined the server",
   "GUILDMEMBERADD_MEMBER_COUNT": "Member #%COUNT%",
+  "PLAYTOGETHER_NOVC": "In order to run this command, you must be in a voice channel. Please, join one and execute this command again.",
   "WELCOMER_INITIALIZE": "The welcome module configuration has been initialized. Run the command again to access the settings.",
   "WELCOMER_VIEWCONFIG_TITLE": "Welcome module configuration",
   "WELCOMER_VIEWCONFIG_DESCRIPTION": "The following shows how the welcome module has been configured on your server.",

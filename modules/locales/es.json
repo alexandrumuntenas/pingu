@@ -60,6 +60,7 @@
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% ha sido %ACTION% por haber superado el límite de advertencias debido a un error.",
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% acaba de unirse al servidor",
   "GUILDMEMBERADD_MEMBER_COUNT": "Miembro #%COUNT%",
+  "PLAYTOGETHER_NOVC": "Para ejecutar este comando, debe estar en un canal de voz. Por favor, únase a uno y ejecute este comando nuevamente.",
   "WELCOMER_INITIALIZE": "Se ha inicializado la configuración del módulo de bienvenidas. Vuelva a ejecutar el comando para tener acceso a la configuración.",
   "WELCOMER_VIEWCONFIG_TITLE": "Configuración del módulo de bienvenidas",
   "WELCOMER_VIEWCONFIG_DESCRIPTION": "A continuación se muestra cómo se ha configurado el módulo de bienvenidas en su servidor.",
@@ -103,3 +104,4 @@
   "FAREWELL_CHANNEL_MISSING_ARGS": "El canal actual de despedida es %FAREWELL_CHANNEL%. Para modificarlo, mencione un canal.",
   "FAREWELL_MESSAGE_PREUPDATE": "El siguiente mensaje que mande será el nuevo mensaje de despedida. No hay límite de tiempo.",
   "FAREWELL_MESSAGE_SUCCESS": "%FAREWELL_MESSAGE% será el nuevo mensaje de despedida."}
+}
