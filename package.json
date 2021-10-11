@@ -34,7 +34,7 @@
     "mysql2": "^2.2.5",
     "nodejs-file-downloader": "^4.6.0",
     "parse-duration": "^1.0.0",
-    "passport": "^0.4.1",
+    "passport": "^0.5.0",
     "passport-local": "^1.0.0",
     "pdfkit": "^0.12.1",
     "random-int": "^3.0.0",
