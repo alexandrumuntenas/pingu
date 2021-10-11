@@ -21,7 +21,7 @@ module.exports = {
                 }
               })
               message.channel.bulkDelete(botMessages, true).then((_message) => {
-                const sent = new MessageEmbed().setColor('#28A745').setDescription(`:broom: ${getLocales(locale, 'CLEAR_EMBED_TITLE', { BROOM: _message.size })}`)
+                const sent = new MessageEmbed().setColor('GREEN').setDescription(`:broom: ${getLocales(locale, 'CLEAR_EMBED_TITLE', { BROOM: _message.size })}`)
                 message.channel
                   .send({ embeds: [sent] }).then((sent) => {
                     setTimeout(() => {
@@ -34,7 +34,7 @@ module.exports = {
             message.delete()
             message.channel.bulkDelete(message.args[0], true)
               .then((_message) => {
-                const sent = new MessageEmbed().setColor('#28A745').setDescription(`:broom: ${getLocales(locale, 'CLEAR_EMBED_TITLE', { BROOM: _message.size })}`)
+                const sent = new MessageEmbed().setColor('GREEN').setDescription(`:broom: ${getLocales(locale, 'CLEAR_EMBED_TITLE', { BROOM: _message.size })}`)
                 message.channel
                   .send({ embeds: [sent] }).then((sent) => {
                     setTimeout(() => {

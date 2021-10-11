@@ -73,7 +73,7 @@
   "TRANSACTION_TYPE_0": "Cancelado",
   "TRANSACTION_TYPE_1": "Ingreso",
   "TRANSACTION_TYPE_2": "Retirar",
-  "TRANSACTION_TYPE_3": "Transferencia"
+  "TRANSACTION_TYPE_3": "Transferencia",
   "PLAYTOGETHER_NOVC": "Para ejecutar este comando, debe estar en un canal de voz. Por favor, únase a uno y ejecute este comando nuevamente.",
   "WELCOMER_INITIALIZE": "Se ha inicializado la configuración del módulo de bienvenidas. Vuelva a ejecutar el comando para tener acceso a la configuración.",
   "WELCOMER_VIEWCONFIG_TITLE": "Configuración del módulo de bienvenidas",

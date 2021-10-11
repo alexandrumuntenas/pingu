@@ -14,7 +14,7 @@ module.exports = {
               client.Sentry.captureException(err)
               client.log.error(err)
             }
-            const sent = new MessageEmbed().setColor('#28A745').setAuthor(getLocales(locale, 'CLEAR_USER_WARNS_EMBED_TITLE', { USER: user.tag }), user.displayAvatarURL())
+            const sent = new MessageEmbed().setColor('GREEN').setAuthor(getLocales(locale, 'CLEAR_USER_WARNS_EMBED_TITLE', { USER: user.tag }), user.displayAvatarURL())
             message.reply({ embeds: [sent] })
           })
         } else {

@@ -15,7 +15,7 @@ module.exports = {
               case 'viewconfig': {
                 message.channel.send('<a:loading:880765834774073344> Fetching data... Please wait.').then((_message) => {
                   const sentEmbed = new MessageEmbed()
-                    .setColor('#17A2B8')
+                    .setColor('BLURPLE')
                     .setTitle(getLocales(locale, 'FAREWELL_VIEWCONFIG_TITLE'))
                     .setDescription(getLocales(locale, 'FAREWELL_VIEWCONFIG_DESCRIPTION'))
                     .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === data.farewellChannel) || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)

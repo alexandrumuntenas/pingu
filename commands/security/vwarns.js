@@ -14,7 +14,7 @@ module.exports = {
               client.Sentry.captureException(err)
               client.log.error(err)
             }
-            const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: message.mentions.users.first().tag }), message.mentions.users.first().displayAvatarURL())
+            const allwarnsEmbed = new MessageEmbed().setColor('YELLOW').setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: message.mentions.users.first().tag }), message.mentions.users.first().displayAvatarURL())
             if (result.length !== 0) {
               for (let i = 0; i < result.length; i++) {
                 allwarnsEmbed.addField(`:stopwatch: <t:${unixTime(result[i].timestamp)}>`, getLocales(locale, 'VIEW_WARNS_EMBED_REASON', { ID: result[0].identificador, REASON: result[i].motivo.trim() }))
@@ -28,7 +28,7 @@ module.exports = {
           genericMessages.Error.permerror(message, locale)
         }
       } else {
-        const allwarnsEmbed = new MessageEmbed().setColor('#FFC107').setAuthor(getLocales(locale, 'VIEW_WARNS_EMBED_TITLE', { USER: message.author.tag }), message.author.displayAvatarURL())
+        const allwarnsEmbed = new MessageEmbed().setColor('YELLOW').setAuthor(getLocales(locale, 'VIEW_WARNS_EMBED_TITLE', { USER: message.author.tag }), message.author.displayAvatarURL())
         client.pool.query('SELECT * FROM `guildWarns` WHERE user = ? AND guild = ? LIMIT 25', [message.author.id, message.guild.id], (err, result) => {
           if (err) {
             client.Sentry.captureException(err)

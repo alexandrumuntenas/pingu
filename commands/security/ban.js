@@ -21,7 +21,7 @@ module.exports = {
               message.guild.members.ban(resolvableUser, { reason })
                 .then(() => {
                   const sent = new MessageEmbed()
-                    .setColor('#28A745')
+                    .setColor('GREEN')
                     .setAuthor(getLocales(locale, 'BAN_EMBED_SUCCESS_TITLE', { USER: resolvableUser.tag }), resolvableUser.displayAvatarURL())
                     .setDescription(getLocales(locale, 'BAN_EMBED_SUCCESS_REASON', { REASON: reason }))
                   message.channel.send({ embeds: [sent] })
@@ -32,7 +32,7 @@ module.exports = {
                     client.log.error(err)
                   }
                   const sent = new MessageEmbed()
-                    .setColor('#DC3545')
+                    .setColor('RED')
                     .setAuthor(getLocales(locale, 'BAN_EMBED_ERROR_TITLE', { USER: resolvableUser.tag }), resolvableUser.displayAvatarURL())
                     .setDescription(getLocales(locale, 'BAN_EMBED_SUCCESS_REASON', { REASON: reason }))
                   message.channel.send({ embeds: [sent] })

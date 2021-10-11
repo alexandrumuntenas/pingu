@@ -11,7 +11,7 @@ module.exports = {
           SEND_MESSAGES: false
         }).then(() => {
           const sent = new MessageEmbed()
-            .setColor('#28A745')
+            .setColor('GREEN')
             .setDescription(`:lock: ${getLocales(locale, 'LOCK', { CHANNEL: message.channel })}`)
           message.channel.send({ embeds: [sent] })
         })

@@ -16,10 +16,10 @@ module.exports = {
               }
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
                 client.pool.query('DELETE FROM guildWarns WHERE guild = ? AND user = ? AND identificador = ?', [message.guild.id, message.mentions.users.first().id, message.args[1]])
-                const sentTrue = new MessageEmbed().setColor('#28A745').setDescription(getLocales(locale, 'DELWARN_EMBED_SUCCESS', { WARNID: message.args[1], USER: message.mentions.users.first().tag }))
+                const sentTrue = new MessageEmbed().setColor('GREEN').setDescription(getLocales(locale, 'DELWARN_EMBED_SUCCESS', { WARNID: message.args[1], USER: message.mentions.users.first().tag }))
                 message.channel.send({ embeds: [sentTrue] })
               } else {
-                const sentTrue = new MessageEmbed().setColor('#DC3545').setDescription(getLocales(locale, 'DELWARN_EMBED_USER_NO_HAS_WARN', { WARNID: message.args[1], USER: message.mentions.users.first().tag }))
+                const sentTrue = new MessageEmbed().setColor('RED').setDescription(getLocales(locale, 'DELWARN_EMBED_USER_NO_HAS_WARN', { WARNID: message.args[1], USER: message.mentions.users.first().tag }))
                 message.channel.send({ embeds: [sentTrue] })
               }
             })
