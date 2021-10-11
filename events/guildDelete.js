@@ -8,7 +8,7 @@ module.exports = (client, guild) => {
       client.Sentry.captureException(err)
       client.log.error(err)
     }
-    client.pool.query('DELETE FROM `guildLevels` WHERE guild = ?', [guild.id], (err) => {
+    client.pool.query('DELETE FROM `guildLevelsData` WHERE guild = ?', [guild.id], (err) => {
       if (err) {
         client.Sentry.captureException(err)
         client.log.error(err)
