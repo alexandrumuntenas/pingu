@@ -69,6 +69,7 @@ module.exports = (client, message) => {
 
       rankUp(client, message)
 
+      /*
       if (message.database.economyEnabled !== 0) {
         const mCeGM = client.Sentry.startTransaction({
           op: 'messageCreate/economyGetMoney',
@@ -91,6 +92,7 @@ module.exports = (client, message) => {
           mCeGM.finish()
         }
       }
+      */
 
       const mCgAR = client.Sentry.startTransaction({
         op: 'messageCreate/guildAutoResponder',
