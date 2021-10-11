@@ -1,9 +1,8 @@
 const guildCreate = require('./guildCreate')
-const levelingRankUp = require('../modules/levelingRankUp')
+const { rankUp } = require('../modules/levelsModule')
 const noMoreInvites = require('../modules/noMoreInvites')
 const economy = require('../modules/economyModule')
-
-const talkedRecently = new Set()
+const genericMessages = require('../modules/genericMessages')
 
 module.exports = (client, message) => {
   if (
@@ -28,11 +27,11 @@ module.exports = (client, message) => {
             name: `Execute Internal Command (${command})`
           })
           try {
-            client.commands.get(command).execute(client, message.database.guild_language || 'en', message, result)
+            client.commands.get(command).execute(client, message.database.guild_language || 'en', message)
           } catch (err) {
             client.Sentry.captureException(err)
             client.log.error(err)
-            message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
+            genericMessages.Error.customerror(message, message.database.guild_language || 'en', 'COMMAND_ERROR')
           } finally {
             mCeIC.finish()
           }
@@ -67,28 +66,8 @@ module.exports = (client, message) => {
       if (message.database.moderator_noMoreInvites_enabled !== 0) {
         noMoreInvites(client, message, result)
       }
-      if (message.database.leveling_enabled !== 0) {
-        const mClRU = client.Sentry.startTransaction({
-          op: 'messageCreate/levelingRankUp',
-          name: 'Leveling Rank Up'
-        })
-        try {
-          if (!contenido.startsWith(message.database.guild_prefix)) {
-            if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
-              talkedRecently.add(`${message.author.id}_${message.guild.id}`)
-              setTimeout(() => {
-                talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
-              }, 60000)
-              levelingRankUp(client, message)
-            }
-          }
-        } catch (err) {
-          client.Sentry.captureException(err)
-          client.log.error(err)
-        } finally {
-          mClRU.finish()
-        }
-      }
+
+      rankUp(client, message)
 
       if (message.database.economyEnabled !== 0) {
         const mCeGM = client.Sentry.startTransaction({

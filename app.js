@@ -39,7 +39,6 @@ client.log.success('Módulos Cargados')
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
 const commandHandler = require('./modules/commandHandler')
-const interactionCreate = require('./events/interactionCreate')
 client.log.success('Servicios Third-Party Cargados')
 
 // Bot
@@ -68,19 +67,11 @@ client.on('ready', () => {
   checkFolder()
   client.log.info(`Conectado como ${client.user.tag}!`)
   client.user.setPresence({
-    status: 'online',
-    activities: [{
-      name: 'Discord',
-      type: 'WATCHING'
-    }]
+    status: 'idle'
   })
   setInterval(() => {
     client.user.setPresence({
-      status: 'online',
-      activities: [{
-        name: 'Discord',
-        type: 'WATCHING'
-      }]
+      status: 'idle'
     })
     client.log.info('Presencia refrescada')
   }, 3600000)
@@ -100,10 +91,6 @@ client.on('guildMemberAdd', (member) => {
 
 client.on('guildMemberRemove', (member) => {
   guildMemberRemove(client, member)
-})
-
-client.on('interactionCreate', async interaction => {
-  interactionCreate(client, interaction)
 })
 
 client.on('messageCreate', (message) => {

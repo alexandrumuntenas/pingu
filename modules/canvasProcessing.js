@@ -34,7 +34,7 @@ module.exports = {
     // Establecer blured overlay
     ctx.fillStyle = `rgba(0, 0, 0, ${database.welcomeImageCustomOpacity / 100})`
     ctx.fillRect(25, 25, 1050, 450)
-    StackBlur.canvasRGBA(canvas, 25, 25, 1050, 450, database.welcomeImageCustomBlur / 100)
+    StackBlur.canvasRGBA(canvas, 25, 25, 1050, 450, database.welcomeImageCustomBlur)
 
     const joinText = getLocales(locale, 'GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD', { USER: member.user.tag })
     const memberCountText = getLocales(locale, 'GUILDMEMBERADD_MEMBER_COUNT', { COUNT: member.guild.memberCount })
