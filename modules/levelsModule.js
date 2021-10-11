@@ -81,7 +81,7 @@ module.exports = {
                 exp = exp - (((niv * niv) * dif) * 100)
                 niv++
                 const messageToSend = config.levelsMessage.replace('{user}', `<@${message.author.id}>`).replace('{nivel-antiguo}', `${niv - 1}`).replace('{nivel-nuevo}', `${niv}`)
-                if (config.levelsChannel === '0') {
+                if (config.levelsChannel === '1') {
                   message.channel.send(messageToSend)
                 } else {
                   const customChannel = client.channels.cache.find(channel => channel.id === config.levelsChannel)

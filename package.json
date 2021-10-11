@@ -1,6 +1,6 @@
 {
   "name": "pingu",
-  "version": "13.0.0-dev",
+  "version": "2110",
   "description": "Bot de Discord by Alexandru Theodor Muntenas",
   "main": "app.js",
   "dependencies": {
