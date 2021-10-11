@@ -117,5 +117,16 @@
   "FAREWELL_CHANNEL_SUCCESS": "Se enviarán a %FAREWELL_CHANNEL% los mensajes de despedidas.",
   "FAREWELL_CHANNEL_MISSING_ARGS": "El canal actual de despedida es %FAREWELL_CHANNEL%. Para modificarlo, mencione un canal.",
   "FAREWELL_MESSAGE_PREUPDATE": "El siguiente mensaje que mande será el nuevo mensaje de despedida. No hay límite de tiempo.",
-  "FAREWELL_MESSAGE_SUCCESS": "%FAREWELL_MESSAGE% será el nuevo mensaje de despedida."
+  "FAREWELL_MESSAGE_SUCCESS": "%FAREWELL_MESSAGE% será el nuevo mensaje de despedida.",
+  "LEVELS_INITIALIZE": "Se ha inicializado la configuración del módulo de niveles. Vuelva a ejecutar el comando para tener acceso a la configuración.",
+  "LEVELS_VIEWCONFIG_TITLE": "Configuración del módulo de niveles",
+  "LEVELS_VIEWCONFIG_DESCRIPTION": "A continuación se muestra cómo se ha configurado el módulo de niveles en su servidor.",
+  "LEVELS_CHANNEL_SUCCESS": "Se enviarán a %LEVELS_CHANNEL% los mensajes de avance de nivel.",
+  "LEVELS_CHANNEL_MISSING_ARGS": "El canal actual para notificar los avance de nivel es %LEVELS_CHANNEL%. Para modificarlo, mencione un canal.",
+  "LEVELS_MESSAGE_PREUPDATE": "El siguiente mensaje que mande será el nuevo mensaje de avance de nivel. No hay límite de tiempo.",
+  "LEVELS_MESSAGE_SUCCESS": "%LEVELS_MESSAGE% será el nuevo mensaje de avance de nivel.",
+  "LEVELS_DIFFICULTY_SUCCESS": "Se ha establecido la dificultad de avance de nivel a %LEVELS_DIFFICULTY%.",
+  "LEVELS_DIFFICULTY_MISSING_ARGS": "La dificultad actual para avanzar de nivel es %LEVELS_DIFFICULTY%.",
+  "LEVELS_DIFFICULTY_NOT_INT": "La dificultad nueva suministrada no es un número entero",
+  "LEVELS_VIEWCONFIG_DIFFICULTY": "Dificultad"
 }

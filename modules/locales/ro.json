@@ -103,5 +103,16 @@
   "FAREWELL_CHANNEL_SUCCESS": "Goodbye messages will be sent to %FAREWELL_CHANNEL%.",
   "FAREWELL_CHANNEL_MISSING_ARGS": "The current goodbye channel is %FAREWELL_CHANNEL%. To modify it, mention a channel.",
   "FAREWELL_MESSAGE_PREUPDATE": "The next message I send will be the new farewell message. There is no time limit.",
-  "FAREWELL_MESSAGE_SUCCESS": "%FAREWELL_MESSAGE% will be the new farewell message."
+  "FAREWELL_MESSAGE_SUCCESS": "%FAREWELL_MESSAGE% will be the new farewell message.",
+  "LEVELS_INITIALIZE": "The level module configuration has been initialized. Run the command again to access the settings.",
+  "LEVELS_VIEWCONFIG_TITLE": "Leveling module configuration",
+  "LEVELS_VIEWCONFIG_DESCRIPTION": "The following shows how the leveling module has been configured on your server.",
+  "LEVELS_CHANNEL_SUCCESS": "RankUp messages will be sent to %LEVELS_CHANNEL%.",
+  "LEVELS_CHANNEL_MISSING_ARGS": "The current Rank Up message channel is %LEVELS_CHANNEL%. To modify it, mention a channel.",
+  "LEVELS_MESSAGE_PREUPDATE": "The next message I send will be the new Rank Up message. There is no time limit.",
+  "LEVELS_MESSAGE_SUCCESS": "%LEVELS_MESSAGE% will be the new Rank Up message.",
+  "LEVELS_DIFFICULTY_SUCCESS": "Level advance difficulty has been set to %LEVELS_DIFFICULTY%.",
+  "LEVELS_DIFFICULTY_MISSING_ARGS": "The current difficulty to advance the level is %LEVELS_DIFFICULTY%.",
+  "LEVELS_DIFFICULTY_NOT_INT": "The newly supplied difficulty is not an integer",
+  "LEVELS_VIEWCONFIG_DIFFICULTY": "Difficulty"
 }
