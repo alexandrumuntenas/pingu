@@ -10,7 +10,7 @@ module.exports = (client, member) => {
       if (data.farewellEnabled !== 0) {
         const mensaje = client.channels.cache.find(channel => channel.id === data.farewellChannel)
         if (mensaje) {
-          mensaje.send(data.farewellMessage.replace('{user}', `${member.user.tag}`).replace('{server}', `${member.guild.name}`))
+          mensaje.send(data.farewellMessage.replace('{member}', `${member.user.tag}`).replace('{server}', `${member.guild.name}`))
         }
       }
     })

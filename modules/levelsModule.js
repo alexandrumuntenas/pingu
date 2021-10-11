@@ -80,7 +80,7 @@ module.exports = {
               if (exp >= (((niv * niv) * dif) * 100)) {
                 exp = exp - (((niv * niv) * dif) * 100)
                 niv++
-                const messageToSend = config.levelsMessage.replace('{user}', `<@${message.author.id}>`).replace('{nivel-antiguo}', `${niv - 1}`).replace('{nivel-nuevo}', `${niv}`)
+                const messageToSend = config.levelsMessage.replace('{member}', `<@${message.author.id}>`).replace('{oldlevel}', `${niv - 1}`).replace('{newlevel}', `${niv}`)
                 if (config.levelsChannel === '1') {
                   message.channel.send(messageToSend)
                 } else {
