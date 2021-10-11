@@ -3,7 +3,7 @@ const getLocales = require('../../modules/getLocales')
 const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {
-  name: 'levels',
+  name: 'levelstop',
   execute (client, locale, message) {
     if (message.database.leveling_enabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
@@ -14,16 +14,16 @@ module.exports = {
         if (result) {
           if (Object.prototype.hasOwnProperty.call(result, 0)) {
             const embed = new MessageEmbed()
-              .setTitle(`:trophy: ${getLocales(locale, 'LEVELS_TITLE')}`)
+              .setTitle(`:trophy: ${getLocales(locale, 'LEVELSTOP_TITLE')}`)
               .setFooter(message.guild.name)
               .setColor('#FFD700')
             rows.forEach(function (row) {
               const usuario = message.guild.members.cache.get(row.member)
-              embed.addFields({ name: usuario.nickname || usuario.displayName || 'Lost User#0000', value: `${getLocales(locale, 'LEVELS_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
+              embed.addFields({ name: usuario.nickname || usuario.displayName || 'Lost User#0000', value: `${getLocales(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
             })
             message.channel.send({ embeds: [embed] })
           } else {
-            genericMessages.Error.customerror(message, locale, 'LEVELS_NODATA')
+            genericMessages.Error.customerror(message, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
