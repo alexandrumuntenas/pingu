@@ -128,5 +128,7 @@
   "LEVELS_DIFFICULTY_SUCCESS": "Se ha establecido la dificultad de avance de nivel a %LEVELS_DIFFICULTY%.",
   "LEVELS_DIFFICULTY_MISSING_ARGS": "La dificultad actual para avanzar de nivel es %LEVELS_DIFFICULTY%.",
   "LEVELS_DIFFICULTY_NOT_INT": "La dificultad nueva suministrada no es un número entero",
-  "LEVELS_VIEWCONFIG_DIFFICULTY": "Dificultad"
+  "LEVELS_VIEWCONFIG_DIFFICULTY": "Dificultad",
+  "CCMD_CREATED_SUCCESFULLY": "Se ha creado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%. Este devolverá el valor especificado %CCMD_VALUERETURNED%",
+  "CCMD_ELIMINATED_SUCCESFULLY": "Se ha eliminado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%."
 }
