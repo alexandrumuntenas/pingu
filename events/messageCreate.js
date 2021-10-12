@@ -1,7 +1,7 @@
 const guildCreate = require('./guildCreate')
 const { rankUp } = require('../modules/levelsModule')
 const noMoreInvites = require('../modules/noMoreInvites')
-const economy = require('../modules/economyModule')
+const { getMoney } = require('../modules/economyModule')
 const genericMessages = require('../modules/genericMessages')
 
 module.exports = (client, message) => {
@@ -46,13 +46,13 @@ module.exports = (client, message) => {
               client.log.error(err)
             }
             if (Object.prototype.hasOwnProperty.call(result, 0)) {
-              client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
+              client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ?', [message.guild.id, command], (err, result) => {
                 if (err) {
                   client.Sentry.captureException(err)
                   client.log.error(err)
                 }
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                  message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns).catch((err) => {
+                  message.channel.send(`<:comandoscustom:858671400424046602> ${result[0].messageReturned}`).catch((err) => {
                     client.log.error(err)
                     client.Sentry.captureException(err)
                   }).finally(mCeEC.finish())
@@ -69,30 +69,7 @@ module.exports = (client, message) => {
 
       rankUp(client, message)
 
-      /*
-      if (message.database.economyEnabled !== 0) {
-        const mCeGM = client.Sentry.startTransaction({
-          op: 'messageCreate/economyGetMoney',
-          name: 'Economy (getMoney)'
-        })
-        try {
-          if (!contenido.startsWith(message.database.guild_prefix)) {
-            if (!talkedRecently.has(`${message.author.id}_${message.guild.id}_eco`)) {
-              talkedRecently.add(`${message.author.id}_${message.guild.id_eco}`)
-              setTimeout(() => {
-                talkedRecently.delete(`${message.author.id}_${message.guild.id}_eco`)
-              }, 60000)
-              economy.getMoney(client, message)
-            }
-          }
-        } catch (err) {
-          client.Sentry.captureException(err)
-          client.log.error(err)
-        } finally {
-          mCeGM.finish()
-        }
-      }
-      */
+      getMoney(client, message)
 
       const mCgAR = client.Sentry.startTransaction({
         op: 'messageCreate/guildAutoResponder',
