@@ -2,7 +2,6 @@ const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { welcomeCard } = require('../../modules/canvasProcessing')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
-const emojiStrip = require('emoji-strip')
 const tempFileRemover = require('../../modules/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd')
 
@@ -56,9 +55,9 @@ module.exports = {
             const filter = m => m.author.id === message.author.id
             genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_MESSAGE_PREUPDATE'))
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-              client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
+              client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${emojiStrip(collected.first().content)}\`` }))
+                genericMessages.Success(message, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${collected.first().content}\`` }))
               })
             })
             break

@@ -1,7 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
-const emojiStrip = require('emoji-strip')
 const { isInteger } = require('mathjs')
 
 module.exports = {
@@ -62,9 +61,9 @@ module.exports = {
             const filter = m => m.author.id === message.author.id
             genericMessages.Info.status(message, getLocales(locale, 'LEVELS_MESSAGE_PREUPDATE'))
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-              client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
+              client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${emojiStrip(collected.first().content)}\`` }))
+                genericMessages.Success(message, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))
               })
             })
             break
