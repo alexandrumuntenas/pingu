@@ -118,5 +118,11 @@
   "CCMD_CREATED_SUCCESFULLY": "The custom command %CCMD_CUSTOMCOMMAND% has been created successfully. This will return the specified value %CCMD_VALUERETURNED%",
   "CCMD_ELIMINATED_SUCCESFULLY": "%CCMD_CUSTOMCOMMAND% custom command has been successfully removed.",
   "P2ENMOD": "%PMODULE% has been enabled.",
-  "P2DISMOD": "%PMODULE% has been disabled."
+  "P2DISMOD": "%PMODULE% has been disabled.",
+  "ECONOMY_CURRENCY_NOARGS": "The actual currency is %BANKCURRENCY%",
+  "ECONOMY_CURRENCY_SUCCESS": "The new currency is %BANKCURRENCY%",
+  "ECONOMY_BANKNAME_NOARGS": "The actual bank name is %BANKNAME%",
+  "ECONOMY_BANKNAME_SUCCESS": "%BANKNAME% will be the new bank name of your Discord Server.",
+  "ECONOMY_BANKLOGO_NORESOLVABLE": "The specified URL is not avaliable. Please, try again with another URL.",
+  "ECONOMY_BANKLOGO_RESOLVABLE": "The bank logo on your Discord server has been changed to: %BANKLOGO%"
 }
