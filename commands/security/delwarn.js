@@ -24,10 +24,10 @@ module.exports = {
               }
             })
           } else {
-            genericMessages.Info.help(message, locale, `${message.database.guild_prefix}delwarn <@user> <warnID>`)
+            genericMessages.Info.help(message, locale, `${message.database.guildPrefix}delwarn <@user> <warnID>`)
           }
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}delwarn <@user> <warnID>`)
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}delwarn <@user> <warnID>`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

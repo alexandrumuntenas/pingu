@@ -9,12 +9,12 @@ module.exports = {
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0] && avaliableLanguages.includes(message.args[0])) {
-        client.pool.query('UPDATE `guildData` SET `guild_language` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
+        client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)
         })
-        genericMessages.Success(message, getLocales(message.args[0], 'SETLANGUAGE_SUCCESS', { GUILD_LANGUAGE: `\`${message.args[0]}\`` }))
+        genericMessages.Success(message, getLocales(message.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${message.args[0]}\`` }))
       } else {
-        genericMessages.Info.help(message, locale, `${message.database.guild_prefix}setlanguage <language>`, ['en', 'es', 'ro'])
+        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}setlanguage <language>`, ['en', 'es', 'ro'])
       }
     } else {
       genericMessages.Error.permerror(message, locale)

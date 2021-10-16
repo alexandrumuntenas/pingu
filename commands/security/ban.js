@@ -7,9 +7,9 @@ module.exports = {
   execute (client, locale, message) {
     if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-        const dataSplit = message.content.replace(`${message.database.guild_prefix}ban`, '').trim().split('|')
-        // const beforeSeparator = message.content.replace(`${options.result.guild_prefix}${options.command}`, '').split(message.database.separator)
-        const guilty = dataSplit[0] || message.content.replace(`${message.database.guild_prefix}ban`, '').trim()// Obtenemos los culpables de dataSplit
+        const dataSplit = message.content.replace(`${message.database.guildPrefix}ban`, '').trim().split('|')
+        // const beforeSeparator = message.content.replace(`${options.result.guildPrefix}${options.command}`, '').split(message.database.separator)
+        const guilty = dataSplit[0] || message.content.replace(`${message.database.guildPrefix}ban`, '').trim()// Obtenemos los culpables de dataSplit
         const guiltyArray = guilty.trim().split('>').filter((object) => (object))
         if (guiltyArray.length) {
           const reason = dataSplit[1] || 'No reason specified' // Obtenemos el motivo de acción de dataSplit
@@ -40,7 +40,7 @@ module.exports = {
             }
           })
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}ban <@user> (@user2 @user3...) | (reason)`)
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}ban <@user> (@user2 @user3...) | (reason)`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

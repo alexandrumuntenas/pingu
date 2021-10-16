@@ -1,6 +1,6 @@
 {
-  "SETPREFIX_SUCCESS": "Se ha actualizado el prefijo a %GUILD_PREFIX%",
-  "SETLANGUAGE_SUCCESS": "Se ha actualizado el idioma a %GUILD_LANGUAGE%",
+  "SETPREFIX_SUCCESS": "Se ha actualizado el prefijo a %guildPrefix%",
+  "SETLANGUAGE_SUCCESS": "Se ha actualizado el idioma a %guildLanguage%",
   "COMMAND_ERROR": "Se ha producido un error al intentar ejecutar este comando. El error ha sido reportado y pronto aplicaremos una solución. Disculpe las molestias.",
   "PARAMETER_NECESSARY": "Necesario",
   "PAREMETER_OPTIONAL": "Opcional",

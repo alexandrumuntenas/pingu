@@ -89,7 +89,7 @@ module.exports = {
           })
         }
       } else {
-        message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${message.database.guild_prefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${message.database.guild_prefix}poll Do you like Pingu?`)
+        message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${message.database.guildPrefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${message.database.guildPrefix}poll Do you like Pingu?`)
       }
     } else {
       genericMessages.Error.permerror(message, locale)

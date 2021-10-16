@@ -8,9 +8,9 @@ module.exports = {
   execute (client, locale, message) {
     if (message.database.moderator_enabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-        const dataSplit = message.content.replace(`${message.database.guild_prefix}warn`, '').trim().split('|')
-        // const beforeSeparator = message.content.replace(`${options.result.guild_prefix}${options.command}`, '').split(message.database.separator)
-        const guilty = dataSplit[0] || message.content.replace(`${message.database.guild_prefix}warn`, '').trim()// Obtenemos los culpables de dataSplit
+        const dataSplit = message.content.replace(`${message.database.guildPrefix}warn`, '').trim().split('|')
+        // const beforeSeparator = message.content.replace(`${options.result.guildPrefix}${options.command}`, '').split(message.database.separator)
+        const guilty = dataSplit[0] || message.content.replace(`${message.database.guildPrefix}warn`, '').trim()// Obtenemos los culpables de dataSplit
         const guiltyArray = guilty.trim().split('>')
 
         const reason = dataSplit[1] || 'No reason specified' // Obtenemos el motivo de acción de dataSplit

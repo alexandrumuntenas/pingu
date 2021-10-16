@@ -17,7 +17,7 @@ module.exports = (client, member) => {
         const mensaje = client.channels.cache.get(result[0].welcomeChannel)
         if (mensaje) {
           if (result[0].welcomeImage !== 0) {
-            welcomeCard(client, member, result[0].guild_language || 'en', result[0]).then((paths) => {
+            welcomeCard(client, member, result[0].guildLanguage || 'en', result[0]).then((paths) => {
               const attachmentSent = new MessageAttachment(paths.attachmentSent)
               mensaje.send({ content: result[0].welcomeMessage.replace('{member}', `<@${member.user.id}>`).replace('{server}', `${member.guild.name}`), files: [attachmentSent] }).then(() => {
                 tempFileRemover(paths)

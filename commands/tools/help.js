@@ -33,6 +33,6 @@ module.exports = {
       'vwarns',
       'warn'
     ]
-    genericMessages.Info.help(message, locale, `${message.database.guild_prefix}<comando>`, options, false)
+    genericMessages.Info.help(message, locale, `${message.database.guildPrefix}<comando>`, options, false)
   }
 }

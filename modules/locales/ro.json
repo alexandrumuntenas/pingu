@@ -1,6 +1,6 @@
 {
-  "SETPREFIX_SUCCESS": "Prefix actualizat la %GUILD_PREFIX%",
-  "SETLANGUAGE_SUCCESS": "Limba a fost actualizată la %GUILD_LANGUAGE%",
+  "SETPREFIX_SUCCESS": "Prefix actualizat la %guildPrefix%",
+  "SETLANGUAGE_SUCCESS": "Limba a fost actualizată la %guildLanguage%",
   "COMMAND_ERROR": "A apărut o eroare la încercarea de a rula această comandă. Bug-ul a fost raportat și vom aplica o soluție în curând. Îmi pare rău pentru neplăcerile create.",
   "PARAMETER_NECESSARY": "Necesar",
   "PAREMETER_OPTIONAL": "Opțional",

@@ -44,7 +44,7 @@ module.exports = {
               })
           }
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}clear <number <= 100> (@user)`)
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}clear <number <= 100> (@user)`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

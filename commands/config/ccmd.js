@@ -10,7 +10,7 @@ module.exports = {
         switch (message.args[0]) {
           case 'create': {
             if (message.args[1] && message.args[2]) {
-              const messageReturned = message.content.replace(`${message.database.guild_prefix}ccmd create ${message.args[1]}`, '')
+              const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
               client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
                 if (err) client.Sentry.captureException(err)
                 genericMessages.Success(message, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))
@@ -46,5 +46,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `${message.database.guild_prefix}ccmd <option>`, ['create <command> <value to return ···>', 'remove <command>'])
+  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}ccmd <option>`, ['create <command> <value to return ···>', 'remove <command>'])
 }

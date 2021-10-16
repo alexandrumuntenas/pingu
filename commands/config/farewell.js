@@ -68,5 +68,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `\`${message.database.guild_prefix}farewell <option>\``, ['viewconfig', 'channel <channel>', 'message', 'simulate'])
+  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}farewell <option>\``, ['viewconfig', 'channel <channel>', 'message', 'simulate'])
 }

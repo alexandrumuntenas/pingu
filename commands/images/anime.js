@@ -42,16 +42,16 @@ module.exports = {
         }
       } else {
         if (!message.channel.nsfw) {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
         }
       }
     } else {
       if (!message.channel.nsfw) {
-        genericMessages.Info.help(message, locale, `${message.database.guild_prefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
+        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
       } else {
-        genericMessages.Info.help(message, locale, `${message.database.guild_prefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
+        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
       }
     }
   }

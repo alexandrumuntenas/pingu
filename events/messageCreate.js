@@ -14,11 +14,11 @@ module.exports = (client, message) => {
     if (err) throw client.log.error(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
       message.database = result[0]
-      if (message.content.startsWith(message.database.guild_prefix) && message.content !== message.database.guild_prefix) {
-        message.args = message.content.slice(message.database.guild_prefix.length).trim().split(/ +/)
+      if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
+        message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
       }
       const contenido = message.content.toLowerCase()
-      if (message.content.startsWith(message.database.guild_prefix) && message.args) {
+      if (message.content.startsWith(message.database.guildPrefix) && message.args) {
         const command = message.args[0]
         message.args.shift()
         if (client.commands.has(command)) {
@@ -27,11 +27,11 @@ module.exports = (client, message) => {
             name: `Execute Internal Command (${command})`
           })
           try {
-            client.commands.get(command).execute(client, message.database.guild_language || 'en', message)
+            client.commands.get(command).execute(client, message.database.guildLanguage || 'en', message)
           } catch (err) {
             client.Sentry.captureException(err)
             client.log.error(err)
-            genericMessages.Error.customerror(message, message.database.guild_language || 'en', 'COMMAND_ERROR')
+            genericMessages.Error.customerror(message, message.database.guildLanguage || 'en', 'COMMAND_ERROR')
           } finally {
             mCeIC.finish()
           }

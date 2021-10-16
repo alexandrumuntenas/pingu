@@ -7,7 +7,7 @@ module.exports = {
       op: 'economy.getMoney',
       name: 'Economy (getMoney)'
     })
-    if (!message.content.startsWith(message.database.guild_prefix)) {
+    if (!message.content.startsWith(message.database.guildPrefix)) {
       if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
         talkedRecently.add(`${message.author.id}_${message.guild.id}`)
         setTimeout(() => {

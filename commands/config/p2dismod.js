@@ -37,7 +37,7 @@ module.exports = {
             return
           }
         }
-        genericMessages.Success(message, getLocales(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))
+        genericMessages.Success(message, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${message.args[0]}\`` }))
       } else {
         helpTray(message, locale)
       }
@@ -48,5 +48,5 @@ module.exports = {
 }
 
 function helpTray (message, locale) {
-  genericMessages.Info.help(message, locale, `${message.database.guild_prefix}p2enmod <module>`, ['welcomer', 'farewell', 'moderation', 'levels'])
+  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2enmod <module>`, ['welcomer', 'farewell', 'moderation', 'levels'])
 }

@@ -48,5 +48,5 @@ module.exports = {
 }
 
 function helpTray (message, locale) {
-  genericMessages.Info.help(message, locale, `${message.database.guild_prefix}p2enmod <module>`, ['welcomer', 'farewell', 'moderation', 'levels'])
+  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2enmod <module>`, ['welcomer', 'farewell', 'moderation', 'levels'])
 }

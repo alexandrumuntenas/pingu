@@ -18,7 +18,7 @@ module.exports = {
             message.reply({ embeds: [sent] })
           })
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}clear-user-warns <@user>`)
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}clear-user-warns <@user>`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

@@ -13,7 +13,7 @@ module.exports = {
           const sent = new MessageEmbed().setColor('GREEN').setDescription(getLocales(locale, 'SLOWMODE', { SLOWMO: message.args[0] }))
           message.channel.send({ embeds: [sent] })
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guild_prefix}slowmode <time s/m/h>`)
+          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}slowmode <time s/m/h>`)
         }
       } else {
         genericMessages.Error.permerror(message, locale)

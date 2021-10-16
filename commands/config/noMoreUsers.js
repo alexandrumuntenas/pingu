@@ -3,7 +3,7 @@ const { Permissions, MessageEmbed } = require('discord.js')
 module.exports = {
   name: 'noMoreUsers',
   execute (client, locale, message) {
-    const i18n = require(`../../i18n/${message.database.guild_language}.json`).tools.config.burbuja
+    const i18n = require(`../../i18n/${message.database.guildLanguage}.json`).tools.config.burbuja
     // const i18n = require(`../../i18n/${message.database.guildLanguage}.json`)
     const messageSent = new MessageEmbed()
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
