@@ -5,7 +5,7 @@ const genericMessages = require('../../modules/genericMessages')
 module.exports = {
   name: 'levelstop',
   execute (client, locale, message) {
-    if (message.database.leveling_enabled !== 0) {
+    if (message.database.levelsEnabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
         if (err) {
           client.Sentry.captureException(err)
