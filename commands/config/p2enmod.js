@@ -9,13 +9,13 @@ module.exports = {
       if (message.args[0]) {
         switch (message.args[0]) {
           case 'welcomer': {
-            client.pool.query('UPDATE `guildWelcomerConfig` SET `welcomerEnabled` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
+            client.pool.query('UPDATE `guildData` SET `welcomerEnabled` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
             })
             break
           }
           case 'farewell': {
-            client.pool.query('UPDATE `guildWelcomerConfig` SET `farewellEnabled` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
+            client.pool.query('UPDATE `guildData` SET `farewellEnabled` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
             })
             break

@@ -7,7 +7,7 @@ module.exports = (client, member) => {
     op: 'guildMemberAdd',
     name: 'Guild Member Add'
   })
-  client.pool.query('SELECT * FROM `guildWelcomerConfig` WHERE guild = ?', [member.guild.id], (err, result) => {
+  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [member.guild.id], (err, result) => {
     if (err) {
       client.Sentry.captureException(err)
       client.log.error(err)

@@ -20,7 +20,7 @@ con.query('SELECT * FROM `guildData` WHERE `welcome_enabled` = 1', async (err, r
   if (err) console.log(err)
   rows.forEach(element => {
     console.log('Inserted ' + element.guild)
-    con.query('INSERT INTO `guildWelcomerConfig` (`guild`, `welcomeEnabled`, `welcomeChannel`, `welcomeMessage`, `welcomeImage`, `welcomeImageBackground`, `welcomeImageCustomBackground`, `welcomeRoles`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [element.guild, element.welcome_enabled, element.welcome_channel, element.welcome_message, element.welcome_image, element.welcome_image_background, element.welcome_image_customBackground, element.welcome_roles])
+    con.query('INSERT INTO `guildData` (`guild`, `welcomeEnabled`, `welcomeChannel`, `welcomeMessage`, `welcomeImage`, `welcomeImageBackground`, `welcomeImageCustomBackground`, `welcomeRoles`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [element.guild, element.welcome_enabled, element.welcome_channel, element.welcome_message, element.welcome_image, element.welcome_image_background, element.welcome_image_customBackground, element.welcome_roles])
   })
 })
 
@@ -28,7 +28,7 @@ con.query('SELECT * FROM `guildData` WHERE `welcome_enabled` = 0', async (err, r
   if (err) console.log(err)
   rows.forEach(element => {
     console.log('Inserted ' + element.guild)
-    con.query('INSERT INTO `guildWelcomerConfig` (`guild`, `welcomeEnabled`, `welcomeChannel`, `welcomeMessage`, `welcomeImage`, `welcomeImageBackground`, `welcomeImageCustomBackground`, `welcomeRoles`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [element.guild, element.welcome_enabled, element.welcome_channel, element.welcome_message, element.welcome_image, element.welcome_image_background, element.welcome_image_customBackground, element.welcome_roles])
+    con.query('INSERT INTO `guildData` (`guild`, `welcomeEnabled`, `welcomeChannel`, `welcomeMessage`, `welcomeImage`, `welcomeImageBackground`, `welcomeImageCustomBackground`, `welcomeRoles`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [element.guild, element.welcome_enabled, element.welcome_channel, element.welcome_message, element.welcome_image, element.welcome_image_background, element.welcome_image_customBackground, element.welcome_roles])
   })
 })
 
