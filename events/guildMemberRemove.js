@@ -1,4 +1,4 @@
-const { fetchConfig } = require('../modules/farewellModule')
+const guildFetchData = require('../modules/guildFetchData')
 
 module.exports = (client, member) => {
   const gMR = client.Sentry.startTransaction({
@@ -6,7 +6,7 @@ module.exports = (client, member) => {
     name: 'Guild Member Remove'
   })
   if (member.user.id !== client.user.id) {
-    fetchConfig(client, member.guild, (data) => {
+    guildFetchData(client, member.guild, (data) => {
       if (data.farewellEnabled !== 0) {
         const mensaje = client.channels.cache.find(channel => channel.id === data.farewellChannel)
         if (mensaje) {
