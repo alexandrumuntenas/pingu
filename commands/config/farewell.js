@@ -28,7 +28,7 @@ module.exports = {
               }
               case 'channel': {
                 if (message.mentions.channels.first()) {
-                  client.pool.query('UPDATE `guildFarewellConfig` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
+                  client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
                     genericMessages.Success(message, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))
                   })
@@ -41,7 +41,7 @@ module.exports = {
                 const filter = m => m.author.id === message.author.id
                 genericMessages.Info.status(message, getLocales(locale, 'FAREWELL_MESSAGE_PREUPDATE'))
                 message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-                  client.pool.query('UPDATE `guildFarewellConfig` SET `farewellMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
+                  client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
                     genericMessages.Success(message, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${emojiStrip(collected.first().content)}\`` }))
                   })
