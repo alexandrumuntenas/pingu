@@ -29,7 +29,7 @@ module.exports = {
               }
               case 'rankUpChannel': {
                 if (message.mentions.channels.first()) {
-                  client.pool.query('UPDATE `guildLevelsConfig` SET `levelsChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
+                  client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
                     genericMessages.Success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: message.mentions.channels.first() }))
                   })
@@ -37,14 +37,14 @@ module.exports = {
                   if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
                     switch (message.args[1]) {
                       case 'none': {
-                        client.pool.query('UPDATE `guildLevelsConfig` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', message.guild.id], (err) => {
+                        client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', message.guild.id], (err) => {
                           if (err) client.Sentry.captureException(err)
                           genericMessages.Success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'none' }))
                         })
                         break
                       }
                       case 'same': {
-                        client.pool.query('UPDATE `guildLevelsConfig` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', message.guild.id], (err) => {
+                        client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', message.guild.id], (err) => {
                           if (err) client.Sentry.captureException(err)
                           genericMessages.Success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'same' }))
                         })
@@ -65,7 +65,7 @@ module.exports = {
                 const filter = m => m.author.id === message.author.id
                 genericMessages.Info.status(message, getLocales(locale, 'LEVELS_MESSAGE_PREUPDATE'))
                 message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-                  client.pool.query('UPDATE `guildLevelsConfig` SET `levelsMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
+                  client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [emojiStrip(collected.first().content), message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
                     genericMessages.Success(message, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${emojiStrip(collected.first().content)}\`` }))
                   })
@@ -75,7 +75,7 @@ module.exports = {
               case 'difficulty': {
                 if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
                   if (isInteger(parseInt(message.args[1]))) {
-                    client.pool.query('UPDATE `guildLevelsConfig` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(message.args[1]), message.guild.id], (err) => {
+                    client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(message.args[1]), message.guild.id], (err) => {
                       if (err) client.Sentry.captureException(err)
                       genericMessages.Success(message, getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: message.args[1] }))
                     })
