@@ -67,9 +67,13 @@ module.exports = (client, message) => {
         noMoreInvites(client, message, result)
       }
 
-      rankUp(client, message)
+      if (message.database.levelsEnabled !== 0) {
+        rankUp(client, message)
+      }
 
-      getMoney(client, message)
+      if (message.database.economyEnabled !== 0) {
+        getMoney(client, message)
+      }
 
       const mCgAR = client.Sentry.startTransaction({
         op: 'messageCreate/guildAutoResponder',
