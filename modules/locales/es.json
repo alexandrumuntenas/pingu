@@ -130,5 +130,7 @@
   "LEVELS_DIFFICULTY_NOT_INT": "La dificultad nueva suministrada no es un número entero",
   "LEVELS_VIEWCONFIG_DIFFICULTY": "Dificultad",
   "CCMD_CREATED_SUCCESFULLY": "Se ha creado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%. Este devolverá el valor especificado %CCMD_VALUERETURNED%",
-  "CCMD_ELIMINATED_SUCCESFULLY": "Se ha eliminado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%."
+  "CCMD_ELIMINATED_SUCCESFULLY": "Se ha eliminado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%.",
+  "P2ENMOD": "Se ha habilitado %PMODULE% correctamente.",
+  "P2DISMOD": "Se ha deshabilitado %PMODULE% correctamente."
 }

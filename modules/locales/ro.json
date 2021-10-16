@@ -116,5 +116,7 @@
   "LEVELS_DIFFICULTY_NOT_INT": "The newly supplied difficulty is not an integer",
   "LEVELS_VIEWCONFIG_DIFFICULTY": "Difficulty",
   "CCMD_CREATED_SUCCESFULLY": "The custom command %CCMD_CUSTOMCOMMAND% has been created successfully. This will return the specified value %CCMD_VALUERETURNED%",
-  "CCMD_ELIMINATED_SUCCESFULLY": "%CCMD_CUSTOMCOMMAND% custom command has been successfully removed."
+  "CCMD_ELIMINATED_SUCCESFULLY": "%CCMD_CUSTOMCOMMAND% custom command has been successfully removed.",
+  "P2ENMOD": "%PMODULE% has been enabled.",
+  "P2DISMOD": "%PMODULE% has been disabled."
 }
