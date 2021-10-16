@@ -32,6 +32,12 @@ module.exports = {
             })
             break
           }
+          case 'economy': {
+            client.pool.query('UPDATE `guildData` SET `economyEnabled` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+            })
+            break
+          }
           default: {
             helpTray(message, locale)
             return
@@ -48,5 +54,5 @@ module.exports = {
 }
 
 function helpTray (message, locale) {
-  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2enmod <module>`, ['welcomer', 'farewell', 'moderation', 'levels'])
+  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'farewell', 'moderation', 'levels', 'economy'])
 }
