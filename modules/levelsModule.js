@@ -1,27 +1,6 @@
 const talkedRecently = new Set()
 
 module.exports = {
-  fetchConfig: (client, guild, callback) => {
-    const lfC = client.Sentry.startTransaction({
-      op: 'levelsModule.fetchConfig',
-      name: 'LevelsModule (Fetch Config)'
-    })
-    client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-      if (err) client.Sentry.captureException(err)
-      if (Object.prototype.hasOwnProperty.call(result, 0)) {
-        callback(result[0])
-      } else {
-        client.pool.query('INSERT INTO `guildData` (`guild`) VALUES (?)', [guild.id], (err) => {
-          if (err) {
-            client.Sentry.captureException(err)
-            client.log.error(err)
-          }
-          callback()
-        })
-      }
-    })
-    lfC.finish()
-  },
   fetchMember: (client, member, callback) => {
     const lfM = client.Sentry.startTransaction({
       op: 'levelsModule.fetchMember',
@@ -71,37 +50,35 @@ module.exports = {
         setTimeout(() => {
           talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
         }, 60000)
-        module.exports.fetchConfig(client, message.guild, (config) => {
-          module.exports.fetchMember(client, message.member, (userData) => {
-            if (userData) {
-              let exp = parseInt(userData.memberExperience) + Math.round(Math.random() * (25 - 15) + 15)
-              let niv = parseInt(userData.memberLevel)
-              const dif = parseInt(config.levelsDifficulty)
-              if (exp >= (((niv * niv) * dif) * 100)) {
-                exp = exp - (((niv * niv) * dif) * 100)
-                niv++
-                const messageToSend = config.levelsMessage.replace('{member}', `<@${message.author.id}>`).replace('{oldlevel}', `${niv - 1}`).replace('{newlevel}', `${niv}`)
-                if (config.levelsChannel === '1') {
-                  message.channel.send(messageToSend)
+        module.exports.fetchMember(client, message.member, (userData) => {
+          if (userData) {
+            let exp = parseInt(userData.memberExperience) + Math.round(Math.random() * (25 - 15) + 15)
+            let niv = parseInt(userData.memberLevel)
+            const dif = parseInt(message.database.levelsDifficulty)
+            if (exp >= (((niv * niv) * dif) * 100)) {
+              exp = exp - (((niv * niv) * dif) * 100)
+              niv++
+              const messageToSend = message.database.levelsMessage.replace('{member}', `<@${message.author.id}>`).replace('{oldlevel}', `${niv - 1}`).replace('{newlevel}', `${niv}`)
+              if (message.database.levelsChannel === '1') {
+                message.channel.send(messageToSend)
+              } else {
+                const customChannel = client.channels.cache.find(channel => channel.id === message.database.levelsChannel)
+                if (customChannel) {
+                  customChannel.send(messageToSend)
                 } else {
-                  const customChannel = client.channels.cache.find(channel => channel.id === config.levelsChannel)
-                  if (customChannel) {
-                    customChannel.send(messageToSend)
-                  } else {
-                    message.channel.send(messageToSend)
-                  }
+                  message.channel.send(messageToSend)
                 }
               }
-              module.exports.updateMember(client, message.member, { memberExperience: exp, memberLevel: niv }, () => { })
-            } else {
-              client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [message.member.guild.id, message.member.id], (err) => {
-                if (err) {
-                  client.Sentry.captureException(err)
-                  client.log.error(err)
-                }
-              })
             }
-          })
+            module.exports.updateMember(client, message.member, { memberExperience: exp, memberLevel: niv }, () => { })
+          } else {
+            client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [message.member.guild.id, message.member.id], (err) => {
+              if (err) {
+                client.Sentry.captureException(err)
+                client.log.error(err)
+              }
+            })
+          }
         })
       }
     }
