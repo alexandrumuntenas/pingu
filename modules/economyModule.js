@@ -47,10 +47,10 @@ module.exports = {
       op: 'economy.fetchConfig',
       name: 'Economy (fetchConfig)'
     })
-    client.pool.query('SELECT * FROM `guildEconomyConfig` WHERE guild = ?', [guild.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        const data = { bankName: rows[0].bankName, bankLogo: rows[0].bankLogo, useGlobalBank: rows[0].useGlobalBank, currency: rows[0].currency }
+        const data = { economyBankName: rows[0].economyBankName, economyBankLogo: rows[0].economyBankLogo, economyUseGlobalBank: rows[0].economyUseGlobalBank, economyCurrency: rows[0].economyCurrency }
         callback(data)
       } else {
         callback(new Error('NO_DATA'))
