@@ -4,7 +4,7 @@ const noMoreInvites = require('../modules/noMoreInvites')
 const { getMoney } = require('../modules/economyModule')
 const genericMessages = require('../modules/genericMessages')
 
-module.exports = (client, message) => {
+module.exports = async (client, message) => {
   if (
     message.channel.type === 'dm' ||
     message.author.bot ||

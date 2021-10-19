@@ -1,6 +1,6 @@
 const guildFetchData = require('../modules/guildFetchData')
 
-module.exports = (client, member) => {
+module.exports = async (client, member) => {
   const gMR = client.Sentry.startTransaction({
     op: 'guildMemberRemove',
     name: 'Guild Member Remove'

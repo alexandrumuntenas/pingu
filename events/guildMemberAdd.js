@@ -3,7 +3,7 @@ const tempFileRemover = require('../modules/tempFileRemover')
 const { welcomeCard } = require('../modules/canvasProcessing')
 const guildFetchData = require('../modules/guildFetchData')
 
-module.exports = (client, member) => {
+module.exports = async (client, member) => {
   const gMA = client.Sentry.startTransaction({
     op: 'guildMemberAdd',
     name: 'Guild Member Add'

@@ -12,7 +12,7 @@ module.exports = {
      * @param {collection} collection Discord Collection for Commands
      * @param {directory} directory The Directory Where Commands are stored
      */
-    function load (directory) {
+    async function load (directory) {
       const files = fs.readdirSync(directory)
 
       for (const file of files) {
