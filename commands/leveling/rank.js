@@ -10,6 +10,8 @@ module.exports = {
     if (message.database.levelsEnabled !== 0) {
       fetchMember(client, message.member, (data) => {
         if (data) {
+          message.member.levelData = data
+          message.member.tag = message.author.tag
           rankCard(client, message.member, locale, message.database).then((paths) => {
             const attachmentSent = new MessageAttachment(paths.attachmentSent)
             message.channel.send({ files: [attachmentSent] }).then(() => {
