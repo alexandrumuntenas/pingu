@@ -1,5 +1,8 @@
 const genericMessages = require('../../modules/genericMessages')
 const { fetchMember } = require('../../modules/levelsModule')
+const { MessageAttachment } = require('discord.js')
+const { rankCard } = require('../../modules/canvasProcessing')
+const tempFileRemover = require('../../modules/tempFileRemover')
 
 module.exports = {
   name: 'rank',
@@ -7,7 +10,14 @@ module.exports = {
     if (message.database.levelsEnabled !== 0) {
       fetchMember(client, message.member, (data) => {
         if (data) {
-          message.reply(`:tools: We're currently working in a new and improved rank card. Meanwhile, you will see this message.\n\nYou are at level *${data.memberLevel}* and you have *${data.memberExperience}*xp points`)
+          message.member.levelData = data
+          message.member.tag = message.author.tag
+          rankCard(client, message.member, locale, message.database).then((paths) => {
+            const attachmentSent = new MessageAttachment(paths.attachmentSent)
+            message.channel.send({ files: [attachmentSent] }).then(() => {
+              tempFileRemover(paths)
+            })
+          })
         } else {
           genericMessages.Error.customerror(message, locale, 'RANK_NO_CLASSIFIED')
         }
