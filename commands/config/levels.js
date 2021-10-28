@@ -85,7 +85,7 @@ module.exports = {
           }
           case 'defaultBackground': {
             if (message.args[1]) {
-              client.pool.query('UPDATE `guildData` SET `welcomeImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+              client.pool.query('UPDATE `guildData` SET `levelsImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
                 genericMessages.Success(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_SUCCESS', { WELCOMER_DEFAULTBACKGROUND: message.args[1] }))
               })
@@ -96,7 +96,7 @@ module.exports = {
           }
           case 'customBackground': {
             if (message.args[1]) {
-              client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
                 genericMessages.Success(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: message.args[1] }))
               })
@@ -107,7 +107,7 @@ module.exports = {
           }
           case 'overlayOpacity': {
             if (message.args[1]) {
-              client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
                 genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))
               })
@@ -118,7 +118,7 @@ module.exports = {
           }
           case 'overlayBlur': {
             if (message.args[1]) {
-              client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
                 genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))
               })
