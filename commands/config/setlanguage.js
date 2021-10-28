@@ -2,7 +2,7 @@ const { Permissions } = require('discord.js')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
-const avaliableLanguages = ['en', 'es', 'ro']
+const avaliableLanguages = ['en', 'es']
 
 module.exports = {
   name: 'setlanguage',
