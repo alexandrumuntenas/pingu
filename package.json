@@ -5,7 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "@blac-sheep/character-count": "^0.1.2",
-    "@discordjs/builders": "^0.7.0",
+    "@discordjs/builders": "^0.8.1",
     "@sentry/node": "^6.11.0",
     "@sentry/tracing": "^6.11.0",
     "@top-gg/sdk": "^3.1.2",
