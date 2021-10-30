@@ -80,7 +80,7 @@ module.exports = {
               })
             })
           } else {
-            embedMenu.edit({ content: `<:pingu_cross:876104109256769546> ${getLocales(locale, 'EMBED_ADDFIELD_NOMOREFIELDS')}`})
+            embedMenu.edit({ content: `<:pingu_cross:876104109256769546> ${getLocales(locale, 'EMBED_ADDFIELD_NOMOREFIELDS')}` })
           }
         }
 
