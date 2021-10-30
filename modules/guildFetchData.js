@@ -1,4 +1,8 @@
 module.exports = (client, guild, callback) => {
+  const gFD = client.Sentry.startTransaction({
+    op: 'guildFetchData',
+    name: 'Guild Fetch Data'
+  })
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) client.Sentry.captureException(err)
     if (Object.prototype.hasOwnProperty.call(result, 0)) {
@@ -10,6 +14,7 @@ module.exports = (client, guild, callback) => {
           client.Sentry.captureException(err)
           client.log.error(err)
         }
+        gFD.finish()
         callback()
       })
     }
