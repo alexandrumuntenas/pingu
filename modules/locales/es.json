@@ -125,6 +125,14 @@
   "LEVELS_DIFFICULTY_MISSING_ARGS": "La dificultad actual para avanzar de nivel es %LEVELS_DIFFICULTY%.",
   "LEVELS_DIFFICULTY_NOT_INT": "La dificultad nueva suministrada no es un número entero",
   "LEVELS_VIEWCONFIG_DIFFICULTY": "Dificultad",
+  "LEVELS_DEFAULTBACKGROUND_MISSING_ARGS": "El fondo predeterminado actual es %WELCOMER_DEFAULTBACKGROUND%.",
+  "LEVELS_DEFAULTBACKGROUND_SUCCESS": "%WELCOMER_DEFAULTBACKGROUND% será el nuevo fondo predeterminado para las tarjetas de bienvenida.",
+  "LEVELS_CUSTOMBACKGROUND_MISSING_ARGS": "El fondo personalizado actual es %WELCOMER_CUSTOMBACKGROUND%.",
+  "LEVELS_CUSTOMBACKGROUND_SUCCESS": "%WELCOMER_CUSTOMBACKGROUND% será el nuevo fondo personalizado para las tarjetas de bienvenida.",
+  "LEVELS_OVERLAYOPACITY_MISSING_ARGS": "La opacidad del overlay está configurada en %WELCOMER_OVERLAYOPACITY%.",
+  "LEVELS_OVERLAYOPACITY_SUCCESS": "La opacidad del overlay se ha configurado a %WELCOMER_OVERLAYOPACITY%.",
+  "LEVELS_OVERLAYBLUR_MISSING_ARGS": "El desenfoque del overlay está configurada en %WELCOMER_OVERLAYBLUR%.",
+  "LEVELS_OVERLAYBLUR_SUCCESS": "El desenfoque del overlay se ha configurado a %WELCOMER_OVERLAYBLUR%.",
   "CCMD_CREATED_SUCCESFULLY": "Se ha creado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%. Este devolverá el valor especificado %CCMD_VALUERETURNED%",
   "CCMD_ELIMINATED_SUCCESFULLY": "Se ha eliminado correctamente el comando personalizado %CCMD_CUSTOMCOMMAND%.",
   "P2ENMOD": "Se ha habilitado %PMODULE% correctamente.",
@@ -134,5 +142,5 @@
   "ECONOMY_BANKNAME_NOARGS": "El nombre actual del banco es %BANKNAME%",
   "ECONOMY_BANKNAME_SUCCESS": "%BANKNAME% será el nuevo nombre del banco de su server de Discord.",
   "ECONOMY_BANKLOGO_NORESOLVABLE": "La URL especificada no es accesible. Prueba con otra URL.",
-  "ECONOMY_BANKLOGO_RESOLVABLE": "Se ha modificado el logo del banco de su servidor de Discord a: %BANKLOGO%"
+  "ECONOMY_BANKLOGO_RESOLVABLE": "Se ha modificado el logo del banco de su servidor de Discord a: %BANKLOGO%",
 }

@@ -83,6 +83,50 @@ module.exports = {
             }
             break
           }
+          case 'defaultBackground': {
+            if (message.args[1]) {
+              client.pool.query('UPDATE `guildData` SET `levelsImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.Success(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_SUCCESS', { WELCOMER_DEFAULTBACKGROUND: message.args[1] }))
+              })
+            } else {
+              genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_MISSING_ARGS', { WELCOMER_DEFAULTBACKGROUND: message.database.welcomeImageBackground }))
+            }
+            break
+          }
+          case 'customBackground': {
+            if (message.args[1]) {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.Success(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: message.args[1] }))
+              })
+            } else {
+              genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS', { WELCOMER_CUSTOMBACKGROUND: message.database.welcomeImageCustomBackground }))
+            }
+            break
+          }
+          case 'overlayOpacity': {
+            if (message.args[1]) {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))
+              })
+            } else {
+              genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity }))
+            }
+            break
+          }
+          case 'overlayBlur': {
+            if (message.args[1]) {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))
+              })
+            } else {
+              genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: message.database.welcomeImageCustomBlur }))
+            }
+            break
+          }
         }
       } else {
         helpTray(message, locale)
@@ -94,5 +138,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}levels <option>\``, ['viewconfig', 'rankUpChannel <channel>', 'rankUpMessage', 'difficulty <difficulty>'])
+  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}levels <option>\``, ['viewconfig', 'rankUpChannel <channel>', 'rankUpMessage', 'difficulty <difficulty>', 'defaultBackground <background ID>', 'customBackground <background URL>', 'overlayOpacity <quantity>', 'overlayBlur <quantity>'])
 }
