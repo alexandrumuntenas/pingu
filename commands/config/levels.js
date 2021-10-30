@@ -138,5 +138,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}levels <option>\``, ['viewconfig', 'rankUpChannel <channel>', 'rankUpMessage', 'difficulty <difficulty>'])
+  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}levels <option>\``, ['viewconfig', 'rankUpChannel <channel>', 'rankUpMessage', 'difficulty <difficulty>', 'defaultBackground <background ID>', 'customBackground <background URL>', 'overlayOpacity <quantity>', 'overlayBlur <quantity>'])
 }
