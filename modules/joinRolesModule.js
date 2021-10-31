@@ -25,7 +25,7 @@ module.exports = {
     client.pool.query('SELECT * FROM `guildJoinRoles` WHERE `guild` = ?', [guild.id], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows) {
-        rows.forEach(r => console.log(r))
+        callback(rows)
       }
     })
   }
