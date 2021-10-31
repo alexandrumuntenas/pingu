@@ -15,18 +15,6 @@ module.exports = {
         switch (message.args[0]) {
           case 'viewconfig': {
             message.channel.send('<a:loading:880765834774073344> Fetching data... Please wait.').then((_message) => {
-              const roles = new Set()
-
-              let rolset = ''
-
-              message.database.welcomeRoles.split(',').forEach(element => {
-                roles.add(element)
-              })
-
-              roles.forEach(element => {
-                rolset = rolset + '<@&' + element + '> '
-              })
-
               const sentEmbed = new MessageEmbed()
                 .setColor('BLURPLE')
                 .setTitle(getLocales(locale, 'WELCOMER_VIEWCONFIG_TITLE'))
@@ -34,7 +22,6 @@ module.exports = {
                 .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
                 .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.welcomeMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
                 .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[message.database.welcomeImage] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_DEFAULTBACKGROUND', { WELCOMER_DEFAULTBACKGROUND: message.database.welcomeImageBackground })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.welcomeImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.welcomeImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] })}`, false)
-                .addField(`<:blurple_gift:892455451004911676> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROLES')}`, rolset)
 
               _message.edit({ content: 'Done', embeds: [sentEmbed] })
             })
