@@ -60,5 +60,5 @@ module.exports = {
 }
 
 function helpTray (message, locale) {
-  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'farewell', 'moderation', 'levels', 'economy'])
+  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy'])
 }
