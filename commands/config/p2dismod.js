@@ -14,6 +14,12 @@ module.exports = {
             })
             break
           }
+          case 'joinroles': {
+            client.pool.query('UPDATE `guildData` SET `joinRolesEnabled` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+            })
+            break
+          }
           case 'farewell': {
             client.pool.query('UPDATE `guildData` SET `farewellEnabled` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)

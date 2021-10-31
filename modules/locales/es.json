@@ -163,5 +163,9 @@
   "EMBED_EDITTHUMBNAIL": "Introduzca la URL del Thumbnail.",
   "EMBED_EDITCOLOR": "Introduzca el color que deseas en hexadecimal. (Es necesario poner # al principio)",
   "EMBED_SEND": "¿A dónde desea enviarlo? ¡Mencione el canal!",
-  "EMBED_SENT_SUCCESS": "Se ha enviado correctamente el mensaje enriquecido a %EMBED_CHANNEL%"
+  "EMBED_SENT_SUCCESS": "Se ha enviado correctamente el mensaje enriquecido a %EMBED_CHANNEL%",
+  "JOINROLES_ADD": "Se otorgará %ROLE% a los nuevos miembros",
+  "JOINROLES_REMOVE": "Ya no se otorgará %ROLE% a los nuevos miembros",
+  "JOINROLES_LIST": "Roles que se otorgarán: %ROLES%",
+  "JOINROLES_LIST_NOROLES": "No hay ningún rol configurado."
 }

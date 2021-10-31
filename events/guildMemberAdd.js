@@ -2,6 +2,7 @@ const { MessageAttachment } = require('discord.js')
 const tempFileRemover = require('../modules/tempFileRemover')
 const { welcomeCard } = require('../modules/canvasProcessing')
 const guildFetchData = require('../modules/guildFetchData')
+const { fetchJoinRoles } = require('../modules/joinRolesModule')
 
 module.exports = async (client, member) => {
   const gMA = client.Sentry.startTransaction({
@@ -29,12 +30,14 @@ module.exports = async (client, member) => {
             .kick(data.moderator_noMoreUsers_message || 'noMoreUsers enabled on this guild · Powered by Pingu')
         }
       }
-      if (data.welcome_roles) {
-        const welcomeRoles = data.welcome_roles
-        const roleArray = welcomeRoles.split(',')
-        roleArray.forEach(element => {
-          if (member.guild.roles.cache.get(element)) {
-            member.roles.add(member.guild.roles.cache.get(element))
+      if (data.joinRolesEnabled !== 0) {
+        fetchJoinRoles(client, member.guild, (roles) => {
+          if (roles && Array.isArray(roles)) {
+            if (roles.length > 0) {
+              roles.forEach(role => {
+                member.roles.add(member.guild.roles.resolveId(role.roleID))
+              })
+            }
           }
         })
       }
