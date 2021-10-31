@@ -159,5 +159,9 @@
   "JOINROLES_ADD": "New members will be granted %ROLE%.",
   "JOINROLES_REMOVE": "New members will no longer be granted %ROLE%.",
   "JOINROLES_LIST": "Roles to be granted: %ROLES%",
-  "JOINROLES_LIST_NOROLES": "No role is configured."
+  "JOINROLES_LIST_NOROLES": "No role is configured.",
+  "AUTORESPONDER_CREATE_INSERTRIGGER": "Enter a personalised response trigger",
+  "AUTORESPONDER_CREATE_INSERTRESPONSE": "Enter a reply",
+  "AUTORESPONDER_CREATE_SUCCESS": "The custom response with identifier %AUTORESPONDER_ID% has been successfully created.",
+  "AUTORESPONDER_REMOVE_SUCCESS": "The custom response with identifier %AUTORESPONDER_ID% has been successfully removed."
 }

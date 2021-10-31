@@ -86,14 +86,14 @@ module.exports = async (client, message) => {
         if (result) {
           try {
             if (Object.prototype.hasOwnProperty.call(result, 0)) {
-              client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, message.content], (err, result) => {
+              client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `autoresponderTrigger` = ?', [message.guild.id, message.content], (err, result) => {
                 if (err) {
                   client.Sentry.captureException(err)
                   client.log.error(err)
                 }
                 if (result) {
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                    message.channel.send('<:respuestacustom:858671300024074240> ' + result[0].returns)
+                    message.channel.send(`<:respuestacustom:858671300024074240> ${result[0].autoresponderResponse}`)
                   }
                 }
               })
