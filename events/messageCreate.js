@@ -17,7 +17,6 @@ module.exports = async (client, message) => {
       if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
         message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
       }
-      const contenido = message.content.toLowerCase()
       if (message.content.startsWith(message.database.guildPrefix) && message.args) {
         const command = message.args[0]
         message.args.shift()
@@ -87,7 +86,7 @@ module.exports = async (client, message) => {
         if (result) {
           try {
             if (Object.prototype.hasOwnProperty.call(result, 0)) {
-              client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
+              client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, message.content], (err, result) => {
                 if (err) {
                   client.Sentry.captureException(err)
                   client.log.error(err)
