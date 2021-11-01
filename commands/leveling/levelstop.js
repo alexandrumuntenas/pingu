@@ -17,11 +17,17 @@ module.exports = {
               .setTitle(`:trophy: ${getLocales(locale, 'LEVELSTOP_TITLE')}`)
               .setFooter(message.guild.name)
               .setColor('#FFD700')
+
+            let count = 0
             rows.forEach(function (row) {
-              const usuario = message.guild.members.cache.get(row.member)
-              embed.addFields({ name: usuario.nickname || usuario.displayName || 'Lost User#0000', value: `${getLocales(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
+              client.users.fetch(row.member).then((user) => {
+                count++
+                embed.addFields({ name: `${user.username}#${user.discriminator}`, value: `${getLocales(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
+                if (count === rows.length) {
+                  message.channel.send({ embeds: [embed] })
+                }
+              })
             })
-            message.channel.send({ embeds: [embed] })
           } else {
             genericMessages.Error.customerror(message, locale, 'LEVELSTOP_NODATA')
           };
