@@ -11,8 +11,8 @@ module.exports = {
           client.Sentry.captureException(err)
           client.log.error(err)
         }
-        if (result) {
-          if (Object.prototype.hasOwnProperty.call(result, 0)) {
+        if (rows) {
+          if (Object.prototype.hasOwnProperty.call(rows, 0)) {
             const embed = new MessageEmbed()
               .setTitle(`:trophy: ${getLocales(locale, 'LEVELSTOP_TITLE')}`)
               .setFooter(message.guild.name)
