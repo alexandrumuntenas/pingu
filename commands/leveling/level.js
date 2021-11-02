@@ -5,7 +5,7 @@ const { rankCard } = require('../../modules/canvasProcessing')
 const tempFileRemover = require('../../modules/tempFileRemover')
 
 module.exports = {
-  name: 'rank',
+  name: 'level',
   execute (client, locale, message) {
     if (message.database.levelsEnabled !== 0) {
       fetchMember(client, message.member, (data) => {
