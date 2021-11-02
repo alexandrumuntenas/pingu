@@ -3,6 +3,8 @@ const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 const { isInteger } = require('mathjs')
 
+const channelRelationship = { 0: 'Not Setup', 1: 'Same Channel where Message is Sent' }
+
 module.exports = {
   name: 'levels',
   execute (client, locale, message) {
@@ -15,7 +17,7 @@ module.exports = {
                 .setColor('BLURPLE')
                 .setTitle(getLocales(locale, 'LEVELS_VIEWCONFIG_TITLE'))
                 .setDescription(getLocales(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
-                .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || 'r/softwaregore'}`, true)
+                .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || channelRelationship[message.database.levelsChannel]}`, true)
                 .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.levelsMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
                 .addField(`:trophy: ${getLocales(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
 
