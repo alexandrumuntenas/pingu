@@ -15,7 +15,6 @@ module.exports = async (client, member) => {
       }
     })
     client.pool.query('DELETE FROM `guildLevelsData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id])
-    client.pool.query('DELETE FROM `guildWarns` WHERE user = ? AND guild = ?', [member.user.id, member.guild.id])
   }
   gMR.finish()
 }

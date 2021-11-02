@@ -14,12 +14,6 @@ module.exports = async (client, guild) => {
         client.log.error(err)
       }
     })
-    client.pool.query('DELETE FROM `guildWarns` WHERE guild = ?', [guild.id], (err) => {
-      if (err) {
-        client.Sentry.captureException(err)
-        client.log.error(err)
-      }
-    })
     client.pool.query('DELETE FROM `guildCustomCommands` WHERE guild = ?', [guild.id], (err) => {
       if (err) {
         client.Sentry.captureException(err)
