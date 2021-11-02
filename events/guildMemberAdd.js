@@ -24,12 +24,6 @@ module.exports = async (client, member) => {
           }
         }
       }
-      if (data.moderator_noMoreUsers_enabled === 1) {
-        if (member) {
-          member
-            .kick(data.moderator_noMoreUsers_message || 'noMoreUsers enabled on this guild · Powered by Pingu')
-        }
-      }
       if (data.joinRolesEnabled !== 0) {
         fetchJoinRoles(client, member.guild, (roles) => {
           if (roles && Array.isArray(roles)) {
