@@ -74,12 +74,14 @@ module.exports = {
           case 'enableCards': {
             client.pool.query('UPDATE `guildData` SET `welcomeImage` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
+              genericMessages.Success(message, getLocales(locale, 'WELCOMER_ENABLECARDS'))
             })
             break
           }
           case 'disableCards': {
             client.pool.query('UPDATE `guildData` SET `welcomeImage` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
+              genericMessages.Success(message, getLocales(locale, 'WELCOMER_DISABLECARDS'))
             })
             break
           }

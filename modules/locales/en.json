@@ -101,6 +101,8 @@
   "WELCOMER_OVERLAYOPACITY_SUCCESS": "The opacity of the overlay has been set to%WELCOMER_OVERLAYOPACITY%.",
   "WELCOMER_OVERLAYBLUR_MISSING_ARGS": "Overlay blur is set to %WELCOMER_OVERLAYBLUR%.",
   "WELCOMER_OVERLAYBLUR_SUCCESS": "The overlay blur has been set to %WELCOMER_OVERLAYBLUR%.",
+    "WELCOMER_ENABLECARDS": "Welcome cards have been activated.",
+    "WELCOMER_DISABLECARDS": "Welcome cards have been deactivated.",
   "ENABLED": "Enabled",
   "DISABLED": "Disabled",
   "WELCOMER_ROUNDAVATAR_MISSING_ARGS": "The rounded avatar is %WELCOMER_ROUNDAVATAR%.",

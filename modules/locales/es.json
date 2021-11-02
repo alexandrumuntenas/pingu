@@ -101,6 +101,8 @@
   "WELCOMER_OVERLAYOPACITY_SUCCESS": "La opacidad del overlay se ha configurado a %WELCOMER_OVERLAYOPACITY%.",
   "WELCOMER_OVERLAYBLUR_MISSING_ARGS": "El desenfoque del overlay está configurada en %WELCOMER_OVERLAYBLUR%.",
   "WELCOMER_OVERLAYBLUR_SUCCESS": "El desenfoque del overlay se ha configurado a %WELCOMER_OVERLAYBLUR%.",
+  "WELCOMER_ENABLECARDS": "Se han activado las tarjetas de bienvenida.",
+  "WELCOMER_DISABLECARDS": "Se han desactivado las tarjetas de bienvenida.",
   "ENABLED": "Habilitado",
   "DISABLED": "Deshabilitado",
   "WELCOMER_ROUNDAVATAR_MISSING_ARGS": "El avatar redondeado está %WELCOMER_ROUNDAVATAR%.",
