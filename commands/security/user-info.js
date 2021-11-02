@@ -6,7 +6,7 @@ const getLocales = require('../../modules/getLocales')
 module.exports = {
   name: 'user-info',
   execute (client, locale, message) {
-    if (message.database.moderator_enabled !== 0) {
+    if (message.database.moderationEnabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const user = message.mentions.users.first() || message.author
         const member = message.guild.members.cache.get(user.id)

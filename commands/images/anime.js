@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
-const noNSFWonSFW = require('../../modules/noNSFWonSFW')
 const fetch = require('superagent')
 const animeProviderList = require('./anime.providerlist.json')
 
@@ -12,10 +11,11 @@ module.exports = {
       const provider = animeProviderList.find(provider => provider.option === message.args[0])
       if (provider) {
         if (!message.channel.nsfw && provider.nsfw === true) {
-          if (message.database.moderator_noNsfwOnSfw_enabled === 1) {
+          return
+          /* if (message.database.moderator_noNsfwOnSfw_enabled === 1) {
             noNSFWonSFW(client, message, { actionToTake: message.database.moderator_noNsfwOnSfw_action, messageToSend: message.database.moderator_noNsfwOnSfw_message })
             return
-          }
+          } */
         }
         const sentMessage = new MessageEmbed()
         try {
