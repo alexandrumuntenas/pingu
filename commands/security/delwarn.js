@@ -5,7 +5,7 @@ const getLocales = require('../../modules/getLocales')
 module.exports = {
   name: 'delwarn',
   execute (client, locale, message) {
-    if (message.database.moderator_enabled !== 0) {
+    if (message.database.moderationEnabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         if (message.mentions.users.first()) {
           if (message.args[1]) {

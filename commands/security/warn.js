@@ -6,7 +6,7 @@ const getLocales = require('../../modules/getLocales')
 module.exports = {
   name: 'warn',
   execute (client, locale, message) {
-    if (message.database.moderator_enabled !== 0) {
+    if (message.database.moderationEnabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         const dataSplit = message.content.replace(`${message.database.guildPrefix}warn`, '').trim().split('|')
         // const beforeSeparator = message.content.replace(`${options.result.guildPrefix}${options.command}`, '').split(message.database.separator)

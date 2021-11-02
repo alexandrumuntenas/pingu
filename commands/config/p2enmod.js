@@ -27,7 +27,7 @@ module.exports = {
             break
           }
           case 'moderation': {
-            client.pool.query('UPDATE `guildData` SET `moderator_enabled` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
+            client.pool.query('UPDATE `guildData` SET `moderationEnabled` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
             })
             break

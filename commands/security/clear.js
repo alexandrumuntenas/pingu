@@ -5,7 +5,7 @@ const getLocales = require('../../modules/getLocales')
 module.exports = {
   name: 'clear',
   execute (client, locale, message) {
-    if (message.database.moderator_enabled !== 0) {
+    if (message.database.moderationEnabled !== 0) {
       if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
         message.args[0] = parseInt(message.args[0].replace(/\D/g, ''))
         if (message.args[0] && parseInt(message.args[0]) <= 100) {
