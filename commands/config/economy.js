@@ -12,12 +12,11 @@ module.exports = {
             message.channel.send('<a:loading:880765834774073344> Fetching data... Please wait.').then((_message) => {
               const sentEmbed = new MessageEmbed()
                 .setColor('BLURPLE')
-                .setTitle(getLocales(locale, 'LEVELS_VIEWCONFIG_TITLE'))
-                .setDescription(getLocales(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
-                .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || 'r/softwaregore'}`, true)
-                .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.levelsMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
-                .addField(`:trophy: ${getLocales(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
-
+                .setTitle(getLocales(locale, 'ECONOMY_VIEWCONFIG_TITLE'))
+                .setDescription(getLocales(locale, 'ECONOMY_VIEWCONFIG_DESCRIPTION'))
+                .addField(`:coin: ${getLocales(locale, 'ECONOMY_VIEWCONFIG_CURRENCY')}`, `${message.database.economyCurrency}`, true)
+                .addField(`:bank: ${getLocales(locale, 'ECONOMY_VIEWCONFIG_BANKNAME')}`, `${message.database.economyBankName}`)
+                .setThumbnail(message.database.economyBankLogo)
               _message.edit({ content: 'Done', embeds: [sentEmbed] })
             })
             break
@@ -47,7 +46,7 @@ module.exports = {
           case 'setBankLogo': {
             if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
               client.pool.query('UPDATE `guildData` SET `economyBankLogo` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.Sentry.captureException(err)
+                if (err) client.Sentry.captureException(err)
                 genericMessages.Success(message, getLocales(locale, 'ECONOMY_BANKLOGO_RESOLVABLE', { BANKLOGO: message.args[1] }))
               })
             } else {
