@@ -71,6 +71,18 @@ module.exports = {
             }
             break
           }
+          case 'enableCards': {
+            client.pool.query('UPDATE `guildData` SET `welcomeImage` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+            })
+            break
+          }
+          case 'disableCards': {
+            client.pool.query('UPDATE `guildData` SET `welcomeImage` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+            })
+            break
+          }
           case 'overlayOpacity': {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
