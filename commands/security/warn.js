@@ -19,7 +19,6 @@ module.exports = {
         guiltyArray.forEach(user => {
           if (user.trim().startsWith('<@!')) {
             const resolvableUser = client.users.cache.get(user.trim().replace('<@!', '').trim())
-            const cache = { activado: message.database.moderador_warn_expulsion_activado, cantidad: message.database.moderador_warn_expulsion_cantidad, accion: message.database.moderador_warn_expulsion_accion }
             client.pool.query('SELECT COUNT(*) AS itotal FROM `guildWarns` WHERE user = ? AND guild = ?', [resolvableUser.id, message.guild.id], (err, result) => {
               if (err) {
                 client.Sentry.captureException(err)
@@ -31,9 +30,9 @@ module.exports = {
                 .setAuthor(getLocales(locale, 'WARN_EMBED_SUCCESS_TITLE', { USER: resolvableUser.tag }), resolvableUser.displayAvatarURL())
                 .setDescription(getLocales(locale, 'WARN_EMBED_SUCCESS_REASON', { REASON: reason }))
               message.channel.send({ embeds: [sent] })
-              if (cache.activado === 0) {
-                if (parseInt(message.database.itotal) + 1 >= cache.cantidad) {
-                  if (cache.accion !== 0) {
+              if (message.database.moderationWarnLimitEnabled === 0) {
+                if (parseInt(result[0].itotal) + 1 >= message.database.moderationWarnLimitLimit) {
+                  if (message.database.moderationWarnLimitAction !== 0) {
                     message.guild.members.ban(resolvableUser, { reason })
                       .then(() => {
                         const sent2 = new MessageEmbed()
