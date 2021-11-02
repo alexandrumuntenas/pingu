@@ -1,6 +1,5 @@
 const guildCreate = require('./guildCreate')
 const { rankUp } = require('../modules/levelsModule')
-const noMoreInvites = require('../modules/noMoreInvites')
 const { getMoney } = require('../modules/economyModule')
 const genericMessages = require('../modules/genericMessages')
 
@@ -60,10 +59,6 @@ module.exports = async (client, message) => {
             }
           })
         };
-      }
-
-      if (message.database.moderator_noMoreInvites_enabled !== 0) {
-        noMoreInvites(client, message, result)
       }
 
       if (message.database.levelsEnabled !== 0) {
