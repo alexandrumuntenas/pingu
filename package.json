@@ -19,7 +19,7 @@
     "flipacoin": "^1.0.0",
     "is-discord-invitation": "^1.0.4",
     "is-valid-http-url": "^1.0.3",
-    "mathjs": "^9.4.4",
+    "mathjs": "^10.0.0",
     "millify": "^4.0.0",
     "moment": "^2.29.1",
     "ms": "^2.1.3",
