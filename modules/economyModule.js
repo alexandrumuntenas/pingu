@@ -2,7 +2,7 @@ const makeId = require('./makeId')
 const talkedRecently = new Set()
 
 module.exports = {
-  getMoney: (client, member, guild) => {
+  getMoney: async (client, member, guild, timeFromVC) => {
     const EgM = client.Sentry.startTransaction({
       op: 'economy.getMoney',
       name: 'Economy (getMoney)'
@@ -12,7 +12,13 @@ module.exports = {
       setTimeout(() => {
         talkedRecently.delete(`${member.id}_${guild.id}`)
       }, 60000)
-      const plusNumber = Math.round(Math.random() * (25 - 15) + 15)
+      let plusNumber
+      if (timeFromVC) {
+        plusNumber = Math.round(Math.random() * (25 - 15) + 15) * (timeFromVC / 60)
+      } else {
+        plusNumber = Math.round(Math.random() * (10 - 5) + 5)
+      }
+
       client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
         if (err) {
           client.Sentry.captureException(err)
@@ -40,7 +46,7 @@ module.exports = {
     }
     EgM.finish()
   },
-  fetchConfig: (client, guild, callback) => {
+  fetchConfig: async (client, guild, callback) => {
     const EfC = client.Sentry.startTransaction({
       op: 'economy.fetchConfig',
       name: 'Economy (fetchConfig)'
@@ -56,7 +62,7 @@ module.exports = {
     })
     EfC.finish()
   },
-  fetchUserAccount: (client, message, callback) => {
+  fetchUserAccount: async (client, message, callback) => {
     const EfM = client.Sentry.startTransaction({
       op: 'economy.fetchUserAccount',
       name: 'Economy (fetchUserAccount)'
@@ -70,7 +76,7 @@ module.exports = {
     })
     EfM.finish()
   },
-  fetchLatestTransactions: (client, message, callback) => {
+  fetchLatestTransactions: async (client, message, callback) => {
     const EfLT = client.Sentry.startTransaction({
       op: 'economy.fetchLatestTransactions',
       name: 'Economy (fetchLatestTransactions)'

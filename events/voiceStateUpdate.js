@@ -1,4 +1,3 @@
-const { default: Collection } = require('@discordjs/collection')
 const { getMoney } = require('../modules/economyModule')
 const timeInChannel = new Map()
 
@@ -10,15 +9,13 @@ module.exports = async (client, oldState, newState) => {
   const newUserChannel = newState.channel
   const oldUserChannel = oldState.channel
   if (oldUserChannel === null && newUserChannel !== null) {
-    timeInChannel.set(oldState.member.id, oldState.guild.id, Date.now())
+    timeInChannel.set(`${oldState.member.id}_${oldState.guild.id}`, Date.now())
+    client.log.info('voiceStateUpdate ha registrado un nuevo evento')
   } else if (oldUserChannel !== null && newUserChannel === null) {
-    const sessionData = timeInChannel.get(oldState.member.id, oldState.guild.id, Date.now())
-    if (sessionData) {
-      let sessionTime = Math.abs((sessionData.time - Date.now()) / 1000)
-      while (sessionTime >= 10) {
-        sessionTime = sessionTime - 10
-        getMoney(client, oldState.member, oldState.guild)
-      }
+    let sessionTime = timeInChannel.get(`${oldState.member.id}_${oldState.guild.id}`)
+    if (sessionTime) {
+      sessionTime = Math.abs((sessionTime - Date.now()) / 1000)
+      getMoney(client, oldState.member, oldState.guild, sessionTime)
     }
   }
   vSU.finish()
