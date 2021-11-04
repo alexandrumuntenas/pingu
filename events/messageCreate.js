@@ -66,7 +66,7 @@ module.exports = async (client, message) => {
       }
 
       if (message.database.economyEnabled !== 0) {
-        getMoney(client, message)
+        getMoney(client, message.member, message.guild)
       }
 
       const mCgAR = client.Sentry.startTransaction({
