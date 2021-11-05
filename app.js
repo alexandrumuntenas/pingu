@@ -40,6 +40,7 @@ client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
 const commandHandler = require('./modules/commandHandler')
 const voiceStateUpdate = require('./events/voiceStateUpdate')
+const ready = require('./events/ready')
 client.log.success('Servicios Third-Party Cargados')
 
 // Bot
@@ -66,16 +67,7 @@ client.commands = commandHandler.loadCommands(client)
 
 client.on('ready', () => {
   checkFolder()
-  client.log.info(`Conectado como ${client.user.tag}!`)
-  client.user.setPresence({
-    status: 'idle'
-  })
-  setInterval(() => {
-    client.user.setPresence({
-      status: 'idle'
-    })
-    client.log.info('Presencia refrescada')
-  }, 3600000)
+  ready(client)
 })
 
 client.on('guildCreate', (guild) => {
