@@ -25,7 +25,7 @@ function updateStatus (client) {
     })
   } else {
     client.user.setPresence({
-      status: 'dnd'
+      status: 'idle'
     })
   }
 }
