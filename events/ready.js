@@ -11,11 +11,7 @@ function updateStatus (client) {
   const date = new Date()
   let currentHours = date.getHours()
   currentHours = ('0' + currentHours).slice(-2)
-  if (currentHours >= 6 && currentHours <= 12) {
-    client.user.setPresence({
-      status: 'online'
-    })
-  } else if (currentHours >= 13 && currentHours <= 18) {
+  if (currentHours >= 6 && currentHours <= 18) {
     client.user.setPresence({
       status: 'online'
     })

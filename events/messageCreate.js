@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js')
 const guildCreate = require('./guildCreate')
 const { rankUp } = require('../modules/levelsModule')
 const { getMoney } = require('../modules/economyModule')
@@ -50,7 +51,11 @@ module.exports = async (client, message) => {
                   client.log.error(err)
                 }
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                  message.channel.send(`<:comandoscustom:858671400424046602> ${result[0].messageReturned}`).catch((err) => {
+                  const messageSent = new MessageEmbed()
+                    .setFooter('Custom commands by Pingu', 'https://cdn.discordapp.com/attachments/894160919087706142/906658311833788426/Instagram_Profiles.png')
+                    .setDescription(result[0].messageReturned)
+                    .setColor('BLURPLE')
+                  message.channel.send({ embeds: [messageSent] }).catch((err) => {
                     client.log.error(err)
                     client.Sentry.captureException(err)
                   }).finally(mCeEC.finish())
@@ -88,7 +93,14 @@ module.exports = async (client, message) => {
                 }
                 if (result) {
                   if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                    message.channel.send(`<:respuestacustom:858671300024074240> ${result[0].autoresponderResponse}`)
+                    const messageSent = new MessageEmbed()
+                      .setFooter('Customized answers by Pingu', 'https://cdn.discordapp.com/attachments/894160919087706142/906658311833788426/Instagram_Profiles.png')
+                      .setDescription(result[0].autoresponderMessage)
+                      .setColor('BLURPLE')
+                    message.channel.send({ embeds: [messageSent] }).catch((err) => {
+                      client.log.error(err)
+                      client.Sentry.captureException(err)
+                    })
                   }
                 }
               })
