@@ -18,10 +18,6 @@ function updateStatus (client) {
     client.user.setPresence({
       status: 'online'
     })
-  } else if ((currentHours >= 13 && currentHours <= 18) || (currentHours >= 18 && currentHours >= 0)) {
-    client.user.setPresence({
-      status: 'idle'
-    })
   } else {
     client.user.setPresence({
       status: 'idle'
