@@ -11,11 +11,14 @@ function updateStatus (client) {
   const date = new Date()
   let currentHours = date.getHours()
   currentHours = ('0' + currentHours).slice(-2)
-  if (currentHours >= 6 && currentHours <= 18) {
+
+  // Se ajusta a las horas españolas de la península. Para obtener la hora española
+  // se debe sumar a las horas +5
+  if (currentHours >= 1 && currentHours <= 13) {
     client.user.setPresence({
       status: 'online'
     })
-  } else if (currentHours >= 19 && currentHours <= 23) {
+  } else if ((currentHours >= 13 && currentHours <= 18) || (currentHours >= 18 && currentHours >= 0)) {
     client.user.setPresence({
       status: 'idle'
     })
