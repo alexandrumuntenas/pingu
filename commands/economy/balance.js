@@ -11,8 +11,11 @@ module.exports = {
         const firstMessageSent = new MessageEmbed()
           .setFooter(`${message.author.username} · ${message.database.economyBankName}`)
           .setColor('#009FE3')
-          .addField(getLocales(locale, 'MYBANK_ACCOUNT_MONEY'), `\`${user.amount || 0} ${message.database.economyCurrency}\``, true)
-
+        if (user) {
+          firstMessageSent.addField(getLocales(locale, 'MYBANK_ACCOUNT_MONEY'), `\`${user.amount || 0} ${message.database.economyCurrency}\``, true)
+        } else {
+          firstMessageSent.addField(getLocales(locale, 'MYBANK_ACCOUNT_MONEY'), `\`0 ${message.database.economyCurrency}\``, true)
+        }
         message.reply({ embeds: [firstMessageSent] })
       })
     } else {
