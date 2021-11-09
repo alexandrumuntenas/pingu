@@ -14,7 +14,7 @@ module.exports = {
         })
         genericMessages.Success(message, getLocales(message.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${message.args[0]}\`` }))
       } else {
-        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}setlanguage <language>`, ['en', 'es', 'ro'])
+        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}setlanguage <language>`, ['en', 'es'])
       }
     } else {
       genericMessages.Error.permerror(message, locale)
