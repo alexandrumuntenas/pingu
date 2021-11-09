@@ -139,6 +139,10 @@ module.exports = {
             guildMemberAdd(client, message.member)
             break
           }
+          default: {
+            helpTray(message, locale)
+            break
+          }
         }
       } else {
         helpTray(message, locale)

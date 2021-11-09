@@ -129,6 +129,10 @@ module.exports = {
             }
             break
           }
+          default: {
+            helpTray(message, locale)
+            break
+          }
         }
       } else {
         helpTray(message, locale)

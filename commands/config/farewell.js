@@ -49,6 +49,10 @@ module.exports = {
             guildMemberRemove(client, message.member)
             break
           }
+          default: {
+            helpTray(message, locale)
+            break
+          }
         }
       } else {
         helpTray(message, locale)
