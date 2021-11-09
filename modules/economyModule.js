@@ -72,7 +72,12 @@ module.exports = {
         client.Sentry.captureException(err)
         client.log.error(err)
       }
-      callback(rows[0] || null)
+      if (Object.prototype.hasOwnProperty.call(rows, 0)) {
+        callback(rows[0])
+      } else {
+        module.exports.getMoney(client, message.author, message.guild, false)
+        module.exports.fetchUserAccount(client, message, callback)
+      }
     })
     EfM.finish()
   },
