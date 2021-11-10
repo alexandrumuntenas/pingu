@@ -105,8 +105,43 @@ module.exports = {
   getLeaderboard: (client, message) => {
 
   },
-  makeMoneyTransfer: (client, message) => {
+  makeMoneyTransferToUser: (client, message) => {
 
+  },
+  fetchShop: (client, guild, shopFriendlyId, callback) => {
+    const EfS = client.Sentry.startTransaction({
+      op: 'economy.fetchShop',
+      name: 'Economy (fetchShop)'
+    })
+    client.pool.query('SELECT * FROM `guildEconomyShops` WHERE guild = ? AND shopFriendlyId = ?', [guild.id, shopFriendlyId], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
+        callback(rows[0])
+      } else {
+        callback(null)
+      }
+    })
+    EfS.finish()
+  },
+  fetchShopProducts: (client, shopId, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE shopId = ?', [shopId], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
+        callback(rows)
+      } else {
+        callback(null)
+      }
+    })
+  },
+  fetchShopProduct: (client, productId, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE productId = ?', [productId], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
+        callback(rows[0])
+      } else {
+        callback(null)
+      }
+    })
   },
   buyItem: (client, message) => {
 
