@@ -114,6 +114,16 @@ module.exports = {
   makeMoneyTransferToUser: (client, message) => {
 
   },
+  fetchShops: (client, guild, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyShops` WHERE guild = ?', [guild.id], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.hasOwnProperty.call(rows, '0')) {
+        callback(rows)
+      } else {
+        callback(null)
+      }
+    })
+  },
   fetchShop: (client, guild, shopFriendlyId, callback) => {
     const EfS = client.Sentry.startTransaction({
       op: 'economy.fetchShop',
