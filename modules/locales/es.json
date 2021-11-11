@@ -177,5 +177,14 @@
   "AUTORESPONDER_CREATE_INSERTRIGGER": "Introduce un accionante de la respuesta personalizada",
   "AUTORESPONDER_CREATE_INSERTRESPONSE": "Introduce una respuesta",
   "AUTORESPONDER_CREATE_SUCCESS": "Se ha creado correctamente la respuesta personalizada con identificador %AUTORESPONDER_ID%",
-  "AUTORESPONDER_REMOVE_SUCCESS": "Se ha eliminado correctamente la respuesta personalizada con identificador %AUTORESPONDER_ID%"
+  "AUTORESPONDER_REMOVE_SUCCESS": "Se ha eliminado correctamente la respuesta personalizada con identificador %AUTORESPONDER_ID%",
+  "SHOP_NOTFOUND": "No se ha encontrado la tienda solicitada.",
+  "SHOP_NODESCRIPTION": "Descripción no establecida.",
+  "SHOP_PRODUCTNOTFOUND": "No se ha encontrado el producto solicitado.",
+  "SHOP_NOEXIST": "No hay ninguna tienda disponible en el servidor.",
+  "SHOP_AVALIABLE_TITLE": "Tiendas disponibles",
+  "SHOP_PRODUCTPRICE" : "Precio del producto",
+  "SHOP_COMMANDTOBUY": "Comando para comprar",
+  "SHOP_VIEWIMAGE": "Ver imagen",
+  "BUYPRODUCT_SUCCESS": "Se ha adquirido %PRODUCT_NAME% correctamente."
 }
