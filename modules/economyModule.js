@@ -1,6 +1,8 @@
 const makeId = require('./makeId')
 const talkedRecently = new Set()
 
+const transactionTypeReference = { income: 1, outcome: 2, buy: 3, transfer: 4 }
+
 module.exports = {
   getMoney: async (client, member, guild, timeFromVC) => {
     const EgM = client.Sentry.startTransaction({
@@ -31,7 +33,6 @@ module.exports = {
               client.Sentry.captureException(err)
               client.log.error(err)
             }
-            client.pool.query('INSERT INTO `guildEconomyBankTransferBook` (`transactionID`, `emisor`, `member`, `previousQuantity`, `newQuantity`, `type`) VALUES (?, ?, ?, ?, ?, 1)', [makeId(64), guild.id, member.id, parseInt(result[0].amount), money])
           })
         } else {
           client.pool.query('INSERT INTO `guildEconomyUserBank` (`eban`, `member`, `guild`, `amount`) VALUES (?, ?, ?, ?)', [makeId(27), member.id, guild.id, plusNumber], (err) => {
@@ -62,12 +63,12 @@ module.exports = {
     })
     EfC.finish()
   },
-  fetchUserAccount: async (client, message, callback) => {
+  fetchUserAccount: async (client, member, guild, callback) => {
     const EfM = client.Sentry.startTransaction({
       op: 'economy.fetchUserAccount',
       name: 'Economy (fetchUserAccount)'
     })
-    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [message.guild.id, message.author.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
       if (err) {
         client.Sentry.captureException(err)
         client.log.error(err)
@@ -75,18 +76,18 @@ module.exports = {
       if (Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        module.exports.getMoney(client, message.author, message.guild, false)
-        module.exports.fetchUserAccount(client, message, callback)
+        module.exports.getMoney(client, member, guild, false)
+        module.exports.fetchUserAccount(client, member, guild, callback)
       }
     })
     EfM.finish()
   },
-  fetchLatestTransactions: async (client, message, callback) => {
+  fetchLatestTransactions: async (client, guild, member, callback) => {
     const EfLT = client.Sentry.startTransaction({
       op: 'economy.fetchLatestTransactions',
       name: 'Economy (fetchLatestTransactions)'
     })
-    client.pool.query('SELECT * FROM `guildEconomyBankTransferBook` WHERE `emisor` LIKE ? AND `member` LIKE ? ORDER BY `timeStamp` DESC LIMIT 5', [message.guild.id, message.author.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyBankTransferBook` WHERE `guild` LIKE ? AND `member` LIKE ? ORDER BY `timeStamp` DESC LIMIT 5', [guild.id, member.id], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows.length > 0) {
         callback(rows)
@@ -99,8 +100,13 @@ module.exports = {
   getTranstactionInformation: (client, message) => {
 
   },
-  getInventory: (client, message) => {
-
+  fetchInventory: (client, member, guild, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyUserInventory` WHERE guild = ? AND member = ?', [member.id, guild.id], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.hasOwnProperty.call(rows, '0')) {
+        callback(rows)
+      }
+    })
   },
   getLeaderboard: (client, message) => {
 
@@ -143,7 +149,46 @@ module.exports = {
       }
     })
   },
-  buyItem: (client, message) => {
+  buyItem: (client, member, guild, productId) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productId = ?', [guild.id, productId], (err, rows) => {
+      if (err) client.Sentry.captureException(err)
+      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
+        const product = rows[0]
 
+        module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
+          if (product.productPrice >= userAccount.amount) {
+            const transactionData = {}
+            transactionData.transactionOldAmount = userAccount.amount
+            transactionData.transactionNewAmount = userAccount.amount - product.productPrice
+            transactionData.transactionType = 'buy'
+            transactionData.metadata = { productId: product.productId, productName: product.productName, productPrice: product.productPrice }
+
+            module.exports.updateUserAccount(client, member, guild, () => { })
+            module.exports.doTransaction(client, member, guild, guild, transactionData, 'buy')
+            module.exports.addItemToUser(client, member, guild, product.productId, product.productQuantity, () => { })
+          }
+        })
+      }
+    })
+  },
+  updateUserAccount: (client, member, guild, callback) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [member.id, guild.id], (err) => {
+      if (err) client.Sentry.captureException(err)
+      callback()
+    })
+  },
+  doTransaction: (client, member, emisor, guild, transactionData, callback) => {
+    client.pool.query('INSERT INTO `guildEconomyBankTransferBook` (`transactionID`, `emisor`, `member`, `guild`, `previousQuantity`, `newQuantity`, `type`, metadata) VALUES (?, ?, ?, ?, ?, ?, 1)', [makeId(64), emisor, member.id, guild.id, parseInt(transactionData.transactionOldAmount || 0), transactionData.transactionNewAmount, transactionTypeReference[transactionData.transactionType], transactionData.metadata || null], (err) => {
+      if (err) client.Sentry.captureException(err)
+    })
+  },
+  addItemToUser: (client, member, guild, productId, productQuantity, callback) => {
+    module.exports.fetchInventory(client, member, guild, (inventory) => {
+      if (inventory) {
+        const inventoryData = JSON.parse(inventory.data)
+        inventoryData[productId] = inventoryData[productId].productQuantity + productQuantity || 0
+        console.log(inventoryData)
+      }
+    })
   }
 }
