@@ -20,7 +20,7 @@ module.exports = {
                   .setAuthor(shopData.shopName, shopData.shopLogo)
                   .setTitle(productData.productName)
                   .setImage(productData.productImage)
-                  .addField(`:coin: ${getLocales(locale, 'SHOP_PRODUCTPRICE')}`, `\`${productData.productPrice} ${message.database.economyCurrency}\``, true)
+                  .addField(`${message.database.economyCurrencyIcon} ${getLocales(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${message.database.economyCurrency}`, true)
                   .addField(`:robot: ${getLocales(locale, 'SHOP_COMMANDTOBUY')}`, `\`${message.database.guildPrefix}buyproduct ${productData.productId}\``, true)
                   .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
@@ -42,7 +42,7 @@ module.exports = {
               fetchShopProducts(client, shopData.shopId, (shopProductsData) => {
                 if (shopProductsData) {
                   shopProductsData.forEach(shopProduct => {
-                    shopEmbed.addField(`${shopProduct.productName} (${shopProduct.productId})`, `:coin: \`${shopProduct.productPrice} ${message.database.economyCurrency}\`\n:frame_photo: [\`${getLocales(locale, 'SHOP_VIEWIMAGE')}\`](${shopProduct.productImage || 'about:blank'})\n\n` + (shopProduct.productDescription || getLocales(locale, 'SHOP_NODESCRIPTION')))
+                    shopEmbed.addField(`${shopProduct.productName} (${shopProduct.productId})`, `${message.database.economyCurrencyIcon} \`${shopProduct.productPrice} ${message.database.economyCurrency}\`\n:frame_photo: [\`${getLocales(locale, 'SHOP_VIEWIMAGE')}\`](${shopProduct.productImage || 'about:blank'})\n\n` + (shopProduct.productDescription || getLocales(locale, 'SHOP_NODESCRIPTION')))
                   })
                   message.channel.send({ embeds: [shopEmbed] })
                 } else {
