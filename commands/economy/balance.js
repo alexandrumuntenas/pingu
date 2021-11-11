@@ -11,7 +11,7 @@ module.exports = {
         const firstMessageSent = new MessageEmbed()
           .setFooter(`${message.author.username} · ${message.database.economyBankName}`)
           .setColor('#009FE3')
-          .addField(getLocales(locale, 'MYBANK_ACCOUNT_MONEY'), `\`${user.amount || 0} ${message.database.economyCurrency}\``, true)
+          .addField(getLocales(locale, 'BALANCE_ACCOUNT_MONEY'), `\`${user.amount || 0} ${message.database.economyCurrency}\``, true)
         message.reply({ embeds: [firstMessageSent] })
       })
     } else {

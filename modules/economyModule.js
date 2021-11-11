@@ -2,8 +2,6 @@
 const makeId = require('./makeId')
 const talkedRecently = new Set()
 
-const transactionTypeReference = { cancel: 0, income: 1, outcome: 2, buy: 3, transfer: 4 }
-
 module.exports = {
   getMoney: async (client, member, guild, timeFromVC) => {
     const EgM = client.Sentry.startTransaction({
@@ -29,27 +27,19 @@ module.exports = {
         }
         const transactionData = {}
         if (Object.prototype.hasOwnProperty.call(result, 0)) {
-          transactionData.transactionOldAmount = result[0].amount
-          transactionData.transactionNewAmount = parseInt(result[0].amount) + plusNumber
-          transactionData.transactionType = 'income'
           client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [transactionData.transactionNewAmount, member.id, guild.id], (err) => {
             if (err) {
               client.Sentry.captureException(err)
               client.log.error(err)
             }
           })
-          module.exports.doTransaction(client, member, guild, guild, transactionData, () => { })
         } else {
-          transactionData.transactionOldAmount = 0
-          transactionData.transactionNewAmount = plusNumber
-          transactionData.transactionType = 'income'
           client.pool.query('INSERT INTO `guildEconomyUserBank` (`eban`, `member`, `guild`, `amount`) VALUES (?, ?, ?, ?)', [makeId(27), member.id, guild.id, plusNumber], (err) => {
             if (err) {
               client.Sentry.captureException(err)
               client.log.error(err)
             }
           })
-          module.exports.doTransaction(client, member, guild, guild, transactionData, () => { })
         }
       })
     }
@@ -89,24 +79,6 @@ module.exports = {
       }
     })
     EfM.finish()
-  },
-  fetchLatestTransactions: async (client, guild, member, callback) => {
-    const EfLT = client.Sentry.startTransaction({
-      op: 'economy.fetchLatestTransactions',
-      name: 'Economy (fetchLatestTransactions)'
-    })
-    client.pool.query('SELECT * FROM `guildEconomyBankTransferBook` WHERE `guild` LIKE ? AND `member` LIKE ? ORDER BY `timeStamp` DESC LIMIT 5', [guild.id, member.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
-      if (rows.length > 0) {
-        callback(rows)
-      } else {
-        callback(new Error('NO_DATA'))
-      }
-    })
-    EfLT.finish()
-  },
-  getTranstactionInformation: (client, message) => {
-
   },
   fetchInventory: (client, member, guild, callback) => {
     client.pool.query('SELECT * FROM `guildEconomyUserInventory` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
@@ -173,14 +145,7 @@ module.exports = {
   buyItem: (client, member, guild, productData, callback) => {
     module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
       if (parseInt(productData.productPrice) <= parseInt(userAccount.amount)) {
-        const transactionData = {}
-        transactionData.transactionOldAmount = userAccount.amount
-        transactionData.transactionNewAmount = parseInt(userAccount.amount) - parseInt(productData.productPrice)
-        transactionData.transactionType = 'buy'
-        transactionData.metadata = { productId: productData.productId, productName: productData.productName, productPrice: productData.productPrice }
-
-        module.exports.updateUserAccount(client, member, guild, transactionData.transactionNewAmount, () => { })
-        module.exports.doTransaction(client, member, guild, guild, transactionData, 'buy')
+        module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
         module.exports.addItemToUser(client, member, guild, productData.productId, productData.productQuantity)
 
         callback(true)
@@ -193,11 +158,6 @@ module.exports = {
     client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [amount, member.id, guild.id], (err) => {
       if (err) client.Sentry.captureException(err)
       callback()
-    })
-  },
-  doTransaction: (client, member, emisor, guild, transactionData, callback) => {
-    client.pool.query('INSERT INTO `guildEconomyBankTransferBook` (`transactionID`, `emisor`, `member`, `guild`, `previousQuantity`, `newQuantity`, `type`, `metadata`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [makeId(64), emisor.id, member.id, guild.id, parseInt(transactionData.transactionOldAmount || 0), transactionData.transactionNewAmount, transactionTypeReference[transactionData.transactionType], JSON.stringify(transactionData.metadata) || null], (err) => {
-      if (err) client.Sentry.captureException(err)
     })
   },
   addItemToUser: (client, member, guild, productId, productQuantity, callback) => {
