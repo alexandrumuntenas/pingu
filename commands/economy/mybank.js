@@ -8,7 +8,7 @@ module.exports = {
   name: 'mybank',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
-      fetchUserAccount(client, message, (user) => {
+      fetchUserAccount(client, message.member, message.guild, (user) => {
         const firstMessageSent = new MessageEmbed()
           .setAuthor(getLocales(locale, 'MYBANK_ACCOUNT_OF', { USER: message.author.username }), message.author.displayAvatarURL())
           .setThumbnail(message.database.economyBankLogo)
@@ -24,7 +24,7 @@ module.exports = {
           .setThumbnail(message.database.economyBankLogo)
           .setFooter(message.database.economyBankName)
 
-        fetchLatestTransactions(client, message, (latestTransactions) => {
+        fetchLatestTransactions(client, message.guild, message.member, (latestTransactions) => {
           latestTransactions.forEach((transaction) => {
             let emisor = ''
             if (client.guilds.cache.get(transaction.emisor)) {
