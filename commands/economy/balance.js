@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchUserAccount } = require('../../modules/economyModule')
 const genericMessages = require('../../modules/genericMessages')
-const getLocales = require('../../modules/getLocales')
 
 module.exports = {
   name: 'balance',
