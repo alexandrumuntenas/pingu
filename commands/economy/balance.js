@@ -9,9 +9,10 @@ module.exports = {
     if (message.database.economyEnabled !== 0) {
       fetchUserAccount(client, message.member, message.guild, (user) => {
         const firstMessageSent = new MessageEmbed()
-          .setFooter(`${message.author.username} · ${message.database.economyBankName}`)
+          .setAuthor(message.member.displayName, message.author.displayAvatarURL())
           .setColor('#009FE3')
-          .addField(getLocales(locale, 'BALANCE_ACCOUNT_MONEY'), `\`${user.amount || 0} ${message.database.economyCurrency}\``, true)
+          .setDescription(`${user.amount || 0} ${message.database.economyCurrency} ${message.database.economyCurrencyIcon}`)
+
         message.reply({ embeds: [firstMessageSent] })
       })
     } else {

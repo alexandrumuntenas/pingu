@@ -56,7 +56,6 @@
   "WARNLIMIT_OVERLIMIT_ERROR": "%USER% ha sido %ACTION% por haber superado el límite de advertencias debido a un error.",
   "GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD": "%USER% acaba de unirse al servidor",
   "GUILDMEMBERADD_MEMBER_COUNT": "Miembro #%COUNT%",
-  "BALANCE_ACCOUNT_MONEY": "Dinero",
   "SERVER": "Servidor",
   "WELCOMER_INITIALIZE": "Se ha inicializado la configuración del módulo de bienvenidas. Vuelva a ejecutar el comando para tener acceso a la configuración.",
   "WELCOMER_VIEWCONFIG_TITLE": "Configuración del módulo de bienvenidas",
