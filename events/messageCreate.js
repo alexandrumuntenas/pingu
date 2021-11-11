@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const guildCreate = require('./guildCreate')
 const { rankUp } = require('../modules/levelsModule')
-const { getMoney } = require('../modules/economyModule')
 const genericMessages = require('../modules/genericMessages')
 
 module.exports = async (client, message) => {
