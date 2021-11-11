@@ -5,7 +5,7 @@ const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
 module.exports = {
-  name: 'mybank',
+  name: 'account',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       fetchUserAccount(client, message.member, message.guild, (user) => {

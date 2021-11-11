@@ -3,7 +3,7 @@ const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
 module.exports = {
-  name: 'buyproduct',
+  name: 'buy',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       if (message.args && Object.prototype.hasOwnProperty.call(message.args, 0)) {
