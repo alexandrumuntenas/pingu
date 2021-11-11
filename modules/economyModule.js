@@ -1,7 +1,8 @@
+/* eslint-disable node/no-callback-literal */
 const makeId = require('./makeId')
 const talkedRecently = new Set()
 
-const transactionTypeReference = { income: 1, outcome: 2, buy: 3, transfer: 4 }
+const transactionTypeReference = { cancel: 0, income: 1, outcome: 2, buy: 3, transfer: 4 }
 
 module.exports = {
   getMoney: async (client, member, guild, timeFromVC) => {
@@ -37,7 +38,7 @@ module.exports = {
               client.log.error(err)
             }
           })
-          module.exports.doTransaction(client, member, guild, guild, transactionData, () => {})
+          module.exports.doTransaction(client, member, guild, guild, transactionData, () => { })
         } else {
           transactionData.transactionOldAmount = 0
           transactionData.transactionNewAmount = plusNumber
@@ -108,10 +109,13 @@ module.exports = {
 
   },
   fetchInventory: (client, member, guild, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyUserInventory` WHERE guild = ? AND member = ?', [member.id, guild.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyUserInventory` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows && Object.hasOwnProperty.call(rows, '0')) {
-        callback(rows)
+        callback(rows[0])
+      } else {
+        client.pool.query('INSERT INTO `guildEconomyUserInventory` (`guild`, `member`, `data`) VALUES (?, ?, ?)', [guild.id, member.id, '[]'])
+        module.exports.fetchInventory(client, member, guild, callback)
       }
     })
   },
@@ -166,36 +170,33 @@ module.exports = {
       }
     })
   },
-  buyItem: (client, member, guild, productId) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productId = ?', [guild.id, productId], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
-      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        const product = rows[0]
+  buyItem: (client, member, guild, productData, callback) => {
+    module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
+      if (parseInt(productData.productPrice) <= parseInt(userAccount.amount)) {
+        const transactionData = {}
+        transactionData.transactionOldAmount = userAccount.amount
+        transactionData.transactionNewAmount = parseInt(userAccount.amount) - parseInt(productData.productPrice)
+        transactionData.transactionType = 'buy'
+        transactionData.metadata = { productId: productData.productId, productName: productData.productName, productPrice: productData.productPrice }
 
-        module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
-          if (product.productPrice >= userAccount.amount) {
-            const transactionData = {}
-            transactionData.transactionOldAmount = userAccount.amount
-            transactionData.transactionNewAmount = userAccount.amount - product.productPrice
-            transactionData.transactionType = 'buy'
-            transactionData.metadata = { productId: product.productId, productName: product.productName, productPrice: product.productPrice }
+        module.exports.updateUserAccount(client, member, guild, transactionData.transactionNewAmount, () => { })
+        module.exports.doTransaction(client, member, guild, guild, transactionData, 'buy')
+        module.exports.addItemToUser(client, member, guild, productData.productId, productData.productQuantity)
 
-            module.exports.updateUserAccount(client, member, guild, () => { })
-            module.exports.doTransaction(client, member, guild, guild, transactionData, 'buy')
-            module.exports.addItemToUser(client, member, guild, product.productId, product.productQuantity, () => { })
-          }
-        })
+        callback(true)
+      } else {
+        callback(false)
       }
     })
   },
-  updateUserAccount: (client, member, guild, callback) => {
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [member.id, guild.id], (err) => {
+  updateUserAccount: (client, member, guild, amount, callback) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [amount, member.id, guild.id], (err) => {
       if (err) client.Sentry.captureException(err)
       callback()
     })
   },
   doTransaction: (client, member, emisor, guild, transactionData, callback) => {
-    client.pool.query('INSERT INTO `guildEconomyBankTransferBook` (`transactionID`, `emisor`, `member`, `guild`, `previousQuantity`, `newQuantity`, `type`, `metadata`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [makeId(64), emisor.id, member.id, guild.id, parseInt(transactionData.transactionOldAmount || 0), transactionData.transactionNewAmount, transactionTypeReference[transactionData.transactionType], transactionData.metadata || null], (err) => {
+    client.pool.query('INSERT INTO `guildEconomyBankTransferBook` (`transactionID`, `emisor`, `member`, `guild`, `previousQuantity`, `newQuantity`, `type`, `metadata`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [makeId(64), emisor.id, member.id, guild.id, parseInt(transactionData.transactionOldAmount || 0), transactionData.transactionNewAmount, transactionTypeReference[transactionData.transactionType], JSON.stringify(transactionData.metadata) || null], (err) => {
       if (err) client.Sentry.captureException(err)
     })
   },
@@ -203,8 +204,13 @@ module.exports = {
     module.exports.fetchInventory(client, member, guild, (inventory) => {
       if (inventory) {
         const inventoryData = JSON.parse(inventory.data)
-        inventoryData[productId] = inventoryData[productId].productQuantity + productQuantity || 0
-        console.log(inventoryData)
+        if (inventoryData[productId]) {
+          inventoryData[productId] = { productId: productId, productQuantity: parseInt(inventoryData[productId].productQuantity) + (productQuantity || 1) }
+        } else {
+          inventoryData[productId] = { productId: productId, productQuantity: productQuantity || 1 }
+        }
+        client.pool.query('UPDATE `guildEconomyUserInventory` SET data = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData), guild.id, member.id])
+        if (callback) callback()
       }
     })
   }
