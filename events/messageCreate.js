@@ -70,10 +70,6 @@ module.exports = async (client, message) => {
         rankUp(client, message)
       }
 
-      if (message.database.economyEnabled !== 0) {
-        getMoney(client, message.member, message.guild)
-      }
-
       const mCgAR = client.Sentry.startTransaction({
         op: 'messageCreate/guildAutoResponder',
         name: 'Auto Responder'
