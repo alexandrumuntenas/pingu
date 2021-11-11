@@ -16,7 +16,7 @@ client.pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_DATA,
-  charset: 'utf8_unicode_ci',
+  charset: 'utf8mb4_unicode_ci',
   waitForConnections: true,
   connectionLimit: 1000,
   queueLimit: 0
