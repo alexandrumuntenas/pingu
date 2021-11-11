@@ -15,10 +15,10 @@ module.exports = {
         .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_PERMISSION_ERROR')}`)
       message.reply({ embeds: [sent] })
     },
-    customerror: (message, locale, key) => {
+    customerror: (message, text) => {
       const sent = new MessageEmbed()
         .setColor('RED')
-        .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, key)}`)
+        .setDescription(`<:pingu_false:876103413526564924> ${text}`)
       message.reply({ embeds: [sent] })
     }
   },
