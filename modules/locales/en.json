@@ -69,7 +69,8 @@
   "TRANSACTION_TYPE_0": "Canceled",
   "TRANSACTION_TYPE_1": "Income",
   "TRANSACTION_TYPE_2": "Outcome",
-  "TRANSACTION_TYPE_3": "Trasnfer",
+  "TRANSACTION_TYPE_3": "Buy",
+  "TRANSACTION_TYPE_4": "Transfer",
   "PLAYTOGETHER_NOVC": "In order to run this command, you must be in a voice channel. Please, join one and execute this command again.",
   "WELCOMER_INITIALIZE": "The welcome module configuration has been initialized. Run the command again to access the settings.",
   "WELCOMER_VIEWCONFIG_TITLE": "Welcome module configuration",
@@ -185,5 +186,8 @@
   "SHOP_AVALIABLE_TITLE": "Avaliable shops",
   "SHOP_PRODUCTPRICE": "Product Price",
   "SHOP_COMMANDTOBUY": "Command to buy",
-  "SHOP_VIEWIMAGE": "View image"
+  "SHOP_VIEWIMAGE": "View image",
+  "BUYPRODUCT_SUCCESS": "You have successfully purchased %PRODUCT_NAME%.",
+  "BUYPRODUCT_NOMONEY": "You do not have sufficient funds to purchase %PRODUCT_NAME%.",
+  "BUYPRODUCT_NOTFOUND": "The product %PRODUCT_NAME% does not exist"
 }
