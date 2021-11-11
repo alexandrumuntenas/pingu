@@ -189,5 +189,8 @@
   "SHOP_VIEWIMAGE": "View image",
   "BUYPRODUCT_SUCCESS": "You have successfully purchased %PRODUCT_NAME%.",
   "BUYPRODUCT_NOMONEY": "You do not have sufficient funds to purchase %PRODUCT_NAME%.",
-  "BUYPRODUCT_NOTFOUND": "The product %PRODUCT_NAME% does not exist"
+  "BUYPRODUCT_NOTFOUND": "The product %PRODUCT_NAME% does not exist",
+  "INVENTORY_TITLE": "My inventory",
+  "INVENTORY_EMPTY": "Your inventory is empty...",
+  "INVENTORY_PRELOADER": "Loading inventory. Please wait."
 }

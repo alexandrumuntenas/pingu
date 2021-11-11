@@ -189,5 +189,8 @@
   "SHOP_VIEWIMAGE": "Ver imagen",
   "BUYPRODUCT_SUCCESS": "Se ha adquirido %PRODUCT_NAME% correctamente.",
   "BUYPRODUCT_NOMONEY": "No dispone de saldo suficiente para comprar %PRODUCT_NAME%.",
-  "BUYPRODUCT_NOTFOUND": "El producto %PRODUCT_NAME% no existe."
+  "BUYPRODUCT_NOTFOUND": "El producto %PRODUCT_NAME% no existe.",
+  "INVENTORY_TITLE": "Mi inventario",
+  "INVENTORY_EMPTY": "Tu inventario está un poco vacío...",
+  "INVENTORY_PRELOADER": "Cargando inventario. Por favor, espere."
 }
