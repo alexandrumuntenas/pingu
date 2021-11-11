@@ -39,7 +39,6 @@ client.log.success('Módulos Cargados')
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
 const commandHandler = require('./modules/commandHandler')
-const voiceStateUpdate = require('./events/voiceStateUpdate')
 const ready = require('./events/ready')
 client.log.success('Servicios Third-Party Cargados')
 
@@ -88,8 +87,4 @@ client.on('guildMemberRemove', (member) => {
 
 client.on('messageCreate', (message) => {
   messageCreate(client, message)
-})
-
-client.on('voiceStateUpdate', (oldState, newState) => {
-  voiceStateUpdate(client, oldState, newState)
 })
