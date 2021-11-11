@@ -9,7 +9,7 @@ module.exports = {
       if (message.args[0]) {
         switch (message.args[0]) {
           case 'viewconfig': {
-            message.channel.send('<a:loading:880765834774073344> Fetching data... Please wait.').then((_message) => {
+            message.channel.send('<a:loader:871389840904695838> Fetching data... Please wait.').then((_message) => {
               const sentEmbed = new MessageEmbed()
                 .setColor('BLURPLE')
                 .setTitle(getLocales(locale, 'ECONOMY_VIEWCONFIG_TITLE'))
