@@ -7,7 +7,7 @@ module.exports = {
   name: 'balance',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
-      fetchUserAccount(client, message, (user) => {
+      fetchUserAccount(client, message.member, message.guild, (user) => {
         const firstMessageSent = new MessageEmbed()
           .setFooter(`${message.author.username} · ${message.database.economyBankName}`)
           .setColor('#009FE3')
