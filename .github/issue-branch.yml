@@ -1,0 +1,10 @@
+branchName: tiny
+silent: false
+autoCloseIssue: true
+openPR: true
+copyIssueDescriptionToPR: true
+copyIssueLabelsToPR: true
+copyIssueAssigneeToPR: true
+copyIssueProjectsToPR: true
+copyIssueMilestoneToPR: true
+commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
