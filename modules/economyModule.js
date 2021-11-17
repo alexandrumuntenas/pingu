@@ -97,33 +97,8 @@ module.exports = {
   makeMoneyTransferToUser: (client, message) => {
 
   },
-  fetchShops: (client, guild, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyShops` WHERE guild = ?', [guild.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
-      if (rows && Object.hasOwnProperty.call(rows, '0')) {
-        callback(rows)
-      } else {
-        callback(null)
-      }
-    })
-  },
-  fetchShop: (client, guild, shopFriendlyId, callback) => {
-    const EfS = client.Sentry.startTransaction({
-      op: 'economy.fetchShop',
-      name: 'Economy (fetchShop)'
-    })
-    client.pool.query('SELECT * FROM `guildEconomyShops` WHERE guild = ? AND shopFriendlyId = ?', [guild.id, shopFriendlyId], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
-      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        callback(rows[0])
-      } else {
-        callback(null)
-      }
-    })
-    EfS.finish()
-  },
-  fetchShopProducts: (client, shopId, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE shopId = ?', [shopId], (err, rows) => {
+  fetchShopProducts: (client, guild, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows)
@@ -132,8 +107,8 @@ module.exports = {
       }
     })
   },
-  fetchShopProduct: (client, productId, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE productId = ?', [productId], (err, rows) => {
+  fetchShopProduct: (client, guild, productId, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ?', [guild.id, productId], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
