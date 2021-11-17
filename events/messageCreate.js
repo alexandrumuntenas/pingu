@@ -1,7 +1,7 @@
 const { MessageEmbed, Collection } = require('discord.js')
-const genericMessages = require('../modules/genericMessages')
+const genericMessages = require('../functions/genericMessages')
 const guildFetchData = require('../modules/guildFetchData')
-const { rankUp } = require('../modules/levelsModule')
+const { rankUp } = require('../modules/levels')
 const cooldown = new Collection()
 
 module.exports = async (client, message) => {

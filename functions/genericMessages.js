@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const humanizeduration = require('humanize-duration')
-const getLocales = require('./getLocales')
+const getLocales = require('../i18n/getLocales')
 
 module.exports = {
   error: {

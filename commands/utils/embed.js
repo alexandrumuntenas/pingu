@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const genericMessages = require('../../functions/genericMessages')
+const getLocales = require('../../i18n/getLocales')
 module.exports = {
   name: 'embed',
   execute (client, locale, message, result) {

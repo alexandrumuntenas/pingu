@@ -1,8 +1,8 @@
 const { MessageAttachment } = require('discord.js')
-const tempFileRemover = require('../modules/tempFileRemover')
+const tempFileRemover = require('../functions/tempFileRemover')
 const { welcomeCard } = require('../modules/canvasProcessing')
 const guildFetchData = require('../modules/guildFetchData')
-const { fetchJoinRoles } = require('../modules/joinRolesModule')
+const { fetchJoinRoles } = require('../modules/joinroles')
 
 module.exports = async (client, member) => {
   const gMA = client.Sentry.startTransaction({

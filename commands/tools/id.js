@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'id',

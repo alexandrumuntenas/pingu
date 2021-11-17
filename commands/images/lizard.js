@@ -1,5 +1,5 @@
 const fetch = require('superagent')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../i18n/getLocales')
 const { MessageEmbed } = require('discord.js')
 
 module.exports = {

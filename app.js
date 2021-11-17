@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * *
  * Pingu                       *
- * Versión: 2109               *
+ * Versión: 22T1               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const { Client, Intents } = require('discord.js')
@@ -9,7 +9,7 @@ const mysql = require('mysql2')
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING] })
 
-client.log = require('./modules/customLogger')
+client.log = require('./functions/customLogger')
 
 client.pool = mysql.createPool({
   host: process.env.DB_HOST,
@@ -33,12 +33,11 @@ const messageCreate = require('./events/messageCreate')
 client.log.success('Eventos Cargados')
 
 client.log.info('Cargando Módulos')
-const checkFolder = require('./modules/checkFolders')
 client.log.success('Módulos Cargados')
 
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
-const commandHandler = require('./modules/commandHandler')
+const commandHandler = require('./functions/commandHandler')
 const ready = require('./events/ready')
 client.log.success('Servicios Third-Party Cargados')
 

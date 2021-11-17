@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const genericMessages = require('../../functions/genericMessages')
+const getLocales = require('../../i18n/getLocales')
 const guildMemberRemove = require('../../events/guildMemberRemove')
 
 module.exports = {

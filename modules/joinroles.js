@@ -1,8 +1,8 @@
 module.exports = {
   addJoinRole: (client, data, callback) => {
     const aJR = client.Sentry.startTransaction({
-      op: 'joinRolesModule.addJoinRole',
-      name: 'JoinRolesModule (Add Join Roles)'
+      op: 'joinroles.addJoinRole',
+      name: 'joinroles (Add Join Roles)'
     })
     client.pool.query('INSERT INTO `guildJoinRoles` (`guild`, `roleID`) VALUES (?, ?)', [data.guild.id, data.role.id], (err) => {
       if (err) client.Sentry.captureException(err)
@@ -12,8 +12,8 @@ module.exports = {
   },
   removeJoinRole: (client, data, callback) => {
     const rJR = client.Sentry.startTransaction({
-      op: 'joinRolesModule.removeJoinRole',
-      name: 'JoinRolesModule (Remove Join Roles)'
+      op: 'joinroles.removeJoinRole',
+      name: 'joinroles (Remove Join Roles)'
     })
     client.pool.query('DELETE FROM `guildJoinRoles` WHERE `guild` = ? AND roleID = ?', [data.guild.id, data.role.id], (err) => {
       if (err) client.Sentry.captureException(err)
