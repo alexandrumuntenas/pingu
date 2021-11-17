@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
-const guildCreate = require('./guildCreate')
 const { rankUp } = require('../modules/levelsModule')
 const genericMessages = require('../modules/genericMessages')
+const guildFetchData = require('../modules/guildFetchData')
 
 module.exports = async (client, message) => {
   if (
@@ -9,108 +9,102 @@ module.exports = async (client, message) => {
     message.author.bot ||
     message.author === client.user
   ) return
-  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
-    if (err) throw client.log.error(err)
-    if (Object.prototype.hasOwnProperty.call(result, 0)) {
-      message.database = result[0]
-      if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
-        message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
-      }
-      if (message.content.startsWith(message.database.guildPrefix) && message.args) {
-        const command = message.args[0]
-        message.args.shift()
-        if (client.commands.has(command)) {
-          const mCeIC = client.Sentry.startTransaction({
-            op: 'messageCreate/executeInternalCommand',
-            name: `Execute Internal Command (${command})`
-          })
-          try {
-            client.commands.get(command).execute(client, message.database.guildLanguage || 'en', message)
-          } catch (err) {
+  guildFetchData(client, message.guild, (guildData) => {
+    message.database = guildData
+    if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
+      message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
+    }
+    if (message.content.startsWith(message.database.guildPrefix) && message.args) {
+      const command = message.args[0]
+      message.args.shift()
+      if (client.commands.has(command)) {
+        const mCeIC = client.Sentry.startTransaction({
+          op: 'messageCreate/executeInternalCommand',
+          name: `Execute Internal Command (${command})`
+        })
+        try {
+          client.commands.get(command).execute(client, message.database.guildLanguage || 'en', message)
+        } catch (err) {
+          client.Sentry.captureException(err)
+          client.log.error(err)
+          genericMessages.error(message, message.database.guildLanguage || 'en', 'COMMAND_ERROR')
+        } finally {
+          mCeIC.finish()
+        }
+      } else {
+        const mCeEC = client.Sentry.startTransaction({
+          op: 'messageCreate/executeExternalCommand',
+          name: 'Execute External Command'
+        })
+        client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+          if (err) {
             client.Sentry.captureException(err)
             client.log.error(err)
-            genericMessages.error(message, message.database.guildLanguage || 'en', 'COMMAND_ERROR')
-          } finally {
-            mCeIC.finish()
           }
-        } else {
-          const mCeEC = client.Sentry.startTransaction({
-            op: 'messageCreate/executeExternalCommand',
-            name: 'Execute External Command'
-          })
-          client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
-            if (err) {
-              client.Sentry.captureException(err)
-              client.log.error(err)
-            }
-            if (Object.prototype.hasOwnProperty.call(result, 0)) {
-              client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ?', [message.guild.id, command], (err, result) => {
-                if (err) {
-                  client.Sentry.captureException(err)
+          if (Object.prototype.hasOwnProperty.call(result, 0)) {
+            client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ?', [message.guild.id, command], (err, result) => {
+              if (err) {
+                client.Sentry.captureException(err)
+                client.log.error(err)
+              }
+              if (Object.prototype.hasOwnProperty.call(result, 0)) {
+                const messageSent = new MessageEmbed()
+                  .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
+                  .setDescription(result[0].messageReturned)
+                  .setColor('BLURPLE')
+                message.channel.send({ embeds: [messageSent] }).catch((err) => {
                   client.log.error(err)
-                }
+                  client.Sentry.captureException(err)
+                }).finally(mCeEC.finish())
+              }
+            })
+          }
+        })
+      };
+    }
+
+    if (message.database.levelsEnabled !== 0) {
+      rankUp(client, message)
+    }
+
+    const mCgAR = client.Sentry.startTransaction({
+      op: 'messageCreate/guildAutoResponder',
+      name: 'Auto Responder'
+    })
+    client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+      if (err) {
+        client.Sentry.captureException(err)
+        client.log.error(err)
+      }
+      if (result) {
+        try {
+          if (Object.prototype.hasOwnProperty.call(result, 0)) {
+            client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `autoresponderTrigger` = ?', [message.guild.id, message.content], (err, result) => {
+              if (err) {
+                client.Sentry.captureException(err)
+                client.log.error(err)
+              }
+              if (result) {
                 if (Object.prototype.hasOwnProperty.call(result, 0)) {
                   const messageSent = new MessageEmbed()
                     .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-                    .setDescription(result[0].messageReturned)
+                    .setDescription(result[0].autoresponderMessage)
                     .setColor('BLURPLE')
                   message.channel.send({ embeds: [messageSent] }).catch((err) => {
                     client.log.error(err)
                     client.Sentry.captureException(err)
-                  }).finally(mCeEC.finish())
+                  })
                 }
-              })
-            }
-          })
-        };
-      }
-
-      if (message.database.levelsEnabled !== 0) {
-        rankUp(client, message)
-      }
-
-      const mCgAR = client.Sentry.startTransaction({
-        op: 'messageCreate/guildAutoResponder',
-        name: 'Auto Responder'
-      })
-      client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
-        if (err) {
+              }
+            })
+          }
+        } catch (err) {
           client.Sentry.captureException(err)
           client.log.error(err)
+        } finally {
+          mCgAR.finish()
         }
-        if (result) {
-          try {
-            if (Object.prototype.hasOwnProperty.call(result, 0)) {
-              client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `autoresponderTrigger` = ?', [message.guild.id, message.content], (err, result) => {
-                if (err) {
-                  client.Sentry.captureException(err)
-                  client.log.error(err)
-                }
-                if (result) {
-                  if (Object.prototype.hasOwnProperty.call(result, 0)) {
-                    const messageSent = new MessageEmbed()
-                      .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-                      .setDescription(result[0].autoresponderMessage)
-                      .setColor('BLURPLE')
-                    message.channel.send({ embeds: [messageSent] }).catch((err) => {
-                      client.log.error(err)
-                      client.Sentry.captureException(err)
-                    })
-                  }
-                }
-              })
-            }
-          } catch (err) {
-            client.Sentry.captureException(err)
-            client.log.error(err)
-          } finally {
-            mCgAR.finish()
-          }
-        }
-      })
-    } else {
-      guildCreate(client, message.guild)
-    }
-  }
-  )
+      }
+    })
+  })
 }
