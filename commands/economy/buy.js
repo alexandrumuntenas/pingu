@@ -1,6 +1,6 @@
 const { buyItem, fetchShopProduct } = require('../../modules/economy')
 const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'buy',

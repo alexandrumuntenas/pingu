@@ -1,6 +1,6 @@
 const { Permissions } = require('discord.js')
 const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../i18n/getLocales')
 const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/joinroles')
 
 module.exports = {

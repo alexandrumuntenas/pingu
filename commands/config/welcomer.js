@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { welcomeCard } = require('../../modules/canvasProcessing')
 const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../i18n/getLocales')
 const tempFileRemover = require('../../functions/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd')
 

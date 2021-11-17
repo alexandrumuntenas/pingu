@@ -2,7 +2,7 @@ const { registerFont, createCanvas, loadImage } = require('canvas')
 const { writeFileSync } = require('fs')
 const StackBlur = require('stackblur-canvas')
 const randomstring = require('randomstring')
-const getLocales = require('./getLocales')
+const getLocales = require('../i18n/getLocales')
 const isValidUrl = require('is-valid-http-url')
 const { millify } = require('millify')
 

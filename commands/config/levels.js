@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../modules/getLocales')
+const getLocales = require('../../i18n/getLocales')
 const { isInteger } = require('mathjs')
 
 const channelRelationship = { 0: 'Not Setup', 1: 'Same Channel where Message is Sent' }
