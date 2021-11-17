@@ -3,8 +3,8 @@ const talkedRecently = new Set()
 module.exports = {
   fetchMember: (client, member, callback) => {
     const lfM = client.Sentry.startTransaction({
-      op: 'levelsModule.fetchMember',
-      name: 'LevelsModule (Fetch Member)'
+      op: 'levels.fetchMember',
+      name: 'levels (Fetch Member)'
     })
     client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? AND member = ?', [member.guild.id, member.id], (err, result) => {
       if (err) client.Sentry.captureException(err)
@@ -24,8 +24,8 @@ module.exports = {
   },
   updateMember: (client, member, newData, callback) => {
     const luM = client.Sentry.startTransaction({
-      op: 'levelsModule.updateMember',
-      name: 'LevelsModule (Update Member)'
+      op: 'levels.updateMember',
+      name: 'levels (Update Member)'
     })
     client.pool.query('UPDATE `guildLevelsData` SET `memberExperience` = ?, `memberLevel` = ? WHERE `guild` = ? AND `member` = ?', [newData.memberExperience, newData.memberLevel, member.guild.id, member.id], (err, result) => {
       let status
@@ -41,8 +41,8 @@ module.exports = {
   },
   rankUp: function (client, message) {
     const lRU = client.Sentry.startTransaction({
-      op: 'levelsModule.rankup',
-      name: 'LevelsModule (Rank Up)'
+      op: 'levels.rankup',
+      name: 'levels (Rank Up)'
     })
     if (!message.content.startsWith(message.database.guildPrefix)) {
       if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {

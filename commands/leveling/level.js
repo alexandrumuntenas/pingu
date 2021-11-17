@@ -1,5 +1,5 @@
 const genericMessages = require('../../modules/genericMessages')
-const { fetchMember } = require('../../modules/levelsModule')
+const { fetchMember } = require('../../modules/levels')
 const { MessageAttachment } = require('discord.js')
 const { rankCard } = require('../../modules/canvasProcessing')
 const tempFileRemover = require('../../modules/tempFileRemover')
