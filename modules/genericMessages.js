@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js')
+const humanizeduration = require('humanize-duration')
 const getLocales = require('./getLocales')
 
 module.exports = {
@@ -67,5 +68,12 @@ module.exports.error = (message, text) => {
   const sent = new MessageEmbed()
     .setColor('RED')
     .setDescription(`<:pingu_false:876103413526564924> ${text}`)
+  message.reply({ embeds: [sent] })
+}
+
+module.exports.error.cooldown = (message, locale, cooldown) => {
+  const sent = new MessageEmbed()
+    .setColor('RED')
+    .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: locale, fallbacks: ['en'] }) })}`)
   message.reply({ embeds: [sent] })
 }
