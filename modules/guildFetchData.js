@@ -15,7 +15,7 @@ module.exports = (client, guild, callback) => {
           client.log.error(err)
         }
         gFD.finish()
-        callback()
+        module.exports(client, guild, callback)
       })
     }
   })
