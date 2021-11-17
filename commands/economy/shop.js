@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { fetchShop, fetchShopProduct, fetchShopProducts, fetchShops } = require('../../modules/economyModule')
+const { fetchShopProduct, fetchShopProducts } = require('../../modules/economyModule')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
@@ -7,68 +7,42 @@ module.exports = {
   name: 'shop',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
-      if (Object.prototype.hasOwnProperty.call(message.args, '0')) {
-        const shopFriendlyId = message.args[0]
-        fetchShop(client, message.guild, shopFriendlyId, (shopData) => {
-          // View product directly, no category module
-          if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            const productFriendlyId = message.args[1]
-            fetchShopProduct(client, productFriendlyId, (productData) => {
-              if (productData) {
-                const productEmbed = new MessageEmbed()
-                  .setColor(shopData.shopColor || '#633bdf')
-                  .setAuthor(shopData.shopName, shopData.shopLogo)
-                  .setTitle(productData.productName)
-                  .setImage(productData.productImage)
-                  .addField(`${message.database.economyCurrencyIcon} ${getLocales(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${message.database.economyCurrency}`, true)
-                  .addField(`:robot: ${getLocales(locale, 'SHOP_COMMANDTOBUY')}`, `\`${message.database.guildPrefix}buyproduct ${productData.productId}\``, true)
-                  .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
+      if (!Object.prototype.hasOwnProperty.call(message.args, 0)) {
+        const shopEmbed = new MessageEmbed()
+          .setTitle(`${message.guild.name} Shop`)
+          .setDescription('Use `/shop <item name>` or `/shop <item id>` to get more details about an item.\n Use `/buy <item name>` or `/buy <item id>` to buy an item.')
+          .setColor('#633bdf')
+          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
-                if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
-
-                message.channel.send({ embeds: [productEmbed] })
-              } else {
-                genericMessages.Error.customerror(message, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
-              }
+        let productList = ''
+        fetchShopProducts(client, message.guild, (shopProductsData) => {
+          if (shopProductsData) {
+            shopProductsData.forEach(shopProduct => {
+              productList += `\`${shopProduct.productName}\` [${shopProduct.productPrice} ${message.database.economyCurrencyIcon} ${message.database.economyCurrency}]\n`
             })
+            shopEmbed.addField('Products', productList)
+            message.channel.send({ embeds: [shopEmbed] })
           } else {
-            if (shopData) {
-              const shopEmbed = new MessageEmbed()
-                .setTitle(shopData.shopName)
-                .setThumbnail(shopData.shopLogo)
-                .setColor(shopData.shopColor || '#633bdf')
-                .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-              if (shopData.shopDescription) shopEmbed.setDescription(shopData.shopDescription)
-              fetchShopProducts(client, shopData.shopId, (shopProductsData) => {
-                if (shopProductsData) {
-                  shopProductsData.forEach(shopProduct => {
-                    shopEmbed.addField(`${shopProduct.productName} (${shopProduct.productId})`, `${message.database.economyCurrencyIcon} \`${shopProduct.productPrice} ${message.database.economyCurrency}\`\n:frame_photo: [\`${getLocales(locale, 'SHOP_VIEWIMAGE')}\`](${shopProduct.productImage || 'about:blank'})\n\n` + (shopProduct.productDescription || getLocales(locale, 'SHOP_NODESCRIPTION')))
-                  })
-                  message.channel.send({ embeds: [shopEmbed] })
-                } else {
-                  message.channel.send({ embeds: [shopEmbed] })
-                }
-              })
-            } else {
-              genericMessages.Error.customerror(message, getLocales(locale, 'SHOP_NOTFOUND'))
-            }
+            message.channel.send({ embeds: [shopEmbed] })
           }
         })
       } else {
-        fetchShops(client, message.guild, (shopsData) => {
-          if (shopsData) {
-            let shopList
-            shopsData.forEach(shop => { shopList = `${shopList || ''}・${shop.shopName} (\`${shop.shopFriendlyId}\`)\n` })
-            const shopsAvaliable = new MessageEmbed()
-              .setAuthor(message.guild.name, message.guild.iconURL())
+        fetchShopProduct(client, message.guild, message.content.replace(`${message.database.guildPrefix}shop `, '').trim(), (productData) => {
+          if (productData) {
+            const productEmbed = new MessageEmbed()
               .setColor('#633bdf')
-              .setTitle(getLocales(locale, 'SHOP_AVALIABLE_TITLE'))
-              .setDescription(shopList)
+              .setAuthor(`${message.guild.name} Shop`, message.guild.iconURL())
+              .setTitle(productData.productName)
+              .setImage(productData.productImage)
+              .addField(`${message.database.economyCurrencyIcon} ${getLocales(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${message.database.economyCurrency}`, true)
+              .addField(`:robot: ${getLocales(locale, 'SHOP_COMMANDTOBUY')}`, `\`${message.database.guildPrefix}buy ${productData.productName}\``, true)
               .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
-            message.channel.send({ embeds: [shopsAvaliable] })
+            if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
+
+            message.channel.send({ embeds: [productEmbed] })
           } else {
-            genericMessages.Error.customerror(message, getLocales(locale, 'SHOP_NOEXIST'))
+            genericMessages.Error.customerror(message, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
           }
         })
       }
