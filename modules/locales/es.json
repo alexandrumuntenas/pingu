@@ -158,18 +158,16 @@
   "AUTORESPONDER_CREATE_INSERTRESPONSE": "Introduce una respuesta",
   "AUTORESPONDER_CREATE_SUCCESS": "Se ha creado correctamente la respuesta personalizada con identificador %AUTORESPONDER_ID%",
   "AUTORESPONDER_REMOVE_SUCCESS": "Se ha eliminado correctamente la respuesta personalizada con identificador %AUTORESPONDER_ID%",
-  "SHOP_NOTFOUND": "No se ha encontrado la tienda solicitada.",
   "SHOP_NODESCRIPTION": "Descripción no establecida.",
   "SHOP_PRODUCTNOTFOUND": "No se ha encontrado el producto solicitado.",
-  "SHOP_NOEXIST": "No hay ninguna tienda disponible en el servidor.",
-  "SHOP_AVALIABLE_TITLE": "Tiendas disponibles",
   "SHOP_PRODUCTPRICE" : "Precio del producto",
   "SHOP_COMMANDTOBUY": "Comando para comprar",
-  "SHOP_VIEWIMAGE": "Ver imagen",
   "BUYPRODUCT_SUCCESS": "Se ha adquirido %PRODUCT_NAME% correctamente.",
   "BUYPRODUCT_NOMONEY": "No dispone de saldo suficiente para comprar %PRODUCT_NAME%.",
   "BUYPRODUCT_NOTFOUND": "El producto %PRODUCT_NAME% no existe.",
   "INVENTORY_TITLE": "Mi inventario",
   "INVENTORY_EMPTY": "Tu inventario está un poco vacío...",
-  "INVENTORY_PRELOADER": "Cargando inventario. Por favor, espere."
+  "INVENTORY_PRELOADER": "Cargando inventario. Por favor, espere.",
+  "DAILY": "Aquí tienes tu recompensa diaria: %DAILY%",
+  "COOLDOWN": "Tienes que esperar %COOLDOWN% para volver a ejecutar este comando."
 }

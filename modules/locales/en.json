@@ -158,18 +158,16 @@
   "AUTORESPONDER_CREATE_INSERTRESPONSE": "Enter a reply",
   "AUTORESPONDER_CREATE_SUCCESS": "The custom response with identifier %AUTORESPONDER_ID% has been successfully created.",
   "AUTORESPONDER_REMOVE_SUCCESS": "The custom response with identifier %AUTORESPONDER_ID% has been successfully removed.",
-  "SHOP_NOTFOUND": "The requested shop has not been found.",
   "SHOP_NODESCRIPTION": "Description not established.",
   "SHOP_PRODUCTNOTFOUND": "The requested product was not found.",
-  "SHOP_NOEXIST": "There is no shop available on the server.",
-  "SHOP_AVALIABLE_TITLE": "Avaliable shops",
   "SHOP_PRODUCTPRICE": "Product Price",
   "SHOP_COMMANDTOBUY": "Command to buy",
-  "SHOP_VIEWIMAGE": "View image",
   "BUYPRODUCT_SUCCESS": "You have successfully purchased %PRODUCT_NAME%.",
   "BUYPRODUCT_NOMONEY": "You do not have sufficient funds to purchase %PRODUCT_NAME%.",
   "BUYPRODUCT_NOTFOUND": "The product %PRODUCT_NAME% does not exist",
   "INVENTORY_TITLE": "My inventory",
   "INVENTORY_EMPTY": "Your inventory is empty...",
-  "INVENTORY_PRELOADER": "Loading inventory. Please wait."
+  "INVENTORY_PRELOADER": "Loading inventory. Please wait.",
+  "DAILY": "Here is your daily reward: %DAILY%",
+  "COOLDOWN": "You have to wait %COOLDOWN% to run this command again."
 }
