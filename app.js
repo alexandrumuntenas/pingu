@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * *
  * Pingu                       *
- * Versión: 2109               *
+ * Versión: 22T1               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const { Client, Intents } = require('discord.js')
@@ -33,7 +33,6 @@ const messageCreate = require('./events/messageCreate')
 client.log.success('Eventos Cargados')
 
 client.log.info('Cargando Módulos')
-const checkFolder = require('./modules/checkFolders')
 client.log.success('Módulos Cargados')
 
 client.log.info('Cargando Servicios Third-Party')
