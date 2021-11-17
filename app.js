@@ -64,7 +64,6 @@ client.Sentry = Sentry
 client.commands = commandHandler.loadCommands(client)
 
 client.on('ready', () => {
-  checkFolder()
   ready(client)
 })
 
