@@ -1,5 +1,5 @@
 /* eslint-disable no-eval */
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
   name: 'party',

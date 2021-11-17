@@ -1,8 +1,8 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { welcomeCard } = require('../../modules/canvasProcessing')
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../modules/getLocales')
-const tempFileRemover = require('../../modules/tempFileRemover')
+const tempFileRemover = require('../../functions/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd')
 
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }

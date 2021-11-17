@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../modules/getLocales')
 const fetch = require('superagent')
 const animeProviderList = require('./anime.providerlist.json')

@@ -1,8 +1,8 @@
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../functions/genericMessages')
 const { fetchMember } = require('../../modules/levels')
 const { MessageAttachment } = require('discord.js')
 const { rankCard } = require('../../modules/canvasProcessing')
-const tempFileRemover = require('../../modules/tempFileRemover')
+const tempFileRemover = require('../../functions/tempFileRemover')
 
 module.exports = {
   name: 'level',

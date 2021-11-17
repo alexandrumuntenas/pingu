@@ -1,5 +1,5 @@
 const { MessageAttachment } = require('discord.js')
-const tempFileRemover = require('../modules/tempFileRemover')
+const tempFileRemover = require('../functions/tempFileRemover')
 const { welcomeCard } = require('../modules/canvasProcessing')
 const guildFetchData = require('../modules/guildFetchData')
 const { fetchJoinRoles } = require('../modules/joinroles')

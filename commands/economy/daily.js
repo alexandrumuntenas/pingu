@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { getMoney } = require('../../modules/economy')
-const genericMessages = require('../../modules/genericMessages')
+const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
 module.exports = {
