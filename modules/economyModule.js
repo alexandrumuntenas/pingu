@@ -107,13 +107,20 @@ module.exports = {
       }
     })
   },
-  fetchShopProduct: (client, guild, productId, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ?', [guild.id, productId], (err, rows) => {
+  fetchShopProduct: (client, guild, product, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ?', [guild.id, product], (err, rows) => {
       if (err) client.Sentry.captureException(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        callback(null)
+        client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productId = ?', [guild.id, product], (err, rows) => {
+          if (err) client.Sentry.captureException(err)
+          if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
+            callback(rows[0])
+          } else {
+            callback(null)
+          }
+        })
       }
     })
   },
