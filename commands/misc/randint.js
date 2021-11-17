@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const Math = require('mathjs')
 
 module.exports = {
+  cooldown: 0,
   name: 'randint',
   execute (client, locale, message) {
     const messageSent = new MessageEmbed().setColor('#007BFF')

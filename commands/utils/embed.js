@@ -2,6 +2,7 @@ const { MessageEmbed, Permissions } = require('discord.js')
 const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 module.exports = {
+  cooldown: 0,
   name: 'embed',
   execute (client, locale, message, result) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

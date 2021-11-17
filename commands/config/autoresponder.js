@@ -4,6 +4,7 @@ const getLocales = require('../../i18n/getLocales')
 const makeId = require('../../modules/makeId')
 
 module.exports = {
+  cooldown: 0,
   name: 'autoresponder',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

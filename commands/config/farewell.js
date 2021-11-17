@@ -4,6 +4,7 @@ const getLocales = require('../../i18n/getLocales')
 const guildMemberRemove = require('../../events/guildMemberRemove')
 
 module.exports = {
+  cooldown: 0,
   name: 'farewell',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

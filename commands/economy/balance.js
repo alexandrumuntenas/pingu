@@ -3,6 +3,7 @@ const { fetchUserAccount } = require('../../modules/economy')
 const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
+  cooldown: 5000,
   name: 'balance',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {

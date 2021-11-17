@@ -5,6 +5,7 @@ const fetch = require('superagent')
 const animeProviderList = require('./anime.providerlist.json')
 
 module.exports = {
+  cooldown: 0,
   name: 'anime',
   execute (client, locale, message) {
     if (Object.prototype.hasOwnProperty.call(message.args, 0)) {

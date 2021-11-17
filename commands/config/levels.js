@@ -6,6 +6,7 @@ const { isInteger } = require('mathjs')
 const channelRelationship = { 0: 'Not Setup', 1: 'Same Channel where Message is Sent' }
 
 module.exports = {
+  cooldown: 0,
   name: 'levels',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

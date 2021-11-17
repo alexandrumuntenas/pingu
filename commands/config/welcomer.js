@@ -8,6 +8,7 @@ const guildMemberAdd = require('../../events/guildMemberAdd')
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 
 module.exports = {
+  cooldown: 0,
   name: 'welcomer',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

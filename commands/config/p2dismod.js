@@ -3,6 +3,7 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
+  cooldown: 0,
   name: 'p2dismod',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

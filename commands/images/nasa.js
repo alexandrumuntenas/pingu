@@ -4,6 +4,7 @@ const translate = require('translatte')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
+  cooldown: 0,
   name: 'nasa',
   execute (client, locale, message) {
     message.reply('<a:loader:871389840904695838>')

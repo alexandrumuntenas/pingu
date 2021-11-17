@@ -3,6 +3,7 @@ const getLocales = require('../../i18n/getLocales')
 const unixTime = require('unix-time')
 
 module.exports = {
+  cooldown: 0,
   name: 'server-info',
   execute (client, locale, message) {
     const embed = new MessageEmbed()

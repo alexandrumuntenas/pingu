@@ -3,6 +3,7 @@ const getLocales = require('../../i18n/getLocales')
 const { MessageEmbed } = require('discord.js')
 
 module.exports = {
+  cooldown: 0,
   name: 'duck',
   execute (client, locale, message) {
     function sendImageEmbed (url, provider) {

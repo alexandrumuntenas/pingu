@@ -8,6 +8,7 @@ const genericMessages = require('../../functions/genericMessages')
  */
 
 module.exports = {
+  cooldown: 0,
   name: 'poll',
   execute (client, locale, message) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

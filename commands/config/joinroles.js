@@ -4,6 +4,7 @@ const getLocales = require('../../i18n/getLocales')
 const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/joinroles')
 
 module.exports = {
+  cooldown: 0,
   name: 'joinroles',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {

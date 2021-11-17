@@ -3,6 +3,7 @@ const getLocales = require('../../i18n/getLocales')
 const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
+  cooldown: 10000,
   name: 'levelstop',
   execute (client, locale, message) {
     if (message.database.levelsEnabled !== 0) {

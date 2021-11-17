@@ -4,6 +4,7 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
+  cooldown: 1000,
   name: 'inventory',
   execute (client, locale, message) {
     if (message.database.economyEnabled !== 0) {

@@ -5,6 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 const avaliableLanguages = ['en', 'es']
 
 module.exports = {
+  cooldown: 0,
   name: 'setlanguage',
   execute (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
