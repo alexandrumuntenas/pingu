@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { fetchUserAccount } = require('../../modules/economyModule')
+const { fetchUserAccount } = require('../../modules/economy')
 const genericMessages = require('../../modules/genericMessages')
 
 module.exports = {

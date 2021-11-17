@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { getMoney } = require('../../modules/economyModule')
+const { getMoney } = require('../../modules/economy')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 

@@ -1,4 +1,4 @@
-const { buyItem, fetchShopProduct } = require('../../modules/economyModule')
+const { buyItem, fetchShopProduct } = require('../../modules/economy')
 const genericMessages = require('../../modules/genericMessages')
 const getLocales = require('../../modules/getLocales')
 
