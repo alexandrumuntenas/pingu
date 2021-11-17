@@ -24,7 +24,7 @@ module.exports = {
                 inventoryDataProducts.forEach((productId) => {
                   inventoryDataProductsIndex++
                   const product = inventoryData[productId]
-                  fetchShopProduct(client, product.productId, (productData) => {
+                  fetchShopProduct(client, message.guild, product.productId, (productData) => {
                     inventoryString += `${productData.productName} - ${productData.productId} (x${product.productQuantity})\n`
                     if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                       inventoryEmbed.setDescription(inventoryString)
