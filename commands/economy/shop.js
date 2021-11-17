@@ -42,12 +42,12 @@ module.exports = {
 
             message.channel.send({ embeds: [productEmbed] })
           } else {
-            genericMessages.Error.customerror(message, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
+            genericMessages.error(message, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
           }
         })
       }
     } else {
-      genericMessages.Error.no_avaliable(message, locale)
+      genericMessages.error.noavaliable(message, locale)
     }
   }
 }

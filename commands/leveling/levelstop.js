@@ -29,12 +29,12 @@ module.exports = {
               })
             })
           } else {
-            genericMessages.Error.customerror(message, locale, 'LEVELSTOP_NODATA')
+            genericMessages.error(message, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
     } else {
-      genericMessages.Error.no_avaliable(message, locale)
+      genericMessages.error.noavaliable(message, locale)
     }
   }
 }

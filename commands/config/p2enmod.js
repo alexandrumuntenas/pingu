@@ -49,12 +49,12 @@ module.exports = {
             return
           }
         }
-        genericMessages.Success(message, getLocales(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))
+        genericMessages.success(message, getLocales(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))
       } else {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

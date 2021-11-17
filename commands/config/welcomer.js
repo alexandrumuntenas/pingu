@@ -31,7 +31,7 @@ module.exports = {
             if (message.mentions.channels.first()) {
               client.pool.query('UPDATE `guildData` SET `welcomeChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_CHANNEL_SUCCESS', { WELCOMER_CHANNEL: message.mentions.channels.first() }))
+                genericMessages.success(message, getLocales(locale, 'WELCOMER_CHANNEL_SUCCESS', { WELCOMER_CHANNEL: message.mentions.channels.first() }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_CHANNEL_MISSING_ARGS', { WELCOMER_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) }))
@@ -44,7 +44,7 @@ module.exports = {
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
               client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${collected.first().content}\`` }))
+                genericMessages.success(message, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${collected.first().content}\`` }))
               })
             })
             break
@@ -53,7 +53,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_SUCCESS', { WELCOMER_DEFAULTBACKGROUND: message.args[1] }))
+                genericMessages.success(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_SUCCESS', { WELCOMER_DEFAULTBACKGROUND: message.args[1] }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_MISSING_ARGS', { WELCOMER_DEFAULTBACKGROUND: message.database.welcomeImageBackground }))
@@ -64,7 +64,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: message.args[1] }))
+                genericMessages.success(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: message.args[1] }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS', { WELCOMER_CUSTOMBACKGROUND: message.database.welcomeImageCustomBackground }))
@@ -74,14 +74,14 @@ module.exports = {
           case 'enableCards': {
             client.pool.query('UPDATE `guildData` SET `welcomeImage` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.Success(message, getLocales(locale, 'WELCOMER_ENABLECARDS'))
+              genericMessages.success(message, getLocales(locale, 'WELCOMER_ENABLECARDS'))
             })
             break
           }
           case 'disableCards': {
             client.pool.query('UPDATE `guildData` SET `welcomeImage` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.Success(message, getLocales(locale, 'WELCOMER_DISABLECARDS'))
+              genericMessages.success(message, getLocales(locale, 'WELCOMER_DISABLECARDS'))
             })
             break
           }
@@ -89,7 +89,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))
+                genericMessages.success(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity }))
@@ -100,7 +100,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))
+                genericMessages.success(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: message.database.welcomeImageCustomBlur }))
@@ -112,12 +112,12 @@ module.exports = {
               if (message.args[1] === 'true') {
                 client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
                   if (err) client.Sentry.captureException(err)
-                  genericMessages.Success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'ENABLED') }))
+                  genericMessages.success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'ENABLED') }))
                 })
               } else {
                 client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
                   if (err) client.Sentry.captureException(err)
-                  genericMessages.Success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'DISABLED') }))
+                  genericMessages.success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'DISABLED') }))
                 })
               }
             } else {
@@ -148,7 +148,7 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

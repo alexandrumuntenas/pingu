@@ -12,7 +12,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [message.content.replace(`${message.database.guildPrefix}economy setCurrency `, ''), message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))
+                genericMessages.success(message, getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: message.database.economyCurrency }))
@@ -23,7 +23,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))
+                genericMessages.success(message, getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: message.database.economyCurrencyIcon }))
@@ -39,7 +39,7 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

@@ -11,18 +11,18 @@ module.exports = {
           if (productData) {
             buyItem(client, message.member, message.guild, productData, (status) => {
               if (status) {
-                genericMessages.Success(message, getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
+                genericMessages.success(message, getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
-                genericMessages.Error.customerror(message, getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
+                genericMessages.error(message, getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
               }
             })
           } else {
-            genericMessages.Error.customerror(message, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: message.args[0] }))
+            genericMessages.error(message, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: message.args[0] }))
           }
         })
       }
     } else {
-      genericMessages.Error.no_avaliable(message, locale)
+      genericMessages.error.noavaliable(message, locale)
     }
   }
 }

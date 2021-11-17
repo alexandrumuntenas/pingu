@@ -29,7 +29,7 @@ module.exports = async (client, message) => {
           } catch (err) {
             client.Sentry.captureException(err)
             client.log.error(err)
-            genericMessages.Error.customerror(message, message.database.guildLanguage || 'en', 'COMMAND_ERROR')
+            genericMessages.error(message, message.database.guildLanguage || 'en', 'COMMAND_ERROR')
           } finally {
             mCeIC.finish()
           }

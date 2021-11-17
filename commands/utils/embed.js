@@ -128,7 +128,7 @@ module.exports = {
         indice()
       })
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

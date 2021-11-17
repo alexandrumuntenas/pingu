@@ -2,23 +2,17 @@ const { MessageEmbed } = require('discord.js')
 const getLocales = require('./getLocales')
 
 module.exports = {
-  Error: {
-    no_avaliable: (message, locale) => {
+  error: {
+    noavaliable: (message, locale) => {
       const sent = new MessageEmbed()
         .setColor('RED')
         .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_NO_AVALIABLE')}`)
       message.reply({ embeds: [sent] })
     },
-    permerror: (message, locale) => {
+    permissionerror: (message, locale) => {
       const sent = new MessageEmbed()
         .setColor('RED')
         .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_PERMISSION_ERROR')}`)
-      message.reply({ embeds: [sent] })
-    },
-    customerror: (message, text) => {
-      const sent = new MessageEmbed()
-        .setColor('RED')
-        .setDescription(`<:pingu_false:876103413526564924> ${text}`)
       message.reply({ embeds: [sent] })
     }
   },
@@ -59,11 +53,19 @@ module.exports = {
         .setDescription(`<:pingu_null:876103457860370442> ${text}`)
       message.reply({ embeds: [sentEmbed] })
     }
-  },
-  Success: (message, text) => {
-    const sentEmbed = new MessageEmbed()
-      .setColor('GREEN')
-      .setDescription(`<:pingu_on:876103503561502730> ${text}`)
-    message.reply({ embeds: [sentEmbed] })
   }
+}
+
+module.exports.success = (message, text) => {
+  const sentEmbed = new MessageEmbed()
+    .setColor('GREEN')
+    .setDescription(`<:pingu_on:876103503561502730> ${text}`)
+  message.reply({ embeds: [sentEmbed] })
+}
+
+module.exports.error = (message, text) => {
+  const sent = new MessageEmbed()
+    .setColor('RED')
+    .setDescription(`<:pingu_false:876103413526564924> ${text}`)
+  message.reply({ embeds: [sent] })
 }

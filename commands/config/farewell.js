@@ -26,7 +26,7 @@ module.exports = {
             if (message.mentions.channels.first()) {
               client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))
+                genericMessages.success(message, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.farewellChannel) }))
@@ -39,7 +39,7 @@ module.exports = {
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
               client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))
+                genericMessages.success(message, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))
               })
             })
             break
@@ -58,7 +58,7 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

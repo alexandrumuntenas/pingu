@@ -43,7 +43,7 @@ module.exports = {
         })
       })
     } else {
-      genericMessages.Error.no_avaliable(message, locale)
+      genericMessages.error.noavaliable(message, locale)
     }
   }
 }

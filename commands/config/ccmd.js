@@ -13,7 +13,7 @@ module.exports = {
               const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
               client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))
+                genericMessages.success(message, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))
               })
             } else {
               helpTray(message, locale)
@@ -24,7 +24,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))
+                genericMessages.success(message, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))
               })
             } else {
               helpTray(message, locale)
@@ -40,7 +40,7 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

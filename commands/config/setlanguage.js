@@ -12,12 +12,12 @@ module.exports = {
         client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)
         })
-        genericMessages.Success(message, getLocales(message.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${message.args[0]}\`` }))
+        genericMessages.success(message, getLocales(message.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${message.args[0]}\`` }))
       } else {
         genericMessages.Info.help(message, locale, `${message.database.guildPrefix}setlanguage <language>`, ['en', 'es'])
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

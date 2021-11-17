@@ -92,7 +92,7 @@ module.exports = {
         message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${message.database.guildPrefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${message.database.guildPrefix}poll Do you like Pingu?`)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

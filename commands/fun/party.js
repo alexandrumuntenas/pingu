@@ -29,7 +29,7 @@ module.exports = {
         genericMessages.Info.help(message, locale, `${message.database.guildPrefix}party <option>`, ['start <activity>[chess, youtube, poker, betrayal, fishing]', 'invite <activity>[chess, youtube, poker, betrayal, fishing] @user'])
       }
     } else {
-      genericMessages.Error.customerror(message, locale, 'PLAYTOGETHER_NOVC')
+      genericMessages.error(message, locale, 'PLAYTOGETHER_NOVC')
     }
   }
 }

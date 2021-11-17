@@ -19,11 +19,11 @@ module.exports = {
             })
           })
         } else {
-          genericMessages.Error.customerror(message, locale, 'RANK_NO_CLASSIFIED')
+          genericMessages.error(message, locale, 'RANK_NO_CLASSIFIED')
         }
       })
     } else {
-      genericMessages.Error.no_avaliable(message, locale)
+      genericMessages.error.noavaliable(message, locale)
     }
   }
 }

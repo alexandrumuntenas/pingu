@@ -29,7 +29,7 @@ module.exports = {
             if (message.mentions.channels.first()) {
               client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: message.mentions.channels.first() }))
+                genericMessages.success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: message.mentions.channels.first() }))
               })
             } else {
               if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
@@ -37,14 +37,14 @@ module.exports = {
                   case 'none': {
                     client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', message.guild.id], (err) => {
                       if (err) client.Sentry.captureException(err)
-                      genericMessages.Success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'none' }))
+                      genericMessages.success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'none' }))
                     })
                     break
                   }
                   case 'same': {
                     client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', message.guild.id], (err) => {
                       if (err) client.Sentry.captureException(err)
-                      genericMessages.Success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'same' }))
+                      genericMessages.success(message, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'same' }))
                     })
                     break
                   }
@@ -65,7 +65,7 @@ module.exports = {
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
               client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))
+                genericMessages.success(message, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))
               })
             })
             break
@@ -75,7 +75,7 @@ module.exports = {
               if (isInteger(parseInt(message.args[1]))) {
                 client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(message.args[1]), message.guild.id], (err) => {
                   if (err) client.Sentry.captureException(err)
-                  genericMessages.Success(message, getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: message.args[1] }))
+                  genericMessages.success(message, getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: message.args[1] }))
                 })
               } else {
                 genericMessages.Info.status(message, getLocales(locale, 'LEVELS_DIFFICULTY_NOT_INT'))
@@ -89,7 +89,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `levelsImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_DEFAULTBACKGROUND_SUCCESS', { LEVELS_DEFAULTBACKGROUND: message.args[1] }))
+                genericMessages.success(message, getLocales(locale, 'LEVELS_DEFAULTBACKGROUND_SUCCESS', { LEVELS_DEFAULTBACKGROUND: message.args[1] }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'LEVELS_DEFAULTBACKGROUND_MISSING_ARGS', { LEVELS_DEFAULTBACKGROUND: message.database.welcomeImageBackground }))
@@ -100,7 +100,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: message.args[1] }))
+                genericMessages.success(message, getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: message.args[1] }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_MISSING_ARGS', { LEVELS_CUSTOMBACKGROUND: message.database.welcomeImageCustomBackground }))
@@ -111,7 +111,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: (message.args[1]) }))
+                genericMessages.success(message, getLocales(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: (message.args[1]) }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'LEVELS_OVERLAYOPACITY_MISSING_ARGS', { LEVELS_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity }))
@@ -122,7 +122,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.Success(message, getLocales(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: (message.args[1]) }))
+                genericMessages.success(message, getLocales(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: (message.args[1]) }))
               })
             } else {
               genericMessages.Info.status(message, getLocales(locale, 'LEVELS_OVERLAYBLUR_MISSING_ARGS', { LEVELS_OVERLAYBLUR: message.database.welcomeImageCustomBlur }))
@@ -138,7 +138,7 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }

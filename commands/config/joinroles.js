@@ -31,7 +31,7 @@ module.exports = {
           }
           case 'add': {
             if (message.mentions.roles.first()) {
-              message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => genericMessages.Success(message, getLocales(locale, 'JOINROLES_ADD', { ROLE: role }))))
+              message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => genericMessages.success(message, getLocales(locale, 'JOINROLES_ADD', { ROLE: role }))))
             } else {
               helpTray(message, locale)
             }
@@ -39,7 +39,7 @@ module.exports = {
           }
           case 'remove': {
             if (message.mentions.roles.first()) {
-              message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => genericMessages.Success(message, getLocales(locale, 'JOINROLES_REMOVE', { ROLE: role }))))
+              message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => genericMessages.success(message, getLocales(locale, 'JOINROLES_REMOVE', { ROLE: role }))))
             } else {
               helpTray(message, locale)
             }
@@ -54,7 +54,7 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.Error.permerror(message, locale)
+      genericMessages.error.permissionerror(message, locale)
     }
   }
 }
