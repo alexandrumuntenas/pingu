@@ -77,6 +77,8 @@ module.exports = async (client, message) => {
       rankUp(client, message)
     }
 
-    autoresponder(client, message)
+    if (message.database.autoresponderEnabled !== 0) {
+      autoresponder(client, message)
+    }
   })
 }
