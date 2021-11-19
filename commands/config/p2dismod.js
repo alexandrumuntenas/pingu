@@ -45,6 +45,12 @@ module.exports = {
             })
             break
           }
+          case 'autoresponder': {
+            client.pool.query('UPDATE `guildData` SET `autoresponderEnabled` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+            })
+            break
+          }
           default: {
             helpTray(message, locale)
             return
@@ -61,5 +67,5 @@ module.exports = {
 }
 
 function helpTray (message, locale) {
-  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy'])
+  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
 }
