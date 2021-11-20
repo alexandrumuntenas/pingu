@@ -26,10 +26,10 @@ module.exports = async (client, message) => {
           setTimeout(() => {
             cooldown.delete(`${commandToExecute}${message.member.id}${message.guild.id}`)
           }, client.commands.get(commandToExecute).cooldown || 10000)
-          await client.commands.get(commandToExecute).execute(client, message.database.guildLanguage || 'en', message)
+          await client.commands.get(commandToExecute).executeLegacy(client, message.database.guildLanguage || 'en', message)
         } else {
           const cooldownTime = cooldown.get(`${commandToExecute}${message.member.id}${message.guild.id}`)
-          genericMessages.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
+          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
           return
         }
       } else {
@@ -68,7 +68,7 @@ module.exports = async (client, message) => {
           })
         } else {
           const cooldownTime = cooldown.get(`customcommand${commandToExecute}${message.member.id}${message.guild.id}`)
-          genericMessages.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
+          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
           return
         }
       }
