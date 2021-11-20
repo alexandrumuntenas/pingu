@@ -19,7 +19,7 @@ module.exports = {
           }
         })
       } else {
-        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
+        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
           if (err) {
             client.Sentry.captureException(err)
             client.log.error(err)
