@@ -4,6 +4,7 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 const tempFileRemover = require('../../functions/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd')
+const isHexcolor = require('is-hexcolor')
 
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 
@@ -22,7 +23,7 @@ module.exports = {
                 .setDescription(getLocales(locale, 'WELCOMER_VIEWCONFIG_DESCRIPTION'))
                 .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
                 .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.welcomeMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
-                .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[message.database.welcomeImage] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_DEFAULTBACKGROUND', { WELCOMER_DEFAULTBACKGROUND: message.database.welcomeImageBackground })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.welcomeImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.welcomeImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] })}`, false)
+                .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[message.database.welcomeImage] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.welcomeImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: message.database.welcomeImageCustomOverlayColor })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.welcomeImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] })}`, false)
 
               _message.edit({ content: 'Done', embeds: [sentEmbed] })
             })
@@ -50,18 +51,7 @@ module.exports = {
             })
             break
           }
-          case 'defaultBackground': {
-            if (message.args[1]) {
-              client.pool.query('UPDATE `guildData` SET `welcomeImageBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-                if (err) client.Sentry.captureException(err)
-                genericMessages.success(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_SUCCESS', { WELCOMER_DEFAULTBACKGROUND: message.args[1] }))
-              })
-            } else {
-              genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_DEFAULTBACKGROUND_MISSING_ARGS', { WELCOMER_DEFAULTBACKGROUND: message.database.welcomeImageBackground }))
-            }
-            break
-          }
-          case 'customBackground': {
+          case 'custombackground': {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
@@ -72,21 +62,21 @@ module.exports = {
             }
             break
           }
-          case 'enableCards': {
+          case 'enablecards': {
             client.pool.query('UPDATE `guildData` SET `welcomeImage` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
               genericMessages.success(message, getLocales(locale, 'WELCOMER_ENABLECARDS'))
             })
             break
           }
-          case 'disableCards': {
+          case 'disablecards': {
             client.pool.query('UPDATE `guildData` SET `welcomeImage` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
               genericMessages.success(message, getLocales(locale, 'WELCOMER_DISABLECARDS'))
             })
             break
           }
-          case 'overlayOpacity': {
+          case 'overlayopacity': {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
@@ -97,7 +87,7 @@ module.exports = {
             }
             break
           }
-          case 'overlayBlur': {
+          case 'overlayblur': {
             if (message.args[1]) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
@@ -108,7 +98,22 @@ module.exports = {
             }
             break
           }
-          case 'roundAvatar': {
+          case 'overlaycolor': {
+            if (message.args[1]) {
+              if (isHexcolor(message.args[1])) {
+                client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOverlayColor` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
+                  if (err) client.Sentry.captureException(err)
+                  genericMessages.success(message, getLocales(locale, 'WELCOMER_OVERLAYCOLOR_SUCCESS', { WELCOMER_OVERLAYCOLOR: message.args[1] }))
+                })
+              } else {
+                genericMessages.Info.status(message, getLocales(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))
+              }
+            } else {
+              genericMessages.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYCOLOR_MISSING_ARGS', { WELCOMER_OVERLAYCOLOR: message.database.welcomeImageCustomOverlayColor }))
+            }
+            break
+          }
+          case 'roundavatar': {
             if (message.args[1]) {
               if (message.args[1] === 'true') {
                 client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
@@ -155,5 +160,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}welcomer <option>\``, ['viewconfig', 'channel <channel>', 'message', 'enableCards', 'disableCards', 'defaultBackground <background ID>', 'customBackground <background URL>', 'overlayOpacity <quantity>', 'overlayBlur <quantity>', 'roundAvatar <true/false>', 'test', 'simulate'])
+  genericMessages.Info.help(message, locale, `\`${message.database.guildPrefix}welcomer <option>\``, ['viewconfig', 'channel <channel>', 'message', 'enablecards', 'disablecards', 'customBackground <background URL>', 'overlaycolor <hex code>', 'overlayopacity <quantity>', 'overlayblur <quantity>', 'roundavatar <true/false>', 'test', 'simulate'])
 }
