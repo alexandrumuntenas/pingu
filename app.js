@@ -72,29 +72,34 @@ client.on('ready', () => {
 client.on('guildCreate', (guild) => {
   guildCreate(client, guild).catch(err => {
     client.log.fatal(err)
+    client.Sentry.captureException(err)
   })
 })
 
 client.on('guildDelete', (guild) => {
   guildDelete(client, guild).catch(err => {
     client.log.fatal(err)
+    client.Sentry.captureException(err)
   })
 })
 
 client.on('guildMemberAdd', (member) => {
   guildMemberAdd(client, member).catch(err => {
     client.log.fatal(err)
+    client.Sentry.captureException(err)
   })
 })
 
 client.on('guildMemberRemove', (member) => {
   guildMemberRemove(client, member).catch(err => {
     client.log.fatal(err)
+    client.Sentry.captureException(err)
   })
 })
 
 client.on('messageCreate', (message) => {
   messageCreate(client, message).catch(err => {
     client.log.fatal(err)
+    client.Sentry.captureException(err)
   })
 })
