@@ -21,6 +21,8 @@ module.exports = async (client, member) => {
                 tempFileRemover(paths)
               })
             })
+          } else {
+            mensaje.send({ content: data.welcomeMessage.replace('{member}', `<@${member.user.id}>`).replace('{guild}', `${member.guild.name}`) })
           }
         }
       }
