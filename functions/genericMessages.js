@@ -3,20 +3,6 @@ const humanizeduration = require('humanize-duration')
 const getLocales = require('../i18n/getLocales')
 
 module.exports = {
-  error: {
-    noavaliable: (message, locale) => {
-      const sent = new MessageEmbed()
-        .setColor('RED')
-        .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_NO_AVALIABLE')}`)
-      message.reply({ embeds: [sent] })
-    },
-    permissionerror: (message, locale) => {
-      const sent = new MessageEmbed()
-        .setColor('RED')
-        .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_PERMISSION_ERROR')}`)
-      message.reply({ embeds: [sent] })
-    }
-  },
   Info: {
     help: (message, locale, syntax, options, nsfw, nsfwOptions) => {
       const sentEmbed = new MessageEmbed().setTitle('Help Tray')
@@ -75,5 +61,19 @@ module.exports.error.cooldown = (message, locale, cooldown) => {
   const sent = new MessageEmbed()
     .setColor('RED')
     .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: locale, fallbacks: ['en'] }) })}`)
+  message.reply({ embeds: [sent] })
+}
+
+module.exports.error.noavaliable = (message, locale) => {
+  const sent = new MessageEmbed()
+    .setColor('RED')
+    .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_NO_AVALIABLE')}`)
+  message.reply({ embeds: [sent] })
+}
+
+module.exports.error.permissionerror = (message, locale) => {
+  const sent = new MessageEmbed()
+    .setColor('RED')
+    .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_PERMISSION_ERROR')}`)
   message.reply({ embeds: [sent] })
 }
