@@ -1,3 +1,4 @@
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
@@ -5,6 +6,34 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 0,
   name: 'ccmd',
+  description: 'Create or remove custom commands',
+  data: new SlashCommandBuilder()
+    .setName('ccmd')
+    .setDescription('Create or remove custom commands')
+    .addSubcommand(subcommand => subcommand.setName('create').setDescription('Create a custom command').addStringOption(option => option.setName('command').setDescription('The Custom Command').setRequired(true)).addStringOption(option => option.setName('response').setDescription('The Response to the command').setRequired(true)))
+    .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove a custom command').addStringOption(option => option.setName('command').setDescription('The Custom Command').setRequired(true))),
+  executeInteraction (client, locale, interaction) {
+    if (interaction.guild.ownerId === interaction.member.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+      switch (interaction.options.getSubcommand()) {
+        case 'create': {
+          client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [interaction.guild.id, interaction.options.getString('command'), interaction.options.getString('response')], function (err) {
+            if (err) client.Sentry.captureException(err)
+            genericMessages.success(interaction, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command'), CCMD_VALUERETURNED: interaction.options.getString('response') }))
+          })
+          break
+        }
+        case 'remove': {
+          client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [interaction.options.getString('command'), interaction.guild.id], function (err) {
+            if (err) client.Sentry.captureException(err)
+            genericMessages.success(interaction, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command') }))
+          })
+          break
+        }
+      }
+    } else {
+      genericMessages.error.permissionerror(interaction, locale)
+    }
+  },
   executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
