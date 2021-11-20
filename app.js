@@ -30,6 +30,7 @@ const guildDelete = require('./events/guildDelete')
 const guildMemberAdd = require('./events/guildMemberAdd')
 const guildMemberRemove = require('./events/guildMemberRemove')
 const messageCreate = require('./events/messageCreate')
+const interactionCreate = require('./events/interactionCreate')
 client.log.success('Eventos Cargados')
 
 client.log.info('Cargando Módulos')
@@ -62,6 +63,7 @@ if (process.env.ENTORNO === 'public') {
 client.Sentry = Sentry
 
 client.commands = commandHandler.loadCommands(client)
+client.interactions = commandHandler.loadInteractions(client)
 
 client.on('ready', () => {
   ready(client).catch(err => {
@@ -102,4 +104,13 @@ client.on('messageCreate', (message) => {
     client.log.fatal(err)
     client.Sentry.captureException(err)
   })
+})
+
+client.on('interactionCreate', async interaction => {
+  if (interaction.isCommand()) {
+    interactionCreate.isCommand(client, interaction).catch(err => {
+      client.log.fatal(err)
+      client.Sentry.captureException(err)
+    })
+  }
 })
