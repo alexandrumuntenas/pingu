@@ -37,7 +37,7 @@ module.exports.legacy.Info.help = (message, locale, syntax, options, nsfw, nsfwO
   message.reply({ embeds: [sentEmbed] })
 }
 
-module.exports.legacy.Info.success = (message, text) => {
+module.exports.legacy.Info.status = (message, text) => {
   const sentEmbed = new MessageEmbed()
     .setColor('BLURPLE')
     .setDescription(`<:pingu_null:876103457860370442> ${text}`)
@@ -112,7 +112,7 @@ module.exports.info.help = (interaction, locale, syntax, options, nsfw, nsfwOpti
   interaction.editReply({ embeds: [sentEmbed] })
 }
 
-module.exports.info.success = (interaction, text) => {
+module.exports.info.status = (interaction, text) => {
   const sentEmbed = new MessageEmbed()
     .setColor('BLURPLE')
     .setDescription(`<:pingu_null:876103457860370442> ${text}`)
