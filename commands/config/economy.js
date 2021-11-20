@@ -1,10 +1,47 @@
 const { Permissions } = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   cooldown: 0,
   name: 'economy',
+  description: 'Configure the economy settings for your server.',
+  data: new SlashCommandBuilder()
+    .setName('economy')
+    .setDescription('Configure the economy settings for your server.')
+    .addSubcommand(subcommand => subcommand.setName('coinname').setDescription('Set the coin name').addStringOption(option => option.setName('coinname').setDescription('Enter the new coin name')))
+    .addSubcommand(subcommand => subcommand.setName('coinicon').setDescription('Set the coin icon').addStringOption(option => option.setName('coinicon').setDescription('Enter the new coin icon'))),
+  executeInteraction (client, locale, interaction) {
+    if (interaction.guild.ownerId === interaction.member.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+      switch (interaction.options.getSubcommand()) {
+        case 'coinname': {
+          if (interaction.options.getString('coinname')) {
+            client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [interaction.options.getString('coinname'), interaction.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+              genericMessages.success(interaction, getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: interaction.options.getString('coinname') }))
+            })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: interaction.database.economyCurrency }))
+          }
+          break
+        }
+        case 'coinicon': {
+          if (interaction.options.getString('coinicon')) {
+            client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [interaction.options.getString('coinicon'), interaction.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+              genericMessages.success(interaction, getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: interaction.options.getString('coinicon') }))
+            })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: interaction.database.economyCurrencyIcon }))
+          }
+          break
+        }
+      }
+    } else {
+      genericMessages.legacy.error.permissionerror(interaction, locale)
+    }
+  },
   executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
