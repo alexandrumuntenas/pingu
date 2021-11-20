@@ -9,7 +9,7 @@ module.exports = {
   executeLegacy (client, locale, message) {
     if (message.author.id === '722810818823192629') {
       rest.put(Routes.applicationGuildCommands(client.user.id, message.guild.id), { body: client.interactions.map(command => command.toJSON()) })
-        .then(() => console.log('Successfully registered application commands.'))
+        .then(() => genericMessages.legacy.success(message, 'Successfully registered application commands.'))
         .catch(console.error)
     } else {
       genericMessages.legacy.error.permissionerror(message, locale)
