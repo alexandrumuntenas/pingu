@@ -19,6 +19,7 @@
     "flipacoin": "^1.0.0",
     "hex-to-rgba": "^2.0.1",
     "humanize-duration": "^3.27.0",
+    "is-image-url": "^1.1.8",
     "is-valid-http-url": "^1.0.3",
     "mathjs": "^10.0.0",
     "millify": "^4.0.0",
