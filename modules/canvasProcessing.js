@@ -5,6 +5,7 @@ const randomstring = require('randomstring')
 const getLocales = require('../i18n/getLocales')
 const isValidUrl = require('is-valid-http-url')
 const { millify } = require('millify')
+const hexToRgba = require('hex-to-rgba')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
 module.exports = {
@@ -33,7 +34,7 @@ module.exports = {
     ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
 
     // Establecer blured overlay
-    ctx.fillStyle = `rgba(0, 0, 0, ${database.welcomeImageCustomOpacity / 100})`
+    ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor, (database.welcomeImageCustomOpacity / 100))
     ctx.fillRect(25, 25, 1050, 450)
     StackBlur.canvasRGBA(canvas, 25, 25, 1050, 450, database.welcomeImageCustomBlur)
 
