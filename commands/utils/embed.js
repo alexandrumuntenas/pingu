@@ -4,7 +4,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 0,
   name: 'embed',
-  execute (client, locale, message, result) {
+  executeLegacy (client, locale, message, result) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       message.channel.send(`<a:loader:871389840904695838> ${getLocales(locale, 'EMBED_PRELOADER')}`).then((embedMenu) => {
         const embedCreated = new MessageEmbed()
@@ -129,7 +129,7 @@ module.exports = {
         indice()
       })
     } else {
-      genericMessages.error.permissionerror(message, locale)
+      genericMessages.legacy.error.permissionerror(message, locale)
     }
   }
 }

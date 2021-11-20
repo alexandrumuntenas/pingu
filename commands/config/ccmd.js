@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 0,
   name: 'ccmd',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
         switch (message.args[0]) {
@@ -14,7 +14,7 @@ module.exports = {
               const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
               client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.success(message, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))
+                genericMessages.legacy.success(message, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))
               })
             } else {
               helpTray(message, locale)
@@ -25,7 +25,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.success(message, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))
+                genericMessages.legacy.success(message, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))
               })
             } else {
               helpTray(message, locale)
@@ -41,11 +41,11 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.error.permissionerror(message, locale)
+      genericMessages.legacy.error.permissionerror(message, locale)
     }
   }
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}ccmd <option>`, ['create <command> <value to return ···>', 'remove <command>'])
+  genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}ccmd <option>`, ['create <command> <value to return ···>', 'remove <command>'])
 }

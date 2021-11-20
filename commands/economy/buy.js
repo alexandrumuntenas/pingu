@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 5000,
   name: 'buy',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       if (message.args && Object.prototype.hasOwnProperty.call(message.args, 0)) {
         const product = message.content.replace(`${message.database.guildPrefix}buy `, '').trim()
@@ -13,20 +13,20 @@ module.exports = {
           if (productData) {
             buyItem(client, message.member, message.guild, productData, (status) => {
               if (status) {
-                genericMessages.success(message, getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
+                genericMessages.legacy.success(message, getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
-                genericMessages.error(message, getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
+                genericMessages.legacy.error(message, getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
               }
             })
           } else {
-            genericMessages.error(message, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: product }))
+            genericMessages.legacy.error(message, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: product }))
           }
         })
       } else {
-        client.commands.get('shop').execute(client, locale, message)
+        client.commands.get('shop').executeLegacy(client, locale, message)
       }
     } else {
-      genericMessages.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale)
     }
   }
 }

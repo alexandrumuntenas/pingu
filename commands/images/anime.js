@@ -7,7 +7,7 @@ const animeProviderList = require('./anime.providerlist.json')
 module.exports = {
   cooldown: 0,
   name: 'anime',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
       const provider = animeProviderList.find(provider => provider.option === message.args[0])
       if (provider) {
@@ -43,16 +43,16 @@ module.exports = {
         }
       } else {
         if (!message.channel.nsfw) {
-          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
+          genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
         } else {
-          genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
+          genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
         }
       }
     } else {
       if (!message.channel.nsfw) {
-        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
+        genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), false)
       } else {
-        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
+        genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}anime <category>`, animeProviderList.filter(object => object.nsfw === false), true, animeProviderList.filter(object => object.nsfw === true))
       }
     }
   }

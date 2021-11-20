@@ -6,7 +6,7 @@ const makeId = require('../../modules/makeId')
 module.exports = {
   cooldown: 0,
   name: 'autoresponder',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       const filter = m => m.author.id === message.author.id
       if (message.args[0]) {
@@ -24,7 +24,7 @@ module.exports = {
                     const autoresponderId = message.args[1] || makeId(12)
                     client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [message.guild.id, autoresponderId, autoresponderTrigger, autoresponderResponse], function (err) {
                       if (err) client.Sentry.captureException(err)
-                      genericMessages.success(message, getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))
+                      genericMessages.legacy.success(message, getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))
                     })
                   })
                 })
@@ -38,7 +38,7 @@ module.exports = {
             if (message.args[1]) {
               client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.success(message, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))
+                genericMessages.legacy.success(message, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))
               })
             } else {
               helpTray(message, locale)
@@ -54,11 +54,11 @@ module.exports = {
         helpTray(message, locale)
       }
     } else {
-      genericMessages.error.permissionerror(message, locale)
+      genericMessages.legacy.error.permissionerror(message, locale)
     }
   }
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.Info.help(message, locale, `${message.database.guildPrefix}autoresponder <option>`, ['create (custom ID)', 'remove <ID>'])
+  genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}autoresponder <option>`, ['create (custom ID)', 'remove <ID>'])
 }

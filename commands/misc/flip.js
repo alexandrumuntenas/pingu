@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 0,
   name: 'flip',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
       embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_HEAD')}`)

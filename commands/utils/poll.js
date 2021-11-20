@@ -10,7 +10,7 @@ const genericMessages = require('../../functions/genericMessages')
 module.exports = {
   cooldown: 0,
   name: 'poll',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.member.permissions.has([Permissions.FLAGS.MANAGE_MESSAGES]) || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (Object.prototype.hasOwnProperty.call(message.args, 0)) {
         // poll(message, message.args, '/', '#965E89')
@@ -93,7 +93,7 @@ module.exports = {
         message.channel.send(`**USAGE**: \n__You can create multiple answer polls__ ${message.database.guildPrefix}poll What's Your Favorite Color? / Blue / Red / Yellow\n __Or yes/no polls__ ${message.database.guildPrefix}poll Do you like Pingu?`)
       }
     } else {
-      genericMessages.error.permissionerror(message, locale)
+      genericMessages.legacy.error.permissionerror(message, locale)
     }
   }
 }

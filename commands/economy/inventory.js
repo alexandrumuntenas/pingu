@@ -6,7 +6,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 1000,
   name: 'inventory',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       message.channel.send(`<a:loader:871389840904695838> ${getLocales(locale, 'INVENTORY_PRELOADER')}`).then((inventoryMessage) => {
         fetchInventory(client, message.member, message.guild, (inventory) => {
@@ -44,7 +44,7 @@ module.exports = {
         })
       })
     } else {
-      genericMessages.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale)
     }
   }
 }

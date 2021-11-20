@@ -6,7 +6,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 5000,
   name: 'shop',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       if (!Object.prototype.hasOwnProperty.call(message.args, 0)) {
         const shopEmbed = new MessageEmbed()
@@ -43,12 +43,12 @@ module.exports = {
 
             message.channel.send({ embeds: [productEmbed] })
           } else {
-            genericMessages.error(message, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
+            genericMessages.legacy.error(message, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
           }
         })
       }
     } else {
-      genericMessages.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale)
     }
   }
 }

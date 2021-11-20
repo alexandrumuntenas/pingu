@@ -5,7 +5,7 @@ const genericMessages = require('../../functions/genericMessages')
 module.exports = {
   cooldown: 10000,
   name: 'levelstop',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.database.levelsEnabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
         if (err) {
@@ -30,12 +30,12 @@ module.exports = {
               })
             })
           } else {
-            genericMessages.error(message, locale, 'LEVELSTOP_NODATA')
+            genericMessages.legacy.error(message, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
     } else {
-      genericMessages.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale)
     }
   }
 }

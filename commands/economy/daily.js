@@ -6,7 +6,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 86400000,
   name: 'daily',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       getMoney(client, message.member, message.guild, (money) => {
         const inventoryEmbed = new MessageEmbed()
@@ -17,7 +17,7 @@ module.exports = {
         message.reply({ embeds: [inventoryEmbed] })
       })
     } else {
-      genericMessages.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale)
     }
   }
 }

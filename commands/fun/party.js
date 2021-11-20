@@ -3,7 +3,7 @@ const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
   name: 'party',
-  execute: async (client, locale, message) => {
+  executeLegacy: async (client, locale, message) => {
     const { DiscordTogether } = require('discord-together')
     client.discordTogether = new DiscordTogether(client)
     if (message.member.voice.channel) {
@@ -21,15 +21,15 @@ module.exports = {
                 message.mentions.users.first().send(`${message.author.tag} te ha invitado a una party. Usa ${invite.code} para entrar.`)
               })
             } else {
-              genericMessages.Info.help(message, locale, `${message.database.guildPrefix}party <option>`, ['start <activity>[chess, youtube, poker, betrayal, fishing]', 'invite <activity>[chess, youtube, poker, betrayal, fishing] @user'])
+              genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}party <option>`, ['start <activity>[chess, youtube, poker, betrayal, fishing]', 'invite <activity>[chess, youtube, poker, betrayal, fishing] @user'])
             }
           }
         }
       } else {
-        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}party <option>`, ['start <activity>[chess, youtube, poker, betrayal, fishing]', 'invite <activity>[chess, youtube, poker, betrayal, fishing] @user'])
+        genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}party <option>`, ['start <activity>[chess, youtube, poker, betrayal, fishing]', 'invite <activity>[chess, youtube, poker, betrayal, fishing] @user'])
       }
     } else {
-      genericMessages.error(message, locale, 'PLAYTOGETHER_NOVC')
+      genericMessages.legacy.error(message, locale, 'PLAYTOGETHER_NOVC')
     }
   }
 }

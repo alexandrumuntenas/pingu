@@ -5,18 +5,18 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 0,
   name: 'setprefix',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
         client.pool.query('UPDATE `guildData` SET `guildPrefix` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)
         })
-        genericMessages.success(message, getLocales(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${message.args[0]}\`` }))
+        genericMessages.legacy.success(message, getLocales(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${message.args[0]}\`` }))
       } else {
-        genericMessages.Info.help(message, locale, `${message.database.guildPrefix}setprefix <newprefix>`)
+        genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}setprefix <newprefix>`)
       }
     } else {
-      genericMessages.error.permissionerror(message, locale)
+      genericMessages.legacy.error.permissionerror(message, locale)
     }
   }
 }

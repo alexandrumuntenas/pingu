@@ -5,7 +5,7 @@ const genericMessages = require('../../functions/genericMessages')
 module.exports = {
   cooldown: 5000,
   name: 'balance',
-  execute (client, locale, message) {
+  executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       fetchUserAccount(client, message.member, message.guild, (user) => {
         const firstMessageSent = new MessageEmbed()
@@ -16,7 +16,7 @@ module.exports = {
         message.reply({ embeds: [firstMessageSent] })
       })
     } else {
-      genericMessages.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale)
     }
   }
 }
