@@ -1,6 +1,8 @@
 module.exports = {
   name: '',
-  execute (client, locale, message) {
-
-  }
+  description: '',
+  alias: [''],
+  permissions: {},
+  executeInteraction (client, locale, interaction) {},
+  executeLegacy (client, locale, message) {}
 }
