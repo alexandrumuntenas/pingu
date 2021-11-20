@@ -17,6 +17,7 @@
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
     "flipacoin": "^1.0.0",
+    "hex-to-rgba": "^2.0.1",
     "humanize-duration": "^3.27.0",
     "is-valid-http-url": "^1.0.3",
     "mathjs": "^10.0.0",
