@@ -21,7 +21,7 @@ module.exports.isCommand = async (client, interaction) => {
         await client.commands.get(commandName).executeInteraction(client, interaction.database.guildLanguage || 'en', interaction)
       } else {
         const cooldownTime = cooldown.get(`${commandName}${interaction.member.id}${interaction.guild.id}`)
-        genericMessages.legacy.error.cooldown(interaction, interaction.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
+        genericMessages.error.cooldown(interaction, interaction.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
       }
     } else {
       interaction.editReply({ content: 'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `deploy`.' })
