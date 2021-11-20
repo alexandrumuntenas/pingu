@@ -32,7 +32,7 @@ module.exports = {
       ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
 
       // Establecer blured overlay
-      ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor, (database.welcomeImageCustomOpacity / 100))
+      ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor || '#272934', (database.welcomeImageCustomOpacity / 100))
       ctx.fillRect(25, 25, 1050, 450)
       StackBlur.canvasRGBA(canvas, 25, 25, 1050, 450, database.welcomeImageCustomBlur)
     } else {
@@ -91,7 +91,7 @@ module.exports = {
       ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
 
       // Establecer blured overlay
-      ctx.fillStyle = hexToRgba(database.levelsImageCustomOverlayColor, (database.levelsImageCustomOpacity / 100))
+      ctx.fillStyle = hexToRgba(database.levelsImageCustomOverlayColor || '#272934', (database.levelsImageCustomOpacity / 100))
       ctx.fillRect(25, 25, 1050, 270)
       StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, database.levelsImageCustomBlur)
     } else {
