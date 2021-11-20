@@ -26,7 +26,7 @@ module.exports = {
       })
       genericMessages.success(interaction, getLocales(interaction.options.getString('language'), 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${interaction.options.getString('language')}\`` }))
     } else {
-      genericMessages.legacy.error.permissionerror(interaction, locale)
+      genericMessages.error.permissionerror(interaction, locale)
     }
   },
   executeLegacy (client, locale, interaction) {
