@@ -50,18 +50,6 @@ module.exports = {
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
     ctx.fillText(memberCountText, canvas.width / 2, 425)
 
-    // Añadir backdrop en avatar de usuario
-
-    if (database.welcomeImageRoundAvatar === 1) {
-      ctx.beginPath()
-      ctx.arc(canvas.width / 2, 160, 110, 0, Math.PI * 2, true) // 110 es el radio de la figura
-      ctx.closePath()
-      ctx.clip()
-    }
-
-    ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(canvas.width / 2 - 110, 50, 220, 220) // canvas.width - 110 para obtener el centrado de la figura
-
     // Añadir avatar de usuario
 
     if (database.welcomeImageRoundAvatar === 1) {
