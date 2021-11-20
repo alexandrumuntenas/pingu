@@ -30,7 +30,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, interaction) {
-    if (interaction.guild.ownerId === interaction.author.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+    if (interaction.guild.ownerId === interaction.member.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (interaction.args[0] && avaliableLanguages.includes(interaction.args[0])) {
         client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [interaction.args[0], interaction.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)

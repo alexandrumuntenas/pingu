@@ -55,7 +55,7 @@ module.exports = {
           break
         }
         case 'message': {
-          const filter = m => m.author.id === interaction.user.id
+          const filter = m => m.member.id === interaction.user.id
           genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_MESSAGE_PREUPDATE'))
           interaction.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [collected.first().content, interaction.guild.id], (err) => {
@@ -170,7 +170,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+    if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
         switch (message.args[0]) {
           case 'viewconfig': {
@@ -199,7 +199,7 @@ module.exports = {
             break
           }
           case 'message': {
-            const filter = m => m.author.id === message.author.id
+            const filter = m => m.member.id === message.member.id
             genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_MESSAGE_PREUPDATE'))
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
               client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {

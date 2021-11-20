@@ -11,7 +11,7 @@ module.exports = {
   cooldown: 0,
   name: 'levels',
   executeLegacy (client, locale, message) {
-    if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+    if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
         switch (message.args[0]) {
           case 'viewconfig': {
@@ -64,7 +64,7 @@ module.exports = {
             break
           }
           case 'rankupmessage': {
-            const filter = m => m.author.id === message.author.id
+            const filter = m => m.member.id === message.member.id
             genericMessages.legacy.Info.status(message, getLocales(locale, 'LEVELS_MESSAGE_PREUPDATE'))
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
               client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {

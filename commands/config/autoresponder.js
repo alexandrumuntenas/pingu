@@ -7,8 +7,8 @@ module.exports = {
   cooldown: 0,
   name: 'autoresponder',
   executeLegacy (client, locale, message) {
-    if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
-      const filter = m => m.author.id === message.author.id
+    if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+      const filter = m => m.member.id === message.member.id
       if (message.args[0]) {
         switch (message.args[0]) {
           case 'create': {

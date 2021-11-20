@@ -7,7 +7,7 @@ module.exports = {
   cooldown: 0,
   name: 'joinroles',
   executeLegacy (client, locale, message) {
-    if (message.guild.ownerId === message.author.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+    if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
         switch (message.args[0]) {
           case 'list': {
