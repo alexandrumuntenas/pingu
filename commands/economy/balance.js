@@ -5,6 +5,21 @@ const genericMessages = require('../../functions/genericMessages')
 module.exports = {
   cooldown: 5000,
   name: 'balance',
+  description: 'Check your balance',
+  executeInteraction (client, locale, interaction) {
+    if (interaction.database.economyEnabled !== 0) {
+      fetchUserAccount(client, interaction.member, interaction.guild, (user) => {
+        const firstMessageSent = new MessageEmbed()
+          .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
+          .setColor('#009FE3')
+          .setDescription(`${user.amount || 0} ${interaction.database.economyCurrency} ${interaction.database.economyCurrencyIcon}`)
+
+        interaction.editReply({ embeds: [firstMessageSent] })
+      })
+    } else {
+      genericMessages.error.noavaliable(interaction, locale)
+    }
+  },
   executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       fetchUserAccount(client, message.member, message.guild, (user) => {
