@@ -1,4 +1,5 @@
 const { Permissions } = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 const makeId = require('../../modules/makeId')
@@ -6,6 +7,34 @@ const makeId = require('../../modules/makeId')
 module.exports = {
   cooldown: 0,
   name: 'autoresponder',
+  description: 'Configure the autoresponder',
+  data: new SlashCommandBuilder()
+    .setName('autoresponder')
+    .setDescription('Configure the autoresponder')
+    .addSubcommand(subcommand => subcommand.setName('create').setDescription('Create a new autoresponder').addStringOption(option => option.setName('id').setDescription('Response ID').setRequired(true)).addStringOption(option => option.setName('trigger').setDescription('Response trigger').setRequired(true)).addStringOption(option => option.setName('reply').setDescription('Response reply').setRequired(true)))
+    .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove an autoresponder').addStringOption(option => option.setName('id').setDescription('Response ID').setRequired(true))),
+  executeInteraction (client, locale, interaction) {
+    if (interaction.guild.ownerId === interaction.member.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+      switch (interaction.options.getSubcommand()) {
+        case 'create': {
+          client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [interaction.guild.id, interaction.options.getString('id'), interaction.options.getString('trigger'), interaction.options.getString('reply')], function (err) {
+            if (err) client.Sentry.captureException(err)
+            genericMessages.success(interaction, getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))
+          })
+          break
+        }
+        case 'remove': {
+          client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [interaction.options.getString('id'), interaction.guild.id], function (err) {
+            if (err) client.Sentry.captureException(err)
+            genericMessages.success(interaction, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))
+          })
+          break
+        }
+      }
+    } else {
+      genericMessages.legacy.error.permissionerror(interaction, locale)
+    }
+  },
   executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       const filter = m => m.member.id === message.member.id
