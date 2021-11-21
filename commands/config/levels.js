@@ -1,4 +1,5 @@
 const { Permissions, MessageEmbed } = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 const { isInteger } = require('mathjs')
@@ -10,6 +11,148 @@ const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:di
 module.exports = {
   cooldown: 0,
   name: 'levels',
+  description: 'Configure the levels system',
+  data: new SlashCommandBuilder()
+    .setName('levels')
+    .setDescription('Configure the levels system')
+    .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current levels system configuration'))
+    .addSubcommand(subcommand => subcommand.setName('rankupchannel').setDescription('Set the rankUp channel').addStringOption(option =>
+      option.setName('channel')
+        .setDescription('Set the new channel')
+        .addChoice('Disabled', 'disabled')
+        .addChoice('Same Channel Where Message Is Sent', 'same')
+        .addChoice('This Channel', 'this')))
+    .addSubcommand(subcommand => subcommand.setName('rankupmessage').setDescription('Set the Rank Up message'))
+    .addSubcommand(subcommand => subcommand.setName('difficulty').setDescription('Change the difficulty to level up').addNumberOption(option => option.setName('difficulty').setDescription('Enter a number 1-5')))
+    .addSubcommand(subcommand => subcommand.setName('custombackground').setDescription('Set the rank cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL')))
+    .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the rank cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color')))
+    .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the rank cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number')))
+    .addSubcommand(subcommand => subcommand.setName('overlayblur').setDescription('Set the rank cards overlay blur').addNumberOption(option => option.setName('blur').setDescription('Enter a number'))),
+  executeInteraction (client, locale, interaction) {
+    if (interaction.guild.ownerId === interaction.member.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
+      switch (interaction.options.getSubcommand()) {
+        case 'viewconfig': {
+          const sentEmbed = new MessageEmbed()
+            .setColor('BLURPLE')
+            .setTitle(getLocales(locale, 'LEVELS_VIEWCONFIG_TITLE'))
+            .setDescription(getLocales(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
+            .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.levelsChannel) || channelRelationship[interaction.database.levelsChannel]}`, true)
+            .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${interaction.database.levelsMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
+            .addField(`:trophy: ${getLocales(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${interaction.database.levelsDifficulty}`, true)
+            .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'LEVELS_VIEWCONFIG_LEVELCARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[1] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${interaction.database.levelsImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: interaction.database.levelsImageCustomOverlayColor })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: interaction.database.levelsImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: interaction.database.levelsImageCustomOpacity })}`, false)
+
+          interaction.editReply({ embeds: [sentEmbed] })
+          break
+        }
+        case 'rankupchannel': {
+          switch (interaction.options.getString('channel')) {
+            case 'disable': {
+              client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', interaction.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.success(interaction, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: channelRelationship[0] }))
+              })
+              break
+            }
+            case 'same': {
+              client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', interaction.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.success(interaction, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: channelRelationship[1] }))
+              })
+              break
+            }
+            case 'this': {
+              client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [interaction.channel.id, interaction.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.success(interaction, getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: interaction.channel }))
+              })
+              break
+            }
+            default: {
+              genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: interaction.database.levelsChannel }))
+              break
+            }
+          }
+          break
+        }
+        case 'rankupmessage': {
+          const filter = m => m.member.id === interaction.member.id
+          genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_MESSAGE_PREUPDATE'))
+          interaction.channel.awaitMessages({ filter, max: 1 }).then(collected => {
+            client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, interaction.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+              genericMessages.success(interaction, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))
+            })
+          })
+          break
+        }
+        case 'difficulty': {
+          if (interaction.options.getNumber('difficulty')) {
+            if (isInteger(parseInt(interaction.options.getNumber('difficulty')))) {
+              client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(interaction.options.getNumber('difficulty')), interaction.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.success(interaction, getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: interaction.options.getNumber('difficulty') }))
+              })
+            } else {
+              genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_DIFFICULTY_NOT_INT'))
+            }
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_DIFFICULTY_MISSING_ARGS', { LEVELS_DIFFICULTY: interaction.database.levelsDifficulty }))
+          }
+          break
+        }
+        case 'custombackground': {
+          if (interaction.options.getString('url')) {
+            client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [interaction.options.getString('url'), interaction.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+              genericMessages.success(interaction, getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: interaction.options.getString('url') }))
+            })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_MISSING_ARGS', { LEVELS_CUSTOMBACKGROUND: interaction.database.levelsImageCustomBackground }))
+          }
+          break
+        }
+        case 'overlayopacity': {
+          if (interaction.options.getNumber('opacity')) {
+            client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [interaction.options.getNumber('opacity'), interaction.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+              genericMessages.success(interaction, getLocales(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: interaction.options.getNumber('opacity') }))
+            })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_OVERLAYOPACITY_MISSING_ARGS', { LEVELS_OVERLAYOPACITY: interaction.database.levelsImageCustomOpacity }))
+          }
+          break
+        }
+        case 'overlayblur': {
+          if (interaction.options.getNumber('blur')) {
+            client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [interaction.options.getNumber('blur'), interaction.guild.id], (err) => {
+              if (err) client.Sentry.captureException(err)
+              genericMessages.success(interaction, getLocales(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: interaction.options.getNumber('blur') }))
+            })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_OVERLAYBLUR_MISSING_ARGS', { LEVELS_OVERLAYBLUR: interaction.database.levelsImageCustomBlur }))
+          }
+          break
+        }
+        case 'overlaycolor': {
+          if (interaction.options.getString('hexcolor')) {
+            if (isHexColor(interaction.options.getString('hexcolor'))) {
+              client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ? WHERE `guild` = ?', [interaction.options.getString('hexcolor'), interaction.guild.id], (err) => {
+                if (err) client.Sentry.captureException(err)
+                genericMessages.success(interaction, getLocales(locale, 'LEVELS_OVERLAYCOLOR_SUCCESS', { LEVELS_OVERLAYCOLOR: interaction.options.getString('hexcolor') }))
+              })
+            } else {
+              genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))
+            }
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_OVERLAYCOLOR_MISSING_ARGS', { LEVELS_OVERLAYCOLOR: interaction.database.levelsImageCustomOverlayColor }))
+          }
+          break
+        }
+      }
+    } else {
+      genericMessages.error.permissionerror(interaction, locale)
+    }
+  },
   executeLegacy (client, locale, message) {
     if (message.guild.ownerId === message.member.id || message.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
       if (message.args[0]) {
