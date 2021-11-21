@@ -13,7 +13,7 @@ module.exports = {
     .setDescription('Configure the farewell settings for your server.')
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current farewell configuration'))
     .addSubcommand(subcommand => subcommand.setName('channel').setDescription('Set the farewell channel').addChannelOption(option => option.setName('farewellchannel').setDescription('Select a channel')))
-    .addSubcommand(subcommand => subcommand.setName('message').setDescription('Set the farewell message'))
+    .addSubcommand(subcommand => subcommand.setName('message').setDescription('Set the farewell message').addStringOption(option => option.setName('farewellmessage').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}')))
     .addSubcommand(subcommand => subcommand.setName('simulate').setDescription('Simulate the farewell message')),
   executeInteraction (client, locale, interaction) {
     if (interaction.guild.ownerId === interaction.member.id || interaction.member.permissions.has([Permissions.FLAGS.ADMINISTRATOR])) {
@@ -41,14 +41,14 @@ module.exports = {
           break
         }
         case 'message': {
-          const filter = m => m.member.id === interaction.member.id
-          genericMessages.info.status(interaction, getLocales(locale, 'FAREWELL_MESSAGE_PREUPDATE'))
-          interaction.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-            client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [collected.first().content, interaction.guild.id], (err) => {
+          if (interaction.options.getString('farewellmessage')) {
+            client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [interaction.options.getString('farewellmessage'), interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.success(interaction, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))
+              genericMessages.success(interaction, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${interaction.options.getString('farewellmessage')}\`` }))
             })
-          })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'FAREWELL_MESSAGE_MISSING_ARGS', { FAREWELL_MESSAGE: interaction.database.farewellMessage }))
+          }
           break
         }
         case 'simulate': {

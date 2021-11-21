@@ -18,7 +18,7 @@ module.exports = {
     .setDescription('Configure the welcomer module')
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current welcomer configuration'))
     .addSubcommand(subcommand => subcommand.setName('channel').setDescription('Set the welcomer channel').addChannelOption(option => option.setName('welcomechannel').setDescription('Select a channel')))
-    .addSubcommand(subcommand => subcommand.setName('message').setDescription('Set the welcomer message'))
+    .addSubcommand(subcommand => subcommand.setName('message').setDescription('Set the welcomer message').addStringOption(option => option.setName('welcomemessage').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}')))
     .addSubcommand(subcommand => subcommand.setName('enablecards').setDescription('Enable the welcomer cards'))
     .addSubcommand(subcommand => subcommand.setName('disablecards').setDescription('Disable the welcomer cards'))
     .addSubcommand(subcommand => subcommand.setName('custombackground').setDescription('Set the welcomer cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL')))
@@ -55,15 +55,14 @@ module.exports = {
           break
         }
         case 'message': {
-          const filter = m => m.member.id === interaction.user.id
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_MESSAGE_PREUPDATE'))
-          interaction.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-            client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [collected.first().content, interaction.guild.id], (err) => {
+          if (interaction.options.getString('welcomemessage')) {
+            client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [interaction.options.getString('welcomemessage'), interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              collected.delete()
-              genericMessages.success(interaction, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${collected.first().content}\`` }))
+              genericMessages.success(interaction, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${interaction.options.getString('welcomemessage')}\`` }))
             })
-          })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_MESSAGE_MISSING_ARGS', { WELCOMER_MESSAGE: interaction.database.welcomeMessage }))
+          }
           break
         }
         case 'custombackground': {

@@ -22,7 +22,7 @@ module.exports = {
         .addChoice('Disabled', 'disabled')
         .addChoice('Same Channel Where Message Is Sent', 'same')
         .addChoice('This Channel', 'this')))
-    .addSubcommand(subcommand => subcommand.setName('rankupmessage').setDescription('Set the Rank Up message'))
+    .addSubcommand(subcommand => subcommand.setName('rankupmessage').setDescription('Set the Rank Up message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {oldlevel} {newlevel} {experience}')))
     .addSubcommand(subcommand => subcommand.setName('difficulty').setDescription('Change the difficulty to level up').addNumberOption(option => option.setName('difficulty').setDescription('Enter a number 1-5')))
     .addSubcommand(subcommand => subcommand.setName('custombackground').setDescription('Set the rank cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL')))
     .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the rank cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color')))
@@ -75,14 +75,14 @@ module.exports = {
           break
         }
         case 'rankupmessage': {
-          const filter = m => m.member.id === interaction.member.id
-          genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_MESSAGE_PREUPDATE'))
-          interaction.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-            client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, interaction.guild.id], (err) => {
+          if (interaction.options.getString('message')) {
+            client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [interaction.options.getString('message'), interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.success(interaction, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))
+              genericMessages.success(interaction, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${interaction.options.getString('message')}\`` }))
             })
-          })
+          } else {
+            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_MESSAGE_MISSING_ARGS', { LEVELS_MESSAGE: interaction.database.levelsMessage }))
+          }
           break
         }
         case 'difficulty': {
