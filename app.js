@@ -38,7 +38,7 @@ client.log.success('Módulos Cargados')
 
 client.log.info('Cargando Servicios Third-Party')
 const topggSDK = require('./modules/third-party/topggSDK')
-const commandHandler = require('./functions/commandHandler')
+const commands = require('./functions/commands')
 const ready = require('./events/ready')
 client.log.success('Servicios Third-Party Cargados')
 
@@ -62,8 +62,8 @@ if (process.env.ENTORNO === 'public') {
 
 client.Sentry = Sentry
 
-client.commands = commandHandler.loadCommands(client)
-client.interactions = commandHandler.loadInteractions(client)
+client.commands = commands.loadCommands(client)
+client.interactions = commands.loadInteractions(client)
 
 client.on('ready', () => {
   ready(client).catch(err => {
