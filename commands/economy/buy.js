@@ -4,10 +4,10 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
-  cooldown: 5000,
   name: 'buy',
   description: 'Buy a shop product',
-  data: new SlashCommandBuilder()
+  cooldown: 5000,
+  interactionData: new SlashCommandBuilder()
     .setName('buy').setDescription('Buy a shop product')
     .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to buy')),
   executeInteraction (client, locale, interaction) {

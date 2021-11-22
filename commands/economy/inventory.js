@@ -4,9 +4,9 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
-  cooldown: 1000,
   name: 'inventory',
   description: 'Check your inventory.',
+  cooldown: 1000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       fetchInventory(client, interaction.member, interaction.guild, (inventory) => {

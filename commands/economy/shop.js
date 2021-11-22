@@ -5,10 +5,10 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
-  cooldown: 5000,
   name: 'shop',
   description: 'Check the server shop.',
-  data: new SlashCommandBuilder()
+  cooldown: 5000,
+  interactionData: new SlashCommandBuilder()
     .setName('shop')
     .setDescription('Check the server shop.')
     .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to checkout')),

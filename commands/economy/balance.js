@@ -3,9 +3,9 @@ const { fetchUserAccount } = require('../../modules/economy')
 const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
-  cooldown: 5000,
   name: 'balance',
   description: 'Check your balance',
+  cooldown: 5000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       fetchUserAccount(client, interaction.member, interaction.guild, (user) => {

@@ -4,9 +4,9 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
-  cooldown: 86400000,
   name: 'daily',
   description: 'Get your daily salary.',
+  cooldown: 86400000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       getMoney(client, interaction.member, interaction.guild, (money) => {
