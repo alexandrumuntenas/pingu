@@ -1,7 +1,6 @@
-const { Collection } = require('discord.js')
+const { cooldown } = require('../functions/commands')
 const genericMessages = require('../functions/genericMessages')
 const guildFetchData = require('../modules/guildFetchData')
-const cooldown = new Collection()
 
 module.exports.isCommand = async (client, interaction) => {
   const { commandName } = interaction
@@ -13,15 +12,16 @@ module.exports.isCommand = async (client, interaction) => {
   guildFetchData(client, interaction.guild, async (guildData) => {
     interaction.database = guildData
     if (client.commands.has(commandName)) {
-      if (!cooldown.has(`${commandName}${interaction.member.id}${interaction.guild.id}`)) {
-        cooldown.set(`${commandName}${interaction.member.id}${interaction.guild.id}`, (Date.now() + parseInt(client.commands.get(commandName).cooldown || 10000)))
-        setTimeout(() => {
-          cooldown.delete(`${commandName}${interaction.member.id}${interaction.guild.id}`)
-        }, client.commands.get(commandName).cooldown || 10000)
-        await client.commands.get(commandName).executeInteraction(client, interaction.database.guildLanguage || 'en', interaction)
+      const commandToExecute = client.commands.get(commandName)
+      if (interaction.member.permissions.has(commandToExecute.permissions)) {
+        if (cooldown.check(interaction.member, interaction.guild, commandToExecute)) {
+          cooldown.add(interaction.member, interaction.guild, commandToExecute)
+          await commandToExecute.executeInteraction(client, interaction.database.guildLanguage || 'en', interaction)
+        } else {
+          genericMessages.error.cooldown(interaction, interaction.database.guildLanguage || 'en', (parseInt(cooldown.ttl(interaction.member, interaction.guild, commandToExecute)) - Date.now()))
+        }
       } else {
-        const cooldownTime = cooldown.get(`${commandName}${interaction.member.id}${interaction.guild.id}`)
-        genericMessages.error.cooldown(interaction, interaction.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
+        genericMessages.error.permissionerror(interaction, interaction.database.guildLanguage || 'en')
       }
     } else {
       interaction.editReply({ content: 'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `deploy`.' })
