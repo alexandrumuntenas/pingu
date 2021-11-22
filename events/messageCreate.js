@@ -1,9 +1,9 @@
-const { MessageEmbed, Collection } = require('discord.js')
+const { MessageEmbed } = require('discord.js')
+const { cooldown } = require('../functions/commands')
 const genericMessages = require('../functions/genericMessages')
 const autoresponder = require('../modules/autoresponder')
 const guildFetchData = require('../modules/guildFetchData')
 const { rankUp } = require('../modules/levels')
-const cooldown = new Collection()
 
 module.exports = async (client, message) => {
   if (
@@ -17,27 +17,25 @@ module.exports = async (client, message) => {
       message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
     }
     if (message.content.startsWith(message.database.guildPrefix) && message.args) {
-      const commandToExecute = message.args[0]
+      let commandToExecute = message.args[0]
       message.args.shift()
 
       if (client.commands.has(commandToExecute)) {
-        if (!cooldown.has(`${commandToExecute}${message.member.id}${message.guild.id}`)) {
-          cooldown.set(`${commandToExecute}${message.member.id}${message.guild.id}`, (Date.now() + parseInt(client.commands.get(commandToExecute).cooldown || 10000)))
-          setTimeout(() => {
-            cooldown.delete(`${commandToExecute}${message.member.id}${message.guild.id}`)
-          }, client.commands.get(commandToExecute).cooldown || 10000)
-          await client.commands.get(commandToExecute).executeLegacy(client, message.database.guildLanguage || 'en', message)
+        commandToExecute = client.commands.get(commandToExecute)
+        if (message.member.permissions.has(commandToExecute.permissions)) {
+          if (cooldown.check(message.member, message.guild, commandToExecute)) {
+            cooldown.add(message.member, message.guild, commandToExecute)
+            await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
+          } else {
+            genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
+            return
+          }
         } else {
-          const cooldownTime = cooldown.get(`${commandToExecute}${message.member.id}${message.guild.id}`)
-          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
-          return
+          genericMessages.legacy.error.permissionerror(message, message.database.guildLanguage || 'en')
         }
       } else {
-        if (!cooldown.has(`customcommand${commandToExecute}${message.member.id}${message.guild.id}`)) {
-          cooldown.set(`customcommand${commandToExecute}${message.member.id}${message.guild.id}`, (Date.now() + parseInt(10000))) // Estudiar la posibilidad de establecer un cooldown personalizado de más de 10 segundos.
-          setTimeout(() => {
-            cooldown.delete(`customcommand${commandToExecute}${message.member.id}${message.guild.id}`)
-          }, 10000) // Estudiar la posibilidad de añadir un cooldown personalizado de más de 10 segundos.
+        if (cooldown.check(message.member, message.guild, commandToExecute)) {
+          cooldown.add(message.member, message.guild, commandToExecute)
           const mCeEC = client.Sentry.startTransaction({
             op: 'messageCreate/executeExternalCommand',
             name: 'Execute External Command'
@@ -67,8 +65,7 @@ module.exports = async (client, message) => {
             }
           })
         } else {
-          const cooldownTime = cooldown.get(`customcommand${commandToExecute}${message.member.id}${message.guild.id}`)
-          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldownTime) - Date.now()))
+          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
           return
         }
       }
