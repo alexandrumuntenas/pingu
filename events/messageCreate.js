@@ -22,16 +22,16 @@ module.exports = async (client, message) => {
 
       if (client.commands.has(commandToExecute)) {
         commandToExecute = client.commands.get(commandToExecute)
-        if (message.member.permissions.has(commandToExecute.permissions)) {
-          if (cooldown.check(message.member, message.guild, commandToExecute)) {
-            cooldown.add(message.member, message.guild, commandToExecute)
-            await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
-          } else {
-            genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
-            return
-          }
-        } else {
+        if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
           genericMessages.legacy.error.permissionerror(message, message.database.guildLanguage || 'en')
+          return
+        }
+        if (cooldown.check(message.member, message.guild, commandToExecute)) {
+          cooldown.add(message.member, message.guild, commandToExecute)
+          await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
+        } else {
+          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
+          return
         }
       } else {
         if (cooldown.check(message.member, message.guild, commandToExecute)) {
