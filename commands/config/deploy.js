@@ -11,6 +11,7 @@ module.exports = {
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   executeInteraction (client, locale, interaction) {
+    genericMessages.info.loader(interaction, 'Deploying commands...')
     rest.put(Routes.applicationGuildCommands(client.user.id, interaction.guild.id), { body: client.interactions.map(command => command.toJSON()) })
       .then(() => genericMessages.success(interaction, 'Successfully registered application commands.'))
       .catch(console.error)

@@ -119,6 +119,13 @@ module.exports.info.status = (interaction, text) => {
   interaction.editReply({ embeds: [sentEmbed] })
 }
 
+module.exports.info.loader = (interaction, text) => {
+  const sentEmbed = new MessageEmbed()
+    .setColor('BLURPLE')
+    .setDescription(`<a:loader:871389840904695838> ${text}`)
+  interaction.editReply({ embeds: [sentEmbed] })
+}
+
 module.exports.success = (interaction, text) => {
   const sentEmbed = new MessageEmbed()
     .setColor('GREEN')
