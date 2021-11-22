@@ -1,8 +1,11 @@
+const { SlashCommandBuilder } = require('@discordjs/builders')
+
 module.exports = {
   name: '',
   description: '',
   alias: [''],
-  permissions: {},
+  permissions: [],
+  interactionData: new SlashCommandBuilder(),
   executeInteraction (client, locale, interaction) {},
   executeLegacy (client, locale, message) {}
 }
