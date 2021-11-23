@@ -7,7 +7,7 @@ const avaliableLanguages = ['en', 'es']
 
 module.exports = {
   name: 'setlanguage',
-  description: 'Set the language for the bot',
+  description: '⚙️ Set the language for the bot',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

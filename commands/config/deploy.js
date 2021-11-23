@@ -7,7 +7,7 @@ const rest = new REST({ version: '9' }).setToken(process.env.INSIDER_TOKEN)
 
 module.exports = {
   name: 'deploy',
-  description: 'Deploys the Pingu\'s Slash Commands to the server.',
+  description: '⚙️ Deploys the Pingu\'s Slash Commands to the server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   executeInteraction (client, locale, interaction) {

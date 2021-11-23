@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'p2dismod',
-  description: 'Disable Pingu modules',
+  description: '⚙️ Disable Pingu modules',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

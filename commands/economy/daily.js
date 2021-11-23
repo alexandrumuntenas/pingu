@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'daily',
-  description: 'Get your daily salary.',
+  description: '💰 Get your daily salary.',
   cooldown: 86400000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {

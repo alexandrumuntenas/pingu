@@ -3,8 +3,9 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
-  cooldown: 0,
   name: 'id',
+  description: '🆔 Get the server ID',
+  cooldown: 0,
   executeInteraction (client, locale, interaction) {
     genericMessages.info.status(interaction, getLocales(locale, 'ID', { ID: `\`${interaction.guild.id}\`` }))
   },

@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'ccmd',
-  description: 'Create or remove custom commands',
+  description: '⚙️ Create or remove custom commands',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

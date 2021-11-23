@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'economy',
-  description: 'Configure the economy settings for your server.',
+  description: '⚙️ Configure the economy settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

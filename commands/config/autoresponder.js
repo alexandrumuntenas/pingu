@@ -6,7 +6,7 @@ const makeId = require('../../modules/makeId')
 
 module.exports = {
   name: 'autoresponder',
-  description: 'Configure the autoresponder',
+  description: '⚙️ Configure the autoresponder',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

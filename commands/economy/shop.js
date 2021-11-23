@@ -6,7 +6,7 @@ const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'shop',
-  description: 'Check the server shop.',
+  description: '🛍️ Check the server shop.',
   cooldown: 5000,
   interactionData: new SlashCommandBuilder()
     .setName('shop')

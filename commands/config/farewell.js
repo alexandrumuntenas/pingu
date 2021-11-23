@@ -6,7 +6,7 @@ const guildMemberRemove = require('../../events/guildMemberRemove')
 
 module.exports = {
   name: 'farewell',
-  description: 'Configure the farewell settings for your server.',
+  description: '⚙️ Configure the farewell settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

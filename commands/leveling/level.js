@@ -7,7 +7,7 @@ const tempFileRemover = require('../../functions/tempFileRemover')
 module.exports = {
   cooldown: 10000,
   name: 'level',
-  description: 'Check your level',
+  description: '⭐ Check your level',
   executeInteraction (client, locale, interaction) {
     if (interaction.database.levelsEnabled !== 0) {
       fetchMember(client, interaction.member, (data) => {

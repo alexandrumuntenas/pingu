@@ -10,7 +10,7 @@ const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:di
 
 module.exports = {
   name: 'levels',
-  description: 'Configure the levels system',
+  description: '⚙️ Configure the levels system',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()

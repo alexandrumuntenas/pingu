@@ -3,9 +3,9 @@ const getLocales = require('../../i18n/getLocales')
 const unixTime = require('unix-time')
 
 module.exports = {
-  cooldown: 0,
   name: 'server-info',
-  description: 'Shows information about the server',
+  description: '👑 Shows information about the server',
+  cooldown: 0,
   executeInteraction (client, locale, interaction) {
     const embed = new MessageEmbed()
       .setTitle(getLocales(locale, 'SERVER_INFO_EMBED_TITLE'))

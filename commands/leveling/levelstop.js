@@ -5,7 +5,7 @@ const genericMessages = require('../../functions/genericMessages')
 module.exports = {
   cooldown: 10000,
   name: 'levelstop',
-  description: 'Get the leaderboard',
+  description: '🏅 Get the leaderboard',
   executeInteraction (client, locale, interaction) {
     if (interaction.database.levelsEnabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 10', [interaction.guild.id], (err, rows, result) => {

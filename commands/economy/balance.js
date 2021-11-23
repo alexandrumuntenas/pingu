@@ -4,7 +4,7 @@ const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
   name: 'balance',
-  description: 'Check your balance',
+  description: '💸 Check your balance',
   cooldown: 5000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {

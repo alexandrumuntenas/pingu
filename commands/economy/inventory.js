@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   name: 'inventory',
-  description: 'Check your inventory.',
+  description: '📦 Check your inventory.',
   cooldown: 1000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {

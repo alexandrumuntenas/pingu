@@ -5,7 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 module.exports = {
   cooldown: 0,
   name: 'flip',
-  description: 'Flip a coin',
+  description: '🪙 Flip a coin',
   executeInteraction (client, locale, interaction) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {

@@ -6,7 +6,7 @@ const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/j
 
 module.exports = {
   name: 'joinroles',
-  description: 'Manage join roles',
+  description: '⚙️ Manage join roles',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   interactionData: new SlashCommandBuilder()
