@@ -4,9 +4,9 @@ const Math = require('mathjs')
 
 module.exports = {
   cooldown: 0,
-  name: 'randint',
-  description: 'Generates a random number between 1 and the specified number',
-  data: new SlashCommandBuilder()
+  name: 'random',
+  description: '🔢 Generates a random number between 1 and the specified number',
+  interactionData: new SlashCommandBuilder()
     .setName('randint')
     .setDescription('Generates a random number')
     .addIntegerOption(option => option.setName('maxnumber').setDescription('Enter an integer').setRequired(true)),
