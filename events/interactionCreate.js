@@ -4,7 +4,7 @@ const guildFetchData = require('../modules/guildFetchData')
 
 module.exports.isCommand = async (client, interaction) => {
   const { commandName } = interaction
-  await interaction.deferReply()
+  interaction.replyData = await interaction.deferReply({ fetchReply: true })
   if (
     interaction.channel.type === 'dm' ||
     interaction.author === client.user
