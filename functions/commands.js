@@ -63,14 +63,12 @@ module.exports.loadInteractions = (client) => {
       if (file.endsWith('.js')) {
         const interaction = require(`.${path}`)
         if (interaction.name) {
-          interactions.push(interaction.data || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set'))
+          interactions.push(interaction.interactionData || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set'))
           table.addRow(file, '✅')
         } else {
           table.addRow(file, '❌  -> missing a help.name, or help.name is not a string.')
           continue
         }
-
-        if (!interaction.cooldown) throw Error('Interaction does not have a cooldown')
       } else if (fs.lstatSync(path).isDirectory()) {
         load(path)
       }
