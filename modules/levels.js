@@ -45,10 +45,10 @@ module.exports = {
       name: 'levels (Rank Up)'
     })
     if (!message.content.startsWith(message.database.guildPrefix)) {
-      if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
-        talkedRecently.add(`${message.author.id}_${message.guild.id}`)
+      if (!talkedRecently.has(`${message.member.id}_${message.guild.id}`)) {
+        talkedRecently.add(`${message.member.id}_${message.guild.id}`)
         setTimeout(() => {
-          talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
+          talkedRecently.delete(`${message.member.id}_${message.guild.id}`)
         }, 60000)
         module.exports.fetchMember(client, message.member, (userData) => {
           if (userData) {
@@ -58,7 +58,7 @@ module.exports = {
             if (exp >= (((niv * niv) * dif) * 100)) {
               exp = exp - (((niv * niv) * dif) * 100)
               niv++
-              const messageToSend = message.database.levelsMessage.replace('{member}', `<@${message.author.id}>`).replace('{oldlevel}', `${niv - 1}`).replace('{newlevel}', `${niv}`)
+              const messageToSend = message.database.levelsMessage.replace('{member}', `<@${message.member.id}>`).replace('{oldlevel}', `${niv - 1}`).replace('{newlevel}', `${niv}`)
               if (message.database.levelsChannel === '1') {
                 message.channel.send(messageToSend)
               } else {
