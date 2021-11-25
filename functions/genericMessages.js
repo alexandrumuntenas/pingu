@@ -96,7 +96,7 @@ module.exports.info.help = (interaction, locale, syntax, options, nsfw, nsfwOpti
   }
 
   if (!nsfw) {
-    sentEmbed.setColor('BLURPLE')
+    sentEmbed.setColor('#2F3136')
   } else {
     sentEmbed.setColor('#B23CFD')
     if (nsfwOptions) {
@@ -114,49 +114,49 @@ module.exports.info.help = (interaction, locale, syntax, options, nsfw, nsfwOpti
 
 module.exports.info.status = (interaction, text) => {
   const sentEmbed = new MessageEmbed()
-    .setColor('BLURPLE')
+    .setColor('#2F3136')
     .setDescription(`<:pingu_null:876103457860370442> ${text}`)
   interaction.editReply({ embeds: [sentEmbed] })
 }
 
 module.exports.info.loader = (interaction, text) => {
   const sentEmbed = new MessageEmbed()
-    .setColor('BLURPLE')
+    .setColor('#2F3136')
     .setDescription(`<a:loader:871389840904695838> ${text}`)
   interaction.editReply({ embeds: [sentEmbed] })
 }
 
 module.exports.success = (interaction, text) => {
   const sentEmbed = new MessageEmbed()
-    .setColor('GREEN')
+    .setColor('#2F3136')
     .setDescription(`<:pingu_on:876103503561502730> ${text}`)
   interaction.editReply({ embeds: [sentEmbed] })
 }
 
 module.exports.error = (interaction, text) => {
   const sent = new MessageEmbed()
-    .setColor('RED')
+    .setColor('#2F3136')
     .setDescription(`<:pingu_false:876103413526564924> ${text}`)
   interaction.editReply({ embeds: [sent] })
 }
 
 module.exports.error.cooldown = (interaction, locale, cooldown) => {
   const sent = new MessageEmbed()
-    .setColor('RED')
+    .setColor('#2F3136')
     .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: locale, fallbacks: ['en'] }) })}`)
   interaction.editReply({ embeds: [sent] })
 }
 
 module.exports.error.noavaliable = (interaction, locale) => {
   const sent = new MessageEmbed()
-    .setColor('RED')
+    .setColor('#2F3136')
     .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_NO_AVALIABLE')}`)
   interaction.editReply({ embeds: [sent] })
 }
 
 module.exports.error.permissionerror = (interaction, locale) => {
   const sent = new MessageEmbed()
-    .setColor('RED')
+    .setColor('#2F3136')
     .setDescription(`<:pingu_false:876103413526564924> ${getLocales(locale, 'COMMAND_PERMISSION_ERROR')}`)
   interaction.editReply({ embeds: [sent] })
 }
