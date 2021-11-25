@@ -138,7 +138,7 @@ module.exports = {
         } else {
           inventoryData[productId] = { productId: productId, productQuantity: productQuantity || 1 }
         }
-        client.pool.query('UPDATE `guildEconomyUserInventory` SET data = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData), guild.id, member.id])
+        client.pool.query('UPDATE `guildEconomyUserInventory` SET data = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData.filter(product => product !== null)), guild.id, member.id])
         if (callback) callback()
       }
     })
