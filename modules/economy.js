@@ -1,3 +1,4 @@
+const StringPlaceholder = require('string-placeholder')
 const getLocales = require('../i18n/getLocales')
 
 module.exports = {
@@ -160,14 +161,45 @@ module.exports = {
       item.productMeta = JSON.parse(item.productMeta)
 
       const actions = item.productMeta.actions
-
+      const userInputRequirements = item.productMeta.properties
+      const userInputs = {}
       Object.keys(actions).forEach(action => {
         const actionToExecute = actions[action]
         if (Object.prototype.hasOwnProperty.call(actionToExecute, 'type')) {
           switch (actionToExecute.type) {
             case 'sendMessage': {
+              let propertiesString = ''
+
+              if (userInputRequirements.length > 0) {
+                if (item.userInput) {
+                  userInputRequirements.forEach(userInputRequirement => {
+                    userInputs[userInputRequirement] = 1
+                  })
+                  item.userInput.forEach(property => {
+                    property = property.split(':')
+                    if (userInputs[property[0].trim()] && property[1]) {
+                      userInputs[property[0]] = property[1].trim()
+                    }
+                  })
+                  Object.keys(userInputs).forEach(userInput => {
+                    if (!userInputs[userInput] || userInputs[userInput] === 1) {
+                      delete userInputs[userInput]
+                      propertiesString += ` ${userInput}`
+                    }
+                  })
+                  if (propertiesString) {
+                    callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+                    return
+                  }
+                } else {
+                  userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
+                  callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+                  return
+                }
+              }
               if (Object.prototype.hasOwnProperty.call(actionToExecute, 'message')) {
                 if (Object.prototype.hasOwnProperty.call(actionToExecute, 'channel')) {
+                  actionToExecute.message = StringPlaceholder(actionToExecute.message, userInputs, { before: '#', after: '#' })
                   guild.channels.fetch(actionToExecute.channel).then(channel => {
                     if (channel) {
                       channel.send(actionToExecute.message || 'Nothing', true)
