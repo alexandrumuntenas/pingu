@@ -112,17 +112,24 @@ module.exports = {
       }
     })
   },
-  buyItem: (client, member, guild, productData, callback) => {
+  buyItem: (client, member, guild, productData, isInteraction, callback) => {
     module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
       const status = []
       if (parseInt(productData.productPrice) <= parseInt(userAccount.amount)) {
-        module.exports.itemActivate(client, member, guild, productData, (iaData, continueBuying) => {
-          status.ia = iaData
-          if (continueBuying) module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
-          if (continueBuying) status.code = true
+        if (isInteraction) {
+          module.exports.itemActivate(client, member, guild, productData, (iaData, continueBuying) => {
+            status.ia = iaData
+            if (continueBuying) module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
+            if (continueBuying) status.code = true
+            status.code = status.code || false
+            callback(status)
+          })
+        } else {
+          module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
+          module.exports.addItemToUser(client, member, guild, productData.productId, productData.productQuantity)
           status.code = status.code || false
           callback(status)
-        })
+        }
       } else {
         callback(status.code || false)
       }
@@ -149,48 +156,54 @@ module.exports = {
     })
   },
   itemActivate: (client, member, guild, item, callback) => {
-    item.productMeta = JSON.parse(item.productMeta)
+    if (Object.prototype.hasOwnProperty.call(item, 'productMeta')) {
+      item.productMeta = JSON.parse(item.productMeta)
 
-    const actions = item.productMeta.actions
+      const actions = item.productMeta.actions
 
-    Object.keys(actions).forEach(action => {
-      const actionToExecute = actions[action]
-      if (Object.prototype.hasOwnProperty.call(actionToExecute, 'type')) {
-        switch (actionToExecute.type) {
-          case 'sendMessage': {
-            if (Object.prototype.hasOwnProperty.call(actionToExecute, 'message')) {
-              if (Object.prototype.hasOwnProperty.call(actionToExecute, 'channel')) {
-                guild.channels.fetch(actionToExecute.channel).then(channel => {
-                  if (channel) {
-                    channel.send(actionToExecute.message || 'Nothing', true)
-                    callback(null, true)
+      Object.keys(actions).forEach(action => {
+        const actionToExecute = actions[action]
+        if (Object.prototype.hasOwnProperty.call(actionToExecute, 'type')) {
+          switch (actionToExecute.type) {
+            case 'sendMessage': {
+              if (Object.prototype.hasOwnProperty.call(actionToExecute, 'message')) {
+                if (Object.prototype.hasOwnProperty.call(actionToExecute, 'channel')) {
+                  guild.channels.fetch(actionToExecute.channel).then(channel => {
+                    if (channel) {
+                      channel.send(actionToExecute.message || 'Nothing', true)
+                      callback(null, true)
+                    } else {
+                      callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                    }
+                  })
+                } else {
+                  callback(actionToExecute.message, true)
+                }
+              }
+              break
+            }
+            case 'giveRole': {
+              if (Object.prototype.hasOwnProperty.call(actionToExecute, 'role')) {
+                guild.roles.fetch(actionToExecute.role).then(role => {
+                  if (role) {
+                    member.roles.add(role)
+                    callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
                   } else {
-                    callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                    callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
                   }
                 })
               } else {
-                callback(actionToExecute.message, true)
+                callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
               }
-            }
-            break
-          }
-          case 'giveRole': {
-            if (Object.prototype.hasOwnProperty.call(actionToExecute, 'role')) {
-              guild.roles.fetch(actionToExecute.role).then(role => {
-                if (role) {
-                  member.roles.add(role)
-                  callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
-                } else {
-                  callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
-                }
-              })
-            } else {
-              callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
             }
           }
         }
-      }
-      if (Object.prototype.hasOwnProperty.call(actionToExecute, 'remove_on_buy') && actionToExecute.remove_on_buy !== '1') module.exports.addItemToUser(client, member, guild, item.productId, item.productQuantity)
-    })
+        if (Object.prototype.hasOwnProperty.call(actionToExecute, 'remove_on_buy') && actionToExecute.remove_on_buy !== '1') module.exports.addItemToUser(client, member, guild, item.productId, item.productQuantity)
+      })
+    } else {
+      module.exports.addItemToUser(client, member, guild, item.productId, item.productQuantity, () => {
+        callback(null, true)
+      })
+    }
   }
 }
