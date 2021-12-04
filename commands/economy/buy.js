@@ -13,13 +13,14 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       if (interaction.options.getString('productname')) {
+        interaction.guild.locale = locale
         fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
           if (productData) {
             buyItem(client, interaction.member, interaction.guild, productData, (status) => {
-              if (status) {
-                genericMessages.success(interaction, getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
+              if (status.code) {
+                genericMessages.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
-                genericMessages.error(interaction, getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
+                genericMessages.error(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
               }
             })
           } else {
