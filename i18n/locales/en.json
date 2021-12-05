@@ -1,4 +1,6 @@
+
 {
+  "LEGACY_DISABLED": "Pingu commands cannot be executed through prefixes on this server. You must use the Slash Commands (/).",
   "SETPREFIX_SUCCESS": "The prefix a has been updated to %guildPrefix%",
   "SETLANGUAGE_SUCCESS": "Language has been updated to %guildLanguage%",
   "COMMAND_ERROR": "An error occurred while trying to run this command. The bug has been reported and we will apply a solution soon. Sorry for the inconvenience.",

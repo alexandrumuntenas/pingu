@@ -1,4 +1,5 @@
 {
+  "LEGACY_DISABLED": "Los comandos de Pingu no pueden ser ejecutados a través de los prefijos en este servidor. Deberá utilizar los Slash Commands (/)",
   "SETPREFIX_SUCCESS": "Se ha actualizado el prefijo a %guildPrefix%",
   "SETLANGUAGE_SUCCESS": "Se ha actualizado el idioma a %guildLanguage%",
   "COMMAND_ERROR": "Se ha producido un error al intentar ejecutar este comando. El error ha sido reportado y pronto aplicaremos una solución. Disculpe las molestias.",
