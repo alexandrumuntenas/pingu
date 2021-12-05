@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { fetchInventory, fetchShopProduct } = require('../../modules/economy')
+const { fetchShopProduct, fetchUserAccount } = require('../../modules/economy')
 const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
@@ -9,26 +9,28 @@ module.exports = {
   cooldown: 1000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      fetchInventory(client, interaction.member, interaction.guild, (inventory) => {
+      fetchUserAccount(client, interaction.member, interaction.guild, (account) => {
         const inventoryEmbed = new MessageEmbed()
           .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
           .setTitle(getLocales(locale, 'INVENTORY_TITLE'))
           .setColor('#633bdf')
           .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-        if (inventory) {
+        if (account) {
           let inventoryString = ''
-          const inventoryData = JSON.parse(inventory.data)
+          const inventoryData = JSON.parse(account.inventory)
           const inventoryDataProducts = Object.keys(inventoryData)
           if (inventoryDataProducts.length > 0) {
             try {
               let inventoryDataProductsIndex = 0
               inventoryDataProducts.forEach((productId) => {
                 const product = inventoryData[productId]
-                fetchShopProduct(client, interaction.guild, product.productId, (productData) => {
+                fetchShopProduct(client, interaction.guild, productId, (productData) => {
                   inventoryDataProductsIndex++
-                  inventoryString += `${productData.productName} - ${productData.productId} (x${product.productQuantity})\n`
+                  inventoryString += `${productData.productName} - ${productData.productId} (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
-                    inventoryEmbed.setDescription(inventoryString)
+                    inventoryEmbed
+                      .setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/917086976744767498/inventory_chest.png')
+                      .setDescription(inventoryString)
                     interaction.editReply({ embeds: [inventoryEmbed] })
                   }
                 })
@@ -49,24 +51,24 @@ module.exports = {
   executeLegacy (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       interaction.channel.send(`<a:loader:871389840904695838> ${getLocales(locale, 'INVENTORY_PRELOADER')}`).then((inventoryMessage) => {
-        fetchInventory(client, interaction.member, interaction.guild, (inventory) => {
+        fetchUserAccount(client, interaction.member, interaction.guild, (account) => {
           const inventoryEmbed = new MessageEmbed()
             .setAuthor(interaction.member.displayName, interaction.author.displayAvatarURL())
             .setTitle(getLocales(locale, 'INVENTORY_TITLE'))
             .setColor('#633bdf')
             .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-          if (inventory) {
+          if (account) {
             let inventoryString = ''
-            const inventoryData = JSON.parse(inventory.data)
+            const inventoryData = JSON.parse(account.inventory)
             const inventoryDataProducts = Object.keys(inventoryData)
             if (inventoryDataProducts.length > 0) {
               try {
                 let inventoryDataProductsIndex = 0
                 inventoryDataProducts.forEach((productId) => {
                   const product = inventoryData[productId]
-                  fetchShopProduct(client, interaction.guild, product.productId, (productData) => {
+                  fetchShopProduct(client, interaction.guild, productId, (productData) => {
                     inventoryDataProductsIndex++
-                    inventoryString += `${productData.productName} - ${productData.productId} (x${product.productQuantity})\n`
+                    inventoryString += `${productData.productName} - ${productData.productId} (x${product})\n`
                     if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                       inventoryEmbed.setDescription(inventoryString)
                       inventoryMessage.edit({ content: 'Loaded!', embeds: [inventoryEmbed] })
