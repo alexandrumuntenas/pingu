@@ -9,14 +9,16 @@ module.exports = {
   cooldown: 5000,
   interactionData: new SlashCommandBuilder()
     .setName('buy').setDescription('💳 Buy a shop product')
-    .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to buy')),
+    .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to buy'))
+    .addStringOption(option => option.setName('properties').setDescription('Additional properties needed to buy the product')),
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       if (interaction.options.getString('productname')) {
         interaction.guild.locale = locale
         fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
           if (productData) {
-            buyItem(client, interaction.member, interaction.guild, productData, (status) => {
+            if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
+            buyItem(client, interaction.member, interaction.guild, productData, true, (status) => {
               if (status.code) {
                 genericMessages.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
@@ -40,11 +42,11 @@ module.exports = {
         const product = interaction.content.replace(`${interaction.database.guildPrefix}buy `, '').trim()
         fetchShopProduct(client, interaction.guild, product, (productData) => {
           if (productData) {
-            buyItem(client, interaction.member, interaction.guild, productData, (status) => {
-              if (status) {
-                genericMessages.legacy.success(interaction, getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
+            buyItem(client, interaction.member, interaction.guild, productData, false, (status) => {
+              if (status.code) {
+                genericMessages.legacy.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
-                genericMessages.legacy.error(interaction, getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
+                genericMessages.legacy.error(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
               }
             })
           } else {
