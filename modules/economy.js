@@ -69,17 +69,6 @@ module.exports = {
     })
     EfM.finish()
   },
-  fetchInventory: (client, member, guild, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyUserInventory` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
-      if (rows && Object.hasOwnProperty.call(rows, '0')) {
-        callback(rows[0])
-      } else {
-        client.pool.query('INSERT INTO `guildEconomyUserInventory` (`guild`, `member`, `data`) VALUES (?, ?, ?)', [guild.id, member.id, '[]'])
-        module.exports.fetchInventory(client, member, guild, callback)
-      }
-    })
-  },
   getLeaderboard: (client, message) => {
 
   },
@@ -126,10 +115,11 @@ module.exports = {
             callback(status)
           })
         } else {
-          module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
-          module.exports.addItemToUser(client, member, guild, productData.productId, productData.productQuantity)
-          status.code = status.code || false
-          callback(status)
+          module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => {
+            module.exports.addItemToUser(client, member, guild, productData.productId, productData.productQuantity)
+            status.code = true
+            callback(status)
+          })
         }
       } else {
         callback(status.code || false)
@@ -143,21 +133,28 @@ module.exports = {
     })
   },
   addItemToUser: (client, member, guild, productId, productQuantity, callback) => {
-    module.exports.fetchInventory(client, member, guild, (inventory) => {
-      if (inventory) {
-        const inventoryData = JSON.parse(inventory.data)
+    module.exports.fetchUserAccount(client, member, guild, (account) => {
+      if (account) {
+        const inventoryData = JSON.parse(account.inventory)
         if (inventoryData[productId]) {
-          inventoryData[productId] = { productId: productId, productQuantity: parseInt(inventoryData[productId].productQuantity) + (productQuantity || 1) }
+          console.log('here')
+          inventoryData[productId] = parseInt(inventoryData[productId].productQuantity) + (productQuantity || 1)
+          console.log(inventoryData[productId])
         } else {
-          inventoryData[productId] = { productId: productId, productQuantity: productQuantity || 1 }
+          inventoryData[productId] = productQuantity || 1
         }
-        client.pool.query('UPDATE `guildEconomyUserInventory` SET data = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData.filter(product => product !== null)), guild.id, member.id])
+        Object.keys(inventoryData).forEach(key => {
+          if (inventoryData[key] === null) {
+            delete inventoryData[key]
+          }
+        })
+        client.pool.query('UPDATE `guildEconomyUserBank` SET inventory = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData), guild.id, member.id])
         if (callback) callback()
       }
     })
   },
   itemActivate: (client, member, guild, item, callback) => {
-    if (Object.prototype.hasOwnProperty.call(item, 'productMeta')) {
+    if (item.productMeta) {
       item.productMeta = JSON.parse(item.productMeta)
 
       const actions = item.productMeta.actions
