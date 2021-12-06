@@ -1,3 +1,4 @@
+/* eslint-disable node/no-callback-literal */
 const StringPlaceholder = require('string-placeholder')
 const getLocales = require('../i18n/getLocales')
 
@@ -116,7 +117,7 @@ module.exports = {
           })
         } else {
           module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => {
-            module.exports.addItemToUser(client, member, guild, productData.productId, productData.productQuantity)
+            module.exports.addItemToUser(client, member, guild, productData.productId)
             status.code = true
             callback(status)
           })
@@ -132,16 +133,25 @@ module.exports = {
       callback()
     })
   },
-  addItemToUser: (client, member, guild, productId, productQuantity, callback) => {
+  addItemToUser: (client, member, guild, productId, singlebuy, callback) => {
     module.exports.fetchUserAccount(client, member, guild, (account) => {
       if (account) {
+        let productQuantity = 1
+
+        singlebuy = singlebuy || false
+        if (singlebuy) productQuantity = -1
+
         const inventoryData = JSON.parse(account.inventory)
         if (inventoryData[productId]) {
-          console.log('here')
-          inventoryData[productId] = parseInt(inventoryData[productId].productQuantity) + (productQuantity || 1)
-          console.log(inventoryData[productId])
+          if (!singlebuy) {
+            inventoryData[productId] = parseInt(inventoryData[productId]) + productQuantity
+            if (callback) callback()
+          } else {
+            if (callback) callback('error')
+          }
         } else {
-          inventoryData[productId] = productQuantity || 1
+          inventoryData[productId] = productQuantity
+          if (callback) callback()
         }
         Object.keys(inventoryData).forEach(key => {
           if (inventoryData[key] === null) {
@@ -149,90 +159,100 @@ module.exports = {
           }
         })
         client.pool.query('UPDATE `guildEconomyUserBank` SET inventory = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData), guild.id, member.id])
-        if (callback) callback()
       }
     })
   },
   itemActivate: (client, member, guild, item, callback) => {
-    if (item.productMeta) {
-      item.productMeta = JSON.parse(item.productMeta)
+    item.productMeta = JSON.parse(item.productMeta)
 
-      const actions = item.productMeta.actions
-      const userInputRequirements = item.productMeta.properties
-      const userInputs = {}
-      Object.keys(actions).forEach(action => {
-        const actionToExecute = actions[action]
-        if (Object.prototype.hasOwnProperty.call(actionToExecute, 'type')) {
-          switch (actionToExecute.type) {
-            case 'sendMessage': {
-              let propertiesString = ''
+    const action = item.productMeta.action
+    const userInputRequirements = item.productMeta.properties
+    const userInputs = {}
+    if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
+      switch (action.type) {
+        case 'sendMessage': {
+          let propertiesString = ''
 
-              if (userInputRequirements.length > 0) {
-                if (item.userInput) {
-                  userInputRequirements.forEach(userInputRequirement => {
-                    userInputs[userInputRequirement] = 1
-                  })
-                  item.userInput.forEach(property => {
-                    property = property.split(':')
-                    if (userInputs[property[0].trim()] && property[1]) {
-                      userInputs[property[0]] = property[1].trim()
-                    }
-                  })
-                  Object.keys(userInputs).forEach(userInput => {
-                    if (!userInputs[userInput] || userInputs[userInput] === 1) {
-                      delete userInputs[userInput]
-                      propertiesString += ` ${userInput}`
-                    }
-                  })
-                  if (propertiesString) {
-                    callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
-                    return
-                  }
-                } else {
-                  userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
-                  callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
-                  return
+          if (userInputRequirements.length > 0) {
+            if (item.userInput) {
+              userInputRequirements.forEach(userInputRequirement => {
+                userInputs[userInputRequirement] = 1
+              })
+              item.userInput.forEach(property => {
+                property = property.split(':')
+                if (userInputs[property[0].trim()] && property[1]) {
+                  userInputs[property[0]] = property[1].trim()
                 }
-              }
-              if (Object.prototype.hasOwnProperty.call(actionToExecute, 'message')) {
-                if (Object.prototype.hasOwnProperty.call(actionToExecute, 'channel')) {
-                  actionToExecute.message = StringPlaceholder(actionToExecute.message, userInputs, { before: '#', after: '#' })
-                  guild.channels.fetch(actionToExecute.channel).then(channel => {
-                    if (channel) {
-                      channel.send(actionToExecute.message || 'Nothing', true)
-                      callback(null, true)
-                    } else {
-                      callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
-                    }
-                  })
-                } else {
-                  callback(actionToExecute.message, true)
+              })
+              Object.keys(userInputs).forEach(userInput => {
+                if (!userInputs[userInput] || userInputs[userInput] === 1) {
+                  delete userInputs[userInput]
+                  propertiesString += ` ${userInput}`
                 }
+              })
+              if (propertiesString) {
+                callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+                return
               }
-              break
+            } else {
+              userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
+              callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+              return
             }
-            case 'giveRole': {
-              if (Object.prototype.hasOwnProperty.call(actionToExecute, 'role')) {
-                guild.roles.fetch(actionToExecute.role).then(role => {
-                  if (role) {
-                    member.roles.add(role)
-                    callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
-                  } else {
-                    callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
-                  }
-                })
+          }
+          if (Object.prototype.hasOwnProperty.call(action, 'message')) {
+            if (Object.prototype.hasOwnProperty.call(action, 'channel')) {
+              action.message = StringPlaceholder(action.message, userInputs, { before: '#', after: '#' })
+              guild.channels.fetch(action.channel).then(channel => {
+                if (channel) {
+                  channel.send(action.message || 'Nothing', true)
+                  callback(null, true)
+                } else {
+                  callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                }
+              })
+            } else {
+              callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+            }
+          }
+          break
+        }
+        case 'giveRole': {
+          if (Object.prototype.hasOwnProperty.call(action, 'role')) {
+            guild.roles.fetch(action.role).then(role => {
+              if (role) {
+                member.roles.add(role)
+                callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
               } else {
                 callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
               }
-            }
+            })
+          } else {
+            callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
           }
         }
-        if (Object.prototype.hasOwnProperty.call(actionToExecute, 'remove_on_buy') && actionToExecute.remove_on_buy !== '1') module.exports.addItemToUser(client, member, guild, item.productId, item.productQuantity)
+      }
+    }
+    if ((Object.prototype.hasOwnProperty.call(item.productMeta, 'singlebuy') && item.productMeta.singlebuy)) {
+      module.exports.addItemToUser(client, member, guild, item.productId, item.productMeta.singlebuy, (status) => {
+        if (status === 'error') {
+          callback(getLocales(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
+        } else {
+          callback(null, true)
+        }
       })
     } else {
-      module.exports.addItemToUser(client, member, guild, item.productId, item.productQuantity, () => {
+      if (!(Object.prototype.hasOwnProperty.call(item.productMeta, 'removeonbuy') && item.productMeta.removeonbuy)) {
+        module.exports.addItemToUser(client, member, guild, item.productId, item.productMeta.singlebuy, (status) => {
+          if (status === 'error') {
+            callback(getLocales(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
+          } else {
+            callback(null, true)
+          }
+        })
+      } else {
         callback(null, true)
-      })
+      }
     }
   }
 }
