@@ -176,6 +176,7 @@
   "BUYPRODUCT_GIVEROLE_ERROR": "Failed to proceed with the purchase because the specified role does not exist.",
   "BUYPRODUCT_SENDMESSAGE_ERROR": "Failed to proceed with the purchase because the specified channel does not exist.",
   "BUYPRODUCT_MISSING_PROPERTY": "You need to specify the following property/s: %PROPERTY%",
+  "BUYPRODUCT_ALREADYOWN": "You already have %PRODUCT%.",
   "INVENTORY_TITLE": "My inventory",
   "INVENTORY_EMPTY": "Your inventory is empty...",
   "INVENTORY_PRELOADER": "Loading inventory. Please wait.",
