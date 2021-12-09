@@ -26,11 +26,11 @@ module.exports = {
                 const product = inventoryData[productId]
                 fetchShopProduct(client, interaction.guild, productId, (productData) => {
                   inventoryDataProductsIndex++
-                  if (product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
+                  if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                     inventoryEmbed
                       .setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/917086976744767498/inventory_chest.png')
-                      .setDescription(inventoryString)
+                      .setDescription(inventoryString || getLocales(locale, 'INVENTORY_EMPTY'))
                     interaction.editReply({ embeds: [inventoryEmbed] })
                   }
                 })
