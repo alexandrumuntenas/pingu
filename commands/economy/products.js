@@ -34,8 +34,8 @@ module.exports = {
         .addStringOption(option => option.setName('message').setDescription('Select the message you want to be sent when the product is bought.').setRequired(true))
         .addChannelOption(option => option.setName('destination').setDescription('Select the channel where you want the message to be sent.').setRequired(true))
         .addStringOption(option => option.setName('description').setDescription('Product Description'))
-        .addStringOption(option => option.setName('properties').setDescription('Variables that users must define when buying the product. Example: `USER, NUMBER...`')))
-      .addStringOption(option => option.setName('image').setDescription('Product Image')))
+        .addStringOption(option => option.setName('properties').setDescription('Variables that users must define when buying the product. Example: `USER, NUMBER...`'))
+        .addStringOption(option => option.setName('image').setDescription('Product Image'))))
     .addSubcommand(subcommand => subcommand.setName('delete').setDescription('Delete a product').addStringOption(option => option.setName('name').setDescription('Product Name').setRequired(true))),
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
