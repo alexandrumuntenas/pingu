@@ -5,6 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 const { fetchShopProduct } = require('../../modules/economy')
 
 module.exports = {
+  module: 'economy',
   name: 'products',
   description: '🛒 Configure the guild shop products',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

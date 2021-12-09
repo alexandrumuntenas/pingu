@@ -5,6 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 const guildMemberRemove = require('../../events/guildMemberRemove')
 
 module.exports = {
+  module: 'farewell',
   name: 'farewell',
   description: '⚙️ Configure the farewell settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

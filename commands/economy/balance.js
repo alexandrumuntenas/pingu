@@ -3,6 +3,7 @@ const { fetchUserAccount } = require('../../modules/economy')
 const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
+  module: 'economy',
   name: 'balance',
   description: '💸 Check your balance',
   cooldown: 5000,

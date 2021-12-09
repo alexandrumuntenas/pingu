@@ -63,7 +63,7 @@ module.exports.loadInteractions = (client) => {
       if (file.endsWith('.js')) {
         const interaction = require(`.${path}`)
         if (interaction.name) {
-          interactions.push(interaction.interactionData || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set'))
+          interactions.push({ module: interaction.module, interaction: interaction.interactionData || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set') })
           table.addRow(file, '✅')
         } else {
           table.addRow(file, '❌  -> missing a help.name, or help.name is not a string.')

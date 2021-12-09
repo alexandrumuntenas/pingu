@@ -5,6 +5,7 @@ const getLocales = require('../../i18n/getLocales')
 const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/joinroles')
 
 module.exports = {
+  module: 'joinroles',
   name: 'joinroles',
   description: '⚙️ Manage join roles',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

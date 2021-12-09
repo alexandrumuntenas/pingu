@@ -3,6 +3,7 @@ const getLocales = require('../../i18n/getLocales')
 const genericMessages = require('../../functions/genericMessages')
 
 module.exports = {
+  module: 'levels',
   cooldown: 10000,
   name: 'levelstop',
   description: '🏅 Get the leaderboard',

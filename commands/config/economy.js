@@ -4,6 +4,7 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
+  module: 'economy',
   name: 'economy',
   description: '⚙️ Configure the economy settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

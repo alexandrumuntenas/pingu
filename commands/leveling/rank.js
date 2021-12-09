@@ -5,6 +5,7 @@ const { rankCard } = require('../../modules/canvasProcessing')
 const tempFileRemover = require('../../functions/tempFileRemover')
 
 module.exports = {
+  module: 'levels',
   cooldown: 10000,
   name: 'rank',
   description: '⭐ Check your level',

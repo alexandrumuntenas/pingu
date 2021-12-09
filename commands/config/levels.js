@@ -9,6 +9,7 @@ const channelRelationship = { 0: 'Not Setup', 1: 'Same Channel where Message is 
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 
 module.exports = {
+  module: 'levels',
   name: 'levels',
   description: '⚙️ Configure the levels system',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

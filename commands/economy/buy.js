@@ -4,6 +4,7 @@ const genericMessages = require('../../functions/genericMessages')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
+  module: 'economy',
   name: 'buy',
   description: '💳 Buy a shop product',
   cooldown: 5000,

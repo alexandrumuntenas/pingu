@@ -10,6 +10,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 
 module.exports = {
+  module: 'welcomer',
   name: 'welcomer',
   description: '⚙️ Configure the welcomer module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
