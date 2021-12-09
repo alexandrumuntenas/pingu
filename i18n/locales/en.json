@@ -181,5 +181,8 @@
   "INVENTORY_EMPTY": "Your inventory is empty...",
   "INVENTORY_PRELOADER": "Loading inventory. Please wait.",
   "DAILY": "Here is your daily reward: %DAILY%",
-  "COOLDOWN": "You have to wait %COOLDOWN% to run this command again."
+  "COOLDOWN": "You have to wait %COOLDOWN% to run this command again.",
+  "PRODUCT_CREATE_SUCCESS": "Product %PRODUCT% has been successfully created.",
+  "PRODUCT_EXISTS": "The product %PRODUCT% already exists.",
+  "PRODUCT_REMOVE_SUCCESS": "The product %PRODUCT% has been successfully removed."
 }
