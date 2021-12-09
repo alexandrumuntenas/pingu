@@ -27,7 +27,7 @@ module.exports = {
     if (interaction.database.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy').map(command => command.interaction.toJSON()) || []
     bodyToSend = client.interactions.filter(command => !command.module).map(command => command.interaction.toJSON())
 
-    bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], bodyToSend || [])
+    bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [])
 
     rest.put(Routes.applicationGuildCommands(client.user.id, interaction.guild.id), { body: bodyToSend })
       .then(() => genericMessages.success(interaction, 'Successfully registered application commands.'))
