@@ -182,5 +182,6 @@
   "COOLDOWN": "Tienes que esperar %COOLDOWN% para volver a ejecutar este comando.",
   "PRODUCT_CREATE_SUCCESS": "Se ha creado correctamente el producto %PRODUCT%",
   "PRODUCT_EXISTS": "El producto %PRODUCT% ya existe.",
-  "PRODUCT_REMOVE_SUCCESS": "Se ha eliminado correctamente el producto %PRODUCT%."
+  "PRODUCT_REMOVE_SUCCESS": "Se ha eliminado correctamente el producto %PRODUCT%.",
+  "WORK": "Has trabajado con éxito. Has ganado %WORK%"
 }

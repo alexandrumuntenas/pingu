@@ -3,12 +3,44 @@ const StringPlaceholder = require('string-placeholder')
 const getLocales = require('../i18n/getLocales')
 
 module.exports = {
-  getMoney: async (client, member, guild, callback) => {
+  getDailyMoney: async (client, member, guild, callback) => {
     const EgM = client.Sentry.startTransaction({
-      op: 'economy.getMoney',
-      name: 'Economy (getMoney)'
+      op: 'economy.getDailyMoney',
+      name: 'Economy (getDailyMoney)'
     })
     const plusNumber = Math.round(Math.random() * (100 - 5) + 5)
+
+    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
+      if (err) {
+        client.Sentry.captureException(err)
+        client.log.error(err)
+      }
+      if (Object.prototype.hasOwnProperty.call(result, 0)) {
+        client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(result[0].amount) + plusNumber), member.id, guild.id], (err) => {
+          if (err) {
+            client.Sentry.captureException(err)
+            client.log.error(err)
+          }
+        })
+      } else {
+        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
+          if (err) {
+            client.Sentry.captureException(err)
+            client.log.error(err)
+          }
+        })
+      }
+    })
+
+    if (callback) callback(plusNumber)
+    EgM.finish()
+  },
+  getWorkMoney: async (client, member, guild, callback) => {
+    const EgM = client.Sentry.startTransaction({
+      op: 'economy.getWorkMoney',
+      name: 'Economy (getWorkMoney)'
+    })
+    const plusNumber = Math.floor(Math.random() * 1500) + 1000
 
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
       if (err) {
@@ -64,7 +96,7 @@ module.exports = {
       if (Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        module.exports.getMoney(client, member, guild, false)
+        module.exports.getDailyMoney(client, member, guild, false)
         module.exports.fetchUserAccount(client, member, guild, callback)
       }
     })
