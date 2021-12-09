@@ -168,91 +168,78 @@ module.exports = {
     const action = item.productMeta.action
     const userInputRequirements = item.productMeta.properties
     const userInputs = {}
-    if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
-      switch (action.type) {
-        case 'sendMessage': {
-          let propertiesString = ''
-
-          if (userInputRequirements.length > 0) {
-            if (item.userInput) {
-              userInputRequirements.forEach(userInputRequirement => {
-                userInputs[userInputRequirement] = 1
-              })
-              item.userInput.forEach(property => {
-                property = property.split(':')
-                if (userInputs[property[0].trim()] && property[1]) {
-                  userInputs[property[0]] = property[1].trim()
-                }
-              })
-              Object.keys(userInputs).forEach(userInput => {
-                if (!userInputs[userInput] || userInputs[userInput] === 1) {
-                  delete userInputs[userInput]
-                  propertiesString += ` ${userInput}`
-                }
-              })
-              if (propertiesString) {
-                callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
-                return
-              }
-            } else {
-              userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
-              callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
-              return
-            }
-          }
-          if (Object.prototype.hasOwnProperty.call(action, 'message')) {
-            if (Object.prototype.hasOwnProperty.call(action, 'channel')) {
-              action.message = StringPlaceholder(action.message, userInputs, { before: '#', after: '#' })
-              guild.channels.fetch(action.channel).then(channel => {
-                if (channel) {
-                  channel.send(action.message || 'Nothing', true)
-                  callback(null, true)
-                } else {
-                  callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
-                }
-              })
-            } else {
-              callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
-            }
-          }
-          break
-        }
-        case 'giveRole': {
-          if (Object.prototype.hasOwnProperty.call(action, 'role')) {
-            guild.roles.fetch(action.role).then(role => {
-              if (role) {
-                member.roles.add(role)
-                callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
-              } else {
-                callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
-              }
-            })
-          } else {
-            callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
-          }
-        }
-      }
-    }
     if ((Object.prototype.hasOwnProperty.call(item.productMeta, 'singlebuy') && item.productMeta.singlebuy)) {
       module.exports.addItemToUser(client, member, guild, item.productId, item.productMeta.singlebuy, (status) => {
         if (status === 'error') {
           callback(getLocales(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
         } else {
-          callback(null, true)
+          if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
+            switch (action.type) {
+              case 'sendMessage': {
+                let propertiesString = ''
+
+                if (userInputRequirements && userInputRequirements.length > 0) {
+                  if (item.userInput) {
+                    userInputRequirements.forEach(userInputRequirement => {
+                      userInputs[userInputRequirement] = 1
+                    })
+                    item.userInput.forEach(property => {
+                      property = property.split(':')
+                      if (userInputs[property[0].trim()] && property[1]) {
+                        userInputs[property[0]] = property[1].trim()
+                      }
+                    })
+                    Object.keys(userInputs).forEach(userInput => {
+                      if (!userInputs[userInput] || userInputs[userInput] === 1) {
+                        delete userInputs[userInput]
+                        propertiesString += ` ${userInput}`
+                      }
+                    })
+                    if (propertiesString) {
+                      callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+                      return
+                    }
+                  } else {
+                    userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
+                    callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+                    return
+                  }
+                }
+                if (Object.prototype.hasOwnProperty.call(action, 'message')) {
+                  if (Object.prototype.hasOwnProperty.call(action, 'channel')) {
+                    action.message = StringPlaceholder(action.message, userInputs, { before: '#', after: '#' })
+                    guild.channels.fetch(action.channel).then(channel => {
+                      if (channel) {
+                        channel.send(action.message || 'Nothing', true)
+                        callback(null, true)
+                      } else {
+                        callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                      }
+                    })
+                  } else {
+                    callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                  }
+                }
+                break
+              }
+              case 'giveRole': {
+                if (Object.prototype.hasOwnProperty.call(action, 'role')) {
+                  guild.roles.fetch(action.role).then(role => {
+                    if (role) {
+                      member.roles.add(role)
+                      callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
+                    } else {
+                      callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
+                    }
+                  })
+                } else {
+                  callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
+                }
+              }
+            }
+          }
         }
       })
-    } else {
-      if (!(Object.prototype.hasOwnProperty.call(item.productMeta, 'removeonbuy') && item.productMeta.removeonbuy)) {
-        module.exports.addItemToUser(client, member, guild, item.productId, item.productMeta.singlebuy, (status) => {
-          if (status === 'error') {
-            callback(getLocales(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
-          } else {
-            callback(null, true)
-          }
-        })
-      } else {
-        callback(null, true)
-      }
     }
   }
 }
