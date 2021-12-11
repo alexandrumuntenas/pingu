@@ -1,4 +1,8 @@
 {
+  "TRANSFER_SUCCESS": "Se ha realizado correctamente la transferencia a %USER%",
+  "TRANSFER_NOENOUGHMONEY": "No dispone de suficiente saldo para realizar la transferencia.",
+  "TRANSFER_INVALIDAMOUNT": "Has introducido una cantidad inválida",
+  "TRANSFER_ISBOT": "No puede transferir dinero a un bot.",
   "LEGACY_NOAVALIABLE": "Este comando no puede ser ejecutado a través de prefijos. Debe utilizar los slash commands.",
   "LEGACY_DISABLED": "Los comandos de Pingu no pueden ser ejecutados a través de los prefijos en este servidor. Deberá utilizar los Slash Commands (/)",
   "SETPREFIX_SUCCESS": "Se ha actualizado el prefijo a %guildPrefix%",

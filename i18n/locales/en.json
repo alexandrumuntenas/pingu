@@ -1,5 +1,8 @@
-
 {
+  "TRANSFER_SUCCESS": "The transfer to %USER% was successful",
+  "TRANSFER_NOENOUGHMONEY": "You do not have sufficient balance to make the transfer.",
+  "TRANSFER_INVALIDAMOUNT": "You have entered an invalid amount.",
+  "TRANSFER_ISBOT": "You cannot transfer money to a bot.",
   "LEGACY_NOAVALIABLE": "This command cannot be executed through prefixes. You must use slash commands.",
   "LEGACY_DISABLED": "Pingu commands cannot be executed through prefixes on this server. You must use the Slash Commands (/).",
   "SETPREFIX_SUCCESS": "The prefix a has been updated to %guildPrefix%",

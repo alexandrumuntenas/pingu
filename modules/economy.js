@@ -105,8 +105,35 @@ module.exports = {
   getLeaderboard: (client, message) => {
 
   },
-  makeMoneyTransferToUser: (client, message) => {
-
+  makeMoneyTransferToUser: (client, guild, fromUser, toUser, amount, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, fromUser.id], (err, fromUserResult) => {
+      if (err) client.logError(err)
+      if (fromUserResult && Object.prototype.hasOwnProperty.call(fromUserResult, 0)) {
+        if (parseInt(fromUserResult[0].amount) >= amount) {
+          client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(fromUserResult[0].amount) - amount), fromUser.id, guild.id], (err) => {
+            if (err) client.logError(err)
+          })
+          client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, toUser.id], (err, toUserResult) => {
+            if (err) client.logError(err)
+            if (fromUserResult && Object.prototype.hasOwnProperty.call(fromUserResult, 0)) {
+              client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(toUserResult[0].amount) + amount), toUser.id, guild.id], (err) => {
+                if (err) client.logError(err)
+              })
+            } else {
+              client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [toUserResult.id, guild.id, amount], (err) => {
+                if (err) client.logError(err)
+              })
+            }
+          })
+          if (callback) callback(true)
+        } else {
+          if (callback) callback(false)
+        }
+      } else {
+        module.exports.getDailyMoney(client, fromUser, guild, false)
+        module.exports.makeMoneyTransferToUser(client, guild, fromUser, toUser, amount, callback)
+      }
+    })
   },
   fetchShopProducts: (client, guild, callback) => {
     client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, rows) => {
