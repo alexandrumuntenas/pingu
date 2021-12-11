@@ -1,5 +1,6 @@
 
 {
+  "LEGACY_NOAVALIABLE": "This command cannot be executed through prefixes. You must use slash commands.",
   "LEGACY_DISABLED": "Pingu commands cannot be executed through prefixes on this server. You must use the Slash Commands (/).",
   "SETPREFIX_SUCCESS": "The prefix a has been updated to %guildPrefix%",
   "SETLANGUAGE_SUCCESS": "Language has been updated to %guildLanguage%",
