@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
           }
           if (cooldown.check(message.member, message.guild, commandToExecute)) {
             cooldown.add(message.member, message.guild, commandToExecute)
-            if (commandToExecute.executeLegacy()) {
+            if (Object.prototype.hasOwnProperty.call(commandToExecute, 'executeLegacy')) {
               await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
             } else {
               genericMessages.legacy.error(message, getLocales(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))
