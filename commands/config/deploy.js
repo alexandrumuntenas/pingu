@@ -5,7 +5,7 @@ const genericMessages = require('../../functions/genericMessages')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {
-  rest.setToken(process.env.INSIDER_TOKEN2)
+  rest.setToken(process.env.INSIDER_TOKEN)
 } else {
   rest.setToken(process.env.PUBLIC_TOKEN)
 }
