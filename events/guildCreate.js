@@ -1,4 +1,4 @@
-const guildFetchData = require('../modules/guildFetchData')
+const guildFetchData = require('../functions/guildFetchData')
 
 module.exports = async (client, guild) => {
   const gC = client.Sentry.startTransaction({

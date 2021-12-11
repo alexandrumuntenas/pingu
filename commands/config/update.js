@@ -2,7 +2,7 @@ const { Permissions } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
 const genericMessages = require('../../functions/genericMessages')
-const guildFetchData = require('../../modules/guildFetchData')
+const guildFetchData = require('../../functions/guildFetchData')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {

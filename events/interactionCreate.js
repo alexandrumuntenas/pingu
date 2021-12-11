@@ -1,6 +1,6 @@
 const { cooldown } = require('../functions/commands')
 const genericMessages = require('../functions/genericMessages')
-const guildFetchData = require('../modules/guildFetchData')
+const guildFetchData = require('../functions/guildFetchData')
 
 module.exports.isCommand = async (client, interaction) => {
   const { commandName } = interaction

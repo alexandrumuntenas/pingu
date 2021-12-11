@@ -3,7 +3,7 @@ const { cooldown } = require('../functions/commands')
 const genericMessages = require('../functions/genericMessages')
 const getLocales = require('../i18n/getLocales')
 const autoresponder = require('../modules/autoresponder')
-const guildFetchData = require('../modules/guildFetchData')
+const guildFetchData = require('../functions/guildFetchData')
 const { rankUp } = require('../modules/levels')
 
 module.exports = async (client, message) => {
