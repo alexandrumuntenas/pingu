@@ -62,6 +62,11 @@ if (process.env.ENTORNO === 'public') {
 
 client.Sentry = Sentry
 
+client.logError = (err) => {
+  client.Sentry.captureException(err)
+  client.log.error(err)
+}
+
 client.commands = commands.loadCommands(client)
 client.interactions = commands.loadInteractions(client)
 
