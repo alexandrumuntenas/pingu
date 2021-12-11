@@ -135,25 +135,17 @@ module.exports = {
       }
     })
   },
-  buyItem: (client, member, guild, productData, isInteraction, callback) => {
+  buyItem: (client, member, guild, productData, callback) => {
     module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
       const status = []
       if (parseInt(productData.productPrice) <= parseInt(userAccount.amount)) {
-        if (isInteraction) {
-          module.exports.itemActivate(client, member, guild, productData, (iaData, continueBuying) => {
-            status.ia = iaData
-            if (continueBuying) module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
-            if (continueBuying) status.code = true
-            status.code = status.code || false
-            callback(status)
-          })
-        } else {
-          module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => {
-            module.exports.addItemToUser(client, member, guild, productData.productId)
-            status.code = true
-            callback(status)
-          })
-        }
+        module.exports.itemActivate(client, member, guild, productData, (iaData, continueBuying) => {
+          status.ia = iaData
+          if (continueBuying) module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
+          if (continueBuying) status.code = true
+          status.code = status.code || false
+          callback(status)
+        })
       } else {
         callback(status.code || false)
       }

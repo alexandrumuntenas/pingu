@@ -19,7 +19,7 @@ module.exports = {
         fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
           if (productData) {
             if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
-            buyItem(client, interaction.member, interaction.guild, productData, true, (status) => {
+            buyItem(client, interaction.member, interaction.guild, productData, (status) => {
               if (status.code) {
                 genericMessages.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
@@ -35,30 +35,6 @@ module.exports = {
       }
     } else {
       genericMessages.error.noavaliable(interaction, locale)
-    }
-  },
-  executeLegacy (client, locale, interaction) {
-    if (interaction.database.economyEnabled !== 0) {
-      if (interaction.args && Object.prototype.hasOwnProperty.call(interaction.args, 0)) {
-        const product = interaction.content.replace(`${interaction.database.guildPrefix}buy `, '').trim()
-        fetchShopProduct(client, interaction.guild, product, (productData) => {
-          if (productData) {
-            buyItem(client, interaction.member, interaction.guild, productData, false, (status) => {
-              if (status.code) {
-                genericMessages.legacy.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
-              } else {
-                genericMessages.legacy.error(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
-              }
-            })
-          } else {
-            genericMessages.legacy.error(interaction, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: product }))
-          }
-        })
-      } else {
-        client.commands.get('shop').executeLegacy(client, locale, interaction)
-      }
-    } else {
-      genericMessages.legacy.error.noavaliable(interaction, locale)
     }
   }
 }
