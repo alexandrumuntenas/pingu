@@ -57,50 +57,5 @@ module.exports = {
     } else {
       genericMessages.error.noavaliable(interaction, locale)
     }
-  },
-  executeLegacy (client, locale, interaction) {
-    if (interaction.database.economyEnabled !== 0) {
-      if (!Object.prototype.hasOwnProperty.call(interaction.args, 0)) {
-        const shopEmbed = new MessageEmbed()
-          .setTitle(`${interaction.guild.name} Shop`)
-          .setDescription('Use `/shop <item name>` or `/shop <item id>` to get more details about an item.\n Use `/buy <item name>` or `/buy <item id>` to buy an item.')
-          .setColor('#633bdf')
-          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-
-        let productList = ''
-        fetchShopProducts(client, interaction.guild, (shopProductsData) => {
-          if (shopProductsData) {
-            shopProductsData.forEach(shopProduct => {
-              productList += `\`${shopProduct.productName}\` [${shopProduct.productPrice} ${interaction.database.economyCurrencyIcon} ${interaction.database.economyCurrency}]\n`
-            })
-            shopEmbed.addField('Products', productList)
-            interaction.channel.send({ embeds: [shopEmbed] })
-          } else {
-            interaction.channel.send({ embeds: [shopEmbed] })
-          }
-        })
-      } else {
-        fetchShopProduct(client, interaction.guild, interaction.content.replace(`${interaction.database.guildPrefix}shop `, '').trim(), (productData) => {
-          if (productData) {
-            const productEmbed = new MessageEmbed()
-              .setColor('#633bdf')
-              .setAuthor(`${interaction.guild.name} Shop`, interaction.guild.iconURL())
-              .setTitle(productData.productName)
-              .setImage(productData.productImage)
-              .addField(`${interaction.database.economyCurrencyIcon} ${getLocales(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
-              .addField(`:robot: ${getLocales(locale, 'SHOP_COMMANDTOBUY')}`, `\`${interaction.database.guildPrefix}buy ${productData.productName}\``, true)
-              .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-
-            if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
-
-            interaction.channel.send({ embeds: [productEmbed] })
-          } else {
-            genericMessages.legacy.error(interaction, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
-          }
-        })
-      }
-    } else {
-      genericMessages.legacy.error.noavaliable(interaction, locale)
-    }
   }
 }
