@@ -21,19 +21,5 @@ module.exports = {
     } else {
       genericMessages.error.noavaliable(interaction, locale)
     }
-  },
-  executeLegacy (client, locale, message) {
-    if (message.database.economyEnabled !== 0) {
-      getWorkMoney(client, message.member, message.guild, (money) => {
-        const inventoryEmbed = new MessageEmbed()
-          .setAuthor(message.member.displayName, message.author.displayAvatarURL())
-          .setColor('#633bdf')
-          .setDescription(getLocales(locale, 'WORK', { WORK: `${money} ${message.database.economyCurrencyIcon}` }))
-          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-        message.reply({ embeds: [inventoryEmbed] })
-      })
-    } else {
-      genericMessages.legacy.error.noavaliable(message, locale)
-    }
   }
 }
