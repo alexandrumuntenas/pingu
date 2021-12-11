@@ -1,10 +1,10 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   cooldown: 0,
   name: 'about',
   description: '📖 About the bot',
-  executeInteraction (client, locale, interaction) {
+  executeInteraction(client, locale, interaction) {
     const embed = new MessageEmbed()
       .setColor('#FFFFFF')
       .addFields(
@@ -24,10 +24,10 @@ module.exports = {
           name: ':speech_balloon: Pingu\'s support server',
           value: 'https://rebrand.ly/pinguSupport'
         }
-      ).setFooter(`👪 ${client.guilds.cache.size} guilds`)
-    interaction.editReply({ embeds: [embed] })
+      ).setFooter(`👪 ${client.guilds.cache.size} guilds`);
+    interaction.editReply({ embeds: [embed] });
   },
-  executeLegacy (client, locale, message) {
+  executeLegacy(client, locale, message) {
     const embed = new MessageEmbed()
       .setColor('#FFFFFF')
       .addFields(
@@ -47,7 +47,7 @@ module.exports = {
           name: ':speech_balloon: Pingu\'s support server',
           value: 'https://rebrand.ly/pinguSupport'
         }
-      ).setFooter(`👪 ${client.guilds.cache.size} guilds`)
-    message.channel.send({ embeds: [embed] })
+      ).setFooter(`👪 ${client.guilds.cache.size} guilds`);
+    message.channel.send({ embeds: [embed] });
   }
-}
+};

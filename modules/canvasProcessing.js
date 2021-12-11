@@ -1,154 +1,154 @@
-const { registerFont, createCanvas, loadImage } = require('canvas')
-const { writeFileSync } = require('fs')
-const StackBlur = require('stackblur-canvas')
-const randomstring = require('randomstring')
-const getLocales = require('../i18n/getLocales')
-const isValidUrl = require('is-valid-http-url')
-const isImageUrl = require('is-image-url')
-const { millify } = require('millify')
-const hexToRgba = require('hex-to-rgba')
+const { registerFont, createCanvas, loadImage } = require('canvas');
+const { writeFileSync } = require('fs');
+const StackBlur = require('stackblur-canvas');
+const randomstring = require('randomstring');
+const isValidUrl = require('is-valid-http-url');
+const isImageUrl = require('is-image-url');
+const { millify } = require('millify');
+const hexToRgba = require('hex-to-rgba');
+const getLocales = require('../i18n/getLocales');
 
-registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
+registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' });
 module.exports = {
   welcomeCard: async (client, member, locale, database) => {
     const uniqueIdentifiers = {
       userAvatar: randomstring.generate({ charset: 'alphabetic' }),
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
-    }
+    };
 
     const paths = {
       attachmentSent: `./modules/temp/${uniqueIdentifiers.attachmentSent}.png`
-    }
+    };
 
-    const canvas = createCanvas(1100, 500)
-    const ctx = canvas.getContext('2d')
+    const canvas = createCanvas(1100, 500);
+    const ctx = canvas.getContext('2d');
 
     // Establecer fondo del canvas
-    let imgPath = ''
+    let imgPath = '';
     if (database.welcomeImageCustomBackground && isValidUrl(database.welcomeImageCustomBackground) && isImageUrl(database.welcomeImageCustomBackground)) {
-      imgPath = database.welcomeImageCustomBackground
-      const background = await loadImage(imgPath)
-      const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
-      ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
+      imgPath = database.welcomeImageCustomBackground;
+      const background = await loadImage(imgPath);
+      const scale = Math.max(canvas.width / background.width, canvas.height / background.height);
+      ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale);
 
       // Establecer blured overlay
-      ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor || '#272934', (database.welcomeImageCustomOpacity / 100))
-      ctx.fillRect(25, 25, 1050, 450)
-      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 450, database.welcomeImageCustomBlur)
+      ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor || '#272934', (database.welcomeImageCustomOpacity / 100));
+      ctx.fillRect(25, 25, 1050, 450);
+      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 450, database.welcomeImageCustomBlur);
     } else {
-      ctx.fillStyle = '#272934'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillStyle = '#272934';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    const joinText = getLocales(locale, 'GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD', { USER: member.user.tag })
-    const memberCountText = getLocales(locale, 'GUILDMEMBERADD_MEMBER_COUNT', { COUNT: member.guild.memberCount })
+    const joinText = getLocales(locale, 'GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD', { USER: member.user.tag });
+    const memberCountText = getLocales(locale, 'GUILDMEMBERADD_MEMBER_COUNT', { COUNT: member.guild.memberCount });
 
-    ctx.font = applyText(canvas, joinText)
-    ctx.fillStyle = '#ffffff'
-    ctx.textAlign = 'center'
-    ctx.fillText(joinText, canvas.width / 2, 350)
+    ctx.font = applyText(canvas, joinText);
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.fillText(joinText, canvas.width / 2, 350);
 
-    ctx.font = '30px "Montserrat SemiBold"'
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    ctx.fillText(memberCountText, canvas.width / 2, 425)
+    ctx.font = '30px "Montserrat SemiBold"';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillText(memberCountText, canvas.width / 2, 425);
 
     // Añadir avatar de usuario
 
     if (database.welcomeImageRoundAvatar === 1) {
-      ctx.beginPath()
-      ctx.arc(canvas.width / 2, 160, 100, 0, Math.PI * 2, true)
-      ctx.closePath()
-      ctx.clip()
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, 160, 100, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.clip();
     }
 
-    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
-    ctx.drawImage(avatar, canvas.width / 2 - 100, 60, 200, 200)
+    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }));
+    ctx.drawImage(avatar, canvas.width / 2 - 100, 60, 200, 200);
 
-    const buffer = canvas.toBuffer('image/png')
-    writeFileSync(paths.attachmentSent, buffer)
+    const buffer = canvas.toBuffer('image/png');
+    writeFileSync(paths.attachmentSent, buffer);
 
-    return paths
+    return paths;
   },
   rankCard: async (client, member, locale, database) => {
     const uniqueIdentifiers = {
       userAvatar: randomstring.generate({ charset: 'alphabetic' }),
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
-    }
+    };
 
     const paths = {
       attachmentSent: `./modules/temp/${uniqueIdentifiers.attachmentSent}.png`
-    }
+    };
 
-    const canvas = createCanvas(1100, 320)
-    const ctx = canvas.getContext('2d')
+    const canvas = createCanvas(1100, 320);
+    const ctx = canvas.getContext('2d');
 
     // Establecer fondo del canvas
-    let imgPath = ''
+    let imgPath = '';
     if (database.levelsImageCustomBackground && isValidUrl(database.levelsImageCustomBackground) && isImageUrl(database.levelsImageCustomBackground)) {
-      imgPath = database.levelsImageCustomBackground
-      const background = await loadImage(imgPath)
-      const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
-      ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
+      imgPath = database.levelsImageCustomBackground;
+      const background = await loadImage(imgPath);
+      const scale = Math.max(canvas.width / background.width, canvas.height / background.height);
+      ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale);
 
       // Establecer blured overlay
-      ctx.fillStyle = hexToRgba(database.levelsImageCustomOverlayColor || '#272934', (database.levelsImageCustomOpacity / 100))
-      ctx.fillRect(25, 25, 1050, 270)
-      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, database.levelsImageCustomBlur)
+      ctx.fillStyle = hexToRgba(database.levelsImageCustomOverlayColor || '#272934', (database.levelsImageCustomOpacity / 100));
+      ctx.fillRect(25, 25, 1050, 270);
+      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, database.levelsImageCustomBlur);
     } else {
-      ctx.fillStyle = '#272934'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.fillStyle = '#272934';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     // Escribir usuario
-    ctx.font = applyText(canvas, member.tag, 40)
-    ctx.textAlign = 'left'
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    ctx.fillText(`${member.tag}`, 295, 180)
+    ctx.font = applyText(canvas, member.tag, 40);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillText(`${member.tag}`, 295, 180);
 
     // Escribir nivel
 
-    ctx.font = '180px "Montserrat SemiBold"'
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
-    ctx.textAlign = 'right'
-    ctx.fillText(millify(member.levelData.memberLevel), 1050, 180)
+    ctx.font = '180px "Montserrat SemiBold"';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.textAlign = 'right';
+    ctx.fillText(millify(member.levelData.memberLevel), 1050, 180);
 
     // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)}`
+    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)}`;
 
-    ctx.font = '40px "Montserrat SemiBold"'
-    ctx.textAlign = 'right'
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    ctx.fillText(actualVSrequired, 1025, 250)
+    ctx.font = '40px "Montserrat SemiBold"';
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillText(actualVSrequired, 1025, 250);
 
     // Añadir barra de progreso (backdrop)
 
-    ctx.fillStyle = 'rgba(255,255,255, 0.3)'
-    ctx.fillRect(295, 200, 755, 70)
+    ctx.fillStyle = 'rgba(255,255,255, 0.3)';
+    ctx.fillRect(295, 200, 755, 70);
 
     // Añadir barra de progreso
 
-    ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(295, 200, Math.round((member.levelData.memberExperience * 100) / 755), 70)
+    ctx.fillStyle = 'rgb(255,255,255)';
+    ctx.fillRect(295, 200, Math.round((member.levelData.memberExperience * 100) / 755), 70);
 
     // Añadir avatar de usuario
 
-    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
-    ctx.drawImage(avatar, 50, 50, 220, 220)
+    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }));
+    ctx.drawImage(avatar, 50, 50, 220, 220);
 
-    const buffer = canvas.toBuffer('image/png')
-    writeFileSync(paths.attachmentSent, buffer)
+    const buffer = canvas.toBuffer('image/png');
+    writeFileSync(paths.attachmentSent, buffer);
 
-    return paths
+    return paths;
   }
-}
+};
 
 const applyText = (canvas, text, maxlimit) => {
-  const ctx = canvas.getContext('2d')
-  let fontSize = maxlimit || 100
+  const ctx = canvas.getContext('2d');
+  let fontSize = maxlimit || 100;
 
   do {
-    ctx.font = `${fontSize -= 1}px "Montserrat SemiBold"`
-  } while (ctx.measureText(text).width > canvas.width - 125)
+    ctx.font = `${fontSize -= 1}px "Montserrat SemiBold"`;
+  } while (ctx.measureText(text).width > canvas.width - 125);
 
-  return ctx.font
-}
+  return ctx.font;
+};

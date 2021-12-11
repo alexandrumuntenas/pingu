@@ -3,30 +3,30 @@ module.exports = {
     const aJR = client.Sentry.startTransaction({
       op: 'joinroles.addJoinRole',
       name: 'joinroles (Add Join Roles)'
-    })
+    });
     client.pool.query('INSERT INTO `guildJoinRoles` (`guild`, `roleID`) VALUES (?, ?)', [data.guild.id, data.role.id], (err) => {
-      if (err) client.Sentry.captureException(err)
-      if (callback) callback()
-      aJR.finish()
-    })
+      if (err) client.Sentry.captureException(err);
+      if (callback) callback();
+      aJR.finish();
+    });
   },
   removeJoinRole: (client, data, callback) => {
     const rJR = client.Sentry.startTransaction({
       op: 'joinroles.removeJoinRole',
       name: 'joinroles (Remove Join Roles)'
-    })
+    });
     client.pool.query('DELETE FROM `guildJoinRoles` WHERE `guild` = ? AND roleID = ?', [data.guild.id, data.role.id], (err) => {
-      if (err) client.Sentry.captureException(err)
-      if (callback) callback()
-      rJR.finish()
-    })
+      if (err) client.Sentry.captureException(err);
+      if (callback) callback();
+      rJR.finish();
+    });
   },
   fetchJoinRoles: (client, guild, callback) => {
     client.pool.query('SELECT * FROM `guildJoinRoles` WHERE `guild` = ?', [guild.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
+      if (err) client.Sentry.captureException(err);
       if (rows) {
-        callback(rows)
+        callback(rows);
       }
-    })
+    });
   }
-}
+};

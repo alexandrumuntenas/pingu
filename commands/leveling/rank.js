@@ -1,52 +1,52 @@
-const genericMessages = require('../../functions/genericMessages')
-const { fetchMember } = require('../../modules/levels')
-const { MessageAttachment } = require('discord.js')
-const { rankCard } = require('../../modules/canvasProcessing')
-const tempFileRemover = require('../../functions/tempFileRemover')
+const { MessageAttachment } = require('discord.js');
+const genericMessages = require('../../functions/genericMessages');
+const { fetchMember } = require('../../modules/levels');
+const { rankCard } = require('../../modules/canvasProcessing');
+const tempFileRemover = require('../../functions/tempFileRemover');
 
 module.exports = {
   module: 'levels',
   cooldown: 10000,
   name: 'rank',
   description: '⭐ Check your level',
-  executeInteraction (client, locale, interaction) {
+  executeInteraction(client, locale, interaction) {
     if (interaction.database.levelsEnabled !== 0) {
       fetchMember(client, interaction.member, (data) => {
         if (data) {
-          interaction.member.levelData = data
-          interaction.member.tag = `${interaction.user.username}#${interaction.user.discriminator}`
+          interaction.member.levelData = data;
+          interaction.member.tag = `${interaction.user.username}#${interaction.user.discriminator}`;
           rankCard(client, interaction.member, locale, interaction.database).then((paths) => {
-            const attachmentSent = new MessageAttachment(paths.attachmentSent)
+            const attachmentSent = new MessageAttachment(paths.attachmentSent);
             interaction.editReply({ files: [attachmentSent] }).then(() => {
-              tempFileRemover(paths)
-            })
-          })
+              tempFileRemover(paths);
+            });
+          });
         } else {
-          genericMessages.error(interaction, locale, 'RANK_NO_CLASSIFIED')
+          genericMessages.error(interaction, locale, 'RANK_NO_CLASSIFIED');
         }
-      })
+      });
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      genericMessages.error.noavaliable(interaction, locale);
     }
   },
-  executeLegacy (client, locale, message) {
+  executeLegacy(client, locale, message) {
     if (message.database.levelsEnabled !== 0) {
       fetchMember(client, message.member, (data) => {
         if (data) {
-          message.member.levelData = data
-          message.member.tag = message.author.tag
+          message.member.levelData = data;
+          message.member.tag = message.author.tag;
           rankCard(client, message.member, locale, message.database).then((paths) => {
-            const attachmentSent = new MessageAttachment(paths.attachmentSent)
+            const attachmentSent = new MessageAttachment(paths.attachmentSent);
             message.channel.send({ files: [attachmentSent] }).then(() => {
-              tempFileRemover(paths)
-            })
-          })
+              tempFileRemover(paths);
+            });
+          });
         } else {
-          genericMessages.legacy.error(message, locale, 'RANK_NO_CLASSIFIED')
+          genericMessages.legacy.error(message, locale, 'RANK_NO_CLASSIFIED');
         }
-      })
+      });
     } else {
-      genericMessages.legacy.error.noavaliable(message, locale)
+      genericMessages.legacy.error.noavaliable(message, locale);
     }
   }
-}
+};

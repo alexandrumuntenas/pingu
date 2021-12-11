@@ -1,6 +1,6 @@
-const { MessageEmbed } = require('discord.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const Math = require('mathjs')
+const { MessageEmbed } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const Math = require('mathjs');
 
 module.exports = {
   cooldown: 0,
@@ -9,22 +9,22 @@ module.exports = {
   interactionData: new SlashCommandBuilder()
     .setName('random')
     .setDescription('Generates a random number')
-    .addIntegerOption(option => option.setName('maxnumber').setDescription('Enter an integer').setRequired(true)),
-  executeInteraction (client, locale, interaction) {
-    const messageSent = new MessageEmbed().setColor('#007BFF')
-    const specifiedRandom = Math.round(Math.random(1, parseInt(interaction.options.getInteger('maxnumber'))))
-    messageSent.setDescription(`:abacus: **${specifiedRandom}**`)
-    interaction.editReply({ embeds: [messageSent] })
+    .addIntegerOption((option) => option.setName('maxnumber').setDescription('Enter an integer').setRequired(true)),
+  executeInteraction(client, locale, interaction) {
+    const messageSent = new MessageEmbed().setColor('#007BFF');
+    const specifiedRandom = Math.round(Math.random(1, parseInt(interaction.options.getInteger('maxnumber'))));
+    messageSent.setDescription(`:abacus: **${specifiedRandom}**`);
+    interaction.editReply({ embeds: [messageSent] });
   },
-  executeLegacy (client, locale, message) {
-    const messageSent = new MessageEmbed().setColor('#007BFF')
+  executeLegacy(client, locale, message) {
+    const messageSent = new MessageEmbed().setColor('#007BFF');
     if (message.args[0]) {
-      const specifiedRandom = Math.round(Math.random(1, parseInt(message.args[0])))
-      messageSent.setDescription(`:abacus: **${specifiedRandom}**`)
+      const specifiedRandom = Math.round(Math.random(1, parseInt(message.args[0])));
+      messageSent.setDescription(`:abacus: **${specifiedRandom}**`);
     } else {
-      const unspecifiedRandom = Math.round(Math.random(1, 100))
-      messageSent.setDescription(`:abacus: **${unspecifiedRandom}**`)
+      const unspecifiedRandom = Math.round(Math.random(1, 100));
+      messageSent.setDescription(`:abacus: **${unspecifiedRandom}**`);
     }
-    message.reply({ embeds: [messageSent] })
+    message.reply({ embeds: [messageSent] });
   }
-}
+};
