@@ -1,4 +1,6 @@
 {
+  "RADIO_FOUND_PLAYING": "Radio encontrada. Reproduciendo %station%",
+  "RADIO_NOTFOUND": "Radio no encontrada",
   "TRANSFER_SUCCESS": "Se ha realizado correctamente la transferencia a %USER%",
   "TRANSFER_NOENOUGHMONEY": "No dispone de suficiente saldo para realizar la transferencia.",
   "TRANSFER_INVALIDAMOUNT": "Has introducido una cantidad inválida",
@@ -170,7 +172,7 @@
   "AUTORESPONDER_REMOVE_SUCCESS": "Se ha eliminado correctamente la respuesta personalizada con identificador %AUTORESPONDER_ID%",
   "SHOP_NODESCRIPTION": "Descripción no establecida.",
   "SHOP_PRODUCTNOTFOUND": "No se ha encontrado el producto solicitado.",
-  "SHOP_PRODUCTPRICE" : "Precio del producto",
+  "SHOP_PRODUCTPRICE": "Precio del producto",
   "SHOP_COMMANDTOBUY": "Comando para comprar",
   "BUYPRODUCT_SUCCESS": "Se ha adquirido %PRODUCT_NAME% correctamente.",
   "BUYPRODUCT_NOMONEY": "No dispone de saldo suficiente para comprar %PRODUCT_NAME%.",

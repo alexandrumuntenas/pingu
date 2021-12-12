@@ -1,4 +1,6 @@
 {
+  "RADIO_FOUND_PLAYING": "Radio found. Playing %station%.",
+  "RADIO_NOTFOUND": "Radio not found",
   "TRANSFER_SUCCESS": "The transfer to %USER% was successful",
   "TRANSFER_NOENOUGHMONEY": "You do not have sufficient balance to make the transfer.",
   "TRANSFER_INVALIDAMOUNT": "You have entered an invalid amount.",
