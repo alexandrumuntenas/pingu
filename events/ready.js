@@ -16,6 +16,7 @@ module.exports = async (client) => {
     updateStatus(client)
     client.log.info('Presencia refrescada')
   }, 3600000)
+  if (client.statcord) client.statcord.autopost()
   setInterval(() => {
     client.guilds.cache.forEach(async (guild) => {
       guildFetchData(client, guild.id, (data) => {
