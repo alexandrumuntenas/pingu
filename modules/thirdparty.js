@@ -15,9 +15,9 @@ module.exports = async (client) => {
     client.statcord = new Statcord.Client({
       client,
       key: process.env.STATCORD_API_KEY,
-      postCpuStatistics: false, /* Whether to post memory statistics or not, defaults to true */
-      postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
-      postNetworkStatistics: false /* Whether to post memory statistics or not, defaults to true */
+      postCpuStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+      postMemStatistics: true, /* Whether to post memory statistics or not, defaults to true */
+      postNetworkStatistics: true /* Whether to post memory statistics or not, defaults to true */
     })
 
     client.statcord.on('autopost-start', () => {
