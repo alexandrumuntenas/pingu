@@ -19,6 +19,7 @@ module.exports.isCommand = async (client, interaction) => {
       }
       if (cooldown.check(interaction.member, interaction.guild, commandToExecute)) {
         cooldown.add(interaction.member, interaction.guild, commandToExecute)
+        if (client.statcord) client.statcord.postCommand(commandToExecute.name, '000000000000000')
         await commandToExecute.executeInteraction(client, interaction.database.guildLanguage || 'en', interaction)
       } else {
         genericMessages.error.cooldown(interaction, interaction.database.guildLanguage || 'en', (parseInt(cooldown.ttl(interaction.member, interaction.guild, commandToExecute)) - Date.now()))
