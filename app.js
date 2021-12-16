@@ -6,18 +6,8 @@ require('dotenv').config()
 const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')
 const mysql = require('mysql2')
-const Statcord = require('statcord.js')
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING] })
-if (process.env.STATCORD_API_KEY) {
-  client.statcord = new Statcord.Client({
-    client,
-    key: process.env.STATCORD_API_KEY,
-    postCpuStatistics: false, /* Whether to post memory statistics or not, defaults to true */
-    postMemStatistics: false, /* Whether to post memory statistics or not, defaults to true */
-    postNetworkStatistics: false /* Whether to post memory statistics or not, defaults to true */
-  })
-}
 
 client.log = require('./functions/customLogger')
 
@@ -47,10 +37,12 @@ client.log.info('Cargando Módulos')
 client.log.success('Módulos Cargados')
 
 client.log.info('Cargando Servicios Third-Party')
-const topggSDK = require('./modules/third-party/topggSDK')
 const commands = require('./functions/commands')
 const ready = require('./events/ready')
+const thirdparty = require('./modules/thirdparty')
 client.log.success('Servicios Third-Party Cargados')
+
+thirdparty(client)
 
 // Bot
 if (process.env.ENTORNO === 'public') {
@@ -59,7 +51,6 @@ if (process.env.ENTORNO === 'public') {
     tracesSampleRate: 1.0,
     environment: 'production'
   })
-  topggSDK(client)
   client.login(process.env.PUBLIC_TOKEN)
 } else {
   Sentry.init({
@@ -129,14 +120,3 @@ client.on('interactionCreate', async interaction => {
     })
   }
 })
-
-if (client.statcord) {
-  client.statcord.on('autopost-start', () => {
-    client.log.info('Publicando estadísticas en Statcord...')
-  })
-
-  client.statcord.on('post', status => {
-    if (!status) client.log.success('Estadísticas publicadas en Statcord')
-    else client.log.error(status)
-  })
-}
