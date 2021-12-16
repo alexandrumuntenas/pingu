@@ -132,7 +132,7 @@ client.on('interactionCreate', async interaction => {
 
 if (client.statcord) {
   client.statcord.on('autopost-start', () => {
-    client.info.log('Publicando estadísticas en Statcord...')
+    client.log.info('Publicando estadísticas en Statcord...')
   })
 
   client.statcord.on('post', status => {
