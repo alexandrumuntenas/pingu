@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { joinVoiceChannel, createAudioPlayer, createAudioResource, NoSubscriberBehavior } = require('@discordjs/voice')
 const RadioBrowser = require('radio-browser')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Error } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -29,9 +29,9 @@ module.exports = {
         })
         player.play(resource)
         const subscription = connection.subscribe(player)
-        messageBuilder.success(interaction, getLocales(locale, 'RADIO_FOUND_PLAYING', { station: stations[0].name }))
+        interaction.editReply({ embeds: [Success(getLocales(locale, 'RADIO_FOUND_PLAYING', { station: stations[0].name }))] })
       } else {
-        messageBuilder.error(interaction, getLocales(locale, 'RADIO_NOTFOUND'))
+        interaction.editReply({ embeds: [Error(getLocales(locale, 'RADIO_NOTFOUND'))] })
       }
     })
   }
