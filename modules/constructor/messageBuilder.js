@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js')
-const getLocales = require('../../i18n/getLocales')
 
 module.exports.Status = (message) => {
   return new MessageEmbed()
@@ -25,35 +24,27 @@ module.exports.Error = (message) => {
     .setDescription(`<:pingu_false:876103413526564924> ${message}`)
 }
 
-module.exports.info = {}
+/**
+* Devuelve un mensaje enriquecido con información del comando
+* @param {String} commandName Nombre del comando
+* @param {String} commandDescription Descripción del comando
+* @param {Array} commandOptions Opciones del comando
+* @param {String} commandModule Opciones del comando
+* @return {MessageEmbed} Mensaje enriquecido
+*/
 
-module.exports.info.help = (interaction, locale, syntax, options, nsfw, nsfwOptions) => {
-  const sentEmbed = new MessageEmbed().setTitle('Help Tray')
-  if (syntax) {
-    sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_SYNTAX'), `\`${syntax}\``)
+module.exports.Help = (commandName, commandDescription, commandOptions, commandModule) => {
+  const embed = new MessageEmbed()
+    .setColor('#2F3136')
+    .setTitle(`${commandName} • Help Tray`)
+    .setDescription(`${commandDescription || 'No description'}`)
+
+  if (commandOptions) {
+    const optionsNoNSFW = commandOptions.filter(option => !option.isNsfw)
+    const optionsNSFW = commandOptions.filter(option => option.isNsfw)
+
+    if (optionsNoNSFW) optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `:gear: Syntax: \`${option.syntax || 'No syntax'}\`\n\n${option.description || 'No description'}`, true))
+    if (optionsNSFW) optionsNSFW.forEach(option => embed.addField(`<:NSFW:922570340582973441> ${option.option}`, `:gear: Syntax: \`${option.syntax || 'No syntax'}\`\n\n${option.description || 'No description'}`, true))
   }
-
-  if (options) {
-    let avaliableOptions = ''
-    options.forEach((object) => {
-      avaliableOptions = avaliableOptions + ` \`${object.option || object}\``
-    })
-    sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_SUBCATEGORIES'), avaliableOptions)
-  }
-
-  if (!nsfw) {
-    sentEmbed.setColor('#2F3136')
-  } else {
-    sentEmbed.setColor('#B23CFD')
-    if (nsfwOptions) {
-      let avaliableOptions = ''
-      nsfwOptions.forEach((object) => {
-        avaliableOptions = avaliableOptions + ` \`${object.option || object}\``
-      })
-      sentEmbed.addField(getLocales(locale, 'COMMAND_HELP_NSFW_OPTIONS'), avaliableOptions)
-    }
-  }
-
-  sentEmbed.setFooter(`<> => ${getLocales(locale, 'PARAMETER_NECESSARY')} | () => ${getLocales(locale, 'PAREMETER_OPTIONAL')}`)
-  interaction.editReply({ embeds: [sentEmbed] })
+  return embed
 }
