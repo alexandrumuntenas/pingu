@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchUserAccount } = require('../../modules/economy')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Error } = require('../../modules/constructor/messageBuilder')
+const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
   module: 'economy',
@@ -18,7 +19,7 @@ module.exports = {
         interaction.editReply({ embeds: [firstMessageSent] })
       })
     } else {
-      messageBuilder.error.noavaliable(interaction, locale)
+      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }
