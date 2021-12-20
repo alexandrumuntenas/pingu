@@ -13,7 +13,7 @@ module.exports = {
       fetchUserAccount(client, interaction.member, interaction.guild, (user) => {
         const firstMessageSent = new MessageEmbed()
           .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
-          .setColor('#009FE3')
+          .setColor('#2F3136')
           .setDescription(`${user.amount || 0} ${interaction.database.economyCurrency} ${interaction.database.economyCurrencyIcon}`)
 
         interaction.editReply({ embeds: [firstMessageSent] })
