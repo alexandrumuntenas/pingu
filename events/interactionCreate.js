@@ -1,5 +1,5 @@
 const { cooldown } = require('../functions/commands')
-const messageBuilder = require('../functions/messageBuilder')
+const messageBuilder = require('../modules/constructor/messageBuilder')
 const guildFetchData = require('../functions/guildFetchData')
 
 module.exports.isCommand = async (client, interaction) => {

@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const getLocales = require('../../i18n/getLocales')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 
 module.exports = {
   module: 'levels',

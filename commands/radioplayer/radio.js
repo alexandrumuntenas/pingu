@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { joinVoiceChannel, createAudioPlayer, createAudioResource, NoSubscriberBehavior } = require('@discordjs/voice')
 const RadioBrowser = require('radio-browser')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {

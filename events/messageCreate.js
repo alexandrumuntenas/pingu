@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { cooldown } = require('../functions/commands')
-const messageBuilder = require('../functions/messageBuilder')
+const messageBuilder = require('../modules/constructor/messageBuilder')
 const getLocales = require('../i18n/getLocales')
 const autoresponder = require('../modules/autoresponder')
 const guildFetchData = require('../functions/guildFetchData')

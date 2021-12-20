@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { fetchShopProduct, fetchShopProducts } = require('../../modules/economy')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {

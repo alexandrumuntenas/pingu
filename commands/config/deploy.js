@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {

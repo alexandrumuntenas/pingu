@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchUserAccount } = require('../../modules/economy')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 
 module.exports = {
   module: 'economy',

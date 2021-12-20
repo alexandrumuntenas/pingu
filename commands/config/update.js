@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 const guildFetchData = require('../../functions/guildFetchData')
 
 const rest = new REST({ version: '9' })

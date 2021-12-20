@@ -1,4 +1,4 @@
-const messageBuilder = require('../../functions/messageBuilder')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 const { fetchMember } = require('../../modules/levels')
 const { MessageAttachment } = require('discord.js')
 const { rankCard } = require('../../modules/canvasProcessing')
