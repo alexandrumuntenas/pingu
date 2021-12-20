@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Help } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -18,14 +18,14 @@ module.exports = {
       case 'create': {
         client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [interaction.guild.id, interaction.options.getString('command'), interaction.options.getString('response')], function (err) {
           if (err) client.Sentry.captureException(err)
-          messageBuilder.success(interaction, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command'), CCMD_VALUERETURNED: interaction.options.getString('response') }))
+          interaction.editReply({ embeds: [Success(getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command'), CCMD_VALUERETURNED: interaction.options.getString('response') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [interaction.options.getString('command'), interaction.guild.id], function (err) {
           if (err) client.Sentry.captureException(err)
-          messageBuilder.success(interaction, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command') }))
+          interaction.editReply({ embeds: [Success(getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command') }))] })
         })
         break
       }
@@ -39,10 +39,10 @@ module.exports = {
             const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
             client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.legacy.success(message, getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))
+              message.reply({ embeds: [Success(getLocales(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))] })
             })
           } else {
-            helpTray(message, locale)
+            message.reply({ embeds: [helpTray] })
           }
           break
         }
@@ -50,24 +50,22 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.legacy.success(message, getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))
+              message.reply({ embeds: [Success(getLocales(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))] })
             })
           } else {
-            helpTray(message, locale)
+            message.reply({ embeds: [helpTray] })
           }
           break
         }
         default: {
-          helpTray(message, locale)
+          message.reply({ embeds: [helpTray] })
           break
         }
       }
     } else {
-      helpTray(message, locale)
+      message.reply({ embeds: [helpTray] })
     }
   }
 }
 
-const helpTray = (message, locale) => {
-  messageBuilder.legacy.Info.help(message, locale, `${message.database.guildPrefix}ccmd <option>`, ['create <command> <value to return ···>', 'remove <command>'])
-}
+const helpTray = Help('ccmd', 'Comando para interactuar con los comandos personalizados del servidor.', [{ option: 'create', description: 'Crea un comando personalizado', syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: 'Elimina un comando personalizado', syntax: 'remove <command>', isNsfw: false }])
