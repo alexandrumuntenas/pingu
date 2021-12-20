@@ -24,6 +24,12 @@ module.exports.Error = (message) => {
     .setDescription(`<:pingu_false:876103413526564924> ${message}`)
 }
 
+module.exports.Info = (message) => {
+  return new MessageEmbed()
+    .setColor('#2F3136')
+    .setDescription(`:information_source: ${message}`)
+}
+
 /**
 * Devuelve un mensaje enriquecido con información del comando
 * @param {String} commandName Nombre del comando
