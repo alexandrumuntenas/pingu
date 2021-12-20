@@ -21,7 +21,7 @@ module.exports.Success = (message) => {
 module.exports.Error = (message) => {
   return new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<:pingu_false:876103413526564924> ${message}`)
+    .setDescription(`<:pingu_null:876103457860370442> ${message}`)
 }
 
 module.exports.Info = (message) => {
