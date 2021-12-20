@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { fetchShopProduct, fetchShopProducts } = require('../../modules/economy')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Error } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
         const shopEmbed = new MessageEmbed()
           .setTitle(`${interaction.guild.name} Shop`)
           .setDescription('Use `/shop <item name>` or `/shop <item id>` to get more details about an item.\n Use `/buy <item name>` or `/buy <item id>` to buy an item.')
-          .setColor('#633bdf')
+          .setColor('#2F3136')
           .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
         let productList = ''
@@ -38,7 +38,7 @@ module.exports = {
         fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
           if (productData) {
             const productEmbed = new MessageEmbed()
-              .setColor('#633bdf')
+              .setColor('#2F3136')
               .setAuthor(`${interaction.guild.name} Shop`, interaction.guild.iconURL())
               .setTitle(productData.productName)
               .setImage(productData.productImage)
@@ -50,12 +50,12 @@ module.exports = {
 
             interaction.editReply({ embeds: [productEmbed] })
           } else {
-            messageBuilder.error(interaction, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
+            interaction.editReply({ embeds: [Error(getLocales('SHOP_PRODUCTNOTFOUND'))] })
           }
         })
       }
     } else {
-      messageBuilder.error.noavaliable(interaction, locale)
+      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }
