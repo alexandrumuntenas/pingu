@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Error } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const { makeMoneyTransferToUser } = require('../../modules/economy')
 
@@ -22,19 +22,19 @@ module.exports = {
         if (parseInt(amount) > 0) {
           makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
             if (status) {
-              messageBuilder.success(interaction, getLocales(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))
+              interaction.editReply({ embeds: [Success(getLocales(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))] })
             } else {
-              messageBuilder.error(interaction, getLocales(locale, 'TRANSFER_NOENOUGHMONEY'))
+              interaction.editReply({ embeds: [Error(getLocales(locale, 'TRANSFER_NOENOUGHMONEY'))] })
             }
           })
         } else {
-          messageBuilder.error(interaction, getLocales(locale, 'TRANSFER_INVALIDAMOUNT'))
+          interaction.editReply({ embeds: [Error(getLocales(locale, 'TRANSFER_INVALIDAMOUNT'))] })
         }
       } else {
-        messageBuilder.error(interaction, getLocales(locale, 'TRANSFER_ISBOT'))
+        interaction.editReply({ embeds: [Error(getLocales(locale, 'TRANSFER_ISBOT'))] })
       }
     } else {
-      messageBuilder.error.noavaliable(interaction, locale)
+      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }
