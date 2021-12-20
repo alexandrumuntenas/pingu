@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { cooldown } = require('../functions/commands')
-const genericMessages = require('../functions/genericMessages')
+const messageBuilder = require('../functions/messageBuilder')
 const getLocales = require('../i18n/getLocales')
 const autoresponder = require('../modules/autoresponder')
 const guildFetchData = require('../functions/guildFetchData')
@@ -25,7 +25,7 @@ module.exports = async (client, message) => {
         if (message.database.legacyCMD !== 0) {
           commandToExecute = client.commands.get(commandToExecute)
           if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
-            genericMessages.legacy.error.permissionerror(message, message.database.guildLanguage || 'en')
+            messageBuilder.legacy.error.permissionerror(message, message.database.guildLanguage || 'en')
             return
           }
           if (cooldown.check(message.member, message.guild, commandToExecute)) {
@@ -34,14 +34,14 @@ module.exports = async (client, message) => {
               if (client.statcord) client.statcord.postCommand(commandToExecute.name, '000000000000000')
               await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
             } else {
-              genericMessages.legacy.error(message, getLocales(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))
+              messageBuilder.legacy.error(message, getLocales(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))
             }
           } else {
-            genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
+            messageBuilder.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
             return
           }
         } else {
-          genericMessages.legacy.Info.status(message, getLocales(message.database.guildLanguage || 'en', 'LEGACY_DISABLED'))
+          messageBuilder.legacy.Info.status(message, getLocales(message.database.guildLanguage || 'en', 'LEGACY_DISABLED'))
         }
       } else {
         if (cooldown.check(message.member, message.guild, commandToExecute)) {
@@ -75,7 +75,7 @@ module.exports = async (client, message) => {
             }
           })
         } else {
-          genericMessages.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
+          messageBuilder.legacy.error.cooldown(message, message.database.guildLanguage || 'en', (parseInt(cooldown.ttl(message.member, message.guild, commandToExecute)) - Date.now()))
           return
         }
       }

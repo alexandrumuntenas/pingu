@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const guildMemberRemove = require('../../events/guildMemberRemove')
 
@@ -34,10 +34,10 @@ module.exports = {
         if (interaction.options.getChannel('farewellchannel')) {
           client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [interaction.options.getChannel('farewellchannel').id, interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: interaction.options.getChannel('farewellchannel') }))
+            messageBuilder.success(interaction, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: interaction.options.getChannel('farewellchannel') }))
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: interaction.guild.channels.cache.find(c => c.id === interaction.database.farewellChannel) }))
+          messageBuilder.info.status(interaction, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: interaction.guild.channels.cache.find(c => c.id === interaction.database.farewellChannel) }))
         }
         break
       }
@@ -45,15 +45,15 @@ module.exports = {
         if (interaction.options.getString('farewellmessage')) {
           client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [interaction.options.getString('farewellmessage'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${interaction.options.getString('farewellmessage')}\`` }))
+            messageBuilder.success(interaction, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${interaction.options.getString('farewellmessage')}\`` }))
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'FAREWELL_MESSAGE_MISSING_ARGS', { FAREWELL_MESSAGE: interaction.database.farewellMessage }))
+          messageBuilder.info.status(interaction, getLocales(locale, 'FAREWELL_MESSAGE_MISSING_ARGS', { FAREWELL_MESSAGE: interaction.database.farewellMessage }))
         }
         break
       }
       case 'simulate': {
-        genericMessages.info.status(interaction, getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))
+        messageBuilder.info.status(interaction, getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))
         guildMemberRemove(client, interaction.member)
         break
       }
@@ -79,26 +79,26 @@ module.exports = {
           if (message.mentions.channels.first()) {
             client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))
+              messageBuilder.legacy.success(message, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.farewellChannel) }))
+            messageBuilder.legacy.Info.status(message, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.farewellChannel) }))
           }
           break
         }
         case 'message': {
           const filter = m => m.member.id === message.member.id
-          genericMessages.legacy.Info.status(message, getLocales(locale, 'FAREWELL_MESSAGE_PREUPDATE'))
+          messageBuilder.legacy.Info.status(message, getLocales(locale, 'FAREWELL_MESSAGE_PREUPDATE'))
           message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))
+              messageBuilder.legacy.success(message, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))
             })
           })
           break
         }
         case 'simulate': {
-          genericMessages.legacy.Info.status(message, getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))
+          messageBuilder.legacy.Info.status(message, getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))
           guildMemberRemove(client, message.member)
           break
         }
@@ -114,5 +114,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.legacy.Info.help(message, locale, `\`${message.database.guildPrefix}farewell <option>\``, ['viewconfig', 'channel <channel>', 'message', 'simulate'])
+  messageBuilder.legacy.Info.help(message, locale, `\`${message.database.guildPrefix}farewell <option>\``, ['viewconfig', 'channel <channel>', 'message', 'simulate'])
 }

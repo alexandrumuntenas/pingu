@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {
@@ -16,7 +16,7 @@ module.exports = {
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
   executeInteraction (client, locale, interaction) {
-    genericMessages.info.loader(interaction, 'Deploying commands...')
+    messageBuilder.info.loader(interaction, 'Deploying commands...')
     client.log.info(`Deploying commands to ${interaction.guild.id}`)
     let bodyToSend = []
     let welcome, joinroles, farewell, levels, economy
@@ -30,7 +30,7 @@ module.exports = {
     bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [])
 
     rest.put(Routes.applicationGuildCommands(client.user.id, interaction.guild.id), { body: bodyToSend })
-      .then(() => genericMessages.success(interaction, 'Successfully registered application commands.'))
+      .then(() => messageBuilder.success(interaction, 'Successfully registered application commands.'))
       .catch(console.error)
   },
   executeLegacy (client, locale, message) {
@@ -47,7 +47,7 @@ module.exports = {
     bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [])
 
     rest.put(Routes.applicationGuildCommands(client.user.id, message.guild.id), { body: bodyToSend })
-      .then(() => genericMessages.legacy.success(message, 'Successfully registered application commands.'))
+      .then(() => messageBuilder.legacy.success(message, 'Successfully registered application commands.'))
       .catch(console.error)
   }
 }

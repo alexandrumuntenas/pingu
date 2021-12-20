@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { fetchShopProduct, fetchShopProducts } = require('../../modules/economy')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -50,12 +50,12 @@ module.exports = {
 
             interaction.editReply({ embeds: [productEmbed] })
           } else {
-            genericMessages.error(interaction, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
+            messageBuilder.error(interaction, getLocales(locale, 'SHOP_PRODUCTNOTFOUND'))
           }
         })
       }
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   }
 }

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { buyItem, fetchShopProduct } = require('../../modules/economy')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -21,20 +21,20 @@ module.exports = {
             if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
             buyItem(client, interaction.member, interaction.guild, productData, (status) => {
               if (status.code) {
-                genericMessages.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
+                messageBuilder.success(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))
               } else {
-                genericMessages.error(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
+                messageBuilder.error(interaction, status.ia || getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))
               }
             })
           } else {
-            genericMessages.error(interaction, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: interaction.options.getString('productname') }))
+            messageBuilder.error(interaction, getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: interaction.options.getString('productname') }))
           }
         })
       } else {
         client.commands.get('shop').executeInteraction(client, locale, interaction)
       }
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   }
 }

@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/joinroles')
 
@@ -27,23 +27,23 @@ module.exports = {
               roles.forEach(role => {
                 itemsProcessed++
                 body = `${body} <@&${role.roleID}>`
-                if (itemsProcessed === roles.length) genericMessages.info.status(interaction, getLocales(locale, 'JOINROLES_LIST', { ROLES: body }))
+                if (itemsProcessed === roles.length) messageBuilder.info.status(interaction, getLocales(locale, 'JOINROLES_LIST', { ROLES: body }))
               })
             } else {
-              genericMessages.info.status(interaction, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
+              messageBuilder.info.status(interaction, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
             }
           } else {
-            genericMessages.info.status(interaction, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
+            messageBuilder.info.status(interaction, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
           }
         })
         break
       }
       case 'add': {
-        addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => genericMessages.success(interaction, getLocales(locale, 'JOINROLES_ADD', { ROLE: interaction.options.getRole('role') })))
+        addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => messageBuilder.success(interaction, getLocales(locale, 'JOINROLES_ADD', { ROLE: interaction.options.getRole('role') })))
         break
       }
       case 'remove': {
-        removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => genericMessages.success(interaction, getLocales(locale, 'JOINROLES_REMOVE', { ROLE: interaction.options.getRole('role') })))
+        removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => messageBuilder.success(interaction, getLocales(locale, 'JOINROLES_REMOVE', { ROLE: interaction.options.getRole('role') })))
         break
       }
     }
@@ -60,20 +60,20 @@ module.exports = {
                 roles.forEach(role => {
                   itemsProcessed++
                   body = `${body} <@&${role.roleID}>`
-                  if (itemsProcessed === roles.length) genericMessages.legacy.Info.status(message, getLocales(locale, 'JOINROLES_LIST', { ROLES: body }))
+                  if (itemsProcessed === roles.length) messageBuilder.legacy.Info.status(message, getLocales(locale, 'JOINROLES_LIST', { ROLES: body }))
                 })
               } else {
-                genericMessages.legacy.Info.status(message, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
+                messageBuilder.legacy.Info.status(message, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
               }
             } else {
-              genericMessages.legacy.Info.status(message, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
+              messageBuilder.legacy.Info.status(message, getLocales(locale, 'JOINROLES_LIST_NOROLES'))
             }
           })
           break
         }
         case 'add': {
           if (message.mentions.roles.first()) {
-            message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => genericMessages.legacy.success(message, getLocales(locale, 'JOINROLES_ADD', { ROLE: role }))))
+            message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => messageBuilder.legacy.success(message, getLocales(locale, 'JOINROLES_ADD', { ROLE: role }))))
           } else {
             helpTray(message, locale)
           }
@@ -81,7 +81,7 @@ module.exports = {
         }
         case 'remove': {
           if (message.mentions.roles.first()) {
-            message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => genericMessages.legacy.success(message, getLocales(locale, 'JOINROLES_REMOVE', { ROLE: role }))))
+            message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => messageBuilder.legacy.success(message, getLocales(locale, 'JOINROLES_REMOVE', { ROLE: role }))))
           } else {
             helpTray(message, locale)
           }
@@ -99,5 +99,5 @@ module.exports = {
 }
 
 const helpTray = (message, locale) => {
-  genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}joinroles <option>`, ['list', 'add @myrole (@myrole2 ··>)', 'remove @myrole (@myrole2 ··>)'])
+  messageBuilder.legacy.Info.help(message, locale, `${message.database.guildPrefix}joinroles <option>`, ['list', 'add @myrole (@myrole2 ··>)', 'remove @myrole (@myrole2 ··>)'])
 }

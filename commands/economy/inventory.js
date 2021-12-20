@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchShopProduct, fetchUserAccount } = require('../../modules/economy')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -46,7 +46,7 @@ module.exports = {
         }
       })
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   }
 }

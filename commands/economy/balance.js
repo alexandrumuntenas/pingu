@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchUserAccount } = require('../../modules/economy')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 
 module.exports = {
   module: 'economy',
@@ -18,7 +18,7 @@ module.exports = {
         interaction.editReply({ embeds: [firstMessageSent] })
       })
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   }
 }

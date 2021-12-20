@@ -1,4 +1,4 @@
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const { fetchMember } = require('../../modules/levels')
 const { MessageAttachment } = require('discord.js')
 const { rankCard } = require('../../modules/canvasProcessing')
@@ -22,11 +22,11 @@ module.exports = {
             })
           })
         } else {
-          genericMessages.error(interaction, locale, 'RANK_NO_CLASSIFIED')
+          messageBuilder.error(interaction, locale, 'RANK_NO_CLASSIFIED')
         }
       })
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   },
   executeLegacy (client, locale, message) {
@@ -42,11 +42,11 @@ module.exports = {
             })
           })
         } else {
-          genericMessages.legacy.error(message, locale, 'RANK_NO_CLASSIFIED')
+          messageBuilder.legacy.error(message, locale, 'RANK_NO_CLASSIFIED')
         }
       })
     } else {
-      genericMessages.legacy.error.noavaliable(message, locale)
+      messageBuilder.legacy.error.noavaliable(message, locale)
     }
   }
 }

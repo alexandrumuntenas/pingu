@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const getLocales = require('../../i18n/getLocales')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 
 module.exports = {
   module: 'levels',
@@ -32,12 +32,12 @@ module.exports = {
               })
             })
           } else {
-            genericMessages.error(interaction, locale, 'LEVELSTOP_NODATA')
+            messageBuilder.error(interaction, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   },
   executeLegacy (client, locale, message) {
@@ -65,12 +65,12 @@ module.exports = {
               })
             })
           } else {
-            genericMessages.legacy.error(message, locale, 'LEVELSTOP_NODATA')
+            messageBuilder.legacy.error(message, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
     } else {
-      genericMessages.legacy.error.noavaliable(message, locale)
+      messageBuilder.legacy.error.noavaliable(message, locale)
     }
   }
 }

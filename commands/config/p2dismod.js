@@ -1,6 +1,6 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -62,7 +62,7 @@ module.exports = {
           return
         }
       }
-      genericMessages.success(interaction, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))
+      messageBuilder.success(interaction, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))
     } else {
       helpInteraction(interaction, locale)
     }
@@ -117,7 +117,7 @@ module.exports = {
           return
         }
       }
-      genericMessages.legacy.success(message, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${message.args[0]}\`` }))
+      messageBuilder.legacy.success(message, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${message.args[0]}\`` }))
     } else {
       helpTray(message, locale)
     }
@@ -125,9 +125,9 @@ module.exports = {
 }
 
 function helpTray (message, locale) {
-  genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
+  messageBuilder.legacy.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
 }
 
 function helpInteraction (message, locale) {
-  genericMessages.info.help(message, locale, '/p2enmod <module>', ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
+  messageBuilder.info.help(message, locale, '/p2enmod <module>', ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
 }

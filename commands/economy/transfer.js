@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const genericMessages = require('../../functions/genericMessages')
+const messageBuilder = require('../../functions/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const { makeMoneyTransferToUser } = require('../../modules/economy')
 
@@ -22,19 +22,19 @@ module.exports = {
         if (parseInt(amount) > 0) {
           makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
             if (status) {
-              genericMessages.success(interaction, getLocales(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))
+              messageBuilder.success(interaction, getLocales(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))
             } else {
-              genericMessages.error(interaction, getLocales(locale, 'TRANSFER_NOENOUGHMONEY'))
+              messageBuilder.error(interaction, getLocales(locale, 'TRANSFER_NOENOUGHMONEY'))
             }
           })
         } else {
-          genericMessages.error(interaction, getLocales(locale, 'TRANSFER_INVALIDAMOUNT'))
+          messageBuilder.error(interaction, getLocales(locale, 'TRANSFER_INVALIDAMOUNT'))
         }
       } else {
-        genericMessages.error(interaction, getLocales(locale, 'TRANSFER_ISBOT'))
+        messageBuilder.error(interaction, getLocales(locale, 'TRANSFER_ISBOT'))
       }
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   }
 }
