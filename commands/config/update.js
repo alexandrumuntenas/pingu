@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Loader, Success, Error } = require('../../modules/constructor/messageBuilder')
 const guildFetchData = require('../../functions/guildFetchData')
 
 const rest = new REST({ version: '9' })
@@ -26,7 +26,7 @@ module.exports = {
   cooldown: 0,
   executeInteraction (client, locale, interaction) {
     if (interaction.member.id === '722810818823192629') {
-      messageBuilder.info.loader(interaction, 'Deploying commands...')
+      interaction.editReply({ embeds: [Loader('Deploying commands...')] })
       client.guilds.cache.forEach(async (guild) => {
         guildFetchData(client, guild.id, (data) => {
           client.log.info(`Deploying commands to ${guild.id}`)
@@ -46,9 +46,9 @@ module.exports = {
             .catch(console.error)
         })
       })
-      messageBuilder.success(interaction, 'Successfully deployed commands!')
+      interaction.editReply({ embeds: [Success('Successfully deployed commands!')] })
     } else {
-      messageBuilder.error(interaction, 'You are not allowed to use this command.')
+      interaction.editReply({ embeds: [Error('You are not allowed to use this command.')] })
     }
   }
 }
