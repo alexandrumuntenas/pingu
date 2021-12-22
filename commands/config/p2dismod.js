@@ -1,6 +1,6 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Help } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -58,13 +58,13 @@ module.exports = {
           break
         }
         default: {
-          helpInteraction(interaction, locale)
+          interaction.editReply({ embeds: [helpTray] })
           return
         }
       }
-      messageBuilder.success(interaction, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))
+      interaction.editReply({ embeds: [Success(getLocales(locale, 'P2DISMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))] })
     } else {
-      helpInteraction(interaction, locale)
+      interaction.editReply({ embeds: [helpTray] })
     }
   },
   executeLegacy (client, locale, message) {
@@ -113,21 +113,15 @@ module.exports = {
           break
         }
         default: {
-          helpTray(message, locale)
+          message.reply({ embeds: [helpTray] })
           return
         }
       }
-      messageBuilder.legacy.success(message, getLocales(locale, 'P2DISMOD', { PMODULE: `\`${message.args[0]}\`` }))
+      message.reply({ embeds: [Success(getLocales(locale, 'P2DISMOD', { PMODULE: `\`${message.args[0]}\`` }))] })
     } else {
-      helpTray(message, locale)
+      message.reply({ embeds: [helpTray] })
     }
   }
 }
 
-function helpTray (message, locale) {
-  messageBuilder.legacy.Info.help(message, locale, `${message.database.guildPrefix}p2dismod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
-}
-
-function helpInteraction (message, locale) {
-  messageBuilder.info.help(message, locale, '/p2enmod <module>', ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
-}
+const helpTray = Help('p2dismod', '⚙️ Disable Pingu modules', [{ option: 'module', description: 'The module to enable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder' }])
