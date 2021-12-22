@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js')
+const { codeBlock } = require('@discordjs/builders')
 
 module.exports.Status = (message) => {
   return new MessageEmbed()
@@ -49,8 +50,8 @@ module.exports.Help = (commandName, commandDescription, commandOptions, commandM
     const optionsNoNSFW = commandOptions.filter(option => !option.isNsfw)
     const optionsNSFW = commandOptions.filter(option => option.isNsfw)
 
-    if (optionsNoNSFW) optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `:gear: Syntax: \`${option.syntax || 'No syntax'}\`\n\n${option.description || 'No description'}`, true))
-    if (optionsNSFW) optionsNSFW.forEach(option => embed.addField(`<:NSFW:922570340582973441> ${option.option}`, `:gear: Syntax: \`${option.syntax || 'No syntax'}\`\n\n${option.description || 'No description'}`, true))
+    if (optionsNoNSFW) optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `${option.description || 'No description'}\n${codeBlock(`:gear: Syntax: \`${option.syntax || 'No syntax'}`)}`, true))
+    if (optionsNSFW) optionsNSFW.forEach(option => embed.addField(`<:NSFW:922570340582973441> ${option.option}`, `${option.description || 'No description'}\n${codeBlock(`:gear: Syntax: \`${option.syntax || 'No syntax'}`)}`, true))
   }
   return embed
 }
