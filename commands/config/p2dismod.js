@@ -124,4 +124,4 @@ module.exports = {
   }
 }
 
-const helpTray = Help('p2dismod', '⚙️ Disable Pingu modules', [{ option: 'module', description: 'The module to enable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder' }])
+const helpTray = Help('p2dismod', '⚙️ Disable Pingu modules', [{ option: 'module', description: 'The module to disable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder' }])
