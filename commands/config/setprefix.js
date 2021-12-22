@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Help } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -16,16 +16,16 @@ module.exports = {
     client.pool.query('UPDATE `guildData` SET `guildPrefix` = ? WHERE `guild` = ?', [interaction.options.getString('newprefix'), interaction.guild.id], (err) => {
       if (err) client.Sentry.captureException(err)
     })
-    messageBuilder.success(interaction, getLocales(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${interaction.options.getString('newprefix')}\`` }))
+    interaction.editReply({ embeds: [Success(getLocales(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${interaction.options.getString('newprefix')}\`` }))] })
   },
   executeLegacy (client, locale, message) {
     if (message.args[0]) {
       client.pool.query('UPDATE `guildData` SET `guildPrefix` = ? WHERE `guild` = ?', [message.args[0], message.guild.id], (err) => {
         if (err) client.Sentry.captureException(err)
       })
-      messageBuilder.legacy.success(message, getLocales(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${message.args[0]}\`` }))
+      message.reply({ embeds: [Success(getLocales(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${message.args[0]}\`` }))] })
     } else {
-      messageBuilder.legacy.Info.help(message, locale, `${message.database.guildPrefix}setprefix <newprefix>`)
+      message.reply({ embeds: [Help('setprefix', 'Change the command prefix', [{ option: '<newprefix>', description: 'New prefix ' }])] })
     }
   }
 }
