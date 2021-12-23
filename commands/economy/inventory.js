@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchShopProduct, fetchUserAccount } = require('../../modules/economy')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Error } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
         const inventoryEmbed = new MessageEmbed()
           .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
           .setTitle(getLocales(locale, 'INVENTORY_TITLE'))
-          .setColor('#633bdf')
+          .setColor('#2F3136')
           .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
         if (account) {
           let inventoryString = ''
@@ -30,7 +30,7 @@ module.exports = {
                   if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                     inventoryEmbed
-                      .setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/917086976744767498/inventory_chest.png')
+                      .setImage('https://cdn.discordapp.com/attachments/908413370665938975/908414689451597824/empty_inventory.png')
                       .setDescription(inventoryString || getLocales(locale, 'INVENTORY_EMPTY'))
                     interaction.editReply({ embeds: [inventoryEmbed] })
                   }
@@ -46,7 +46,7 @@ module.exports = {
         }
       })
     } else {
-      messageBuilder.error.noavaliable(interaction, locale)
+      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }

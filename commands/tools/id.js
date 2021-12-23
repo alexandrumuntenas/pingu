@@ -1,5 +1,4 @@
-const { MessageEmbed } = require('discord.js')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Info } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 
 module.exports = {
@@ -7,10 +6,9 @@ module.exports = {
   description: '🆔 Get the server ID',
   cooldown: 0,
   executeInteraction (client, locale, interaction) {
-    messageBuilder.info.status(interaction, getLocales(locale, 'ID', { ID: `\`${interaction.guild.id}\`` }))
+    interaction.editReply({ embeds: [Info(getLocales(locale, 'ID', { ID: `\`${interaction.guild.id}\`` }))] })
   },
   executeLegacy (client, locale, message) {
-    const messageSent = new MessageEmbed().setColor('#3984BD').setDescription(`<:win_information:876119543968305233> ${getLocales(locale, 'ID', { ID: `\`${message.guild.id}\`` })}`)
-    message.reply({ embeds: [messageSent] })
+    message.reply({ embeds: [Info(getLocales(locale, 'ID', { ID: `\`${message.guild.id}\`` }))] })
   }
 }

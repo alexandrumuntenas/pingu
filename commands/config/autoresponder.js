@@ -1,6 +1,6 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Help } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const makeId = require('../../modules/makeId')
 
@@ -19,14 +19,14 @@ module.exports = {
       case 'create': {
         client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [interaction.guild.id, interaction.options.getString('id'), interaction.options.getString('trigger'), interaction.options.getString('reply')], function (err) {
           if (err) client.Sentry.captureException(err)
-          messageBuilder.success(interaction, getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))
+          interaction.editReply({ embeds: [Success(getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [interaction.options.getString('id'), interaction.guild.id], function (err) {
           if (err) client.Sentry.captureException(err)
-          messageBuilder.success(interaction, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))
+          interaction.editReply({ embeds: [Success(interaction, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
         })
         break
       }
@@ -49,13 +49,13 @@ module.exports = {
                   const autoresponderId = message.args[1] || makeId(12)
                   client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [message.guild.id, autoresponderId, autoresponderTrigger, autoresponderResponse], function (err) {
                     if (err) client.Sentry.captureException(err)
-                    messageBuilder.legacy.success(message, getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))
+                    message.reply({ embeds: [Success(getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))] })
                   })
                 })
               })
             })
           } else {
-            helpTray(message, locale)
+            message.reply({ embeds: [helpTray] })
           }
           break
         }
@@ -63,24 +63,22 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.legacy.success(message, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))
+              message.reply({ embeds: [Success(getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))] })
             })
           } else {
-            helpTray(message, locale)
+            message.reply({ embeds: [helpTray] })
           }
           break
         }
         default: {
-          helpTray(message, locale)
+          message.reply({ embeds: [helpTray] })
           break
         }
       }
     } else {
-      helpTray(message, locale)
+      message.reply({ embeds: [helpTray] })
     }
   }
 }
 
-const helpTray = (message, locale) => {
-  messageBuilder.legacy.Info.help(message, locale, `${message.database.guildPrefix}autoresponder <option>`, ['create (custom ID)', 'remove <ID>'])
-}
+const helpTray = Help('autoresponder', 'Command to interact with Pingu\'s customized answers module.', [{ option: 'create', description: 'Crea un comando personalizado. Se puede asignar un identificador personalizado.', syntax: 'create (customId)', isNsfw: false }, { option: 'remove', description: 'Eliminar una respuesta personalizada mediante su identificador.', syntax: 'remove <ID>', isNsfw: true }])

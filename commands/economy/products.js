@@ -1,6 +1,6 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const { fetchShopProduct } = require('../../modules/economy')
 
@@ -51,10 +51,10 @@ module.exports = {
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.success(interaction, getLocales(locale, 'PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))
+              interaction.editReply({ embeds: [Success(getLocales('PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            messageBuilder.error(interaction, getLocales(locale, 'PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))
+            interaction.editReply({ embeds: [Error(getLocales('PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
@@ -75,10 +75,10 @@ module.exports = {
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.success(interaction, getLocales(locale, 'PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))
+              interaction.editReply({ embeds: [Success(getLocales('PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            messageBuilder.error(interaction, getLocales(locale, 'PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))
+            interaction.editReply({ embeds: [Error(getLocales('PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
@@ -101,10 +101,10 @@ module.exports = {
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.success(interaction, getLocales(locale, 'PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))
+              interaction.editReply({ embeds: [Success(getLocales(locale, 'PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            messageBuilder.error(interaction, getLocales(locale, 'PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))
+            interaction.editReply({ embeds: [Error(getLocales(locale, 'PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
@@ -112,7 +112,7 @@ module.exports = {
       case 'delete': {
         client.pool.query('DELETE FROM `guildEconomyProducts` WHERE `productName` = ? AND `guild` = ?', [interaction.options.getString('name'), interaction.guild.id], function (err) {
           if (err) client.Sentry.captureException(err)
-          messageBuilder.success(interaction, getLocales(locale, 'PRODUCT_REMOVE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))
+          interaction.editReply({ embeds: [Success(getLocales(locale, 'PRODUCT_REMOVE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
         })
         break
       }

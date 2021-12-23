@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
 const getLocales = require('../../i18n/getLocales')
 const guildMemberRemove = require('../../events/guildMemberRemove')
 
@@ -34,10 +34,10 @@ module.exports = {
         if (interaction.options.getChannel('farewellchannel')) {
           client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [interaction.options.getChannel('farewellchannel').id, interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            messageBuilder.success(interaction, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: interaction.options.getChannel('farewellchannel') }))
+            interaction.editReply({ embeds: [Success(getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: interaction.options.getChannel('farewellchannel') }))] })
           })
         } else {
-          messageBuilder.info.status(interaction, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: interaction.guild.channels.cache.find(c => c.id === interaction.database.farewellChannel) }))
+          interaction.editReply({ embeds: [Status(getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: interaction.guild.channels.cache.find(c => c.id === interaction.database.farewellChannel) }))] })
         }
         break
       }
@@ -45,15 +45,15 @@ module.exports = {
         if (interaction.options.getString('farewellmessage')) {
           client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [interaction.options.getString('farewellmessage'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            messageBuilder.success(interaction, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${interaction.options.getString('farewellmessage')}\`` }))
+            interaction.editReply({ embeds: [Success(getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${interaction.options.getString('farewellmessage')}\`` }))] })
           })
         } else {
-          messageBuilder.info.status(interaction, getLocales(locale, 'FAREWELL_MESSAGE_MISSING_ARGS', { FAREWELL_MESSAGE: interaction.database.farewellMessage }))
+          interaction.editReply({ embeds: [Status(getLocales(locale, 'FAREWELL_MESSAGE_MISSING_ARGS', { FAREWELL_MESSAGE: interaction.database.farewellMessage }))] })
         }
         break
       }
       case 'simulate': {
-        messageBuilder.info.status(interaction, getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))
+        interaction.editReply({ embeds: [Status(getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))] })
         guildMemberRemove(client, interaction.member)
         break
       }
@@ -79,40 +79,38 @@ module.exports = {
           if (message.mentions.channels.first()) {
             client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.legacy.success(message, getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))
+              message.reply({ embeds: [Success(getLocales(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))] })
             })
           } else {
-            messageBuilder.legacy.Info.status(message, getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.farewellChannel) }))
+            message.reply({ embeds: [Status(getLocales(locale, 'FAREWELL_CHANNEL_MISSING_ARGS', { FAREWELL_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.farewellChannel) }))] })
           }
           break
         }
         case 'message': {
           const filter = m => m.member.id === message.member.id
-          messageBuilder.legacy.Info.status(message, getLocales(locale, 'FAREWELL_MESSAGE_PREUPDATE'))
+          message.channel.send({ embeds: [Status(message, getLocales(locale, 'FAREWELL_MESSAGE_PREUPDATE'))] })
           message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              messageBuilder.legacy.success(message, getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))
+              message.channel.send({ embeds: [Success(getLocales(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))] })
             })
           })
           break
         }
         case 'simulate': {
-          messageBuilder.legacy.Info.status(message, getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))
+          message.reply({ embeds: [Status(getLocales(locale, 'FAREWELL_SIMULATE_SUCCESS'))] })
           guildMemberRemove(client, message.member)
           break
         }
         default: {
-          helpTray(message, locale)
+          message.reply({ embeds: [helpTray] })
           break
         }
       }
     } else {
-      helpTray(message, locale)
+      message.reply({ embeds: [helpTray] })
     }
   }
 }
 
-const helpTray = (message, locale) => {
-  messageBuilder.legacy.Info.help(message, locale, `\`${message.database.guildPrefix}farewell <option>\``, ['viewconfig', 'channel <channel>', 'message', 'simulate'])
-}
+const helpTray = Help('farewell', 'Configure the farewell module', [{ option: 'viewconfig', description: 'View the farewell configuration', syntax: '', isNsfw: false }, { option: 'channel', description: 'Set the farewell channel', syntax: '<#channel>', isNsfw: false }, { option: 'message', description: 'Set the farewell message', syntax: '<message>', isNsfw: false }, { option: 'simulate', description: 'Simulate a farewell', syntax: '', isNsfw: false }])
