@@ -26,5 +26,7 @@
   "LEVELS::OPTION:OVERLAYCOLOR": "Establecer el color de la superposición de las tarjetas de rango",
   "LEVELS::OPTION:OVERLAYBLUR": "Establecer el desenfoque de la superposición de las tarjetas de rango",
   "P2DISMOD::DESCRIPTION": "Desactivar los módulos Pingu",
-  "P2DISMOD::OPTION:MODULE": "El módulo a deshabilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder"
+  "P2DISMOD::OPTION:MODULE": "El módulo a deshabilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
+  "P2ENMOD::DESCRIPTION": "Habilitar los módulos Pingu",
+  "P2ENMOD::OPTION:MODULE": "El módulo que se desea habilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder"
 }

@@ -13,6 +13,7 @@ module.exports = {
     .setDescription('Enable Pingu modules')
     .addStringOption(option => option.setName('module').setDescription('The module to enable')),
   executeInteraction (client, locale, interaction) {
+    const helpTray = Help('p2enmod', i18n.help(locale, 'P2ENMOD::DESCRIPTION'), [{ option: 'module', description: i18n.help(locale, 'P2ENMOD::OPTION:MODULE'), syntax: '<module>' }])
     if (interaction.options.getString('module')) {
       switch (interaction.options.getString('module')) {
         case 'welcomer': {
@@ -68,6 +69,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('p2enmod', i18n.help(locale, 'P2ENMOD::DESCRIPTION'), [{ option: 'module', description: i18n.help(locale, 'P2ENMOD::OPTION:MODULE'), syntax: '<module>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'welcomer': {
@@ -123,5 +125,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('p2enmod', 'Enable Pingu modules', [{ option: 'module', description: 'The module to disable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder' }])
