@@ -12,5 +12,9 @@
   "FAREWELL::OPTION:VIEWCONFIG": "View the farewell configuration.",
   "FAREWELL::OPTION:CHANNEL": "Set the farewell channel.",
   "FAREWELL::OPTION:MESSAGE": "Set the farewell message.",
-  "FAREWELL::OPTION:SIMULATE": "Simulate a farewell message."
+  "FAREWELL::OPTION:SIMULATE": "Simulate a farewell message.",
+  "JOINROLES::DESCRIPTION": "Manage the roles given to users when they join the server.",
+  "JOINROLES::OPTION:LIST": "List all the roles given to users when they join the server.",
+  "JOINROLES::OPTION:ADD": "Add a role to the list of roles that are given to users when they join the server.",
+  "JOINROLES::OPTION:REMOVE": "Remove a role from the list of roles that are given to users when they join the server."
 }
