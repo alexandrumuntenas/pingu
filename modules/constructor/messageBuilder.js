@@ -50,8 +50,8 @@ module.exports.Help = (commandName, commandDescription, commandOptions, commandM
     const optionsNoNSFW = commandOptions.filter(option => !option.isNsfw)
     const optionsNSFW = commandOptions.filter(option => option.isNsfw)
 
-    if (optionsNoNSFW) optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `${option.description || 'No description'}\n${codeBlock(`:gear: Syntax: \`${option.syntax || 'No syntax'}`)}`, true))
-    if (optionsNSFW) optionsNSFW.forEach(option => embed.addField(`<:NSFW:922570340582973441> ${option.option}`, `${option.description || 'No description'}\n${codeBlock(`:gear: Syntax: \`${option.syntax || 'No syntax'}`)}`, true))
+    if (optionsNoNSFW) optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true))
+    if (optionsNSFW) optionsNSFW.forEach(option => embed.addField(`:underage: ${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true))
   }
   return embed
 }
