@@ -7,5 +7,10 @@
   "CCMD::OPTION:REMOVE": "Elimina un comando personalizado.",
   "ECONOMY::DESCRIPTION": "Configura el módulo de economía en tu servidor",
   "ECONOMY::OPTION:SETCURRENCY": "Configura el nombre de la moneda",
-  "ECONOMY::OPTION:SETCURRENCYICON": "Configura el icono de la moneda"
+  "ECONOMY::OPTION:SETCURRENCYICON": "Configura el icono de la moneda",
+  "FAREWELL::DESCRIPTION": "Configurar el módulo de despedida",
+  "FAREWELL::OPTION:VIEWCONFIG": "Ver la configuración de farewell",
+  "FAREWELL::OPTION:CHANNEL": "Configurar el canal de despedida",
+  "FAREWELL::OPTION:MESSAGE": "Configurar el mensaje de despedida",
+  "FAREWELL::OPTION:SIMULATE": "Simular un mensaje de despedida"
 }

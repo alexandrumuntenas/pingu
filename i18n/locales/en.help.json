@@ -7,5 +7,10 @@
   "CCMD::OPTION:REMOVE": "Deletes a custom command.",
   "ECONOMY::DESCRIPTION": "Configure the economy module in your server.",
   "ECONOMY::OPTION:SETCURRENCY": "Set the currency name.",
-  "ECONOMY::OPTION:SETCURRENCYICON": "Set the currency icon."
+  "ECONOMY::OPTION:SETCURRENCYICON": "Set the currency icon.",
+  "FAREWELL::DESCRIPTION": "Configure the farewell module.",
+  "FAREWELL::OPTION:VIEWCONFIG": "View the farewell configuration.",
+  "FAREWELL::OPTION:CHANNEL": "Set the farewell channel.",
+  "FAREWELL::OPTION:MESSAGE": "Set the farewell message.",
+  "FAREWELL::OPTION:SIMULATE": "Simulate a farewell message."
 }
