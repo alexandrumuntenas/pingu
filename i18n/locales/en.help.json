@@ -1,5 +1,8 @@
 {
   "AUTORESPONDER::DESCRIPTION": "Command to interact with Pingu's custom response module.",
   "AUTORESPONDER::OPTION:CREATE": "Creates a custom response. A custom identifier can be assigned.",
-  "AUTORESPONDER::OPTION:REMOVE": "Delete a custom response using its identifier."
+  "AUTORESPONDER::OPTION:REMOVE": "Delete a custom response using its identifier.",
+  "CCMD::DESCRIPTION": "Command to interact with custom server commands.",
+  "CCMD::OPTION:CREATE": "Create a custom command.",
+  "CCMD::OPTION:REMOVE": "Deletes a custom command."
 }

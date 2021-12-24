@@ -1,5 +1,8 @@
 {
   "AUTORESPONDER::DESCRIPTION": "Comando para interactuar con el módulo de respuestas personalizadas de Pingu.",
   "AUTORESPONDER::OPTION:CREATE": "Crea una respuesta personalizado. Se puede asignar un identificador personalizado.",
-  "AUTORESPONDER::OPTION:REMOVE": "Eliminar una respuesta personalizada mediante su identificador."
+  "AUTORESPONDER::OPTION:REMOVE": "Eliminar una respuesta personalizada mediante su identificador.",
+  "CCMD::DESCRIPTION": "Comando para interactuar con los comandos personalizados del servidor",
+  "CCMD::OPTION:CREATE": "Crear un comando personalizado",
+  "CCMD::OPTION:REMOVE": "Elimina un comando personalizado."
 }
