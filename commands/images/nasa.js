@@ -1,7 +1,7 @@
 const fetch = require('superagent')
 const { MessageEmbed } = require('discord.js')
 const translate = require('translatte')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'nasa',
@@ -18,7 +18,7 @@ module.exports = {
               .setDescription(res.text)
               .setImage(quote.hdurl)
               .setColor('#0B3D91')
-              .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${getLocales(locale, 'ANIME_IMAGE_API', { API_PROVIDER: 'Nasa.gov' })}`)
+              .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${i18n(locale, 'ANIME_IMAGE_API', { API_PROVIDER: 'Nasa.gov' })}`)
               .setFooter('')
             interaction.editReply({ embeds: [embed] })
           } else {
@@ -40,7 +40,7 @@ module.exports = {
                   .setDescription(res.text)
                   .setImage(quote.hdurl)
                   .setColor('#0B3D91')
-                  .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${getLocales(locale, 'ANIME_IMAGE_API', { API_PROVIDER: 'Nasa.gov' })}`)
+                  .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${i18n(locale, 'ANIME_IMAGE_API', { API_PROVIDER: 'Nasa.gov' })}`)
                   .setFooter('')
                 msg.edit({ content: 'Done!', embeds: [embed] })
               } else {

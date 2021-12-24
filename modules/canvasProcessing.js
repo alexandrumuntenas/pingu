@@ -2,7 +2,7 @@ const { registerFont, createCanvas, loadImage } = require('canvas')
 const { writeFileSync } = require('fs')
 const StackBlur = require('stackblur-canvas')
 const randomstring = require('randomstring')
-const getLocales = require('../i18n/getLocales')
+const i18n = require('../i18n/i18n')
 const isValidUrl = require('is-valid-http-url')
 const isImageUrl = require('is-image-url')
 const { millify } = require('millify')
@@ -40,8 +40,8 @@ module.exports = {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
 
-    const joinText = getLocales(locale, 'GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD', { USER: member.user.tag })
-    const memberCountText = getLocales(locale, 'GUILDMEMBERADD_MEMBER_COUNT', { COUNT: member.guild.memberCount })
+    const joinText = i18n(locale, 'GUILDMEMBERADD_USER_HAS_JOINED_THE_GUILD', { USER: member.user.tag })
+    const memberCountText = i18n(locale, 'GUILDMEMBERADD_MEMBER_COUNT', { COUNT: member.guild.memberCount })
 
     ctx.font = applyText(canvas, joinText)
     ctx.fillStyle = '#ffffff'

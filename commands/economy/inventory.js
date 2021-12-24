@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 const { fetchShopProduct, fetchUserAccount } = require('../../modules/economy')
 const { Error } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   module: 'economy',
@@ -13,7 +13,7 @@ module.exports = {
       fetchUserAccount(client, interaction.member, interaction.guild, (account) => {
         const inventoryEmbed = new MessageEmbed()
           .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
-          .setTitle(getLocales(locale, 'INVENTORY_TITLE'))
+          .setTitle(i18n(locale, 'INVENTORY_TITLE'))
           .setColor('#2F3136')
           .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
         if (account) {
@@ -31,7 +31,7 @@ module.exports = {
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                     inventoryEmbed
                       .setImage('https://cdn.discordapp.com/attachments/908413370665938975/908414689451597824/empty_inventory.png')
-                      .setDescription(inventoryString || getLocales(locale, 'INVENTORY_EMPTY'))
+                      .setDescription(inventoryString || i18n(locale, 'INVENTORY_EMPTY'))
                     interaction.editReply({ embeds: [inventoryEmbed] })
                   }
                 })
@@ -40,13 +40,13 @@ module.exports = {
               client.Sentry.captureException(error)
             }
           } else {
-            inventoryEmbed.setDescription(getLocales(locale, 'INVENTORY_EMPTY')).setImage('https://cdn.discordapp.com/attachments/908413370665938975/908414689451597824/empty_inventory.png')
+            inventoryEmbed.setDescription(i18n(locale, 'INVENTORY_EMPTY')).setImage('https://cdn.discordapp.com/attachments/908413370665938975/908414689451597824/empty_inventory.png')
             interaction.editReply({ content: 'Loaded!', embeds: [inventoryEmbed] })
           }
         }
       })
     } else {
-      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }

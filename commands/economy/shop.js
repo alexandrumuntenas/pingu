@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { fetchShopProduct, fetchShopProducts } = require('../../modules/economy')
 const { Error } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   module: 'economy',
@@ -42,20 +42,20 @@ module.exports = {
               .setAuthor(`${interaction.guild.name} Shop`, interaction.guild.iconURL())
               .setTitle(productData.productName)
               .setImage(productData.productImage)
-              .addField(`${interaction.database.economyCurrencyIcon} ${getLocales(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
-              .addField(`:robot: ${getLocales(locale, 'SHOP_COMMANDTOBUY')}`, `\`/buy ${productData.productName}\``, true)
+              .addField(`${interaction.database.economyCurrencyIcon} ${i18n(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
+              .addField(`:robot: ${i18n(locale, 'SHOP_COMMANDTOBUY')}`, `\`/buy ${productData.productName}\``, true)
               .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
             if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
 
             interaction.editReply({ embeds: [productEmbed] })
           } else {
-            interaction.editReply({ embeds: [Error(getLocales('SHOP_PRODUCTNOTFOUND'))] })
+            interaction.editReply({ embeds: [Error(i18n('SHOP_PRODUCTNOTFOUND'))] })
           }
         })
       }
     } else {
-      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }

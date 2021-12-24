@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   module: 'economy',
@@ -20,10 +20,10 @@ module.exports = {
         if (interaction.options.getString('coinname')) {
           client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [interaction.options.getString('coinname'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: interaction.options.getString('coinname') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: interaction.options.getString('coinname') }))] })
           })
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: interaction.database.economyCurrency }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: interaction.database.economyCurrency }))] })
         }
         break
       }
@@ -31,10 +31,10 @@ module.exports = {
         if (interaction.options.getString('coinicon')) {
           client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [interaction.options.getString('coinicon'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: interaction.options.getString('coinicon') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: interaction.options.getString('coinicon') }))] })
           })
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: interaction.database.economyCurrencyIcon }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: interaction.database.economyCurrencyIcon }))] })
         }
         break
       }
@@ -47,10 +47,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [message.content.replace(`${message.database.guildPrefix}economy setCurrency `, ''), message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))] })
             })
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: message.database.economyCurrency }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: message.database.economyCurrency }))] })
           }
           break
         }
@@ -58,10 +58,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))] })
             })
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: message.database.economyCurrencyIcon }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: message.database.economyCurrencyIcon }))] })
           }
           break
         }

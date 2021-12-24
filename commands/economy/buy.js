@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { buyItem, fetchShopProduct } = require('../../modules/economy')
 const { Error, Success } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   module: 'economy',
@@ -21,20 +21,20 @@ module.exports = {
             if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
             buyItem(client, interaction.member, interaction.guild, productData, (status) => {
               if (status.code) {
-                interaction.editReply({ embeds: [Success(status.ia || getLocales(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))] })
+                interaction.editReply({ embeds: [Success(status.ia || i18n(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))] })
               } else {
-                interaction.editReply({ embeds: [Error(status.ia || getLocales(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))] })
+                interaction.editReply({ embeds: [Error(status.ia || i18n(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))] })
               }
             })
           } else {
-            interaction.editReply({ embeds: [Error(getLocales(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: interaction.options.getString('productname') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: interaction.options.getString('productname') }))] })
           }
         })
       } else {
         client.commands.get('shop').executeInteraction(client, locale, interaction)
       }
     } else {
-      interaction.editReply({ embeds: [Error(getLocales(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }

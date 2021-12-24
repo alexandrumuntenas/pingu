@@ -1,6 +1,6 @@
 /* eslint-disable node/no-callback-literal */
 const StringPlaceholder = require('string-placeholder')
-const getLocales = require('../i18n/getLocales')
+const i18n = require('../i18n/i18n')
 
 module.exports = {
   getDailyMoney: async (client, member, guild, callback) => {
@@ -240,11 +240,11 @@ module.exports = {
             }
           })
           if (propertiesString) {
-            callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+            callback(i18n(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
           } else {
             module.exports.addItemToUser(client, member, guild, item.productId, item.productMeta.singlebuy, (status) => {
               if (status === 'error') {
-                callback(getLocales(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
+                callback(i18n(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
               } else {
                 if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
                   switch (action.type) {
@@ -257,11 +257,11 @@ module.exports = {
                               channel.send(action.message || 'Nothing', true)
                               callback(null, true)
                             } else {
-                              callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                              callback(i18n(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
                             }
                           })
                         } else {
-                          callback(getLocales(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
+                          callback(i18n(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
                         }
                       }
                       break
@@ -271,13 +271,13 @@ module.exports = {
                         guild.roles.fetch(action.role).then(role => {
                           if (role) {
                             member.roles.add(role)
-                            callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
+                            callback(i18n(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
                           } else {
-                            callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
+                            callback(i18n(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
                           }
                         })
                       } else {
-                        callback(getLocales(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
+                        callback(i18n(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
                       }
                     }
                   }
@@ -287,7 +287,7 @@ module.exports = {
           }
         } else {
           userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
-          callback(getLocales(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+          callback(i18n(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
         }
       }
     }

@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Help } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 const makeId = require('../../modules/makeId')
 
 module.exports = {
@@ -19,14 +19,14 @@ module.exports = {
       case 'create': {
         client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [interaction.guild.id, interaction.options.getString('id'), interaction.options.getString('trigger'), interaction.options.getString('reply')], function (err) {
           if (err) client.Sentry.captureException(err)
-          interaction.editReply({ embeds: [Success(getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [interaction.options.getString('id'), interaction.guild.id], function (err) {
           if (err) client.Sentry.captureException(err)
-          interaction.editReply({ embeds: [Success(interaction, getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
+          interaction.editReply({ embeds: [Success(interaction, i18n(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
         })
         break
       }
@@ -38,18 +38,18 @@ module.exports = {
       switch (message.args[0]) {
         case 'create': {
           if (message.args[1]) {
-            message.channel.send({ content: `:arrow_right: ${getLocales(locale, 'AUTORESPONDER_CREATE_INSERTRIGGER')}` }).then((embedMenu) => {
+            message.channel.send({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER_CREATE_INSERTRIGGER')}` }).then((embedMenu) => {
               message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
                 const autoresponderTrigger = collected.first().content.toLocaleLowerCase()
                 collected.first().delete()
-                embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'AUTORESPONDER_CREATE_INSERTRESPONSE')}` })
+                embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER_CREATE_INSERTRESPONSE')}` })
                 message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
                   const autoresponderResponse = collected.first().content
                   collected.first().delete()
                   const autoresponderId = message.args[1] || makeId(12)
                   client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [message.guild.id, autoresponderId, autoresponderTrigger, autoresponderResponse], function (err) {
                     if (err) client.Sentry.captureException(err)
-                    message.reply({ embeds: [Success(getLocales(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))] })
+                    message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))] })
                   })
                 })
               })
@@ -63,7 +63,7 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))] })
             })
           } else {
             message.reply({ embeds: [helpTray] })

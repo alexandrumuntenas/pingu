@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 const { isInteger } = require('mathjs')
 const isHexColor = require('is-hexcolor')
 
@@ -35,12 +35,12 @@ module.exports = {
       case 'viewconfig': {
         const sentEmbed = new MessageEmbed()
           .setColor('BLURPLE')
-          .setTitle(getLocales(locale, 'LEVELS_VIEWCONFIG_TITLE'))
-          .setDescription(getLocales(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
-          .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.levelsChannel) || channelRelationship[interaction.database.levelsChannel]}`, true)
-          .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${interaction.database.levelsMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
-          .addField(`:trophy: ${getLocales(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${interaction.database.levelsDifficulty}`, true)
-          .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'LEVELS_VIEWCONFIG_LEVELCARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[1] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${interaction.database.levelsImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: interaction.database.levelsImageCustomOverlayColor })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: interaction.database.levelsImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: interaction.database.levelsImageCustomOpacity })}`, false)
+          .setTitle(i18n(locale, 'LEVELS_VIEWCONFIG_TITLE'))
+          .setDescription(i18n(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
+          .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.levelsChannel) || channelRelationship[interaction.database.levelsChannel]}`, true)
+          .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${interaction.database.levelsMessage || i18n(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
+          .addField(`:trophy: ${i18n(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${interaction.database.levelsDifficulty}`, true)
+          .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS_VIEWCONFIG_LEVELCARD_TITLE')}`, `${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[1] })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${interaction.database.levelsImageCustomBackground})` || i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: interaction.database.levelsImageCustomOverlayColor })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: interaction.database.levelsImageCustomBlur })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: interaction.database.levelsImageCustomOpacity })}`, false)
 
         interaction.editReply({ embeds: [sentEmbed] })
         break
@@ -50,26 +50,26 @@ module.exports = {
           case 'disable': {
             client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: channelRelationship[0] }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: channelRelationship[0] }))] })
             })
             break
           }
           case 'same': {
             client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: channelRelationship[1] }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: channelRelationship[1] }))] })
             })
             break
           }
           case 'this': {
             client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [interaction.channel.id, interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: interaction.channel }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: interaction.channel }))] })
             })
             break
           }
           default: {
-            interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: interaction.database.levelsChannel }))] })
+            interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: interaction.database.levelsChannel }))] })
             break
           }
         }
@@ -79,10 +79,10 @@ module.exports = {
         if (interaction.options.getString('message')) {
           client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [interaction.options.getString('message'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${interaction.options.getString('message')}\`` }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${interaction.options.getString('message')}\`` }))] })
           })
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_MESSAGE_MISSING_ARGS', { LEVELS_MESSAGE: interaction.database.levelsMessage }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_MESSAGE_MISSING_ARGS', { LEVELS_MESSAGE: interaction.database.levelsMessage }))] })
         }
         break
       }
@@ -91,13 +91,13 @@ module.exports = {
           if (isInteger(parseInt(interaction.options.getNumber('difficulty')))) {
             client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(interaction.options.getNumber('difficulty')), interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: interaction.options.getNumber('difficulty') }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: interaction.options.getNumber('difficulty') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: interaction.options.getNumber('difficulty') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: interaction.options.getNumber('difficulty') }))] })
           }
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_DIFFICULTY_MISSING_ARGS', { LEVELS_DIFFICULTY: interaction.database.levelsDifficulty }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_DIFFICULTY_MISSING_ARGS', { LEVELS_DIFFICULTY: interaction.database.levelsDifficulty }))] })
         }
         break
       }
@@ -105,10 +105,10 @@ module.exports = {
         if (interaction.options.getString('url')) {
           client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [interaction.options.getString('url'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: interaction.options.getString('url') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: interaction.options.getString('url') }))] })
           })
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_MISSING_ARGS', { LEVELS_CUSTOMBACKGROUND: interaction.database.levelsImageCustomBackground }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_CUSTOMBACKGROUND_MISSING_ARGS', { LEVELS_CUSTOMBACKGROUND: interaction.database.levelsImageCustomBackground }))] })
         }
         break
       }
@@ -116,10 +116,10 @@ module.exports = {
         if (interaction.options.getNumber('opacity')) {
           client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [interaction.options.getNumber('opacity'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: interaction.options.getNumber('opacity') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: interaction.options.getNumber('opacity') }))] })
           })
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYOPACITY_MISSING_ARGS', { LEVELS_OVERLAYOPACITY: interaction.database.levelsImageCustomOpacity }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYOPACITY_MISSING_ARGS', { LEVELS_OVERLAYOPACITY: interaction.database.levelsImageCustomOpacity }))] })
         }
         break
       }
@@ -127,10 +127,10 @@ module.exports = {
         if (interaction.options.getNumber('blur')) {
           client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [interaction.options.getNumber('blur'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: interaction.options.getNumber('blur') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: interaction.options.getNumber('blur') }))] })
           })
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYBLUR_MISSING_ARGS', { LEVELS_OVERLAYBLUR: interaction.database.levelsImageCustomBlur }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYBLUR_MISSING_ARGS', { LEVELS_OVERLAYBLUR: interaction.database.levelsImageCustomBlur }))] })
         }
         break
       }
@@ -139,13 +139,13 @@ module.exports = {
           if (isHexColor(interaction.options.getString('hexcolor'))) {
             client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ? WHERE `guild` = ?', [interaction.options.getString('hexcolor'), interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(getLocales(locale, 'LEVELS_OVERLAYCOLOR_SUCCESS', { LEVELS_OVERLAYCOLOR: interaction.options.getString('hexcolor') }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS_OVERLAYCOLOR_SUCCESS', { LEVELS_OVERLAYCOLOR: interaction.options.getString('hexcolor') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))] })
+            interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))] })
           }
         } else {
-          interaction.editReply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYCOLOR_MISSING_ARGS', { LEVELS_OVERLAYCOLOR: interaction.database.levelsImageCustomOverlayColor }))] })
+          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYCOLOR_MISSING_ARGS', { LEVELS_OVERLAYCOLOR: interaction.database.levelsImageCustomOverlayColor }))] })
         }
         break
       }
@@ -158,12 +158,12 @@ module.exports = {
           message.channel.send('<a:loader:871389840904695838> Fetching data... Please wait.').then((_message) => {
             const sentEmbed = new MessageEmbed()
               .setColor('BLURPLE')
-              .setTitle(getLocales(locale, 'LEVELS_VIEWCONFIG_TITLE'))
-              .setDescription(getLocales(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
-              .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || channelRelationship[message.database.levelsChannel]}`, true)
-              .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.levelsMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
-              .addField(`:trophy: ${getLocales(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
-              .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'LEVELS_VIEWCONFIG_LEVELCARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[1] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.levelsImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: message.database.levelsImageCustomOverlayColor })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.levelsImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.levelsImageCustomOpacity })}`, false)
+              .setTitle(i18n(locale, 'LEVELS_VIEWCONFIG_TITLE'))
+              .setDescription(i18n(locale, 'LEVELS_VIEWCONFIG_DESCRIPTION'))
+              .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || channelRelationship[message.database.levelsChannel]}`, true)
+              .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.levelsMessage || i18n(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
+              .addField(`:trophy: ${i18n(locale, 'LEVELS_VIEWCONFIG_DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
+              .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS_VIEWCONFIG_LEVELCARD_TITLE')}`, `${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[1] })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.levelsImageCustomBackground})` || i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: message.database.levelsImageCustomOverlayColor })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.levelsImageCustomBlur })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.levelsImageCustomOpacity })}`, false)
 
             _message.edit({ content: 'Done', embeds: [sentEmbed] })
           })
@@ -173,7 +173,7 @@ module.exports = {
           if (message.mentions.channels.first()) {
             client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: message.mentions.channels.first() }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: message.mentions.channels.first() }))] })
             })
           } else {
             if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
@@ -181,35 +181,35 @@ module.exports = {
                 case 'none': {
                   client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
-                    message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'none' }))] })
+                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'none' }))] })
                   })
                   break
                 }
                 case 'same': {
                   client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', message.guild.id], (err) => {
                     if (err) client.Sentry.captureException(err)
-                    message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'same' }))] })
+                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS_CHANNEL_SUCCESS', { LEVELS_CHANNEL: 'same' }))] })
                   })
                   break
                 }
                 default: {
-                  message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: 'r/softwaregore' }))] })
+                  message.reply({ embeds: [Status(i18n(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: 'r/softwaregore' }))] })
                   break
                 }
               }
             } else {
-              message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: 'r/softwaregore' }))] })
+              message.reply({ embeds: [Status(i18n(locale, 'LEVELS_CHANNEL_MISSING_ARGS', { LEVELS_CHANNEL: 'r/softwaregore' }))] })
             }
           }
           break
         }
         case 'rankupmessage': {
           const filter = m => m.member.id === message.member.id
-          message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_MESSAGE_PREUPDATE'))] })
+          message.reply({ embeds: [Status(i18n(locale, 'LEVELS_MESSAGE_PREUPDATE'))] })
           message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.channel.send({ embeds: [Success(message, getLocales(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))] })
+              message.channel.send({ embeds: [Success(message, i18n(locale, 'LEVELS_MESSAGE_SUCCESS', { LEVELS_MESSAGE: `\`${collected.first().content}\`` }))] })
             })
           })
           break
@@ -219,13 +219,13 @@ module.exports = {
             if (isInteger(parseInt(message.args[1]))) {
               client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(message.args[1]), message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: message.args[1] }))] })
+                message.reply({ embeds: [Success(i18n(locale, 'LEVELS_DIFFICULTY_SUCCESS', { LEVELS_DIFFICULTY: message.args[1] }))] })
               })
             } else {
-              message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_DIFFICULTY_NOT_INT'))] })
+              message.reply({ embeds: [Status(i18n(locale, 'LEVELS_DIFFICULTY_NOT_INT'))] })
             }
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_DIFFICULTY_MISSING_ARGS', { LEVELS_DIFFICULTY: message.database.levelsDifficulty }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'LEVELS_DIFFICULTY_MISSING_ARGS', { LEVELS_DIFFICULTY: message.database.levelsDifficulty }))] })
           }
           break
         }
@@ -233,10 +233,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: message.args[1] }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS_CUSTOMBACKGROUND_SUCCESS', { LEVELS_CUSTOMBACKGROUND: message.args[1] }))] })
             })
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_CUSTOMBACKGROUND_MISSING_ARGS', { LEVELS_CUSTOMBACKGROUND: message.database.levelsImageCustomBackground }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'LEVELS_CUSTOMBACKGROUND_MISSING_ARGS', { LEVELS_CUSTOMBACKGROUND: message.database.levelsImageCustomBackground }))] })
           }
           break
         }
@@ -244,10 +244,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: (message.args[1]) }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS_OVERLAYOPACITY_SUCCESS', { LEVELS_OVERLAYOPACITY: (message.args[1]) }))] })
             })
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYOPACITY_MISSING_ARGS', { LEVELS_OVERLAYOPACITY: message.database.levelsImageCustomOpacity }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYOPACITY_MISSING_ARGS', { LEVELS_OVERLAYOPACITY: message.database.levelsImageCustomOpacity }))] })
           }
           break
         }
@@ -255,10 +255,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: (message.args[1]) }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS_OVERLAYBLUR_SUCCESS', { LEVELS_OVERLAYBLUR: (message.args[1]) }))] })
             })
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYBLUR_MISSING_ARGS', { LEVELS_OVERLAYBLUR: message.database.levelsImageCustomBlur }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYBLUR_MISSING_ARGS', { LEVELS_OVERLAYBLUR: message.database.levelsImageCustomBlur }))] })
           }
           break
         }
@@ -267,13 +267,13 @@ module.exports = {
             if (isHexColor(message.args[1])) {
               client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                message.reply({ embeds: [Success(getLocales(locale, 'LEVELS_OVERLAYCOLOR_SUCCESS', { LEVELS_OVERLAYCOLOR: message.args[1] }))] })
+                message.reply({ embeds: [Success(i18n(locale, 'LEVELS_OVERLAYCOLOR_SUCCESS', { LEVELS_OVERLAYCOLOR: message.args[1] }))] })
               })
             } else {
-              message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))] })
+              message.reply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))] })
             }
           } else {
-            message.reply({ embeds: [Status(getLocales(locale, 'LEVELS_OVERLAYCOLOR_MISSING_ARGS', { LEVELS_OVERLAYCOLOR: message.database.levelsImageCustomOverlayColor }))] })
+            message.reply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYCOLOR_MISSING_ARGS', { LEVELS_OVERLAYCOLOR: message.database.levelsImageCustomOverlayColor }))] })
           }
           break
         }

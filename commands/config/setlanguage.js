@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const { Success, Help } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 const avaliableLanguages = ['en', 'es']
 
@@ -24,14 +24,14 @@ module.exports = {
     client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [interaction.options.getString('language'), interaction.guild.id], (err) => {
       if (err) client.Sentry.captureException(err)
     })
-    interaction.editReply({ embeds: [Success(getLocales(interaction.options.getString('language'), 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${interaction.options.getString('language')}\`` }))] })
+    interaction.editReply({ embeds: [Success(i18n(interaction.options.getString('language'), 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${interaction.options.getString('language')}\`` }))] })
   },
   executeLegacy (client, locale, interaction) {
     if (interaction.args[0] && avaliableLanguages.includes(interaction.args[0])) {
       client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [interaction.args[0], interaction.guild.id], (err) => {
         if (err) client.Sentry.captureException(err)
       })
-      interaction.reply({ embeds: [Success(getLocales(interaction.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${interaction.args[0]}\`` }))] })
+      interaction.reply({ embeds: [Success(i18n(interaction.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${interaction.args[0]}\`` }))] })
     } else {
       interaction.reply({ embeds: [Help('setlanguage', 'Change the language of the bot', [{ option: 'es', description: 'Spanish' }, { option: 'en', description: 'English' }])] })
     }

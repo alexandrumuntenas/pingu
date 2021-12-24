@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/joinroles')
 
 module.exports = {
@@ -27,23 +27,23 @@ module.exports = {
               roles.forEach(role => {
                 itemsProcessed++
                 body = `${body} <@&${role.roleID}>`
-                if (itemsProcessed === roles.length) interaction.editReply({ embeds: [Status(getLocales(locale, 'JOINROLES_LIST', { ROLES: body }))] })
+                if (itemsProcessed === roles.length) interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST', { ROLES: body }))] })
               })
             } else {
-              interaction.editReply({ embeds: [Status(getLocales(locale, 'JOINROLES_LIST_NOROLES'))] })
+              interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
             }
           } else {
-            interaction.editReply({ embeds: [Status(getLocales(locale, 'JOINROLES_LIST_NOROLES'))] })
+            interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
           }
         })
         break
       }
       case 'add': {
-        addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => interaction.editReply({ embeds: [Success(getLocales(locale, 'JOINROLES_ADD', { ROLE: interaction.options.getRole('role') }))] }))
+        addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES_ADD', { ROLE: interaction.options.getRole('role') }))] }))
         break
       }
       case 'remove': {
-        removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => interaction.editReply({ embeds: [Success(getLocales(locale, 'JOINROLES_REMOVE', { ROLE: interaction.options.getRole('role') }))] }))
+        removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES_REMOVE', { ROLE: interaction.options.getRole('role') }))] }))
         break
       }
     }
@@ -60,20 +60,20 @@ module.exports = {
                 roles.forEach(role => {
                   itemsProcessed++
                   body = `${body} <@&${role.roleID}>`
-                  if (itemsProcessed === roles.length) message.reply({ embeds: [Status(getLocales(locale, 'JOINROLES_LIST', { ROLES: body }))] })
+                  if (itemsProcessed === roles.length) message.reply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST', { ROLES: body }))] })
                 })
               } else {
-                message.reply({ embeds: [Status(getLocales(locale, 'JOINROLES_LIST_NOROLES'))] })
+                message.reply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
               }
             } else {
-              message.reply({ embeds: [Status(getLocales(locale, 'JOINROLES_LIST_NOROLES'))] })
+              message.reply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
             }
           })
           break
         }
         case 'add': {
           if (message.mentions.roles.first()) {
-            message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => message.reply({ embeds: [Success(getLocales(locale, 'JOINROLES_ADD', { ROLE: role }))] })))
+            message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => message.reply({ embeds: [Success(i18n(locale, 'JOINROLES_ADD', { ROLE: role }))] })))
           } else {
             message.reply({ embeds: [helpTray] })
           }
@@ -81,7 +81,7 @@ module.exports = {
         }
         case 'remove': {
           if (message.mentions.roles.first()) {
-            message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => message.reply({ embeds: [Success(getLocales(locale, 'JOINROLES_REMOVE', { ROLE: role }))] })))
+            message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => message.reply({ embeds: [Success(i18n(locale, 'JOINROLES_REMOVE', { ROLE: role }))] })))
           } else {
             message.reply({ embeds: [helpTray] })
           }

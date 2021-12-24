@@ -1,6 +1,6 @@
 const { cooldown } = require('../functions/commands')
 const { Status, Error } = require('../modules/constructor/messageBuilder')
-const getLocales = require('../i18n/getLocales')
+const i18n = require('../i18n/i18n')
 const autoresponder = require('../modules/autoresponder')
 const guildFetchData = require('../functions/guildFetchData')
 const { rankUp } = require('../modules/levels')
@@ -26,7 +26,7 @@ module.exports = async (client, message) => {
         if (message.database.legacyCMD !== 0) {
           commandToExecute = client.commands.get(commandToExecute)
           if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
-            message.reply({ embeds: [Error(getLocales(message.database.guildLanguage || 'en', 'COMMAND_PERMISSION_ERROR'))] })
+            message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND_PERMISSION_ERROR'))] })
             return
           }
           if (cooldown.check(message.member, message.guild, commandToExecute)) {
@@ -35,21 +35,21 @@ module.exports = async (client, message) => {
               if (client.statcord) client.statcord.postCommand(commandToExecute.name, message.member.id)
               await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
             } else {
-              message.reply({ embeds: [Error(getLocales(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))] })
+              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))] })
             }
           } else {
-            message.reply({ embeds: [Error(getLocales(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+            message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
             return
           }
         } else {
-          message.reply({ embeds: [Status(getLocales(message.database.guildLanguage || 'en', 'LEGACY_DISABLED'))] })
+          message.reply({ embeds: [Status(i18n(message.database.guildLanguage || 'en', 'LEGACY_DISABLED'))] })
         }
       } else {
         if (cooldown.check(message.member, message.guild, commandToExecute)) {
           cooldown.add(message.member, message.guild, commandToExecute)
           customcommands(client, message, commandToExecute)
         } else {
-          message.reply({ embeds: [Error(getLocales(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+          message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
           return
         }
       }

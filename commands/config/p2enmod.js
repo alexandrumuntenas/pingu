@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Help } = require('../../modules/constructor/messageBuilder')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'p2enmod',
@@ -62,7 +62,7 @@ module.exports = {
           return
         }
       }
-      interaction.editReply({ embeds: [Success(getLocales(locale, 'P2ENMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))] })
+      interaction.editReply({ embeds: [Success(i18n(locale, 'P2ENMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))] })
     } else {
       interaction.editReply({ embeds: [helpTray] })
     }
@@ -117,7 +117,7 @@ module.exports = {
           return
         }
       }
-      message.reply({ embeds: [Success(getLocales(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))] })
+      message.reply({ embeds: [Success(i18n(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))] })
     } else {
       message.reply({ embeds: [helpTray] })
     }
