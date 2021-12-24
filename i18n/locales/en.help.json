@@ -1,0 +1,5 @@
+{
+  "AUTORESPONDER::DESCRIPTION": "Command to interact with Pingu's custom response module.",
+  "AUTORESPONDER::OPTION:CREATE": "Creates a custom response. A custom identifier can be assigned.",
+  "AUTORESPONDER::OPTION:REMOVE": "Delete a custom response using its identifier."
+}
