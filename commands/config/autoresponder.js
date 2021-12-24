@@ -33,7 +33,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('autoresponder', i18n.help(locale, 'AUTORESPONDER::DESCRIPTION'), [{ option: 'create', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:CREATE'), syntax: 'create (customId)', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:REMOVE'), syntax: 'remove <ID>', isNsfw: true }])
+    const helpTray = Help('autoresponder', i18n.help(locale, 'AUTORESPONDER::DESCRIPTION'), [{ option: 'create', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:CREATE'), syntax: 'create (customId)', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:REMOVE'), syntax: 'remove <ID>', isNsfw: false }])
     const filter = m => m.member.id === message.member.id
     if (message.args[0]) {
       switch (message.args[0]) {
