@@ -60,6 +60,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('farewell', i18n.help(locale, 'FAREWELL::DESCRIPTION'), [{ option: 'viewconfig', description: i18n.help(locale, 'FAREWELL::OPTION:VIEWCONFIG'), syntax: '', isNsfw: false }, { option: 'channel', description: i18n.help(locale, 'FAREWELL::OPTION:CHANNEL'), syntax: '<#channel>', isNsfw: false }, { option: 'message', description: i18n.help(locale, 'FAREWELL::OPTION:MESSAGE'), syntax: '<message>', isNsfw: false }, { option: 'simulate', description: i18n.help(locale, 'FAREWELL::OPTION:SIMULATE'), syntax: '', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'viewconfig': {
@@ -112,5 +113,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('farewell', 'Configure the farewell module', [{ option: 'viewconfig', description: 'View the farewell configuration', syntax: '', isNsfw: false }, { option: 'channel', description: 'Set the farewell channel', syntax: '<#channel>', isNsfw: false }, { option: 'message', description: 'Set the farewell message', syntax: '<message>', isNsfw: false }, { option: 'simulate', description: 'Simulate a farewell', syntax: '', isNsfw: false }])

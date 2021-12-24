@@ -160,13 +160,10 @@ module.exports = {
         guildMemberAdd(client, interaction.member)
         break
       }
-      default: {
-        interaction.editReply({ embeds: [helpTray] })
-        break
-      }
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('welcomer', i18n.help(locale, 'WELCOMER::DESCRIPTION'), [{ option: 'viewconfig', description: i18n.help(locale, 'WELCOMER::OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n.help(locale, 'WELCOMER::OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n.help(locale, 'WELCOMER::OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n.help(locale, 'WELCOMER::OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlayblur', description: i18n.help(locale, 'WELCOMER::OPTION:OVERLAYBLUR'), syntax: 'overlayblur <blur quantity>' }, { option: 'overlaycolor', description: i18n.help(locale, 'WELCOMER::OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'roundavatar', description: i18n.help(locale, 'WELCOMER::OPTION:ROUNDAVATAR') }, { option: 'test', description: i18n.help(locale, 'WELCOMER::OPTION:TEST') }, { option: 'simulate', description: i18n.help(locale, 'WELCOMER::OPTION:SIMULATE') }, { option: 'custombackground', description: i18n.help(locale, 'WELCOMER::OPTION:CUSTOMBACKGROUND'), syntax: 'custombackground <url>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'viewconfig': {
@@ -309,5 +306,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('welcomer', 'Configure the welcomer module', [{ option: 'viewconfig', description: 'View the current welcomer configuration' }, { option: 'enablecards', description: 'Enable the welcomer module' }, { option: 'disablecards', description: 'Disable the welcomer module' }, { option: 'overlayopacity', description: 'Set the opacity of the overlay', syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlayblur', description: 'Set the blur of the overlay', syntax: 'overlayblur <blur quantity>' }, { option: 'overlaycolor', description: 'Set the color of the overlay', syntax: 'overlaycolor <hex code>' }, { option: 'roundavatar', description: 'Set the avatar to be round' }, { option: 'test', description: 'Test the welcomer module' }, { option: 'simulate', description: 'Simulate a member joining the server' }, { option: 'custombackground', description: 'Change welcome card background', syntax: 'custombackground <url>' }])

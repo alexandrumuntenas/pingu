@@ -49,6 +49,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('joinroles', i18n.help(locale, 'JOINROLES::DESCRIPTION'), [{ option: 'list', description: i18n.help(locale, 'JOINROLES::OPTION:LIST'), syntax: 'list', isNsfw: false }, { option: 'add', description: i18n.help(locale, 'JOINROLES::OPTION:ADD'), syntax: 'add @myrole (@myrole2 ··>)', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'JOINROLES::OPTION:REMOVE'), syntax: 'remove @myrole (@myrole2 ··>)', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'list': {
@@ -97,5 +98,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('joinroles', 'Manage join roles', [{ option: 'list', description: 'List the Join Roles', syntax: '', isNsfw: false }, { option: 'add', description: 'Add a new join role', syntax: '@myrole (@myrole2 ··>)', isNsfw: false }, { option: 'remove', description: 'Remove a join role', syntax: '@myrole (@myrole2 ··>)', isNsfw: false }])

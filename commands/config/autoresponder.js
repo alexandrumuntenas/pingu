@@ -33,6 +33,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('autoresponder', i18n.help(locale, 'AUTORESPONDER::DESCRIPTION'), [{ option: 'create', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:CREATE'), syntax: 'create (customId)', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:REMOVE'), syntax: 'remove <ID>', isNsfw: false }])
     const filter = m => m.member.id === message.member.id
     if (message.args[0]) {
       switch (message.args[0]) {
@@ -80,5 +81,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('autoresponder', 'Command to interact with Pingu\'s customized answers module.', [{ option: 'create', description: 'Crea un comando personalizado. Se puede asignar un identificador personalizado.', syntax: 'create (customId)', isNsfw: false }, { option: 'remove', description: 'Eliminar una respuesta personalizada mediante su identificador.', syntax: 'remove <ID>', isNsfw: true }])

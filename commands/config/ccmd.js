@@ -32,6 +32,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('ccmd', i18n.help(locale, 'CCMD::DESCRIPTION'), [{ option: 'create', description: i18n.help(locale, 'CCMD::OPTION:CREATE'), syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'CCMD::OPTION:CREATE'), syntax: 'remove <command>', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'create': {
@@ -67,5 +68,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('ccmd', 'Comando para interactuar con los comandos personalizados del servidor.', [{ option: 'create', description: 'Crea un comando personalizado', syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: 'Elimina un comando personalizado', syntax: 'remove <command>', isNsfw: false }])

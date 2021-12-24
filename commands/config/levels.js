@@ -152,6 +152,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('levels', i18n.help(locale, 'LEVELS::DESCRIPTION'), [{ option: 'viewconfig', description: i18n.help(locale, 'LEVELS::OPTION:VIEWCONFIG') }, { option: 'rankupmessage', description: i18n.help(locale, 'LEVELS::OPTION:RANKUPMESSAGE') }, { option: 'difficulty', description: i18n.help(locale, 'LEVELS::OPTION:DIFFICULTY'), syntax: 'difficulty <number of difficulty>' }, { option: 'custombackground', description: i18n.help(locale, 'LEVELS::OPTION:CUSTOMBACKGROUND'), syntax: 'custombackground <background url>' }, { option: 'overlayopacity', description: i18n.help(locale, 'LEVELS::OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity>' }, { option: 'overlayblur', description: i18n.help(locale, 'LEVELS::OPTION:OVERLAYBLUR'), syntax: 'overlayblur <quantity>' }, { option: 'overlaycolor', description: i18n.help(locale, 'LEVELS::OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'viewconfig': {
@@ -287,5 +288,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('levels', 'Configure the levels system', [{ option: 'viewconfig', description: 'View the current levels configuration' }, { option: 'rankupmessage', description: 'Set the rankup message' }, { option: 'difficulty', description: 'Set the difficulty of the levels system', syntax: 'difficulty <number of difficulty>' }, { option: 'custombackground', description: 'Set the custom background of the levels system', syntax: 'custombackground <background url>' }, { option: 'overlayopacity', description: 'Set the overlay opacity of the levels system', syntax: 'overlayopacity <opacity>' }, { option: 'overlayblur', description: 'Set the overlay blur of the levels system', syntax: 'overlayblur <quantity>' }, { option: 'overlaycolor', description: 'Set the overlay color of the levels system', syntax: 'overlaycolor <hex code>' }])
