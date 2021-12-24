@@ -29,5 +29,7 @@
   "P2DISMOD::OPTION:MODULE": "El módulo a deshabilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
   "P2ENMOD::DESCRIPTION": "Habilitar los módulos Pingu",
   "P2ENMOD::OPTION:MODULE": "El módulo que se desea habilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
-  "SETLANGUAGE::DESCRIPTION": "Cambia el idioma del bot"
+  "SETLANGUAGE::DESCRIPTION": "Cambia el idioma del bot",
+  "SETPREFIX::DESCRIPTION": "Modifica el prefijo de los comandos por mensaje del bot",
+  "SETPREFIX::OPTION:NEWPREFIX": "Nuevo prefijo"
 }

@@ -25,7 +25,7 @@ module.exports = {
       })
       message.reply({ embeds: [Success(i18n(locale, 'SETPREFIX_SUCCESS', { guildPrefix: `\`${message.args[0]}\`` }))] })
     } else {
-      message.reply({ embeds: [Help('setprefix', 'Change the command prefix', [{ option: '<newprefix>', description: 'New prefix ' }])] })
+      message.reply({ embeds: [Help('setprefix', i18n.help(locale, 'SETPREFIX::DESCRIPTION'), [{ option: 'newprefix', description: i18n.help(locale, 'SETPREFIX::OPTION:NEWPREFIX'), syntax: '<new prefix>' }])] })
     }
   }
 }
