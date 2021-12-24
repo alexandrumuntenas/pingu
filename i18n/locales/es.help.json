@@ -24,5 +24,7 @@
   "LEVELS::OPTION:CUSTOMBACKGROUND": "Establecer un fondo personalizado para las tarjetas de rango de tu servidor",
   "LEVELS::OPTION:OVERLAYOPACITY": "Establecer la opacidad de la superposición de las tarjetas de rango",
   "LEVELS::OPTION:OVERLAYCOLOR": "Establecer el color de la superposición de las tarjetas de rango",
-  "LEVELS::OPTION:OVERLAYBLUR": "Establecer el desenfoque de la superposición de las tarjetas de rango"
+  "LEVELS::OPTION:OVERLAYBLUR": "Establecer el desenfoque de la superposición de las tarjetas de rango",
+  "P2DISMOD::DESCRIPTION": "Desactivar los módulos Pingu",
+  "P2DISMOD::OPTION:MODULE": "El módulo a deshabilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder"
 }

@@ -24,5 +24,7 @@
   "LEVELS::OPTION:CUSTOMBACKGROUND": "Set a custom background for your server's rank cards",
   "LEVELS::OPTION:OVERLAYOPACITY": "Set the opacity of the rank card overlay",
   "LEVELS::OPTION:OVERLAYCOLOR": "Set the color of the rank card overlay",
-  "LEVELS::OPTION:OVERLAYBLUR": "Set the blur of the rank card overlay"
+  "LEVELS::OPTION:OVERLAYBLUR": "Set the blur of the rank card overlay",
+  "P2DISMOD::DESCRIPTION": "Disable Pingu Modules",
+  "P2DISMOD::OPTION:MODULE": "The module to disable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder"
 }
