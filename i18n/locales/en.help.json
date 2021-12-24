@@ -31,5 +31,18 @@
   "P2ENMOD::OPTION:MODULE": "The module to enable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
   "SETLANGUAGE::DESCRIPTION": "Change the language of the bot",
   "SETPREFIX::DESCRIPTION": "Modifies the prefix of the commands per bot message",
-  "SETPREFIX::OPTION:NEWPREFIX": "New prefix"
+  "SETPREFIX::OPTION:NEWPREFIX": "New prefix",
+  "WELCOMER::DESCRIPTION": "Configure the welcomer module",
+  "WELCOMER::OPTION:VIEWCONFIG": "View the welcomer configuration",
+  "WELCOMER::OPTION:CHANNEL": "Set the welcomer channel",
+  "WELCOMER::OPTION:ENABLECARDS": "Enable the welcomer cards",
+  "WELCOMER::OPTION:DISABLECARDS": "Disable the welcomer cards",
+  "WELCOMER::OPTION:MESSAGE": "Set the welcomer message",
+  "WELCOMER::OPTION:SIMULATE": "Simulate a welcomer message",
+  "WELCOMER::OPTION:OVERLAYOPACITY": "Set the opacity of the welcomer card overlay",
+  "WELCOMER::OPTION:OVERLAYCOLOR": "Set the color of the welcomer card overlay",
+  "WELCOMER::OPTION:OVERLAYBLUR": "Set the blur of the welcomer card overlay",
+  "WELCOMER::OPTION:ROUNDAVATAR": "Set the avatar to be round",
+  "WELCOMER::OPTION:TEST": "Test the welcomer message",
+  "WELCOMER::OPTION:CUSTOMBACKGROUND": "Set a custom background for your server's welcomer cards"
 }

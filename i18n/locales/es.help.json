@@ -31,5 +31,18 @@
   "P2ENMOD::OPTION:MODULE": "El módulo que se desea habilitar. Módulos disponibles: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
   "SETLANGUAGE::DESCRIPTION": "Cambia el idioma del bot",
   "SETPREFIX::DESCRIPTION": "Modifica el prefijo de los comandos por mensaje del bot",
-  "SETPREFIX::OPTION:NEWPREFIX": "Nuevo prefijo"
+  "SETPREFIX::OPTION:NEWPREFIX": "Nuevo prefijo",
+  "WELCOMER::DESCRIPTION": "Configurar el módulo welcomer",
+  "WELCOMER::OPTION:VIEWCONFIG": "Ver la configuración del welcomer",
+  "WELCOMER::OPTION:CHANNEL": "Configurar el canal del welcomer",
+  "WELCOMER::OPTION:ENABLECARDS": "Habilitar las tarjetas del welcomer",
+  "WELCOMER::OPTION:DISABLECARDS": "Desactivar las tarjetas de bienvenida",
+  "WELCOMER::OPTION:MESSAGE": "Establecer el mensaje de bienvenida",
+  "WELCOMER::OPTION:SIMULATE": "Simular un mensaje de bienvenida",
+  "WELCOMER::OPTION:OVERLAYOPACITY": "Establecer la opacidad de la superposición de la tarjeta de bienvenida",
+  "WELCOMER::OPTION:OVERLAYCOLOR": "Establecer el color de la superposición de la tarjeta de bienvenida",
+  "WELCOMER::OPTION:OVERLAYBLUR": "Establecer el desenfoque de la superposición de la tarjeta de bienvenida",
+  "WELCOMER::OPTION:ROUNDAVATAR": "Establecer que el avatar sea redondo",
+  "WELCOMER::OPTION:TEST": "Probar el mensaje de bienvenida",
+  "WELCOMER::OPTION:CUSTOMBACKGROUND": "Establece un fondo personalizado para las tarjetas de bienvenida de tu servidor"
 }
