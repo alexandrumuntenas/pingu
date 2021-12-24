@@ -4,5 +4,8 @@
   "AUTORESPONDER::OPTION:REMOVE": "Eliminar una respuesta personalizada mediante su identificador.",
   "CCMD::DESCRIPTION": "Comando para interactuar con los comandos personalizados del servidor",
   "CCMD::OPTION:CREATE": "Crear un comando personalizado",
-  "CCMD::OPTION:REMOVE": "Elimina un comando personalizado."
+  "CCMD::OPTION:REMOVE": "Elimina un comando personalizado.",
+  "ECONOMY::DESCRIPTION": "Configura el módulo de economía en tu servidor",
+  "ECONOMY::OPTION:SETCURRENCY": "Configura el nombre de la moneda",
+  "ECONOMY::OPTION:SETCURRENCYICON": "Configura el icono de la moneda"
 }

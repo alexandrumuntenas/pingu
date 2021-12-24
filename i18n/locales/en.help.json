@@ -4,5 +4,8 @@
   "AUTORESPONDER::OPTION:REMOVE": "Delete a custom response using its identifier.",
   "CCMD::DESCRIPTION": "Command to interact with custom server commands.",
   "CCMD::OPTION:CREATE": "Create a custom command.",
-  "CCMD::OPTION:REMOVE": "Deletes a custom command."
+  "CCMD::OPTION:REMOVE": "Deletes a custom command.",
+  "ECONOMY::DESCRIPTION": "Configure the economy module in your server.",
+  "ECONOMY::OPTION:SETCURRENCY": "Set the currency name.",
+  "ECONOMY::OPTION:SETCURRENCYICON": "Set the currency icon."
 }

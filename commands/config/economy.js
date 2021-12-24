@@ -41,6 +41,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('economy', i18n.help(locale, 'ECONOMY::DESCRIPTION'), [{ option: 'setCurrency', description: i18n.help(locale, 'ECONOMY::OPTION:SETCURRENCY'), syntax: 'setCurrency <new currency>', isNsfw: false }, { option: 'setCurrencyIcon', description: i18n.help(locale, 'ECONOMY::OPTION:SETCURRENCYICON'), syntax: 'setCurrencyIcon <:emoji:>', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'setCurrency': {
@@ -75,5 +76,3 @@ module.exports = {
     }
   }
 }
-
-const helpTray = Help('economy', 'Configure the economy module in your server', [{ option: 'setCurrency', description: 'Set the currency name', syntax: 'setCurrency <new currency>', isNsfw: false }, { option: 'setCurrencyIcon', description: 'Set the currency icon', syntax: 'setCurrencyIcon <:emoji:>', isNsfw: false }])
