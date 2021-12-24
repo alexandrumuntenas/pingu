@@ -16,5 +16,13 @@
   "JOINROLES::DESCRIPTION": "Gestiona los roles dados a los usuarios cuando se unen al servidor",
   "JOINROLES::OPTION:LIST": "Listar todos los roles dados a los usuarios cuando se unen al servidor",
   "JOINROLES::OPTION:ADD": "Añade un rol a la lista de roles que se dan a los usuarios cuando se unen al servidor",
-  "JOINROLES::OPTION:REMOVE": "Eliminar un rol de la lista de roles que se dan a los usuarios cuando se unen al servidor"
+  "JOINROLES::OPTION:REMOVE": "Eliminar un rol de la lista de roles que se dan a los usuarios cuando se unen al servidor",
+  "LEVELS::DESCRIPTION": "Configura el módulo de niveles",
+  "LEVELS::OPTION:VIEWCONFIG": "Ver la configuración la configuración actual del módulo",
+  "LEVELS::OPTION:RANKUPMESSAGE": "Establecer el mensaje de avance de nivel",
+  "LEVELS::OPTION:DIFFICULTY": "Modifica la dificultad del módulo para avanzar de nivel",
+  "LEVELS::OPTION:CUSTOMBACKGROUND": "Establecer un fondo personalizado para las tarjetas de rango de tu servidor",
+  "LEVELS::OPTION:OVERLAYOPACITY": "Establecer la opacidad de la superposición de las tarjetas de rango",
+  "LEVELS::OPTION:OVERLAYCOLOR": "Establecer el color de la superposición de las tarjetas de rango",
+  "LEVELS::OPTION:OVERLAYBLUR": "Establecer el desenfoque de la superposición de las tarjetas de rango"
 }
