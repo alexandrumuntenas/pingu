@@ -28,5 +28,6 @@
   "P2DISMOD::DESCRIPTION": "Disable Pingu Modules",
   "P2DISMOD::OPTION:MODULE": "The module to disable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
   "P2ENMOD::DESCRIPTION": "Enable Pingu Modules",
-  "P2ENMOD::OPTION:MODULE": "The module to enable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder"
+  "P2ENMOD::OPTION:MODULE": "The module to enable. Modules avaliable: welcomer, joinroles, farewell, moderation, levels, economy, autoresponder",
+  "SETLANGUAGE::DESCRIPTION": "Change the language of the bot"
 }

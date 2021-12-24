@@ -33,7 +33,7 @@ module.exports = {
       })
       interaction.reply({ embeds: [Success(i18n(interaction.args[0], 'SETLANGUAGE_SUCCESS', { guildLanguage: `\`${interaction.args[0]}\`` }))] })
     } else {
-      interaction.reply({ embeds: [Help('setlanguage', 'Change the language of the bot', [{ option: 'es', description: 'Spanish' }, { option: 'en', description: 'English' }])] })
+      interaction.reply({ embeds: [Help('setlanguage', i18n.help(locale, 'SETLANGUAGE::DESCRIPTION'), [{ option: 'es', description: 'Spanish' }, { option: 'en', description: 'English' }])] })
     }
   }
 }
