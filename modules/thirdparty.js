@@ -3,7 +3,7 @@ const Statcord = require('statcord.js')
 
 module.exports = async (client) => {
   if (process.env.TOPGG_API_KEY) {
-    const ap = topgg.AutoPoster(process.env.TOPGG, client)
+    const ap = topgg.AutoPoster(process.env.TOPGG_API_KEY, client)
     client.log.info('Publicando Estadísticas a Top.GG')
     ap.on('posted', (err) => {
       if (err.status === 503) client.log.warn('TopGG: 503 Servicio no disponible')
