@@ -8,7 +8,7 @@ links:
 - text: Home
   link: /README.md
   icon: home
-  
+
 - text: Issues
   link: https://github.com/alexandrumuntenas/pingu/issues
   icon: issue-opened
