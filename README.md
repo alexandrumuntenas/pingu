@@ -13,10 +13,8 @@
     <a href="#"><strong><del>Explore the docs »</del></strong></a> I'm working on it. Check <a href="https://github.com/alexandrumuntenas/pingu/issues/142">#142</a>
     <br/>
     <br/>
-    <a href="https://github.com/alexandrumuntenas/pingu">View Demo</a>
-    .
     <a href="https://github.com/alexandrumuntenas/pingu/issues">Report Bug</a>
-    .
+     • 
     <a href="https://github.com/alexandrumuntenas/pingu/issues">Request Feature</a>
   </p>
 </p>
