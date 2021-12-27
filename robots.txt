@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alexandrumuntenas.github.io/pingu/sitemap.xml.gz
