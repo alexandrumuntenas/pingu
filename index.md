@@ -1,3 +1,8 @@
+---
+title: Home
+icon: home
+---
+
 <br/>
 <p align="center">
   <a href="https://github.com/alexandrumuntenas/pingu">
@@ -24,16 +29,6 @@
 ![Contributors](https://img.shields.io/github/contributors/alexandrumuntenas/pingu?color=dark-green) ![Issues](https://img.shields.io/github/issues/alexandrumuntenas/pingu) ![License](https://img.shields.io/github/license/alexandrumuntenas/pingu) 
 
 </center>
-
-## Table Of Contents
-
-* [About the Project](#about-the-project)
-* [Getting Started](#getting-started)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
-* [Authors](#authors)
-* [Acknowledgements](#acknowledgements)
 
 ## About The Project
 
