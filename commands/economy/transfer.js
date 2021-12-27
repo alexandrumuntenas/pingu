@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../i18n/getLocales')
+const { Success, Error } = require('../../modules/constructor/messageBuilder')
+const i18n = require('../../i18n/i18n')
 const { makeMoneyTransferToUser } = require('../../modules/economy')
 
 module.exports = {
@@ -22,19 +22,19 @@ module.exports = {
         if (parseInt(amount) > 0) {
           makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
             if (status) {
-              genericMessages.success(interaction, getLocales(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))
+              interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))] })
             } else {
-              genericMessages.error(interaction, getLocales(locale, 'TRANSFER_NOENOUGHMONEY'))
+              interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER_NOENOUGHMONEY'))] })
             }
           })
         } else {
-          genericMessages.error(interaction, getLocales(locale, 'TRANSFER_INVALIDAMOUNT'))
+          interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER_INVALIDAMOUNT'))] })
         }
       } else {
-        genericMessages.error(interaction, getLocales(locale, 'TRANSFER_ISBOT'))
+        interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER_ISBOT'))] })
       }
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
     }
   }
 }

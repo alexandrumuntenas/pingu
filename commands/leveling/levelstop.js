@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
-const getLocales = require('../../i18n/getLocales')
-const genericMessages = require('../../functions/genericMessages')
+const i18n = require('../../i18n/i18n')
+const messageBuilder = require('../../modules/constructor/messageBuilder')
 
 module.exports = {
   module: 'levels',
@@ -17,7 +17,7 @@ module.exports = {
         if (rows) {
           if (Object.prototype.hasOwnProperty.call(rows, 0)) {
             const embed = new MessageEmbed()
-              .setTitle(`:trophy: ${getLocales(locale, 'LEVELSTOP_TITLE')}`)
+              .setTitle(`:trophy: ${i18n(locale, 'LEVELSTOP_TITLE')}`)
               .setFooter(interaction.guild.name)
               .setColor('#FFD700')
 
@@ -25,19 +25,19 @@ module.exports = {
             rows.forEach(function (row) {
               client.users.fetch(row.member).then((user) => {
                 count++
-                embed.addFields({ name: `${user.username}#${user.discriminator}`, value: `${getLocales(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
+                embed.addFields({ name: `${user.username}#${user.discriminator}`, value: `${i18n(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
                 if (count === rows.length) {
                   interaction.editReply({ embeds: [embed] })
                 }
               })
             })
           } else {
-            genericMessages.error(interaction, locale, 'LEVELSTOP_NODATA')
+            messageBuilder.error(interaction, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
     } else {
-      genericMessages.error.noavaliable(interaction, locale)
+      messageBuilder.error.noavaliable(interaction, locale)
     }
   },
   executeLegacy (client, locale, message) {
@@ -50,7 +50,7 @@ module.exports = {
         if (rows) {
           if (Object.prototype.hasOwnProperty.call(rows, 0)) {
             const embed = new MessageEmbed()
-              .setTitle(`:trophy: ${getLocales(locale, 'LEVELSTOP_TITLE')}`)
+              .setTitle(`:trophy: ${i18n(locale, 'LEVELSTOP_TITLE')}`)
               .setFooter(message.guild.name)
               .setColor('#FFD700')
 
@@ -58,19 +58,19 @@ module.exports = {
             rows.forEach(function (row) {
               client.users.fetch(row.member).then((user) => {
                 count++
-                embed.addFields({ name: `${user.username}#${user.discriminator}`, value: `${getLocales(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
+                embed.addFields({ name: `${user.username}#${user.discriminator}`, value: `${i18n(locale, 'LEVELSTOP_ENTRY', { LEVEL: row.memberLevel, XP: row.memberExperience })}` })
                 if (count === rows.length) {
                   message.channel.send({ embeds: [embed] })
                 }
               })
             })
           } else {
-            genericMessages.legacy.error(message, locale, 'LEVELSTOP_NODATA')
+            messageBuilder.legacy.error(message, locale, 'LEVELSTOP_NODATA')
           };
         }
       })
     } else {
-      genericMessages.legacy.error.noavaliable(message, locale)
+      messageBuilder.legacy.error.noavaliable(message, locale)
     }
   }
 }

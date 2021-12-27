@@ -1,16 +1,14 @@
-const { MessageEmbed } = require('discord.js')
-const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../i18n/getLocales')
+const { Info } = require('../../modules/constructor/messageBuilder')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'id',
   description: '🆔 Get the server ID',
   cooldown: 0,
   executeInteraction (client, locale, interaction) {
-    genericMessages.info.status(interaction, getLocales(locale, 'ID', { ID: `\`${interaction.guild.id}\`` }))
+    interaction.editReply({ embeds: [Info(i18n(locale, 'ID', { ID: `\`${interaction.guild.id}\`` }))] })
   },
   executeLegacy (client, locale, message) {
-    const messageSent = new MessageEmbed().setColor('#3984BD').setDescription(`<:win_information:876119543968305233> ${getLocales(locale, 'ID', { ID: `\`${message.guild.id}\`` })}`)
-    message.reply({ embeds: [messageSent] })
+    message.reply({ embeds: [Info(i18n(locale, 'ID', { ID: `\`${message.guild.id}\`` }))] })
   }
 }

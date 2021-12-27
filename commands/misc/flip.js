@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const flip = require('flipacoin')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   cooldown: 0,
@@ -9,18 +9,18 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_HEAD')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_HEAD')}`)
     } else {
-      embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_CROSS')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_CROSS')}`)
     }
     interaction.editReply({ embeds: [embed] })
   },
   executeLegacy (client, locale, message) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_HEAD')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_HEAD')}`)
     } else {
-      embed.setDescription(`:coin: ${getLocales(locale, 'FLIP_CROSS')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_CROSS')}`)
     }
     message.reply({ embeds: [embed] })
   }

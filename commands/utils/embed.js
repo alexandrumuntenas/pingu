@@ -1,6 +1,6 @@
 const { MessageEmbed, Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const getLocales = require('../../i18n/getLocales')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'embed',
@@ -36,7 +36,7 @@ module.exports = {
     interaction.followUp({ embeds: [embed] })
   },
   executeLegacy (client, locale, message) {
-    message.channel.send(`<a:loader:871389840904695838> ${getLocales(locale, 'EMBED_PRELOADER')}`).then((embedMenu) => {
+    message.channel.send(`<a:loader:871389840904695838> ${i18n(locale, 'EMBED_PRELOADER')}`).then((embedMenu) => {
       const embedCreated = new MessageEmbed()
       const filter = m => m.member.id === message.member.id
       embedCreated.setAuthor(message.author.username, message.author.avatarURL())
@@ -45,7 +45,7 @@ module.exports = {
       embedCreated.setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
       let addfields = 0
       function indice () {
-        embedMenu.edit({ content: `${getLocales(locale, 'EMBED_MENU_WELCOME')} \n\n ****${getLocales(locale, 'EMBED_MENU_AVALIABLE_OPTIONS')}** \n **1.**${getLocales(locale, 'EMBED_MENU_OPTIONS_1')}\n **2.**${getLocales(locale, 'EMBED_MENU_OPTIONS_2')}\n **3.**${getLocales(locale, 'EMBED_MENU_OPTIONS_3')}\n **4.**${getLocales(locale, 'EMBED_MENU_OPTIONS_4')}\n **5.**${getLocales(locale, 'EMBED_MENU_OPTIONS_5')}\n **6.**${getLocales(locale, 'EMBED_MENU_OPTIONS_6')}\n **7.**${getLocales(locale, 'EMBED_MENU_OPTIONS_7')}\n **8.**${getLocales(locale, 'EMBED_MENU_OPTIONS_8')}`, embeds: [embedCreated] })
+        embedMenu.edit({ content: `${i18n(locale, 'EMBED_MENU_WELCOME')} \n\n ****${i18n(locale, 'EMBED_MENU_AVALIABLE_OPTIONS')}** \n **1.**${i18n(locale, 'EMBED_MENU_OPTIONS_1')}\n **2.**${i18n(locale, 'EMBED_MENU_OPTIONS_2')}\n **3.**${i18n(locale, 'EMBED_MENU_OPTIONS_3')}\n **4.**${i18n(locale, 'EMBED_MENU_OPTIONS_4')}\n **5.**${i18n(locale, 'EMBED_MENU_OPTIONS_5')}\n **6.**${i18n(locale, 'EMBED_MENU_OPTIONS_6')}\n **7.**${i18n(locale, 'EMBED_MENU_OPTIONS_7')}\n **8.**${i18n(locale, 'EMBED_MENU_OPTIONS_8')}`, embeds: [embedCreated] })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           switch (collected.first().content) {
             case '1':
@@ -80,7 +80,7 @@ module.exports = {
       }
 
       function editarTitulo () {
-        embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'EMBED_CHANGETITLE')}` })
+        embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'EMBED_CHANGETITLE')}` })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           embedCreated.setTitle(collected.first().content)
 
@@ -89,7 +89,7 @@ module.exports = {
       }
 
       function editarDescripcion () {
-        embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'EMBED_CHANGEBODY')}` })
+        embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'EMBED_CHANGEBODY')}` })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           embedCreated.setDescription(collected.first().content)
           collected.first().delete().then(() => indice())
@@ -99,11 +99,11 @@ module.exports = {
       function addField () {
         ++addfields
         if (addfields === 0 || addfields <= 25) {
-          embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'EMBED_ADDFIELD_INSERTTITLE', { ADDFIELD_FIELD: addfields })}` })
+          embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'EMBED_ADDFIELD_INSERTTITLE', { ADDFIELD_FIELD: addfields })}` })
           message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             const titulo = collected.first().content
             collected.first().delete()
-            embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'EMBED_ADDFIELD_INSERTBODY', { ADDFIELD_FIELD: addfields })}` })
+            embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'EMBED_ADDFIELD_INSERTBODY', { ADDFIELD_FIELD: addfields })}` })
             message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
               const descrip = collected.first().content
               embedCreated.addField(titulo, descrip)
@@ -111,12 +111,12 @@ module.exports = {
             })
           })
         } else {
-          embedMenu.edit({ content: `<:pingu_cross:876104109256769546> ${getLocales(locale, 'EMBED_ADDFIELD_NOMOREFIELDS')}` })
+          embedMenu.edit({ content: `<:pingu_cross:876104109256769546> ${i18n(locale, 'EMBED_ADDFIELD_NOMOREFIELDS')}` })
         }
       }
 
       function editarImagen () {
-        embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'EMBED_EDITIMAGE')}` })
+        embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'EMBED_EDITIMAGE')}` })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           embedCreated.setImage(collected.first().content.content)
           collected.first().delete().then(() => indice())
@@ -124,7 +124,7 @@ module.exports = {
       }
 
       function editarMiniatura () {
-        embedMenu.edit({ content: `:arrow_right: ${getLocales(locale, 'EMBED_EDITTHUMBNAIL')}` })
+        embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'EMBED_EDITTHUMBNAIL')}` })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           embedCreated.setThumbnail(collected.first().content.content)
           collected.first().delete().then(() => indice())
@@ -133,7 +133,7 @@ module.exports = {
 
       function editarColorBorde () {
         embedMenu.edit({
-          content: `:arrow_right: ${getLocales(locale, 'EMBED_EDITCOLOR')}`
+          content: `:arrow_right: ${i18n(locale, 'EMBED_EDITCOLOR')}`
         })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           embedCreated.setColor(collected.first().content.content)
@@ -143,14 +143,14 @@ module.exports = {
 
       function enviar () {
         embedMenu.edit({
-          content: `:arrow_right: ${getLocales(locale, 'EMBED_SEND')}`
+          content: `:arrow_right: ${i18n(locale, 'EMBED_SEND')}`
         })
         message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
           const canal = collected.first().mentions.channels.first()
           const mensaje = client.channels.cache.find(channel => channel.id === canal.id)
           mensaje.send({ embeds: [embedCreated] })
           embedMenu.edit({
-            content: `<:pingu_check:876104161794596964> ${getLocales(locale, 'EMBED_SENT_SUCCESS', { EMBED_CHANNEL: canal })}`, embeds: [embedCreated]
+            content: `<:pingu_check:876104161794596964> ${i18n(locale, 'EMBED_SENT_SUCCESS', { EMBED_CHANNEL: canal })}`, embeds: [embedCreated]
           })
           collected.first().delete()
         })

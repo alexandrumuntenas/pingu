@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../i18n/getLocales')
+const { Success, Help } = require('../../modules/constructor/messageBuilder')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'p2enmod',
@@ -13,6 +13,7 @@ module.exports = {
     .setDescription('Enable Pingu modules')
     .addStringOption(option => option.setName('module').setDescription('The module to enable')),
   executeInteraction (client, locale, interaction) {
+    const helpTray = Help('p2enmod', i18n.help(locale, 'P2ENMOD::DESCRIPTION'), [{ option: 'module', description: i18n.help(locale, 'P2ENMOD::OPTION:MODULE'), syntax: '<module>' }])
     if (interaction.options.getString('module')) {
       switch (interaction.options.getString('module')) {
         case 'welcomer': {
@@ -58,16 +59,17 @@ module.exports = {
           break
         }
         default: {
-          helpInteraction(interaction, locale)
+          interaction.editReply({ embeds: [helpTray] })
           return
         }
       }
-      genericMessages.success(interaction, getLocales(locale, 'P2ENMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))
+      interaction.editReply({ embeds: [Success(i18n(locale, 'P2ENMOD', { PMODULE: `\`${interaction.options.getString('module')}\`` }))] })
     } else {
-      helpInteraction(interaction, locale)
+      interaction.editReply({ embeds: [helpTray] })
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('p2enmod', i18n.help(locale, 'P2ENMOD::DESCRIPTION'), [{ option: 'module', description: i18n.help(locale, 'P2ENMOD::OPTION:MODULE'), syntax: '<module>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'welcomer': {
@@ -113,21 +115,13 @@ module.exports = {
           break
         }
         default: {
-          helpTray(message, locale)
+          message.reply({ embeds: [helpTray] })
           return
         }
       }
-      genericMessages.legacy.success(message, getLocales(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))
+      message.reply({ embeds: [Success(i18n(locale, 'P2ENMOD', { PMODULE: `\`${message.args[0]}\`` }))] })
     } else {
-      helpTray(message, locale)
+      message.reply({ embeds: [helpTray] })
     }
   }
-}
-
-function helpTray (message, locale) {
-  genericMessages.legacy.Info.help(message, locale, `${message.database.guildPrefix}p2enmod <module>`, ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
-}
-
-function helpInteraction (message, locale) {
-  genericMessages.info.help(message, locale, '/p2dismod <module>', ['welcomer', 'joinroles', 'farewell', 'moderation', 'levels', 'economy', 'autoresponder'])
 }

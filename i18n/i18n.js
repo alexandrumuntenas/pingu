@@ -16,3 +16,8 @@ module.exports = (language, key, placeholders) => {
     return locale
   }
 }
+
+module.exports.help = (language, key) => {
+  const locale = require(`./locales/${language}.help.json`)[key]
+  return locale
+}

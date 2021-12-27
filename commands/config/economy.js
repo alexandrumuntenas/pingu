@@ -1,7 +1,7 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../i18n/getLocales')
+const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   module: 'economy',
@@ -20,10 +20,10 @@ module.exports = {
         if (interaction.options.getString('coinname')) {
           client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [interaction.options.getString('coinname'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: interaction.options.getString('coinname') }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: interaction.options.getString('coinname') }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: interaction.database.economyCurrency }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: interaction.database.economyCurrency }))] })
         }
         break
       }
@@ -31,26 +31,27 @@ module.exports = {
         if (interaction.options.getString('coinicon')) {
           client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [interaction.options.getString('coinicon'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: interaction.options.getString('coinicon') }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: interaction.options.getString('coinicon') }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: interaction.database.economyCurrencyIcon }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: interaction.database.economyCurrencyIcon }))] })
         }
         break
       }
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('economy', i18n.help(locale, 'ECONOMY::DESCRIPTION'), [{ option: 'setCurrency', description: i18n.help(locale, 'ECONOMY::OPTION:SETCURRENCY'), syntax: 'setCurrency <new currency>', isNsfw: false }, { option: 'setCurrencyIcon', description: i18n.help(locale, 'ECONOMY::OPTION:SETCURRENCYICON'), syntax: 'setCurrencyIcon <:emoji:>', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'setCurrency': {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [message.content.replace(`${message.database.guildPrefix}economy setCurrency `, ''), message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))
+              message.reply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))] })
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: message.database.economyCurrency }))
+            message.reply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCY_NOARGS', { BANKCURRENCY: message.database.economyCurrency }))] })
           }
           break
         }
@@ -58,24 +59,20 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))
+              message.reply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))] })
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: message.database.economyCurrencyIcon }))
+            message.reply({ embeds: [Status(i18n(locale, 'ECONOMY_CURRENCYICON_NOARGS', { CURRENCYICON: message.database.economyCurrencyIcon }))] })
           }
           break
         }
         default: {
-          helpTray(message, locale)
+          message.reply({ embeds: [helpTray] })
           break
         }
       }
     } else {
-      helpTray(message, locale)
+      message.reply({ embeds: [helpTray] })
     }
   }
-}
-
-const helpTray = (message, locale) => {
-  genericMessages.legacy.Info.help(message, locale, `\`${message.database.guildPrefix}economy <option>\``, ['setCurrency <new currency>', 'setCurrencyIcon :emoji:'])
 }

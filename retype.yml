@@ -1,0 +1,32 @@
+input: .
+output: .retype
+url: # Add your website address here
+branding:
+  title: Pingu • The Discord Bot
+  label: 22T1
+links:
+- text: Home
+  link: /README.md
+  icon: home
+
+- text: Issues
+  link: https://github.com/alexandrumuntenas/pingu/issues
+  icon: issue-opened
+  target: blank
+
+- text: Discussions
+  link: https://github.com/alexandrumuntenas/pingu/discussions
+  icon: comment-discussion
+  target: blank
+
+- text: GitHub
+  link: https://github.com/alexandrumuntenas/pingu
+  icon: mark-github
+  target: blank
+
+- text: Add to Discord
+  link: https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands
+  icon: diff-added
+  target: blank
+footer:
+  copyright: "&copy; Copyright {{ year }}. All rights reserved."

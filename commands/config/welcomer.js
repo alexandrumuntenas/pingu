@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { welcomeCard } = require('../../modules/canvasProcessing')
-const genericMessages = require('../../functions/genericMessages')
-const getLocales = require('../../i18n/getLocales')
+const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
+const i18n = require('../../i18n/i18n')
 const tempFileRemover = require('../../functions/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd')
 const isHexcolor = require('is-hexcolor')
@@ -35,11 +35,11 @@ module.exports = {
       case 'viewconfig': {
         const sentEmbed = new MessageEmbed()
           .setColor('BLURPLE')
-          .setTitle(getLocales(locale, 'WELCOMER_VIEWCONFIG_TITLE'))
-          .setDescription(getLocales(locale, 'WELCOMER_VIEWCONFIG_DESCRIPTION'))
-          .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.welcomeChannel) || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
-          .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${interaction.database.welcomeMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
-          .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[interaction.database.welcomeImage] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${interaction.database.welcomeImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: interaction.database.welcomeImageCustomOverlayColor })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: interaction.database.welcomeImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: interaction.database.welcomeImageCustomOpacity })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[interaction.database.welcomeImageRoundAvatar] })}`, false)
+          .setTitle(i18n(locale, 'WELCOMER_VIEWCONFIG_TITLE'))
+          .setDescription(i18n(locale, 'WELCOMER_VIEWCONFIG_DESCRIPTION'))
+          .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.welcomeChannel) || i18n(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
+          .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${interaction.database.welcomeMessage || i18n(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
+          .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[interaction.database.welcomeImage] })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${interaction.database.welcomeImageCustomBackground})` || i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: interaction.database.welcomeImageCustomOverlayColor })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: interaction.database.welcomeImageCustomBlur })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: interaction.database.welcomeImageCustomOpacity })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[interaction.database.welcomeImageRoundAvatar] })}`, false)
 
         interaction.editReply({ embeds: [sentEmbed] })
         break
@@ -48,10 +48,10 @@ module.exports = {
         if (interaction.options.getChannel('welcomechannel')) {
           client.pool.query('UPDATE `guildData` SET `welcomeChannel` = ? WHERE `guild` = ?', [interaction.options.getChannel('welcomechannel').id, interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'WELCOMER_CHANNEL_SUCCESS', { WELCOMER_CHANNEL: interaction.options.getChannel('welcomechannel') }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_CHANNEL_SUCCESS', { WELCOMER_CHANNEL: interaction.options.getChannel('welcomechannel') }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_CHANNEL_MISSING_ARGS', { WELCOMER_CHANNEL: interaction.guild.channels.cache.find(c => c.id === interaction.database.welcomeChannel) }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_CHANNEL_MISSING_ARGS', { WELCOMER_CHANNEL: interaction.guild.channels.cache.find(c => c.id === interaction.database.welcomeChannel) }))] })
         }
         break
       }
@@ -59,10 +59,10 @@ module.exports = {
         if (interaction.options.getString('welcomemessage')) {
           client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [interaction.options.getString('welcomemessage'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${interaction.options.getString('welcomemessage')}\`` }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${interaction.options.getString('welcomemessage')}\`` }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_MESSAGE_MISSING_ARGS', { WELCOMER_MESSAGE: interaction.database.welcomeMessage }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_MESSAGE_MISSING_ARGS', { WELCOMER_MESSAGE: interaction.database.welcomeMessage }))] })
         }
         break
       }
@@ -70,24 +70,24 @@ module.exports = {
         if (interaction.options.getString('url')) {
           client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBackground` = ? WHERE `guild` = ?', [interaction.options.getString('url'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: interaction.options.getString('url') }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: interaction.options.getString('url') }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS', { WELCOMER_CUSTOMBACKGROUND: interaction.database.welcomeImageCustomBackground }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS', { WELCOMER_CUSTOMBACKGROUND: interaction.database.welcomeImageCustomBackground }))] })
         }
         break
       }
       case 'enablecards': {
         client.pool.query('UPDATE `guildData` SET `welcomeImage` = 1 WHERE `guild` = ?', [interaction.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)
-          genericMessages.success(interaction, getLocales(locale, 'WELCOMER_ENABLECARDS'))
+          interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_ENABLECARDS'))] })
         })
         break
       }
       case 'disablecards': {
         client.pool.query('UPDATE `guildData` SET `welcomeImage` = 0 WHERE `guild` = ?', [interaction.guild.id], (err) => {
           if (err) client.Sentry.captureException(err)
-          genericMessages.success(interaction, getLocales(locale, 'WELCOMER_DISABLECARDS'))
+          interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_DISABLECARDS'))] })
         })
         break
       }
@@ -95,10 +95,10 @@ module.exports = {
         if (interaction.options.getNumber('opacity')) {
           client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [interaction.options.getNumber('opacity'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: interaction.options.getNumber('opacity') }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: interaction.options.getNumber('opacity') }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: interaction.database.welcomeImageCustomOpacity }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: interaction.database.welcomeImageCustomOpacity }))] })
         }
         break
       }
@@ -106,10 +106,10 @@ module.exports = {
         if (interaction.options.getNumber('blur')) {
           client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBlur` = ? WHERE `guild` = ?', [interaction.options.getNumber('blur'), interaction.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.success(interaction, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: interaction.options.getNumber('blur') }))
+            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: interaction.options.getNumber('blur') }))] })
           })
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: interaction.database.welcomeImageCustomBlur }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: interaction.database.welcomeImageCustomBlur }))] })
         }
         break
       }
@@ -118,13 +118,13 @@ module.exports = {
           if (isHexcolor(interaction.options.getString('hexcolor'))) {
             client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOverlayColor` = ? WHERE `guild` = ?', [interaction.options.getString('hexcolor'), interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.success(interaction, getLocales(locale, 'WELCOMER_OVERLAYCOLOR_SUCCESS', { WELCOMER_OVERLAYCOLOR: interaction.options.getString('hexcolor') }))
+              interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_OVERLAYCOLOR_SUCCESS', { WELCOMER_OVERLAYCOLOR: interaction.options.getString('hexcolor') }))] })
             })
           } else {
-            genericMessages.info.status(interaction, getLocales(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))
+            interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))] })
           }
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_OVERLAYCOLOR_MISSING_ARGS', { WELCOMER_OVERLAYCOLOR: interaction.database.welcomeImageCustomOverlayColor }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_OVERLAYCOLOR_MISSING_ARGS', { WELCOMER_OVERLAYCOLOR: interaction.database.welcomeImageCustomOverlayColor }))] })
         }
         break
       }
@@ -133,16 +133,16 @@ module.exports = {
           if (interaction.options.getBoolean('value') === true) {
             client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.success(interaction, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'ENABLED') }))
+              interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: i18n(locale, 'ENABLED') }))] })
             })
           } else {
             client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 0 WHERE `guild` = ?', [interaction.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.success(interaction, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'DISABLED') }))
+              interaction.editReply({ embeds: [Success(interaction, i18n(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: i18n(locale, 'DISABLED') }))] })
             })
           }
         } else {
-          genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_ROUNDAVATAR_MISSING_ARGS', { WELCOMER_ROUNDAVATAR: emojiRelationship[interaction.database.welcomeImageRoundAvatar] }))
+          interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_ROUNDAVATAR_MISSING_ARGS', { WELCOMER_ROUNDAVATAR: emojiRelationship[interaction.database.welcomeImageRoundAvatar] }))] })
         }
         break
       }
@@ -156,28 +156,25 @@ module.exports = {
         break
       }
       case 'simulate': {
-        genericMessages.info.status(interaction, getLocales(locale, 'WELCOMER_SIMULATE_SUCCESS'))
+        interaction.editReply({ embeds: [Status(i18n(locale, 'WELCOMER_SIMULATE_SUCCESS'))] })
         guildMemberAdd(client, interaction.member)
-        break
-      }
-      default: {
-        helpTray(interaction, locale)
         break
       }
     }
   },
   executeLegacy (client, locale, message) {
+    const helpTray = Help('welcomer', i18n.help(locale, 'WELCOMER::DESCRIPTION'), [{ option: 'viewconfig', description: i18n.help(locale, 'WELCOMER::OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n.help(locale, 'WELCOMER::OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n.help(locale, 'WELCOMER::OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n.help(locale, 'WELCOMER::OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlayblur', description: i18n.help(locale, 'WELCOMER::OPTION:OVERLAYBLUR'), syntax: 'overlayblur <blur quantity>' }, { option: 'overlaycolor', description: i18n.help(locale, 'WELCOMER::OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'roundavatar', description: i18n.help(locale, 'WELCOMER::OPTION:ROUNDAVATAR') }, { option: 'test', description: i18n.help(locale, 'WELCOMER::OPTION:TEST') }, { option: 'simulate', description: i18n.help(locale, 'WELCOMER::OPTION:SIMULATE') }, { option: 'custombackground', description: i18n.help(locale, 'WELCOMER::OPTION:CUSTOMBACKGROUND'), syntax: 'custombackground <url>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'viewconfig': {
           message.channel.send('<a:loader:871389840904695838> Fetching data... Please wait.').then((_message) => {
             const sentEmbed = new MessageEmbed()
               .setColor('BLURPLE')
-              .setTitle(getLocales(locale, 'WELCOMER_VIEWCONFIG_TITLE'))
-              .setDescription(getLocales(locale, 'WELCOMER_VIEWCONFIG_DESCRIPTION'))
-              .addField(`<:blurple_announcements:892441292909469726> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
-              .addField(`<:blurple_chat:892441341827616859> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.welcomeMessage || getLocales(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
-              .addField(`<:blurple_image:892443053359517696> ${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[message.database.welcomeImage] })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.welcomeImageCustomBackground})` || getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: message.database.welcomeImageCustomOverlayColor })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.welcomeImageCustomBlur })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity })}\n${getLocales(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] })}`, false)
+              .setTitle(i18n(locale, 'WELCOMER_VIEWCONFIG_TITLE'))
+              .setDescription(i18n(locale, 'WELCOMER_VIEWCONFIG_DESCRIPTION'))
+              .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'WELCOMER_VIEWCONFIG_CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) || i18n(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
+              .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'WELCOMER_VIEWCONFIG_MESSAGE')}`, `${message.database.welcomeMessage || i18n(locale, 'WELCOMER_VIEWCONFIG_NOMESSAGE')}`, true)
+              .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_TITLE')}`, `${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ENABLED', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[message.database.welcomeImage] })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_CUSTOMBACKGROUND', { WELCOMER_CUSTOMBACKGROUND: `[Ver imagen](${message.database.welcomeImageCustomBackground})` || i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_NOCUSTOMBACKGROUND') })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYCOLOR', { WELCOMER_OVERLAYCOLOR: message.database.welcomeImageCustomOverlayColor })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYBLUR', { WELCOMER_OVELAYBLUR: message.database.welcomeImageCustomBlur })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_OVERLAYOPACITY', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity })}\n${i18n(locale, 'WELCOMER_VIEWCONFIG_WELCOMECARD_ROUNDAVATAR', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] })}`, false)
 
             _message.edit({ content: 'Done', embeds: [sentEmbed] })
           })
@@ -187,20 +184,20 @@ module.exports = {
           if (message.mentions.channels.first()) {
             client.pool.query('UPDATE `guildData` SET `welcomeChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_CHANNEL_SUCCESS', { WELCOMER_CHANNEL: message.mentions.channels.first() }))
+              message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_CHANNEL_SUCCESS', { WELCOMER_CHANNEL: message.mentions.channels.first() }))] })
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_CHANNEL_MISSING_ARGS', { WELCOMER_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) }))
+            message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_CHANNEL_MISSING_ARGS', { WELCOMER_CHANNEL: message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) }))] })
           }
           break
         }
         case 'message': {
           const filter = m => m.member.id === message.member.id
-          genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_MESSAGE_PREUPDATE'))
+          message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_MESSAGE_PREUPDATE'))] })
           message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             client.pool.query('UPDATE `guildData` SET `welcomeMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${collected.first().content}\`` }))
+              message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_MESSAGE_SUCCESS', { WELCOMER_MESSAGE: `\`${collected.first().content}\`` }))] })
             })
           })
           break
@@ -209,24 +206,24 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: message.args[1] }))
+              message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_CUSTOMBACKGROUND_SUCCESS', { WELCOMER_CUSTOMBACKGROUND: message.args[1] }))] })
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS', { WELCOMER_CUSTOMBACKGROUND: message.database.welcomeImageCustomBackground }))
+            message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_CUSTOMBACKGROUND_MISSING_ARGS', { WELCOMER_CUSTOMBACKGROUND: message.database.welcomeImageCustomBackground }))] })
           }
           break
         }
         case 'enablecards': {
           client.pool.query('UPDATE `guildData` SET `welcomeImage` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_ENABLECARDS'))
+            message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_ENABLECARDS'))] })
           })
           break
         }
         case 'disablecards': {
           client.pool.query('UPDATE `guildData` SET `welcomeImage` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
             if (err) client.Sentry.captureException(err)
-            genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_DISABLECARDS'))
+            message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_DISABLECARDS'))] })
           })
           break
         }
@@ -234,10 +231,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))
+              message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_OVERLAYOPACITY_SUCCESS', { WELCOMER_OVERLAYOPACITY: (message.args[1]) }))] })
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity }))
+            message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_OVERLAYOPACITY_MISSING_ARGS', { WELCOMER_OVERLAYOPACITY: message.database.welcomeImageCustomOpacity }))] })
           }
           break
         }
@@ -245,10 +242,10 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `welcomeImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
               if (err) client.Sentry.captureException(err)
-              genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))
+              message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_OVERLAYBLUR_SUCCESS', { WELCOMER_OVERLAYBLUR: (message.args[1]) }))] })
             })
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: message.database.welcomeImageCustomBlur }))
+            message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_OVERLAYBLUR_MISSING_ARGS', { WELCOMER_OVERLAYBLUR: message.database.welcomeImageCustomBlur }))] })
           }
           break
         }
@@ -257,13 +254,13 @@ module.exports = {
             if (isHexcolor(message.args[1])) {
               client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOverlayColor` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_OVERLAYCOLOR_SUCCESS', { WELCOMER_OVERLAYCOLOR: message.args[1] }))
+                message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_OVERLAYCOLOR_SUCCESS', { WELCOMER_OVERLAYCOLOR: message.args[1] }))] })
               })
             } else {
-              genericMessages.legacy.Info.status(message, getLocales(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))
+              message.channel.send({ embeds: [Status(i18n(locale, 'LEVELS_OVERLAYCOLOR_NOT_HEX'))] })
             }
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_OVERLAYCOLOR_MISSING_ARGS', { WELCOMER_OVERLAYCOLOR: message.database.welcomeImageCustomOverlayColor }))
+            message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_OVERLAYCOLOR_MISSING_ARGS', { WELCOMER_OVERLAYCOLOR: message.database.welcomeImageCustomOverlayColor }))] })
           }
           break
         }
@@ -272,16 +269,16 @@ module.exports = {
             if (message.args[1] === 'true') {
               client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 1 WHERE `guild` = ?', [message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'ENABLED') }))
+                message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: i18n(locale, 'ENABLED') }))] })
               })
             } else {
               client.pool.query('UPDATE `guildData` SET `welcomeImageRoundAvatar` = 0 WHERE `guild` = ?', [message.guild.id], (err) => {
                 if (err) client.Sentry.captureException(err)
-                genericMessages.legacy.success(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: getLocales(locale, 'DISABLED') }))
+                message.channel.send({ embeds: [Success(i18n(locale, 'WELCOMER_ROUNDAVATAR_SUCCESS', { WELCOMER_ROUNDAVATAR: i18n(locale, 'DISABLED') }))] })
               })
             }
           } else {
-            genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_ROUNDAVATAR_MISSING_ARGS', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] }))
+            message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_ROUNDAVATAR_MISSING_ARGS', { WELCOMER_ROUNDAVATAR: emojiRelationship[message.database.welcomeImageRoundAvatar] }))] })
           }
           break
         }
@@ -295,21 +292,17 @@ module.exports = {
           break
         }
         case 'simulate': {
-          genericMessages.legacy.Info.status(message, getLocales(locale, 'WELCOMER_SIMULATE_SUCCESS'))
+          message.channel.send({ embeds: [Status(i18n(locale, 'WELCOMER_SIMULATE_SUCCESS'))] })
           guildMemberAdd(client, message.member)
           break
         }
         default: {
-          helpTray(message, locale)
+          message.channel.send({ embeds: [helpTray] })
           break
         }
       }
     } else {
-      helpTray(message, locale)
+      message.channel.send({ embeds: [helpTray] })
     }
   }
-}
-
-const helpTray = (message, locale) => {
-  genericMessages.legacy.Info.help(message, locale, `\`${message.database.guildPrefix}welcomer <option>\``, ['viewconfig', 'channel <channel>', 'message', 'enablecards', 'disablecards', 'customBackground <background URL>', 'overlaycolor <hex code>', 'overlayopacity <quantity>', 'overlayblur <quantity>', 'roundavatar <true/false>', 'test', 'simulate'])
 }
