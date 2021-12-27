@@ -1,8 +1,3 @@
----
-label: Home
-icon: home
----
-
 <br/>
 <p align="center">
   <a href="https://github.com/alexandrumuntenas/pingu">
@@ -15,7 +10,7 @@ icon: home
     We differ from other bots because I am very customizable and at what cost? FREE!
     <br/>
     <br/>
-    <a href="#"><strong><del>Explore the docs »</del></strong></a> I'm working on it. Check <a href="https://github.com/alexandrumuntenas/pingu/issues/142">#142</a>
+    <a href="https://alexandrumuntenas.github.io/pingu/"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
     <a href="https://github.com/alexandrumuntenas/pingu/issues">Report Bug</a>
@@ -24,11 +19,7 @@ icon: home
   </p>
 </p>
 
-<center>
-
 ![Contributors](https://img.shields.io/github/contributors/alexandrumuntenas/pingu?color=dark-green) ![Issues](https://img.shields.io/github/issues/alexandrumuntenas/pingu) ![License](https://img.shields.io/github/license/alexandrumuntenas/pingu) 
-
-</center>
 
 ## Table Of Contents
 
