@@ -114,7 +114,7 @@ module.exports = {
     ctx.font = '50px "Montserrat SemiBold"'
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
     ctx.textAlign = 'right'
-    ctx.fillText(`Rank #${5}  Level ${millify(member.levelData.memberLevel)}`, 1050, 100)
+    ctx.fillText(`Rank #${member.levelData.rank}  Level ${millify(member.levelData.memberLevel)}`, 1050, 100)
 
     // Escribir progreso actual (actual/necesario)
     const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)} XP`

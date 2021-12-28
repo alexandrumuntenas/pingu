@@ -9,7 +9,22 @@ module.exports = {
     client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? AND member = ?', [member.guild.id, member.id], (err, result) => {
       if (err) client.Sentry.captureException(err)
       if (Object.prototype.hasOwnProperty.call(result, 0)) {
-        callback(result[0])
+        const adata = result[0]
+        client.pool.query('SELECT member, ROW_NUMBER() OVER (ORDER BY memberLevel DESC, memberExperience DESC) AS rnk FROM guildLevelsData WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC', [member.guild.id], (err, result) => {
+          if (err) client.logError(err)
+          if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
+            result.filter(r => r.member === member.id).forEach(r => { adata.rank = r.rnk })
+            callback(adata)
+          } else {
+            client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
+              if (err) {
+                client.Sentry.captureException(err)
+                client.log.error(err)
+              }
+              module.exports.fetchMember(client, member, callback)
+            })
+          }
+        })
       } else {
         client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
           if (err) {
