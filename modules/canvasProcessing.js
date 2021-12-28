@@ -94,6 +94,10 @@ module.exports = {
       ctx.fillStyle = hexToRgba(database.levelsImageCustomOverlayColor || '#272934', (database.levelsImageCustomOpacity / 100))
       ctx.fillRect(25, 25, 1050, 270)
       StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, database.levelsImageCustomBlur)
+      /* Next Release: 22T2
+      ctx.fillRect(25, 25, 1050, 250)
+      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 250, database.levelsImageCustomBlur)
+      */
     } else {
       ctx.fillStyle = '#272934'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -103,22 +107,22 @@ module.exports = {
     ctx.font = applyText(canvas, member.tag, 40)
     ctx.textAlign = 'left'
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    ctx.fillText(`${member.tag}`, 295, 180)
+    ctx.fillText(`${member.tag}`, 295, 180, 500)
 
-    // Escribir nivel
+    // Escribir nivel, experiencia y rango
 
-    ctx.font = '180px "Montserrat SemiBold"'
+    ctx.font = '50px "Montserrat SemiBold"'
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
     ctx.textAlign = 'right'
-    ctx.fillText(millify(member.levelData.memberLevel), 1050, 180)
+    ctx.fillText(`Rank #${member.levelData.rank}  Level ${millify(member.levelData.memberLevel)}`, 1050, 100)
 
     // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)}`
+    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)} XP`
 
-    ctx.font = '40px "Montserrat SemiBold"'
+    ctx.font = '30px "Montserrat SemiBold"'
     ctx.textAlign = 'right'
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    ctx.fillText(actualVSrequired, 1025, 250)
+    ctx.fillText(actualVSrequired, 1050, 180)
 
     // Añadir barra de progreso (backdrop)
 
@@ -128,12 +132,26 @@ module.exports = {
     // Añadir barra de progreso
 
     ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(295, 200, Math.round((member.levelData.memberExperience * 100) / 755), 70)
+    ctx.fillRect(295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)) * 1100), 70)
+
+    // Escribir progreso actual (porcentaje)
+
+    /* Next Release: 22T2
+    ctx.fillStyle = 'rgba(255,255,255, 0.4)'
+    ctx.fillRect(0, 300, 1100, 20)
+
+    ctx.fillStyle = 'rgb(255,255,255)'
+    ctx.fillRect(0, 300, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)) * 1100), 20)
+
+    */
 
     // Añadir avatar de usuario
 
     const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
     ctx.drawImage(avatar, 50, 50, 220, 220)
+    /* Next Release: 22T2
+    ctx.drawImage(avatar, 50, 50, 200, 200)
+    */
 
     const buffer = canvas.toBuffer('image/png')
     writeFileSync(paths.attachmentSent, buffer)
