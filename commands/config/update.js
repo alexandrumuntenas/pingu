@@ -27,7 +27,7 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.member.id === '722810818823192629') {
       interaction.editReply({ embeds: [Loader('Deploying commands...')] })
-      client.guilds.cache.forEach(async (guild) => {
+      client.guilds.cache.forEach((guild) => {
         guildFetchData(client, guild, (data) => {
           client.log.info(`Deploying commands to ${guild.id}`)
           let bodyToSend = []
@@ -46,7 +46,7 @@ module.exports = {
             .catch(console.error)
         })
       })
-      interaction.editReply({ embeds: [Success('Successfully deployed commands!')] })
+      interaction.channel.send({ embeds: [Success('Successfully deployed commands!')] })
     } else {
       interaction.editReply({ embeds: [Error('You are not allowed to use this command.')] })
     }
