@@ -28,7 +28,7 @@ module.exports = {
     if (interaction.member.id === '722810818823192629') {
       interaction.editReply({ embeds: [Loader('Deploying commands...')] })
       client.guilds.cache.forEach(async (guild) => {
-        guildFetchData(client, guild.id, (data) => {
+        guildFetchData(client, guild, (data) => {
           client.log.info(`Deploying commands to ${guild.id}`)
           let bodyToSend = []
           let welcome, joinroles, farewell, levels, economy
