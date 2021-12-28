@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:    
+      - 22T1
+      
+name: Deploy to production server
+jobs:
+  FTP-Deploy-Action:
+    name: FTP-Deploy-Action
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+        
+    - name: List output files
+      run: ls
+      
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ${{ secrets.DEPLOY_HOST }}
+        FTP_USERNAME: ${{ secrets.DEPLOY_USER }}
+        FTP_PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
+        LOCAL_DIR: .
+        METHOD: sftp
+        PORT: ${{ secrets.DEPLOY_HOST_PORT }}
+    - name: Restart Panel
+      uses: supercrafter100/Pterodactyl-Restart@v1.0
+      with:
+        PTE_PANEL_URL: ${{ secrets.DEPLOY_PANELURL }}
+        PTE_BEARER_TOKEN: ${{ secrets.DEPLOY_PANELAPI }}
+        PTE_PANEL_ID: ${{ secrets.DEPLOY_PANELID }}
