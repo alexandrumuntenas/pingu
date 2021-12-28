@@ -49,7 +49,7 @@ Well, leaving the story behind, let's talk about what Pingu is capable of. You c
 
 ## Getting Started
 
-Start using Pingu by adding it directly from Discord, or using this link [https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands).
+Start using Pingu by adding it directly from Discord, or using this [link](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands).
 
 After adding it, run `.deploy` to deploy all Slash Commands. It is recommended to run it because we are revamping the help commands and bot documentation.
 
