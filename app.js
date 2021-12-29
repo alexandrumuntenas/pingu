@@ -62,9 +62,5 @@ client.interactions = commands.loadInteractions(client)
 for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
   const event = require(`./events/${file}`)
   client.log.success(`Evento ${file} cargado`)
-  if (event.once) {
-    client.once(event.name, (...args) => event.execute(client, ...args))
-  } else {
-    client.on(event.name, (...args) => event.execute(client, ...args))
-  }
+  client.on(event.name, (...args) => event.execute(client, ...args))
 }
