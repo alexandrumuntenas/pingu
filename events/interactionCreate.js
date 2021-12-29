@@ -4,6 +4,18 @@ const guildFetchData = require('../functions/guildFetchData')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
+module.exports = {
+  name: 'interactionCreate',
+  execute: async (client, interaction) => {
+    if (interaction.isCommand()) {
+      module.exports.isCommand(client, interaction).catch(err => {
+        client.log.fatal(err)
+        client.Sentry.captureException(err)
+      })
+    }
+  }
+}
+
 module.exports.isCommand = async (client, interaction) => {
   const { commandName } = interaction
   interaction.replyData = await interaction.deferReply({ fetchReply: true })
