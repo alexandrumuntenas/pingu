@@ -6,6 +6,7 @@ require('dotenv').config()
 const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')
 const mysql = require('mysql2')
+const fs = require('fs')
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING] })
 
@@ -24,21 +25,8 @@ client.pool = mysql.createPool({
 
 client.pool.config.namedPlaceholders = true
 
-client.log.info('Cargando Eventos')
-const guildCreate = require('./events/guildCreate')
-const guildDelete = require('./events/guildDelete')
-const guildMemberAdd = require('./events/guildMemberAdd')
-const guildMemberRemove = require('./events/guildMemberRemove')
-const messageCreate = require('./events/messageCreate')
-const interactionCreate = require('./events/interactionCreate')
-client.log.success('Eventos Cargados')
-
-client.log.info('Cargando Módulos')
-client.log.success('Módulos Cargados')
-
 client.log.info('Cargando Servicios Third-Party')
 const commands = require('./functions/commands')
-const ready = require('./events/ready')
 const thirdparty = require('./modules/thirdparty')
 client.log.success('Servicios Third-Party Cargados')
 
@@ -71,52 +59,12 @@ client.logError = (err) => {
 client.commands = commands.loadCommands(client)
 client.interactions = commands.loadInteractions(client)
 
-client.on('ready', () => {
-  ready(client).catch(err => {
-    client.log.fatal(err)
-  })
-})
-
-client.on('guildCreate', (guild) => {
-  guildCreate(client, guild).catch(err => {
-    client.log.fatal(err)
-    client.Sentry.captureException(err)
-  })
-})
-
-client.on('guildDelete', (guild) => {
-  guildDelete(client, guild).catch(err => {
-    client.log.fatal(err)
-    client.Sentry.captureException(err)
-  })
-})
-
-client.on('guildMemberAdd', (member) => {
-  guildMemberAdd(client, member).catch(err => {
-    client.log.fatal(err)
-    client.Sentry.captureException(err)
-  })
-})
-
-client.on('guildMemberRemove', (member) => {
-  guildMemberRemove(client, member).catch(err => {
-    client.log.fatal(err)
-    client.Sentry.captureException(err)
-  })
-})
-
-client.on('messageCreate', (message) => {
-  messageCreate(client, message).catch(err => {
-    client.log.fatal(err)
-    client.Sentry.captureException(err)
-  })
-})
-
-client.on('interactionCreate', async interaction => {
-  if (interaction.isCommand()) {
-    interactionCreate.isCommand(client, interaction).catch(err => {
-      client.log.fatal(err)
-      client.Sentry.captureException(err)
-    })
+for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
+  const event = require(`./events/${file}`)
+  client.log.success(`Evento ${file} cargado`)
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(client, ...args))
+  } else {
+    client.on(event.name, (...args) => event.execute(client, ...args))
   }
-})
+}
