@@ -3,7 +3,7 @@ const { welcomeCard } = require('../../modules/canvasProcessing')
 const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const tempFileRemover = require('../../functions/tempFileRemover')
-const guildMemberAdd = require('../../events/guildMemberAdd')
+const guildMemberAdd = require('../../events/guildMemberAdd').execute
 const isHexcolor = require('is-hexcolor')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 

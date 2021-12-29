@@ -2,7 +2,7 @@ const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const guildMemberRemove = require('../../events/guildMemberRemove')
+const guildMemberRemove = require('../../events/guildMemberRemove').execute
 
 module.exports = {
   module: 'farewell',
