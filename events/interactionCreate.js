@@ -39,7 +39,7 @@ module.exports.isCommand = async (client, interaction) => {
         interaction.editReply({ embeds: [Error(i18n(interaction.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: interaction.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
       }
     } else {
-      interaction.editReply({ content: 'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `deploy`.' })
+      interaction.editReply({ content: 'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `update`.' })
     }
   })
 }

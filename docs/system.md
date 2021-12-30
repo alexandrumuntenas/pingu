@@ -21,5 +21,5 @@ The default prefix is `!`, and the default language is `en` (English).
 !!!
 
 !!!
-Remember to use the command `!deploy` if you are using for the first time the bot in your server.
+Remember to use the command `!update` if you are using for the first time the bot in your server.
 !!!
