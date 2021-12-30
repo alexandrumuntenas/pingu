@@ -15,8 +15,11 @@ This module can be only used using Slash Commands.
 
 | Command | Function | Example |
 | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| suggestions setchannel channel:\<Channel>| Command where the suggestions are sent. | /suggestions setchannel channel:#suggestions |
-| suggestions setrevisedchannel channel:\<Channel> | Command where revised suggestions are sent. | /suggestions revisedchannel channel:#revisedsuggestions |
+| suggestions viewconfig | Command to view the acutal config of the module. | /suggestions viewconfig |
+| suggestions setchannel channel:\<Channel>| Command to set where the suggestions are sent. | /suggestions setchannel channel:#suggestions |
+| suggestions unsetchannel | Command to unset the suggestions channel. | /suggestions unsetchannel |
+| suggestions setrevisedchannel channel:\<Channel> | Command to set where revised suggestions are sent. | /suggestions revisedchannel channel:#revisedsuggestions |
+| suggestions unsetrevisedchannel | Command to unset the revised suggestions channel. | /suggestions unsetrevisedchannel |
 
 ## Commands to handle suggestions
 
