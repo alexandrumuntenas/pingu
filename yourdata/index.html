@@ -7,23 +7,21 @@
     <meta name="turbo-cache-control" content="no-cache">
 
     <!-- Primary Meta Tags -->
-    <title>Welcomer</title>
-    <meta name="title" content="Welcomer">
-    <meta name="description" content="A wonderful way to welcome newcomers. Customize the message and welcome card to your liking." />
+    <title>The story of how Pingu takes your data and processes it.</title>
+    <meta name="title" content="The story of how Pingu takes your data and processes it.">
+    <meta name="description" content="Everything you do with Pingu is recorded. But recorded in a peculiar way." />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alexandrumuntenas.github.io/pingu/docs/modules/welcomer/">
-    <meta property="og:title" content="Welcomer">
-    <meta property="og:description" content="A wonderful way to welcome newcomers. Customize the message and welcome card to your liking.">
-    <meta property="og:image" content="https://cdn.discordapp.com/attachments/925135972251881482/925135999149953074/yjjemZDfcZKRAjQlpsphBaGbxTSuhzuR.png">
+    <meta property="og:url" content="https://alexandrumuntenas.github.io/pingu/yourdata/">
+    <meta property="og:title" content="The story of how Pingu takes your data and processes it.">
+    <meta property="og:description" content="Everything you do with Pingu is recorded. But recorded in a peculiar way.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://alexandrumuntenas.github.io/pingu/docs/modules/welcomer/">
-    <meta property="twitter:title" content="Welcomer">
-    <meta property="twitter:description" content="A wonderful way to welcome newcomers. Customize the message and welcome card to your liking.">
-    <meta property="twitter:image" content="https://cdn.discordapp.com/attachments/925135972251881482/925135999149953074/yjjemZDfcZKRAjQlpsphBaGbxTSuhzuR.png">
+    <meta property="twitter:url" content="https://alexandrumuntenas.github.io/pingu/yourdata/">
+    <meta property="twitter:title" content="The story of how Pingu takes your data and processes it.">
+    <meta property="twitter:description" content="Everything you do with Pingu is recorded. But recorded in a peculiar way.">
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
@@ -238,112 +236,88 @@
                 <div id="docs-sidebar-right-toggle"></div>
                
                 <!-- Page content  -->
-<doc-anchor-target id="welcomer" class="break-words">
+<doc-anchor-target id="the-story-of-how-pingu-takes-your-data-and-processes-it" class="break-words">
     <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#welcomer">#</doc-anchor-trigger>
-        <span>Welcomer</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#the-story-of-how-pingu-takes-your-data-and-processes-it">#</doc-anchor-trigger>
+        <span>The story of how Pingu takes your data and processes it.</span>
     </h1>
 </doc-anchor-target>
-<blockquote>
-<p>A wonderful way to welcome newcomers. Customize the message and welcome card to your liking.</p>
-</blockquote>
-<p>In Pingu we have always wanted to give the user the option of being able to configure the messages and welcome signs to their liking.</p>
-<p>The commands listed below can only be used by the server owner, or by persons with the <a href="https://discord.com/developers/docs/topics/permissions">MANAGE_GUILD*</a> permission.</p>
-<div class="flex mb-6">
-    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3">
-<p>Enable this module using <code v-pre>/p2enmod module: welcomer</code>.</p>
-<p>Disable this module using <code v-pre>/p2dismod module: welcome</code>.</p>
-        </div>
+<p>Everything you do with Pingu is recorded. But recorded in a peculiar way. If we look at Pingu&#x27;s code, we can see that even the statistics that could be sent to Statcord are privatized.</p>
+<p>Since I started working on Pingu, I had a rule: &quot;Whatever it is, whoever uses the bot, don&#x27;t be surprised by the bad, but by the good&quot;. Even if I put it this way, it may seem very nice and rosy to look good in front of the public. I&#x27;m telling you, it&#x27;s like that.</p>
+<p>Pingu uses Sentry to register all the errors that may arise and Top.GG to publish statistical data of the bot&#x27;s growth (only number of servers and number of instances it has).</p>
+<p>In the operation of the bot, we can see in numerous occasions (if not all), how I register each action in Sentry. With Sentry only the action is registered, but not who has executed the action.</p>
+<p>Let&#x27;s get down to what you are really interested in... what is stored in the Pingu database about you?
+Guild ID, User ID, Role ID, Message ID, Message Content, and blah blah blah blah blah... that seems pretty shocking, doesn&#x27;t it? The following is a full explanation of the use of each data and why we store it, told in a way, I hope, very entertaining and that you can understand it very easily.</p>
+<p>Not for another, but 99% of the neologisms (specialized terms) that are used when writing a privacy policy, I do not understand them. And besides, everyone is supposed to understand what happens to their data, right?</p>
+<doc-anchor-target id="chapter-1-the-guild-id">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#chapter-1-the-guild-id">#</doc-anchor-trigger>
+        <span>Chapter 1: The Guild ID</span>
+    </h2>
+</doc-anchor-target>
+<p>Let&#x27;s start with the first chapter of our little story. We talked about the Guild ID, an identifier that identifies (it is the function of an identifier) the Discord servers.</p>
+<p>When Pingu is added to a server, in our database (Maria DB), a record is added in which the bot modules are automatically configured.
+The Guild ID is not only limited to the use of configuration (language, prefixes, etc.). Through the Guild ID, we can identify all the data that the modules have registered in our database about a server.</p>
+<p>In the level system, when a user chats and the module is active, a record is added or updated in the database, in which a level or experience is added. In the &quot;datasheet&quot;, Pingu first picks all data from a server and then, in the case of leveling, takes the record of the specific user.</p>
+<p>This search operation happens with all modules in which the user&#x27;s interaction with the bot is involved. Moderation, levels, economy, and blah blah blah blah blah.</p>
+<p>When Pingu is kicked out of a server, it takes from all the &quot;datasheets&quot; the server records and deletes them.</p>
+<doc-anchor-target id="chapter-2-the-user-id">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#chapter-2-the-user-id">#</doc-anchor-trigger>
+        <span>Chapter 2: The User ID</span>
+    </h2>
+</doc-anchor-target>
+<p>We talked about the User ID, the identifier that identifies all Discord users. Each user has his own, for example, mine is 827199539185975417.</p>
+<p>Before I commented the intervention of the Guild ID, and how the data search was made. The use of the User ID is to identify, for example, the level of a user, his inventory, the amount of money (FALSE) that he has, his suggestions... And it is only limited to that.</p>
+<p>If you leave a server on which Pingu is on, all your data is removed from the database, except for the moderation data, which is kept until either the server is removed, or the server kicks the bot out.</p>
+<doc-anchor-target id="chapter-3-the-role-id">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#chapter-3-the-role-id">#</doc-anchor-trigger>
+        <span>Chapter 3: The Role ID</span>
+    </h2>
+</doc-anchor-target>
+<p>The Role ID is used to identify the roles. Pingu stores these identifiers to know which role to interact with.</p>
+<p>For example, when we talk in the economy module, there is an option in which you can create a product to buy a role. When the user purchases the product of the role (Guild ID and User ID are also involved), the bot searches in its &quot;datasheet&quot; for the specific product and the role to be granted in its metadata. It then searches for it and gives it to the user and adds it to its inventory.</p>
+<p>In future modules, such as Reaction Roles, we will see that the Role ID will be necessary to know what role the bot should give when reacting with X emoji.</p>
+<doc-anchor-target id="chapter-4--5-the-message-content-and-message-id">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#chapter-4--5-the-message-content-and-message-id">#</doc-anchor-trigger>
+        <span>Chapter 4 &amp; 5: The Message Content and Message ID</span>
+    </h2>
+</doc-anchor-target>
+<p>Well, let&#x27;s get to what may cause the most controversy. Why on earth does Pingu store the content of my messages?</p>
+<p>We don&#x27;t really store it, but we do use it for custom replies. The content of the message is looked up in the &quot;datasheet&quot; of the custom replies to answer your message, in case there is something configured. We are not interested in storing the content of the message.</p>
+<p>First of all, we&#x27;re not interested in storing your conversations about &quot;why are dogs better than cats?&quot; (by the way, I am of the team that favors cats...) and any other subject; and the second, because it would be storing unnecessary information in the database, which would occupy unnecessary space, which can be useful for other data.</p>
+<p>Each message in Discord is identified by a unique identifier. There is an occasion, that I can remember, in which the ID of the message is used, and it is in the module of the suggestions.</p>
+<p>When a user makes a suggestion, the bot processes his suggestion and sends it to a specific suggestion channel. When it sends it, it stores the message ID in the database so that later, after review, the message is updated with the final verdict.</p>
+<p>This is the only time the message ID is stored.</p>
+<doc-anchor-target id="chapter-6-the-generated-files">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#chapter-6-the-generated-files">#</doc-anchor-trigger>
+        <span>Chapter 6: The generated files</span>
+    </h2>
+</doc-anchor-target>
+<p>The generated files are part of the bot activity. A user enters a server and a welcome card has to be generated, heard cooking. The bot receives the action and starts working. When generating the files, there is no identifier (Guild, User, Role...) assigned to the file name. The file generator function itself generates a unique identifier of X digits that is assigned to the file and, after sending, it is deleted.</p>
+<doc-anchor-target id="the-end">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#the-end">#</doc-anchor-trigger>
+        <span>The end</span>
+    </h2>
+</doc-anchor-target>
+<p>To finish our story, remember that if you have any questions about your data, you can open a ticket on our <a href="https://discord.com/invite/q55kCfekyy">support server</a> and I will assist you in the best possible way.</p>
+<p>
+<div class="mb-6 px-5 py-4 flex justify-between relative border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded transition-colors duration-150">
+    <div class="flex items-center text-blue-500 dark:text-blue-400">
+        <span class="inline-block mb-px">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" role="presentation" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z"/></svg>
+        </span>
+        <span class="inline-block font-medium ml-2">Pingu&#x27;s Support Server</span>
     </div>
+    <div class="flex items-center text-xs text-gray-400 dark:text-dark-400">
+        <span>https://discord.com/invite/q55kCfekyy</span>
+    </div>
+    <a href="https://discord.com/invite/q55kCfekyy" class="absolute block inset-0"></a>
 </div>
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Command</th>
-<th>Function</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>/welcomer viewconfig</td>
-<td>Command to view the set configuration of the module.</td>
-<td>/welcomer viewconfig</td>
-</tr>
-<tr>
-<td>/welcomer channel welcomechannel: <channel></td>
-<td>Command to configure the welcome channel. (If it does not exist/work, the message is not sent).</td>
-<td>/welcomer channel welcomerchannel:#aeropuerto-internacional</td>
-</tr>
-<tr>
-<td>/wecomer message welcomemessage:</td>
-<td>Command to set the welcome message.</td>
-<td>/welcomer message welcomemessage:{member} has joined {guild}.</td>
-</tr>
-<tr>
-<td>/welcomer enableCards</td>
-<td>Command to enable welcome cards.</td>
-<td>/welcomer enableCards</td>
-</tr>
-<tr>
-<td>/welcomer disableCards</td>
-<td>Command to disable welcome cards.</td>
-<td>/welcomer disableCards</td>
-</tr>
-<tr>
-<td>/welcomer custombackground url:</td>
-<td>Command to set the background image.</td>
-<td>/welcomer custombackground url:https://myawesomesite.com/myawesomephoto.png</td>
-</tr>
-<tr>
-<td>/welcomer overlaycolor hexcolor:</td>
-<td>Command to configure the color of the overlay.</td>
-<td>/welcomer overlaycolor hexcolor:#fff</td>
-</tr>
-<tr>
-<td>/welcomer overlayopacity opacity:</td>
-<td>Command to set the overlay opacity.</td>
-<td>/welcomer overlayopacity opacity:50</td>
-</tr>
-<tr>
-<td>/welcomer overlayblur blur:</td>
-<td>Command to set the overlay blur.</td>
-<td>/welcomer overlayblur blur:25</td>
-</tr>
-<tr>
-<td>/welcomer test</td>
-<td>Preview the welcome card</td>
-<td>/welcomer test</td>
-</tr>
-<tr>
-<td>/welcomer simulate</td>
-<td>Simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended)</td>
-<td>/welcomer simulate</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><figure class="content-center">
-    <img src="https://cdn.discordapp.com/attachments/925135972251881482/925135999149953074/yjjemZDfcZKRAjQlpsphBaGbxTSuhzuR.png" alt="Sample greeting card with custom background and rounded avatar." />
-    <figcaption class="caption">Sample greeting card with custom background and rounded avatar.</figcaption>
-</figure>
-</p>
-<p><figure class="content-center">
-    <img src="https://cdn.discordapp.com/attachments/925135972251881482/925135999506456596/yFKHQgmSQsjGYdJsCbBotUxsUAmiNlgp.png" alt="Sample greeting card with default background and square avatar." />
-    <figcaption class="caption">Sample greeting card with default background and square avatar.</figcaption>
-</figure>
 </p>
 
 
@@ -356,20 +330,20 @@
             
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/modules/autoresponder/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/pingu/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">Autoresponder</span>
+                <span class="block mt-1">Home</span>
             </span>
         </a>
     </div>
 
     <div class="w-1/2">
-        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/modules/joinroles/">
+        <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/system/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">Join Roles</span>
+                <span class="block mt-1">System</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -417,6 +391,6 @@
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "Welcomer", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "Pingu and the data", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>
