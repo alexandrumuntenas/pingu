@@ -21,7 +21,7 @@ Pingu has a local economy module. This means that your balance and inventory are
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!warning
-This module can be only managed using Slash Commands.
+This module can be only used using Slash Commands.
 !!!
 
 | Command | Function | Example |

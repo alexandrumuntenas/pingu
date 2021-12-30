@@ -58,6 +58,12 @@ module.exports = {
           })
           break
         }
+        case 'suggestions': {
+          client.pool.query('UPDATE `guildData` SET `suggestionsEnabled` = 0 WHERE `guild` = ?', [interaction.guild.id], (err) => {
+            if (err) client.Sentry.captureException(err)
+          })
+          break
+        }
         default: {
           interaction.editReply({ embeds: [helpTray] })
           return
