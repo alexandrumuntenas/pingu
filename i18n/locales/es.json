@@ -201,5 +201,16 @@
   "SUGGESTION_STATUS": "Estado",
   "SUGGESTION_APPROVED": "Aprobado",
   "SUGGESTION_REJECTED": "Rechazado",	
-  "SUGGESTION_PENDING": "Pendiente de revisión"
+  "SUGGESTION_PENDING": "Pendiente de revisión",
+  "SUGGESTION_REVISOR": "Revisor",
+  "SUGGESTIONS_SETCHANNEL_NOCHANNEL": "No ha especificado ningún canal. Por favor, especifique uno.",
+  "SUGGESTIONS_SETCHANNEL_SUCCESFULLY": "Se ha establecido el canal (%SUGGESTIONS_CHANNEL%) de sugerencias correctamente.",
+  "SUGGESTIONS_SETCHANNEL_ERROR": "Se ha producido un error a la hora de establecer el canal de sugerencias. El error ha sido registrado en nuestro sistema y desplegaremos una solución lo antes posible. Disculpe las molestias.",
+  "SUGGESTIONS_APPROVE_NOEXIST": "No existe ninguna sugerencia con el identificador %SUGGESTION_ID%.",
+  "SUGGESTIONS_APPROVE_SUCCESS": "Se ha aprobado correctamente la sugerencia con identificador %SUGGESTION_ID%",
+  "SUGGESTIONS_REJECT_NOEXIST": "No existe ninguna sugerencia con el identificador %SUGGESTION_ID%.",
+  "SUGGESTIONS_REJECT_SUCCESS": "Se ha rechazado correctamente la sugerencia con identificador %SUGGESTION_ID%",
+  "SUGGESTIONS_VIEWCONFIG_CHANNEL": "Canal de sugerencias",
+  "SUGGESTIONS_VIEWCONFIG_REVISEDCHANNEL": "Canal de sugerencias revisadas",
+  "ERROR": "Se ha producido un error al procesar su solicitud. Se ha reportado el error. Disculpe las molestias."
 }

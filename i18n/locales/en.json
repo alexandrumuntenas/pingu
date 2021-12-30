@@ -202,5 +202,16 @@
   "SUGGESTION_STATUS": "Status",
   "SUGGESTION_APPROVED": "Approved",
   "SUGGESTION_REJECTED": "Rejected",
-  "SUGGESTION_PENDING": "Pending review"
+  "SUGGESTION_PENDING": "Pending review",
+  "SUGGESTION_REVISOR": "Reviewer",
+  "SUGGESTIONS_SETCHANNEL_NOCHANNEL": "You have not specified a channel. Please specify one.",
+  "SUGGESTIONS_SETCHANNEL_SUCCESFULLY": "You have set the channel (%SUGGESTIONS_CHANNEL%) for suggestions correctly.",
+  "SUGGESTIONS_SETCHANNEL_ERROR": "An error has occurred while setting the suggestions channel. The error has been logged in our system and we will deploy a solution as soon as possible. We apologize for the inconvenience.",
+  "SUGGESTIONS_APPROVE_NOEXIST": "There is no suggestion with the identifier %SUGGESTION_ID%.",
+  "SUGGESTIONS_APPROVE_SUCCESS": "The suggestion with identifier %SUGGESTION_ID% has been successfully approved.",
+  "SUGGESTIONS_REJECT_NOEXIST": "No suggestion with identifier %SUGGESTION_ID% exists.",
+  "SUGGESTIONS_REJECT_SUCCESS": "The suggestion with identifier %SUGGESTION_ID% has been successfully rejected.",
+  "SUGGESTIONS_VIEWCONFIG_CHANNEL": "Suggestion channel",
+  "SUGGESTIONS_VIEWCONFIG_REVISEDCHANNEL": "Revised suggestions channel",
+  "ERROR": "An error occurred while processing your request. The error has been reported. We apologize for the inconvenience."
 }
