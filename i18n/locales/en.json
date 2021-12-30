@@ -191,5 +191,16 @@
   "PRODUCT_CREATE_SUCCESS": "Product %PRODUCT% has been successfully created.",
   "PRODUCT_EXISTS": "The product %PRODUCT% already exists.",
   "PRODUCT_REMOVE_SUCCESS": "The product %PRODUCT% has been successfully removed.",
-  "WORK": "You have successfully worked. You have earned %WORK%."
+  "WORK": "You have successfully worked. You have earned %WORK%.",
+  "SUGGESTION_NO_INPUT": "You have not entered any suggestions.",
+  "SUGGESTION_CREATION_ERROR": "An error has occurred while processing your request. The error has been logged in our system and we will deploy a solution as soon as possible. We apologize for the inconvenience.",
+  "SUGGESTION_CREATED": "Your suggestion has been successfully registered. This is your identifier: %SUGGESTION_ID%",
+  "SUGGESTIONS_NOT_CONFIGURED": "It appears that the suggestion system is not configured. Please contact an administrator.",
+  "SUGGESTION_SUBMITTER": "Sender",
+  "SUGGESTION_SUGGESTION": "Suggestion",
+  "SUGGESTION_ID": "Identifier",
+  "SUGGESTION_STATUS": "Status",
+  "SUGGESTION_APPROVED": "Approved",
+  "SUGGESTION_REJECTED": "Rejected",
+  "SUGGESTION_PENDING": "Pending review"
 }

@@ -190,5 +190,16 @@
   "PRODUCT_CREATE_SUCCESS": "Se ha creado correctamente el producto %PRODUCT%",
   "PRODUCT_EXISTS": "El producto %PRODUCT% ya existe.",
   "PRODUCT_REMOVE_SUCCESS": "Se ha eliminado correctamente el producto %PRODUCT%.",
-  "WORK": "Has trabajado con éxito. Has ganado %WORK%"
+  "WORK": "Has trabajado con éxito. Has ganado %WORK%",
+  "SUGGESTION_NO_INPUT": "No has introducido ningún sugerencia.",
+  "SUGGESTION_CREATION_ERROR": "Se ha producido un error a la hora de procesar tu petición. El error ha sido registrado en nuestro sistema y desplegaremos una solución lo antes posible. Disculpe las molestias.",
+  "SUGGESTION_CREATED": "Se ha registrado correctamente tu sugerencia. Este es su identificador: %SUGGESTION_ID%",
+  "SUGGESTIONS_NOT_CONFIGURED": "Parece que el sistema de sugerencias no está configurado. Por favor, contacte con un administrador.",
+  "SUGGESTION_SUBMITTER": "Remitente",
+  "SUGGESTION_SUGGESTION": "Sugerencia",
+  "SUGGESTION_ID": "Identificador",
+  "SUGGESTION_STATUS": "Estado",
+  "SUGGESTION_APPROVED": "Aprobado",
+  "SUGGESTION_REJECTED": "Rechazado",	
+  "SUGGESTION_PENDING": "Pendiente de revisión"
 }
