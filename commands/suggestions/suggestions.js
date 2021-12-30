@@ -4,6 +4,7 @@ const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
+  module: 'suggestions',
   name: 'suggestions',
   description: 'Configure the suggestions module of your server',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

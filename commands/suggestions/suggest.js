@@ -6,6 +6,7 @@ const i18n = require('../../i18n/i18n')
 const makeId = require('../../modules/makeId')
 
 module.exports = {
+  module: 'suggestions',
   name: 'suggest',
   description: 'Make a suggestion',
   cooldown: 3600000,

@@ -24,6 +24,7 @@ module.exports = {
     if (interaction.database.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell').map(command => command.interaction.toJSON()) || []
     if (interaction.database.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles').map(command => command.interaction.toJSON()) || []
     if (interaction.database.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels').map(command => command.interaction.toJSON()) || []
+    if (interaction.database.suggestionsEnabled !== 0) economy = client.interactions.filter(command => command.module === 'suggestions').map(command => command.interaction.toJSON()) || []
     if (interaction.database.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy').map(command => command.interaction.toJSON()) || []
     bodyToSend = client.interactions.filter(command => !command.module).map(command => command.interaction.toJSON())
 
@@ -42,6 +43,7 @@ module.exports = {
     if (message.database.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles').map(command => command.interaction.toJSON()) || []
     if (message.database.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels').map(command => command.interaction.toJSON()) || []
     if (message.database.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy').map(command => command.interaction.toJSON()) || []
+    if (message.database.suggestionsEnabled !== 0) economy = client.interactions.filter(command => command.module === 'suggestions').map(command => command.interaction.toJSON()) || []
     bodyToSend = client.interactions.filter(command => !command.module).map(command => command.interaction.toJSON())
 
     bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [])

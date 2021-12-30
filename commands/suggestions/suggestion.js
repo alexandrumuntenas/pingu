@@ -5,6 +5,7 @@ const { approveSuggestion, rejectSuggestion } = require('../../modules/suggestio
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
+  module: 'suggestions',
   name: 'suggestion',
   description: 'Command to handle suggestions',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
