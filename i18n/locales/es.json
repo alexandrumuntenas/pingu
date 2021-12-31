@@ -37,5 +37,12 @@
   "AUTORESPONDER::CREATE:TRIGGERINSERT": "Introduce un desencadenante de la respuesta",
   "AUTORESPONDER::CREATE:RESPONSE": "Introduce una respuesta",
   "AUTORESPONDER::REMOVE:ERROR": "Se ha producido un error al intentar eliminar la respuesta personalizada %RESPONSE%.",
-  "AUTORESPONDER::REMOVE:SUCCESS": "Se ha eliminado correctamente la respuesta personalizada %RESPONSE%."
+  "AUTORESPONDER::REMOVE:SUCCESS": "Se ha eliminado correctamente la respuesta personalizada %RESPONSE%.",
+  "CCMD::CREATE:SUCCESS": "Se ha creado correctamente el comando personalizado %COMMAND%.",
+  "CCMD::CREATE:ERROR": "Se ha producido un error al intentar crear el comando personalizado %COMMAND%.",
+  "CCMD::REMOVE:SUCCESS": "Se ha eliminado correctamente el comando personalizado %COMMAND%.",
+  "CCMD::REMOVE:ERROR": "Se ha producido un error al intentar eliminar el comando personalizado %COMMAND%.",
+  "CCMD::HELPTRAY:DESCRIPTION": "Comando maestro para gestionar los comandos personalizados.",
+  "CCMD::HELPTRAY:OPTION:CREATE": "Crea un comando personalizado.",
+  "CCMD::HELPTRAY:OPTION:REMOVE": "Elimina un comando personalizado."
 }

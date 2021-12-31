@@ -18,21 +18,23 @@ module.exports = {
       case 'create': {
         client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [interaction.guild.id, interaction.options.getString('command'), interaction.options.getString('response')], function (err) {
           if (err) client.logError(err)
-          interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command'), CCMD_VALUERETURNED: interaction.options.getString('response') }))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'CCMD::CREATE:ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD::CREATE:SUCCESS', { COMMAND: interaction.options.getString('command') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [interaction.options.getString('command'), interaction.guild.id], function (err) {
           if (err) client.logError(err)
-          interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command') }))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'CCMD::REMOVE:ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD::REMOVE:ERROR', { COMMAND: interaction.options.getString('command') }))] })
         })
         break
       }
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('ccmd', i18n.help(locale, 'CCMD::DESCRIPTION'), [{ option: 'create', description: i18n.help(locale, 'CCMD::OPTION:CREATE'), syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'CCMD::OPTION:CREATE'), syntax: 'remove <command>', isNsfw: false }])
+    const help = Help('ccmd', i18n(locale, 'CCMD::HELPTRAY:DESCRIPTION'), [{ option: 'create', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:CREATE'), syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:REMOVE'), syntax: 'remove <command>', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'create': {
@@ -40,10 +42,11 @@ module.exports = {
             const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
             client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
               if (err) client.logError(err)
-              message.reply({ embeds: [Success(i18n(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))] })
+              if (err) return message.reply({ embeds: [Error(i18n(locale, 'CCMD::CREATE:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'CCMD::CREATE:SUCCESS', { COMMAND: message.args[1] }))] })
             })
           } else {
-            message.reply({ embeds: [helpTray] })
+            message.reply({ embeds: [help] })
           }
           break
         }
@@ -51,20 +54,21 @@ module.exports = {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
               if (err) client.logError(err)
-              message.reply({ embeds: [Success(i18n(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))] })
+              if (err) return message.reply({ embeds: [Error(i18n(locale, 'CCMD::REMOVE:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'CCMD::REMOVE:SUCCESS', { COMMAND: message.args[1] }))] })
             })
           } else {
-            message.reply({ embeds: [helpTray] })
+            message.reply({ embeds: [help] })
           }
           break
         }
         default: {
-          message.reply({ embeds: [helpTray] })
+          message.reply({ embeds: [help] })
           break
         }
       }
     } else {
-      message.reply({ embeds: [helpTray] })
+      message.reply({ embeds: [help] })
     }
   }
 }

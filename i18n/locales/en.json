@@ -37,5 +37,12 @@
   "AUTORESPONDER::CREATE:TRIGGERINSERT": "Enter a trigger for the response.",
   "AUTORESPONDER::CREATE:RESPONSE": "Enter a response.",
   "AUTORESPONDER::REMOVE:ERROR": "An error has occurred while trying to remove the custom response %RESPONSE%.",
-  "AUTORESPONDER::REMOVE:SUCCESS": "The custom response %RESPONSE%. has been successfully deleted."
+  "AUTORESPONDER::REMOVE:SUCCESS": "The custom response %RESPONSE%. has been successfully deleted.",
+  "CCMD::CREATE:SUCCESS": "The custom command %COMMAND%. has been successfully created.",
+  "CCMD::CREATE:ERROR": "An error occurred while trying to create the custom command %COMMAND%.",
+  "CCMD::REMOVE:SUCCESS": "The custom command %COMMAND%.",
+  "CCMD::REMOVE:ERROR": "An error occurred while attempting to remove the custom command %COMMAND%.",
+  "CCMD::HELPTRAY:DESCRIPTION": "Master command to manage custom commands.",
+  "CCMD::HELPTRAY:OPTION:CREATE": "Creates a custom command.",
+  "CCMD::HELPTRAY:OPTION:REMOVE": "Deletes a custom command."
 }
