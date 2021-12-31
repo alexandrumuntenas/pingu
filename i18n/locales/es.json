@@ -216,5 +216,6 @@
   "SUGGESTIONS_VIEWCONFIG_DESCRIPTION": "A continuación se muestra cómo se ha configurado el módulo de sugerencias en su servidor.",
   "SUGGESTIONS_VIEWCONFIG_CHANNEL": "Canal de sugerencias",
   "SUGGESTIONS_VIEWCONFIG_REVISEDCHANNEL": "Canal de sugerencias revisadas",
-  "ERROR": "Se ha producido un error al procesar su solicitud. Se ha reportado el error. Disculpe las molestias."
+  "ERROR": "Se ha producido un error al procesar su solicitud. Se ha reportado el error. Disculpe las molestias.",
+  "SUCCESS": "Se ha procesado correctamente tu solicitud."
 }

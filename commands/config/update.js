@@ -39,7 +39,7 @@ module.exports = {
             .catch(console.error)
         })
       })
-      interaction.channel.send({ embeds: [Success('Successfully deployed commands!')] })
+      interaction.editReply({ embeds: [Success('Successfully deployed commands!')] })
     } else {
       interaction.editReply({ embeds: [Loader('Deploying commands...')] })
       client.log.info(`Deploying commands to ${interaction.guild.id}`)

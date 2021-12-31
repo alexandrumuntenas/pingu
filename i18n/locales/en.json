@@ -217,5 +217,6 @@
   "SUGGESTIONS_VIEWCONFIG_REVISEDCHANNEL": "Revised suggestions channel",
   "ERROR": "An error occurred while processing your request. The error has been reported. We apologize for the inconvenience.",
   "SUGGESTIONS_VIEWCONFIG_TITLE": "Suggestion configuration",
-  "SUGGESTIONS_VIEWCONFIG_DESCRIPTION": "The following shows how the suggestions module has been configured on your server."
+  "SUGGESTIONS_VIEWCONFIG_DESCRIPTION": "The following shows how the suggestions module has been configured on your server.",
+  "SUCCESS": "Your request has been successfully processed."
 }
