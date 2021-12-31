@@ -40,7 +40,7 @@ module.exports = {
                 message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))] })
               }
             } else {
-              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
               return
             }
           } else {
@@ -51,7 +51,7 @@ module.exports = {
             cooldown.add(message.member, message.guild, commandToExecute)
             customcommands(client, message, commandToExecute)
           } else {
-            message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+            message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
             return
           }
         }
