@@ -28,5 +28,14 @@
   "MODULES::JOINROLES": "Roles de entrada",
   "MODULES::LEVELING": "Niveles",
   "MODULES::SUGGESTIONS": "Sugerencias",
-  "MODULES::WELCOMER": "Bienvenidas"
+  "MODULES::WELCOMER": "Bienvenidas",
+  "AUTORESPONDER::HELPTRAY:DESCRIPTION": "Comando para interactuar con el módulo de respuestas personalizadas de Pingu.",
+  "AUTORESPONDER::HELPTRAY:OPTION:CREATE": "Crea una respuesta personalizada.",
+  "AUTORESPONDER::HELPTRAY:OPTION:REMOVE": "Elimina una respuesta personalizada.",
+  "AUTORESPONDER::CREATE:ERROR": "Se ha producido un error al intentar crear una respuesta personalizada.",
+  "AUTORESPONDER::CREATE:SUCCESS": "Se ha creado correctamente la respuesta personalizada. Su identificador es %RESPONSE%.",
+  "AUTORESPONDER::CREATE:TRIGGERINSERT": "Introduce un desencadenante de la respuesta",
+  "AUTORESPONDER::CREATE:RESPONSE": "Introduce una respuesta",
+  "AUTORESPONDER::REMOVE:ERROR": "Se ha producido un error al intentar eliminar la respuesta personalizada %RESPONSE%.",
+  "AUTORESPONDER::REMOVE:SUCCESS": "Se ha eliminado correctamente la respuesta personalizada %RESPONSE%."
 }

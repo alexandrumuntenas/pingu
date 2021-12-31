@@ -28,5 +28,14 @@
   "MODULES::JOINROLES": "Input Roles",
   "MODULES::LEVELING": "Levels",
   "MODULES::SUGGESTIONS": "Suggestions",
-  "MODULES::WELCOMER": "Welcome"
+  "MODULES::WELCOMER": "Welcome",
+  "AUTORESPONDER::HELPTRAY:DESCRIPTION": "Command to interact with Pingu's custom response module.",
+  "AUTORESPONDER::HELPTRAY:OPTION:CREATE": "Creates a custom response.",
+  "AUTORESPONDER::HELPTRAY:OPTION:REMOVE": "Deletes a custom response.",
+  "AUTORESPONDER::CREATE:ERROR": "An error occurred while trying to create a custom response.",
+  "AUTORESPONDER::CREATE:SUCCESS": "The custom response has been successfully created. Its identifier is %RESPONSE%.",
+  "AUTORESPONDER::CREATE:TRIGGERINSERT": "Enter a trigger for the response.",
+  "AUTORESPONDER::CREATE:RESPONSE": "Enter a response.",
+  "AUTORESPONDER::REMOVE:ERROR": "An error has occurred while trying to remove the custom response %RESPONSE%.",
+  "AUTORESPONDER::REMOVE:SUCCESS": "The custom response %RESPONSE%. has been successfully deleted."
 }
