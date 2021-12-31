@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Success, Error, Info, Help } = require('../../modules/constructor/messageBuilder')
+const { Success, Error, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
+const { MessageEmbed } = require('discord.js')
 
 const columnRelationShip = {
   welcome: 'welcomeEnabled',
@@ -12,6 +13,8 @@ const columnRelationShip = {
   suggestions: 'suggestionsEnabled',
   customcommands: 'customcommandsEnabled'
 }
+
+const emojiRelation = { 1: '<:discord_online:876102925129236481>', 0: '<:discord_offline:876102753821278238>' }
 
 module.exports = {
   name: 'admin',
@@ -49,7 +52,11 @@ module.exports = {
         break
       }
       case 'viewconfig': {
-        interaction.editReply({ embeds: [Info('This option is still under development. It will be implemented when the overhaul of the translation files is completed.')] })
+        const configStatus = new MessageEmbed()
+          .setColor('#2F3136')
+          .setTitle(i18n(locale, 'ADMIN::VIEWCONFIG:EMBED:TITLE'))
+          .setDescription(`${i18n(locale, 'MODULES::AUTORESPONDER')}: ${emojiRelation[interaction.database.autoresponderEnabled]}\n${i18n(locale, 'MODULES::CUSTOMCOMMANDS')}: ${emojiRelation[interaction.database.customcommandsEnabled]}\n${i18n(locale, 'MODULES::ECONOMY')}: ${emojiRelation[interaction.database.economyEnabled]}\n${i18n(locale, 'MODULES::FAREWELL')}: ${emojiRelation[interaction.database.farewellEnabled]}\n${i18n(locale, 'MODULES::JOINROLES')}: ${emojiRelation[interaction.database.joinRolesEnabled]}\n${i18n(locale, 'MODULES::LEVELING')}: ${emojiRelation[interaction.database.levelsEnabled]}\n${i18n(locale, 'MODULES::SUGGESTIONS')}: ${emojiRelation[interaction.database.suggestionsEnabled]}\n${i18n(locale, 'MODULES::WELCOMER')}: ${emojiRelation[interaction.database.welcomeEnabled]}`)
+        interaction.editReply({ embeds: [configStatus] })
         break
       }
       case 'enable': {
@@ -89,7 +96,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const help = Help('admin', 'Master command to manage the bot', [{ option: 'viewcnfcommands', description: i18n.help(locale, 'ADMIN::OPTION:VIEWCNFCOMMANDS'), syntax: 'viewcnfcommands <true/false>' }, { option: 'modules viewconfig', description: i18n.help(locale, 'ADMIN::OPTION:MODULES_VIEWCONFIG'), syntax: 'modules viewconfig' }, { option: 'modules enable', description: i18n.help(locale, 'ADMIN::OPTION:MODULES_ENABLE'), syntax: 'modules enable <module>' }, { option: 'modules disable', description: i18n.help(locale, 'ADMIN::OPTION:MODULE_DISABLE'), syntax: 'modules disable <module>' }, { option: 'setprefix', description: i18n.help(locale, 'SETPREFIX::OPTION:NEWPREFIX'), syntax: 'setprefix <new prefix>' }, { option: 'setlanguage', description: i18n.help(locale, 'SETLANGUAGE::DESCRIPTION'), syntax: 'setlanguage <en/es>' }])
+    const help = Help('admin', i18n(locale, 'ADMIN::HELPTRAY:DESCRIPTION'), [{ option: 'viewcnfcommands', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCNFCOMMANDS'), syntax: 'viewcnfcommands <true/false>' }, { option: 'modules viewconfig', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCONFIG'), syntax: 'modules viewconfig' }, { option: 'modules enable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEENABLE'), syntax: 'modules enable <module>' }, { option: 'modules disable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEDISABLE'), syntax: 'modules disable <module>' }, { option: 'setprefix', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETPREFIX'), syntax: 'setprefix <new prefix>' }, { option: 'setlanguage', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETLANGUAGE'), syntax: 'setlanguage <en/es>' }])
     if (message.args && Object.prototype.hasOwnProperty.call(message.args, '0')) {
       switch (message.args[0]) {
         case 'viewcnfcommands': {
@@ -110,6 +117,14 @@ module.exports = {
           } else {
             message.reply({ embeds: [help] })
           }
+          break
+        }
+        case 'viewconfig': {
+          const configStatus = new MessageEmbed()
+            .setColor('#2F3136')
+            .setTitle(i18n(locale, 'ADMIN::VIEWCONFIG:EMBED:TITLE'))
+            .setDescription(`${i18n(locale, 'MODULES::AUTORESPONDER')}: ${emojiRelation[message.database.autoresponderEnabled]}\n${i18n(locale, 'MODULES::CUSTOMCOMMANDS')}: ${emojiRelation[message.database.customcommandsEnabled]}\n${i18n(locale, 'MODULES::ECONOMY')}: ${emojiRelation[message.database.economyEnabled]}\n${i18n(locale, 'MODULES::FAREWELL')}: ${emojiRelation[message.database.farewellEnabled]}\n${i18n(locale, 'MODULES::JOINROLES')}: ${emojiRelation[message.database.joinRolesEnabled]}\n${i18n(locale, 'MODULES::LEVELING')}: ${emojiRelation[message.database.levelsEnabled]}\n${i18n(locale, 'MODULES::SUGGESTIONS')}: ${emojiRelation[message.database.suggestionsEnabled]}\n${i18n(locale, 'MODULES::WELCOMER')}: ${emojiRelation[message.database.welcomeEnabled]}`)
+          message.reply({ embeds: [configStatus] })
           break
         }
         case 'modules': {
@@ -142,7 +157,7 @@ module.exports = {
               message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { guildPrefix: message.args[1] }))] })
             })
           } else {
-            // help for this option in development
+            message.reply({ embeds: [help] })
           }
           break
         }
@@ -154,7 +169,7 @@ module.exports = {
               message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { guildLanguage: message.args[1] }))] })
             })
           } else {
-            // help for this option in development
+            message.reply({ embeds: [help] })
           }
           break
         }
