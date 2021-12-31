@@ -44,5 +44,12 @@
   "CCMD::REMOVE:ERROR": "Se ha producido un error al intentar eliminar el comando personalizado %COMMAND%.",
   "CCMD::HELPTRAY:DESCRIPTION": "Comando maestro para gestionar los comandos personalizados.",
   "CCMD::HELPTRAY:OPTION:CREATE": "Crea un comando personalizado.",
-  "CCMD::HELPTRAY:OPTION:REMOVE": "Elimina un comando personalizado."
+  "CCMD::HELPTRAY:OPTION:REMOVE": "Elimina un comando personalizado.",
+  "ECONOMY::SETCOINICON:ERROR": "Se ha producido un error al intentar modificar el icono de monedas.",
+  "ECONOMY::SETCOINICON:SUCCESS": "Se ha modificado correctamente el icono de monedas a %CURRENCY%",
+  "ECONOMY::SETCOINNAME:ERROR": "Se ha producido un error al intentar modificar el nombre de monedas.",
+  "ECONOMY::SETCOINNAME:SUCCESS": "Se ha modificado correctamente el nombre de monedas a %CURRENCY%",
+  "ECONOMY::HELPTRAY:DESCRIPTION": "Comando maestro para gestionar el módulo de economía del servidor.",
+  "ECONOMY::HELPTRAY:OPTION:SETCOINICON": "Modifica el icono de monedas.",
+  "ECONOMY::HELPTRAY:OPTION:SETCOINNAME": "Modifica el nombre de monedas."
 }

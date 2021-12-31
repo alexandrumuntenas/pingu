@@ -44,5 +44,12 @@
   "CCMD::REMOVE:ERROR": "An error occurred while attempting to remove the custom command %COMMAND%.",
   "CCMD::HELPTRAY:DESCRIPTION": "Master command to manage custom commands.",
   "CCMD::HELPTRAY:OPTION:CREATE": "Creates a custom command.",
-  "CCMD::HELPTRAY:OPTION:REMOVE": "Deletes a custom command."
+  "CCMD::HELPTRAY:OPTION:REMOVE": "Deletes a custom command.",
+  "ECONOMY::SETCOINICON:ERROR": "An error has occurred while attempting to modify the coin icon.",
+  "ECONOMY::SETCOINICON:SUCCESS": "The coin icon has been successfully modified to %CURRENCY%.",
+  "ECONOMY::SETCOINNAME:ERROR": "An error occurred while trying to modify the coin name.",
+  "ECONOMY::SETCOINNAME:SUCCESS": "The coin name has been successfully changed to %CURRENCY%.",
+  "ECONOMY::HELPTRAY:DESCRIPTION": "Master command to manage the server's economy module.",
+  "ECONOMY::HELPTRAY:OPTION:SETCOINICON": "Modifies the coin icon.",
+  "ECONOMY::HELPTRAY:OPTION:SETCOINNAME": "Modifies the name of currencies."
 }
