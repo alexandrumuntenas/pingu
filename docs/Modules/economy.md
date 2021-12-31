@@ -7,9 +7,9 @@ icon: credit-card
 > Do you want to create a roleplay store? A super-epic chachipirulis item store for your server? Create your own economic system on your Discord server.
 
 !!!
-Enable this module using `/p2enmod module: economy`.
+Enable this module using `/admin modules enable module: economy`.
 
-Disable this module using `/p2dismod module: economy`.
+Disable this module using `/admin modules disable module: economy`.
 !!!
 
 ## The module inside

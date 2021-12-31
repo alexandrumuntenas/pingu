@@ -23,9 +23,9 @@ If this condition is met, the user advances in level.
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: levels`.
+Enable this module using `/admin modules enable module: levels`.
 
-Disable this module using `/p2dismod module: levels`.
+Disable this module using `/admin modules disable module: levels`.
 !!!
 
 | Command | Function | Example |

@@ -11,9 +11,9 @@ In Pingu we have always wanted to give the user the option of being able to conf
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: welcomer`.
+Enable this module using `/admin modules enable module: welcomer`.
 
-Disable this module using `/p2dismod module: welcome`.
+Disable this module using `/admin modules disable module: welcome`.
 !!!
 
 | Command                                     | Function                                                                                         | Example                                                                     |

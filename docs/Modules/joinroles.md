@@ -9,9 +9,9 @@ icon: diff-added
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: joinroles`.
+Enable this module using `/admin modules enable module: joinroles`.
 
-Disable this module using `/p2dismod module: joinroles`.
+Disable this module using `/admin modules disable module: joinroles`.
 !!!
 
 | Commands | Function | Example |

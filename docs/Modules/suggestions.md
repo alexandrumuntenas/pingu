@@ -10,9 +10,9 @@ icon: git-pull-request-draft
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: suggestions`.
+Enable this module using `/admin modules enable module: suggestions`.
 
-Disable this module using `/p2dismod module: suggestions`.
+Disable this module using `/admin modules disable module: suggestions`.
 !!!
 
 !!!warning

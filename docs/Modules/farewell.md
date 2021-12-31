@@ -9,9 +9,9 @@ icon: diff-removed
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: farewell`.
+Enable this module using `/admin modules enable module: farewell`.
 
-Disable this module using `/p2dismod module: farewell`.
+Disable this module using `/admin modules disable module: farewell`.
 !!!
 
 | Comando                                     | Funcion                                                                                         | Ejemplo                                                                     |
