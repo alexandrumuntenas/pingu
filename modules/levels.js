@@ -7,7 +7,7 @@ module.exports = {
       name: 'levels (Fetch Member)'
     })
     client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? AND member = ?', [member.guild.id, member.id], (err, result) => {
-      if (err) client.Sentry.captureException(err)
+      if (err) client.logError(err)
       if (Object.prototype.hasOwnProperty.call(result, 0)) {
         const adata = result[0]
         client.pool.query('SELECT member, ROW_NUMBER() OVER (ORDER BY memberLevel DESC, memberExperience DESC) AS rnk FROM guildLevelsData WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC', [member.guild.id], (err, result) => {
@@ -18,7 +18,7 @@ module.exports = {
           } else {
             client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
               if (err) {
-                client.Sentry.captureException(err)
+                client.logError(err)
                 client.log.error(err)
               }
               module.exports.fetchMember(client, member, callback)
@@ -28,7 +28,7 @@ module.exports = {
       } else {
         client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
           if (err) {
-            client.Sentry.captureException(err)
+            client.logError(err)
             client.log.error(err)
           }
           module.exports.fetchMember(client, member, callback)
@@ -46,7 +46,7 @@ module.exports = {
       let status
       if (err) {
         status = 500
-        client.Sentry.captureException(err)
+        client.logError(err)
       } else {
         status = 200
       }

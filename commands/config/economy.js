@@ -19,7 +19,7 @@ module.exports = {
       case 'coinname': {
         if (interaction.options.getString('coinname')) {
           client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [interaction.options.getString('coinname'), interaction.guild.id], (err) => {
-            if (err) client.Sentry.captureException(err)
+            if (err) client.logError(err)
             interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: interaction.options.getString('coinname') }))] })
           })
         } else {
@@ -30,7 +30,7 @@ module.exports = {
       case 'coinicon': {
         if (interaction.options.getString('coinicon')) {
           client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [interaction.options.getString('coinicon'), interaction.guild.id], (err) => {
-            if (err) client.Sentry.captureException(err)
+            if (err) client.logError(err)
             interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: interaction.options.getString('coinicon') }))] })
           })
         } else {
@@ -47,7 +47,7 @@ module.exports = {
         case 'setCurrency': {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [message.content.replace(`${message.database.guildPrefix}economy setCurrency `, ''), message.guild.id], (err) => {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.reply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCY_SUCCESS', { BANKCURRENCY: message.content.replace(`${message.database.guildPrefix}economy setCurrency `, '') }))] })
             })
           } else {
@@ -58,7 +58,7 @@ module.exports = {
         case 'setCurrencyIcon': {
           if (message.args[1]) {
             client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.reply({ embeds: [Success(i18n(locale, 'ECONOMY_CURRENCYICON_SUCCESS', { CURRENCYICON: message.args[1] }))] })
             })
           } else {

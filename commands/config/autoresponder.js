@@ -18,14 +18,14 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'create': {
         client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [interaction.guild.id, interaction.options.getString('id'), interaction.options.getString('trigger'), interaction.options.getString('reply')], function (err) {
-          if (err) client.Sentry.captureException(err)
+          if (err) client.logError(err)
           interaction.editReply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [interaction.options.getString('id'), interaction.guild.id], function (err) {
-          if (err) client.Sentry.captureException(err)
+          if (err) client.logError(err)
           interaction.editReply({ embeds: [Success(interaction, i18n(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
         })
         break
@@ -49,7 +49,7 @@ module.exports = {
                   collected.first().delete()
                   const autoresponderId = message.args[1] || makeId(12)
                   client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [message.guild.id, autoresponderId, autoresponderTrigger, autoresponderResponse], function (err) {
-                    if (err) client.Sentry.captureException(err)
+                    if (err) client.logError(err)
                     message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))] })
                   })
                 })
@@ -63,7 +63,7 @@ module.exports = {
         case 'remove': {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))] })
             })
           } else {

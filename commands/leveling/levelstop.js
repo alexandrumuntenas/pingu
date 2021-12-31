@@ -11,7 +11,7 @@ module.exports = {
     if (interaction.database.levelsEnabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 10', [interaction.guild.id], (err, rows, result) => {
         if (err) {
-          client.Sentry.captureException(err)
+          client.logError(err)
           client.log.error(err)
         }
         if (rows) {
@@ -44,7 +44,7 @@ module.exports = {
     if (message.database.levelsEnabled !== 0) {
       client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 10', [message.guild.id], (err, rows, result) => {
         if (err) {
-          client.Sentry.captureException(err)
+          client.logError(err)
           client.log.error(err)
         }
         if (rows) {

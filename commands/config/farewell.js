@@ -33,7 +33,7 @@ module.exports = {
       case 'channel': {
         if (interaction.options.getChannel('farewellchannel')) {
           client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [interaction.options.getChannel('farewellchannel').id, interaction.guild.id], (err) => {
-            if (err) client.Sentry.captureException(err)
+            if (err) client.logError(err)
             interaction.editReply({ embeds: [Success(i18n(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: interaction.options.getChannel('farewellchannel') }))] })
           })
         } else {
@@ -44,7 +44,7 @@ module.exports = {
       case 'message': {
         if (interaction.options.getString('farewellmessage')) {
           client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [interaction.options.getString('farewellmessage'), interaction.guild.id], (err) => {
-            if (err) client.Sentry.captureException(err)
+            if (err) client.logError(err)
             interaction.editReply({ embeds: [Success(i18n(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${interaction.options.getString('farewellmessage')}\`` }))] })
           })
         } else {
@@ -79,7 +79,7 @@ module.exports = {
         case 'channel': {
           if (message.mentions.channels.first()) {
             client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.reply({ embeds: [Success(i18n(locale, 'FAREWELL_CHANNEL_SUCCESS', { FAREWELL_CHANNEL: message.mentions.channels.first() }))] })
             })
           } else {
@@ -92,7 +92,7 @@ module.exports = {
           message.channel.send({ embeds: [Status(message, i18n(locale, 'FAREWELL_MESSAGE_PREUPDATE'))] })
           message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
             client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.channel.send({ embeds: [Success(i18n(locale, 'FAREWELL_MESSAGE_SUCCESS', { FAREWELL_MESSAGE: `\`${collected.first().content}\`` }))] })
             })
           })

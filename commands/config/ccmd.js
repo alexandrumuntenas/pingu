@@ -17,14 +17,14 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'create': {
         client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [interaction.guild.id, interaction.options.getString('command'), interaction.options.getString('response')], function (err) {
-          if (err) client.Sentry.captureException(err)
+          if (err) client.logError(err)
           interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command'), CCMD_VALUERETURNED: interaction.options.getString('response') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [interaction.options.getString('command'), interaction.guild.id], function (err) {
-          if (err) client.Sentry.captureException(err)
+          if (err) client.logError(err)
           interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: interaction.options.getString('command') }))] })
         })
         break
@@ -39,7 +39,7 @@ module.exports = {
           if (message.args[1] && message.args[2]) {
             const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
             client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.reply({ embeds: [Success(i18n(locale, 'CCMD_CREATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1], CCMD_VALUERETURNED: messageReturned }))] })
             })
           } else {
@@ -50,7 +50,7 @@ module.exports = {
         case 'remove': {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
-              if (err) client.Sentry.captureException(err)
+              if (err) client.logError(err)
               message.reply({ embeds: [Success(i18n(locale, 'CCMD_ELIMINATED_SUCCESFULLY', { CCMD_CUSTOMCOMMAND: message.args[1] }))] })
             })
           } else {
