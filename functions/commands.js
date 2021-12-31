@@ -97,5 +97,5 @@ module.exports.cooldown.check = (member, guild, command) => {
 }
 
 module.exports.cooldown.ttl = (member, guild, command) => {
-  return cooldown.get(`${command.name}${member.id}${guild.id}`)
+  return (cooldown.get(`${command.name}${member.id}${guild.id}`) - Date.now())
 }

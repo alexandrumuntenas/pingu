@@ -36,7 +36,7 @@ module.exports.isCommand = async (client, interaction) => {
         if (client.statcord) client.statcord.postCommand(commandToExecute.name, '000000000000000')
         await commandToExecute.executeInteraction(client, interaction.database.guildLanguage || 'en', interaction)
       } else {
-        interaction.editReply({ embeds: [Error(i18n(interaction.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown, { round: true, language: interaction.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+        interaction.editReply({ embeds: [Error(i18n(interaction.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(interaction.member, interaction.guild, commandToExecute), { round: true, language: interaction.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
       }
     } else {
       interaction.editReply({ content: 'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `update`.' })
