@@ -51,5 +51,22 @@
   "ECONOMY::SETCOINNAME:SUCCESS": "The coin name has been successfully changed to %CURRENCY%.",
   "ECONOMY::HELPTRAY:DESCRIPTION": "Master command to manage the server's economy module.",
   "ECONOMY::HELPTRAY:OPTION:SETCOINICON": "Modifies the coin icon.",
-  "ECONOMY::HELPTRAY:OPTION:SETCOINNAME": "Modifies the name of currencies."
+  "ECONOMY::HELPTRAY:OPTION:SETCOINNAME": "Modifies the name of currencies.",
+  "FAREWELL::VIEWCONFIG:EMBED:TITLE": "Configuring the goodbye module.",
+  "FAREWELL::VIEWCONFIG:EMBED:DESCRIPTION": "The following shows how the goodbye module has been configured on your server.",
+  "FAREWELL::HELPTRAY:DESCRIPTION": "Master command to manage the server's goodbye module.",
+  "MESSAGE": "Message",
+  "CHANNEL": "Channel",
+  "UNSET": "Not set",
+  "FAREWELL::SETCHANNEL:ERROR": "An error occurred while trying to modify the goodbye channel.",
+  "FAREWELL::SETCHANNEL:SUCCESS": "The goodbye channel has been successfully modified to %CHANNEL%.",
+  "FAREWELL::SETMESSAGE:ERROR": "An error occurred while attempting to modify the goodbye message.",
+  "FAREWELL::SETMESSAGE:SUCCESS": "The goodbye message has been successfully modified to %MESSAGE%.",
+  "FAREWELL::SIMULATE:SENDING": "Simulating farewell event...",
+  "FAREWELL::HELPTRAY:OPTION:VIEWCONFIG": "Viewing configuration of the goodbye module.",
+  "FAREWELL::HELPTRAY:OPTION:SETCHANNEL": "Modify the goodbye channel.",
+  "FAREWELL::HELPTRAY:OPTION:SETMESSAGE": "Modifies the farewell message.",
+  "FAREWELL::HELPTRAY:OPTION:SIMULATE": "Simulates a farewell event.",
+  "FETCHINGDATA": "Fetching data...",
+  "FAREWELL::SETMESSAGE:ASKFORINPUT": "Enter a farewell message."
 }

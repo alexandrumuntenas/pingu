@@ -51,5 +51,22 @@
   "ECONOMY::SETCOINNAME:SUCCESS": "Se ha modificado correctamente el nombre de monedas a %CURRENCY%",
   "ECONOMY::HELPTRAY:DESCRIPTION": "Comando maestro para gestionar el módulo de economía del servidor.",
   "ECONOMY::HELPTRAY:OPTION:SETCOINICON": "Modifica el icono de monedas.",
-  "ECONOMY::HELPTRAY:OPTION:SETCOINNAME": "Modifica el nombre de monedas."
+  "ECONOMY::HELPTRAY:OPTION:SETCOINNAME": "Modifica el nombre de monedas.",
+  "FAREWELL::VIEWCONFIG:EMBED:TITLE": "Configuración del módulo de despedidas",
+  "FAREWELL::VIEWCONFIG:EMBED:DESCRIPTION": "A continuación se muestra cómo se ha configurado el módulo de despedidas en su servidor.",
+  "FAREWELL::HELPTRAY:DESCRIPTION": "Comando maestro para gestionar el módulo de despedidas del servidor.",
+  "MESSAGE": "Mensaje",
+  "CHANNEL": "Canal",
+  "UNSET": "Sin establecer",
+  "FAREWELL::SETCHANNEL:ERROR": "Se ha producido un error al intentar modificar el canal de despedidas.",
+  "FAREWELL::SETCHANNEL:SUCCESS": "Se ha modificado correctamente el canal de despedidas a %CHANNEL%.",
+  "FAREWELL::SETMESSAGE:ERROR": "Se ha producido un error al intentar modificar el mensaje de despedidas.",
+  "FAREWELL::SETMESSAGE:SUCCESS": "Se ha modificado correctamente el mensaje de despedidas a %MESSAGE%.",
+  "FAREWELL::SIMULATE:SENDING": "Simulando evento de despedida...",
+  "FAREWELL::HELPTRAY:OPTION:VIEWCONFIG": "Ver configuración del módulo de despedidas.",
+  "FAREWELL::HELPTRAY:OPTION:SETCHANNEL": "Modifica el canal de despedidas.",
+  "FAREWELL::HELPTRAY:OPTION:SETMESSAGE": "Modifica el mensaje de despedidas.",
+  "FAREWELL::HELPTRAY:OPTION:SIMULATE": "Simula un evento de despedida.",
+  "FETCHINGDATA": "Obteniendo datos...",
+  "FAREWELL::SETMESSAGE:ASKFORINPUT": "Introduce un mensaje de despedida"
 }
