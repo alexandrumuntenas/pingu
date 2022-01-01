@@ -115,5 +115,8 @@
   "LEVELS::OVERLAYBLUR:ERROR": "An error occurred while trying to modify the overlay Gaussian blur.",
   "LEVELS::OVERLAYBLUR:SUCCESS": "The overlay Gaussian blur has been successfully modified to %BLUR%.",
   "LEVELS::OVERLAYOPACITY:ERROR": "An error has occurred while trying to modify the overlay opacity.",
-  "LEVELS::OVERLAYOPACITY:SUCCESS": "The overlay opacity has been successfully modified to %OPACITY%."
+  "LEVELS::OVERLAYOPACITY:SUCCESS": "The overlay opacity has been successfully modified to %OPACITY%.",
+  "UPDATE::ERROR": "An error occurred while trying to deploy the commands to the server.",
+  "UPDATE::SUCCESS": "Commands have been successfully deployed to the server.",
+  "UPDATE::DEPLOYING": "Deploying commands..."
 }

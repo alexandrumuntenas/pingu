@@ -115,5 +115,8 @@
   "LEVELS::OVERLAYBLUR:ERROR": "Se ha producido un error al intentar modificar el desenfoque gaussiano de superposición.",
   "LEVELS::OVERLAYBLUR:SUCCESS": "Se ha modificado correctamente el desenfoque gaussiano de superposición a %BLUR%.",
   "LEVELS::OVERLAYOPACITY:ERROR": "Se ha producido un error al intentar modificar la opacidad de superposición.",
-  "LEVELS::OVERLAYOPACITY:SUCCESS": "Se ha modificado correctamente la opacidad de superposición a %OPACITY%."
+  "LEVELS::OVERLAYOPACITY:SUCCESS": "Se ha modificado correctamente la opacidad de superposición a %OPACITY%.",
+  "UPDATE::ERROR": "Se ha producido un error mientras se intentaba desplegar los comandos al servidor.",
+  "UPDATE::SUCCESS": "Se han desplegado correctamente los comandos al servidor.",
+  "UPDATE::DEPLOYING": "Desplegando comandos..."
 }

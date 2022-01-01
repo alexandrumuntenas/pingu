@@ -3,6 +3,7 @@ const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
 const { Loader, Success } = require('../../modules/constructor/messageBuilder')
 const guildFetchData = require('../../functions/guildFetchData')
+const i18n = require('../../i18n/i18n')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {
@@ -35,13 +36,17 @@ module.exports = {
           bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
           rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: bodyToSend })
-            .then(() => client.log.success(`Commands deployed to ${guild.id}`))
+            .then((err) => { 
+              if (err) client.logError(err)
+              if (err) interaction.editReply(`${guild.id} had an error. ${err}`)
+              client.log.success(`Commands deployed to ${guild.id}`)
+            })
             .catch(console.error)
         })
       })
-      interaction.editReply({ embeds: [Success('Successfully deployed commands!')] })
+      interaction.editReply({ embeds: [Success(i18n(locale, 'UPDATE::SUCCESS'))] })
     } else {
-      interaction.editReply({ embeds: [Loader('Deploying commands...')] })
+      interaction.editReply({ embeds: [Loader(i18n(locale, 'UPDATE::DEPLOYING'))] })
       client.log.info(`Deploying commands to ${interaction.guild.id}`)
       let bodyToSend = []
       let welcome, joinroles, farewell, levels, economy, suggestions
@@ -56,7 +61,11 @@ module.exports = {
       bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
       rest.put(Routes.applicationGuildCommands(client.user.id, interaction.guild.id), { body: bodyToSend })
-        .then(() => interaction.editReply({ embeds: [Success('Successfully registered application commands.')] }))
+        .then((err) => {
+          if (err) client.logError(err)
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'UPDATE::ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'UPDATE::SUCCESS'))] })
+        })
         .catch(console.error)
     }
   },
@@ -75,7 +84,11 @@ module.exports = {
     bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
     rest.put(Routes.applicationGuildCommands(client.user.id, message.guild.id), { body: bodyToSend })
-      .then(() => message.reply({ embeds: [Success('Successfully registered application commands.')] }))
+      .then((err) => {
+        if (err) client.logError(err)
+        if (err) return message.reply({ embeds: [Error(i18n(locale, 'UPDATE::ERROR'))] })
+        message.reply({ embeds: [Success(i18n(locale, 'UPDATE::SUCCESS'))] })
+      })
       .catch(console.error)
   }
 }
