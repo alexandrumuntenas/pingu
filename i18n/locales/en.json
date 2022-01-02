@@ -191,5 +191,7 @@
   "LEVEL": "Level",
   "EXPERIENCE": "Experience",
   "LEVELSTOP::NODATA": "No data available.",
-  "RANK::NOCLASSIFIED": "You're not classified yet."
+  "RANK::NOCLASSIFIED": "You're not classified yet.",
+  "FLIP::TAILS": "Ha salido cruz.",
+  "FLIP::HEADS": "Ha salido cara."
 }
