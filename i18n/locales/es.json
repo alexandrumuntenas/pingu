@@ -186,5 +186,9 @@
   "TRANSFER::ISBOT": "No puedes transferir dinero a un bot.",
   "WORK": "Trabajar",
   "WORK::SUCCESS": "Has ganado %MONEY% por trabajar.",
-  "IMAGEAPI::PROVIDER": "Imagen ofrecida a través de %API%."
+  "IMAGEAPI::PROVIDER": "Imagen ofrecida a través de %API%.",
+  "RANKING": "Ranking",
+  "LEVEL": "Nivel",
+  "EXPERIENCE": "Experiencia",
+  "LEVELSTOP::NODATA": "No hay datos de nivel."
 }
