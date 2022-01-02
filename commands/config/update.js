@@ -36,9 +36,7 @@ module.exports = {
           bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
           rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: bodyToSend })
-            .then((err) => {
-              if (err) client.logError(err)
-              if (err) interaction.editReply(`${guild.id} had an error. ${err}`)
+            .then(() => {
               client.log.success(`Commands deployed to ${guild.id}`)
             })
             .catch(console.error)
@@ -61,9 +59,7 @@ module.exports = {
       bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
       rest.put(Routes.applicationGuildCommands(client.user.id, interaction.guild.id), { body: bodyToSend })
-        .then((err) => {
-          if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'UPDATE::ERROR'))] })
+        .then(() => {
           interaction.editReply({ embeds: [Success(i18n(locale, 'UPDATE::SUCCESS'))] })
         })
         .catch(console.error)
@@ -84,9 +80,7 @@ module.exports = {
     bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
     rest.put(Routes.applicationGuildCommands(client.user.id, message.guild.id), { body: bodyToSend })
-      .then((err) => {
-        if (err) client.logError(err)
-        if (err) return message.reply({ embeds: [Error(i18n(locale, 'UPDATE::ERROR'))] })
+      .then(() => {
         message.reply({ embeds: [Success(i18n(locale, 'UPDATE::SUCCESS'))] })
       })
       .catch(console.error)
