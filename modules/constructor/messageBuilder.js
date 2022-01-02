@@ -10,7 +10,7 @@ module.exports.Status = (message) => {
 module.exports.Loader = (message) => {
   return new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<a:loader:871389840904695838> ${message}`)
+    .setDescription(`<a:loader:927223896330084412> ${message}`)
 }
 
 module.exports.Success = (message) => {
