@@ -36,7 +36,7 @@ module.exports = {
           bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [])
 
           rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: bodyToSend })
-            .then((err) => { 
+            .then((err) => {
               if (err) client.logError(err)
               if (err) interaction.editReply(`${guild.id} had an error. ${err}`)
               client.log.success(`Commands deployed to ${guild.id}`)
