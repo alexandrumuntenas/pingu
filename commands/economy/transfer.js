@@ -22,19 +22,19 @@ module.exports = {
         if (parseInt(amount) > 0) {
           makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
             if (status) {
-              interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER_SUCCESS', { USER: userToSendMoney }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: userToSendMoney }))] })
             } else {
-              interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER_NOENOUGHMONEY'))] })
+              interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::NOMONEY'))] })
             }
           })
         } else {
-          interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER_INVALIDAMOUNT'))] })
+          interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::INAVLIDAMOUNT'))] })
         }
       } else {
-        interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER_ISBOT'))] })
+        interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::ISBOT'))] })
       }
     } else {
-      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
   }
 }

@@ -178,5 +178,10 @@
   "BUY": "Comprar",
   "USE": "Usar",
   "SHOP::NOTFOUND": "No se ha encontrado el producto %PRODUCT%.",
-  "SHOP::EMBED:DESCRIPTION": "Usa /shop <producto> para obtener detalles del producto. Y /buy <producto> para comprar el producto."
+  "SHOP::EMBED:DESCRIPTION": "Usa /shop <producto> para obtener detalles del producto. Y /buy <producto> para comprar el producto.",
+  "TRANSFER::SUCCESS": "Se ha transferido correctamente el dinero a %USER%.",
+  "TRANSFER::ERROR": "Se ha producido un error al intentar transferir el dinero a %USER%.",
+  "TRANSFER::NOMONEY": "No tienes suficiente dinero para realizar la transferencia.",
+  "TRANSFER::INVALIDAMOUNT": "La cantidad de dinero a transferir debe ser un número.",
+  "TRANSFER::ISBOT": "No puedes transferir dinero a un bot."
 }
