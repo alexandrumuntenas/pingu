@@ -19,7 +19,7 @@ module.exports = {
   executeLegacy (client, locale, message) {
     function sendImageEmbed (url, provider) {
       const embed = new MessageEmbed()
-        .setImage(url.url).setDescription(`<a:ultimahora:876105976573472778> ${i18n(locale, 'ANIME_IMAGE_API', { API_PROVIDER: provider })}`)
+        .setImage(url.url).setDescription(`<a:ultimahora:876105976573472778> ${i18n(locale, 'IMAGEAPI::PROVIDER', { API: provider })}`)
       message.reply({ embeds: [embed] })
     }
     fetch('https://nekos.life/api/v2/img/woof')

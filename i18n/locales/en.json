@@ -185,5 +185,6 @@
   "TRANSFER::INVALIDAMOUNT": "The amount of money to transfer must be a number.",
   "TRANSFER::ISBOT": "You are unable to transfer money to a bot.",
   "WORK": "Work",
-  "WORK::SUCCESS": "You have earned %MONEY% for working."
+  "WORK::SUCCESS": "You have earned %MONEY% for working.",
+  "IMAGEAPI::PROVIDER": "Image via %API% API."
 }

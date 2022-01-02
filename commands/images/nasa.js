@@ -18,8 +18,7 @@ module.exports = {
               .setDescription(res.text)
               .setImage(quote.hdurl)
               .setColor('#0B3D91')
-              .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${i18n(locale, 'ANIME_IMAGE_API', { API_PROVIDER: 'Nasa.gov' })}`)
-              .setFooter('')
+              .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${i18n(locale, 'IMAGEAPI::PROVIDER', { API: 'Nasa.gov' })}`)
             interaction.editReply({ embeds: [embed] })
           } else {
             interaction.editReply('We are working on video media type.')

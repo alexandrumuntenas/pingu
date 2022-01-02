@@ -12,7 +12,6 @@ module.exports = {
     if (interaction.database.economyEnabled !== 0) {
       getWorkMoney(client, interaction.member, interaction.guild, (money) => {
         const inventoryEmbed = new MessageEmbed()
-          .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL(), ico })
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
           .setColor('#2F3136')
           .setDescription(i18n(locale, 'WORK::SUCCESS', { MONEY: `${money} ${interaction.database.economyCurrencyIcon}` }))
