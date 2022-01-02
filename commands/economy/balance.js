@@ -19,7 +19,7 @@ module.exports = {
         interaction.editReply({ embeds: [firstMessageSent] })
       })
     } else {
-      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
   }
 }
