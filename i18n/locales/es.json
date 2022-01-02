@@ -163,5 +163,6 @@
   "BUY::ERROR": "Se ha producido un error al intentar comprar %ITEM%.",
   "BUY::SUCCESS": "Se ha comprado correctamente %ITEM%.",
   "BUY::NOMONEY": "No tienes suficiente dinero para comprar %ITEM%.",
-  "BUY::NOTFOUND": "No se ha encontrado %ITEM%."
+  "BUY::NOTFOUND": "No se ha encontrado %ITEM%.",
+  "DAILY": "Aquí está tu recompensa diaria: %REWARD%."
 }
