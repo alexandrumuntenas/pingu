@@ -30,7 +30,7 @@ This module can be only used using Slash Commands.
 ## Commands to handle suggestions
 
 | Command | Function | Example |
-| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| --- | --- | --- |
 | /suggestion approve id:\<ID> | Command to approve a suggestion. | /suggestion approve id:1234567890 |
 | /suggestion reject id:\<ID> reason:\<Reason>| Command to dismiss a suggestion. | /suggestion reject id:1234567890 reason:Something interesting |
 

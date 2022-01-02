@@ -15,9 +15,9 @@ Disable this module using `/admin modules disable module: Custom Commands`.
 !!!
 
 | Command | Function | Example |
-| --------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------- |
+| --- | --- | --- |
 | /ccmd | Base command for configuration and creation of custom commands. | /ccmd |
-| /ccmd create command: response:| command to create a custom command.                                  | /ccmd create command:ip response:mc.myawesomeserver.com |
-| /ccmd remove command: | Command to remove a custom command.                               | /ccmd remove command: ip |
+| /ccmd create command: response:| command to create a custom command. | /ccmd create command:ip response:mc.myawesomeserver.com |
+| /ccmd remove command: | Command to remove a custom command. | /ccmd remove command: ip |
 
 Custom commands can only be executed through prefixes. If I create the `ip` command, I will be able to execute it using, for example, `-ip`, if `-` is the configured prefix.

@@ -28,8 +28,9 @@ Enable this module using `/admin modules enable module: levels`.
 Disable this module using `/admin modules disable module: levels`.
 !!!
 
+<!-- markdown-link-check-disable -->
 | Command | Function | Example |
-| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| --- | --- | --- |
 | levels | Base command to configure the levels module. | /levels |
 | levels viewconfig | Command to query the current configuration of the module.| /levels viewconfig |
 | levels setrankupchannel | Command to modify the channel of the level advance messages. | /levels setrankupchannel channel: \<Disabled/Same Channel Were Message is Sent/This Channel> |
@@ -40,6 +41,7 @@ Disable this module using `/admin modules disable module: levels`.
 | levels overlayopacity opacity: | Command to customize the opacity of the range card overlay. | /levels overlayopacity opacity: 56 |
 | levels overlaycolor hexcolor: | Command to customize the opacity of the range card overlay. | /levels overlaycolor: #FFF |
 | levels simulate | Command to simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended) | !levels simulate |
+<!-- markdown-link-check-enable -->
 
 !!!
 With the integration of Slash Commands, the creation of custom commands becomes much easier.
