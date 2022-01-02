@@ -167,5 +167,10 @@
   "DAILY": "Aquí está tu recompensa diaria: %REWARD%.",
   "INVENTORY::ERROR": "Se ha producido al intentar obtener el inventario de la base de datos.",
   "INVENTORY::EMBED:TITLE": "Inventario",
-  "INVENTORY::EMBED:EMPTY": "No tienes ningún objeto en tu inventario."
+  "INVENTORY::EMBED:EMPTY": "No tienes ningún objeto en tu inventario.",
+  "PRODUCTS::CREATE:ERROR": "Se ha producido un error al intentar crear el producto.",
+  "PRODUCTS::CREATE:SUCCESS": "Se ha creado correctamente el producto %PRODUCT%.",
+  "PRODUCTS::CREATE:EXISTS": "Ya existe un producto con el nombre %PRODUCT%.",
+  "PRODUCTS::DELETE:ERROR": "Se ha producido un error al intentar eliminar el producto.",
+  "PRODUCTS::DELETE:SUCCESS": "Se ha eliminado correctamente el producto %PRODUCT%."
 }

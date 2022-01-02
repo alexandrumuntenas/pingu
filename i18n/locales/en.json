@@ -167,5 +167,10 @@
   "DAILY": "Here is your daily reward: %REWARD%",
   "INVENTORY::ERROR": "Occurred while trying to get the inventory from the database.",
   "INVENTORY::EMBED:TITLE": "Inventory",
-  "INVENTORY::EMBED:EMPTY": "You do not have any objects in your inventory"
+  "INVENTORY::EMBED:EMPTY": "You do not have any objects in your inventory",
+  "PRODUCTS::CREATE:ERROR": "An error has occurred while trying to create the product.",
+  "PRODUCTS::CREATE:SUCCESS": "The product %PRODUCT% has been successfully created.",
+  "PRODUCTS::CREATE:EXISTS": "A product with the name %PRODUCT% already exists.",
+  "PRODUCTS::DELETE:ERROR": "An error has occurred while trying to delete the product.",
+  "PRODUCTS::DELETE:SUCCESS": "The product %PRODUCT% has been successfully deleted."
 }
