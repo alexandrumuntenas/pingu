@@ -4,7 +4,7 @@ const i18n = require('../../i18n/i18n')
 const { MessageEmbed } = require('discord.js')
 
 const columnRelationShip = {
-  welcome: 'welcomeEnabled',
+  welcomer: 'welcomeEnabled',
   farewell: 'farewellEnabled',
   joinroles: 'joinRolesEnabled',
   levels: 'levelsEnabled',
@@ -63,7 +63,7 @@ module.exports = {
         const module = interaction.options.getString('module')
         client.pool.query('UPDATE `guildData` SET ?? = 1 WHERE `guild` = ?', [columnRelationShip[module], interaction.guild.id], (err) => {
           if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR'))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: module }))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEENABLE:SUCCESS', { MODULE: module }))] })
         })
         break
@@ -72,7 +72,7 @@ module.exports = {
         const module = interaction.options.getString('module')
         client.pool.query('UPDATE `guildData` SET ?? = 0 WHERE `guild` = ?', [columnRelationShip[module], interaction.guild.id], (err) => {
           if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR'))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR', { MODULE: module }))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEDISABLE:SUCCESS', { MODULE: module }))] })
         })
         break

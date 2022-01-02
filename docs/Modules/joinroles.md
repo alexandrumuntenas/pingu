@@ -16,7 +16,7 @@ Disable this module using `/admin modules disable module: joinroles`.
 
 | Commands | Function | Example |
 | ------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- 
-| !joinroles                                  | Comando base para la configuración del módulo                                        | !joinroles                                                                                  |
-| !joinroles list                             | Comando para listar todos los roles configurados para otorgar a los nuevos usuarios. | !joinroles list                                                                             |
-| !joinroles add \<role> (role2, role3..)     | Comando para añadir rol de bienvenida                                                | <p>!join add @miembro </p><p>!join add @miembros @verificados @personasdivertidas</p>       |
-| !joinroles remove \<role> (role2, role3...) | Comando para eliminar rol de bienvenida                                              | <p>!join remove @miembro </p><p>!join remove @miembros @verificados @personasdivertidas</p> |
+| /joinroles                                  | Base command for module configuration                                        |/joinroles                                                                                  |
+|/joinroles list                             | Command to list all the roles configured to grant to new users. | /joinroles list                                                                             |
+| /joinroles add role:     | Add new role to grant to new users.                                                | <p>/joinroles add role: @member</p>       |
+| /joinroles remove role: |  Remove role to grant to new users.                                              | <p>/joinroles remove @member </p> |
