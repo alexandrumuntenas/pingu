@@ -219,5 +219,10 @@
   "SUGGESTIONS::VIEWCONFIG:EMBED:DESCRIPTION": "A continuación se muestra cómo se ha configurado el módulo de sugerencias en su servidor.",
   "SUGGESTIONS::VIEWCONFIG:EMBED:CHANNEL": "Canal de sugerencias",
   "SUGGESTIONS::VIEWCONFIG:EMBED:REVISEDCHANNEL": "Canal de sugerencias revisadas",
-  "ERROR": "Se ha producido un error mientras se procesaba su solicitud. Por favor, inténtelo de nuevo más tarde."
+  "ERROR": "Se ha producido un error mientras se procesaba su solicitud. Por favor, inténtelo de nuevo más tarde.",
+  "SERVER::EMBED:TITLE": "Información del servidor",
+  "SERVER::EMBED:SERVERNAME": "Nombre del servidor",
+  "SERVER::EMBED:SERVERCREATIONDATE": "Fecha de creación del servidor",
+  "SERVER::EMBED:SERVEROWNER": "Dueño del servidor",
+  "SERVER::EMBED:NITROSTATUS": "Estado de Nitro"
 }

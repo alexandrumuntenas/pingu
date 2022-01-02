@@ -219,5 +219,10 @@
   "SUGGESTIONS::VIEWCONFIG:EMBED:DESCRIPTION": "The following shows how the suggestions module has been configured on your server.",
   "SUGGESTIONS::VIEWCONFIG:EMBED:CHANNEL": "Suggestion channel",
   "SUGGESTIONS::VIEWCONFIG:EMBED:REVISEDCHANNEL": "Revised suggestions channel",
-  "ERROR": "An error occurred while processing your request. Please try again later."
+  "ERROR": "An error occurred while processing your request. Please try again later.",
+  "SERVER::EMBED:TITLE": "Server information",
+  "SERVER::EMBED:SERVERNAME": "Server name",
+  "SERVER::EMBED:SERVERCREATIONDATE": "Server creation date",
+  "SERVER::EMBED:SERVEROWNER": "Server owner",
+  "SERVER::EMBED:NITROSTATUS": "Nitro Status"
 }
