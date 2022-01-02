@@ -158,5 +158,10 @@
   "WELCOMER::VIEWCONFIG:EMBED:DESCRIPTION": "A continuación se muestra cómo se ha configurado el módulo de bienvenidas en su servidor.",
   "WELCOMER::VIEWCONFIG:EMBED:TITLE": "Configuración del módulo de bienvenidas",
   "WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS": "Tarjetas de bienvenida",
-  "WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS:ROUNDAVATAR": "¿Avatar redondo?"
+  "WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS:ROUNDAVATAR": "¿Avatar redondo?",
+  "COMMAND::NOAVALIABLE": "Comando no disponible.",
+  "BUY::ERROR": "Se ha producido un error al intentar comprar %ITEM%.",
+  "BUY::SUCCESS": "Se ha comprado correctamente %ITEM%.",
+  "BUY::NOMONEY": "No tienes suficiente dinero para comprar %ITEM%.",
+  "BUY::NOTFOUND": "No se ha encontrado %ITEM%."
 }

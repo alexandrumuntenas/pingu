@@ -21,20 +21,20 @@ module.exports = {
             if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
             buyItem(client, interaction.member, interaction.guild, productData, (status) => {
               if (status.code) {
-                interaction.editReply({ embeds: [Success(status.ia || i18n(locale, 'BUYPRODUCT_SUCCESS', { PRODUCT_NAME: productData.productName }))] })
+                interaction.editReply({ embeds: [Success(status.ia || i18n(locale, 'BUY::SUCCESS', { ITEM: productData.productName }))] })
               } else {
-                interaction.editReply({ embeds: [Error(status.ia || i18n(locale, 'BUYPRODUCT_NOMONEY', { PRODUCT_NAME: productData.productName }))] })
+                interaction.editReply({ embeds: [Error(status.ia || i18n(locale, 'BUY::NOMONEY', { ITEM: productData.productName }))] })
               }
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'BUYPRODUCT_NOTFOUND', { PRODUCT_NAME: interaction.options.getString('productname') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::NOTFOUND', { ITEM: interaction.options.getString('productname') }))] })
           }
         })
       } else {
         client.commands.get('shop').executeInteraction(client, locale, interaction)
       }
     } else {
-      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
   }
 }
