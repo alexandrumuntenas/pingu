@@ -164,5 +164,8 @@
   "BUY::SUCCESS": "Se ha comprado correctamente %ITEM%.",
   "BUY::NOMONEY": "No tienes suficiente dinero para comprar %ITEM%.",
   "BUY::NOTFOUND": "No se ha encontrado %ITEM%.",
-  "DAILY": "Aquí está tu recompensa diaria: %REWARD%."
+  "DAILY": "Aquí está tu recompensa diaria: %REWARD%.",
+  "INVENTORY::ERROR": "Se ha producido al intentar obtener el inventario de la base de datos.",
+  "INVENTORY::EMBED:TITLE": "Inventario",
+  "INVENTORY::EMBED:EMPTY": "No tienes ningún objeto en tu inventario."
 }
