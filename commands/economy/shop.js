@@ -39,7 +39,7 @@ module.exports = {
           if (productData) {
             const productEmbed = new MessageEmbed()
               .setColor('#2F3136')
-              .setAuthor({ name: `${interaction.guild.name} Shop`, iconUrl: interaction.guild.iconURL() })
+              .setAuthor({ name: `${interaction.guild.name} Shop`, iconURL: interaction.guild.iconURL() })
               .setTitle(productData.productName)
               .setImage(productData.productImage)
               .addField(`${interaction.database.economyCurrencyIcon} ${i18n(locale, 'PRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
