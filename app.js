@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * *
  * Pingu                       *
- * Versión: 22T1               *
+ * Versión: 22T2               *
  * * * * * * * * * * * * * * * */
 require('dotenv').config()
 const { Client, Intents } = require('discord.js')
