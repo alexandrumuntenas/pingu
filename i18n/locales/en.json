@@ -190,5 +190,6 @@
   "RANKING": "Ranking",
   "LEVEL": "Level",
   "EXPERIENCE": "Experience",
-  "LEVELSTOP::NODATA": "No data available."
+  "LEVELSTOP::NODATA": "No data available.",
+  "RANK::NOCLASSIFIED": "You're not classified yet."
 }
