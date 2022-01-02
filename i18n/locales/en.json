@@ -193,5 +193,6 @@
   "LEVELSTOP::NODATA": "No data available.",
   "RANK::NOCLASSIFIED": "You're not classified yet.",
   "FLIP::TAILS": "Ha salido cruz.",
-  "FLIP::HEADS": "Ha salido cara."
+  "FLIP::HEADS": "Ha salido cara.",
+  "ID": "The server ID is %ID%."
 }

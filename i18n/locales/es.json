@@ -193,5 +193,6 @@
   "LEVELSTOP::NODATA": "No hay datos de nivel.",
   "RANK::NOCLASSIFIED": "Aun no estás clasificado.",
   "FLIP::TAILS": "Ha salido cruz.",
-  "FLIP::HEADS": "Ha salido cara."
+  "FLIP::HEADS": "Ha salido cara.",
+  "ID": "El ID de este servidor es %ID%."
 }
