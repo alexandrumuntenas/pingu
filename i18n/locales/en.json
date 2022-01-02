@@ -183,5 +183,7 @@
   "TRANSFER::ERROR": "An error has occurred while trying to transfer money to %USER%.",
   "TRANSFER::NOMONEY": "You do not have enough money to make the transfer.",
   "TRANSFER::INVALIDAMOUNT": "The amount of money to transfer must be a number.",
-  "TRANSFER::ISBOT": "You are unable to transfer money to a bot."
+  "TRANSFER::ISBOT": "You are unable to transfer money to a bot.",
+  "WORK": "Work",
+  "WORK::SUCCESS": "You have earned %MONEY% for working."
 }
