@@ -1,6 +1,5 @@
 const { MessageEmbed, Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'embed',
@@ -24,7 +23,7 @@ module.exports = {
     const image = interaction.options.getString('image')
 
     const embed = new MessageEmbed()
-      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL()})
+      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
       .setTitle(title)
       .setDescription(description)
       .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
