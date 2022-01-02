@@ -18,7 +18,7 @@ module.exports = {
       if (!interaction.options.getString('productname')) {
         const shopEmbed = new MessageEmbed()
           .setTitle(`${interaction.guild.name} Shop`)
-          .setDescription('Use `/shop <item name>` or `/shop <item id>` to get more details about an item.\n Use `/buy <item name>` or `/buy <item id>` to buy an item.')
+          .setDescription(i18n(locale, 'SHOP::EMBED:DESCRIPTION'))
           .setColor('#2F3136')
           .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
@@ -28,7 +28,7 @@ module.exports = {
             shopProductsData.forEach(shopProduct => {
               productList += `\`${shopProduct.productName}\` [${shopProduct.productPrice} ${interaction.database.economyCurrencyIcon} ${interaction.database.economyCurrency}]\n`
             })
-            shopEmbed.addField('Products', productList)
+            shopEmbed.addField(i18n(locale, 'PRODUCTS'), productList)
             interaction.editReply({ embeds: [shopEmbed] })
           } else {
             interaction.editReply({ embeds: [shopEmbed] })
@@ -39,23 +39,23 @@ module.exports = {
           if (productData) {
             const productEmbed = new MessageEmbed()
               .setColor('#2F3136')
-              .setAuthor(`${interaction.guild.name} Shop`, interaction.guild.iconURL())
+              .setAuthor({ name: `${interaction.guild.name} Shop`, iconUrl: interaction.guild.iconURL() })
               .setTitle(productData.productName)
               .setImage(productData.productImage)
-              .addField(`${interaction.database.economyCurrencyIcon} ${i18n(locale, 'SHOP_PRODUCTPRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
-              .addField(`:robot: ${i18n(locale, 'SHOP_COMMANDTOBUY')}`, `\`/buy ${productData.productName}\``, true)
+              .addField(`${interaction.database.economyCurrencyIcon} ${i18n(locale, 'PRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
+              .addField(`:robot: ${i18n(locale, 'BUY')}`, `\`/buy ${productData.productName}\``, true)
               .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
 
             if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
 
             interaction.editReply({ embeds: [productEmbed] })
           } else {
-            interaction.editReply({ embeds: [Error(i18n('SHOP_PRODUCTNOTFOUND'))] })
+            interaction.editReply({ embeds: [Error(i18n('SHOP::NOTFOUND'))] })
           }
         })
       }
     } else {
-      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOTAVALIABLE'))] })
     }
   }
 }

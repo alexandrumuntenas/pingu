@@ -172,5 +172,11 @@
   "PRODUCTS::CREATE:SUCCESS": "The product %PRODUCT% has been successfully created.",
   "PRODUCTS::CREATE:EXISTS": "A product with the name %PRODUCT% already exists.",
   "PRODUCTS::DELETE:ERROR": "An error has occurred while trying to delete the product.",
-  "PRODUCTS::DELETE:SUCCESS": "The product %PRODUCT% has been successfully deleted."
+  "PRODUCTS::DELETE:SUCCESS": "The product %PRODUCT% has been successfully deleted.",
+  "PRODUCTS": "Products",
+  "PRICE": "Price",
+  "BUY": "Buy",
+  "USE": "Use",
+  "SHOP::NOTFOUND": "The product %PRODUCT% has not been found.",
+  "SHOP::EMBED:DESCRIPTION": "Use /shop <product> to get details of the product. Use /buy <product> to buy the product."
 }
