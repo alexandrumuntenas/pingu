@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { fetchShopProduct, fetchShopProducts } = require('../../modules/economy')
+const { getShopProduct, fetchShopProducts } = require('../../modules/economy')
 const { Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
@@ -35,7 +35,7 @@ module.exports = {
           }
         })
       } else {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
           if (productData) {
             const productEmbed = new MessageEmbed()
               .setColor('#2F3136')

@@ -1,38 +1,18 @@
-/* eslint-disable node/no-callback-literal */
-const StringPlaceholder = require('string-placeholder')
-const i18n = require('../i18n/i18n')
-
 module.exports = {
   getDailyMoney: async (client, member, guild, callback) => {
     const EgM = client.Sentry.startTransaction({
       op: 'economy.getDailyMoney',
       name: 'Economy (getDailyMoney)'
     })
-    const plusNumber = Math.round(Math.random() * (100 - 5) + 5)
+    const dailyMoney = Math.round(Math.random() * (100 - 5) + 5)
 
-    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
-      if (err) {
-        client.logError(err)
-        client.log.error(err)
-      }
-      if (Object.prototype.hasOwnProperty.call(result, 0)) {
-        client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(result[0].amount) + plusNumber), member.id, guild.id], (err) => {
-          if (err) {
-            client.logError(err)
-            client.log.error(err)
-          }
-        })
-      } else {
-        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
-          if (err) {
-            client.logError(err)
-            client.log.error(err)
-          }
-        })
-      }
+    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
+      client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(memberInventoryAndBalance.amount) + dailyMoney), member.id, guild.id], (err) => {
+        if (err) client.logError(err)
+        if (err) throw new Error('DB_ERROR')
+        if (callback && !err) callback(dailyMoney)
+      })
     })
-
-    if (callback) callback(plusNumber)
     EgM.finish()
   },
   getWorkMoney: async (client, member, guild, callback) => {
@@ -40,64 +20,33 @@ module.exports = {
       op: 'economy.getWorkMoney',
       name: 'Economy (getWorkMoney)'
     })
-    const plusNumber = Math.floor(Math.random() * 1500) + 1000
+    const workMoney = Math.floor(Math.random() * 1500) + 1000
 
-    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
-      if (err) {
-        client.logError(err)
-        client.log.error(err)
-      }
-      if (Object.prototype.hasOwnProperty.call(result, 0)) {
-        client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(result[0].amount) + plusNumber), member.id, guild.id], (err) => {
-          if (err) {
-            client.logError(err)
-            client.log.error(err)
-          }
-        })
-      } else {
-        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
-          if (err) {
-            client.logError(err)
-            client.log.error(err)
-          }
-        })
-      }
+    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
+      client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(memberInventoryAndBalance.amount) + workMoney), member.id, guild.id], (err) => {
+        if (err) client.logError(err)
+        if (err) throw new Error('DB_ERROR')
+        if (callback && !err) callback(workMoney)
+      })
     })
-
-    if (callback) callback(plusNumber)
     EgM.finish()
   },
-  fetchConfig: async (client, guild, callback) => {
-    const EfC = client.Sentry.startTransaction({
-      op: 'economy.fetchConfig',
-      name: 'Economy (fetchConfig)'
-    })
-    client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, rows) => {
-      if (err) client.logError(err)
-      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        const data = { economyBankName: rows[0].economyBankName, economyBankLogo: rows[0].economyBankLogo, economyUseGlobalBank: rows[0].economyUseGlobalBank, economyCurrency: rows[0].economyCurrency }
-        callback(data)
-      } else {
-        callback(new Error('NO_DATA'))
-      }
-    })
-    EfC.finish()
-  },
-  fetchUserAccount: async (client, member, guild, callback) => {
+  getMemberInventoryAndBalance: async (client, member, guild, callback) => {
     const EfM = client.Sentry.startTransaction({
-      op: 'economy.fetchUserAccount',
-      name: 'Economy (fetchUserAccount)'
+      op: 'economy.getMemberInventoryAndBalance',
+      name: 'Economy (getMemberInventoryAndBalance)'
     })
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
-      if (err) {
-        client.logError(err)
-        client.log.error(err)
-      }
+      if (err) client.logError(err)
+      if (err) throw new Error('DB_ERROR')
       if (Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        module.exports.getDailyMoney(client, member, guild, false)
-        module.exports.fetchUserAccount(client, member, guild, callback)
+        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`) VALUES (?, ?)', [member.id, guild.id], (err) => {
+          if (err) client.logError(err)
+          if (err) throw new Error('DB_ERROR')
+          module.exports.getMemberInventoryAndBalance(client, member, guild, callback)
+        })
       }
     })
     EfM.finish()
@@ -105,70 +54,62 @@ module.exports = {
   getLeaderboard: (client, message) => {
 
   },
-  makeMoneyTransferToUser: (client, guild, fromUser, toUser, amount, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, fromUser.id], (err, fromUserResult) => {
-      if (err) client.logError(err)
-      if (fromUserResult && Object.prototype.hasOwnProperty.call(fromUserResult, 0)) {
-        if (parseInt(fromUserResult[0].amount) >= amount) {
-          client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(fromUserResult[0].amount) - amount), fromUser.id, guild.id], (err) => {
-            if (err) client.logError(err)
-          })
-          client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, toUser.id], (err, toUserResult) => {
-            if (err) client.logError(err)
-            if (fromUserResult && Object.prototype.hasOwnProperty.call(fromUserResult, 0)) {
-              client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(toUserResult[0].amount) + amount), toUser.id, guild.id], (err) => {
-                if (err) client.logError(err)
-              })
-            } else {
-              client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [toUserResult.id, guild.id, amount], (err) => {
-                if (err) client.logError(err)
-              })
-            }
-          })
-          if (callback) callback(true)
-        } else {
-          if (callback) callback(false)
-        }
+  makeMoneyTransferToUser: (client, guild, fromUser, toUser, moneyToTransfer, callback) => {
+    module.exports.getMemberInventoryAndBalance(client, fromUser, guild, (fromUserInventoryAndBalance) => {
+      if (fromUserInventoryAndBalance.amount >= moneyToTransfer) {
+        module.exports.getMemberInventoryAndBalance(client, toUser, guild, (toUserInventoryAndBalance) => {
+          try {
+            module.exports.updateMemberBalance(client, fromUser, guild, (parseInt(fromUserInventoryAndBalance.amount) - moneyToTransfer))
+            module.exports.updateMemberBalance(client, fromUser, guild, (parseInt(toUserInventoryAndBalance.amount) + moneyToTransfer))
+          } catch (err) {
+            client.logError(err)
+          }
+        })
       } else {
-        module.exports.getDailyMoney(client, fromUser, guild, false)
-        module.exports.makeMoneyTransferToUser(client, guild, fromUser, toUser, amount, callback)
+        throw new Error('ECO_XX01')
       }
     })
   },
   fetchShopProducts: (client, guild, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, shopProducts) => {
       if (err) client.logError(err)
-      if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        callback(rows)
+      if (shopProducts && Object.prototype.hasOwnProperty.call(shopProducts, 0)) {
+        callback(shopProducts)
       } else {
-        callback(null)
+        throw new Error('ECO_XX02')
       }
     })
   },
-  fetchShopProduct: (client, guild, product, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ?', [guild.id, product], (err, rows) => {
+  getShopProduct: (client, guild, product, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ? LIMIT 1', [guild.id, product], (err, rows) => {
       if (err) client.logError(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productId = ?', [guild.id, product], (err, rows) => {
-          if (err) client.logError(err)
-          if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-            callback(rows[0])
-          } else {
-            callback(null)
-          }
-        })
+        throw new Error('ECO_XX03')
       }
     })
   },
-  buyItem: (client, member, guild, productData, callback) => {
-    module.exports.fetchUserAccount(client, member, guild, (userAccount) => {
+  updateMemberBalance: (client, member, guild, amount, callback) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [amount, member.id, guild.id], (err) => {
+      if (err) client.logError(err)
+      callback()
+    })
+  },
+  updateMemberInventory: (client, member, guild, inventory, callback) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [inventory, member.id, guild.id], (err) => {
+      if (err) client.logError(err)
+      callback()
+    })
+  }
+  /*
+  buyItem: (client, member, guild, productData, callback) => { // WTF IS GOING HERE?
+    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
       const status = []
-      if (parseInt(productData.productPrice) <= parseInt(userAccount.amount)) {
+      if (parseInt(memberInventoryAndBalance.amount) >= parseInt(productData.productPrice)) {
         module.exports.itemActivate(client, member, guild, productData, (iaData, continueBuying) => {
           status.ia = iaData
-          if (continueBuying) module.exports.updateUserAccount(client, member, guild, parseInt(userAccount.amount) - parseInt(productData.productPrice), () => { })
+          if (continueBuying) module.exports.updateMemberBalance(client, member, guild, parseInt(memberInventoryAndBalance.amount) - parseInt(productData.productPrice), () => { })
           if (continueBuying) status.code = true
           status.code = status.code || false
           callback(status)
@@ -178,14 +119,8 @@ module.exports = {
       }
     })
   },
-  updateUserAccount: (client, member, guild, amount, callback) => {
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [amount, member.id, guild.id], (err) => {
-      if (err) client.logError(err)
-      callback()
-    })
-  },
   addItemToUser: (client, member, guild, productId, singlebuy, callback) => {
-    module.exports.fetchUserAccount(client, member, guild, (account) => {
+    module.exports.getMemberInventoryAndBalance(client, member, guild, (account) => {
       if (account) {
         let productQuantity = 1
 
@@ -291,5 +226,5 @@ module.exports = {
         }
       }
     }
-  }
+  } */
 }

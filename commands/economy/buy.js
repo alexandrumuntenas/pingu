@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { buyItem, fetchShopProduct } = require('../../modules/economy')
+const { buyItem, getShopProduct } = require('../../modules/economy')
 const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
@@ -16,7 +16,7 @@ module.exports = {
     if (interaction.database.economyEnabled !== 0) {
       if (interaction.options.getString('productname')) {
         interaction.guild.locale = locale
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
           if (productData) {
             if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
             buyItem(client, interaction.member, interaction.guild, productData, (status) => {

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const { fetchShopProduct, fetchUserAccount } = require('../../modules/economy')
+const { getShopProduct, getMemberInventoryAndBalance } = require('../../modules/economy')
 const { Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
@@ -10,7 +10,7 @@ module.exports = {
   cooldown: 1000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      fetchUserAccount(client, interaction.member, interaction.guild, (account) => {
+      getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (account) => {
         const inventoryEmbed = new MessageEmbed()
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
           .setTitle(i18n(locale, 'INVENTORY::EMBED:TITLE'))
@@ -25,7 +25,7 @@ module.exports = {
               let inventoryDataProductsIndex = 0
               inventoryDataProducts.forEach((productId) => {
                 const product = inventoryData[productId]
-                fetchShopProduct(client, interaction.guild, productId, (productData) => {
+                getShopProduct(client, interaction.guild, productId, (productData) => {
                   inventoryDataProductsIndex++
                   if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {

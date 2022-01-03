@@ -2,7 +2,7 @@ const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const { fetchShopProduct } = require('../../modules/economy')
+const { getShopProduct } = require('../../modules/economy')
 
 module.exports = {
   module: 'economy',
@@ -42,7 +42,7 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'collectionable': {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
             const productMeta = {}
 
@@ -62,7 +62,7 @@ module.exports = {
         break
       }
       case 'role': {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
             const productMeta = {}
 
@@ -87,7 +87,7 @@ module.exports = {
         break
       }
       case 'message': {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
             const productMeta = {}
 
