@@ -9,6 +9,7 @@ module.exports = {
   description: '⚙️ Configure the economy settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('economy')
     .setDescription('Configure the economy settings for your server.')

@@ -15,6 +15,7 @@ module.exports = {
   description: '⚙️ Configure the welcomer module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('welcomer')
     .setDescription('Configure the welcomer module')

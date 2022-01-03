@@ -9,6 +9,7 @@ module.exports = {
   description: 'Configure the suggestions module of your server',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder().setName('suggestions').setDescription('Configure the suggestions module of your server')
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current configuration of the suggestions module.'))
     .addSubcommand(sc => sc.setName('unsetchannel').setDescription('Unset the channel where the suggestions are sent.'))

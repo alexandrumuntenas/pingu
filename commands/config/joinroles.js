@@ -10,6 +10,7 @@ module.exports = {
   description: '⚙️ Manage join roles',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('joinroles')
     .setDescription('Manage join roles')

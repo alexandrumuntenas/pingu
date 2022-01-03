@@ -14,6 +14,7 @@ module.exports = {
   description: '⚙️ Configure the levels system',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('levels')
     .setDescription('Configure the levels system')

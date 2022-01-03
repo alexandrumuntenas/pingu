@@ -10,6 +10,7 @@ module.exports = {
   description: '🛒 Configure the guild shop products',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('products')
     .setDescription('🛒 Configure the guild shop products')

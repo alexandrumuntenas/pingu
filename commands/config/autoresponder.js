@@ -9,6 +9,7 @@ module.exports = {
   description: '⚙️ Configure the autoresponder',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('autoresponder')
     .setDescription('Configure the autoresponder')
