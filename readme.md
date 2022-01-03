@@ -27,6 +27,8 @@
 
 ## Table Of Contents
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8dbfbda3f71422d9a7a7933f335d1e5)](https://app.codacy.com/gh/alexandrumuntenas/pingu?utm_source=github.com&utm_medium=referral&utm_content=alexandrumuntenas/pingu&utm_campaign=Badge_Grade_Settings)
+
 * [About the Project](#about-the-project)
 * [Getting Started](#getting-started)
 * [Roadmap](#roadmap)
