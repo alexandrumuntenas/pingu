@@ -1,4 +1,4 @@
-const messageBuilder = require('../../modules/constructor/messageBuilder')
+const { Error } = require('../../modules/constructor/messageBuilder')
 const { fetchMember } = require('../../modules/levels')
 const { MessageAttachment } = require('discord.js')
 const { rankCard } = require('../../modules/canvasProcessing')
@@ -22,11 +22,11 @@ module.exports = {
             })
           })
         } else {
-          messageBuilder.error(interaction, locale, 'RANK_NO_CLASSIFIED')
+          interaction.editReply({ embeds: [Error(locale, 'RANK::NOCLASSIFIED')] })
         }
       })
     } else {
-      messageBuilder.error.noavaliable(interaction, locale)
+      interaction.editReply({ embeds: [Error(locale, 'COMMAND::NOAVALIABLE')] })
     }
   },
   executeLegacy (client, locale, message) {
@@ -42,11 +42,11 @@ module.exports = {
             })
           })
         } else {
-          messageBuilder.legacy.error(message, locale, 'RANK_NO_CLASSIFIED')
+          message.reply({ embeds: [Error(locale, 'RANK::NOCLASSIFIED')] })
         }
       })
     } else {
-      messageBuilder.legacy.error.noavaliable(message, locale)
+      message.reply({ embeds: [Error(locale, 'COMMAND::NOAVALIABLE')] })
     }
   }
 }

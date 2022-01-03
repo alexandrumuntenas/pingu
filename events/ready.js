@@ -23,19 +23,29 @@ module.exports = {
       client.guilds.cache.forEach(async (guild) => {
         guildFetchData(client, guild.id, (data) => {
           client.log.info(`Deploying commands to ${guild.id}`)
-          let bodyToSend = []
-          let welcome, joinroles, farewell, levels, economy
-          if (data.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome').map(command => command.interaction.toJSON()) || []
-          if (data.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell').map(command => command.interaction.toJSON()) || []
-          if (data.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles').map(command => command.interaction.toJSON()) || []
-          if (data.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels').map(command => command.interaction.toJSON()) || []
-          if (data.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy').map(command => command.interaction.toJSON()) || []
-          bodyToSend = client.interactions.filter(command => !command.module).map(command => command.interaction.toJSON())
+          let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
+          if (data.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []
+          if (data.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell') || []
+          if (data.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles') || []
+          if (data.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels') || []
+          if (data.suggestionsEnabled !== 0) suggestions = client.interactions.filter(command => command.module === 'suggestions') || []
+          if (data.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy') || []
+          const nomodule = client.interactions.filter(command => !command.module)
 
-          bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [])
+          bodyToSend = []
+
+          bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [], nomodule || [])
+
+          if (data.guildViewCnfCmdsEnabled === 0) {
+            bodyToSend = bodyToSend.filter(command => command.isConfigCommand === false)
+          }
+
+          bodyToSend = bodyToSend.map(command => command.interaction.toJSON())
 
           rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: bodyToSend })
-            .then(() => client.log.success(`Commands deployed to ${guild.id}`))
+            .then(() => {
+              client.log.success(`Commands deployed to ${guild.id}`)
+            })
             .catch(console.error)
         })
       })

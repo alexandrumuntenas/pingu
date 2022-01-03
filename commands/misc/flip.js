@@ -9,18 +9,18 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_HEAD')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_CROSS')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::TAILS')}`)
     }
     interaction.editReply({ embeds: [embed] })
   },
   executeLegacy (client, locale, message) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_HEAD')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP_CROSS')}`)
+      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::TAILS')}`)
     }
     message.reply({ embeds: [embed] })
   }

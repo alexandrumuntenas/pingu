@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
+const { Success, Status, Help, Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const { addJoinRole, removeJoinRole, fetchJoinRoles } = require('../../modules/joinroles')
 
@@ -10,6 +10,7 @@ module.exports = {
   description: '⚙️ Manage join roles',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('joinroles')
     .setDescription('Manage join roles')
@@ -22,79 +23,89 @@ module.exports = {
         fetchJoinRoles(client, interaction.guild, (roles) => {
           let itemsProcessed = 0
           let body = ''
-          if (roles && Array.isArray(roles)) {
-            if (roles.length > 0) {
-              roles.forEach(role => {
-                itemsProcessed++
-                body = `${body} <@&${role.roleID}>`
-                if (itemsProcessed === roles.length) interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST', { ROLES: body }))] })
-              })
-            } else {
-              interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
-            }
+          if (roles && Array.isArray(roles) && roles.length > 0) {
+            roles.forEach(role => {
+              itemsProcessed++
+              body = `${body} <@&${role.roleID}>`
+              if (itemsProcessed === roles.length) interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES::LIST', { ROLES: body }))] })
+            })
           } else {
-            interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
+            if (roles) return interaction.editReply({ embeds: [Error(i18n(locale, 'JOINROLES::LIST:ERROR'))] })
+            interaction.editReply({ embeds: [Status(i18n(locale, 'JOINROLES::LIST:NOROLES'))] })
           }
         })
         break
       }
       case 'add': {
-        addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES_ADD', { ROLE: interaction.options.getRole('role') }))] }))
+        addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, (err) => {
+          if (err) client.logError(err)
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'JOINROLES::ADD:ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES::ADD:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
+        })
         break
       }
       case 'remove': {
-        removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, () => interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES_REMOVE', { ROLE: interaction.options.getRole('role') }))] }))
+        removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, (err) => {
+          if (err) client.logError(err)
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'JOINROLES::REMOVE:ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:ERROR', { ROLE: interaction.options.getRole('role') }))] })
+        })
         break
       }
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('joinroles', i18n.help(locale, 'JOINROLES::DESCRIPTION'), [{ option: 'list', description: i18n.help(locale, 'JOINROLES::OPTION:LIST'), syntax: 'list', isNsfw: false }, { option: 'add', description: i18n.help(locale, 'JOINROLES::OPTION:ADD'), syntax: 'add @myrole (@myrole2 ··>)', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'JOINROLES::OPTION:REMOVE'), syntax: 'remove @myrole (@myrole2 ··>)', isNsfw: false }])
+    const help = Help('joinroles', i18n(locale, 'JOINROLES::HELPTRAY:DESCRIPTION'), [{ option: 'list', description: i18n(locale, 'JOINROLES::HELPTRAY:OPTION:LIST'), syntax: 'list', isNsfw: false }, { option: 'add', description: i18n(locale, 'JOINROLES::HELPTRAY:OPTION:ADD'), syntax: 'add @myrole (@myrole2 ··>)', isNsfw: false }, { option: 'remove', description: i18n(locale, 'JOINROLES::HELPTRAY:OPTION:REMOVE'), syntax: 'remove @myrole (@myrole2 ··>)', isNsfw: false }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'list': {
           fetchJoinRoles(client, message.guild, (roles) => {
             let itemsProcessed = 0
             let body = ''
-            if (roles && Array.isArray(roles)) {
-              if (roles.length > 0) {
-                roles.forEach(role => {
-                  itemsProcessed++
-                  body = `${body} <@&${role.roleID}>`
-                  if (itemsProcessed === roles.length) message.reply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST', { ROLES: body }))] })
-                })
-              } else {
-                message.reply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
-              }
+            if (roles && Array.isArray(roles) && roles.length > 0) {
+              roles.forEach(role => {
+                itemsProcessed++
+                body = `${body} <@&${role.roleID}>`
+                if (itemsProcessed === roles.length) message.reply({ embeds: [Status(i18n(locale, 'JOINROLES::LIST', { ROLES: body }))] })
+              })
             } else {
-              message.reply({ embeds: [Status(i18n(locale, 'JOINROLES_LIST_NOROLES'))] })
+              if (roles) return message.reply({ embeds: [Error(i18n(locale, 'JOINROLES::LIST:ERROR'))] })
+              message.reply({ embeds: [Status(i18n(locale, 'JOINROLES::LIST:NOROLES'))] })
             }
           })
           break
         }
         case 'add': {
           if (message.mentions.roles.first()) {
-            message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, () => message.reply({ embeds: [Success(i18n(locale, 'JOINROLES_ADD', { ROLE: role }))] })))
+            message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, (err) => {
+              if (err) client.logError(err)
+              if (err) return message.reply({ embeds: [Error(i18n(locale, 'JOINROLES::ADD:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::ADD:SUCCESS', { ROLE: role }))] })
+            }))
           } else {
-            message.reply({ embeds: [helpTray] })
+            message.reply({ embeds: [help] })
           }
           break
         }
         case 'remove': {
           if (message.mentions.roles.first()) {
-            message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, () => message.reply({ embeds: [Success(i18n(locale, 'JOINROLES_REMOVE', { ROLE: role }))] })))
+            message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, (err) => {
+              if (err) client.logError(err)
+              if (err) return message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:SUCCESS', { ROLE: role }))] })
+            }))
           } else {
-            message.reply({ embeds: [helpTray] })
+            message.reply({ embeds: [help] })
           }
           break
         }
         default: {
-          message.reply({ embeds: [helpTray] })
+          message.reply({ embeds: [help] })
           break
         }
       }
     } else {
-      message.reply({ embeds: [helpTray] })
+      message.reply({ embeds: [help] })
     }
   }
 }

@@ -23,25 +23,30 @@ If this condition is met, the user advances in level.
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: levels`.
+Enable this module using `/admin modules enable module: levels`.
 
-Disable this module using `/p2dismod module: levels`.
+Disable this module using `/admin modules disable module: levels`.
 !!!
 
+<!-- markdown-link-check-disable -->
 | Command | Function | Example |
-| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| levels | Base command to configure the levels module. | !levels |
-| levels viewconfig | Command to query the current configuration of the module.| !levels viewconfig |
-| levels rankUpChannel | Command to modify the channel of the level advance messages. | !levels rankUpChannel #level-up |
-| !levels rankUpChannel none | Command to disable level advance messages. | !levels rankUpChannel none |
-| levels rankUpChannel same | Command to set the level messages to be sent to the same channel on which the running message is sent. | levels rankUpChannel same | 
-| levels rankUpMessage | Command to modify the level advance message.| !levels rankUpMessage |
-| levels difficulty \<difficulty> | Command to modify the difficulty of the module. | !levels difficulty 2 |
-| levels customBackground \<url>| Command to set the custom background | !levels customBackground https://site.com/myphoto.png |
-| levels overlayBlur \<quantity> | Command to customize the blur of the range card overlay. | !levels overlayBlur 56 | 
-| levels overlayOpacity \<quantity> | Command to customize the opacity of the range card overlay. | !levels overlayOpacity 56 |
+| --- | --- | --- |
+| levels | Base command to configure the levels module. | /levels |
+| levels viewconfig | Command to query the current configuration of the module.| /levels viewconfig |
+| levels setrankupchannel | Command to modify the channel of the level advance messages. | /levels setrankupchannel channel: \<Disabled/Same Channel Were Message is Sent/This Channel> |
+| levels setrankupmessage message: | Command to modify the level advance message.| /levels setrankupmessage message: {member} got a new level!  |
+| levels setdifficulty difficulty: | Command to modify the difficulty of the module. | /levels difficulty difficulty: 2 |
+| levels setbackground url: | Command to set the custom background | /levels setbackground url: https://site.com/myphoto.png |
+| levels overlayblur blur: | Command to customize the blur of the range card overlay. | /levels overlayblur blur: 56 | 
+| levels overlayopacity opacity: | Command to customize the opacity of the range card overlay. | /levels overlayopacity opacity: 56 |
+| levels overlaycolor hexcolor: | Command to customize the opacity of the range card overlay. | /levels overlaycolor: #FFF |
 | levels simulate | Command to simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended) | !levels simulate |
+<!-- markdown-link-check-enable -->
 
 !!!
 With the integration of Slash Commands, the creation of custom commands becomes much easier.
 !!!
+
+## User commands
+
+Users will be able to use /rank to see their level card and /levelstop to see the server ranking.

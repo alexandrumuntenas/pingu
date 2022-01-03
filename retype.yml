@@ -3,7 +3,7 @@ output: .retype
 url: alexandrumuntenas.github.io/pingu/
 branding:
   title: Pingu • The Discord Bot
-  label: 22T1
+  label: 22T2
 links:
 - text: Home
   link: /README.md

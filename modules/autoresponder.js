@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
   })
   client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
     if (err) {
-      client.Sentry.captureException(err)
+      client.logError(err)
       client.log.error(err)
     }
     if (result) {
@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
         if (Object.prototype.hasOwnProperty.call(result, 0)) {
           client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `autoresponderTrigger` = ?', [message.guild.id, message.content.toLowerCase()], (err, result) => {
             if (err) {
-              client.Sentry.captureException(err)
+              client.logError(err)
               client.log.error(err)
             }
             if (result) {
@@ -26,14 +26,14 @@ module.exports = async (client, message) => {
                   .setColor('BLURPLE')
                 message.channel.send({ embeds: [messageSent] }).catch((err) => {
                   client.log.error(err)
-                  client.Sentry.captureException(err)
+                  client.logError(err)
                 })
               }
             }
           })
         }
       } catch (err) {
-        client.Sentry.captureException(err)
+        client.logError(err)
         client.log.error(err)
       } finally {
         mCgAR.finish()

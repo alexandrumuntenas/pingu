@@ -1,7 +1,7 @@
 on:
   push:
     branches:    
-      - 22T1
+      - main
       
 name: Deploy to production server
 jobs:

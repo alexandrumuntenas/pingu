@@ -12,20 +12,20 @@ module.exports = {
 
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
       if (err) {
-        client.Sentry.captureException(err)
+        client.logError(err)
         client.log.error(err)
       }
       if (Object.prototype.hasOwnProperty.call(result, 0)) {
         client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(result[0].amount) + plusNumber), member.id, guild.id], (err) => {
           if (err) {
-            client.Sentry.captureException(err)
+            client.logError(err)
             client.log.error(err)
           }
         })
       } else {
         client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
           if (err) {
-            client.Sentry.captureException(err)
+            client.logError(err)
             client.log.error(err)
           }
         })
@@ -44,20 +44,20 @@ module.exports = {
 
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, result) => {
       if (err) {
-        client.Sentry.captureException(err)
+        client.logError(err)
         client.log.error(err)
       }
       if (Object.prototype.hasOwnProperty.call(result, 0)) {
         client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(result[0].amount) + plusNumber), member.id, guild.id], (err) => {
           if (err) {
-            client.Sentry.captureException(err)
+            client.logError(err)
             client.log.error(err)
           }
         })
       } else {
         client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`, `amount`) VALUES (?, ?, ?)', [member.id, guild.id, plusNumber], (err) => {
           if (err) {
-            client.Sentry.captureException(err)
+            client.logError(err)
             client.log.error(err)
           }
         })
@@ -73,7 +73,7 @@ module.exports = {
       name: 'Economy (fetchConfig)'
     })
     client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
+      if (err) client.logError(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         const data = { economyBankName: rows[0].economyBankName, economyBankLogo: rows[0].economyBankLogo, economyUseGlobalBank: rows[0].economyUseGlobalBank, economyCurrency: rows[0].economyCurrency }
         callback(data)
@@ -90,7 +90,7 @@ module.exports = {
     })
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
       if (err) {
-        client.Sentry.captureException(err)
+        client.logError(err)
         client.log.error(err)
       }
       if (Object.prototype.hasOwnProperty.call(rows, 0)) {
@@ -137,7 +137,7 @@ module.exports = {
   },
   fetchShopProducts: (client, guild, callback) => {
     client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
+      if (err) client.logError(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows)
       } else {
@@ -147,12 +147,12 @@ module.exports = {
   },
   fetchShopProduct: (client, guild, product, callback) => {
     client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ?', [guild.id, product], (err, rows) => {
-      if (err) client.Sentry.captureException(err)
+      if (err) client.logError(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
         client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productId = ?', [guild.id, product], (err, rows) => {
-          if (err) client.Sentry.captureException(err)
+          if (err) client.logError(err)
           if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
             callback(rows[0])
           } else {
@@ -180,7 +180,7 @@ module.exports = {
   },
   updateUserAccount: (client, member, guild, amount, callback) => {
     client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [amount, member.id, guild.id], (err) => {
-      if (err) client.Sentry.captureException(err)
+      if (err) client.logError(err)
       callback()
     })
   },

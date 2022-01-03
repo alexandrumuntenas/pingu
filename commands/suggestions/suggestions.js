@@ -9,6 +9,7 @@ module.exports = {
   description: 'Configure the suggestions module of your server',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder().setName('suggestions').setDescription('Configure the suggestions module of your server')
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current configuration of the suggestions module.'))
     .addSubcommand(sc => sc.setName('unsetchannel').setDescription('Unset the channel where the suggestions are sent.'))
@@ -20,49 +21,49 @@ module.exports = {
       case 'viewconfig': {
         const sentEmbed = new MessageEmbed()
           .setColor('BLURPLE')
-          .setTitle(i18n(locale, 'SUGGESTIONS_VIEWCONFIG_TITLE'))
-          .setDescription(i18n(locale, 'SUGGESTIONS_VIEWCONFIG_DESCRIPTION'))
-          .addField(`:outbox_tray: ${i18n(locale, 'SUGGESTIONS_VIEWCONFIG_CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.suggestionsChannel) || i18n(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
-          .addField(`:inbox_tray: ${i18n(locale, 'SUGGESTIONS_VIEWCONFIG_REVISEDCHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.suggestionsRevChannel) || i18n(locale, 'WELCOMER_VIEWCONFIG_NOCHANNEL')}`, true)
+          .setTitle(i18n(locale, 'SUGGESTIONS::VIEWCONFIG:EMBED:TITLE'))
+          .setDescription(i18n(locale, 'SUGGESTIONS::VIEWCONFIG:EMBED:DESCRIPTION'))
+          .addField(`:outbox_tray: ${i18n(locale, 'SUGGESTIONS::VIEWCONFIG:EMBED:CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.suggestionsChannel) || i18n(locale, 'UNSET')}`, true)
+          .addField(`:inbox_tray: ${i18n(locale, 'SUGGESTIONS::VIEWCONFIG:EMBED:REVISEDCHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.suggestionsRevChannel) || i18n(locale, 'UNSET')}`, true)
 
         interaction.editReply({ embeds: [sentEmbed] })
         break
       }
       case 'setchannel': {
         const channel = interaction.options.getChannel('channel')
-        if (!channel) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS_SETCHANNEL_NOCHANNEL'))] })
+        if (!channel) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:NOCHANNEL'))] })
 
         client.pool.query('UPDATE `guildData` SET `suggestionsChannel` = ? WHERE `guild` = ?', [channel.id, interaction.guild.id], (err) => {
           if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS_SETCHANNEL_ERROR'))] })
-          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS_SETCHANNEL_SUCCESFULLY', { SUGGESTIONS_CHANNEL: channel }))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { SUGGESTIONS_CHANNEL: channel }))] })
         })
         break
       }
       case 'setrevisedchannel': {
         const channel = interaction.options.getChannel('channel')
-        if (!channel) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS_SETCHANNEL_NOCHANNEL'))] })
+        if (!channel) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:NOCHANNEL'))] })
 
         client.pool.query('UPDATE `guildData` SET `suggestionsRevChannel` = ? WHERE `guild` = ?', [channel.id, interaction.guild.id], (err) => {
           if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS_SETCHANNEL_ERROR'))] })
-          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS_SETCHANNEL_SUCCESFULLY', { SUGGESTIONS_CHANNEL: channel }))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS::sETCHANNEL:SUCCESS', { SUGGESTIONS_CHANNEL: channel }))] })
         })
         break
       }
       case 'unsetchannel': {
         client.pool.query('UPDATE `guildData` SET `suggestionsRevChannel` = ? WHERE `guild` = ?', [null, interaction.guild.id], (err) => {
           if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS_UNSETCHANNEL_ERROR'))] })
-          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS_UNSETCHANNEL_SUCCESFULLY'))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS::UNSETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS::UNSETCHANNEL:SUCCESS'))] })
         })
         break
       }
       case 'unsetrevisedchannel': {
         client.pool.query('UPDATE `guildData` SET `suggestionsChannel` = ? WHERE `guild` = ?', [null, interaction.guild.id], (err) => {
           if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS_UNSETCHANNEL_ERROR'))] })
-          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS_UNSETCHANNEL_SUCCESFULLY'))] })
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'SUGGESTIONS::UNSETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [Success(i18n(locale, 'SUGGESTIONS::UNSETCHANNEL:SUCCESS'))] })
         })
         break
       }

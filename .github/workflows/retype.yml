@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 22T1
+      - main
 
 jobs:
   publish:

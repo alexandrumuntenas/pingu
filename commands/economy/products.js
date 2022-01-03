@@ -10,6 +10,7 @@ module.exports = {
   description: '🛒 Configure the guild shop products',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('products')
     .setDescription('🛒 Configure the guild shop products')
@@ -50,11 +51,12 @@ module.exports = {
             productMeta.singlebuy = productMeta.singlebuy || false
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
-              if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(i18n('PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              if (err) client.logError(err)
+              if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n('PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
@@ -74,11 +76,12 @@ module.exports = {
             productMeta.singlebuy = productMeta.singlebuy || false
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
-              if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(i18n('PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              if (err) client.logError(err)
+              if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n('PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXITS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
@@ -100,19 +103,21 @@ module.exports = {
             productMeta.singlebuy = productMeta.singlebuy || false
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
-              if (err) client.Sentry.captureException(err)
-              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT_CREATE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              if (err) client.logError(err)
+              if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT_EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
       }
       case 'delete': {
         client.pool.query('DELETE FROM `guildEconomyProducts` WHERE `productName` = ? AND `guild` = ?', [interaction.options.getString('name'), interaction.guild.id], function (err) {
-          if (err) client.Sentry.captureException(err)
-          interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT_REMOVE_SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+          if (err) client.logError(err)
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::DELETE:ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::DELETE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
         })
         break
       }

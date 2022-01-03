@@ -10,7 +10,7 @@ module.exports = {
     if (interaction.isCommand()) {
       module.exports.isCommand(client, interaction).catch(err => {
         client.log.fatal(err)
-        client.Sentry.captureException(err)
+        client.logError(err)
       })
     }
   }

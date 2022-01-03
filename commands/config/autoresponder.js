@@ -9,6 +9,7 @@ module.exports = {
   description: '⚙️ Configure the autoresponder',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 0,
+  isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('autoresponder')
     .setDescription('Configure the autoresponder')
@@ -18,66 +19,70 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'create': {
         client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [interaction.guild.id, interaction.options.getString('id'), interaction.options.getString('trigger'), interaction.options.getString('reply')], function (err) {
-          if (err) client.Sentry.captureException(err)
-          interaction.editReply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
+          if (err) client.logError(err)
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'AUTORESPONDER::CREATE:ERROR'))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'AUTORESPONDER::CREATE:SUCCESS', { RESPONSE: interaction.options.getString('id') }))] })
         })
         break
       }
       case 'remove': {
         client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [interaction.options.getString('id'), interaction.guild.id], function (err) {
-          if (err) client.Sentry.captureException(err)
-          interaction.editReply({ embeds: [Success(interaction, i18n(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: interaction.options.getString('id') }))] })
+          if (err) client.logError(err)
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'AUTORESPONDER::REMOVE:ERROR'))] })
+          interaction.editReply({ embeds: [Success(interaction, i18n(locale, 'AUTORESPONDER::REMOVE:SUCCESS', { RESPONSE: interaction.options.getString('id') }))] })
         })
         break
       }
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('autoresponder', i18n.help(locale, 'AUTORESPONDER::DESCRIPTION'), [{ option: 'create', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:CREATE'), syntax: 'create (customId)', isNsfw: false }, { option: 'remove', description: i18n.help(locale, 'AUTORESPONDER::OPTIONS:REMOVE'), syntax: 'remove <ID>', isNsfw: false }])
+    const help = Help('autoresponder', i18n(locale, 'AUTORESPONDER::HELPTRAY:DESCRIPTION'), [{ option: 'create', description: i18n(locale, 'AUTORESPONDER::HELPTRAY:OPTION:CREATE'), syntax: 'create <ID>', isNsfw: false }, { option: 'remove', description: i18n(locale, 'AUTORESPONDER::HELPTRAY:OPTION:REMOVE'), syntax: 'remove <ID>', isNsfw: false }])
     const filter = m => m.member.id === message.member.id
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'create': {
           if (message.args[1]) {
-            message.channel.send({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER_CREATE_INSERTRIGGER')}` }).then((embedMenu) => {
+            message.channel.send({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER::CREATE:TRIGGERINSERT')}` }).then((embedMenu) => {
               message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
                 const autoresponderTrigger = collected.first().content.toLocaleLowerCase()
                 collected.first().delete()
-                embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER_CREATE_INSERTRESPONSE')}` })
+                embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER::CREATE:RESPONSE')}` })
                 message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
                   const autoresponderResponse = collected.first().content
                   collected.first().delete()
                   const autoresponderId = message.args[1] || makeId(12)
                   client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [message.guild.id, autoresponderId, autoresponderTrigger, autoresponderResponse], function (err) {
-                    if (err) client.Sentry.captureException(err)
-                    message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_CREATE_SUCCESS', { AUTORESPONDER_ID: autoresponderId }))] })
+                    if (err) client.logError(err)
+                    if (err) return message.reply({ embeds: [Error(i18n(locale, 'AUTORESPONDER::CREATE:ERROR'))] })
+                    message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER::CREATE:SUCCESS', { RESPONSE: autoresponderId }))] })
                   })
                 })
               })
             })
           } else {
-            message.reply({ embeds: [helpTray] })
+            message.reply({ embeds: [help] })
           }
           break
         }
         case 'remove': {
           if (message.args[1]) {
             client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
-              if (err) client.Sentry.captureException(err)
-              message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER_REMOVE_SUCCESS', { AUTORESPONDER_ID: message.args[1] }))] })
+              if (err) client.logError(err)
+              if (err) return message.reply({ embeds: [Error(i18n(locale, 'AUTORESPONDER::REMOVE:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER::REMOVE:SUCCESS', { RESPONSE: message.args[1] }))] })
             })
           } else {
-            message.reply({ embeds: [helpTray] })
+            message.reply({ embeds: [help] })
           }
           break
         }
         default: {
-          message.reply({ embeds: [helpTray] })
+          message.reply({ embeds: [help] })
           break
         }
       }
     } else {
-      message.reply({ embeds: [helpTray] })
+      message.reply({ embeds: [help] })
     }
   }
 }

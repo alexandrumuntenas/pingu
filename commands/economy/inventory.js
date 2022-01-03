@@ -12,8 +12,8 @@ module.exports = {
     if (interaction.database.economyEnabled !== 0) {
       fetchUserAccount(client, interaction.member, interaction.guild, (account) => {
         const inventoryEmbed = new MessageEmbed()
-          .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
-          .setTitle(i18n(locale, 'INVENTORY_TITLE'))
+          .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
+          .setTitle(i18n(locale, 'INVENTORY::EMBED:TITLE'))
           .setColor('#2F3136')
           .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
         if (account) {
@@ -30,8 +30,8 @@ module.exports = {
                   if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                     inventoryEmbed
-                      .setImage('https://cdn.discordapp.com/attachments/908413370665938975/908414689451597824/empty_inventory.png')
-                      .setDescription(inventoryString || i18n(locale, 'INVENTORY_EMPTY'))
+                      .setImage('https://cdn.discordapp.com/attachments/908413370665938975/927155718115688488/empty_inventory.png')
+                      .setDescription(inventoryString || i18n(locale, 'INVENTORY::EMBED:EMPTY'))
                     interaction.editReply({ embeds: [inventoryEmbed] })
                   }
                 })
@@ -40,13 +40,13 @@ module.exports = {
               client.Sentry.captureException(error)
             }
           } else {
-            inventoryEmbed.setDescription(i18n(locale, 'INVENTORY_EMPTY')).setImage('https://cdn.discordapp.com/attachments/908413370665938975/908414689451597824/empty_inventory.png')
-            interaction.editReply({ content: 'Loaded!', embeds: [inventoryEmbed] })
+            inventoryEmbed.setDescription(i18n(locale, 'INVENTORY::EMBED:EMPTY')).setImage('https://cdn.discordapp.com/attachments/908413370665938975/927155718115688488/empty_inventory.png')
+            interaction.editReply({ embeds: [inventoryEmbed] })
           }
         }
       })
     } else {
-      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND_NO_AVALIABLE'))] })
+      interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND:NOAVALIABLE'))] })
     }
   }
 }

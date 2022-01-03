@@ -11,24 +11,26 @@ In Pingu we have always wanted to give the user the option of being able to conf
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
 !!!
-Enable this module using `/p2enmod module: welcomer`.
+Enable this module using `/admin modules enable module: welcomer`.
 
-Disable this module using `/p2dismod module: welcome`.
+Disable this module using `/admin modules disable module: welcome`.
 !!!
 
-| Command                                     | Function                                                                                         | Example                                                                     |
-|---------------------------------------------|-------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| /welcomer viewconfig                        | Command to view the set configuration of the module.                                            | /welcomer viewconfig                                                        |
-| /welcomer channel welcomechannel: <channel> | Command to configure the welcome channel. (If it does not exist/work, the message is not sent). | /welcomer channel welcomerchannel:#aeropuerto-internacional                 |
-| /wecomer message welcomemessage:            | Command to set the welcome message.                                                             | /welcomer message welcomemessage:{member} has joined {guild}.               |
-| /welcomer enableCards                       | Command to enable welcome cards.                                                                | /welcomer enableCards                                                       |
-| /welcomer disableCards                      | Command to disable welcome cards.                                                               | /welcomer disableCards                                                      |
-| /welcomer custombackground url:             | Command to set the background image.                                                            | /welcomer custombackground url:https://myawesomesite.com/myawesomephoto.png |
-| /welcomer overlaycolor hexcolor:            | Command to configure the color of the overlay.                                                  | /welcomer overlaycolor hexcolor:#fff                                        |
-| /welcomer overlayopacity opacity:           | Command to set the overlay opacity.                                                             | /welcomer overlayopacity opacity:50                                         |
-| /welcomer overlayblur blur:                 | Command to set the overlay blur.                                                                | /welcomer overlayblur blur:25                                               |
-| /welcomer test                              | Preview the welcome card                                                                        | /welcomer test                                                              |
-| /welcomer simulate                          | Simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended)           | /welcomer simulate                                                          |
+<!-- markdown-link-check-disable -->
+| Command | Function | Example |
+| --- | --- | --- |
+| /welcomer viewconfig | Command to view the set configuration of the module. | /welcomer viewconfig |
+| /welcomer setchannel channel: <channel> | Command to configure the welcome channel. (If it does not exist/work, the message is not sent). | /welcomer setchannel channel:#aeropuerto-internacional |
+| /wecomer setmessage message: | Command to set the welcome message. | /welcomer message welcomemessage:{member} has joined {guild}. |
+| /welcomer enablecards | Command to enable welcome cards. | /welcomer enableCards |
+| /welcomer disablecards | Command to disable welcome cards. | /welcomer disableCards |
+| /welcomer setbackground url: | Command to set the background image. | /welcomer setbackground url: https://myawesomesite.com/myawesomephoto.png |
+| /welcomer overlaycolor hexcolor: | Command to configure the color of the overlay. | /welcomer overlaycolor hexcolor:#fff |
+| /welcomer overlayopacity opacity: | Command to set the overlay opacity. | /welcomer overlayopacity opacity:50 |
+| /welcomer overlayblur blur: | Command to set the overlay blur. | /welcomer overlayblur blur:25 |
+| /welcomer test | Preview the welcome card | /welcomer test |
+| /welcomer simulate | Simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended) | /welcomer simulate                                                          |
+<!-- markdown-link-check-enable -->
 
 ![Sample greeting card with custom background and rounded avatar.](https://cdn.discordapp.com/attachments/925135972251881482/925135999149953074/yjjemZDfcZKRAjQlpsphBaGbxTSuhzuR.png)
 
