@@ -25,11 +25,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.694482337231" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.694486351978" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694482337231" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694486351978" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694482337231" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694486351978" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -46,7 +46,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T1</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T2</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -257,28 +257,74 @@
 </thead>
 <tbody>
 <tr>
-<td>setprefix &lt;newprefix&gt;</td>
-<td>Change the prefix used to activate the bot</td>
-<td><p>!setprefix &gt;</p><p></p><p>!setprefix .</p></td>
+<td>admin setprefix newprefix:</td>
+<td>Change the prefix used to activate the bot.</td>
+<td>/admin setprefix newprefix: &gt;</td>
 </tr>
 <tr>
-<td>setlanguage &lt;language&gt;</td>
+<td>admin setlanguage language:</td>
 <td>Change the language used in bot responses</td>
-<td><p>!setlanguage en</p><p>!setlanguage es</p><p>!setlanguage fr</p></td>
+<td>!admin setlanguage en</td>
 </tr>
 <tr>
-<td>p2enmod &lt;módulo&gt;</td>
+<td>admin modules enable module:</td>
 <td>Enables a module</td>
-<td>!p2enmod welcomer</td>
+<td>!admin modules enable module: Welcomer</td>
 </tr>
 <tr>
-<td>p2dismod &lt;módulo&gt;</td>
+<td>admin modules disable module:</td>
 <td>Disable a module</td>
-<td>!p2dismod welcomer</td>
+<td>!admin modules disable module: Welcomer</td>
+</tr>
+<tr>
+<td>admin viewcnfcommands view true/false</td>
+<td>Enables or disables the deployment of bot configuration commands.</td>
+<td>/admin viewcnfcommands view true/false</td>
 </tr>
 </tbody>
 </table>
 </div>
+<doc-panel id="prefix-commands" collapsed>
+    <template #title>Prefix Commands</template>
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>Command</th>
+<th>Function</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>admin setprefix &lt;newprefix&gt;</td>
+<td>Change the prefix used to activate the bot.</td>
+<td><p>!admin setprefix &gt;</p><p></p><p>!admin setprefix .</p></td>
+</tr>
+<tr>
+<td>admin setlanguage &lt;language&gt;</td>
+<td>Change the language used in bot responses</td>
+<td><p>!admin setlanguage en</p><p>!admin setlanguage es</p><p>!setlanguage fr</p></td>
+</tr>
+<tr>
+<td>admin modules enable &lt;módulo&gt;</td>
+<td>Enables a module</td>
+<td>!admin modules enable welcomer</td>
+</tr>
+<tr>
+<td>admin modules disable &lt;módulo&gt;</td>
+<td>Disable a module</td>
+<td>!admin modules disable welcomer</td>
+</tr>
+<tr>
+<td>admin viewcnfcommands view true/false</td>
+<td>Enables or disables the deployment of bot configuration commands.</td>
+<td>/admin viewcnfcommands view true/false</td>
+</tr>
+</tbody>
+</table>
+</div>
+</doc-panel>
 <div class="flex mb-6">
     <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">

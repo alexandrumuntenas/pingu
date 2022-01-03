@@ -27,11 +27,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.694482337231" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.694486351978" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694482337231" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694486351978" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694482337231" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694486351978" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -48,7 +48,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T1</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T2</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -262,11 +262,12 @@
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>Enable this module using <code v-pre>/p2enmod module: welcomer</code>.</p>
-<p>Disable this module using <code v-pre>/p2dismod module: welcome</code>.</p>
+<p>Enable this module using <code v-pre>/admin modules enable module: welcomer</code>.</p>
+<p>Disable this module using <code v-pre>/admin modules disable module: welcome</code>.</p>
         </div>
     </div>
 </div>
+<!-- markdown-link-check-disable -->
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
@@ -283,29 +284,29 @@
 <td>/welcomer viewconfig</td>
 </tr>
 <tr>
-<td>/welcomer channel welcomechannel: <channel></td>
+<td>/welcomer setchannel channel: <channel></td>
 <td>Command to configure the welcome channel. (If it does not exist/work, the message is not sent).</td>
-<td>/welcomer channel welcomerchannel:#aeropuerto-internacional</td>
+<td>/welcomer setchannel channel:#aeropuerto-internacional</td>
 </tr>
 <tr>
-<td>/wecomer message welcomemessage:</td>
+<td>/wecomer setmessage message:</td>
 <td>Command to set the welcome message.</td>
 <td>/welcomer message welcomemessage:{member} has joined {guild}.</td>
 </tr>
 <tr>
-<td>/welcomer enableCards</td>
+<td>/welcomer enablecards</td>
 <td>Command to enable welcome cards.</td>
 <td>/welcomer enableCards</td>
 </tr>
 <tr>
-<td>/welcomer disableCards</td>
+<td>/welcomer disablecards</td>
 <td>Command to disable welcome cards.</td>
 <td>/welcomer disableCards</td>
 </tr>
 <tr>
-<td>/welcomer custombackground url:</td>
+<td>/welcomer setbackground url:</td>
 <td>Command to set the background image.</td>
-<td>/welcomer custombackground url:https://myawesomesite.com/myawesomephoto.png</td>
+<td>/welcomer setbackground url: <a href="https://myawesomesite.com/myawesomephoto.png">https://myawesomesite.com/myawesomephoto.png</a></td>
 </tr>
 <tr>
 <td>/welcomer overlaycolor hexcolor:</td>
@@ -335,6 +336,7 @@
 </tbody>
 </table>
 </div>
+<!-- markdown-link-check-enable -->
 <p><figure class="content-center">
     <img src="https://cdn.discordapp.com/attachments/925135972251881482/925135999149953074/yjjemZDfcZKRAjQlpsphBaGbxTSuhzuR.png" alt="Sample greeting card with custom background and rounded avatar." />
     <figcaption class="caption">Sample greeting card with custom background and rounded avatar.</figcaption>

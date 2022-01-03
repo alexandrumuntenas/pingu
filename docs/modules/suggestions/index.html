@@ -25,11 +25,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.694482337231" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.694486351978" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694482337231" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694486351978" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694482337231" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694486351978" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -46,7 +46,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T1</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T2</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -259,8 +259,8 @@
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>Enable this module using <code v-pre>/p2enmod module: suggestions</code>.</p>
-<p>Disable this module using <code v-pre>/p2dismod module: suggestions</code>.</p>
+<p>Enable this module using <code v-pre>/admin modules enable module: suggestions</code>.</p>
+<p>Disable this module using <code v-pre>/admin modules disable module: suggestions</code>.</p>
         </div>
     </div>
 </div>
@@ -291,27 +291,27 @@
 </thead>
 <tbody>
 <tr>
-<td>suggestions viewconfig</td>
+<td>/suggestions viewconfig</td>
 <td>Command to view the acutal config of the module.</td>
 <td>/suggestions viewconfig</td>
 </tr>
 <tr>
-<td>suggestions setchannel channel:&lt;Channel&gt;</td>
+<td>/suggestions setchannel channel:&lt;Channel&gt;</td>
 <td>Command to set where the suggestions are sent.</td>
 <td>/suggestions setchannel channel:#suggestions</td>
 </tr>
 <tr>
-<td>suggestions unsetchannel</td>
+<td>/suggestions unsetchannel</td>
 <td>Command to unset the suggestions channel.</td>
 <td>/suggestions unsetchannel</td>
 </tr>
 <tr>
-<td>suggestions setrevisedchannel channel:&lt;Channel&gt;</td>
+<td>/suggestions setrevisedchannel channel:&lt;Channel&gt;</td>
 <td>Command to set where revised suggestions are sent.</td>
 <td>/suggestions revisedchannel channel:#revisedsuggestions</td>
 </tr>
 <tr>
-<td>suggestions unsetrevisedchannel</td>
+<td>/suggestions unsetrevisedchannel</td>
 <td>Command to unset the revised suggestions channel.</td>
 <td>/suggestions unsetrevisedchannel</td>
 </tr>
@@ -335,14 +335,14 @@
 </thead>
 <tbody>
 <tr>
-<td>suggestion approve id:&lt;ID&gt;</td>
+<td>/suggestion approve id:&lt;ID&gt;</td>
 <td>Command to approve a suggestion.</td>
 <td>/suggestion approve id:1234567890</td>
 </tr>
 <tr>
-<td>suggestion reject id:&lt;ID&gt; reason:&lt;Reason&gt;</td>
+<td>/suggestion reject id:&lt;ID&gt; reason:&lt;Reason&gt;</td>
 <td>Command to dismiss a suggestion.</td>
-<td>!suggestion reject id:1234567890 reason:Something interesting</td>
+<td>/suggestion reject id:1234567890 reason:Something interesting</td>
 </tr>
 </tbody>
 </table>

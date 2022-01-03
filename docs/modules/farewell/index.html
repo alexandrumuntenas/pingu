@@ -25,11 +25,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.694482337231" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.694486351978" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694482337231" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694486351978" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694482337231" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694486351978" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -46,7 +46,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T1</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T2</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -259,8 +259,8 @@
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>Enable this module using <code v-pre>/p2enmod module: farewell</code>.</p>
-<p>Disable this module using <code v-pre>/p2dismod module: farewell</code>.</p>
+<p>Enable this module using <code v-pre>/admin modules enable module: farewell</code>.</p>
+<p>Disable this module using <code v-pre>/admin modules disable module: farewell</code>.</p>
         </div>
     </div>
 </div>
@@ -268,26 +268,26 @@
 <table class="comfortable">
 <thead>
 <tr>
-<th>Comando</th>
-<th>Funcion</th>
-<th>Ejemplo</th>
+<th>Command</th>
+<th>Function</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>/farewell viewconfig</td>
 <td>Command to view the set configuration of the module.</td>
-<td>/welcomer viewconfig</td>
+<td>/farewell viewconfig</td>
 </tr>
 <tr>
-<td>/farewell channel farewellchannel: <farewell></td>
+<td>/farewell setchannel channel: <farewell channel></td>
 <td>Command to configure the farewell channel. (If it does not exist/work, the message is not sent).</td>
-<td>/welcomer channel farewellchannel:#aeropuerto-internacional</td>
+<td>/farewell setchannel channel:#aeropuerto-internacional</td>
 </tr>
 <tr>
-<td>/wecomer message farewellmessage:</td>
+<td>/wecomer setmessage message:</td>
 <td>Command to set the farewell message.</td>
-<td>/farewell farewell farewellmessage:{member} left {guild}.</td>
+<td>/farewell setmessage message:{member} left {guild}.</td>
 </tr>
 <tr>
 <td>/farewell simulate</td>
