@@ -1,9 +1,7 @@
-/* eslint-disable prefer-const */
 const { Permissions } = require('discord.js')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
 const { Loader, Success } = require('../../modules/constructor/messageBuilder')
-const guildFetchData = require('../../functions/guildFetchData')
 const i18n = require('../../i18n/i18n')
 
 const rest = new REST({ version: '9' })
@@ -21,14 +19,14 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     interaction.editReply({ embeds: [Loader(i18n(locale, 'UPDATE::DEPLOYING'))] })
     client.log.info(`Deploying commands to ${interaction.guild.id}`)
-    let welcome, joinroles, farewell, levels, economy, suggestions, nomodule, bodyToSend
+    let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
     if (interaction.database.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []
     if (interaction.database.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell') || []
     if (interaction.database.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles') || []
     if (interaction.database.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels') || []
     if (interaction.database.suggestionsEnabled !== 0) suggestions = client.interactions.filter(command => command.module === 'suggestions') || []
     if (interaction.database.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy') || []
-    nomodule = client.interactions.filter(command => !command.module)
+    const nomodule = client.interactions.filter(command => !command.module)
 
     bodyToSend = []
 
@@ -48,14 +46,14 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     client.log.info(`Deploying commands to ${message.guild.id}`)
-    let welcome, joinroles, farewell, levels, economy, suggestions, nomodule, bodyToSend
+    let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
     if (message.database.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []
     if (message.database.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell') || []
     if (message.database.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles') || []
     if (message.database.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels') || []
     if (message.database.suggestionsEnabled !== 0) suggestions = client.interactions.filter(command => command.module === 'suggestions') || []
     if (message.database.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy') || []
-    nomodule = client.interactions.filter(command => !command.module)
+    const nomodule = client.interactions.filter(command => !command.module)
 
     bodyToSend = []
 

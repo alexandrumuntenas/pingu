@@ -23,14 +23,14 @@ module.exports = {
       client.guilds.cache.forEach(async (guild) => {
         guildFetchData(client, guild.id, (data) => {
           client.log.info(`Deploying commands to ${guild.id}`)
-          let welcome, joinroles, farewell, levels, economy, suggestions, nomodule, bodyToSend
+          let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
           if (data.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []
           if (data.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell') || []
           if (data.joinRolesEnabled !== 0) joinroles = client.interactions.filter(command => command.module === 'joinroles') || []
           if (data.levelsEnabled !== 0) levels = client.interactions.filter(command => command.module === 'levels') || []
           if (data.suggestionsEnabled !== 0) suggestions = client.interactions.filter(command => command.module === 'suggestions') || []
           if (data.economyEnabled !== 0) economy = client.interactions.filter(command => command.module === 'economy') || []
-          nomodule = client.interactions.filter(command => !command.module)
+          const nomodule = client.interactions.filter(command => !command.module)
 
           bodyToSend = []
 
