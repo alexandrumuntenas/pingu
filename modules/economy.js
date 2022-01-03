@@ -80,8 +80,8 @@ module.exports = {
       }
     })
   },
-  getShopProduct: (client, guild, product, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ? LIMIT 1', [guild.id, product], (err, rows) => {
+  getShopProduct: (client, guild, productname, callback) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ? LIMIT 1', [guild.id, productname], (err, rows) => {
       if (err) client.logError(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
@@ -90,74 +90,66 @@ module.exports = {
       }
     })
   },
-  updateMemberBalance: (client, member, guild, amount, callback) => {
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [amount, member.id, guild.id], (err) => {
+  updateMemberBalance: (client, member, guild, newBalance, callback) => {
+    // TODO: Update column name from "amount" to "balance"
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, guild.id], (err) => {
       if (err) client.logError(err)
       callback()
     })
   },
-  updateMemberInventory: (client, member, guild, inventory, callback) => {
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [inventory, member.id, guild.id], (err) => {
+  updateMemberInventory: (client, member, guild, newInventory, callback) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [newInventory, member.id, guild.id], (err) => {
       if (err) client.logError(err)
       callback()
     })
-  }
-  /*
-  buyItem: (client, member, guild, productData, callback) => { // WTF IS GOING HERE?
+  },
+  addItemToMemberInventory: (client, inventoryFromDB, productToAdd, callback) => {
+    // TODO: Replace the property "singlebuy" with "buyOnlyOne".
+
+    let productQuantity = 1
+
+    if (productToAdd.singlebuy) productQuantity = -1
+
+    const parsedInventoryFromDB = JSON.parse(inventoryFromDB)
+
+    if (parsedInventoryFromDB[productToAdd.productId]) {
+      if (!productToAdd.singlebuy) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId]) + productQuantity
+    } else {
+      parsedInventoryFromDB[productToAdd.productId] = productQuantity
+    }
+
+    Object.keys(parsedInventoryFromDB).forEach(product => {
+      if (parsedInventoryFromDB[product] === null) {
+        delete parsedInventoryFromDB[product]
+      }
+    })
+
+    const newInventory = JSON.stringify(parsedInventoryFromDB)
+
+    if (callback) callback(newInventory)
+  },
+  buyItem: (client, member, guild, productname, buyproperties, callback) => {
     module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
-      const status = []
-      if (parseInt(memberInventoryAndBalance.amount) >= parseInt(productData.productPrice)) {
-        module.exports.itemActivate(client, member, guild, productData, (iaData, continueBuying) => {
-          status.ia = iaData
-          if (continueBuying) module.exports.updateMemberBalance(client, member, guild, parseInt(memberInventoryAndBalance.amount) - parseInt(productData.productPrice), () => { })
-          if (continueBuying) status.code = true
-          status.code = status.code || false
-          callback(status)
-        })
-      } else {
-        callback(status.code || false)
-      }
-    })
-  },
-  addItemToUser: (client, member, guild, productId, singlebuy, callback) => {
-    module.exports.getMemberInventoryAndBalance(client, member, guild, (account) => {
-      if (account) {
-        let productQuantity = 1
-
-        singlebuy = singlebuy || false
-        if (singlebuy) productQuantity = -1
-
-        const inventoryData = JSON.parse(account.inventory)
-        if (inventoryData[productId]) {
-          if (!singlebuy) {
-            inventoryData[productId] = parseInt(inventoryData[productId]) + productQuantity
-            if (callback) callback()
-          } else {
-            if (callback) callback('error')
-          }
+      module.exports.getShopProduct(client, guild, productname, (shopProduct) => {
+        if (memberInventoryAndBalance >= shopProduct.productPrice) {
+          module.exports.updateMemberBalance(client, member, guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+          module.exports.addItemToMemberInventory(client, memberInventoryAndBalance.inventory, shopProduct, (newInventory) => module.exports.updateMemberInventory(client, member, guild, newInventory))
+          module.exports.executeItemFunctions()
         } else {
-          inventoryData[productId] = productQuantity
-          if (callback) callback()
+          throw new Error('ECO_XX01')
         }
-        Object.keys(inventoryData).forEach(key => {
-          if (inventoryData[key] === null) {
-            delete inventoryData[key]
-          }
-        })
-        client.pool.query('UPDATE `guildEconomyUserBank` SET inventory = ? WHERE guild = ? AND member = ?', [JSON.stringify(inventoryData), guild.id, member.id])
-      }
+      })
     })
-  },
-  itemActivate: (client, member, guild, item, callback) => {
-    item.productMeta = JSON.parse(item.productMeta)
+  }/* WTF IS GOING HERE?
+  executeItemFunctions: (client, member, guild, shopProduct, callback) => {
+    const productMeta = JSON.parse(shopProduct.productMeta)
 
-    const action = item.productMeta.action
-    const userInputRequirements = item.productMeta.properties
+    const { action, properties } = productMeta
     const userInputs = {}
-    if ((Object.prototype.hasOwnProperty.call(item.productMeta, 'singlebuy') && item.productMeta.singlebuy)) {
+    if ((Object.prototype.hasOwnProperty.call(shopProduct.productMeta, 'singlebuy') && shopProduct.productMeta.singlebuy)) {
       let propertiesString = ''
 
-      if (userInputRequirements && userInputRequirements.length > 0) {
+      if (properties && properties.length > 0) {
         if (item.userInput) {
           userInputRequirements.forEach(userInputRequirement => {
             userInputs[userInputRequirement] = 1
@@ -177,48 +169,7 @@ module.exports = {
           if (propertiesString) {
             callback(i18n(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
           } else {
-            module.exports.addItemToUser(client, member, guild, item.productId, item.productMeta.singlebuy, (status) => {
-              if (status === 'error') {
-                callback(i18n(guild.locale, 'BUYPRODUCT_ALREADYOWN', { PRODUCT: item.productName }), false)
-              } else {
-                if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
-                  switch (action.type) {
-                    case 'sendMessage': {
-                      if (Object.prototype.hasOwnProperty.call(action, 'message')) {
-                        if (Object.prototype.hasOwnProperty.call(action, 'channel')) {
-                          action.message = StringPlaceholder(action.message, userInputs, { before: '#', after: '#' })
-                          guild.channels.fetch(action.channel).then(channel => {
-                            if (channel) {
-                              channel.send(action.message || 'Nothing', true)
-                              callback(null, true)
-                            } else {
-                              callback(i18n(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
-                            }
-                          })
-                        } else {
-                          callback(i18n(guild.locale, 'BUYPRODUCT_SENDMESSAGE_ERROR'), false)
-                        }
-                      }
-                      break
-                    }
-                    case 'giveRole': {
-                      if (Object.prototype.hasOwnProperty.call(action, 'role')) {
-                        guild.roles.fetch(action.role).then(role => {
-                          if (role) {
-                            member.roles.add(role)
-                            callback(i18n(guild.locale, 'BUYPRODUCT_GIVEROLE', { ROLE: role }), true)
-                          } else {
-                            callback(i18n(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
-                          }
-                        })
-                      } else {
-                        callback(i18n(guild.locale, 'BUYPRODUCT_GIVEROLE_ERROR'), false)
-                      }
-                    }
-                  }
-                }
-              }
-            })
+
           }
         } else {
           userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
@@ -226,5 +177,5 @@ module.exports = {
         }
       }
     }
-  } */
+  }*/
 }
