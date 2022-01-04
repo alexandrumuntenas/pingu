@@ -25,7 +25,7 @@ module.exports = {
     const workMoney = Math.floor(Math.random() * 1500) + 1000
 
     module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
-      client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(memberInventoryAndBalance.amount) + workMoney), member.id, guild.id], (err) => {
+      client.pool.query("UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?", [(parseInt(memberInventoryAndBalance.amount) + workMoney), member.id, guild.id], (err) => {
         if (err) client.logError(err)
         if (err) throw new Error('DB_ERROR')
         if (callback && !err) callback(workMoney)
