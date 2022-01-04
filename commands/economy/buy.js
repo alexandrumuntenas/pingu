@@ -17,8 +17,7 @@ module.exports = {
       if (interaction.options.getString('productname')) {
         try {
           buyItem(client, interaction.member, interaction.guild, interaction.options.getString('productname'), interaction.options.getString('properties'), (err) => {
-            if (err.message === 'ECO_200') {interaction.editReply({ embeds: [Success(i18n(locale, 'BUY::SUCCESS', { ITEM: interaction.options.getString('productName') }))] })}
-            else interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ERROR', { ITEM: err.message }))] })
+            if (err.message === 'ECO_200') { interaction.editReply({ embeds: [Success(i18n(locale, 'BUY::SUCCESS', { ITEM: interaction.options.getString('productName') }))] }) } else interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ERROR', { ITEM: err.message }))] })
           })
         } catch (error) {
           interaction.channel.send(error)
