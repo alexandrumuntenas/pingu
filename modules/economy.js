@@ -35,7 +35,7 @@ module.exports = {
   },
   getMemberInventoryAndBalance: async (client, member, guild, callback) => {
     const EfM = client.Sentry.startTransaction({
-      op: 'economy.getMemberInventoryAndBalance',
+      op: "economy.getMemberInventoryAndBalance",
       name: 'Economy (getMemberInventoryAndBalance)'
     })
     client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
