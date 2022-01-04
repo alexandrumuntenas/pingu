@@ -145,35 +145,28 @@ module.exports = {
       }
     })
   },
-  buyItem: (client, member, guild, productname, memberInputs) => {
-    try {
-      member.inputs = memberInputs
-      module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
-        module.exports.getShopProduct(client, guild, productname, (shopProduct) => {
-          if (memberInventoryAndBalance >= shopProduct.productPrice) {
-            if (!module.exports.checkIfMemberHasProduct(client, member, guild, shopProduct.productId)) return new Error('ECO_BU04')
-            try {
-              try {
-                module.exports.executeItemFunctions(client, member, guild, shopProduct)
-              } catch (err) {
-                throw new Error(err)
-              } finally {
-                module.exports.addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
-                  module.exports.updateMemberBalance(client, member, guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
-                  module.exports.updateMemberInventory(client, member, guild, newInventory)
-                })
-              }
-            } catch (err) {
-              throw new Error(err)
-            }
-          } else {
-            throw new Error('ECO_XX01')
+  buyItem: (client, member, guild, productname, memberInputs, callback) => {
+    // TODO: Find better ways to send errors codes back.
+    member.inputs = memberInputs
+    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
+      module.exports.getShopProduct(client, guild, productname, (shopProduct) => {
+        if (memberInventoryAndBalance >= shopProduct.productPrice) {
+          if (!module.exports.checkIfMemberHasProduct(client, member, guild, shopProduct.productId)) callback(new Error('ECO_BU04'))
+          try {
+            module.exports.executeItemFunctions(client, member, guild, shopProduct)
+          } catch (err) {
+            callback(new Error(err))
+          } finally {
+            module.exports.addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
+              module.exports.updateMemberBalance(client, member, guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+              module.exports.updateMemberInventory(client, member, guild, newInventory)
+            })
           }
-        })
+        } else {
+          callback(new Error('ECO_XX01'))
+        }
       })
-    } catch (err) {
-      throw new Error(err)
-    }
+    })
   },
   executeItemFunctions: (client, member, guild, shopProduct, callback) => {
     // TODO: Change the column name from "productMeta" to "productProperties". The code changes will be commented and highlighted.
@@ -226,7 +219,6 @@ module.exports = {
           break
         }
         case 'giveRole': {
-          console.log('a')
           if (Object.prototype.hasOwnProperty.call(action, 'role')) {
             guild.roles.fetch(action.role).then(role => {
               if (role) {

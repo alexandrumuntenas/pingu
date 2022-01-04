@@ -56,7 +56,7 @@ module.exports = {
               interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
@@ -78,10 +78,10 @@ module.exports = {
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)
               if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
-              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getRole('role') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXITS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXITS', { PRODUCT: interaction.options.getString('role') }))] })
           }
         })
         break
@@ -105,10 +105,10 @@ module.exports = {
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)
               if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
-              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('message') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
