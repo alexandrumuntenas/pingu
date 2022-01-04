@@ -30,7 +30,7 @@ module.exports = {
                   if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                     if (!inventoryString) inventoryEmbed.setImage('https://cdn.discordapp.com/attachments/908413370665938975/927155718115688488/empty_inventory.png')
-                    else {inventoryEmbed.setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/917086976744767498/inventory_chest.png')}
+                    else { inventoryEmbed.setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/917086976744767498/inventory_chest.png') }
                     inventoryEmbed
                       .setDescription(inventoryString || i18n(locale, 'INVENTORY::EMBED:EMPTY'))
                     interaction.editReply({ embeds: [inventoryEmbed] })
