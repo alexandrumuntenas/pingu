@@ -30,6 +30,7 @@
   "AUTORESPONDER::REMOVE:SUCCESS": "The custom response %RESPONSE%. has been successfully deleted.",
   "BACKGROUND": "Background",
   "BUY": "Buy",
+  "BUY::ALREADYOWN": "You already own this item.",
   "BUY::ERROR": "An error occurred while trying to purchase. Error: %ITEM%.",
   "BUY::NOMONEY": "You do not have enough money to purchase %ITEM%.",
   "BUY::NOTFOUND": "%ITEM% has not been found.",

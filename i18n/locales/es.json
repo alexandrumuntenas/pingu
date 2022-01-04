@@ -30,6 +30,7 @@
   "AUTORESPONDER::REMOVE:SUCCESS": "Se ha eliminado correctamente la respuesta personalizada %RESPONSE%.",
   "BACKGROUND": "Fondo",
   "BUY": "Comprar",
+  "BUY::ALREADYOWN": "Ya tienes este producto.",
   "BUY::ERROR": "Se ha producido un error al intentar comprar. Error: %ITEM%.",
   "BUY::NOMONEY": "No tienes suficiente dinero para comprar %ITEM%.",
   "BUY::NOTFOUND": "No se ha encontrado %ITEM%.",
