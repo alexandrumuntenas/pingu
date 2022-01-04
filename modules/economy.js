@@ -1,3 +1,5 @@
+const StringPlaceholder = require('string-placeholder')
+
 module.exports = {
   getDailyMoney: async (client, member, guild, callback) => {
     const EgM = client.Sentry.startTransaction({
@@ -81,12 +83,12 @@ module.exports = {
     })
   },
   getShopProduct: (client, guild, productname, callback) => {
-    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ? LIMIT 1', [guild.id, productname], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ? OR productId = ? LIMIT 1', [guild.id, productname, productname], (err, rows) => {
       if (err) client.logError(err)
       if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-        callback(rows[0])
+        if (callback) callback(rows[0])
       } else {
-        throw new Error('ECO_XX03')
+        if (callback) callback()
       }
     })
   },
@@ -94,16 +96,16 @@ module.exports = {
     // TODO: Update column name from "amount" to "balance"
     client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, guild.id], (err) => {
       if (err) client.logError(err)
-      callback()
+      if (callback) callback()
     })
   },
   updateMemberInventory: (client, member, guild, newInventory, callback) => {
     client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [newInventory, member.id, guild.id], (err) => {
       if (err) client.logError(err)
-      callback()
+      if (callback) callback()
     })
   },
-  addItemToMemberInventory: (client, inventoryFromDB, productToAdd, callback) => {
+  addItemToMemberInventory: (inventoryFromDB, productToAdd, callback) => {
     // TODO: Replace the property "singlebuy" with "buyOnlyOne".
 
     let productQuantity = 1
@@ -114,6 +116,7 @@ module.exports = {
 
     if (parsedInventoryFromDB[productToAdd.productId]) {
       if (!productToAdd.singlebuy) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId]) + productQuantity
+      return new Error('ECO_BU04')
     } else {
       parsedInventoryFromDB[productToAdd.productId] = productQuantity
     }
@@ -128,54 +131,115 @@ module.exports = {
 
     if (callback) callback(newInventory)
   },
-  buyItem: (client, member, guild, productname, buyproperties, callback) => {
+  checkIfMemberHasProduct: (client, member, guild, productId) => {
     module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
-      module.exports.getShopProduct(client, guild, productname, (shopProduct) => {
-        if (memberInventoryAndBalance >= shopProduct.productPrice) {
-          module.exports.updateMemberBalance(client, member, guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
-          module.exports.addItemToMemberInventory(client, memberInventoryAndBalance.inventory, shopProduct, (newInventory) => module.exports.updateMemberInventory(client, member, guild, newInventory))
-          module.exports.executeItemFunctions()
+      if (memberInventoryAndBalance.inventory) {
+        const inventory = JSON.parse(memberInventoryAndBalance.inventory)
+        if (Object.prototype.hasOwnProperty.call(inventory, productId)) {
+          return true
         } else {
-          throw new Error('ECO_XX01')
+          return false
+        }
+      } else {
+        return false
+      }
+    })
+  },
+  buyItem: (client, member, guild, productname, memberInputs) => {
+    try {
+      member.inputs = memberInputs
+      module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
+        module.exports.getShopProduct(client, guild, productname, (shopProduct) => {
+          if (memberInventoryAndBalance >= shopProduct.productPrice) {
+            if (!module.exports.checkIfMemberHasProduct(client, member, guild, shopProduct.productId)) return new Error('ECO_BU04')
+            try {
+              try {
+                module.exports.executeItemFunctions(client, member, guild, shopProduct)
+              } catch (err) {
+                throw new Error(err)
+              } finally {
+                module.exports.addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
+                  module.exports.updateMemberBalance(client, member, guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+                  module.exports.updateMemberInventory(client, member, guild, newInventory)
+                })
+              }
+            } catch (err) {
+              throw new Error(err)
+            }
+          } else {
+            throw new Error('ECO_XX01')
+          }
+        })
+      })
+    } catch (err) {
+      throw new Error(err)
+    }
+  },
+  executeItemFunctions: (client, member, guild, shopProduct, callback) => {
+    // TODO: Change the column name from "productMeta" to "productProperties". The code changes will be commented and highlighted.
+
+    const productProperties = JSON.parse(shopProduct.productMeta)
+    // * const productProperties = JSON.parse(shopProduct.productProperties)
+
+    const { action, properties } = productProperties
+    // * const { action, memberInputRequirements } = productProperties
+
+    // Properties are the placeholders for the values that are passed to the function. In the future will have a better name.
+
+    const memberInputRequirements = properties
+    let memberInput
+    if (member.inputs) memberInput = member.inputs.split(',')
+    const memberInputOrganized = {}
+    const missingInputs = []
+
+    if (Array.isArray(memberInputRequirements) && memberInputRequirements.length >= 0 && Array.isArray(memberInput)) {
+      memberInputRequirements.forEach(userInputRequirement => {
+        memberInputOrganized[userInputRequirement] = null
+      })
+      memberInput.forEach(input => {
+        const getPropertyAndItsValue = input.split(':')
+        if (memberInputRequirements[getPropertyAndItsValue[0]]) memberInputRequirements[getPropertyAndItsValue[0]] = getPropertyAndItsValue[1]
+      })
+      Object.keys(memberInputOrganized).forEach(input => {
+        if (memberInputOrganized[input] === null) {
+          delete memberInputRequirements[input]
+          missingInputs.push(input)
         }
       })
-    })
-  }/* WTF IS GOING HERE?
-  executeItemFunctions: (client, member, guild, shopProduct, callback) => {
-    const productMeta = JSON.parse(shopProduct.productMeta)
+      if (Array.isArray(missingInputs) && missingInputs.length > 0) return { code: 'ECO_BU05', missingInputs: missingInputs }
+    }
 
-    const { action, properties } = productMeta
-    const userInputs = {}
-    if ((Object.prototype.hasOwnProperty.call(shopProduct.productMeta, 'singlebuy') && shopProduct.productMeta.singlebuy)) {
-      let propertiesString = ''
-
-      if (properties && properties.length > 0) {
-        if (item.userInput) {
-          userInputRequirements.forEach(userInputRequirement => {
-            userInputs[userInputRequirement] = 1
-          })
-          item.userInput.forEach(property => {
-            property = property.split(':')
-            if (userInputs[property[0].trim()] && property[1]) {
-              userInputs[property[0]] = property[1].trim()
-            }
-          })
-          Object.keys(userInputs).forEach(userInput => {
-            if (!userInputs[userInput] || userInputs[userInput] === 1) {
-              delete userInputs[userInput]
-              propertiesString += ` ${userInput}`
-            }
-          })
-          if (propertiesString) {
-            callback(i18n(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+    if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
+      switch (action.type) {
+        case 'sendMessage': {
+          if (Object.prototype.hasOwnProperty.call(action, 'message') && Object.prototype.hasOwnProperty.call(action, 'channel')) {
+            guild.channels.fetch(action.channel).then(channel => {
+              if (channel) {
+                channel.send(StringPlaceholder(action.message, memberInputOrganized, { before: '#', after: '#' }) || 'Nothing')
+              } else {
+                throw new Error('ECO_ATI05')
+              }
+            })
           } else {
-
+            throw new Error('ECO_ATI07')
           }
-        } else {
-          userInputRequirements.forEach(userInputRequirement => { propertiesString += ` ${userInputRequirement}` })
-          callback(i18n(guild.locale, 'BUYPRODUCT_MISSING_PROPERTY', { PROPERTY: propertiesString }), false)
+          break
+        }
+        case 'giveRole': {
+          console.log('a')
+          if (Object.prototype.hasOwnProperty.call(action, 'role')) {
+            guild.roles.fetch(action.role).then(role => {
+              if (role) {
+                member.roles.add(role)
+              } else {
+                throw new Error('ECO_ATI06')
+              }
+            })
+          } else {
+            throw new Error('ECO_ATI07')
+          }
         }
       }
     }
-  }*/
+  }
 }
