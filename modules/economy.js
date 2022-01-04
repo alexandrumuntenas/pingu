@@ -206,7 +206,7 @@ module.exports = {
       switch (action.type) {
         case 'sendMessage': {
           if (Object.prototype.hasOwnProperty.call(action, 'message') && Object.prototype.hasOwnProperty.call(action, 'channel')) {
-            guild.channels.fetch(action.channel).then(channel => {
+                          guild.channels.fetch(action.channel).then((channel) => {
               if (channel) {
                 channel.send(StringPlaceholder(action.message, memberInputOrganized, { before: '#', after: '#' }) || 'Nothing')
               } else {
