@@ -68,7 +68,7 @@ module.exports = {
           }
         })
       } else {
-        throw new Error('ECO_XX01')
+        throw new Error("ECO_XX01")
       }
     })
   },
