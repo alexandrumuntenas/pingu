@@ -44,7 +44,7 @@ module.exports = {
       if (Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`) VALUES (?, ?)', [member.id, guild.id], (err) => {
+        client.pool.query("INSERT INTO `guildEconomyUserBank` (`member`, `guild`) VALUES (?, ?)", [member.id, guild.id], (err) => {
           if (err) client.logError(err)
           if (err) throw new Error('DB_ERROR')
           module.exports.getMemberInventoryAndBalance(client, member, guild, callback)
