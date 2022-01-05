@@ -3,6 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Loader, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const guildMemberRemove = require('../../events/guildMemberRemove').execute
+const updateGuildConfig = require('../../functions/updateGuildConfig')
 
 module.exports = {
   module: 'farewell',
@@ -21,27 +22,25 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
-        const sentEmbed = new MessageEmbed()
+        const configStatus = new MessageEmbed()
           .setColor('BLURPLE')
           .setTitle(i18n(locale, 'FAREWELL::VIEWCONFIG:EMBED:TITLE'))
           .setDescription(i18n(locale, 'FAREWELL::VIEWCONFIG:EMBED:DESCRIPTION'))
           .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.farewellChannel) || i18n(locale, 'UNSET')}`, true)
           .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${interaction.database.farewellMessage || i18n(locale, 'UNSET')}`, true)
 
-        interaction.editReply({ embeds: [sentEmbed] })
+        interaction.editReply({ embeds: [configStatus] })
         break
       }
       case 'setchannel': {
-        client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [interaction.options.getChannel('channel').id, interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'farewellChannel', value: interaction.options.getChannel('channel') }, (err) => {
           if (err) return interaction.editReply({ content: i18n(locale, 'FAREWELL::SETCHANNEL:ERROR') })
           interaction.editReply({ embeds: [Success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setmessage': {
-        client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [interaction.options.getString('message'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'farewellMessage', value: interaction.options.getString('message') }, (err) => {
           if (err) return interaction.editReply({ content: i18n(locale, 'FAREWELL::SETMESSAGE:ERROR') })
           interaction.editReply({ embeds: [Success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
@@ -59,35 +58,29 @@ module.exports = {
     if (Object.prototype.hasOwnProperty.call(message.args, '0') && Object.prototype.hasOwnProperty.call(message.args, '1')) {
       switch (message.args[0]) {
         case 'viewconfig': {
-          message.channel.send({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
-            const sentEmbed = new MessageEmbed()
+          message.reply({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
+            const configStatus = new MessageEmbed()
               .setColor('BLURPLE')
               .setTitle(i18n(locale, 'FAREWELL::VIEWCONFIG:EMBED:TITLE'))
               .setDescription(i18n(locale, 'FAREWELL::VIEWCONFIG:EMBED:DESCRIPTION'))
               .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.farewellChannel) || i18n(locale, 'UNSET')}`, true)
               .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${message.database.farewellMessage || i18n(locale, 'UNSET')}`, true)
 
-            _message.edit({ embeds: [sentEmbed] })
+            _message.edit({ embeds: [configStatus] })
           })
           break
         }
         case 'setchannel': {
-          client.pool.query('UPDATE `guildData` SET `farewellChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
-            if (err) client.logError(err)
-            if (err) return message.reply({ embeds: [Error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
+          updateGuildConfig(client, message.guild, { column: 'farewellChannel', value: message.mentions.channels.first().id }, (err) => {
+            if (err) return message.reply({ content: i18n(locale, 'FAREWELL::SETCHANNEL:ERROR') })
             message.reply({ embeds: [Success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
           })
           break
         }
         case 'setmessage': {
-          const filter = m => m.member.id === message.member.id
-          message.channel.send({ embeds: [Status(message, i18n(locale, 'FAREWELL::SETMESSAGE:ASKFORINPUT'))] })
-          message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-            client.pool.query('UPDATE `guildData` SET `farewellMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
-              if (err) client.logError(err)
-              if (err) message.channel.send({ embeds: [Error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
-              message.channel.send({ embeds: [Success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: collected.first().content }))] })
-            })
+          updateGuildConfig(client, message.guild, { column: 'farewellMessage', value: message.content.replace(`${message.database.guildPrefix}farewell setmessage `, '') }, (err) => {
+            if (err) message.reply({ embeds: [Error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.content.replace(`${message.database.guildPrefix}farewell setmessage `, '') }))] })
           })
           break
         }

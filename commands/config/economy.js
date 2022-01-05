@@ -2,6 +2,7 @@ const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
+const updateGuildConfig = require('../../functions/updateGuildConfig')
 
 module.exports = {
   module: 'economy',
@@ -18,16 +19,14 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setcoinname': {
-        client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [interaction.options.getString('coinname'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'economyCurrency', value: interaction.options.getString('coinname') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINNAME:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'ECCONOMY::SETCOINNAME:SUCCESS', { CURRENCY: interaction.options.getString('coinname') }))] })
         })
         break
       }
       case 'setcoinicon': {
-        client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [interaction.options.getString('coinicon'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'economyCurrencyIcon', value: interaction.options.getString('coinicon') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINICON:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'ECONOMY::SETCOINICON:SUCCESS', { CURRENCY: interaction.options.getString('coinicon') }))] })
         })
@@ -40,16 +39,14 @@ module.exports = {
     if (Object.prototype.hasOwnProperty.call(message.args, '0') && Object.prototype.hasOwnProperty.call(message.args, '1')) {
       switch (message.args[0]) {
         case 'setcoinname': {
-          client.pool.query('UPDATE `guildData` SET `economyCurrency` = ? WHERE `guild` = ?', [message.content.replace(`${message.database.guildPrefix}economy setcoinname `, ''), message.guild.id], (err) => {
-            if (err) client.logError(err)
-            if (err) message.reply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINNAME:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'ECONOMY::SETCOINNAME:SUCCESS', { CURRENCY: message.content.replace(`${message.database.guildPrefix}economy setcoinname `, '') }))] })
+          updateGuildConfig(client, message.guild, { column: 'economyCurrency', value: message.content.replace(`${message.database.guildPrefix}economy setcoinname `, '') }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINNAME:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'ECCONOMY::SETCOINNAME:SUCCESS', { CURRENCY: message.content.replace(`${message.database.guildPrefix}economy setcoinname `, '') }))] })
           })
           break
         }
         case 'setcoinicon': {
-          client.pool.query('UPDATE `guildData` SET `economyCurrencyIcon` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-            if (err) client.logError(err)
+          updateGuildConfig(client, message.guild, { column: 'economyCurrency', value: message.args[1] }, (err) => {
             if (err) return message.reply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINICON:ERROR'))] })
             message.reply({ embeds: [Success(i18n(locale, 'ECONOMY::SETCOINICON:SUCCESS', { CURRENCY: message.args[1] }))] })
           })
