@@ -190,6 +190,13 @@ module.exports = {
     writeFileSync(paths.attachmentSent, buffer)
 
     return paths
+  },
+  getLeaderboard (client, guild, callback) {
+    client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC LIMIT 25', [guild.id], (err, members) => {
+      if (err) client.logError(err)
+      if (callback && members && Object.prototype.hasOwnProperty.call(members, '1')) callback(members)
+      else callback()
+    })
   }
 }
 
