@@ -2,53 +2,49 @@
 const StringPlaceholder = require('string-placeholder')
 
 module.exports = {
-  getDailyMoney: async (client, member, guild, callback) => {
+  getDailyMoney: async (client, member, callback) => {
     const EgM = client.Sentry.startTransaction({
       op: 'economy.getDailyMoney',
       name: 'Economy (getDailyMoney)'
     })
     const dailyMoney = Math.round(Math.random() * (100 - 5) + 5)
 
-    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
-      client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(memberInventoryAndBalance.amount) + dailyMoney), member.id, guild.id], (err) => {
-        if (err) client.logError(err)
-        if (err) throw new Error('DB_ERROR')
-        if (callback && !err) callback(dailyMoney)
+    module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
+      module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.amount) + dailyMoney), () => {
+        if (callback) callback(dailyMoney)
       })
     })
     EgM.finish()
   },
-  getWorkMoney: async (client, member, guild, callback) => {
+  getWorkMoney: async (client, member, callback) => {
     const EgM = client.Sentry.startTransaction({
       op: 'economy.getWorkMoney',
       name: 'Economy (getWorkMoney)'
     })
     const workMoney = Math.floor(Math.random() * 1500) + 1000
 
-    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
-      client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [(parseInt(memberInventoryAndBalance.amount) + workMoney), member.id, guild.id], (err) => {
-        if (err) client.logError(err)
-        if (err) throw new Error('DB_ERROR')
-        if (callback && !err) callback(workMoney)
+    module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
+      module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.amount) + workMoney), () => {
+        if (callback) callback(workMoney)
       })
     })
     EgM.finish()
   },
-  getMemberInventoryAndBalance: async (client, member, guild, callback) => {
+  getMemberInventoryAndBalance: async (client, member, callback) => {
     const EfM = client.Sentry.startTransaction({
       op: 'economy.getMemberInventoryAndBalance',
       name: 'Economy (getMemberInventoryAndBalance)'
     })
-    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [guild.id, member.id], (err, rows) => {
+    client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [member.guild.id, member.id], (err, rows) => {
       if (err) client.logError(err)
       if (err) throw new Error('DB_ERROR')
       if (Object.prototype.hasOwnProperty.call(rows, 0)) {
         callback(rows[0])
       } else {
-        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`) VALUES (?, ?)', [member.id, guild.id], (err) => {
+        client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`) VALUES (?, ?)', [member.id, member.guild.id], (err) => {
           if (err) client.logError(err)
           if (err) throw new Error('DB_ERROR')
-          module.exports.getMemberInventoryAndBalance(client, member, guild, callback)
+          module.exports.getMemberInventoryAndBalance(client, member, callback)
         })
       }
     })
@@ -77,15 +73,15 @@ module.exports = {
       }
     })
   },
-  updateMemberBalance: (client, member, guild, newBalance, callback) => {
+  updateMemberBalance: (client, member, newBalance, callback) => {
     // TODO: Update column name from "amount" to "balance"
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, guild.id], (err) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, member.guild.id], (err) => {
       if (err) client.logError(err)
       if (callback) callback()
     })
   },
-  updateMemberInventory: (client, member, guild, newInventory, callback) => {
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [newInventory, member.id, guild.id], (err) => {
+  updateMemberInventory: (client, member, newInventory, callback) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [newInventory, member.id, member.guild.id], (err) => {
       if (err) client.logError(err)
       if (callback) callback()
     })
@@ -116,8 +112,8 @@ module.exports = {
 
     if (callback) callback(newInventory)
   },
-  checkIfMemberHasProduct: (client, member, guild, productId) => {
-    module.exports.getMemberInventoryAndBalance(client, member, guild, (memberInventoryAndBalance) => {
+  checkIfMemberHasProduct: (client, member, productId) => {
+    module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
       if (memberInventoryAndBalance.inventory) {
         const inventory = JSON.parse(memberInventoryAndBalance.inventory)
         if (Object.prototype.hasOwnProperty.call(inventory, productId)) {
@@ -130,7 +126,7 @@ module.exports = {
       }
     })
   },
-  executeItemFunctions: (client, member, guild, shopProduct, callback) => {
+  executeItemFunctions: (client, member, shopProduct, callback) => {
     // TODO: Change the column name from "productMeta" to "productProperties". The code changes will be commented and highlighted.
 
     const productProperties = JSON.parse(shopProduct.productMeta)
@@ -159,7 +155,7 @@ module.exports = {
         switch (action.type) {
           case 'sendMessage': {
             if (Object.prototype.hasOwnProperty.call(action, 'message') && Object.prototype.hasOwnProperty.call(action, 'channel')) {
-              guild.channels.fetch(action.channel).then(channel => {
+              member.guild.channels.fetch(action.channel).then(channel => {
                 if (channel) {
                   channel.send(StringPlaceholder(action.message, processedInputs, { before: '#', after: '#' }) || 'Nothing')
                   if (callback) callback()
@@ -174,7 +170,7 @@ module.exports = {
           }
           case 'giveRole': {
             if (Object.prototype.hasOwnProperty.call(action, 'role')) {
-              guild.roles.fetch(action.role).then(role => {
+              member.guild.roles.fetch(action.role).then(role => {
                 if (role) {
                   member.roles.add(role)
                   if (callback) callback()

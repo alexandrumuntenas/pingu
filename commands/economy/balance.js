@@ -9,7 +9,7 @@ module.exports = {
   cooldown: 5000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (user) => {
+      getMemberInventoryAndBalance(client, interaction.member, (user) => {
         interaction.editReply({ embeds: [Status(`**${interaction.user.tag}**: ${user.amount || 0} ${interaction.database.economyCurrency} ${interaction.database.economyCurrencyIcon}`)] })
       })
     } else {
@@ -18,7 +18,7 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
-      getMemberInventoryAndBalance(client, message.member, message.guild, (user) => {
+      getMemberInventoryAndBalance(client, message.member, (user) => {
         message.reply({ embeds: [Status(`**${message.member.user.tag}**: ${user.amount || 0} ${message.database.economyCurrency} ${message.database.economyCurrencyIcon}`)] })
       })
     } else {

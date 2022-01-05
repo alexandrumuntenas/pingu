@@ -10,7 +10,7 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       try {
-        getWorkMoney(client, interaction.member, interaction.guild, (money) => {
+        getWorkMoney(client, interaction.member, (money) => {
           interaction.editReply({ embeds: [Success(i18n(locale, 'WORK::SUCCESS', { MONEY: `${money} ${interaction.database.economyCurrencyIcon}` }))] })
         })
       } catch (err) {
@@ -24,7 +24,7 @@ module.exports = {
   executeLegacy: (client, locale, message) => {
     if (message.database.economyEnabled !== 0) {
       try {
-        getWorkMoney(client, message.member, message.guild, (money) => {
+        getWorkMoney(client, message.member, (money) => {
           message.reply({ embeds: [Success(i18n(locale, 'WORK::SUCCESS', { MONEY: `${money} ${message.database.economyCurrencyIcon}` }))] })
         })
       } catch (err) {

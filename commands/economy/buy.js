@@ -15,16 +15,16 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       if (interaction.options.getString('productname')) {
-        getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (memberInventoryAndBalance) => {
+        getMemberInventoryAndBalance(client, interaction.member, (memberInventoryAndBalance) => {
           getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (shopProduct) => {
             if (shopProduct) {
               if (memberInventoryAndBalance >= shopProduct.productPrice) {
-                if (checkIfMemberHasProduct(client, interaction.member, interaction.guild, shopProduct.productId)) {
+                if (checkIfMemberHasProduct(client, interaction.member, shopProduct.productId)) {
                   interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ALREADYOWN'))] })
                 }
                 addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
-                  updateMemberBalance(client, interaction.member, interaction.guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
-                  updateMemberInventory(client, interaction.member, interaction.guild, newInventory)
+                  updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+                  updateMemberInventory(client, interaction.member, newInventory)
                 })
               } else {
                 interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::NOMONEY', { ITEM: interaction.options.getString('productname') }))] })

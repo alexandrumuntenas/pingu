@@ -18,12 +18,14 @@ module.exports = {
     if (interaction.database.economyEnabled !== 0) {
       if (!interaction.options.getUser('user').bot) {
         if (parseInt(interaction.options.getNumber('amount')) > 0) {
-          getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (fromUserInventoryAndBalance) => {
+          getMemberInventoryAndBalance(client, interaction.member, (fromUserInventoryAndBalance) => {
             if (fromUserInventoryAndBalance.amount >= interaction.options.getNumber('amount')) {
-              getMemberInventoryAndBalance(client, interaction.options.getUser('user'), interaction.guild, (toUserInventoryAndBalance) => {
+              const toUser = interaction.options.getUser('user')
+              toUser.guild = interaction.member.guild
+              getMemberInventoryAndBalance(client, toUser, (toUserInventoryAndBalance) => {
                 try {
-                  updateMemberBalance(client, interaction.member, interaction.guild, (parseInt(fromUserInventoryAndBalance.amount) - interaction.options.getNumber('amount')))
-                  updateMemberBalance(client, interaction.options.getUser('user'), interaction.guild, (parseInt(toUserInventoryAndBalance.amount) + interaction.options.getNumber('amount')))
+                  updateMemberBalance(client, interaction.member, (parseInt(fromUserInventoryAndBalance.amount) - interaction.options.getNumber('amount')))
+                  updateMemberBalance(client, toUser, (parseInt(toUserInventoryAndBalance.amount) + interaction.options.getNumber('amount')))
                   interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: interaction.options.getUser('user') }))] })
                 } catch (err) {
                   client.logError(err)

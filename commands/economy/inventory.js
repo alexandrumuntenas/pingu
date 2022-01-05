@@ -10,7 +10,7 @@ module.exports = {
   cooldown: 1000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (account) => {
+      getMemberInventoryAndBalance(client, interaction.member, (account) => {
         const inventoryEmbed = new MessageEmbed()
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
           .setTitle(i18n(locale, 'INVENTORY::EMBED:TITLE'))
@@ -27,7 +27,7 @@ module.exports = {
                 const product = inventoryData[productId]
                 getShopProduct(client, interaction.guild, productId, (productData) => {
                   inventoryDataProductsIndex++
-                  if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - ${productData.productId} (x${product})\n`
+                  if (productData && product !== -1) inventoryString += `${productData.productName || 'Non existent item'} - (x${product})\n`
                   if (inventoryDataProductsIndex === inventoryDataProducts.length) {
                     if (!inventoryString) inventoryEmbed.setImage('https://cdn.discordapp.com/attachments/908413370665938975/927155718115688488/empty_inventory.png')
                     else { inventoryEmbed.setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/917086976744767498/inventory_chest.png') }

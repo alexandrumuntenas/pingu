@@ -10,7 +10,7 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       try {
-        getDailyMoney(client, interaction.member, interaction.guild, (money) => {
+        getDailyMoney(client, interaction.member, (money) => {
           interaction.editReply({ embeds: [Success(i18n(locale, 'DAILY', { REWARD: `${money} ${interaction.database.economyCurrencyIcon}` }))] })
         })
       } catch (err) {
@@ -24,7 +24,7 @@ module.exports = {
   executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       try {
-        getDailyMoney(client, message.member, message.guild, (money) => {
+        getDailyMoney(client, message.member, (money) => {
           message.reply({ embeds: [Success(i18n(locale, 'DAILY', { REWARD: `${money} ${message.database.economyCurrencyIcon}` }))] })
         })
       } catch (err) {
