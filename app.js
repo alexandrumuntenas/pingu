@@ -30,8 +30,6 @@ const commands = require('./functions/commands')
 const thirdparty = require('./modules/thirdparty')
 client.log.success('Servicios Third-Party Cargados')
 
-thirdparty(client)
-
 // Bot
 if (process.env.ENTORNO === 'public') {
   Sentry.init({
@@ -39,6 +37,7 @@ if (process.env.ENTORNO === 'public') {
     tracesSampleRate: 1.0,
     environment: 'production'
   })
+  thirdparty(client)
   client.login(process.env.PUBLIC_TOKEN)
 } else {
   Sentry.init({
