@@ -44,6 +44,7 @@
   "CCMD::REMOVE:SUCCESS": "The custom command %COMMAND%.",
   "CHANNEL": "Channel",
   "COMMAND::NOAVALIABLE": "Command not available.",
+  "COOLDOWN": "You cannot use this command at this time! You must wait %COOLDOWN%.",
   "DAILY": "Here is your daily reward: %REWARD%",
   "DIFFICULTY": "Difficulty",
   "DISABLED": "Disabled",

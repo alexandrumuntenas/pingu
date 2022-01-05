@@ -44,6 +44,7 @@
   "CCMD::REMOVE:SUCCESS": "Se ha eliminado correctamente el comando personalizado %COMMAND%.",
   "CHANNEL": "Canal",
   "COMMAND::NOAVALIABLE": "Comando no disponible.",
+  "COOLDOWN": "¡No puedes usar este comando en este momento! Debes esperar %COOLDOWN%.",
   "DAILY": "Aquí está tu recompensa diaria: %REWARD%.",
   "DIFFICULTY": "Dificultad",
   "DISABLED": "Desactivado",

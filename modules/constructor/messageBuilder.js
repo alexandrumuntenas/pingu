@@ -37,6 +37,12 @@ module.exports.Image = (imageURL, imageProvider) => {
     .setDescription(`:frame_photo: Image via ${imageProvider} API.`)
 }
 
+module.exports.Timer = (message) => {
+  return new MessageEmbed()
+    .setColor('#2F3136')
+    .setDescription(`<:wait:928374551182721044> ${message}`)
+}
+
 /**
 * Devuelve un mensaje enriquecido con información del comando
 * @param {String} commandName Nombre del comando
