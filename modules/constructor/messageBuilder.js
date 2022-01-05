@@ -31,6 +31,12 @@ module.exports.Info = (message) => {
     .setDescription(`:information_source: ${message}`)
 }
 
+module.exports.Image = (imageURL, imageProvider) => {
+  return new MessageEmbed()
+    .setImage(imageURL)
+    .setDescription(`:frame_photo: Image via ${imageProvider} API.`)
+}
+
 /**
 * Devuelve un mensaje enriquecido con información del comando
 * @param {String} commandName Nombre del comando
