@@ -20,13 +20,17 @@ module.exports = {
       const amount = interaction.options.getNumber('amount')
       if (!userToSendMoney.bot) {
         if (parseInt(amount) > 0) {
-          makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
-            if (status) {
-              interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: userToSendMoney }))] })
-            } else {
-              interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::NOMONEY'))] })
-            }
-          })
+          try {
+            makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
+              if (status) {
+                interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: userToSendMoney }))] })
+              } else {
+                interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::NOMONEY'))] })
+              }
+            })
+          } catch (err) {
+            interaction.editReply({ embeds: [Error(i18n(locale, err))] })
+          }
         } else {
           interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::INAVLIDAMOUNT'))] })
         }

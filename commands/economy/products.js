@@ -2,7 +2,7 @@ const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const { fetchShopProduct } = require('../../modules/economy')
+const { getShopProduct } = require('../../modules/economy')
 
 module.exports = {
   module: 'economy',
@@ -42,7 +42,7 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'collectionable': {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
             const productMeta = {}
 
@@ -56,13 +56,13 @@ module.exports = {
               interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break
       }
       case 'role': {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
             const productMeta = {}
 
@@ -78,16 +78,16 @@ module.exports = {
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)
               if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
-              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getRole('role') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXITS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXITS', { PRODUCT: interaction.options.getString('role') }))] })
           }
         })
         break
       }
       case 'message': {
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
+        getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
             const productMeta = {}
 
@@ -105,10 +105,10 @@ module.exports = {
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)
               if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:ERROR'))] })
-              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCT::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('name') }))] })
+              interaction.editReply({ embeds: [Success(i18n(locale, 'PRODUCTS::CREATE:SUCCESS', { PRODUCT: interaction.options.getString('message') }))] })
             })
           } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCT::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'PRODUCTS::CREATE:EXISTS', { PRODUCT: interaction.options.getString('name') }))] })
           }
         })
         break

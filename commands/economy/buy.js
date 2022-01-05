@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { buyItem, fetchShopProduct } = require('../../modules/economy')
-const { Error, Success } = require('../../modules/constructor/messageBuilder')
+const { getMemberInventoryAndBalance, getShopProduct, checkIfMemberHasProduct, addItemToMemberInventory, updateMemberBalance, updateMemberInventory } = require('../../modules/economy')
+const { Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -15,20 +15,24 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       if (interaction.options.getString('productname')) {
-        interaction.guild.locale = locale
-        fetchShopProduct(client, interaction.guild, interaction.options.getString('productname'), (productData) => {
-          if (productData) {
-            if (interaction.options.getString('properties')) productData.userInput = interaction.options.getString('properties').split(',')
-            buyItem(client, interaction.member, interaction.guild, productData, (status) => {
-              if (status.code) {
-                interaction.editReply({ embeds: [Success(status.ia || i18n(locale, 'BUY::SUCCESS', { ITEM: productData.productName }))] })
+        getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (memberInventoryAndBalance) => {
+          getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (shopProduct) => {
+            if (shopProduct) {
+              if (memberInventoryAndBalance >= shopProduct.productPrice) {
+                if (checkIfMemberHasProduct(client, interaction.member, interaction.guild, shopProduct.productId)) {
+                  interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ALREADYOWN'))] })
+                }
+                addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
+                  updateMemberBalance(client, interaction.member, interaction.guild, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+                  updateMemberInventory(client, interaction.member, interaction.guild, newInventory)
+                })
               } else {
-                interaction.editReply({ embeds: [Error(status.ia || i18n(locale, 'BUY::NOMONEY', { ITEM: productData.productName }))] })
+                interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::NOMONEY', { ITEM: interaction.options.getString('productname') }))] })
               }
-            })
-          } else {
-            interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::NOTFOUND', { ITEM: interaction.options.getString('productname') }))] })
-          }
+            } else {
+              interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::NOTFOUND', { ITEM: interaction.options.getString('productname') }))] })
+            }
+          })
         })
       } else {
         client.commands.get('shop').executeInteraction(client, locale, interaction)

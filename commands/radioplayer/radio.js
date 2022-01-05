@@ -28,8 +28,8 @@ module.exports = {
           }
         })
         player.play(resource)
-        const subscription = connection.subscribe(player)
-        interaction.editReply({ embeds: [Success(i18n(locale, 'RADIO_FOUND_PLAYING', { station: stations[0].name }))] })
+        connection.subscribe(player)
+        interaction.editReply({ embeds: [Success(i18n(locale, 'RADIO::TOPLAY', { RADIO: stations[0].name }))] })
       } else {
         interaction.editReply({ embeds: [Error(i18n(locale, 'RADIO_NOTFOUND'))] })
       }
