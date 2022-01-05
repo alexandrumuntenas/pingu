@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const { makeMoneyTransferToUser } = require('../../modules/economy')
+const { getMemberInventoryAndBalance, updateMemberBalance } = require('../../modules/economy')
 
 module.exports = {
   module: 'economy',
@@ -16,21 +16,24 @@ module.exports = {
     .addNumberOption(option => option.setName('amount').setDescription('The amount of money to send.').setRequired(true)),
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      const userToSendMoney = interaction.options.getUser('user')
-      const amount = interaction.options.getNumber('amount')
-      if (!userToSendMoney.bot) {
-        if (parseInt(amount) > 0) {
-          try {
-            makeMoneyTransferToUser(client, interaction.guild, interaction.member, userToSendMoney, amount, (status) => {
-              if (status) {
-                interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: userToSendMoney }))] })
-              } else {
-                interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::NOMONEY'))] })
-              }
-            })
-          } catch (err) {
-            interaction.editReply({ embeds: [Error(i18n(locale, err))] })
-          }
+      if (!interaction.options.getUser('user').bot) {
+        if (parseInt(interaction.options.getNumber('amount')) > 0) {
+          getMemberInventoryAndBalance(client, interaction.member, interaction.guild, (fromUserInventoryAndBalance) => {
+            if (fromUserInventoryAndBalance.amount >= interaction.options.getNumber('amount')) {
+              getMemberInventoryAndBalance(client, interaction.options.getUser('user'), interaction.guild, (toUserInventoryAndBalance) => {
+                try {
+                  updateMemberBalance(client, interaction.member, interaction.guild, (parseInt(fromUserInventoryAndBalance.amount) - interaction.options.getNumber('amount')))
+                  updateMemberBalance(client, interaction.options.getUser('user'), interaction.guild, (parseInt(toUserInventoryAndBalance.amount) + interaction.options.getNumber('amount')))
+                  interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: interaction.options.getUser('user') }))] })
+                } catch (err) {
+                  client.logError(err)
+                  interaction.editReply({ embeds: [Error(i18n(locale, 'ERROR'))] })
+                }
+              })
+            } else {
+              interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::NOENOUGHMONEY'))] })
+            }
+          })
         } else {
           interaction.editReply({ embeds: [Error(i18n(locale, 'TRANSFER::INAVLIDAMOUNT'))] })
         }

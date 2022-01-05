@@ -57,22 +57,6 @@ module.exports = {
   getLeaderboard: (client, message) => {
 
   },
-  makeMoneyTransferToUser: (client, guild, fromUser, toUser, moneyToTransfer, callback) => {
-    module.exports.getMemberInventoryAndBalance(client, fromUser, guild, (fromUserInventoryAndBalance) => {
-      if (fromUserInventoryAndBalance.amount >= moneyToTransfer) {
-        module.exports.getMemberInventoryAndBalance(client, toUser, guild, (toUserInventoryAndBalance) => {
-          try {
-            module.exports.updateMemberBalance(client, fromUser, guild, (parseInt(fromUserInventoryAndBalance.amount) - moneyToTransfer))
-            module.exports.updateMemberBalance(client, fromUser, guild, (parseInt(toUserInventoryAndBalance.amount) + moneyToTransfer))
-          } catch (err) {
-            client.logError(err)
-          }
-        })
-      } else {
-        throw new Error('ECO_XX01')
-      }
-    })
-  },
   fetchShopProducts: (client, guild, callback) => {
     client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, shopProducts) => {
       if (err) client.logError(err)
