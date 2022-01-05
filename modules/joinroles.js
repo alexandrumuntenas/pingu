@@ -6,7 +6,8 @@ module.exports = {
     })
     client.pool.query('INSERT INTO `guildJoinRoles` (`guild`, `roleID`) VALUES (?, ?)', [data.guild.id, data.role.id], (err) => {
       if (err) client.logError(err)
-      if (callback) callback(err)
+      if (callback && err) callback(err)
+      if (callback && !err) callback()
       aJR.finish()
     })
   },
@@ -17,7 +18,8 @@ module.exports = {
     })
     client.pool.query('DELETE FROM `guildJoinRoles` WHERE `guild` = ? AND roleID = ?', [data.guild.id, data.role.id], (err) => {
       if (err) client.logError(err)
-      if (callback) callback(err)
+      if (callback && err) callback(err)
+      if (callback && !err) callback()
       rJR.finish()
     })
   },

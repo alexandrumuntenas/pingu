@@ -38,7 +38,6 @@ module.exports = {
       }
       case 'add': {
         addJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, (err) => {
-          if (err) client.logError(err)
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'JOINROLES::ADD:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES::ADD:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
@@ -46,7 +45,6 @@ module.exports = {
       }
       case 'remove': {
         removeJoinRole(client, { guild: interaction.guild, role: interaction.options.getRole('role') }, (err) => {
-          if (err) client.logError(err)
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'JOINROLES::REMOVE:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:ERROR', { ROLE: interaction.options.getRole('role') }))] })
         })
@@ -78,7 +76,6 @@ module.exports = {
         case 'add': {
           if (message.mentions.roles.first()) {
             message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, (err) => {
-              if (err) client.logError(err)
               if (err) return message.reply({ embeds: [Error(i18n(locale, 'JOINROLES::ADD:ERROR'))] })
               message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::ADD:SUCCESS', { ROLE: role }))] })
             }))
@@ -90,7 +87,6 @@ module.exports = {
         case 'remove': {
           if (message.mentions.roles.first()) {
             message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, (err) => {
-              if (err) client.logError(err)
               if (err) return message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:ERROR'))] })
               message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:SUCCESS', { ROLE: role }))] })
             }))
