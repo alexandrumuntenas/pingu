@@ -24,13 +24,10 @@ module.exports = {
           if (err) client.logError(err)
           if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
             result.filter(r => r.member === member.id).forEach(r => { adata.rank = r.rnk })
-            callback(adata)
+            if (callback) callback(adata)
           } else {
             client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
-              if (err) {
-                client.logError(err)
-                client.log.error(err)
-              }
+              if (err) client.logError(err)
               module.exports.getMember(client, member, callback)
             })
           }
@@ -102,7 +99,7 @@ module.exports = {
     }
     lRU.finish()
   },
-  generateRankCard: async (client, member, locale, database) => {
+  generateRankCard: async (member, guildConfig) => {
     const uniqueIdentifiers = {
       userAvatar: randomstring.generate({ charset: 'alphabetic' }),
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
@@ -117,19 +114,19 @@ module.exports = {
 
     // Establecer fondo del canvas
     let imgPath = ''
-    if (database.levelsImageCustomBackground && isValidUrl(database.levelsImageCustomBackground) && isImageUrl(database.levelsImageCustomBackground)) {
-      imgPath = database.levelsImageCustomBackground
+    if (guildConfig.levelsImageCustomBackground && isValidUrl(guildConfig.levelsImageCustomBackground) && isImageUrl(guildConfig.levelsImageCustomBackground)) {
+      imgPath = guildConfig.levelsImageCustomBackground
       const background = await loadImage(imgPath)
       const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
       ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
 
       // Establecer blured overlay
-      ctx.fillStyle = hexToRgba(database.levelsImageCustomOverlayColor || '#272934', (database.levelsImageCustomOpacity / 100))
+      ctx.fillStyle = hexToRgba(guildConfig.levelsImageCustomOverlayColor || '#272934', (guildConfig.levelsImageCustomOpacity / 100))
       ctx.fillRect(25, 25, 1050, 270)
-      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, database.levelsImageCustomBlur)
+      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, guildConfig.levelsImageCustomBlur)
       /* Next Release: 22T2
       ctx.fillRect(25, 25, 1050, 250)
-      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 250, database.levelsImageCustomBlur)
+      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 250, guildConfig.levelsImageCustomBlur)
       */
     } else {
       ctx.fillStyle = '#272934'
@@ -150,7 +147,7 @@ module.exports = {
     ctx.fillText(`Rank #${member.levelData.rank}  Level ${millify(member.levelData.memberLevel)}`, 1050, 100)
 
     // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)} XP`
+    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)} XP`
 
     ctx.font = '30px "Montserrat SemiBold"'
     ctx.textAlign = 'right'
@@ -165,7 +162,7 @@ module.exports = {
     // Añadir barra de progreso
 
     ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)) * 555), 70)
+    ctx.fillRect(295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70)
 
     // Escribir progreso actual (porcentaje)
 
@@ -174,7 +171,7 @@ module.exports = {
     ctx.fillRect(0, 300, 1100, 20)
 
     ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(0, 300, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * database.levelsDifficulty) * 100)) * 1100), 20)
+    ctx.fillRect(0, 300, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 1100), 20)
 
     */
 
