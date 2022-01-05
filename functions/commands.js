@@ -22,7 +22,7 @@ module.exports.loadCommands = (client) => {
     for (const file of files) {
       const path = `${directory}/${file}`
 
-      if (file.endsWith('.js')) {
+      if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
         if (command.name) {
           commands.set(command.name, command)
@@ -60,7 +60,7 @@ module.exports.loadInteractions = (client) => {
     for (const file of files) {
       const path = `${directory}/${file}`
 
-      if (file.endsWith('.js')) {
+      if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const interaction = require(`.${path}`)
         if (interaction.name) {
           interactions.push({ module: interaction.module, isConfigCommand: interaction.isConfigCommand || false, interaction: interaction.interactionData || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set') })
