@@ -15,5 +15,14 @@ module.exports = {
     } else {
       interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
+  },
+  executeLegacy (client, locale, message) {
+    if (message.database.economyEnabled !== 0) {
+      getMemberInventoryAndBalance(client, message.member, message.guild, (user) => {
+        message.reply({ embeds: [Status(`**${message.member.user.tag}**: ${user.amount || 0} ${message.database.economyCurrency} ${message.database.economyCurrencyIcon}`)] })
+      })
+    } else {
+      message.reply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
+    }
   }
 }

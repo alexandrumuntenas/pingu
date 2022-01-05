@@ -20,5 +20,19 @@ module.exports = {
     } else {
       interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
+  },
+  executeLegacy: (client, locale, message) => {
+    if (message.database.economyEnabled !== 0) {
+      try {
+        getWorkMoney(client, message.member, message.guild, (money) => {
+          message.reply({ embeds: [Success(i18n(locale, 'WORK::SUCCESS', { MONEY: `${money} ${message.database.economyCurrencyIcon}` }))] })
+        })
+      } catch (err) {
+        client.log.error(err)
+        message.reply({ embeds: [Error(i18n(locale, 'ERROR'))] })
+      }
+    } else {
+      message.reply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
+    }
   }
 }
