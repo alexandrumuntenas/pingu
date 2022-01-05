@@ -1,6 +1,6 @@
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const guildFetchData = require('../functions/guildFetchData')
+const getGuildConfig = require('../functions/getGuildConfig')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {
@@ -21,7 +21,7 @@ module.exports = {
     if (client.statcord) client.statcord.autopost()
     setInterval(() => {
       client.guilds.cache.forEach(async (guild) => {
-        guildFetchData(client, guild.id, (data) => {
+        getGuildConfig(client, guild.id, (data) => {
           client.log.info(`Deploying commands to ${guild.id}`)
           let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
           if (data.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []

@@ -1,6 +1,6 @@
 const { cooldown } = require('../functions/commands')
 const { Error } = require('../modules/constructor/messageBuilder')
-const guildFetchData = require('../functions/guildFetchData')
+const getGuildConfig = require('../functions/getGuildConfig')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
@@ -23,7 +23,7 @@ module.exports.isCommand = async (client, interaction) => {
     interaction.channel.type === 'dm' ||
     interaction.author === client.user
   ) return
-  guildFetchData(client, interaction.guild, async (guildData) => {
+  getGuildConfig(client, interaction.guild, async (guildData) => {
     interaction.database = guildData
     if (client.commands.has(commandName)) {
       const commandToExecute = client.commands.get(commandName)
