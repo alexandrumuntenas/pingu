@@ -1,6 +1,5 @@
-const { MessageEmbed } = require('discord.js')
 const { getWorkMoney } = require('../../modules/economy')
-const { Error } = require('../../modules/constructor/messageBuilder')
+const { Success, Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -10,14 +9,14 @@ module.exports = {
   cooldown: 3600000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      getWorkMoney(client, interaction.member, interaction.guild, (money) => {
-        const inventoryEmbed = new MessageEmbed()
-          .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
-          .setColor('#2F3136')
-          .setDescription(i18n(locale, 'WORK::SUCCESS', { MONEY: `${money} ${interaction.database.economyCurrencyIcon}` }))
-          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-        interaction.editReply({ embeds: [inventoryEmbed] })
-      })
+      try {
+        getWorkMoney(client, interaction.member, interaction.guild, (money) => {
+          interaction.editReply({ embeds: [Success(i18n(locale, 'WORK::SUCCESS', { MONEY: `${money} ${interaction.database.economyCurrencyIcon}` }))] })
+        })
+      } catch (err) {
+        client.log.error(err)
+        interaction.editReply({ embeds: [Error(i18n(locale, 'ERROR'))] })
+      }
     } else {
       interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
