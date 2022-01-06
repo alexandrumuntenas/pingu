@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { getMemberInventoryAndBalance, getShopProduct, checkIfMemberHasProduct, addItemToMemberInventory, updateMemberBalance, updateMemberInventory } = require('../../modules/economy')
+const { getMemberInventoryAndBalance, getShopProduct, checkIfMemberHasProduct, addItemToMemberInventory, updateMemberBalance, updateMemberInventory, checkIfTheProductShouldOnlyBePurchasedOnce, executeItemFunctions } = require('../../modules/economy')
 const { Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
@@ -10,8 +10,7 @@ module.exports = {
   cooldown: 5000,
   interactionData: new SlashCommandBuilder()
     .setName('buy').setDescription('💳 Buy a shop product')
-    .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to buy'))
-    .addStringOption(option => option.setName('properties').setDescription('Additional properties needed to buy the product')),
+    .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to buy')),
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       if (interaction.options.getString('productname')) {
@@ -19,12 +18,16 @@ module.exports = {
           getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (shopProduct) => {
             if (shopProduct) {
               if (memberInventoryAndBalance >= shopProduct.productPrice) {
-                if (checkIfMemberHasProduct(client, interaction.member, shopProduct.productId)) {
+                if (checkIfTheProductShouldOnlyBePurchasedOnce(client, shopProduct.shopId, interaction.guild) && checkIfMemberHasProduct(client, interaction.member, shopProduct.productId)) {
                   interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ALREADYOWN'))] })
                 }
-                addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
-                  updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
-                  updateMemberInventory(client, interaction.member, newInventory)
+                if (interaction.options.getString('properties')) interaction.member.inputs = interaction.options.getString('properties')
+                executeItemFunctions(client, interaction.member, shopProduct, (err) => {
+                  if (err) return interaction.editReply({ embeds: [Error(i18n(locale, `BUY::${err.message}`))] })
+                  addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
+                    updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+                    updateMemberInventory(client, interaction.member, newInventory)
+                  })
                 })
               } else {
                 interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::NOMONEY', { ITEM: interaction.options.getString('productname') }))] })
