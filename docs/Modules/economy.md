@@ -35,15 +35,19 @@ This module can be only used using Slash Commands.
 | --- | --- | --- |
 | /products create colletionable name:\<name of the product> price:\<price of the product> singlebuy:\<true/false> (···)| Create a collectionable product. | /products create collectionable name:Star price:400 singlebuy:true |
 | /products create role name:\<name of the product> price:\<price of the product> singlebuy:\<true/false> role:\<role> | Create a products that gives a role. | /products create role name: ROLE32 price: 1 singlebuy: true role: @newrole |
-| /products create message | Create a product that sends a message to a channel | /products create message name:Get 1000$ in MC Server price:1000 singlebuy:False message:Example destination:#📬・announcements <br><br> /products create message name:Say Hi in Server price:4001 singlebuy:False message:Hi from #USER# destination:#:mailbox_with_mail:・announcements properties:USER  |
+| /products create message | Create a product that sends a message to a channel | /products create message name:Get 1000$ in MC Server price:1000 singlebuy:False message:Example destination:#📬・announcements |
 | /products delete name:\<name of the product> | Delete a product. | /products delete name: EX4 |
 
 ## User commands
 
 | Command | Function | Example |
 | --- | --- | --- |
-| /buy name:\<name of the product> properties:\<properties of the command> | Command to buy a product. | /buy name: Get 1000$ in MC Server <br><br> /buy name:Say Hi properties: USER:Guilda |
+| /buy name:\<name of the product> properties:\<properties of the command> | Command to buy a product. | /buy name: Get 1000$ in MC Server |
 | /balance | Command to see your balance. | /balance |
 | /inventory | Command to see your inventory. | /inventory |
 | /work | Command to work. | /work |
 | /daily | Command to get your daily reward. | /daily |
+
+!!!
+The user commands do have their own prefix version!
+!!!
