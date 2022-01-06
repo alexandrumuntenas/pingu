@@ -124,10 +124,6 @@ module.exports = {
       ctx.fillStyle = hexToRgba(guildConfig.levelsImageCustomOverlayColor || '#272934', (guildConfig.levelsImageCustomOpacity / 100))
       ctx.fillRect(25, 25, 1050, 270)
       StackBlur.canvasRGBA(canvas, 25, 25, 1050, 270, guildConfig.levelsImageCustomBlur)
-      /* Next Release: 22T2
-      ctx.fillRect(25, 25, 1050, 250)
-      StackBlur.canvasRGBA(canvas, 25, 25, 1050, 250, guildConfig.levelsImageCustomBlur)
-      */
     } else {
       ctx.fillStyle = '#272934'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -164,24 +160,10 @@ module.exports = {
     ctx.fillStyle = 'rgb(255,255,255)'
     ctx.fillRect(295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70)
 
-    // Escribir progreso actual (porcentaje)
-
-    /* Next Release: 22T2
-    ctx.fillStyle = 'rgba(255,255,255, 0.4)'
-    ctx.fillRect(0, 300, 1100, 20)
-
-    ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(0, 300, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 1100), 20)
-
-    */
-
     // Añadir avatar de usuario
 
     const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
     ctx.drawImage(avatar, 50, 50, 220, 220)
-    /* Next Release: 22T2
-    ctx.drawImage(avatar, 50, 50, 200, 200)
-    */
 
     const buffer = canvas.toBuffer('image/png')
     writeFileSync(paths.attachmentSent, buffer)

@@ -11,11 +11,6 @@ module.exports.loadCommands = (client) => {
 
   load('./commands')
 
-  /**
-   * Load Pingu Commands
-   * @param {collection} collection Discord Collection for Commands
-   * @param {directory} directory The Directory Where Commands are stored
-   */
   async function load (directory) {
     const files = fs.readdirSync(directory)
 
@@ -49,11 +44,6 @@ module.exports.loadInteractions = (client) => {
 
   load('./commands')
 
-  /**
-   * Load Pingu Interactions
-   * @param {collection} collection Discord Collection for Interactions
-   * @param {directory} directory The Directory Where Interactions are stored
-   */
   async function load (directory) {
     const files = fs.readdirSync(directory)
 
