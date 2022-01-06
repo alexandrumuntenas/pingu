@@ -111,32 +111,32 @@ module.exports = {
 
     if (callback) callback(newInventory)
   },
-  checkIfMemberHasProduct: (client, member, productId) => {
+  checkIfMemberHasProduct: (client, member, productId, callback) => {
     module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
       if (memberInventoryAndBalance.inventory) {
         const inventory = JSON.parse(memberInventoryAndBalance.inventory)
         if (Object.prototype.hasOwnProperty.call(inventory, productId)) {
-          return true
+          return callback(true)
         } else {
-          return false
+          return callback(false)
         }
       } else {
-        return false
+        return callback(false)
       }
     })
   },
-  checkIfTheProductShouldOnlyBePurchasedOnce: (client, productNameOrId, guild) => {
+  checkIfTheProductShouldOnlyBePurchasedOnce: (client, productNameOrId, guild, callback) => {
     module.exports.getShopProduct(client, guild, productNameOrId, (shopProduct) => {
       if (shopProduct) {
         const { singlebuy } = JSON.parse(shopProduct.productMeta)
         // TODO: Replace Singlebuy with buyOnlyOne
         if (singlebuy) {
-          return true
+          return callback(true)
         } else {
-          return false
+          return callback(false)
         }
       } else {
-        return false
+        return callback(false)
       }
     })
   },

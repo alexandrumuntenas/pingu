@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { getMemberInventoryAndBalance, getShopProduct, checkIfMemberHasProduct, addItemToMemberInventory, updateMemberBalance, updateMemberInventory, checkIfTheProductShouldOnlyBePurchasedOnce, executeItemFunctions } = require('../../modules/economy')
-const { Error } = require('../../modules/constructor/messageBuilder')
+const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -18,15 +18,17 @@ module.exports = {
           getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (shopProduct) => {
             if (shopProduct) {
               if (memberInventoryAndBalance >= shopProduct.productPrice) {
-                if (checkIfTheProductShouldOnlyBePurchasedOnce(client, shopProduct.shopId, interaction.guild) && checkIfMemberHasProduct(client, interaction.member, shopProduct.productId)) {
-                  interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ALREADYOWN'))] })
-                }
-                if (interaction.options.getString('properties')) interaction.member.inputs = interaction.options.getString('properties')
+                checkIfTheProductShouldOnlyBePurchasedOnce(client, shopProduct.shopId, interaction.guild, (shouldBeOnlyPurchasedOnce) => {
+                  checkIfMemberHasProduct(client, interaction.member, shopProduct.productId, (memberHasProduct) => {
+                    if (shouldBeOnlyPurchasedOnce && memberHasProduct) return interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ALREADYOWN'))] })
+                  })
+                })
                 executeItemFunctions(client, interaction.member, shopProduct, (err) => {
                   if (err) return interaction.editReply({ embeds: [Error(i18n(locale, `BUY::${err.message}`))] })
                   addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
                     updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
                     updateMemberInventory(client, interaction.member, newInventory)
+                    interaction.editReply({ embeds: [Success(i18n(locale, 'BUY::SUCCESS', { ITEM: interaction.options.getString('productname') }))] })
                   })
                 })
               } else {
