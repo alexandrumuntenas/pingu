@@ -1,7 +1,6 @@
 const { Error } = require('../../modules/constructor/messageBuilder')
-const { fetchMember } = require('../../modules/levels')
+const { getMember, generateRankCard } = require('../../modules/levels')
 const { MessageAttachment } = require('discord.js')
-const { rankCard } = require('../../modules/canvasProcessing')
 const tempFileRemover = require('../../functions/tempFileRemover')
 
 module.exports = {
@@ -11,19 +10,15 @@ module.exports = {
   description: '⭐ Check your level',
   executeInteraction (client, locale, interaction) {
     if (interaction.database.levelsEnabled !== 0) {
-      fetchMember(client, interaction.member, (data) => {
-        if (data) {
-          interaction.member.levelData = data
-          interaction.member.tag = `${interaction.user.username}#${interaction.user.discriminator}`
-          rankCard(client, interaction.member, locale, interaction.database).then((paths) => {
-            const attachmentSent = new MessageAttachment(paths.attachmentSent)
-            interaction.editReply({ files: [attachmentSent] }).then(() => {
-              tempFileRemover(paths)
-            })
+      getMember(client, interaction.member, (data) => {
+        interaction.member.levelData = data
+        interaction.member.tag = `${interaction.user.username}#${interaction.user.discriminator}`
+        generateRankCard(interaction.member, interaction.database).then((paths) => {
+          const attachmentSent = new MessageAttachment(paths.attachmentSent)
+          interaction.editReply({ files: [attachmentSent] }).then(() => {
+            tempFileRemover(paths)
           })
-        } else {
-          interaction.editReply({ embeds: [Error(locale, 'RANK::NOCLASSIFIED')] })
-        }
+        })
       })
     } else {
       interaction.editReply({ embeds: [Error(locale, 'COMMAND::NOAVALIABLE')] })
@@ -31,19 +26,15 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     if (message.database.levelsEnabled !== 0) {
-      fetchMember(client, message.member, (data) => {
-        if (data) {
-          message.member.levelData = data
-          message.member.tag = message.author.tag
-          rankCard(client, message.member, locale, message.database).then((paths) => {
-            const attachmentSent = new MessageAttachment(paths.attachmentSent)
-            message.channel.send({ files: [attachmentSent] }).then(() => {
-              tempFileRemover(paths)
-            })
+      getMember(client, message.member, (data) => {
+        message.member.levelData = data
+        message.member.tag = message.author.tag
+        generateRankCard(message.member, message.database).then((paths) => {
+          const attachmentSent = new MessageAttachment(paths.attachmentSent)
+          message.channel.send({ files: [attachmentSent] }).then(() => {
+            tempFileRemover(paths)
           })
-        } else {
-          message.reply({ embeds: [Error(locale, 'RANK::NOCLASSIFIED')] })
-        }
+        })
       })
     } else {
       message.reply({ embeds: [Error(locale, 'COMMAND::NOAVALIABLE')] })

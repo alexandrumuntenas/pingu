@@ -1,8 +1,8 @@
 const { cooldown } = require('../functions/commands')
-const { Status, Error } = require('../modules/constructor/messageBuilder')
+const { Status, Error, Timer } = require('../modules/constructor/messageBuilder')
 const i18n = require('../i18n/i18n')
 const autoresponder = require('../modules/autoresponder')
-const guildFetchData = require('../functions/guildFetchData')
+const getGuildConfig = require('../functions/getGuildConfig')
 const { rankUp } = require('../modules/levels')
 const humanizeduration = require('humanize-duration')
 const customcommands = require('../modules/customcommands')
@@ -15,7 +15,7 @@ module.exports = {
       message.author.bot ||
       message.author === client.user
     ) return
-    guildFetchData(client, message.guild, async (guildData) => {
+    getGuildConfig(client, message.guild, async (guildData) => {
       message.database = guildData
       if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
         message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
@@ -40,7 +40,7 @@ module.exports = {
                 message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))] })
               }
             } else {
-              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+              message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
               return
             }
           } else {
@@ -51,7 +51,7 @@ module.exports = {
             cooldown.add(message.member, message.guild, commandToExecute)
             customcommands(client, message, commandToExecute)
           } else {
-            message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+            message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
             return
           }
         }

@@ -1,6 +1,5 @@
-const { MessageEmbed } = require('discord.js')
 const { getDailyMoney } = require('../../modules/economy')
-const { Error } = require('../../modules/constructor/messageBuilder')
+const { Error, Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -10,16 +9,30 @@ module.exports = {
   cooldown: 86400000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      getDailyMoney(client, interaction.member, interaction.guild, (money) => {
-        const inventoryEmbed = new MessageEmbed()
-          .setAuthor(interaction.member.displayName, interaction.user.displayAvatarURL())
-          .setColor('#2F3136')
-          .setDescription(i18n(locale, 'DAILY', { REWARD: `${money} ${interaction.database.economyCurrencyIcon}` }))
-          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
-        interaction.editReply({ embeds: [inventoryEmbed] })
-      })
+      try {
+        getDailyMoney(client, interaction.member, (money) => {
+          interaction.editReply({ embeds: [Success(i18n(locale, 'DAILY', { REWARD: `${money} ${interaction.database.economyCurrencyIcon}` }))] })
+        })
+      } catch (err) {
+        client.log.error(err)
+        interaction.editReply({ embeds: [Error(i18n(locale, 'ERROR'))] })
+      }
     } else {
       interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
+    }
+  },
+  executeLegacy (client, locale, message) {
+    if (message.database.economyEnabled !== 0) {
+      try {
+        getDailyMoney(client, message.member, (money) => {
+          message.reply({ embeds: [Success(i18n(locale, 'DAILY', { REWARD: `${money} ${message.database.economyCurrencyIcon}` }))] })
+        })
+      } catch (err) {
+        client.log.error(err)
+        message.reply({ embeds: [Error(i18n(locale, 'ERROR'))] })
+      }
+    } else {
+      message.reply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
     }
   }
 }

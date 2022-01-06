@@ -1,7 +1,7 @@
 module.exports = (client, guild, callback) => {
   const gFD = client.Sentry.startTransaction({
-    op: 'guildFetchData',
-    name: 'Guild Fetch Data'
+    op: 'getGuildConfig',
+    name: 'Get Guild Configuration'
   })
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) client.logError(err)

@@ -1,4 +1,4 @@
-const guildFetchData = require('../functions/guildFetchData')
+const getGuildConfig = require('../functions/getGuildConfig')
 
 module.exports = {
   name: 'guildMemberRemove',
@@ -8,7 +8,7 @@ module.exports = {
       name: 'Guild Member Remove'
     })
     if (member.user.id !== client.user.id) {
-      guildFetchData(client, member.guild, (data) => {
+      getGuildConfig(client, member.guild, (data) => {
         if (data.farewellEnabled !== 0) {
           const mensaje = client.channels.cache.find(channel => channel.id === data.farewellChannel)
           if (mensaje) {

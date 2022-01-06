@@ -3,6 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Help, Error, Loader } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const { isInteger } = require('mathjs')
+const updateGuildConfig = require('../../functions/updateGuildConfig')
 const isHexColor = require('is-hexcolor')
 
 const channelRelationship = { 0: 'Not Setup', 1: 'Same Channel where Message is Sent' }
@@ -49,24 +50,21 @@ module.exports = {
       case 'setrankupchannel': {
         switch (interaction.options.getString('channel')) {
           case 'disable': {
-            client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', interaction.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, interaction.guild, { column: 'levelsChannel', value: 0 }, (err) => {
               if (err) return interaction.editReply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
               interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[0] }))] })
             })
             break
           }
           case 'same': {
-            client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', interaction.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, interaction.guild, { column: 'levelsChannel', value: 1 }, (err) => {
               if (err) return interaction.editReply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
               interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[1] }))] })
             })
             break
           }
           case 'this': {
-            client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [interaction.channel.id, interaction.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, interaction.guild, { column: 'levelsChannel', value: interaction.channel.id }, (err) => {
               if (err) return interaction.editReply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
               interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: interaction.channel }))] })
             })
@@ -80,51 +78,47 @@ module.exports = {
         break
       }
       case 'setrankupmessage': {
-        client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [interaction.options.getString('message'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'levelsMessage', value: interaction.options.getString('message') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:SUCCESS', { MESSAGE: `\`${interaction.options.getString('message')}\`` }))] })
         })
         break
       }
       case 'setdifficulty': {
-        client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(interaction.options.getNumber('difficulty')), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'levelsDifficulty', value: parseInt(interaction.options.getNumber('difficulty')) }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETDIFFICULTY:SUCCESS', { DIFFICULTY: interaction.options.getNumber('difficulty') }))] })
         })
         break
       }
       case 'setbackground': {
-        client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [interaction.options.getString('url'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomBackground', value: interaction.options.getString('url') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::SETBACKGROUND:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETBACKGROUND:SUCCESS', { BACKGROUND: interaction.options.getString('url') }))] })
         })
         break
       }
       case 'overlayopacity': {
-        client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [interaction.options.getNumber('opacity'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomOpacity', value: interaction.options.getNumber('opacity') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: interaction.options.getNumber('opacity') }))] })
         })
         break
       }
       case 'overlayblur': {
-        client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [interaction.options.getNumber('blur'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomBlur', value: interaction.options.getNumber('blur') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYBLUR:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYBLUR:SUCCESS', { BLUR: interaction.options.getNumber('blur') }))] })
         })
         break
       }
       case 'overlaycolor': {
-        if (isHexColor(interaction.options.getString('hexcolor'))) {
-          client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ? WHERE `guild` = ?', [interaction.options.getString('hexcolor'), interaction.guild.id], (err) => {
-            if (err) client.logError(err)
+        let hexcolor = interaction.options.getString('hexcolor')
+        if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
+        if (isHexColor(hexcolor)) {
+          updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomOverlayColor', value: hexcolor }, (err) => {
             if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
-            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: interaction.options.getString('hexcolor') }))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
           })
         } else {
           interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS::OVERLAYCOLOR:NOTHEX'))] })
@@ -139,7 +133,7 @@ module.exports = {
       switch (message.args[0]) {
         case 'viewconfig': {
           message.channel.send({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
-            const sentEmbed = new MessageEmbed()
+            const configStatus = new MessageEmbed()
               .setColor('#2F3136')
               .setTitle(i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:TITLE'))
               .setDescription(i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:DESCRIPTION'))
@@ -148,33 +142,30 @@ module.exports = {
               .addField(`:trophy: ${i18n(locale, 'DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
               .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[1]}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${message.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYBLUR')}: ${message.database.levelsImageCustomBlur}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.levelsImageCustomOpacity}`, false)
 
-            _message.edit({ embeds: [sentEmbed] })
+            _message.edit({ embeds: [configStatus] })
           })
           break
         }
         case 'setrankupchannel': {
           if (message.mentions.channels.first()) {
-            client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', [message.mentions.channels.first().id, message.guild.id], (err) => {
-              if (err) client.logError(err)
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR'))] })
+            updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: message.mentions.channels.first().id }, (err) => {
+              if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
               message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
             })
           } else {
             if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
               switch (message.args[1]) {
                 case 'none': {
-                  client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['0', message.guild.id], (err) => {
-                    if (err) client.logError(err)
-                    if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR'))] })
-                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: 'none' }))] })
+                  updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: 0 }, (err) => {
+                    if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
+                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[0] }))] })
                   })
                   break
                 }
                 case 'same': {
-                  client.pool.query('UPDATE `guildData` SET `levelsChannel` = ? WHERE `guild` = ?', ['1', message.guild.id], (err) => {
-                    if (err) client.logError(err)
-                    if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR'))] })
-                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: 'same' }))] })
+                  updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: 1 }, (err) => {
+                    if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
+                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[1] }))] })
                   })
                   break
                 }
@@ -190,22 +181,16 @@ module.exports = {
           break
         }
         case 'setrankupmessage': {
-          const filter = m => m.member.id === message.member.id
-          message.reply({ embeds: [Status(i18n(locale, 'LEVELS_MESSAGE_PREUPDATE'))] })
-          message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-            client.pool.query('UPDATE `guildData` SET `levelsMessage` = ? WHERE `guild` = ?', [collected.first().content, message.guild.id], (err) => {
-              if (err) client.logError(err)
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:SUCCESS', { MESSAGE: collected.first().content }))] })
-            })
+          updateGuildConfig(client, message.guild, { column: 'levelsMessage', value: message.content.replace(`${message.database.guildPrefix}levels setrankupmessage `, '') }, (err) => {
+            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:SUCCESS', { MESSAGE: message.content.replace(`${message.database.guildPrefix}levels setrankupmessage `, '') }))] })
           })
           break
         }
         case 'setdifficulty': {
           if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
             if (isInteger(parseInt(message.args[1]))) {
-              client.pool.query('UPDATE `guildData` SET `levelsDifficulty` = ? WHERE `guild` = ?', [parseInt(message.args[1]), message.guild.id], (err) => {
-                if (err) client.logError(err)
+              updateGuildConfig(client, message.guild, { column: 'levelsDifficulty', value: parseInt(parseInt(message.args[1])) }, (err) => {
                 if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:ERROR'))] })
                 message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETDIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.args[1]) }))] })
               })
@@ -219,8 +204,7 @@ module.exports = {
         }
         case 'setbackground': {
           if (message.args[1]) {
-            client.pool.query('UPDATE `guildData` SET `levelsImageCustomBackground` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomBackground', value: message.args[1] }, (err) => {
               if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETBACKGROUND:ERROR'))] })
               message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
             })
@@ -231,8 +215,7 @@ module.exports = {
         }
         case 'overlayopacity': {
           if (message.args[1]) {
-            client.pool.query('UPDATE `guildData` SET `levelsImageCustomOpacity` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOpacity', value: message.args[1] }, (err) => {
               if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
               message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
             })
@@ -243,10 +226,9 @@ module.exports = {
         }
         case 'overlayblur': {
           if (message.args[1]) {
-            client.pool.query('UPDATE `guildData` SET `levelsImageCustomBlur` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomBlur', value: message.args[1] }, (err) => {
               if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYBLUR:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYBLUR:SUCCESS', { BLUR: (message.args[1]) }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYBLUR:SUCCESS', { BLUR: message.args[1] }))] })
             })
           } else {
             message.reply({ embeds: [helpTray] })
@@ -255,11 +237,12 @@ module.exports = {
         }
         case 'overlaycolor': {
           if (message.args[1]) {
-            if (isHexColor(message.args[1])) {
-              client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-                if (err) client.logError(err)
-                if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: message.args[1] }))] })
+            let hexcolor = message.args[1]
+            if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
+            if (isHexColor(hexcolor)) {
+              updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOverlayColor', value: hexcolor }, (err) => {
+                if (err) return message.reply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
+                message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
               })
             } else {
               message.reply({ embeds: [Status(i18n(locale, 'LEVELS::OVERLAYCOLOR:NOTHEX'))] })

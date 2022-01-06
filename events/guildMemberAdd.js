@@ -1,7 +1,7 @@
 const { MessageAttachment } = require('discord.js')
 const tempFileRemover = require('../functions/tempFileRemover')
 const { welcomeCard } = require('../modules/canvasProcessing')
-const guildFetchData = require('../functions/guildFetchData')
+const getGuildConfig = require('../functions/getGuildConfig')
 const { fetchJoinRoles } = require('../modules/joinroles')
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
       op: 'guildMemberAdd',
       name: 'Guild Member Add'
     })
-    guildFetchData(client, member.guild, (data) => {
+    getGuildConfig(client, member.guild, (data) => {
       if (data) {
         if (data.welcomeEnabled !== 0) {
           const mensaje = client.channels.cache.get(data.welcomeChannel)

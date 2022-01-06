@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Error, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const { MessageEmbed } = require('discord.js')
+const updateGuildConfig = require('../../functions/updateGuildConfig')
 
 const columnRelationShip = {
   welcomer: 'welcomeEnabled',
@@ -31,24 +32,17 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewcnfcommands': {
-        const view = interaction.options.getBoolean('view')
-
-        if (view) {
-          client.pool.query('UPDATE `guildData` SET `guildViewCnfCmdsEnabled` = 1 WHERE guild = ?', [interaction.guild.id], (err) => {
-            if (err) client.logError(err)
+        if (interaction.options.getBoolean('view')) {
+          updateGuildConfig(client, interaction.guild, { column: 'guildViewCnfCmdsEnabled', value: 1 }, (err) => {
             if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
             interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
           })
         } else {
-          client.pool.query('UPDATE `guildData` SET `guildViewCnfCmdsEnabled` = 0 WHERE guild = ?', [interaction.guild.id], (err) => {
-            if (err) client.logError(err)
-            if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:DISABLE:ERROR'))] })
-            interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:DISABLE:SUCCESS'))] })
+          updateGuildConfig(client, interaction.guild, { column: 'guildViewCnfCmdsEnabled', value: 0 }, (err) => {
+            if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
+            interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
           })
         }
-
-        client.commands.get('update').executeInteraction(client, locale, interaction)
-
         break
       }
       case 'viewconfig': {
@@ -60,34 +54,28 @@ module.exports = {
         break
       }
       case 'enable': {
-        const module = interaction.options.getString('module')
-        client.pool.query('UPDATE `guildData` SET ?? = 1 WHERE `guild` = ?', [columnRelationShip[module], interaction.guild.id], (err) => {
-          if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: module }))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEENABLE:SUCCESS', { MODULE: module }))] })
+        updateGuildConfig(client, interaction.guild, { column: columnRelationShip[interaction.options.getString('module')], value: 1 }, (err) => {
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: interaction.options.getString('module') }))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEENABLE:SUCCESS', { MODULE: interaction.options.getString('module') }))] })
         })
         break
       }
       case 'disable': {
-        const module = interaction.options.getString('module')
-        client.pool.query('UPDATE `guildData` SET ?? = 0 WHERE `guild` = ?', [columnRelationShip[module], interaction.guild.id], (err) => {
-          if (err) client.logError(err)
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR', { MODULE: module }))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEDISABLE:SUCCESS', { MODULE: module }))] })
+        updateGuildConfig(client, interaction.guild, { column: columnRelationShip[interaction.options.getString('module')], value: 0 }, (err) => {
+          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR', { MODULE: interaction.options.getString('module') }))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEDISABLE:SUCCESS', { MODULE: interaction.options.getString('module') }))] })
         })
         break
       }
       case 'setprefix': {
-        client.pool.query('UPDATE `guildData` SET `guildPrefix` = ? WHERE `guild` = ?', [interaction.options.getString('newprefix'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'guildPrefix', value: interaction.options.getString('newprefix') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::SETPREFIX:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { guildPrefix: interaction.options.getString('newprefix') }))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
         })
         break
       }
       case 'setlanguage': {
-        client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [interaction.options.getString('language'), interaction.guild.id], (err) => {
-          if (err) client.logError(err)
+        updateGuildConfig(client, interaction.guild, { column: 'guildLanguage', value: interaction.options.getString('language') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::SETLANGUAGE:ERROR'))] })
           interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { guildLanguage: interaction.options.getString('language') }))] })
         })
@@ -102,16 +90,14 @@ module.exports = {
         case 'viewcnfcommands': {
           if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
             if (message.args[1] === 'true') {
-              client.pool.query('UPDATE `guildData` SET `guildViewCnfCmdsEnabled` = 1 WHERE guild = ?', [message.guild.id], (err) => {
-                if (err) client.logError(err)
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:SUCCESS'))] })
+              updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 1 }, (err) => {
+                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
+                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
               })
             } else {
-              client.pool.query('UPDATE `guildData` SET `guildViewCnfCmdsEnabled` = 0 WHERE guild = ?', [message.guild.id], (err) => {
-                if (err) client.logError(err)
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ERROR'))] })
-                message.editReply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:SUCCESS'))] })
+              updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 0 }, (err) => {
+                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
+                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
               })
             }
           } else {
@@ -131,17 +117,15 @@ module.exports = {
           if (Object.prototype.hasOwnProperty.call(message.args, '1') && Object.prototype.hasOwnProperty.call(message.args, '2')) {
             if (message.args[1] === 'enable') {
               if (!columnRelationShip[message.args[2].toLowerCase()]) return message.reply({ embeds: [help] })
-              client.pool.query('UPDATE `guildData` SET ?? = 1 WHERE `guild` = ?', [columnRelationShip[message.args[2].toLowerCase()], message.guild.id], (err) => {
-                if (err) client.logError(err)
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULESENABLE:ERROR', { MODULES: message.args[2].toLowerCase() }))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULESENABLED:SUCCESS', { MODULES: message.args[2].toLowerCase() }))] })
+              updateGuildConfig(client, message.guild, { column: columnRelationShip[columnRelationShip[message.args[2].toLowerCase()]], value: 1 }, (err) => {
+                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
+                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEENABLE:SUCCESS', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
               })
             } else {
               if (!columnRelationShip[message.args[2].toLowerCase()]) return message.reply({ embeds: [help] })
-              client.pool.query('UPDATE `guildData` SET ?? = 0 WHERE `guild` = ?', [columnRelationShip[message.args[2].toLowerCase()], message.guild.id], (err) => {
-                if (err) client.logError(err)
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULESDISABLE:ERROR', { MODULE: message.args[2].toLowerCase() }))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULESDISABLE:SUCCESS', { MODULE: message.args[2].toLowerCase() }))] })
+              updateGuildConfig(client, message.guild, { column: columnRelationShip[columnRelationShip[message.args[2].toLowerCase()]], value: 0 }, (err) => {
+                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
+                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEDISABLE:SUCCESS', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
               })
             }
           } else {
@@ -151,10 +135,9 @@ module.exports = {
         }
         case 'setprefix': {
           if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            client.pool.query('UPDATE `guildData` SET `guildPrefix` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, message.guild, { column: 'guildPrefix', value: message.args[1] }, (err) => {
               if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETPREFIX:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { guildPrefix: message.args[1] }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { PREFIX: message.args[1] }))] })
             })
           } else {
             message.reply({ embeds: [help] })
@@ -163,8 +146,7 @@ module.exports = {
         }
         case 'setlanguage': {
           if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            client.pool.query('UPDATE `guildData` SET `guildLanguage` = ? WHERE `guild` = ?', [message.args[1], message.guild.id], (err) => {
-              if (err) client.logError(err)
+            updateGuildConfig(client, message.guild, { column: 'guildLanguage', value: message.args[1] }, (err) => {
               if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETLANGUAGE:ERROR'))] })
               message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { guildLanguage: message.args[1] }))] })
             })

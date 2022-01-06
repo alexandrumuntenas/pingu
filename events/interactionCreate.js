@@ -1,6 +1,6 @@
 const { cooldown } = require('../functions/commands')
-const { Error } = require('../modules/constructor/messageBuilder')
-const guildFetchData = require('../functions/guildFetchData')
+const { Error, Timer } = require('../modules/constructor/messageBuilder')
+const getGuildConfig = require('../functions/getGuildConfig')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
@@ -23,7 +23,7 @@ module.exports.isCommand = async (client, interaction) => {
     interaction.channel.type === 'dm' ||
     interaction.author === client.user
   ) return
-  guildFetchData(client, interaction.guild, async (guildData) => {
+  getGuildConfig(client, interaction.guild, async (guildData) => {
     interaction.database = guildData
     if (client.commands.has(commandName)) {
       const commandToExecute = client.commands.get(commandName)
@@ -36,7 +36,7 @@ module.exports.isCommand = async (client, interaction) => {
         if (client.statcord) client.statcord.postCommand(commandToExecute.name, '000000000000000')
         await commandToExecute.executeInteraction(client, interaction.database.guildLanguage || 'en', interaction)
       } else {
-        interaction.editReply({ embeds: [Error(i18n(interaction.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(interaction.member, interaction.guild, commandToExecute), { round: true, language: interaction.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+        interaction.editReply({ embeds: [Timer(i18n(interaction.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(interaction.member, interaction.guild, commandToExecute), { round: true, language: interaction.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
       }
     } else {
       interaction.editReply({ content: 'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `update`.' })

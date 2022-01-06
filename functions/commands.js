@@ -11,18 +11,13 @@ module.exports.loadCommands = (client) => {
 
   load('./commands')
 
-  /**
-   * Load Pingu Commands
-   * @param {collection} collection Discord Collection for Commands
-   * @param {directory} directory The Directory Where Commands are stored
-   */
   async function load (directory) {
     const files = fs.readdirSync(directory)
 
     for (const file of files) {
       const path = `${directory}/${file}`
 
-      if (file.endsWith('.js')) {
+      if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
         if (command.name) {
           commands.set(command.name, command)
@@ -49,18 +44,13 @@ module.exports.loadInteractions = (client) => {
 
   load('./commands')
 
-  /**
-   * Load Pingu Interactions
-   * @param {collection} collection Discord Collection for Interactions
-   * @param {directory} directory The Directory Where Interactions are stored
-   */
   async function load (directory) {
     const files = fs.readdirSync(directory)
 
     for (const file of files) {
       const path = `${directory}/${file}`
 
-      if (file.endsWith('.js')) {
+      if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const interaction = require(`.${path}`)
         if (interaction.name) {
           interactions.push({ module: interaction.module, isConfigCommand: interaction.isConfigCommand || false, interaction: interaction.interactionData || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set') })

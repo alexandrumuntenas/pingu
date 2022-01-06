@@ -1,4 +1,4 @@
-const guildFetchData = require('../functions/guildFetchData')
+const getGuildConfig = require('../functions/getGuildConfig')
 
 module.exports = {
   name: 'guildCreate',
@@ -7,7 +7,7 @@ module.exports = {
       op: 'guildCreate',
       name: 'Guild Create'
     })
-    guildFetchData(client, guild, () => { })
+    getGuildConfig(client, guild, () => { })
     gC.finish()
   }
 }
