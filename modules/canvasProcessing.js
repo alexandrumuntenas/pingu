@@ -21,6 +21,7 @@ module.exports = {
     const canvas = createCanvas(1100, 500)
     const ctx = canvas.getContext('2d')
 
+    ctx.strokeStyle = 'rgba(0,0,0,0)'
     // Establecer fondo del canvas
     let imgPath = ''
     if (database.welcomeImageCustomBackground && isValidUrl(database.welcomeImageCustomBackground) && isImageUrl(database.welcomeImageCustomBackground)) {
@@ -29,7 +30,6 @@ module.exports = {
       const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
       ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
       ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor || '#272934', (database.welcomeImageCustomOpacity / 100))
-      ctx.strokeStyle = 'rgba(0,0,0,0)'
       roundRect(ctx, 25, 25, 1050, 450, 10, ctx.fillStyle, ctx.strokeStyle)
     } else {
       ctx.fillStyle = '#272934'
@@ -86,6 +86,7 @@ module.exports = {
     const ctx = canvas.getContext('2d')
 
     // Establecer fondo del canvas
+    ctx.strokeStyle = 'rgba(0,0,0,0)'
     let imgPath = ''
     if (guildConfig.levelsImageCustomBackground && isValidUrl(guildConfig.levelsImageCustomBackground) && isImageUrl(guildConfig.levelsImageCustomBackground)) {
       imgPath = guildConfig.levelsImageCustomBackground
@@ -95,7 +96,7 @@ module.exports = {
 
       // Establecer blured overlay
       ctx.fillStyle = hexToRgba(guildConfig.levelsImageCustomOverlayColor || '#272934', (guildConfig.levelsImageCustomOpacity / 100))
-      ctx.fillRect(25, 25, 1050, 270)
+      roundRect(ctx, 16, 16, 1068, 290, 10, ctx.fillStyle, ctx.strokeStyle)
     } else {
       ctx.fillStyle = '#272934'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -125,17 +126,17 @@ module.exports = {
     // Añadir barra de progreso (backdrop)
 
     ctx.fillStyle = 'rgba(255,255,255, 0.3)'
-    ctx.fillRect(295, 200, 755, 70)
+    roundRect(ctx, 295, 200, 755, 70, 10, ctx.fillStyle, ctx.strokeStyle)
 
     // Añadir barra de progreso
 
     ctx.fillStyle = 'rgb(255,255,255)'
-    ctx.fillRect(295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70)
+    roundRect(ctx, 295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70, 10, ctx.fillStyle, ctx.strokeStyle)
 
     // Añadir avatar de usuario
 
     const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
-    ctx.drawImage(avatar, 50, 50, 220, 220)
+    ctx.drawImage(avatar, 57, 59, 204, 204)
 
     const buffer = canvas.toBuffer('image/png')
     writeFileSync(paths.attachmentSent, buffer)
