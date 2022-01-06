@@ -1,10 +1,6 @@
 const { Collection } = require('discord.js')
-
+const { SlashCommandBuilder } = require('@discordjs/builders')
 const fs = require('fs')
-const Ascii = require('ascii-table')
-
-const table = new Ascii('Commands')
-table.setHeading('Command', 'Load status')
 
 module.exports.loadCommands = (client) => {
   const commands = new Collection()
@@ -20,10 +16,12 @@ module.exports.loadCommands = (client) => {
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
         if (command.name) {
+          if (!command.interactionData) command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
+          if (!command.isConfigCommand) command.isConfigCommand = false
           commands.set(command.name, command)
-          table.addRow(file, '✅')
+          client.console.success(`Comando ${file} cargado`)
         } else {
-          table.addRow(file, '❌  -> missing a help.name, or help.name is not a string.')
+          client.console.warn(`Command ${file} is missing a help.name, or help.name is not a string.`)
           continue
         }
       } else if (fs.lstatSync(path).isDirectory()) {
@@ -31,43 +29,7 @@ module.exports.loadCommands = (client) => {
       }
     }
   }
-
-  console.log(table.toString())
-
   return commands
-}
-
-const { SlashCommandBuilder } = require('@discordjs/builders')
-
-module.exports.loadInteractions = (client) => {
-  const interactions = []
-
-  load('./commands')
-
-  async function load (directory) {
-    const files = fs.readdirSync(directory)
-
-    for (const file of files) {
-      const path = `${directory}/${file}`
-
-      if (file.endsWith('.js') && !file.endsWith('dev.js')) {
-        const interaction = require(`.${path}`)
-        if (interaction.name) {
-          interactions.push({ module: interaction.module, isConfigCommand: interaction.isConfigCommand || false, interaction: interaction.interactionData || new SlashCommandBuilder().setName(interaction.name).setDescription(interaction.description || 'Description not set') })
-          table.addRow(file, '✅')
-        } else {
-          table.addRow(file, '❌  -> missing a help.name, or help.name is not a string.')
-          continue
-        }
-      } else if (fs.lstatSync(path).isDirectory()) {
-        load(path)
-      }
-    }
-  }
-
-  console.log(table.toString())
-
-  return interactions
 }
 
 const cooldown = new Collection()

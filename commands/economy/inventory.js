@@ -38,7 +38,7 @@ module.exports = {
                 })
               })
             } catch (error) {
-              client.Sentry.captureException(error)
+              client.console.sentry.captureException(error)
             }
           } else {
             inventoryEmbed.setDescription(i18n(locale, 'INVENTORY::EMBED:EMPTY')).setImage('https://cdn.discordapp.com/attachments/908413370665938975/927155718115688488/empty_inventory.png')

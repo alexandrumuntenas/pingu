@@ -3,7 +3,7 @@ const getGuildConfig = require('../functions/getGuildConfig')
 module.exports = {
   name: 'guildMemberRemove',
   execute: async (client, member) => {
-    const gMR = client.Sentry.startTransaction({
+    const gMR = client.console.sentry.startTransaction({
       op: 'guildMemberRemove',
       name: 'Guild Member Remove'
     })

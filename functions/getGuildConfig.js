@@ -1,5 +1,5 @@
 module.exports = (client, guild, callback) => {
-  const gFD = client.Sentry.startTransaction({
+  const gFD = client.console.sentry.startTransaction({
     op: 'getGuildConfig',
     name: 'Get Guild Configuration'
   })
@@ -12,7 +12,7 @@ module.exports = (client, guild, callback) => {
       client.pool.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], (err) => {
         if (err) {
           client.logError(err)
-          client.log.error(err)
+          client.console.error(err)
         }
         gFD.finish()
         module.exports(client, guild, callback)

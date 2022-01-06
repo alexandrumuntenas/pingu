@@ -1,14 +1,14 @@
 const { MessageEmbed } = require('discord.js')
 
 module.exports = async (client, message) => {
-  const mCgAR = client.Sentry.startTransaction({
+  const mCgAR = client.console.sentry.startTransaction({
     op: 'messageCreate/guildAutoResponder',
     name: 'Auto Responder'
   })
   client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
     if (err) {
       client.logError(err)
-      client.log.error(err)
+      client.console.error(err)
     }
     if (result) {
       try {
@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
           client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `autoresponderTrigger` = ?', [message.guild.id, message.content.toLowerCase()], (err, result) => {
             if (err) {
               client.logError(err)
-              client.log.error(err)
+              client.console.error(err)
             }
             if (result) {
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
@@ -25,7 +25,7 @@ module.exports = async (client, message) => {
                   .setDescription(result[0].autoresponderResponse)
                   .setColor('BLURPLE')
                 message.channel.send({ embeds: [messageSent] }).catch((err) => {
-                  client.log.error(err)
+                  client.console.error(err)
                   client.logError(err)
                 })
               }
@@ -34,7 +34,7 @@ module.exports = async (client, message) => {
         }
       } catch (err) {
         client.logError(err)
-        client.log.error(err)
+        client.console.error(err)
       } finally {
         mCgAR.finish()
       }

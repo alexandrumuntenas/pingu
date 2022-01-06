@@ -12,7 +12,7 @@ registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { fam
 
 module.exports = {
   getMember: (client, member, callback) => {
-    const lfM = client.Sentry.startTransaction({
+    const lfM = client.console.sentry.startTransaction({
       op: 'levels.getMember',
       name: 'levels (Get Member)'
     })
@@ -36,7 +36,7 @@ module.exports = {
         client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
           if (err) {
             client.logError(err)
-            client.log.error(err)
+            client.console.error(err)
           }
           module.exports.getMember(client, member, callback)
         })
@@ -45,7 +45,7 @@ module.exports = {
     lfM.finish()
   },
   updateMember: (client, member, newData, callback) => {
-    const luM = client.Sentry.startTransaction({
+    const luM = client.console.sentry.startTransaction({
       op: 'levels.updateMember',
       name: 'levels (Update Member)'
     })
@@ -62,7 +62,7 @@ module.exports = {
     luM.finish()
   },
   rankUp: function (client, message) {
-    const lRU = client.Sentry.startTransaction({
+    const lRU = client.console.sentry.startTransaction({
       op: 'levels.rankup',
       name: 'levels (Rank Up)'
     })
