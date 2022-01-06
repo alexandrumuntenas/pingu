@@ -18,10 +18,11 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const embed = new MessageEmbed()
-      .setTitle(i18n(locale, 'SERVER_INFO_EMBED_TITLE'))
+      .setTitle(i18n(locale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
-      .setDescription(`:credit_card: ${i18n(locale, 'SERVER_INFO_EMBED_GUILD_NAME', { GUILDNAME: message.guild.name })}\n:calendar: ${i18n(locale, 'SERVER_INFO_EMBED_GUILD_CREATED_TIMESTAMP', { GUILDCREATEDTIMESTAMP: `<t:${unixTime(message.guild.createdTimestamp)}>` })}\n:crown: ${i18n(locale, 'SERVER_INFO_EMBED_GUILD_OWNER', { USER: client.users.cache.get(message.guild.ownerId).tag })}\n<a:nitro_boost:868214436178046976> ${i18n(locale, 'SERVER_INFO_EMBED_GUILD_BOOST', { GUILDBOOST: `${message.guild.premiumTier ? `Tier ${message.guild.premiumTier}` : i18n(locale, 'SERVER_INFO_BOOST_NONE')} (${message.guild.premiumSubscriptionCount || '0'})` })}`)
+      .setDescription(`:medal: **${i18n(locale, 'SERVER::EMBED:SERVERNAME')}**: ${message.guild.name}\n:calendar: **${i18n(locale, 'SERVER::EMBED:SERVERCREATIONDATE')}**: <t:${unixTime(message.guild.createdTimestamp)}>\n:crown: **${i18n(locale, 'SERVER::EMBED:SERVEROWNER')}**: ${client.users.cache.get(message.guild.ownerId).tag}\n<a:nitro:927222194034053161> **${i18n(locale, 'SERVER::EMBED:NITROSTATUS')}**: ${message.guild.premiumTier} (${message.guild.premiumSubscriptionCount || '0'})`)
+      .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
       .setTimestamp()
     message.reply({ embeds: [embed] })
   }
