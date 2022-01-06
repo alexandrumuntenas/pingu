@@ -30,8 +30,7 @@ module.exports = {
     .addSubcommand(subcommand => subcommand.setName('setdifficulty').setDescription('Change the difficulty to level up').addNumberOption(option => option.setName('difficulty').setDescription('Enter a number 1-5').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('setbackground').setDescription('Set the rank cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the rank cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the rank cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlayblur').setDescription('Set the rank cards overlay blur').addNumberOption(option => option.setName('blur').setDescription('Enter a number').setRequired(true))),
+    .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the rank cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true))),
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
@@ -105,13 +104,6 @@ module.exports = {
         })
         break
       }
-      case 'overlayblur': {
-        updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomBlur', value: interaction.options.getNumber('blur') }, (err) => {
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYBLUR:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYBLUR:SUCCESS', { BLUR: interaction.options.getNumber('blur') }))] })
-        })
-        break
-      }
       case 'overlaycolor': {
         let hexcolor = interaction.options.getString('hexcolor')
         if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
@@ -128,7 +120,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('levels', i18n(locale, 'LEVELS::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'setrankupmessage', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPMESSAGE') }, { option: 'setrankupchannel', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPCHANNEL') }, { option: 'setdifficulty', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETDIFFICULTY'), syntax: 'setdifficulty <number of difficulty>' }, { option: 'setbackground', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <background url>' }, { option: 'overlayopacity', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity>' }, { option: 'overlayblur', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYBLUR'), syntax: 'overlayblur <quantity>' }, { option: 'overlaycolor', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }])
+    const helpTray = Help('levels', i18n(locale, 'LEVELS::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'setrankupmessage', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPMESSAGE') }, { option: 'setrankupchannel', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPCHANNEL') }, { option: 'setdifficulty', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETDIFFICULTY'), syntax: 'setdifficulty <number of difficulty>' }, { option: 'setbackground', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <background url>' }, { option: 'overlayopacity', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity>' }, { option: 'overlaycolor', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'viewconfig': {
@@ -218,17 +210,6 @@ module.exports = {
             updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOpacity', value: message.args[1] }, (err) => {
               if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
               message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'overlayblur': {
-          if (message.args[1]) {
-            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomBlur', value: message.args[1] }, (err) => {
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYBLUR:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYBLUR:SUCCESS', { BLUR: message.args[1] }))] })
             })
           } else {
             message.reply({ embeds: [helpTray] })

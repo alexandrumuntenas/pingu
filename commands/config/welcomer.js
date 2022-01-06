@@ -28,8 +28,6 @@ module.exports = {
     .addSubcommand(subcommand => subcommand.setName('setbackground').setDescription('Set the welcomer cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the welcomer cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the welcomer cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlayblur').setDescription('Set the welcomer cards overlay blur').addNumberOption(option => option.setName('blur').setDescription('Enter a number').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('roundavatar').setDescription('Set the welcomer cards round avatar').addBooleanOption(option => option.setName('value').setDescription('Select a value').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('test').setDescription('Test the welcomer message'))
     .addSubcommand(subcommand => subcommand.setName('simulate').setDescription('Simulate the welcomer message')),
   executeInteraction (client, locale, interaction) {
@@ -88,13 +86,6 @@ module.exports = {
         })
         break
       }
-      case 'overlayblur': {
-        updateGuildConfig(client, interaction.guild, { column: 'welcomeImageCustomBlur', value: interaction.options.getNumber('blur') }, (err) => {
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYBLUR:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYBLUR:SUCCESS', { BLUR: interaction.options.getNumber('blur') }))] })
-        })
-        break
-      }
       case 'overlaycolor': {
         let hexcolor = interaction.options.getString('hexcolor')
         if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
@@ -105,20 +96,6 @@ module.exports = {
           })
         } else {
           interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
-        }
-        break
-      }
-      case 'roundavatar': {
-        if (interaction.options.getBoolean('value') === true) {
-          updateGuildConfig(client, interaction.guild, { column: 'welcomeImageRoundAvatar', value: 1 }, (err) => {
-            if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::ROUNDAVATAR:ERROR'))] })
-            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER::ROUNDAVATAR:SUCCESS', { STATUS: i18n(locale, 'ENABLE') }))] })
-          })
-        } else {
-          updateGuildConfig(client, interaction.guild, { column: 'welcomeImageRoundAvatar', value: 0 }, (err) => {
-            if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::ROUNDAVATAR:ERROR'))] })
-            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER::ROUNDAVATAR:SUCCESS', { STATUS: i18n(locale, 'DISABLED') }))] })
-          })
         }
         break
       }
@@ -139,7 +116,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('welcomer', i18n(locale, 'WELCOMER::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlayblur', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYBLUR'), syntax: 'overlayblur <blur quantity>' }, { option: 'overlaycolor', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'roundavatar', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ROUNDAVATAR') }, { option: 'test', description: i18n(locale, 'WELCOMER::xºHELPTRAY:OPTION:TEST') }, { option: 'simulate', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SIMULATE') }, { option: 'setbackground', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <url>' }])
+    const helpTray = Help('welcomer', i18n(locale, 'WELCOMER::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlaycolor', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'test', description: i18n(locale, 'WELCOMER::xºHELPTRAY:OPTION:TEST') }, { option: 'simulate', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SIMULATE') }, { option: 'setbackground', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <url>' }])
     if (message.args[0]) {
       switch (message.args[0]) {
         case 'viewconfig': {
@@ -210,17 +187,6 @@ module.exports = {
           }
           break
         }
-        case 'overlayblur': {
-          if (message.args[1]) {
-            updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomBlur', value: message.args[1] }, (err) => {
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYBLUR:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYBLUR:SUCCESS', { BLUR: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
         case 'overlaycolor': {
           if (message.args[1]) {
             let hexcolor = message.args[1]
@@ -232,24 +198,6 @@ module.exports = {
               })
             } else {
               message.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
-            }
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'roundavatar': {
-          if (message.args[1]) {
-            if (message.args[1] === 'true') {
-              updateGuildConfig(client, message.guild, { column: 'welcomeImageRoundAvatar', value: 1 }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::ROUNDAVATAR:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::ROUNDAVATAR:SUCCESS', { TYPE: 'round' }))] })
-              })
-            } else {
-              updateGuildConfig(client, message.guild, { column: 'welcomeImageRoundAvatar', value: 0 }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::ROUNDAVATAR:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::ROUNDAVATAR:SUCCESS', { TYPE: 'round' }))] })
-              })
             }
           } else {
             message.reply({ embeds: [helpTray] })

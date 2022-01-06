@@ -10,7 +10,6 @@ registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { fam
 module.exports = {
   welcomeCard: async (client, member, locale, database) => {
     const uniqueIdentifiers = {
-      userAvatar: randomstring.generate({ charset: 'alphabetic' }),
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
     }
 
@@ -50,19 +49,16 @@ module.exports = {
     ctx.fillText(subtitle, canvas.width / 2, 437)
 
     // Añadir avatar de usuario
-
-    if (database.welcomeImageRoundAvatar === 1) {
-      ctx.beginPath()
-      ctx.arc(canvas.width / 2, 175, 125, 0, Math.PI * 2, true)
-      ctx.closePath()
-      ctx.strokeStyle = 'white'
-      ctx.lineWidth = 10
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.arc(canvas.width / 2, 175, 100, 0, Math.PI * 2, true)
-      ctx.closePath()
-      ctx.clip()
-    }
+    ctx.beginPath()
+    ctx.arc(canvas.width / 2, 175, 125, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.strokeStyle = 'white'
+    ctx.lineWidth = 10
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.arc(canvas.width / 2, 175, 100, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.clip()
 
     const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
     ctx.drawImage(avatar, canvas.width / 2 - 100, 75, 200, 200)
@@ -160,7 +156,7 @@ const applyText = (canvas, text, maxlimit) => {
   return ctx.font
 }
 
-//* Code from https://stackoverflow.com/a/3368118/17821331
+// Code from https://stackoverflow.com/a/3368118/17821331
 function roundRect (ctx, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === 'undefined') {
     stroke = true

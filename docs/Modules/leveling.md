@@ -37,7 +37,6 @@ Disable this module using `/admin modules disable module: levels`.
 | levels setrankupmessage message: | Command to modify the level advance message.| /levels setrankupmessage message: {member} got a new level!  |
 | levels setdifficulty difficulty: | Command to modify the difficulty of the module. | /levels difficulty difficulty: 2 |
 | levels setbackground url: | Command to set the custom background | /levels setbackground url: https://site.com/myphoto.png |
-| levels overlayblur blur: | Command to customize the blur of the range card overlay. | /levels overlayblur blur: 56 | 
 | levels overlayopacity opacity: | Command to customize the opacity of the range card overlay. | /levels overlayopacity opacity: 56 |
 | levels overlaycolor hexcolor: | Command to customize the opacity of the range card overlay. | /levels overlaycolor: #FFF |
 | levels simulate | Command to simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended) | !levels simulate |
@@ -50,3 +49,9 @@ With the integration of Slash Commands, the creation of custom commands becomes 
 ## User commands
 
 Users will be able to use /rank to see their level card and /levelstop to see the server ranking.
+
+!!!
+The user commands do have their own prefix version!
+!!!
+
+![Rank Card Example](https://cdn.discordapp.com/attachments/926103260111179836/928779386059104347/imCnpLagomxItWHwTgagZWgjrjxHQIpe.png)
