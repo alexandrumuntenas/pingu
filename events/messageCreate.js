@@ -27,7 +27,7 @@ module.exports = {
           if (message.database.legacyCMD !== 0) {
             commandToExecute = client.commands.get(commandToExecute)
             if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
-              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND_PERMISSION_ERROR'))] })
+              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND::PERMERROR'))] })
               return
             }
             if (client.cooldownManager.check(message.member, message.guild, commandToExecute)) {
@@ -36,7 +36,7 @@ module.exports = {
                 if (client.statcord) client.statcord.postCommand(commandToExecute.name, message.member.id)
                 await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
               } else {
-                message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))] })
+                message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND::LEGACYNOAVALIABLE'))] })
               }
             } else {
               message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(client.cooldownManager.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
