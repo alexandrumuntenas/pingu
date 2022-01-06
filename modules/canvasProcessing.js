@@ -134,9 +134,13 @@ module.exports = {
     roundRect(ctx, 295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70, 10, ctx.fillStyle, ctx.strokeStyle)
 
     // Añadir avatar de usuario
+    ctx.beginPath()
+    ctx.arc(159, 159, 102, 0, Math.PI * 2, true)
+    ctx.closePath()
+    ctx.clip()
 
     const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
-    ctx.drawImage(avatar, 57, 59, 204, 204)
+    ctx.drawImage(avatar, 57, 57, 204, 204)
 
     const buffer = canvas.toBuffer('image/png')
     writeFileSync(paths.attachmentSent, buffer)
