@@ -25,7 +25,14 @@ module.exports.add = (member, guild, command) => {
 }
 
 module.exports.check = (member, guild, command) => {
-  if (cooldown[`${command.name}${member.id}${guild.id}`]) return false
+  if (cooldown[`${command.name}${member.id}${guild.id}`]) {
+    if (cooldown[`${command.name}${member.id}${guild.id}`] > Date.now()) {
+      return false
+    } else {
+      delete cooldown[`${command.name}${member.id}${guild.id}`]
+      return true
+    }
+  }
   return true
 }
 
