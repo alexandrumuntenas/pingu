@@ -2,9 +2,8 @@ const { Collection } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const fs = require('fs')
 
-module.exports.loadCommands = async (client) => {
+module.exports.loadCommands = (client) => {
   const commands = new Collection()
-  const interactions = []
 
   load('./commands')
 
@@ -17,8 +16,9 @@ module.exports.loadCommands = async (client) => {
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
         if (command.name) {
+          if (!command.interactionData) command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
+          if (!command.isConfigCommand) command.isConfigCommand = false
           commands.set(command.name, command)
-          interactions.push({ module: command.module, isConfigCommand: command.isConfigCommand || false, interaction: command.interactionData || new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set') })
           client.console.success(`Comando ${file} cargado`)
         } else {
           client.console.warn(`Command ${file} is missing a help.name, or help.name is not a string.`)
