@@ -18,17 +18,18 @@ module.exports = {
           getShopProduct(client, interaction.guild, interaction.options.getString('productname'), (shopProduct) => {
             if (shopProduct) {
               if (memberInventoryAndBalance >= shopProduct.productPrice) {
-                checkIfTheProductShouldOnlyBePurchasedOnce(client, shopProduct.shopId, interaction.guild, (shouldBeOnlyPurchasedOnce) => {
+                checkIfTheProductShouldOnlyBePurchasedOnce(client, shopProduct.productName, interaction.guild, (shouldBeOnlyPurchasedOnce) => {
                   checkIfMemberHasProduct(client, interaction.member, shopProduct.productId, (memberHasProduct) => {
                     if (shouldBeOnlyPurchasedOnce && memberHasProduct) return interaction.editReply({ embeds: [Error(i18n(locale, 'BUY::ALREADYOWN'))] })
-                  })
-                })
-                executeItemFunctions(client, interaction.member, shopProduct, (err) => {
-                  if (err) return interaction.editReply({ embeds: [Error(i18n(locale, `BUY::${err.message}`))] })
-                  addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
-                    updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
-                    updateMemberInventory(client, interaction.member, newInventory)
-                    interaction.editReply({ embeds: [Success(i18n(locale, 'BUY::SUCCESS', { ITEM: interaction.options.getString('productname') }))] })
+                    executeItemFunctions(client, interaction.member, shopProduct, (err, functionType) => {
+                      if (err) return interaction.editReply({ embeds: [Error(i18n(locale, `BUY::${err.message}`))] })
+                      shopProduct.functionType = functionType
+                      addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
+                        updateMemberInventory(client, interaction.member, newInventory)
+                      })
+                      updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+                      interaction.editReply({ embeds: [Success(i18n(locale, 'BUY::SUCCESS', { ITEM: interaction.options.getString('productname') }))] })
+                    })
                   })
                 })
               } else {

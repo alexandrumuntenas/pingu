@@ -95,7 +95,10 @@ module.exports = {
     const parsedInventoryFromDB = JSON.parse(inventoryFromDB)
 
     if (parsedInventoryFromDB[productToAdd.productId]) {
-      if (!productToAdd.singlebuy) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId]) + productQuantity
+      if (!productToAdd.singlebuy) {
+        if (productToAdd.functionType !== 'giveRole' && productToAdd.functionType !== 'sendMessage') { if (callback) return callback(inventoryFromDB) }
+        parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId]) + productQuantity
+      }
       if (productToAdd.singlebuy) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId])
     } else {
       parsedInventoryFromDB[productToAdd.productId] = productQuantity
@@ -127,14 +130,10 @@ module.exports = {
   },
   checkIfTheProductShouldOnlyBePurchasedOnce: (client, productNameOrId, guild, callback) => {
     module.exports.getShopProduct(client, guild, productNameOrId, (shopProduct) => {
-      if (shopProduct) {
-        const { singlebuy } = JSON.parse(shopProduct.productMeta)
-        // TODO: Replace Singlebuy with buyOnlyOne
-        if (singlebuy) {
-          return callback(true)
-        } else {
-          return callback(false)
-        }
+      const { singlebuy } = JSON.parse(shopProduct.productMeta)
+      // TODO: Replace Singlebuy with buyOnlyOne
+      if (singlebuy) {
+        return callback(true)
       } else {
         return callback(false)
       }
@@ -153,7 +152,7 @@ module.exports = {
             member.guild.channels.fetch(action.channel).then(channel => {
               if (channel) {
                 channel.send(action.message)
-                if (callback) callback()
+                if (callback) callback(null, 'sendMessage')
               } else {
                 if (callback) callback(Error('PRODUCT:INVALIDCHANNEL'))
               }
@@ -168,7 +167,7 @@ module.exports = {
             member.guild.roles.fetch(action.role).then(role => {
               if (role) {
                 member.roles.add(role)
-                if (callback) callback()
+                if (callback) callback(null, 'giveRole')
               } else {
                 if (callback) callback(Error('PRODUCT:INVALIDROLE'))
               }
