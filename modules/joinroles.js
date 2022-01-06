@@ -1,6 +1,6 @@
 module.exports = {
   addJoinRole: (client, data, callback) => {
-    const aJR = client.Sentry.startTransaction({
+    const aJR = client.console.sentry.startTransaction({
       op: 'joinroles.addJoinRole',
       name: 'joinroles (Add Join Roles)'
     })
@@ -12,7 +12,7 @@ module.exports = {
     })
   },
   removeJoinRole: (client, data, callback) => {
-    const rJR = client.Sentry.startTransaction({
+    const rJR = client.console.sentry.startTransaction({
       op: 'joinroles.removeJoinRole',
       name: 'joinroles (Remove Join Roles)'
     })

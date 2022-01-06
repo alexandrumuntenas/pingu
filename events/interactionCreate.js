@@ -9,7 +9,7 @@ module.exports = {
   execute: async (client, interaction) => {
     if (interaction.isCommand()) {
       module.exports.isCommand(client, interaction).catch(err => {
-        client.log.fatal(err)
+        client.console.fatal(err)
         client.logError(err)
       })
     }

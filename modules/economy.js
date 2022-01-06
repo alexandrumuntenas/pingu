@@ -2,7 +2,7 @@
 
 module.exports = {
   getDailyMoney: async (client, member, callback) => {
-    const EgM = client.Sentry.startTransaction({
+    const EgM = client.console.sentry.startTransaction({
       op: 'economy.getDailyMoney',
       name: 'Economy (getDailyMoney)'
     })
@@ -16,7 +16,7 @@ module.exports = {
     EgM.finish()
   },
   getWorkMoney: async (client, member, callback) => {
-    const EgM = client.Sentry.startTransaction({
+    const EgM = client.console.sentry.startTransaction({
       op: 'economy.getWorkMoney',
       name: 'Economy (getWorkMoney)'
     })
@@ -30,7 +30,7 @@ module.exports = {
     EgM.finish()
   },
   getMemberInventoryAndBalance: async (client, member, callback) => {
-    const EfM = client.Sentry.startTransaction({
+    const EfM = client.console.sentry.startTransaction({
       op: 'economy.getMemberInventoryAndBalance',
       name: 'Economy (getMemberInventoryAndBalance)'
     })

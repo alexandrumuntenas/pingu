@@ -14,7 +14,7 @@ module.exports = {
           interaction.editReply({ embeds: [Success(i18n(locale, 'DAILY', { REWARD: `${money} ${interaction.database.economyCurrencyIcon}` }))] })
         })
       } catch (err) {
-        client.log.error(err)
+        client.console.error(err)
         interaction.editReply({ embeds: [Error(i18n(locale, 'ERROR'))] })
       }
     } else {
@@ -28,7 +28,7 @@ module.exports = {
           message.reply({ embeds: [Success(i18n(locale, 'DAILY', { REWARD: `${money} ${message.database.economyCurrencyIcon}` }))] })
         })
       } catch (err) {
-        client.log.error(err)
+        client.console.error(err)
         message.reply({ embeds: [Error(i18n(locale, 'ERROR'))] })
       }
     } else {

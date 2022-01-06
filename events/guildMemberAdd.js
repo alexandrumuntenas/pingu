@@ -7,7 +7,7 @@ const { fetchJoinRoles } = require('../modules/joinroles')
 module.exports = {
   name: 'guildMemberAdd',
   execute: async (client, member) => {
-    const gMA = client.Sentry.startTransaction({
+    const gMA = client.console.sentry.startTransaction({
       op: 'guildMemberAdd',
       name: 'Guild Member Add'
     })

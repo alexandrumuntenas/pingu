@@ -1,5 +1,5 @@
 module.exports = (client, guild, configuration, callback) => {
-  const uGC = client.Sentry.startTransaction({
+  const uGC = client.console.sentry.startTransaction({
     op: 'updateGuildConfig',
     name: 'Update Guild Config'
   })

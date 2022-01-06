@@ -1,7 +1,7 @@
 module.exports = {
   name: 'guildDelete',
   execute: async (client, guild) => {
-    const gD = client.Sentry.startTransaction({
+    const gD = client.console.sentry.startTransaction({
       op: 'guildDelete',
       name: 'Guild Delete'
     })

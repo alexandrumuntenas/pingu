@@ -1,7 +1,7 @@
 module.exports = {
   name: 'ready',
   execute: async (client) => {
-    client.log.info(`Conectado como ${client.user.tag}!`)
+    client.console.info(`Conectado como ${client.user.tag}!`)
     if (client.statcord) client.statcord.autopost()
 
     // TODO: Autoupdate the guilds slash commands.

@@ -18,7 +18,7 @@ module.exports = {
   cooldown: 0,
   executeInteraction (client, locale, interaction) {
     interaction.editReply({ embeds: [Loader(i18n(locale, 'UPDATE::DEPLOYING'))] })
-    client.log.info(`Deploying commands to ${interaction.guild.id}`)
+    client.console.info(`Deploying commands to ${interaction.guild.id}`)
     let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
     if (interaction.database.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []
     if (interaction.database.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell') || []
@@ -45,7 +45,7 @@ module.exports = {
       .catch(console.error)
   },
   executeLegacy (client, locale, message) {
-    client.log.info(`Deploying commands to ${message.guild.id}`)
+    client.console.info(`Deploying commands to ${message.guild.id}`)
     let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
     if (message.database.welcomeEnabled !== 0) welcome = client.interactions.filter(command => command.module === 'welcome') || []
     if (message.database.farewellEnabled !== 0) farewell = client.interactions.filter(command => command.module === 'farewell') || []
