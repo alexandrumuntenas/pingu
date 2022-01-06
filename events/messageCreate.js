@@ -1,4 +1,3 @@
-const { cooldown } = require('../functions/commands')
 const { Status, Error, Timer } = require('../modules/constructor/messageBuilder')
 const i18n = require('../i18n/i18n')
 const autoresponder = require('../modules/autoresponder')
@@ -31,8 +30,8 @@ module.exports = {
               message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND_PERMISSION_ERROR'))] })
               return
             }
-            if (cooldown.check(message.member, message.guild, commandToExecute)) {
-              cooldown.add(message.member, message.guild, commandToExecute)
+            if (client.cooldownManager.check(message.member, message.guild, commandToExecute)) {
+              client.cooldownManager.add(message.member, message.guild, commandToExecute)
               if (Object.prototype.hasOwnProperty.call(commandToExecute, 'executeLegacy')) {
                 if (client.statcord) client.statcord.postCommand(commandToExecute.name, message.member.id)
                 await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
@@ -40,18 +39,18 @@ module.exports = {
                 message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'LEGACY_NOAVALIABLE'))] })
               }
             } else {
-              message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+              message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(client.cooldownManager.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
               return
             }
           } else {
             message.reply({ embeds: [Status(i18n(message.database.guildLanguage || 'en', 'LEGACY_DISABLED'))] })
           }
         } else {
-          if (cooldown.check(message.member, message.guild, commandToExecute)) {
-            cooldown.add(message.member, message.guild, commandToExecute)
+          if (client.cooldownManager.check(message.member, message.guild, commandToExecute)) {
+            client.cooldownManager.add(message.member, message.guild, commandToExecute)
             customcommands(client, message, commandToExecute)
           } else {
-            message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(cooldown.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
+            message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(client.cooldownManager.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
             return
           }
         }

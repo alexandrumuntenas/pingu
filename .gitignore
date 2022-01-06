@@ -1,5 +1,6 @@
 .env
 package-lock.json
+cooldowns.json
 /.vscode
 /node_modules
 /modules/temp

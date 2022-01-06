@@ -26,11 +26,10 @@ client.pool = mysql.createPool({
 client.pool.config.namedPlaceholders = true
 
 client.console.info('Cargando Servicios Third-Party')
-const commands = require('./functions/commands')
-const thirdparty = require('./modules/thirdparty')
 client.console.success('Servicios Third-Party Cargados')
 
 if (process.env.ENTORNO === 'public') {
+  const thirdparty = require('./modules/thirdparty')
   client.console.warn('Iniciando sesión como el bot público.')
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -56,7 +55,10 @@ client.logError = (err) => {
   client.console.error(err)
 }
 
-client.commands = commands.loadCommands(client)
+const loadClientCommands = require('./functions/loadClientCommands')
+client.commands = loadClientCommands(client)
+
+client.cooldownManager = require('./modules/cooldownManager')
 
 for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
   const event = require(`./events/${file}`)
