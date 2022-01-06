@@ -25,11 +25,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.694825130246" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.694826196236" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694825130246" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.694826196236" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694825130246" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.694826196236" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -345,7 +345,7 @@
 <tr>
 <td>/products create message</td>
 <td>Create a product that sends a message to a channel</td>
-<td>/products create message name:Get 1000$ in MC Server price:1000 singlebuy:False message:Example destination:#<span class="docs-emoji">&#x1F4EC;</span>・announcements <br><br> /products create message name:Say Hi in Server price:4001 singlebuy:False message:Hi from #USER# destination:#<span class="docs-emoji">&#x1F4EC;</span>・announcements properties:USER</td>
+<td>/products create message name:Get 1000$ in MC Server price:1000 singlebuy:False message:Example destination:#<span class="docs-emoji">&#x1F4EC;</span>・announcements</td>
 </tr>
 <tr>
 <td>/products delete name:&lt;name of the product&gt;</td>
@@ -374,7 +374,7 @@
 <tr>
 <td>/buy name:&lt;name of the product&gt; properties:&lt;properties of the command&gt;</td>
 <td>Command to buy a product.</td>
-<td>/buy name: Get 1000$ in MC Server <br><br> /buy name:Say Hi properties: USER:Guilda</td>
+<td>/buy name: Get 1000$ in MC Server</td>
 </tr>
 <tr>
 <td>/balance</td>
@@ -398,6 +398,23 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="flex mb-6">
+    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
+    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
+        <div class="flex items-center ml-4 h-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
+                <g fill="currentColor"><g>
+                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
+                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
+                    <path fill="none" d="M0 0h24v24H0z"></path>
+                </g></g>
+            </svg>
+        </div>
+        <div class="pr-5 ml-3">
+<p>The user commands do have their own prefix version!</p>
+        </div>
+    </div>
 </div>
 
 
