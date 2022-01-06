@@ -5,8 +5,8 @@ on:
       
 name: Deploy to production server
 jobs:
-  FTP-Deploy-Action:
-    name: FTP-Deploy-Action
+  DeployAction:
+    name: Deploy to production server
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
