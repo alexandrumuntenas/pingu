@@ -50,9 +50,3 @@ module.exports.saveCooldownCollectionIntoJsonFile = () => {
 setInterval(async () => {
   module.exports.saveCooldownCollectionIntoJsonFile()
 }, 60000)
-
-process.on('unhandledRejection', () => {
-  process.exit(1)
-}).on('uncaughtException', () => {
-  process.exit(1)
-})
