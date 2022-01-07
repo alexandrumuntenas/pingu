@@ -15,7 +15,7 @@ module.exports = {
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
           .setTitle(i18n(locale, 'INVENTORY::EMBED:TITLE'))
           .setColor('#2F3136')
-          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
+          .setFooter('Powered by Pingu', client.user.displayAvatarURL())
         if (account) {
           let inventoryString = ''
           const inventoryData = JSON.parse(account.inventory)

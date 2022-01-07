@@ -77,7 +77,7 @@ module.exports = {
       case 'setlanguage': {
         updateGuildConfig(client, interaction.guild, { column: 'guildLanguage', value: interaction.options.getString('language') }, (err) => {
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'ADMIN::SETLANGUAGE:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { guildLanguage: interaction.options.getString('language') }))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { LANGUAGE: interaction.options.getString('language') }))] })
         })
         break
       }
@@ -148,7 +148,7 @@ module.exports = {
           if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
             updateGuildConfig(client, message.guild, { column: 'guildLanguage', value: message.args[1] }, (err) => {
               if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETLANGUAGE:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { guildLanguage: message.args[1] }))] })
+              message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { LANGUAGE: message.args[1] }))] })
             })
           } else {
             message.reply({ embeds: [help] })

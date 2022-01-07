@@ -21,7 +21,7 @@ module.exports = async (client, message) => {
             if (result) {
               if (Object.prototype.hasOwnProperty.call(result, 0)) {
                 const messageSent = new MessageEmbed()
-                  .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
+                  .setFooter('Powered by Pingu', client.user.displayAvatarURL())
                   .setDescription(result[0].autoresponderResponse)
                   .setColor('BLURPLE')
                 message.channel.send({ embeds: [messageSent] }).catch((err) => {

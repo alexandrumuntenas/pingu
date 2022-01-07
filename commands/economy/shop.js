@@ -20,7 +20,7 @@ module.exports = {
           .setTitle(`${interaction.guild.name} Shop`)
           .setDescription(i18n(locale, 'SHOP::EMBED:DESCRIPTION'))
           .setColor('#2F3136')
-          .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
+          .setFooter('Powered by Pingu', client.user.displayAvatarURL())
 
         let productList = ''
         fetchShopProducts(client, interaction.guild, (shopProductsData) => {
@@ -44,13 +44,13 @@ module.exports = {
               .setImage(productData.productImage)
               .addField(`${interaction.database.economyCurrencyIcon} ${i18n(locale, 'PRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
               .addField(`:robot: ${i18n(locale, 'BUY')}`, `\`/buy ${productData.productName}\``, true)
-              .setFooter('Powered by Pingu', 'https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png')
+              .setFooter('Powered by Pingu', client.user.displayAvatarURL())
 
             if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
 
             interaction.editReply({ embeds: [productEmbed] })
           } else {
-            interaction.editReply({ embeds: [Error(i18n('SHOP::NOTFOUND'))] })
+            interaction.editReply({ embeds: [Error(i18n(locale, 'SHOP::NOTFOUND'))] })
           }
         })
       }

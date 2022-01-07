@@ -28,7 +28,7 @@ module.exports = {
         client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [interaction.options.getString('command'), interaction.guild.id], function (err) {
           if (err) client.logError(err)
           if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'CCMD::REMOVE:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD::REMOVE:ERROR', { COMMAND: interaction.options.getString('command') }))] })
+          interaction.editReply({ embeds: [Success(i18n(locale, 'CCMD::REMOVE:SUCCESS', { COMMAND: interaction.options.getString('command') }))] })
         })
         break
       }
