@@ -41,7 +41,7 @@ module.exports = {
           .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${interaction.guild.channels.cache.find(c => c.id === interaction.database.levelsChannel) || channelRelationship[interaction.database.levelsChannel]}`, true)
           .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${interaction.database.levelsMessage || i18n(locale, 'UNSET')}`, true)
           .addField(`:trophy: ${i18n(locale, 'DIFFICULTY')}`, `${interaction.database.levelsDifficulty}`, true)
-          .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS', { WELCOMER_BACKGROUND_STATUS: emojiRelationship[1] })}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${interaction.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${interaction.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYBLUR')}: ${interaction.database.levelsImageCustomBlur}\n${i18n(locale, 'OVERLAYOPACITY')}: ${interaction.database.levelsImageCustomOpacity}`, false)
+          .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[1]}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${interaction.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${interaction.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${interaction.database.levelsImageCustomOpacity}`, false)
 
         interaction.editReply({ embeds: [sentEmbed] })
         break
@@ -132,7 +132,7 @@ module.exports = {
               .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || channelRelationship[message.database.levelsChannel]}`, true)
               .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${message.database.levelsMessage || i18n(locale, 'UNSET')}`, true)
               .addField(`:trophy: ${i18n(locale, 'DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
-              .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[1]}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${message.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYBLUR')}: ${message.database.levelsImageCustomBlur}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.levelsImageCustomOpacity}`, false)
+              .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[1]}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${message.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.levelsImageCustomOpacity}`, false)
 
             _message.edit({ embeds: [configStatus] })
           })
