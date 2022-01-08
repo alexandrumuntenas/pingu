@@ -20,9 +20,6 @@ module.exports = {
   },
   fatal: (message) => {
     process.stdout.write(`${boxen(`${chalk.yellow('[FATAL]')} ${chalk.yellow(`[${getCurrentTime()}]`)}\n${message}`, { padding: 1, align: 'center' })}\n`)
-  },
-  spinner: (message) => {
-    process.stdout.write()
   }
 }
 
