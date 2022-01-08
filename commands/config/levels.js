@@ -121,125 +121,122 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('levels', i18n(locale, 'LEVELS::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'setrankupmessage', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPMESSAGE') }, { option: 'setrankupchannel', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPCHANNEL') }, { option: 'setdifficulty', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETDIFFICULTY'), syntax: 'setdifficulty <number of difficulty>' }, { option: 'setbackground', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <background url>' }, { option: 'overlayopacity', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity>' }, { option: 'overlaycolor', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }])
-    if (message.args[0]) {
-      switch (message.args[0]) {
-        case 'viewconfig': {
-          message.channel.send({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
-            const configStatus = new MessageEmbed()
-              .setColor('#2F3136')
-              .setTitle(i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:TITLE'))
-              .setDescription(i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:DESCRIPTION'))
-              .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || channelRelationship[message.database.levelsChannel]}`, true)
-              .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${message.database.levelsMessage || i18n(locale, 'UNSET')}`, true)
-              .addField(`:trophy: ${i18n(locale, 'DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
-              .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[1]}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${message.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.levelsImageCustomOpacity}`, false)
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, [0]))) return message.reply({ embeds: [helpTray] })
+    switch (message.args[0]) {
+      case 'viewconfig': {
+        message.channel.send({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
+          const configStatus = new MessageEmbed()
+            .setColor('#2F3136')
+            .setTitle(i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:TITLE'))
+            .setDescription(i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:DESCRIPTION'))
+            .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.levelsChannel) || channelRelationship[message.database.levelsChannel]}`, true)
+            .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${message.database.levelsMessage || i18n(locale, 'UNSET')}`, true)
+            .addField(`:trophy: ${i18n(locale, 'DIFFICULTY')}`, `${message.database.levelsDifficulty}`, true)
+            .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[1]}\n${i18n(locale, 'BACKGROUND')}: [Ver imagen](${message.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.levelsImageCustomOpacity}`, false)
 
-            _message.edit({ embeds: [configStatus] })
-          })
-          break
-        }
-        case 'setrankupchannel': {
-          if (message.mentions.channels.first()) {
-            updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: message.mentions.channels.first().id }, (err) => {
-              if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
-              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
-            })
-          } else {
-            if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-              switch (message.args[1]) {
-                case 'none': {
-                  updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: 0 }, (err) => {
-                    if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
-                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[0] }))] })
-                  })
-                  break
-                }
-                case 'same': {
-                  updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: 1 }, (err) => {
-                    if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
-                    message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[1] }))] })
-                  })
-                  break
-                }
-                default: {
-                  message.reply({ embeds: [helpTray] })
-                  break
-                }
-              }
-            } else {
-              message.reply({ embeds: [helpTray] })
-            }
-          }
-          break
-        }
-        case 'setrankupmessage': {
-          updateGuildConfig(client, message.guild, { column: 'levelsMessage', value: message.content.replace(`${message.database.guildPrefix}levels setrankupmessage `, '') }, (err) => {
-            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:SUCCESS', { MESSAGE: message.content.replace(`${message.database.guildPrefix}levels setrankupmessage `, '') }))] })
-          })
-          break
-        }
-        case 'setdifficulty': {
-          if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            if (isInteger(parseInt(message.args[1]))) {
-              updateGuildConfig(client, message.guild, { column: 'levelsDifficulty', value: parseInt(parseInt(message.args[1])) }, (err) => {
-                if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETDIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.args[1]) }))] })
-              })
-            } else {
-              message.reply({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:NOTINT'))] })
-            }
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'setbackground': {
-          if (message.args[1]) {
-            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomBackground', value: message.args[1] }, (err) => {
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETBACKGROUND:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'overlayopacity': {
-          if (message.args[1]) {
-            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOpacity', value: message.args[1] }, (err) => {
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'overlaycolor': {
-          if (message.args[1]) {
-            let hexcolor = message.args[1]
-            if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-            if (isHexColor(hexcolor)) {
-              updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOverlayColor', value: hexcolor }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
-              })
-            } else {
-              message.reply({ embeds: [Status(i18n(locale, 'LEVELS::OVERLAYCOLOR:NOTHEX'))] })
-            }
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        default: {
-          message.reply({ embeds: [helpTray] })
-          break
-        }
+          _message.edit({ embeds: [configStatus] })
+        })
+        break
       }
-    } else {
-      message.reply({ embeds: [helpTray] })
+      case 'setrankupchannel': {
+        if (message.mentions.channels.first()) {
+          updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: message.mentions.channels.first().id }, (err) => {
+            if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
+            message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+          })
+        } else {
+          if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
+            switch (message.args[1]) {
+              case 'none': {
+                updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: 0 }, (err) => {
+                  if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
+                  message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[0] }))] })
+                })
+                break
+              }
+              case 'same': {
+                updateGuildConfig(client, message.guild, { column: 'levelsChannel', value: 1 }, (err) => {
+                  if (err) return message.reply(Error(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:ERROR')))
+                  message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPCHANNEL:SUCCESS', { CHANNEL: channelRelationship[1] }))] })
+                })
+                break
+              }
+              default: {
+                message.reply({ embeds: [helpTray] })
+                break
+              }
+            }
+          } else {
+            message.reply({ embeds: [helpTray] })
+          }
+        }
+        break
+      }
+      case 'setrankupmessage': {
+        updateGuildConfig(client, message.guild, { column: 'levelsMessage', value: message.content.replace(`${message.database.guildPrefix}levels setrankupmessage `, '') }, (err) => {
+          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETRANKUPMESSAGE:SUCCESS', { MESSAGE: message.content.replace(`${message.database.guildPrefix}levels setrankupmessage `, '') }))] })
+        })
+        break
+      }
+      case 'setdifficulty': {
+        if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
+          if (isInteger(parseInt(message.args[1]))) {
+            updateGuildConfig(client, message.guild, { column: 'levelsDifficulty', value: parseInt(parseInt(message.args[1])) }, (err) => {
+              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETDIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.args[1]) }))] })
+            })
+          } else {
+            message.reply({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:NOTINT'))] })
+          }
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'setbackground': {
+        if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
+          updateGuildConfig(client, message.guild, { column: 'levelsImageCustomBackground', value: message.args[1] }, (err) => {
+            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETBACKGROUND:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
+          })
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'overlayopacity': {
+        if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
+          updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOpacity', value: message.args[1] }, (err) => {
+            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
+          })
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'overlaycolor': {
+        if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
+          let hexcolor = message.args[1]
+          if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
+          if (isHexColor(hexcolor)) {
+            updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOverlayColor', value: hexcolor }, (err) => {
+              if (err) return message.reply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
+            })
+          } else {
+            message.reply({ embeds: [Status(i18n(locale, 'LEVELS::OVERLAYCOLOR:NOTHEX'))] })
+          }
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      default: {
+        message.reply({ embeds: [helpTray] })
+        break
+      }
     }
   }
 }
