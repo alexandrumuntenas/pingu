@@ -10,9 +10,7 @@ module.exports = (client, database, callback) => {
   if (database.economyEnabled !== 0) economy = client.commands.filter(command => command.module === 'economy') || []
   const nomodule = client.commands.filter(command => !command.module)
 
-  bodyToSend = new Collection()
-
-  bodyToSend = bodyToSend.concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [], nomodule || [])
+  bodyToSend = new Collection(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [], nomodule || [])
 
   if (database.guildViewCnfCmdsEnabled === 0) {
     bodyToSend = bodyToSend.filter(command => command.isConfigCommand === false)
