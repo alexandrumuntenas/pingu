@@ -73,8 +73,7 @@ module.exports = {
     })
   },
   updateMemberBalance: (client, member, newBalance, callback) => {
-    // TODO: Update column name from "amount" to "balance"
-    client.pool.query('UPDATE `guildEconomyUserBank` SET `amount` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, member.guild.id], (err) => {
+    client.pool.query('UPDATE `guildEconomyUserBank` SET `balance` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, member.guild.id], (err) => {
       if (err) client.logError(err)
       if (callback) callback()
     })
@@ -86,20 +85,18 @@ module.exports = {
     })
   },
   addItemToMemberInventory: (inventoryFromDB, productToAdd, callback) => {
-    // TODO: Replace the property "singlebuy" with "buyOnlyOne".
-
     let productQuantity = 1
 
-    if (productToAdd.singlebuy) productQuantity = -1
+    if (productToAdd.buyOnlyOne) productQuantity = -1
 
     const parsedInventoryFromDB = JSON.parse(inventoryFromDB)
 
     if (parsedInventoryFromDB[productToAdd.productId]) {
-      if (!productToAdd.singlebuy) {
+      if (!productToAdd.buyOnlyOne) {
         if (productToAdd.functionType !== 'giveRole' && productToAdd.functionType !== 'sendMessage') { if (callback) return callback(inventoryFromDB) }
         parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId]) + productQuantity
       }
-      if (productToAdd.singlebuy) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId])
+      if (productToAdd.buyOnlyOne) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId])
     } else {
       parsedInventoryFromDB[productToAdd.productId] = productQuantity
     }
@@ -130,9 +127,8 @@ module.exports = {
   },
   checkIfTheProductShouldOnlyBePurchasedOnce: (client, productNameOrId, guild, callback) => {
     module.exports.getShopProduct(client, guild, productNameOrId, (shopProduct) => {
-      const { singlebuy } = JSON.parse(shopProduct.productMeta)
-      // TODO: Replace Singlebuy with buyOnlyOne
-      if (singlebuy) {
+      const { buyOnlyOne } = JSON.parse(shopProduct.productMeta)
+      if (buyOnlyOne) {
         return callback(true)
       } else {
         return callback(false)
@@ -140,10 +136,7 @@ module.exports = {
     })
   },
   executeItemFunctions: (client, member, shopProduct, callback) => {
-    // TODO: Change the column name from "productMeta" to "productProperties". The code changes will be commented and highlighted.
-
-    const { action } = JSON.parse(shopProduct.productMeta)
-    // * const { action } = JSON.parse(shopProduct.productProperties)
+    const { action } = JSON.parse(shopProduct.productProperties)
 
     if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
       switch (action.type) {

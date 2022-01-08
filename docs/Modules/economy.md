@@ -33,9 +33,9 @@ This module can be only used using Slash Commands.
 
 | Command | Function | Example |
 | --- | --- | --- |
-| /products create colletionable name:\<name of the product> price:\<price of the product> singlebuy:\<true/false> (···)| Create a collectionable product. | /products create collectionable name:Star price:400 singlebuy:true |
-| /products create role name:\<name of the product> price:\<price of the product> singlebuy:\<true/false> role:\<role> | Create a products that gives a role. | /products create role name: ROLE32 price: 1 singlebuy: true role: @newrole |
-| /products create message | Create a product that sends a message to a channel | /products create message name:Get 1000$ in MC Server price:1000 singlebuy:False message:Example destination:#📬・announcements |
+| /products create colletionable name:\<name of the product> price:\<price of the product> buyonlyone:\<true/false> (···)| Create a collectionable product. | /products create collectionable name:Star price:400 buyonlyone:true |
+| /products create role name:\<name of the product> price:\<price of the product> buyonlyone:\<true/false> role:\<role> | Create a products that gives a role. | /products create role name: ROLE32 price: 1 buyonlyone: true role: @newrole |
+| /products create message | Create a product that sends a message to a channel | /products create message name:Get 1000$ in MC Server price:1000 buyonlyone:False message:Example destination:#📬・announcements |
 | /products delete name:\<name of the product> | Delete a product. | /products delete name: EX4 |
 
 ## User commands
