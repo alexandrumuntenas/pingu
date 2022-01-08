@@ -21,7 +21,7 @@ module.exports = async (client, message) => {
               .setFooter('Powered by Pingu', client.user.displayAvatarURL())
               .setDescription(result[0].autoresponderResponse)
               .setColor('BLURPLE')
-            message.channel.send({ embeds: [messageSent] }).catch((err) => {
+            message.channel.send({ embeds: [messageSent] }).catch((err) => { //! Esto se debe eliminar muy pronto
               client.console.error(err)
               client.logError(err)
             })
