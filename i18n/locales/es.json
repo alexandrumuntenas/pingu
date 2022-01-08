@@ -140,6 +140,7 @@
   "OVERLAYCOLOR": "Color de superposición",
   "OVERLAYOPACITY": "Opacidad de superposición",
   "PRICE": "Precio",
+  "PROCESSINGREQUEST": "Procesando su solicitud... Por favor, espere",
   "PRODUCTS": "Productos",
   "PRODUCTS::CREATE:ERROR": "Se ha producido un error al intentar crear el producto.",
   "PRODUCTS::CREATE:EXISTS": "Ya existe un producto con el nombre %PRODUCT%.",
