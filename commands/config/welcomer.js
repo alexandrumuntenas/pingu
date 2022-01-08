@@ -117,114 +117,111 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('welcomer', i18n(locale, 'WELCOMER::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlaycolor', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'test', description: i18n(locale, 'WELCOMER::xºHELPTRAY:OPTION:TEST') }, { option: 'simulate', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SIMULATE') }, { option: 'setbackground', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <url>' }])
-    if (message.args[0]) {
-      switch (message.args[0]) {
-        case 'viewconfig': {
-          message.reply({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
-            const sentEmbed = new MessageEmbed()
-              .setColor('BLURPLE')
-              .setTitle(i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:TITLE'))
-              .setDescription(i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:DESCRIPTION'))
-              .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) || i18n(locale, 'UNSET')}`, true)
-              .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${message.database.welcomeMessage || i18n(locale, 'UNSET')}`, true)
-              .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[message.database.welcomeImage]}\n${i18n(locale, 'BACKGROUND')} [Ver imagen](${message.database.welcomeImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.welcomeImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.welcomeImageCustomOpacity}\n${i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS:ROUNDAVATAR')}: ${emojiRelationship[message.database.welcomeImageRoundAvatar]}`, false)
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
+    switch (message.args[0]) {
+      case 'viewconfig': {
+        message.reply({ embeds: [Loader(i18n(locale, 'FETCHINGDATA'))] }).then((_message) => {
+          const sentEmbed = new MessageEmbed()
+            .setColor('BLURPLE')
+            .setTitle(i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:TITLE'))
+            .setDescription(i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:DESCRIPTION'))
+            .addField(`<:blurple_announcements:892441292909469726> ${i18n(locale, 'CHANNEL')}`, `${message.guild.channels.cache.find(c => c.id === message.database.welcomeChannel) || i18n(locale, 'UNSET')}`, true)
+            .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'MESSAGE')}`, `${message.database.welcomeMessage || i18n(locale, 'UNSET')}`, true)
+            .addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS')}`, `${i18n(locale, 'STATUS')}: ${emojiRelationship[message.database.welcomeImage]}\n${i18n(locale, 'BACKGROUND')} [Ver imagen](${message.database.welcomeImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${message.database.welcomeImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${message.database.welcomeImageCustomOpacity}\n${i18n(locale, 'WELCOMER::VIEWCONFIG:EMBED:WELCOMECARDS:ROUNDAVATAR')}: ${emojiRelationship[message.database.welcomeImageRoundAvatar]}`, false)
 
-            _message.edit({ embeds: [sentEmbed] })
-          })
-          break
-        }
-        case 'setchannel': {
-          if (message.mentions.channels.first()) {
-            updateGuildConfig(client, message.guild, { column: 'welcomeChannel', value: message.mentions.channels.first().id }, (err) => {
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::SETCHANNEL:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'setmessage': {
-          updateGuildConfig(client, message.guild, { column: 'welcomeMessage', value: message.content.replace(`${message.database.guildPrefix}welcomer setmessage `, '') }, (err) => {
-            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETMESSAGE:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETMESSAGE:SUCCESS', { MESSAGE: message.content.replace(`${message.database.guildPrefix}welcomer setmessage `, '') }))] })
-          })
-          break
-        }
-        case 'setbackground': {
-          if (message.args[1]) {
-            updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomBackground', value: message.args[1] }, (err) => {
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETBACKGROUND:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'enablecards': {
-          updateGuildConfig(client, message.guild, { column: 'welcomeImage', value: 1 }, (err) => {
-            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::ENABLECARDS:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::ENABLECARDS:SUCCESS'))] })
-          })
-          break
-        }
-        case 'disablecards': {
-          updateGuildConfig(client, message.guild, { column: 'welcomeImage', value: 0 }, (err) => {
-            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::DISABLECARDS:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::DISABLECARDS:SUCCESS'))] })
-          })
-          break
-        }
-        case 'overlayopacity': {
-          if (message.args[1]) {
-            updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOpacity', value: message.args[1] }, (err) => {
-              if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYOPACITY:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'overlaycolor': {
-          if (message.args[1]) {
-            let hexcolor = message.args[1]
-            if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-            if (isHexcolor(hexcolor)) {
-              updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOverlayColor', value: hexcolor }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYCOLOR:SUCCESS', { COLOR: message.args[1] }))] })
-              })
-            } else {
-              message.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
-            }
-          } else {
-            message.reply({ embeds: [helpTray] })
-          }
-          break
-        }
-        case 'test': {
-          welcomeCard(client, message.member, locale, message.database).then((paths) => {
-            const attachmentSent = new MessageAttachment(paths.attachmentSent)
-            message.reply({ files: [attachmentSent] }).then(() => {
-              tempFileRemover(paths)
-            })
-          })
-          break
-        }
-        case 'simulate': {
-          message.reply({ embeds: [Status(i18n(locale, 'WELCOMER::SIMULATE:SENDING'))] })
-          guildMemberAdd(client, message.member)
-          break
-        }
-        default: {
-          message.reply({ embeds: [helpTray] })
-          break
-        }
+          _message.edit({ embeds: [sentEmbed] })
+        })
+        break
       }
-    } else {
-      message.reply({ embeds: [helpTray] })
+      case 'setchannel': {
+        if (message.mentions.channels.first()) {
+          updateGuildConfig(client, message.guild, { column: 'welcomeChannel', value: message.mentions.channels.first().id }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::SETCHANNEL:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+          })
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'setmessage': {
+        updateGuildConfig(client, message.guild, { column: 'welcomeMessage', value: message.content.replace(`${message.database.guildPrefix}welcomer setmessage `, '') }, (err) => {
+          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETMESSAGE:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETMESSAGE:SUCCESS', { MESSAGE: message.content.replace(`${message.database.guildPrefix}welcomer setmessage `, '') }))] })
+        })
+        break
+      }
+      case 'setbackground': {
+        if (Object.prototype.hasOwnProperty.call(message.args, 1)) {
+          updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomBackground', value: message.args[1] }, (err) => {
+            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETBACKGROUND:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
+          })
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'enablecards': {
+        updateGuildConfig(client, message.guild, { column: 'welcomeImage', value: 1 }, (err) => {
+          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::ENABLECARDS:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::ENABLECARDS:SUCCESS'))] })
+        })
+        break
+      }
+      case 'disablecards': {
+        updateGuildConfig(client, message.guild, { column: 'welcomeImage', value: 0 }, (err) => {
+          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::DISABLECARDS:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::DISABLECARDS:SUCCESS'))] })
+        })
+        break
+      }
+      case 'overlayopacity': {
+        if (Object.prototype.hasOwnProperty.call(message.args, 1)) {
+          updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOpacity', value: message.args[1] }, (err) => {
+            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYOPACITY:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
+          })
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'overlaycolor': {
+        if (Object.prototype.hasOwnProperty.call(message.args, 1)) {
+          let hexcolor = message.args[1]
+          if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
+          if (isHexcolor(hexcolor)) {
+            updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOverlayColor', value: hexcolor }, (err) => {
+              if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:ERROR'))] })
+              message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYCOLOR:SUCCESS', { COLOR: message.args[1] }))] })
+            })
+          } else {
+            message.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
+          }
+        } else {
+          message.reply({ embeds: [helpTray] })
+        }
+        break
+      }
+      case 'test': {
+        welcomeCard(client, message.member, locale, message.database).then((paths) => {
+          const attachmentSent = new MessageAttachment(paths.attachmentSent)
+          message.reply({ files: [attachmentSent] }).then(() => {
+            tempFileRemover(paths)
+          })
+        })
+        break
+      }
+      case 'simulate': {
+        message.reply({ embeds: [Status(i18n(locale, 'WELCOMER::SIMULATE:SENDING'))] })
+        guildMemberAdd(client, message.member)
+        break
+      }
+      default: {
+        message.reply({ embeds: [helpTray] })
+        break
+      }
     }
   }
 }
