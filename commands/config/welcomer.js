@@ -30,7 +30,7 @@ module.exports = {
     .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the welcomer cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('test').setDescription('Test the welcomer message'))
     .addSubcommand(subcommand => subcommand.setName('simulate').setDescription('Simulate the welcomer message')),
-  executeInteraction (client, locale, interaction) {
+  executeInteraction(client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
         const configStatus = new MessageEmbed()
@@ -115,7 +115,7 @@ module.exports = {
       }
     }
   },
-  executeLegacy (client, locale, message) {
+  executeLegacy(client, locale, message) {
     const helpTray = Help('welcomer', i18n(locale, 'WELCOMER::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlaycolor', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'test', description: i18n(locale, 'WELCOMER::xºHELPTRAY:OPTION:TEST') }, { option: 'simulate', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SIMULATE') }, { option: 'setbackground', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <url>' }])
     if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
@@ -134,14 +134,11 @@ module.exports = {
         break
       }
       case 'setchannel': {
-        if (message.mentions.channels.first()) {
-          updateGuildConfig(client, message.guild, { column: 'welcomeChannel', value: message.mentions.channels.first().id }, (err) => {
-            if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::SETCHANNEL:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
-          })
-        } else {
-          message.reply({ embeds: [helpTray] })
-        }
+        if (!message.mentions.channels.first()) return message.reply({ embeds: [helpTray] })
+        updateGuildConfig(client, message.guild, { column: 'welcomeChannel', value: message.mentions.channels.first().id }, (err) => {
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::SETCHANNEL:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+        })
         break
       }
       case 'setmessage': {
@@ -152,14 +149,11 @@ module.exports = {
         break
       }
       case 'setbackground': {
-        if (Object.prototype.hasOwnProperty.call(message.args, 1)) {
-          updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomBackground', value: message.args[1] }, (err) => {
-            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETBACKGROUND:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
-          })
-        } else {
-          message.reply({ embeds: [helpTray] })
-        }
+        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
+        updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomBackground', value: message.args[1] }, (err) => {
+          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETBACKGROUND:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
+        })
         break
       }
       case 'enablecards': {
@@ -177,31 +171,22 @@ module.exports = {
         break
       }
       case 'overlayopacity': {
-        if (Object.prototype.hasOwnProperty.call(message.args, 1)) {
-          updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOpacity', value: message.args[1] }, (err) => {
-            if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYOPACITY:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
-          })
-        } else {
-          message.reply({ embeds: [helpTray] })
-        }
+        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
+        updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOpacity', value: message.args[1] }, (err) => {
+          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYOPACITY:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
+        })
         break
       }
       case 'overlaycolor': {
-        if (Object.prototype.hasOwnProperty.call(message.args, 1)) {
-          let hexcolor = message.args[1]
-          if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-          if (isHexcolor(hexcolor)) {
-            updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOverlayColor', value: hexcolor }, (err) => {
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYCOLOR:SUCCESS', { COLOR: message.args[1] }))] })
-            })
-          } else {
-            message.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
-          }
-        } else {
-          message.reply({ embeds: [helpTray] })
-        }
+        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
+        let hexcolor = message.args[1]
+        if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
+        if (!isHexcolor(hexcolor)) return message.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
+        updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOverlayColor', value: hexcolor }, (err) => {
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYCOLOR:SUCCESS', { COLOR: message.args[1] }))] })
+        })
         break
       }
       case 'test': {
