@@ -22,7 +22,7 @@ module.exports = {
   }
 }
 
-function updateGuildCommands(client) {
+function updateGuildCommands (client) {
   client.guilds.fetch().then((guilds) => {
     guilds.forEach(guild => {
       client.console.info(`Deploying commands to ${guild.id}`)

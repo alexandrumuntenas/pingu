@@ -31,7 +31,7 @@ module.exports = {
     .addSubcommand(subcommand => subcommand.setName('setbackground').setDescription('Set the rank cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the rank cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the rank cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true))),
-  executeInteraction(client, locale, interaction) {
+  executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
         const sentEmbed = new MessageEmbed()
@@ -119,7 +119,7 @@ module.exports = {
       }
     }
   },
-  executeLegacy(client, locale, message) {
+  executeLegacy (client, locale, message) {
     const helpTray = Help('levels', i18n(locale, 'LEVELS::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'setrankupmessage', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPMESSAGE') }, { option: 'setrankupchannel', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPCHANNEL') }, { option: 'setdifficulty', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETDIFFICULTY'), syntax: 'setdifficulty <number of difficulty>' }, { option: 'setbackground', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <background url>' }, { option: 'overlayopacity', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity>' }, { option: 'overlaycolor', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }])
     if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
