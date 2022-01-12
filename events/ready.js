@@ -15,21 +15,26 @@ module.exports = {
   execute: (client) => {
     client.console.info(`Conectado como ${client.user.tag}!`)
     if (client.statcord) client.statcord.autopost()
-
-    // TODO: Autoupdate the guilds slash commands.
+    updateGuildCommands(client)
     setInterval(() => {
-      client.guilds.fetch().forEach(guild => {
-        client.console.info(`Deploying commands to ${guild.id}`)
-        getGuildConfig(client, guild, (guildConfig) => {
-          generateTheCommandListOfTheGuild(client, guildConfig, (commandListOfTheGuild) => {
-            rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commandListOfTheGuild })
-              .then(() => {
-                client.console.success(`Commands deployed succesfully to ${guild.id}`)
-              })
-              .catch(console.error)
-          })
-        })
-      })
+      updateGuildCommands(client)
     }, 86400000)
   }
+}
+
+function updateGuildCommands(client) {
+  client.guilds.fetch().then((guilds) => {
+    guilds.forEach(guild => {
+      client.console.info(`Deploying commands to ${guild.id}`)
+      getGuildConfig(client, guild, (guildConfig) => {
+        generateTheCommandListOfTheGuild(client, guildConfig, (commandListOfTheGuild) => {
+          rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commandListOfTheGuild })
+            .then(() => {
+              client.console.success(`Commands deployed succesfully to ${guild.id}`)
+            })
+            .catch(console.error)
+        })
+      })
+    })
+  })
 }
