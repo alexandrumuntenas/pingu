@@ -36,7 +36,7 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('ccmd', i18n(locale, 'CCMD::HELPTRAY:DESCRIPTION'), [{ option: 'create', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:CREATE'), syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:REMOVE'), syntax: 'remove <command>', isNsfw: false }])
-    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, [0, 1]))) return message.reply({ embeds: [helpTray] })
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0) && Object.prototype.hasOwnProperty.call(message.args, 1))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'create': {
         const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '').trim()
