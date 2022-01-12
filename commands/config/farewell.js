@@ -55,7 +55,7 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('farewell', i18n(locale, 'FAREWELL::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'FAREWELL::HELPTRAY:OPTION:VIEWCONFIG'), syntax: '' }, { option: 'setchannel', description: i18n(locale, 'FAREWELL::HELPTRAY:OPTION:SETCHANNEL'), syntax: '<#channel>' }, { option: 'setmessage', description: i18n(locale, 'FAREWELL::HELPTRAY:OPTION:SETMESSAGE'), syntax: '<message>' }, { option: 'simulate', description: i18n(locale, 'FAREWELL::HELPTRAY:OPTION:SIMULATE'), syntax: '' }])
-    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, [0, 1]))) return message.reply({ embeds: [helpTray] })
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0) && Object.prototype.hasOwnProperty.call(message.args, 1))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'viewconfig': {
         const configStatus = new MessageEmbed()
