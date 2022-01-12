@@ -31,9 +31,9 @@ module.exports = {
     .addStringOption(option => option.setName('option_s').setDescription('Type your choice'))
     .addStringOption(option => option.setName('option_t').setDescription('Type your choice')),
   executeInteraction (client, locale, interaction) {
-    const options = []
-      .push(interaction.options.getString('option_a'), interaction.options.getString('option_a'), interaction.options.getString('option_b'), interaction.options.getString('option_c'), interaction.options.getString('option_d'), interaction.options.getString('option_e'), interaction.options.getString('option_f'), interaction.options.getString('option_g'), interaction.options.getString('option_h'), interaction.options.getString('option_i'), interaction.options.getString('option_j'), interaction.options.getString('option_k'), interaction.options.getString('option_l'), interaction.options.getString('option_m'), interaction.options.getString('option_t'), interaction.options.getString('option_n'), interaction.options.getString('option_o'), interaction.options.getString('option_p'), interaction.options.getString('option_q'), interaction.options.getString('option_r'), interaction.options.getString('option_s'))
-      .filter(option => option !== null)
+    let options = []
+    options.push(interaction.options.getString('option_a'), interaction.options.getString('option_b'), interaction.options.getString('option_c'), interaction.options.getString('option_d'), interaction.options.getString('option_e'), interaction.options.getString('option_f'), interaction.options.getString('option_g'), interaction.options.getString('option_h'), interaction.options.getString('option_i'), interaction.options.getString('option_j'), interaction.options.getString('option_k'), interaction.options.getString('option_l'), interaction.options.getString('option_m'), interaction.options.getString('option_t'), interaction.options.getString('option_n'), interaction.options.getString('option_o'), interaction.options.getString('option_p'), interaction.options.getString('option_q'), interaction.options.getString('option_r'), interaction.options.getString('option_s'))
+    options = options.filter(option => option !== null)
 
     const question = interaction.options.getString('question')
 
@@ -49,7 +49,7 @@ module.exports = {
         .setTitle(`📊 ${question}`)
 
       const alphabet = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱',
-        '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
+        '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹']
 
       const arr = []
 
