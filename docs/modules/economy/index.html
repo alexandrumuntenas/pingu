@@ -25,11 +25,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.695252441691" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.695308494780" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.695252441691" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.695308494780" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.695252441691" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.695308494780" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -333,19 +333,19 @@
 </thead>
 <tbody>
 <tr>
-<td>/products create colletionable name:&lt;name of the product&gt; price:&lt;price of the product&gt; singlebuy:&lt;true/false&gt; (···)</td>
+<td>/products create colletionable name:&lt;name of the product&gt; price:&lt;price of the product&gt; buyonlyone:&lt;true/false&gt; (···)</td>
 <td>Create a collectionable product.</td>
-<td>/products create collectionable name:Star price:400 singlebuy:true</td>
+<td>/products create collectionable name:Star price:400 buyonlyone:true</td>
 </tr>
 <tr>
-<td>/products create role name:&lt;name of the product&gt; price:&lt;price of the product&gt; singlebuy:&lt;true/false&gt; role:&lt;role&gt;</td>
+<td>/products create role name:&lt;name of the product&gt; price:&lt;price of the product&gt; buyonlyone:&lt;true/false&gt; role:&lt;role&gt;</td>
 <td>Create a products that gives a role.</td>
-<td>/products create role name: ROLE32 price: 1 singlebuy: true role: @newrole</td>
+<td>/products create role name: ROLE32 price: 1 buyonlyone: true role: @newrole</td>
 </tr>
 <tr>
 <td>/products create message</td>
 <td>Create a product that sends a message to a channel</td>
-<td>/products create message name:Get 1000$ in MC Server price:1000 singlebuy:False message:Example destination:#<span class="docs-emoji">&#x1F4EC;</span>・announcements</td>
+<td>/products create message name:Get 1000$ in MC Server price:1000 buyonlyone:False message:Example destination:#<span class="docs-emoji">&#x1F4EC;</span>・announcements</td>
 </tr>
 <tr>
 <td>/products delete name:&lt;name of the product&gt;</td>
