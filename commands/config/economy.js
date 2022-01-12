@@ -36,17 +36,17 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('economy', i18n(locale, 'ECONOMY::HELPTRAY:DESCRIPTION'), [{ option: 'setcoinname', description: i18n(locale, 'ECONOMY::HELPTRAY:OPTION:SETCOINNAME'), syntax: 'setcoinname <new currency>', isNsfw: false }, { option: 'setcoinicon', description: i18n(locale, 'ECONOMY::HELPTRAY:OPTION:SETCOINICON'), syntax: 'setcoinicon <:emoji:>', isNsfw: false }])
-    if (!Object.prototype.hasOwnProperty.call(message.args, [0, 1])) return message.reply({ embeds: [helpTray] })
+    if (!(Object.prototype.hasOwnProperty.call(message.args, 0) && Object.prototype.hasOwnProperty.call(message.args, 1))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'setcoinname': {
         updateGuildConfig(client, message.guild, { column: 'economyCurrency', value: message.content.replace(`${message.database.guildPrefix}economy setcoinname `, '') }, (err) => {
           if (err) return message.reply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINNAME:ERROR'))] })
-          message.reply({ embeds: [Success(i18n(locale, 'ECCONOMY::SETCOINNAME:SUCCESS', { CURRENCY: message.content.replace(`${message.database.guildPrefix}economy setcoinname `, '') }))] })
+          message.reply({ embeds: [Success(i18n(locale, 'ECONOMY::SETCOINNAME:SUCCESS', { CURRENCY: message.content.replace(`${message.database.guildPrefix}economy setcoinname `, '') }))] })
         })
         break
       }
       case 'setcoinicon': {
-        updateGuildConfig(client, message.guild, { column: 'economyCurrency', value: message.args[1] }, (err) => {
+        updateGuildConfig(client, message.guild, { column: 'economyCurrencyIcon', value: message.args[1] }, (err) => {
           if (err) return message.reply({ embeds: [Error(i18n(locale, 'ECONOMY::SETCOINICON:ERROR'))] })
           message.reply({ embeds: [Success(i18n(locale, 'ECONOMY::SETCOINICON:SUCCESS', { CURRENCY: message.args[1] }))] })
         })
