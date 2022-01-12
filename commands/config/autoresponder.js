@@ -1,8 +1,7 @@
 const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Success, Help } = require('../../modules/constructor/messageBuilder')
+const { Success } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const makeId = require('../../modules/makeId')
 
 module.exports = {
   name: 'autoresponder',
@@ -33,56 +32,6 @@ module.exports = {
         })
         break
       }
-    }
-  },
-  executeLegacy (client, locale, message) {
-    const help = Help('autoresponder', i18n(locale, 'AUTORESPONDER::HELPTRAY:DESCRIPTION'), [{ option: 'create', description: i18n(locale, 'AUTORESPONDER::HELPTRAY:OPTION:CREATE'), syntax: 'create <ID>', isNsfw: false }, { option: 'remove', description: i18n(locale, 'AUTORESPONDER::HELPTRAY:OPTION:REMOVE'), syntax: 'remove <ID>', isNsfw: false }])
-    const filter = m => m.member.id === message.member.id
-    if (message.args[0]) {
-      switch (message.args[0]) {
-        case 'create': {
-          if (message.args[1]) {
-            message.channel.send({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER::CREATE:TRIGGERINSERT')}` }).then((embedMenu) => {
-              message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-                const autoresponderTrigger = collected.first().content.toLocaleLowerCase()
-                collected.first().delete()
-                embedMenu.edit({ content: `:arrow_right: ${i18n(locale, 'AUTORESPONDER::CREATE:RESPONSE')}` })
-                message.channel.awaitMessages({ filter, max: 1 }).then(collected => {
-                  const autoresponderResponse = collected.first().content
-                  collected.first().delete()
-                  const autoresponderId = message.args[1] || makeId(12)
-                  client.pool.query('INSERT INTO `guildAutoResponder` (`guild`, `autoresponderID`, `autoresponderTrigger`, `autoresponderResponse`) VALUES (?,?,?,?)', [message.guild.id, autoresponderId, autoresponderTrigger, autoresponderResponse], function (err) {
-                    if (err) client.logError(err)
-                    if (err) return message.reply({ embeds: [Error(i18n(locale, 'AUTORESPONDER::CREATE:ERROR'))] })
-                    message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER::CREATE:SUCCESS', { RESPONSE: autoresponderId }))] })
-                  })
-                })
-              })
-            })
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
-        case 'remove': {
-          if (message.args[1]) {
-            client.pool.query('DELETE FROM `guildAutoResponder` WHERE `autoresponderId` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
-              if (err) client.logError(err)
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'AUTORESPONDER::REMOVE:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'AUTORESPONDER::REMOVE:SUCCESS', { RESPONSE: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
-        default: {
-          message.reply({ embeds: [help] })
-          break
-        }
-      }
-    } else {
-      message.reply({ embeds: [help] })
     }
   }
 }

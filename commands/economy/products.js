@@ -19,20 +19,20 @@ module.exports = {
         .setName('collectionable').setDescription('🛒 Create a collectionable product')
         .addStringOption(option => option.setName('name').setDescription('Product Name').setRequired(true))
         .addNumberOption(option => option.setName('price').setDescription('Product Price').setRequired(true))
-        .addBooleanOption(option => option.setName('singlebuy').setDescription('Should this product be purchased only once?').setRequired(true))
+        .addBooleanOption(option => option.setName('buyonlyone').setDescription('Should this product be purchased only once?').setRequired(true))
         .addStringOption(option => option.setName('description').setDescription('Product Description'))
         .addStringOption(option => option.setName('image').setDescription('Product Image')))
       .addSubcommand(sc => sc.setName('role').setDescription('🛒 Create a product that gives a role')
         .addStringOption(option => option.setName('name').setDescription('Product Name').setRequired(true))
         .addNumberOption(option => option.setName('price').setDescription('Product Price').setRequired(true))
-        .addBooleanOption(option => option.setName('singlebuy').setDescription('Should this product be purchased only once?').setRequired(true))
+        .addBooleanOption(option => option.setName('buyonlyone').setDescription('Should this product be purchased only once?').setRequired(true))
         .addRoleOption(option => option.setName('role').setDescription('Select the role you want to be bought').setRequired(true))
         .addStringOption(option => option.setName('description').setDescription('Product Description'))
         .addStringOption(option => option.setName('image').setDescription('Product Image')))
       .addSubcommand(sc => sc.setName('message').setDescription('🛒 Create a product that sends a message to a channel')
         .addStringOption(option => option.setName('name').setDescription('Product Name').setRequired(true))
         .addNumberOption(option => option.setName('price').setDescription('Product Price').setRequired(true))
-        .addBooleanOption(option => option.setName('singlebuy').setDescription('Should this product be purchased only once?').setRequired(true))
+        .addBooleanOption(option => option.setName('buyonlyone').setDescription('Should this product be purchased only once?').setRequired(true))
         .addStringOption(option => option.setName('message').setDescription('Select the message you want to be sent when the product is bought.').setRequired(true))
         .addChannelOption(option => option.setName('destination').setDescription('Select the channel where you want the message to be sent.').setRequired(true))
         .addStringOption(option => option.setName('description').setDescription('Product Description'))
@@ -45,9 +45,9 @@ module.exports = {
           if (!fromDB) {
             const productMeta = {}
 
-            if (interaction.options.getBoolean('singlebuy')) productMeta.singlebuy = true
+            if (interaction.options.getBoolean('buyOnlyOne')) productMeta.buyOnlyOne = true
 
-            productMeta.singlebuy = productMeta.singlebuy || false
+            productMeta.buyOnlyOne = productMeta.buyOnlyOne || false
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)
@@ -70,9 +70,9 @@ module.exports = {
             productMeta.action.type = 'giveRole'
             productMeta.action.role = interaction.options.getRole('role').id
 
-            if (interaction.options.getBoolean('singlebuy')) productMeta.singlebuy = true
+            if (interaction.options.getBoolean('buyOnlyOne')) productMeta.buyOnlyOne = true
 
-            productMeta.singlebuy = productMeta.singlebuy || false
+            productMeta.buyOnlyOne = productMeta.buyOnlyOne || false
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)
@@ -96,9 +96,9 @@ module.exports = {
             productMeta.action.channel = interaction.options.getChannel('destination').id
             productMeta.action.message = interaction.options.getString('message')
 
-            if (interaction.options.getBoolean('singlebuy')) productMeta.singlebuy = true
+            if (interaction.options.getBoolean('buyOnlyOne')) productMeta.buyOnlyOne = true
 
-            productMeta.singlebuy = productMeta.singlebuy || false
+            productMeta.buyOnlyOne = productMeta.buyOnlyOne || false
 
             client.pool.query('INSERT INTO `guildEconomyProducts` (`guild`, `productName`, `productDescription`, `productImage`, `productPrice`, `productMeta`) VALUES (?,?,?,?,?,?)', [interaction.guild.id, interaction.options.getString('name'), (interaction.options.getString('description') || null), (interaction.options.getString('image') || null), interaction.options.getNumber('price'), JSON.stringify(productMeta)], function (err) {
               if (err) client.logError(err)

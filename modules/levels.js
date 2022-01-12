@@ -8,13 +8,13 @@ module.exports = {
     })
     client.pool.query('SELECT * FROM `guildLevelsData` WHERE guild = ? AND member = ?', [member.guild.id, member.id], (err, result) => {
       if (err) client.logError(err)
-      if (Object.prototype.hasOwnProperty.call(result, 0)) {
-        const adata = result[0]
+      if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
+        const memberLevelsData = result[0]
         client.pool.query('SELECT member, ROW_NUMBER() OVER (ORDER BY memberLevel DESC, memberExperience DESC) AS rnk FROM guildLevelsData WHERE guild = ? ORDER BY memberLevel DESC, memberExperience DESC', [member.guild.id], (err, result) => {
           if (err) client.logError(err)
           if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-            result.filter(r => r.member === member.id).forEach(r => { adata.rank = r.rnk })
-            if (callback) callback(adata)
+            result.filter(r => r.member === member.id).forEach(r => { memberLevelsData.rank = r.rnk })
+            if (callback) callback(memberLevelsData)
           } else {
             client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
               if (err) client.logError(err)
@@ -24,10 +24,7 @@ module.exports = {
         })
       } else {
         client.pool.query('INSERT INTO `guildLevelsData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], (err) => {
-          if (err) {
-            client.logError(err)
-            client.console.error(err)
-          }
+          if (err) client.logError(err)
           module.exports.getMember(client, member, callback)
         })
       }

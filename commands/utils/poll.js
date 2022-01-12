@@ -32,27 +32,7 @@ module.exports = {
     .addStringOption(option => option.setName('option_t').setDescription('Type your choice')),
   executeInteraction (client, locale, interaction) {
     let options = []
-    options.push(interaction.options.getString('option_a'))
-    options.push(interaction.options.getString('option_b'))
-    options.push(interaction.options.getString('option_c'))
-    options.push(interaction.options.getString('option_d'))
-    options.push(interaction.options.getString('option_e'))
-    options.push(interaction.options.getString('option_f'))
-    options.push(interaction.options.getString('option_g'))
-    options.push(interaction.options.getString('option_h'))
-    options.push(interaction.options.getString('option_i'))
-    options.push(interaction.options.getString('option_j'))
-    options.push(interaction.options.getString('option_k'))
-    options.push(interaction.options.getString('option_l'))
-    options.push(interaction.options.getString('option_m'))
-    options.push(interaction.options.getString('option_n'))
-    options.push(interaction.options.getString('option_o'))
-    options.push(interaction.options.getString('option_p'))
-    options.push(interaction.options.getString('option_q'))
-    options.push(interaction.options.getString('option_r'))
-    options.push(interaction.options.getString('option_s'))
-    options.push(interaction.options.getString('option_t'))
-
+    options.push(interaction.options.getString('option_a'), interaction.options.getString('option_b'), interaction.options.getString('option_c'), interaction.options.getString('option_d'), interaction.options.getString('option_e'), interaction.options.getString('option_f'), interaction.options.getString('option_g'), interaction.options.getString('option_h'), interaction.options.getString('option_i'), interaction.options.getString('option_j'), interaction.options.getString('option_k'), interaction.options.getString('option_l'), interaction.options.getString('option_m'), interaction.options.getString('option_t'), interaction.options.getString('option_n'), interaction.options.getString('option_o'), interaction.options.getString('option_p'), interaction.options.getString('option_q'), interaction.options.getString('option_r'), interaction.options.getString('option_s'))
     options = options.filter(option => option !== null)
 
     const question = interaction.options.getString('question')
@@ -69,7 +49,7 @@ module.exports = {
         .setTitle(`📊 ${question}`)
 
       const alphabet = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱',
-        '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
+        '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹']
 
       const arr = []
 
@@ -80,7 +60,7 @@ module.exports = {
         count++
       })
       embed
-        .setDescription(arr.join('\n\n'))
+        .setDescription(arr.join('\n'))
         .setColor('#965E89')
 
       interaction.editReply({ embeds: [embed] })

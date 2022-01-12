@@ -140,6 +140,7 @@
   "OVERLAYCOLOR": "Overlaycolor",
   "OVERLAYOPACITY": "Overlay opacity",
   "PRICE": "Price",
+  "PROCESSINGREQUEST": "Processing request... Please wait.",
   "PRODUCTS": "Products",
   "PRODUCTS::CREATE:ERROR": "An error has occurred while trying to create the product.",
   "PRODUCTS::CREATE:EXISTS": "A product with the name %PRODUCT% already exists.",

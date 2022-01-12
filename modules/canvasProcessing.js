@@ -36,7 +36,8 @@ module.exports = {
     }
 
     const title = `${member.user.tag} just joined the server`
-    //* const title = "TEXT WILL BE FROM THE DATABASE"
+    // TODO: Permitir a los usuarios cambiar el título y el subtitulo.
+    // const title = "TEXT WILL BE FROM THE DATABASE"
     const subtitle = `Member #${member.guild.memberCount}`
 
     ctx.font = applyText(canvas, title)

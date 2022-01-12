@@ -84,80 +84,67 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const help = Help('admin', i18n(locale, 'ADMIN::HELPTRAY:DESCRIPTION'), [{ option: 'viewcnfcommands', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCNFCOMMANDS'), syntax: 'viewcnfcommands <true/false>' }, { option: 'modules viewconfig', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCONFIG'), syntax: 'modules viewconfig' }, { option: 'modules enable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEENABLE'), syntax: 'modules enable <module>' }, { option: 'modules disable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEDISABLE'), syntax: 'modules disable <module>' }, { option: 'setprefix', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETPREFIX'), syntax: 'setprefix <new prefix>' }, { option: 'setlanguage', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETLANGUAGE'), syntax: 'setlanguage <en/es>' }])
-    if (message.args && Object.prototype.hasOwnProperty.call(message.args, '0')) {
-      switch (message.args[0]) {
-        case 'viewcnfcommands': {
-          if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            if (message.args[1] === 'true') {
-              updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 1 }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
-              })
-            } else {
-              updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 0 }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
-              })
-            }
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
+    const helpTray = Help('admin', i18n(locale, 'ADMIN::HELPTRAY:DESCRIPTION'), [{ option: 'viewcnfcommands', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCNFCOMMANDS'), syntax: 'viewcnfcommands <true/false>' }, { option: 'viewconfig', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCONFIG'), syntax: 'viewconfig' }, { option: 'modules enable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEENABLE'), syntax: 'modules enable <module>' }, { option: 'modules disable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEDISABLE'), syntax: 'modules disable <module>' }, { option: 'setprefix', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETPREFIX'), syntax: 'setprefix <new prefix>' }, { option: 'setlanguage', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETLANGUAGE'), syntax: 'setlanguage <en/es>' }])
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
+    switch (message.args[0]) {
+      case 'viewcnfcommands': {
+        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
+        if (message.args[1] === 'true') {
+          updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 1 }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
+          })
+        } else {
+          updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 0 }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
+          })
         }
-        case 'viewconfig': {
-          const configStatus = new MessageEmbed()
-            .setColor('#2F3136')
-            .setTitle(i18n(locale, 'ADMIN::VIEWCONFIG:EMBED:TITLE'))
-            .setDescription(`${i18n(locale, 'MODULES::AUTORESPONDER')}: ${emojiRelation[message.database.autoresponderEnabled]}\n${i18n(locale, 'MODULES::CUSTOMCOMMANDS')}: ${emojiRelation[message.database.customcommandsEnabled]}\n${i18n(locale, 'MODULES::ECONOMY')}: ${emojiRelation[message.database.economyEnabled]}\n${i18n(locale, 'MODULES::FAREWELL')}: ${emojiRelation[message.database.farewellEnabled]}\n${i18n(locale, 'MODULES::JOINROLES')}: ${emojiRelation[message.database.joinRolesEnabled]}\n${i18n(locale, 'MODULES::LEVELING')}: ${emojiRelation[message.database.levelsEnabled]}\n${i18n(locale, 'MODULES::SUGGESTIONS')}: ${emojiRelation[message.database.suggestionsEnabled]}\n${i18n(locale, 'MODULES::WELCOMER')}: ${emojiRelation[message.database.welcomeEnabled]}`)
-          message.reply({ embeds: [configStatus] })
-          break
-        }
-        case 'modules': {
-          if (Object.prototype.hasOwnProperty.call(message.args, '1') && Object.prototype.hasOwnProperty.call(message.args, '2')) {
-            if (message.args[1] === 'enable') {
-              if (!columnRelationShip[message.args[2].toLowerCase()]) return message.reply({ embeds: [help] })
-              updateGuildConfig(client, message.guild, { column: columnRelationShip[columnRelationShip[message.args[2].toLowerCase()]], value: 1 }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEENABLE:SUCCESS', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
-              })
-            } else {
-              if (!columnRelationShip[message.args[2].toLowerCase()]) return message.reply({ embeds: [help] })
-              updateGuildConfig(client, message.guild, { column: columnRelationShip[columnRelationShip[message.args[2].toLowerCase()]], value: 0 }, (err) => {
-                if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
-                message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEDISABLE:SUCCESS', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
-              })
-            }
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
-        case 'setprefix': {
-          if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            updateGuildConfig(client, message.guild, { column: 'guildPrefix', value: message.args[1] }, (err) => {
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETPREFIX:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { PREFIX: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
-        case 'setlanguage': {
-          if (Object.prototype.hasOwnProperty.call(message.args, '1')) {
-            updateGuildConfig(client, message.guild, { column: 'guildLanguage', value: message.args[1] }, (err) => {
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETLANGUAGE:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { LANGUAGE: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
+        break
       }
-    } else {
-      message.reply({ embeds: [help] })
+      case 'viewconfig': {
+        const configStatus = new MessageEmbed()
+          .setColor('#2F3136')
+          .setTitle(i18n(locale, 'ADMIN::VIEWCONFIG:EMBED:TITLE'))
+          .setDescription(`${i18n(locale, 'MODULES::AUTORESPONDER')}: ${emojiRelation[message.database.autoresponderEnabled]}\n${i18n(locale, 'MODULES::CUSTOMCOMMANDS')}: ${emojiRelation[message.database.customcommandsEnabled]}\n${i18n(locale, 'MODULES::ECONOMY')}: ${emojiRelation[message.database.economyEnabled]}\n${i18n(locale, 'MODULES::FAREWELL')}: ${emojiRelation[message.database.farewellEnabled]}\n${i18n(locale, 'MODULES::JOINROLES')}: ${emojiRelation[message.database.joinRolesEnabled]}\n${i18n(locale, 'MODULES::LEVELING')}: ${emojiRelation[message.database.levelsEnabled]}\n${i18n(locale, 'MODULES::SUGGESTIONS')}: ${emojiRelation[message.database.suggestionsEnabled]}\n${i18n(locale, 'MODULES::WELCOMER')}: ${emojiRelation[message.database.welcomeEnabled]}`)
+        message.reply({ embeds: [configStatus] })
+        break
+      }
+      case 'modules': {
+        if (!(Object.prototype.hasOwnProperty.call(message.args, 1) && Object.prototype.hasOwnProperty.call(message.args, 2) && columnRelationShip[message.args[2].toLowerCase()])) return message.reply({ embeds: [helpTray] })
+        if (message.args[1] === 'enable') {
+          updateGuildConfig(client, message.guild, { column: columnRelationShip[message.args[2].toLowerCase()], value: 1 }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
+            message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEENABLE:SUCCESS', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
+          })
+        } else {
+          updateGuildConfig(client, message.guild, { column: columnRelationShip[message.args[2].toLowerCase()], value: 0 }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEDISABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
+            message.reply({ embeds: [Success(i18n(locale, 'ADMIN::MODULEDISABLE:SUCCESS', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
+          })
+        }
+        break
+      }
+      case 'setprefix': {
+        if (!Object.prototype.hasOwnProperty.call(message.args, '1')) return message.reply({ embeds: [helpTray] })
+        updateGuildConfig(client, message.guild, { column: 'guildPrefix', value: message.args[1] }, (err) => {
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETPREFIX:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETPREFIX:SUCCESS', { PREFIX: message.args[1] }))] })
+        })
+        break
+      }
+      case 'setlanguage': {
+        if (!Object.prototype.hasOwnProperty.call(message.args, '1')) return message.reply({ embeds: [helpTray] })
+        updateGuildConfig(client, message.guild, { column: 'guildLanguage', value: message.args[1] }, (err) => {
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::SETLANGUAGE:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'ADMIN::SETLANGUAGE:SUCCESS', { LANGUAGE: message.args[1] }))] })
+        })
+        break
+      }
+      default: {
+        message.reply({ embeds: [helpTray] })
+        break
+      }
     }
   }
 }

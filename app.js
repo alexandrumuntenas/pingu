@@ -1,7 +1,12 @@
-/* * * * * * * * * * * * * * * *
- * Pingu                       *
- * Versión: 22T2               *
- * * * * * * * * * * * * * * * */
+/* * * * * * * * * * * * * * * * * * * * *
+ * Proyecto: Pingu                       *
+ * Autor: Alexandru Muntenas             *
+ * Licencia: BSL-1                       *
+ * * * * * * * * * * * * * * * * * * * * *
+ * Versión desarrollo: 2201              *
+ * Versión pública: 22T1                 *
+ * * * * * * * * * * * * * * * * * * * * */
+
 require('dotenv').config()
 const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')

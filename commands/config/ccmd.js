@@ -35,41 +35,30 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const help = Help('ccmd', i18n(locale, 'CCMD::HELPTRAY:DESCRIPTION'), [{ option: 'create', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:CREATE'), syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:REMOVE'), syntax: 'remove <command>', isNsfw: false }])
-    if (message.args[0]) {
-      switch (message.args[0]) {
-        case 'create': {
-          if (message.args[1] && message.args[2]) {
-            const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '')
-            client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
-              if (err) client.logError(err)
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'CCMD::CREATE:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'CCMD::CREATE:SUCCESS', { COMMAND: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
-        case 'remove': {
-          if (message.args[1]) {
-            client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
-              if (err) client.logError(err)
-              if (err) return message.reply({ embeds: [Error(i18n(locale, 'CCMD::REMOVE:ERROR'))] })
-              message.reply({ embeds: [Success(i18n(locale, 'CCMD::REMOVE:SUCCESS', { COMMAND: message.args[1] }))] })
-            })
-          } else {
-            message.reply({ embeds: [help] })
-          }
-          break
-        }
-        default: {
-          message.reply({ embeds: [help] })
-          break
-        }
+    const helpTray = Help('ccmd', i18n(locale, 'CCMD::HELPTRAY:DESCRIPTION'), [{ option: 'create', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:CREATE'), syntax: 'create <command> <value to return>', isNsfw: false }, { option: 'remove', description: i18n(locale, 'CCMD::HELPTRAY:OPTION:REMOVE'), syntax: 'remove <command>', isNsfw: false }])
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0) && Object.prototype.hasOwnProperty.call(message.args, 1))) return message.reply({ embeds: [helpTray] })
+    switch (message.args[0]) {
+      case 'create': {
+        const messageReturned = message.content.replace(`${message.database.guildPrefix}ccmd create ${message.args[1]}`, '').trim()
+        client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customCommand`, `messageReturned`) VALUES (?,?,?)', [message.guild.id, message.args[1], messageReturned], function (err) {
+          if (err) client.logError(err)
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'CCMD::CREATE:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'CCMD::CREATE:SUCCESS', { COMMAND: message.args[1] }))] })
+        })
+        break
       }
-    } else {
-      message.reply({ embeds: [help] })
+      case 'remove': {
+        client.pool.query('DELETE FROM `guildCustomCommands` WHERE `customCommand` = ? AND `guild` = ?', [message.args[1], message.guild.id], function (err) {
+          if (err) client.logError(err)
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'CCMD::REMOVE:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'CCMD::REMOVE:SUCCESS', { COMMAND: message.args[1] }))] })
+        })
+        break
+      }
+      default: {
+        message.reply({ embeds: [helpTray] })
+        break
+      }
     }
   }
 }
