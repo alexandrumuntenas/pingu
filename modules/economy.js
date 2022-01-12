@@ -8,7 +8,7 @@ module.exports.getDailyMoney = async (client, member, callback) => {
   const dailyMoney = Math.round(Math.random() * (100 - 5) + 5)
 
   module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
-    module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.amount) + dailyMoney), () => {
+    module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.balance) + dailyMoney), () => {
       if (callback) callback(dailyMoney)
     })
   })
@@ -23,7 +23,7 @@ module.exports.getWorkMoney = async (client, member, callback) => {
   const workMoney = Math.floor(Math.random() * 1500) + 1000
 
   module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
-    module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.amount) + workMoney), () => {
+    module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.balance) + workMoney), () => {
       if (callback) callback(workMoney)
     })
   })

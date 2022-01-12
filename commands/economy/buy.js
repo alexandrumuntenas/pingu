@@ -27,7 +27,7 @@ module.exports = {
                       addItemToMemberInventory(memberInventoryAndBalance.inventory, shopProduct, (newInventory) => {
                         updateMemberInventory(client, interaction.member, newInventory)
                       })
-                      updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.amount) - shopProduct.productPrice))
+                      updateMemberBalance(client, interaction.member, (parseInt(memberInventoryAndBalance.balance) - shopProduct.productPrice))
                       interaction.editReply({ embeds: [Success(i18n(locale, 'BUY::SUCCESS', { ITEM: interaction.options.getString('productname') }))] })
                     })
                   })

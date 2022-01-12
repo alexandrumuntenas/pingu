@@ -10,7 +10,7 @@ module.exports = {
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
       getMemberInventoryAndBalance(client, interaction.member, (user) => {
-        interaction.editReply({ embeds: [Status(`**${interaction.user.tag}**: ${user.amount || 0} ${interaction.database.economyCurrency} ${interaction.database.economyCurrencyIcon}`)] })
+        interaction.editReply({ embeds: [Status(`**${interaction.user.tag}**: ${user.balance || 0} ${interaction.database.economyCurrency} ${interaction.database.economyCurrencyIcon}`)] })
       })
     } else {
       interaction.editReply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
@@ -19,7 +19,7 @@ module.exports = {
   executeLegacy (client, locale, message) {
     if (message.database.economyEnabled !== 0) {
       getMemberInventoryAndBalance(client, message.member, (user) => {
-        message.reply({ embeds: [Status(`**${message.member.user.tag}**: ${user.amount || 0} ${message.database.economyCurrency} ${message.database.economyCurrencyIcon}`)] })
+        message.reply({ embeds: [Status(`**${message.member.user.tag}**: ${user.balance || 0} ${message.database.economyCurrency} ${message.database.economyCurrencyIcon}`)] })
       })
     } else {
       message.reply({ embeds: [Error(i18n(locale, 'COMMAND::NOAVALIABLE'))] })
