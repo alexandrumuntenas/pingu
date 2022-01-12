@@ -85,10 +85,10 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('admin', i18n(locale, 'ADMIN::HELPTRAY:DESCRIPTION'), [{ option: 'viewcnfcommands', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCNFCOMMANDS'), syntax: 'viewcnfcommands <true/false>' }, { option: 'viewconfig', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:VIEWCONFIG'), syntax: 'viewconfig' }, { option: 'modules enable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEENABLE'), syntax: 'modules enable <module>' }, { option: 'modules disable', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:MODULEDISABLE'), syntax: 'modules disable <module>' }, { option: 'setprefix', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETPREFIX'), syntax: 'setprefix <new prefix>' }, { option: 'setlanguage', description: i18n(locale, 'ADMIN::HELPTRAY:OPTION:SETLANGUAGE'), syntax: 'setlanguage <en/es>' }])
-    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, '0'))) return message.reply({ embeds: [helpTray] })
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'viewcnfcommands': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, '1')) return message.reply({ embeds: [helpTray] })
+        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
         if (message.args[1] === 'true') {
           updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 1 }, (err) => {
             if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
@@ -111,7 +111,7 @@ module.exports = {
         break
       }
       case 'modules': {
-        if (!(Object.prototype.hasOwnProperty.call(message.args, [1, 2]) && columnRelationShip[message.args[2].toLowerCase()])) return message.reply({ embeds: [helpTray] })
+        if (!(Object.prototype.hasOwnProperty.call(message.args, 1) && Object.prototype.hasOwnProperty.call(message.args, 2) && columnRelationShip[message.args[2].toLowerCase()])) return message.reply({ embeds: [helpTray] })
         if (message.args[1] === 'enable') {
           updateGuildConfig(client, message.guild, { column: columnRelationShip[message.args[2].toLowerCase()], value: 1 }, (err) => {
             if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::MODULEENABLE:ERROR', { MODULE: columnRelationShip[message.args[2].toLowerCase()] }))] })
