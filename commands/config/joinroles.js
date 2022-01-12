@@ -54,7 +54,7 @@ module.exports = {
   },
   executeLegacy (client, locale, message) {
     const helpTray = Help('joinroles', i18n(locale, 'JOINROLES::HELPTRAY:DESCRIPTION'), [{ option: 'list', description: i18n(locale, 'JOINROLES::HELPTRAY:OPTION:LIST'), syntax: 'list', isNsfw: false }, { option: 'add', description: i18n(locale, 'JOINROLES::HELPTRAY:OPTION:ADD'), syntax: 'add @myrole (@myrole2 ··>)', isNsfw: false }, { option: 'remove', description: i18n(locale, 'JOINROLES::HELPTRAY:OPTION:REMOVE'), syntax: 'remove @myrole (@myrole2 ··>)', isNsfw: false }])
-    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, [0]))) return message.reply({ embeds: [helpTray] })
+    if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'list': {
         fetchJoinRoles(client, message.guild, (roles) => {
@@ -74,25 +74,19 @@ module.exports = {
         break
       }
       case 'add': {
-        if (message.mentions.roles.first()) {
-          message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, (err) => {
-            if (err) return message.reply({ embeds: [Error(i18n(locale, 'JOINROLES::ADD:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::ADD:SUCCESS', { ROLE: role }))] })
-          }))
-        } else {
-          message.reply({ embeds: [helpTray] })
-        }
+        if (!message.mentions.roles.first()) return message.reply({ embeds: [helpTray] })
+        message.mentions.roles.forEach(role => addJoinRole(client, { guild: message.guild, role: role }, (err) => {
+          if (err) return message.reply({ embeds: [Error(i18n(locale, 'JOINROLES::ADD:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::ADD:SUCCESS', { ROLE: role }))] })
+        }))
         break
       }
       case 'remove': {
-        if (message.mentions.roles.first()) {
-          message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, (err) => {
-            if (err) return message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:SUCCESS', { ROLE: role }))] })
-          }))
-        } else {
-          message.reply({ embeds: [helpTray] })
-        }
+        if (!message.mentions.roles.first()) return message.reply({ embeds: [helpTray] })
+        message.mentions.roles.forEach(role => removeJoinRole(client, { guild: message.guild, role: role }, (err) => {
+          if (err) return message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:ERROR'))] })
+          message.reply({ embeds: [Success(i18n(locale, 'JOINROLES::REMOVE:SUCCESS', { ROLE: role }))] })
+        }))
         break
       }
       default: {
