@@ -1,4 +1,5 @@
 /* eslint-disable node/no-callback-literal */
+const { getMember, updateMember } = require('./memberManager')
 
 module.exports.getDailyMoney = async (client, member, callback) => {
   const EgM = client.console.sentry.startTransaction({
@@ -7,8 +8,8 @@ module.exports.getDailyMoney = async (client, member, callback) => {
   })
   const dailyMoney = Math.round(Math.random() * (100 - 5) + 5)
 
-  module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
-    module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.amount) + dailyMoney), () => {
+  getMember(client, member, (memberInventoryAndBalance) => {
+    updateMember(client, member, { ecoBalance: (parseInt(memberInventoryAndBalance.ecoBalance) + dailyMoney) }, () => {
       if (callback) callback(dailyMoney)
     })
   })
@@ -22,33 +23,12 @@ module.exports.getWorkMoney = async (client, member, callback) => {
   })
   const workMoney = Math.floor(Math.random() * 1500) + 1000
 
-  module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
-    module.exports.updateMemberBalance(client, member, (parseInt(memberInventoryAndBalance.amount) + workMoney), () => {
+  getMember(client, member, (memberData) => {
+    updateMember(client, member, { ecoBalance: (parseInt(memberData.ecoBalance) + workMoney) }, () => {
       if (callback) callback(workMoney)
     })
   })
   EgM.finish()
-}
-
-module.exports.getMemberInventoryAndBalance = async (client, member, callback) => {
-  const EfM = client.console.sentry.startTransaction({
-    op: 'economy.getMemberInventoryAndBalance',
-    name: 'Economy (getMemberInventoryAndBalance)'
-  })
-  client.pool.query('SELECT * FROM `guildEconomyUserBank` WHERE guild = ? AND member = ?', [member.guild.id, member.id], (err, rows) => {
-    if (err) client.logError(err)
-    if (err) throw new Error('DB_ERROR')
-    if (Object.prototype.hasOwnProperty.call(rows, 0)) {
-      callback(rows[0])
-    } else {
-      client.pool.query('INSERT INTO `guildEconomyUserBank` (`member`, `guild`) VALUES (?, ?)', [member.id, member.guild.id], (err) => {
-        if (err) client.logError(err)
-        if (err) throw new Error('DB_ERROR')
-        module.exports.getMemberInventoryAndBalance(client, member, callback)
-      })
-    }
-  })
-  EfM.finish()
 }
 
 module.exports.getLeaderboard = (client, message) => {
@@ -74,20 +54,6 @@ module.exports.getShopProduct = (client, guild, productname, callback) => {
     } else {
       if (callback) callback()
     }
-  })
-}
-
-module.exports.updateMemberBalance = (client, member, newBalance, callback) => {
-  client.pool.query('UPDATE `guildEconomyUserBank` SET `balance` = ? WHERE `member` = ? AND `guild` = ?', [newBalance, member.id, member.guild.id], (err) => {
-    if (err) client.logError(err)
-    if (callback) callback()
-  })
-}
-
-module.exports.updateMemberInventory = (client, member, newInventory, callback) => {
-  client.pool.query('UPDATE `guildEconomyUserBank` SET `inventory` = ? WHERE `member` = ? AND `guild` = ?', [newInventory, member.id, member.guild.id], (err) => {
-    if (err) client.logError(err)
-    if (callback) callback()
   })
 }
 
@@ -120,14 +86,10 @@ module.exports.addItemToMemberInventory = (inventoryFromDB, productToAdd, callba
 }
 
 module.exports.checkIfMemberHasProduct = (client, member, productId, callback) => {
-  module.exports.getMemberInventoryAndBalance(client, member, (memberInventoryAndBalance) => {
-    if (memberInventoryAndBalance.inventory) {
-      const inventory = JSON.parse(memberInventoryAndBalance.inventory)
-      if (Object.prototype.hasOwnProperty.call(inventory, productId)) {
-        return callback(true)
-      } else {
-        return callback(false)
-      }
+  getMember(client, member, (memberInventoryAndBalance) => {
+    const inventory = JSON.parse(memberInventoryAndBalance.ecoInventory)
+    if (Object.prototype.hasOwnProperty.call(inventory, productId)) {
+      return callback(true)
     } else {
       return callback(false)
     }
@@ -146,7 +108,7 @@ module.exports.checkIfTheProductShouldOnlyBePurchasedOnce = (client, productName
 }
 
 module.exports.executeItemFunctions = (client, member, shopProduct, callback) => {
-  const { action } = JSON.parse(shopProduct.productProperties)
+  const { action } = JSON.parse(shopProduct.productProperties || shopProduct.productMeta)
 
   if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
     switch (action.type) {

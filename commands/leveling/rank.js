@@ -1,5 +1,5 @@
 const { Error, Loader } = require('../../modules/constructor/messageBuilder')
-const { getMember } = require('../../modules/levels')
+const { getMember } = require('../../modules/memberManager')
 const { generateRankCard } = require('../../modules/canvasProcessing')
 const { MessageAttachment } = require('discord.js')
 const tempFileRemover = require('../../functions/tempFileRemover')
