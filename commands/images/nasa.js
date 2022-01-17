@@ -37,7 +37,6 @@ module.exports = {
                 .setImage(quote.hdurl)
                 .setColor('#0B3D91')
                 .addField('+ Info', `:camera: ${quote.copyright || 'We don\'t have that information'}\n<a:ultimahora:876105976573472778> ${i18n(locale, 'IMAGEAPI::PROVIDER', { API_PROVIDER: 'Nasa.gov' })}`)
-                .setFooter('')
               msg.edit({ content: 'Done!', embeds: [embed] })
             } else {
               message.channel.send('We are working on video media type.')

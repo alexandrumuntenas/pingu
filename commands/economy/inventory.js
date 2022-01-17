@@ -16,7 +16,7 @@ module.exports = {
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
           .setTitle(i18n(locale, 'INVENTORY::EMBED:TITLE'))
           .setColor('#2F3136')
-          .setFooter('Powered by Pingu', client.user.displayAvatarURL())
+          .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
         if (memberData) {
           let inventoryString = ''
           const inventoryData = JSON.parse(memberData.ecoInventory)

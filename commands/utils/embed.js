@@ -27,7 +27,7 @@ module.exports = {
       .setTitle(title)
       .setDescription(description)
       .setColor('#000000'.replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16) }))
-    if (footer) embed.setFooter(footer)
+    if (footer) embed.setFooter({ text: footer })
     if (thumbnail) embed.setThumbnail(thumbnail)
     if (image) embed.setImage(image)
     interaction.editReply({ embeds: [embed] })
