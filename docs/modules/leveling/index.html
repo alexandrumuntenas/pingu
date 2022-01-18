@@ -27,11 +27,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.695838130710" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.695841804796" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.695838130710" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.695841804796" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.695838130710" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.695841804796" defer></script>
     <link href="/pingu/resources/css/katex.css?v=1.11.2" rel="stylesheet" />
     <script id="katex-js" type="text/javascript" src="/pingu/resources/js/katex.js?v=1.11.2" defer></script>
 </head>
@@ -321,24 +321,9 @@
 <td>/levels difficulty difficulty: 2</td>
 </tr>
 <tr>
-<td>levels setbackground url:</td>
-<td>Command to set the custom background</td>
-<td>/levels setbackground url: <a href="https://site.com/myphoto.png">https://site.com/myphoto.png</a></td>
-</tr>
-<tr>
-<td>levels overlayopacity opacity:</td>
-<td>Command to customize the opacity of the range card overlay.</td>
-<td>/levels overlayopacity opacity: 56</td>
-</tr>
-<tr>
-<td>levels overlaycolor hexcolor:</td>
-<td>Command to customize the opacity of the range card overlay.</td>
-<td>/levels overlaycolor: #FFF</td>
-</tr>
-<tr>
-<td>levels simulate</td>
-<td>Command to simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended)</td>
-<td>!levels simulate</td>
+<td>levels configurecard setbackgroundurl: &lt;URL&gt; setoverlaycolor: &lt;Hex Color&gt; setoverlayopacity: &lt;Opacity&gt;</td>
+<td>Command to customize the rank card</td>
+<td>/levels configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: <a href="https://myawesomestocksite.com/photo.png">https://myawesomestocksite.com/photo.png</a></td>
 </tr>
 </tbody>
 </table>
@@ -357,7 +342,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>With the integration of Slash Commands, the creation of custom commands becomes much easier.</p>
+<p>With the integration of Slash Commands, the configuration of levels module becomes much easier.</p>
         </div>
     </div>
 </div>
