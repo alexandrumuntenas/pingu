@@ -27,11 +27,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.695850793835" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.695850911207" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.695850793835" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.695850911207" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.695850793835" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.695850911207" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -263,7 +263,7 @@
         </div>
         <div class="pr-5 ml-3">
 <p>Enable this module using <code v-pre>/admin modules enable module: welcomer</code>.</p>
-<p>Disable this module using <code v-pre>/admin modules disable module: welcome</code>.</p>
+<p>Disable this module using <code v-pre>/admin modules disable module: welcomer</code>.</p>
         </div>
     </div>
 </div>
@@ -304,24 +304,14 @@
 <td>/welcomer disableCards</td>
 </tr>
 <tr>
-<td>/welcomer setbackground url:</td>
-<td>Command to set the background image.</td>
-<td>/welcomer setbackground url: <a href="https://myawesomesite.com/myawesomephoto.png">https://myawesomesite.com/myawesomephoto.png</a></td>
+<td>/welcomer configurecard setbackgroundurl: &lt;URL&gt; setoverlaycolor: &lt;Hex Color&gt; setoverlayopacity: &lt;Opacity&gt;</td>
+<td>Command to customize the welcome card</td>
+<td>/welcomer configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: <a href="https://myawesomestocksite.com/photo.png">https://myawesomestocksite.com/photo.png</a></td>
 </tr>
 <tr>
-<td>/welcomer overlaycolor hexcolor:</td>
-<td>Command to configure the color of the overlay.</td>
-<td>/welcomer overlaycolor hexcolor:#fff</td>
-</tr>
-<tr>
-<td>/welcomer overlayopacity opacity:</td>
-<td>Command to set the overlay opacity.</td>
-<td>/welcomer overlayopacity opacity:50</td>
-</tr>
-<tr>
-<td>/welcomer test</td>
+<td>/welcomer previewcard</td>
 <td>Preview the welcome card</td>
-<td>/welcomer test</td>
+<td>/welcomer previewcard</td>
 </tr>
 <tr>
 <td>/welcomer simulate</td>
