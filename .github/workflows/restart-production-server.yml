@@ -1,0 +1,17 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:    
+      - main
+      
+name: Restart Production Server
+jobs:
+  DeployAction:
+    name: Restart Production Server
+    runs-on: ubuntu-latest
+    steps:
+      uses: supercrafter100/Pterodactyl-Restart@v1.0
+      with:
+        PTE_PANEL_URL: ${{ secrets.DEPLOY_PANELURL }}
+        PTE_BEARER_TOKEN: ${{ secrets.DEPLOY_PANELAPI }}
+        PTE_PANEL_ID: ${{ secrets.DEPLOY_PANELID }}
