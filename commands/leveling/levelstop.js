@@ -14,16 +14,16 @@ module.exports = {
       getLeaderboard(client, interaction.guild, (members) => {
         if (members) {
           const embed = new MessageEmbed()
-            .setTitle(`:trophy: ${i18n(locale, 'RANKING')} TOP 25`)
-            .setFooter(interaction.guild.name)
+            .setTitle(`:trophy: ${i18n(locale, 'RANKING')} of ${interaction.guild.name}`)
             .setColor('#FFD700')
+            .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
 
           let leaderboardStr = ''
           let count = 0
           members.forEach(function (row) {
             client.users.fetch(row.member).then((user) => {
               count++
-              leaderboardStr = `${leaderboardStr}\n#${count}. **${user.username}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.memberLevel}, ${i18n(locale, 'EXPERIENCE')} ${row.memberExperience}) `
+              leaderboardStr = `${leaderboardStr}\n#${count}. **${user.username}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel}, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
               if (count === members.length) {
                 interaction.editReply({ embeds: [embed.setDescription(leaderboardStr)] })
               }
@@ -42,15 +42,15 @@ module.exports = {
           if (members) {
             const embed = new MessageEmbed()
               .setTitle(`:trophy: ${i18n(locale, 'RANKING')} TOP 25`)
-              .setFooter(message.guild.name)
               .setColor('#FFD700')
+              .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
 
             let leaderboardStr = ''
             let count = 0
             members.forEach(function (row) {
               client.users.fetch(row.member).then((user) => {
                 count++
-                leaderboardStr = `${leaderboardStr}\n#${count}. **${user.username}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.memberLevel}, ${i18n(locale, 'EXPERIENCE')} ${row.memberExperience}) `
+                leaderboardStr = `${leaderboardStr}\n#${count}. **${user.username}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel}, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
                 if (count === members.length) {
                   _message.edit({ embeds: [embed.setDescription(leaderboardStr)] })
                 }

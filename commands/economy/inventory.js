@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js')
-const { getShopProduct, getMemberInventoryAndBalance } = require('../../modules/economy')
+const { getMember } = require('../../modules/memberManager')
+const { getShopProduct } = require('../../modules/economy')
 const { Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 
@@ -10,15 +11,15 @@ module.exports = {
   cooldown: 1000,
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {
-      getMemberInventoryAndBalance(client, interaction.member, (account) => {
+      getMember(client, interaction.member, (memberData) => {
         const inventoryEmbed = new MessageEmbed()
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.user.displayAvatarURL() })
           .setTitle(i18n(locale, 'INVENTORY::EMBED:TITLE'))
           .setColor('#2F3136')
-          .setFooter('Powered by Pingu', client.user.displayAvatarURL())
-        if (account) {
+          .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
+        if (memberData) {
           let inventoryString = ''
-          const inventoryData = JSON.parse(account.inventory)
+          const inventoryData = JSON.parse(memberData.ecoInventory)
           const inventoryDataProducts = Object.keys(inventoryData)
           if (inventoryDataProducts.length > 0) {
             try {

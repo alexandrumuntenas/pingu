@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Error } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const { getMemberInventoryAndBalance, updateMemberBalance } = require('../../modules/economy')
+const { getMember, updateMember } = require('../../modules/memberManager')
 
 module.exports = {
   module: 'economy',
@@ -18,14 +18,14 @@ module.exports = {
     if (interaction.database.economyEnabled !== 0) {
       if (!interaction.options.getUser('user').bot) {
         if (parseInt(interaction.options.getNumber('amount')) > 0) {
-          getMemberInventoryAndBalance(client, interaction.member, (fromUserInventoryAndBalance) => {
-            if (fromUserInventoryAndBalance.amount >= interaction.options.getNumber('amount')) {
+          getMember(client, interaction.member, (fromUserInventoryAndBalance) => {
+            if (fromUserInventoryAndBalance.ecoBalance >= interaction.options.getNumber('amount')) {
               const toUser = interaction.options.getUser('user')
               toUser.guild = interaction.member.guild
-              getMemberInventoryAndBalance(client, toUser, (toUserInventoryAndBalance) => {
+              getMember(client, toUser, (toUserInventoryAndBalance) => {
                 try {
-                  updateMemberBalance(client, interaction.member, (parseInt(fromUserInventoryAndBalance.amount) - interaction.options.getNumber('amount')))
-                  updateMemberBalance(client, toUser, (parseInt(toUserInventoryAndBalance.amount) + interaction.options.getNumber('amount')))
+                  updateMember(client, interaction.member, { ecoBalance: parseInt(fromUserInventoryAndBalance.ecoBalance) - interaction.options.getNumber('amount') })
+                  updateMember(client, toUser, { ecoBalance: parseInt(toUserInventoryAndBalance.ecoBalance) + interaction.options.getNumber('amount') })
                   interaction.editReply({ embeds: [Success(i18n(locale, 'TRANSFER::SUCCESS', { USER: interaction.options.getUser('user') }))] })
                 } catch (err) {
                   client.logError(err)

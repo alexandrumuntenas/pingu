@@ -26,11 +26,9 @@ module.exports = {
         .addChoice('Disabled', 'disabled')
         .addChoice('Same Channel Where Message Is Sent', 'same')
         .addChoice('This Channel', 'this').setRequired(true)))
+    .addSubcommand(subcommand => subcommand.setName('configurecard').setDescription('Configure the rank card').addNumberOption(option => option.setName('setoverlayopacity').setDescription('Enter a number')).addStringOption(option => option.setName('setoverlaycolor').setDescription('Enter a hex color')).addStringOption(option => option.setName('setbackgroundurl').setDescription('Enter a valid image URL')))
     .addSubcommand(subcommand => subcommand.setName('setrankupmessage').setDescription('Set the Rank Up message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {oldlevel} {newlevel} {experience}').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('setdifficulty').setDescription('Change the difficulty to level up').addNumberOption(option => option.setName('difficulty').setDescription('Enter a number 1-5').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('setbackground').setDescription('Set the rank cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the rank cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the rank cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true))),
+    .addSubcommand(subcommand => subcommand.setName('setdifficulty').setDescription('Change the difficulty to level up').addNumberOption(option => option.setName('difficulty').setDescription('Enter a number 1-5').setRequired(true))),
   executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
@@ -90,30 +88,33 @@ module.exports = {
         })
         break
       }
-      case 'setbackground': {
-        updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomBackground', value: interaction.options.getString('url') }, (err) => {
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::SETBACKGROUND:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::SETBACKGROUND:SUCCESS', { BACKGROUND: interaction.options.getString('url') }))] })
-        })
-        break
-      }
-      case 'overlayopacity': {
-        updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomOpacity', value: interaction.options.getNumber('opacity') }, (err) => {
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: interaction.options.getNumber('opacity') }))] })
-        })
-        break
-      }
-      case 'overlaycolor': {
-        let hexcolor = interaction.options.getString('hexcolor')
-        if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-        if (isHexColor(hexcolor)) {
-          updateGuildConfig(client, interaction.guild, { column: 'levelsImageCustomOverlayColor', value: hexcolor }, (err) => {
-            if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
-            interaction.editReply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
-          })
+      case 'configurecard': {
+        const overlayOpacity = interaction.options.getNumber('setoverlayopacity')
+        let overlayColor = interaction.options.getString('setoverlaycolor')
+        const background = interaction.options.getString('setbackgroundurl')
+
+        const configureCardEmbed = new MessageEmbed()
+          .setColor('#2F3136')
+          .setTitle(i18n(locale, 'LEVELS::CONFIGURECARD:EMBED:TITLE'))
+
+        if (overlayOpacity) {
+          if (!(parseInt(overlayOpacity) <= 100 && parseInt(overlayOpacity) >= 0)) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'OVERLAYOPACITY')}`, `${i18n(locale, 'LEVELS::CONFIGURECARD:OVERLAYOPACITY:ERROR')}`, false)
+          else configureCardEmbed.addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'OVERLAYOPACITY')}`, `${i18n(locale, 'LEVELS::CONFIGURECARD:OVERLAYOPACITY:SUCCESS', { OPACITY: overlayOpacity })}`, false)
+        }
+        if (overlayColor) {
+          if (!overlayColor.startsWith('#')) overlayColor = `#${overlayColor}`
+          if (overlayColor && !isHexColor(overlayColor)) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'OVERLAYCOLOR')}`, `${i18n(locale, 'LEVELS::CONFIGURECARD:OVERLAYCOLOR:ERROR')}`, false)
+          else configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'OVERLAYCOLOR')}`, `${i18n(locale, 'LEVELS::CONFIGURECARD:OVERLAYCOLOR:SUCCESS', { COLOR: overlayColor })}`, false)
+        }
+        if (background) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'BACKGROUND')}`, `${i18n(locale, 'LEVELS::CONFIGURECARD:BACKGROUND:SUCCESS', { BACKGROUND: background })}`, false)
+
+        if (!(overlayColor || overlayOpacity || background)) {
+          interaction.editReply({ embeds: [new MessageEmbed().setColor('#2F3136').setTitle(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`).setDescription(`${i18n(locale, 'BACKGROUND')}: [Ver imagen](${interaction.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${interaction.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${interaction.database.levelsImageCustomOpacity}`)] })
         } else {
-          interaction.editReply({ embeds: [Status(i18n(locale, 'LEVELS::OVERLAYCOLOR:NOTHEX'))] })
+          client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ?, `levelsImageCustomBackground` = ?, `levelsImageCustomOpacity` = ? WHERE guild = ?', [overlayColor || interaction.database.levelsImageCustomOverlayColor, background || interaction.database.levelsImageCustomBackground, overlayOpacity || interaction.database.levelsImageCustomOpacity, interaction.guild.id], (err) => {
+            if (err) client.logError(err)
+            interaction.editReply({ embeds: [configureCardEmbed] })
+          })
         }
         break
       }
@@ -185,36 +186,6 @@ module.exports = {
           })
         } else {
           message.reply({ embeds: [Error(i18n(locale, 'LEVELS::SETDIFFICULTY:NOTINT'))] })
-        }
-        break
-      }
-      case 'setbackground': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
-        updateGuildConfig(client, message.guild, { column: 'levelsImageCustomBackground', value: message.args[1] }, (err) => {
-          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::SETBACKGROUND:ERROR'))] })
-          message.reply({ embeds: [Success(i18n(locale, 'LEVELS::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
-        })
-        break
-      }
-      case 'overlayopacity': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
-        updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOpacity', value: message.args[1] }, (err) => {
-          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYOPACITY:ERROR'))] })
-          message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
-        })
-        break
-      }
-      case 'overlaycolor': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
-        let hexcolor = message.args[1]
-        if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-        if (isHexColor(hexcolor)) {
-          updateGuildConfig(client, message.guild, { column: 'levelsImageCustomOverlayColor', value: hexcolor }, (err) => {
-            if (err) return message.reply({ embeds: [Error(i18n(locale, 'LEVELS::OVERLAYCOLOR:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'LEVELS::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
-          })
-        } else {
-          message.reply({ embeds: [Status(i18n(locale, 'LEVELS::OVERLAYCOLOR:NOTHEX'))] })
         }
         break
       }

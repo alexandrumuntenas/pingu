@@ -18,7 +18,7 @@ module.exports = async (client, message) => {
           if (err) client.logError(err)
           if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
             const messageSent = new MessageEmbed()
-              .setFooter('Powered by Pingu', client.user.displayAvatarURL())
+              .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
               .setDescription(result[0].autoresponderResponse)
               .setColor('BLURPLE')
             message.channel.send({ embeds: [messageSent] }).catch((err) => { //! Esto se debe eliminar muy pronto

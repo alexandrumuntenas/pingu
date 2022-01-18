@@ -110,10 +110,10 @@ module.exports = {
     ctx.font = '50px "Montserrat SemiBold"'
     ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
     ctx.textAlign = 'right'
-    ctx.fillText(`Rank #${member.levelData.rank}  Level ${millify(member.levelData.memberLevel)}`, 1050, 100)
+    ctx.fillText(`Rank #${member.levelData.lvlRank}  Level ${millify(member.levelData.lvlLevel)}`, 1050, 100)
 
     // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(member.levelData.memberExperience)} / ${millify(((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)} XP`
+    const actualVSrequired = `${millify(member.levelData.lvlExperience)} / ${millify(((member.levelData.lvlLevel * member.levelData.lvlLevel) * guildConfig.levelsDifficulty) * 100)} XP`
 
     ctx.font = '30px "Montserrat SemiBold"'
     ctx.textAlign = 'right'
@@ -128,7 +128,7 @@ module.exports = {
     // Añadir barra de progreso
 
     ctx.fillStyle = 'rgb(255,255,255)'
-    roundRect(ctx, 295, 200, (Math.abs((member.levelData.memberExperience) / (((member.levelData.memberLevel * member.levelData.memberLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70, 10, ctx.fillStyle, ctx.strokeStyle)
+    roundRect(ctx, 295, 200, (Math.abs((member.levelData.lvlExperience) / (((member.levelData.lvlLevel * member.levelData.lvlLevel) * guildConfig.levelsDifficulty) * 100)) * 755), 70, 10, ctx.fillStyle, ctx.strokeStyle)
 
     // Añadir avatar de usuario
     ctx.beginPath()

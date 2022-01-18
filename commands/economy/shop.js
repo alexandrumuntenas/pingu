@@ -20,7 +20,7 @@ module.exports = {
           .setTitle(`${interaction.guild.name} Shop`)
           .setDescription(i18n(locale, 'SHOP::EMBED:DESCRIPTION'))
           .setColor('#2F3136')
-          .setFooter('Powered by Pingu', client.user.displayAvatarURL())
+          .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
 
         let productList = ''
         fetchShopProducts(client, interaction.guild, (shopProductsData) => {
@@ -44,7 +44,7 @@ module.exports = {
               .setImage(productData.productImage)
               .addField(`${interaction.database.economyCurrencyIcon} ${i18n(locale, 'PRICE')}`, `${productData.productPrice} ${interaction.database.economyCurrency}`, true)
               .addField(`:robot: ${i18n(locale, 'BUY')}`, `\`/buy ${productData.productName}\``, true)
-              .setFooter('Powered by Pingu', client.user.displayAvatarURL())
+              .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
 
             if (productData.productDescription) productEmbed.setDescription(productData.productDescription)
 
