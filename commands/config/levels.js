@@ -109,7 +109,7 @@ module.exports = {
         if (background) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'BACKGROUND')}`, `${i18n(locale, 'LEVELS::CONFIGURECARD:BACKGROUND:SUCCESS', { BACKGROUND: background })}`, false)
 
         if (!(overlayColor || overlayOpacity || background)) {
-          interaction.editReply({ embeds: [new MessageEmbed().setColor('#2F3136').setTitle(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::VIEWCONFIG:EMBED:RANKCARD')}`).setDescription(`${i18n(locale, 'BACKGROUND')}: [Ver imagen](${interaction.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${interaction.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${interaction.database.levelsImageCustomOpacity}`)] })
+          interaction.editReply({ embeds: [new MessageEmbed().setColor(interaction.database.levelsImageCustomOverlayColor).setTitle(`<:blurple_image:892443053359517696> ${i18n(locale, 'LEVELS::CONFIGURECARD:EMBED:TITLE')}`).setDescription(`${i18n(locale, 'BACKGROUND')}: [Ver imagen](${interaction.database.levelsImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${interaction.database.levelsImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${interaction.database.levelsImageCustomOpacity}`)] })
         } else {
           client.pool.query('UPDATE `guildData` SET `levelsImageCustomOverlayColor` = ?, `levelsImageCustomBackground` = ?, `levelsImageCustomOpacity` = ? WHERE guild = ?', [overlayColor || interaction.database.levelsImageCustomOverlayColor, background || interaction.database.levelsImageCustomBackground, overlayOpacity || interaction.database.levelsImageCustomOpacity, interaction.guild.id], (err) => {
             if (err) client.logError(err)
@@ -121,7 +121,7 @@ module.exports = {
     }
   },
   executeLegacy (client, locale, message) {
-    const helpTray = Help('levels', i18n(locale, 'LEVELS::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'setrankupmessage', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPMESSAGE') }, { option: 'setrankupchannel', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPCHANNEL') }, { option: 'setdifficulty', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETDIFFICULTY'), syntax: 'setdifficulty <number of difficulty>' }, { option: 'setbackground', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <background url>' }, { option: 'overlayopacity', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity>' }, { option: 'overlaycolor', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }])
+    const helpTray = Help('levels', i18n(locale, 'LEVELS::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'setrankupmessage', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPMESSAGE'), syntax: '<message ··>' }, { option: 'setrankupchannel', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETRANKUPCHANNEL'), syntax: '<#channel / same / none>' }, { option: 'setdifficulty', description: i18n(locale, 'LEVELS::HELPTRAY:OPTION:SETDIFFICULTY'), syntax: 'setdifficulty <number of difficulty>' }])
     if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'viewconfig': {

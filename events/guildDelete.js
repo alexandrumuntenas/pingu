@@ -5,7 +5,7 @@ module.exports = {
       op: 'guildDelete',
       name: 'Guild Delete'
     })
-    const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildEconomyUserBank', 'guildJoinRoles', 'guildJoinRoles', 'guildLevelsData', 'guildLevelsRankupRoles', 'guildReactionRoles']
+    const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles']
     databaseTables.forEach(table => {
       client.pool.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], (err) => {
         if (err) client.logError(err)

@@ -16,8 +16,7 @@ module.exports = {
           }
         }
       })
-      client.pool.query('DELETE FROM `guildLevelsData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id])
-      client.pool.query('DELETE FROM `guildEconomyUserBank` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id])
+      client.pool.query('DELETE FROM `memberData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id])
     }
     gMR.finish()
   }
