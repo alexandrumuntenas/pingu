@@ -13,7 +13,7 @@ The commands listed below can only be used by the server owner, or by persons wi
 !!!
 Enable this module using `/admin modules enable module: welcomer`.
 
-Disable this module using `/admin modules disable module: welcome`.
+Disable this module using `/admin modules disable module: welcomer`.
 !!!
 
 <!-- markdown-link-check-disable -->
@@ -24,10 +24,8 @@ Disable this module using `/admin modules disable module: welcome`.
 | /wecomer setmessage message: | Command to set the welcome message. | /welcomer message welcomemessage:{member} has joined {guild}. |
 | /welcomer enablecards | Command to enable welcome cards. | /welcomer enableCards |
 | /welcomer disablecards | Command to disable welcome cards. | /welcomer disableCards |
-| /welcomer setbackground url: | Command to set the background image. | /welcomer setbackground url: https://myawesomesite.com/myawesomephoto.png |
-| /welcomer overlaycolor hexcolor: | Command to configure the color of the overlay. | /welcomer overlaycolor hexcolor:#fff |
-| /welcomer overlayopacity opacity: | Command to set the overlay opacity. | /welcomer overlayopacity opacity:50 |
-| /welcomer test | Preview the welcome card | /welcomer test |
+| /welcomer configurecard setbackgroundurl: \<URL> setoverlaycolor: \<Hex Color> setoverlayopacity: \<Opacity> | Command to customize the welcome card | /welcomer configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: https://myawesomestocksite.com/photo.png |
+| /welcomer previewcard | Preview the welcome card | /welcomer previewcard |
 | /welcomer simulate | Simulate the event GuildMemberAdd (A.K.A. Check if everything is working as intended) | /welcomer simulate                                                          |
 <!-- markdown-link-check-enable -->
 

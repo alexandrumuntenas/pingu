@@ -4,7 +4,7 @@ const { Success, Status, Help, Loader } = require('../../modules/constructor/mes
 const i18n = require('../../i18n/i18n')
 const tempFileRemover = require('../../functions/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd').execute
-const isHexcolor = require('is-hexcolor')
+const isHexColor = require('is-hexcolor')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const updateGuildConfig = require('../../functions/updateGuildConfig')
 
@@ -24,13 +24,11 @@ module.exports = {
     .addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the welcomer channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('setmessage').setDescription('Set the welcomer message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('enablecards').setDescription('Enable the welcomer cards'))
-    .addSubcommand(subcommand => subcommand.setName('disablecards').setDescription('Disable the welcomer cards'))
-    .addSubcommand(subcommand => subcommand.setName('setbackground').setDescription('Set the welcomer cards background').addStringOption(option => option.setName('url').setDescription('Enter a valid image URL').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlaycolor').setDescription('Set the welcomer cards overlay color').addStringOption(option => option.setName('hexcolor').setDescription('Enter a hex color').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('overlayopacity').setDescription('Set the welcomer cards overlay opacity').addNumberOption(option => option.setName('opacity').setDescription('Enter a number').setRequired(true)))
-    .addSubcommand(subcommand => subcommand.setName('test').setDescription('Test the welcomer message'))
+    .addSubcommand(subcommand => subcommand.setName('disablecards').setDescription('Disable the welcomer cards')) //! ESTO TIENE QUE DESAPARECER //TODO: FUSIONAR ESTE SUBCOMANDO CON ENABLECARDS PARA SIMPLIFICAR LAS OPCIONES
+    .addSubcommand(subcommand => subcommand.setName('configurecard').setDescription('Configure the welcome card').addNumberOption(option => option.setName('setoverlayopacity').setDescription('Enter a number')).addStringOption(option => option.setName('setoverlaycolor').setDescription('Enter a hex color')).addStringOption(option => option.setName('setbackgroundurl').setDescription('Enter a valid image URL')))
+    .addSubcommand(subcommand => subcommand.setName('previewcard').setDescription('Preview the welcome card'))
     .addSubcommand(subcommand => subcommand.setName('simulate').setDescription('Simulate the welcomer message')),
-  executeInteraction(client, locale, interaction) {
+  executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
         const configStatus = new MessageEmbed()
@@ -79,27 +77,37 @@ module.exports = {
         })
         break
       }
-      case 'overlayopacity': {
-        updateGuildConfig(client, interaction.guild, { column: 'welcomeImageCustomOpacity', value: interaction.options.getNumber('opacity') }, (err) => {
-          if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYOPACITY:ERROR'))] })
-          interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYOPACITY:SUCCESS', { OPACITY: interaction.options.getNumber('opacity') }))] })
-        })
-        break
-      }
-      case 'overlaycolor': {
-        let hexcolor = interaction.options.getString('hexcolor')
-        if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-        if (isHexcolor(hexcolor)) {
-          updateGuildConfig(client, interaction.guild, { column: 'welcomeImageCustomOverlayColor', value: hexcolor }, (err) => {
-            if (err) return interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:ERROR'))] })
-            interaction.editReply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYCOLOR:SUCCESS', { COLOR: hexcolor }))] })
-          })
+      case 'configurecard': {
+        const overlayOpacity = interaction.options.getNumber('setoverlayopacity')
+        let overlayColor = interaction.options.getString('setoverlaycolor')
+        const background = interaction.options.getString('setbackgroundurl')
+
+        const configureCardEmbed = new MessageEmbed()
+          .setColor('#2F3136')
+          .setTitle(i18n(locale, 'WELCOMER::CONFIGURECARD:EMBED:TITLE'))
+
+        if (overlayOpacity) {
+          if (!(parseInt(overlayOpacity) <= 100 && parseInt(overlayOpacity) >= 0)) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'OVERLAYOPACITY')}`, `${i18n(locale, 'WELCOMER::CONFIGURECARD:OVERLAYOPACITY:ERROR')}`, false)
+          else configureCardEmbed.addField(`<:blurple_image:892443053359517696> ${i18n(locale, 'OVERLAYOPACITY')}`, `${i18n(locale, 'WELCOMER::CONFIGURECARD:OVERLAYOPACITY:SUCCESS', { OPACITY: overlayOpacity })}`, false)
+        }
+        if (overlayColor) {
+          if (!overlayColor.startsWith('#')) overlayColor = `#${overlayColor}`
+          if (overlayColor && !isHexColor(overlayColor)) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'OVERLAYCOLOR')}`, `${i18n(locale, 'WELCOMER::CONFIGURECARD:OVERLAYCOLOR:ERROR')}`, false)
+          else configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'OVERLAYCOLOR')}`, `${i18n(locale, 'WELCOMER::CONFIGURECARD:OVERLAYCOLOR:SUCCESS', { COLOR: overlayColor })}`, false)
+        }
+        if (background) configureCardEmbed.addField(`<:syntax:933018105137999953> ${i18n(locale, 'BACKGROUND')}`, `${i18n(locale, 'WELCOMER::CONFIGURECARD:BACKGROUND:SUCCESS', { BACKGROUND: background })}`, false)
+
+        if (!(overlayColor || overlayOpacity || background)) {
+          interaction.editReply({ embeds: [new MessageEmbed().setColor(interaction.database.welcomeImageCustomOverlayColor).setTitle(`<:blurple_image:892443053359517696> ${i18n(locale, 'WELCOMER::CONFIGURECARD:EMBED:TITLE')}`).setDescription(`${i18n(locale, 'BACKGROUND')}: [Ver imagen](${interaction.database.welcomeImageCustomBackground})\n${i18n(locale, 'OVERLAYCOLOR')}: ${interaction.database.welcomeImageCustomOverlayColor}\n${i18n(locale, 'OVERLAYOPACITY')}: ${interaction.database.welcomeImageCustomOpacity}`)] })
         } else {
-          interaction.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
+          client.pool.query('UPDATE `guildData` SET `welcomeImageCustomOverlayColor` = ?, `welcomeImageCustomBackground` = ?, `welcomeImageCustomOpacity` = ? WHERE guild = ?', [overlayColor || interaction.database.welcomeImageCustomOverlayColor, background || interaction.database.welcomeImageCustomBackground, overlayOpacity || interaction.database.welcomeImageCustomOpacity, interaction.guild.id], (err) => {
+            if (err) client.logError(err)
+            interaction.editReply({ embeds: [configureCardEmbed] })
+          })
         }
         break
       }
-      case 'test': {
+      case 'previewcard': {
         welcomeCard(client, interaction.member, locale, interaction.database).then((paths) => {
           const attachmentSent = new MessageAttachment(paths.attachmentSent)
           interaction.editReply({ files: [attachmentSent] }).then(() => {
@@ -115,8 +123,8 @@ module.exports = {
       }
     }
   },
-  executeLegacy(client, locale, message) {
-    const helpTray = Help('welcomer', i18n(locale, 'WELCOMER::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:DISABLECARDS') }, { option: 'overlayopacity', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYOPACITY'), syntax: 'overlayopacity <opacity quantity>' }, { option: 'overlaycolor', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:OVERLAYCOLOR'), syntax: 'overlaycolor <hex code>' }, { option: 'test', description: i18n(locale, 'WELCOMER::xºHELPTRAY:OPTION:TEST') }, { option: 'simulate', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SIMULATE') }, { option: 'setbackground', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <url>' }])
+  executeLegacy (client, locale, message) {
+    const helpTray = Help('welcomer', i18n(locale, 'WELCOMER::HELPTRAY:DESCRIPTION'), [{ option: 'viewconfig', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:VIEWCONFIG') }, { option: 'enablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:ENABLECARDS') }, { option: 'disablecards', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:DISABLECARDS') }, { option: 'test', description: i18n(locale, 'WELCOMER::xºHELPTRAY:OPTION:TEST') }, { option: 'simulate', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SIMULATE') }, { option: 'setbackground', description: i18n(locale, 'WELCOMER::HELPTRAY:OPTION:SETBACKGROUND'), syntax: 'setbackground <url>' }])
     if (!(message.args && Object.prototype.hasOwnProperty.call(message.args, 0))) return message.reply({ embeds: [helpTray] })
     switch (message.args[0]) {
       case 'viewconfig': {
@@ -148,14 +156,6 @@ module.exports = {
         })
         break
       }
-      case 'setbackground': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
-        updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomBackground', value: message.args[1] }, (err) => {
-          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::SETBACKGROUND:ERROR'))] })
-          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::SETBACKGROUND:SUCCESS', { BACKGROUND: message.args[1] }))] })
-        })
-        break
-      }
       case 'enablecards': {
         updateGuildConfig(client, message.guild, { column: 'welcomeImage', value: 1 }, (err) => {
           if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::ENABLECARDS:ERROR'))] })
@@ -167,25 +167,6 @@ module.exports = {
         updateGuildConfig(client, message.guild, { column: 'welcomeImage', value: 0 }, (err) => {
           if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::DISABLECARDS:ERROR'))] })
           message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::DISABLECARDS:SUCCESS'))] })
-        })
-        break
-      }
-      case 'overlayopacity': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
-        updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOpacity', value: message.args[1] }, (err) => {
-          if (err) return message.channel.send({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYOPACITY:ERROR'))] })
-          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYOPACITY:SUCCESS', { OPACITY: message.args[1] }))] })
-        })
-        break
-      }
-      case 'overlaycolor': {
-        if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
-        let hexcolor = message.args[1]
-        if (!hexcolor.startsWith('#')) hexcolor = `#${hexcolor}`
-        if (!isHexcolor(hexcolor)) return message.editReply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:NOTHEX'))] })
-        updateGuildConfig(client, message.guild, { column: 'welcomeImageCustomOverlayColor', value: hexcolor }, (err) => {
-          if (err) return message.reply({ embeds: [Error(i18n(locale, 'WELCOMER::OVERLAYCOLOR:ERROR'))] })
-          message.reply({ embeds: [Success(i18n(locale, 'WELCOMER::OVERLAYCOLOR:SUCCESS', { COLOR: message.args[1] }))] })
         })
         break
       }
