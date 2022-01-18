@@ -3,7 +3,7 @@ const { writeFileSync } = require('fs')
 const randomstring = require('randomstring')
 const isValidUrl = require('is-valid-http-url')
 const isImageUrl = require('is-image-url')
-const hexToRgba = require('hex-to-rgba')
+const hexToRgba = require('hex-rgba')
 const { millify } = require('millify')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
@@ -28,7 +28,7 @@ module.exports = {
       const background = await loadImage(imgPath)
       const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
       ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
-      ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor || '#272934', (database.welcomeImageCustomOpacity / 100))
+      ctx.fillStyle = hexToRgba(database.welcomeImageCustomOverlayColor || '#272934', database.welcomeImageCustomOpacity || 50)
       roundRect(ctx, 25, 25, 1050, 450, 10, ctx.fillStyle, ctx.strokeStyle)
     } else {
       ctx.fillStyle = '#272934'
@@ -91,8 +91,7 @@ module.exports = {
       const scale = Math.max(canvas.width / background.width, canvas.height / background.height)
       ctx.drawImage(background, (canvas.width / 2) - (background.width / 2) * scale, (canvas.height / 2) - (background.height / 2) * scale, background.width * scale, background.height * scale)
 
-      // Establecer blured overlay
-      ctx.fillStyle = hexToRgba(guildConfig.levelsImageCustomOverlayColor || '#272934', (guildConfig.levelsImageCustomOpacity / 100))
+      ctx.fillStyle = hexToRgba(guildConfig.levelsImageCustomOverlayColor || '#272934', guildConfig.levelsImageCustomOpacity || 50)
       roundRect(ctx, 16, 16, 1068, 290, 10, ctx.fillStyle, ctx.strokeStyle)
     } else {
       ctx.fillStyle = '#272934'

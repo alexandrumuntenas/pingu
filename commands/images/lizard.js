@@ -1,4 +1,5 @@
 const fetch = require('superagent')
+const { Image } = require('../../modules/constructor/messageBuilder')
 
 module.exports = {
   name: 'lizard',
