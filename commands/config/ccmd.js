@@ -7,7 +7,7 @@ module.exports = {
   name: 'ccmd',
   description: '⚙️ Create or remove custom commands',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 0,
+  cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
     .setName('ccmd')

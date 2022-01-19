@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const Math = require('mathjs')
 
 module.exports = {
-  cooldown: 0,
+  cooldown: 1,
   name: 'random',
   description: '🔢 Generates a random number between 1 and the specified number',
   interactionData: new SlashCommandBuilder()

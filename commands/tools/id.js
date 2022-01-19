@@ -4,7 +4,7 @@ const i18n = require('../../i18n/i18n')
 module.exports = {
   name: 'id',
   description: '🆔 Get the server ID',
-  cooldown: 0,
+  cooldown: 1,
   executeInteraction (client, locale, interaction) {
     interaction.editReply({ embeds: [Info(i18n(locale, 'ID', { ID: `\`${interaction.guild.id}\`` }))] })
   },

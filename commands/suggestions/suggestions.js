@@ -8,7 +8,7 @@ module.exports = {
   name: 'suggestions',
   description: 'Configure the suggestions module of your server',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 0,
+  cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder().setName('suggestions').setDescription('Configure the suggestions module of your server')
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current configuration of the suggestions module.'))

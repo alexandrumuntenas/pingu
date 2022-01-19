@@ -5,7 +5,7 @@ module.exports = {
   name: 'poll',
   description: '📊 Create a poll',
   permissions: [Permissions.FLAGS.MANAGE_MESSAGES],
-  cooldown: 0,
+  cooldown: 1,
   interactionData: new SlashCommandBuilder()
     .setName('poll')
     .setDescription('📊 Create a poll')

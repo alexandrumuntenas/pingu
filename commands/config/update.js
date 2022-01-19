@@ -16,7 +16,7 @@ module.exports = {
   name: 'update',
   description: '⚙️ Deploys and updates the Pingu\'s Slash Commands of the the server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 0,
+  cooldown: 1,
   executeInteraction (client, locale, interaction) {
     interaction.editReply({ embeds: [Loader(i18n(locale, 'UPDATE::DEPLOYING'))] })
     client.console.info(`Deploying commands to ${interaction.guild.id}`)

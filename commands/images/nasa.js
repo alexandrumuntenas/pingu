@@ -6,7 +6,7 @@ const { Loader } = require('../../modules/constructor/messageBuilder')
 module.exports = {
   name: 'nasa',
   description: '🚀 Get the NASA\'s image of the day',
-  cooldown: 0,
+  cooldown: 1,
   executeInteraction (client, locale, interaction) {
     fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
       .then(response => response.body)

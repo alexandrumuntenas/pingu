@@ -5,7 +5,7 @@ const unixTime = require('unix-time')
 module.exports = {
   name: 'server',
   description: '👑 Shows information about the server',
-  cooldown: 0,
+  cooldown: 1,
   executeInteraction (client, locale, interaction) {
     const embed = new MessageEmbed()
       .setTitle(i18n(locale, 'SERVER::EMBED:TITLE'))

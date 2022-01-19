@@ -3,7 +3,7 @@ const flip = require('flipacoin')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
-  cooldown: 0,
+  cooldown: 1,
   name: 'flip',
   description: '🪙 Flip a coin',
   executeInteraction (client, locale, interaction) {

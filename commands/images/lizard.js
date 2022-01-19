@@ -4,7 +4,7 @@ const { Image } = require('../../modules/constructor/messageBuilder')
 module.exports = {
   name: 'lizard',
   description: '🦎 Sends a random lizard image',
-  cooldown: 0,
+  cooldown: 1,
   executeInteraction (client, locale, interaction) {
     fetch('https://nekos.life/api/v2/img/lizard')
       .then((response) => response.body)

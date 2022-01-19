@@ -5,7 +5,7 @@ module.exports = {
   name: 'embed',
   description: '📝 Create an embed message',
   permissions: [Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS],
-  cooldown: 0,
+  cooldown: 1,
   ephemeral: true,
   interactionData: new SlashCommandBuilder()
     .setName('embed')
