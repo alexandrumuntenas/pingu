@@ -1,3 +1,11 @@
+/**
+ * Get the guild's configuration from the database.
+ * @param {Client} client - The Bot Client
+ * @param {Guild} guild - The guild
+ * @param {Function} callback - The callback function
+ * @returns Object - The guild configuration
+ */
+
 module.exports = (client, guild, callback) => {
   const gFD = client.console.sentry.startTransaction({
     op: 'getGuildConfig',
