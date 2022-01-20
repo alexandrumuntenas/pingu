@@ -1,3 +1,12 @@
+/**
+ * Get member data from the database.
+ * @param {Client} client - The Bot Client
+ * @param {GuildMember} member - The Member to get the data for
+ * @param {Function} callback - The callback function
+ * @callback memberData - The member data
+ *
+ */
+
 module.exports.getMember = (client, member, callback) => {
   const sentryEvent = client.console.sentry.startTransaction({
     op: 'memberManager.getMember',
@@ -22,6 +31,13 @@ module.exports.getMember = (client, member, callback) => {
   })
 }
 
+/**
+ * Create a new member entry in the database.
+ * @param {Client} client - The Bot Client
+ * @param {GuildMember} member - The Member to create the data for
+ * @param {Function} callback - The callback function
+ */
+
 module.exports.createMember = (client, member, callback) => {
   const sentryEvent = client.console.sentry.startTransaction({
     op: 'memberManager.createMember',
@@ -33,6 +49,18 @@ module.exports.createMember = (client, member, callback) => {
     sentryEvent.finish()
   })
 }
+
+/**
+ * Update the member's data from the database.
+ * @param {Client} client - The Bot Client
+ * @param {GuildMember} member - The Member to update the data for
+ * @param {Object} memberDataToUpdate - The data to update
+ * @param {?String} memberDataToUpdate.lvlExperience - Member Experience
+ * @param {?String} memberDataToUpdate.lvlLevel - Member Level
+ * @param {?String} memberDataToUpdate.ecoBalance - Member Balance
+ * @param {?Array} memberDataToUpdate.ecoInventory - Member Inventory
+ * @param {Function} callback - The callback function
+ */
 
 module.exports.updateMember = (client, member, memberDataToUpdate, callback) => {
   const sentryEvent = client.console.sentry.startTransaction({
