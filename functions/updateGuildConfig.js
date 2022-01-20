@@ -1,3 +1,13 @@
+/**
+ * Update a guild's configuration.
+ * @param {Client} client - The Bot Client
+ * @param {Guild} guild - The Guild
+ * @param {Object} configuration - The configuration to update
+ * @param {String} configuration.column - The configuration column to update
+ * @param {String} configuration.value - The new configuration value
+ * @param {Function} callback - The callback function
+ */
+
 module.exports = (client, guild, configuration, callback) => {
   const uGC = client.console.sentry.startTransaction({
     op: 'updateGuildConfig',
