@@ -13,8 +13,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('farewell')
-    .setDescription('Configure the farewell settings for your server.')
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current farewell configuration'))
     .addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the farewell channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('setmessage').setDescription('Set the farewell message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}').setRequired(true)))

@@ -10,8 +10,6 @@ module.exports = {
   alias: [''],
   permissions: [],
   interactionData: new SlashCommandBuilder()
-    .setName('transfer')
-    .setDescription('📨 Send money to another user.')
     .addUserOption(option => option.setName('user').setDescription('The user to send money to.').setRequired(true))
     .addNumberOption(option => option.setName('amount').setDescription('The amount of money to send.').setRequired(true)),
   executeInteraction (client, locale, interaction) {

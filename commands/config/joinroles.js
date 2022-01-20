@@ -12,8 +12,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('joinroles')
-    .setDescription('Manage join roles')
     .addSubcommand(subcommand => subcommand.setName('list').setDescription('List the Join Roles'))
     .addSubcommand(subcommand => subcommand.setName('add').setDescription('Add a new join role').addRoleOption(option => option.setName('role').setDescription('Role to give').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove a join role').addRoleOption(option => option.setName('role').setDescription('Role to remove').setRequired(true))),

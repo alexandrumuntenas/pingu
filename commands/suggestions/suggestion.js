@@ -10,7 +10,7 @@ module.exports = {
   description: 'Command to handle suggestions',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 1,
-  interactionData: new SlashCommandBuilder().setName('suggestion').setDescription('Command to handle suggestions')
+  interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('approve').setDescription('Approve a suggestion.').addStringOption(option => option.setName('id').setDescription('ID of the suggestion to approve.').setRequired(true)))
     .addSubcommand(sc => sc.setName('reject').setDescription('Reject a suggestion.').addStringOption(option => option.setName('id').setDescription('ID of the suggestion to reject.').setRequired(true)).addStringOption(option => option.setName('reason').setDescription('Reason for rejection.'))),
   executeInteraction: async (client, locale, interaction) => {

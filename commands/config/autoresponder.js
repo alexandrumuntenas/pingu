@@ -10,8 +10,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('autoresponder')
-    .setDescription('Configure the autoresponder')
     .addSubcommand(subcommand => subcommand.setName('create').setDescription('Create a new autoresponder').addStringOption(option => option.setName('id').setDescription('Response ID').setRequired(true)).addStringOption(option => option.setName('trigger').setDescription('Response trigger').setRequired(true)).addStringOption(option => option.setName('reply').setDescription('Response reply').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove an autoresponder').addStringOption(option => option.setName('id').setDescription('Response ID').setRequired(true))),
   executeInteraction (client, locale, interaction) {

@@ -10,8 +10,6 @@ module.exports = {
   description: '🛍️ Check the server shop.',
   cooldown: 5000,
   interactionData: new SlashCommandBuilder()
-    .setName('shop')
-    .setDescription('🛍️ Check the server shop.')
     .addStringOption(option => option.setName('productname').setDescription('Enter the product name you want to checkout')),
   executeInteraction (client, locale, interaction) {
     if (interaction.database.economyEnabled !== 0) {

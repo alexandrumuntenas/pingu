@@ -12,8 +12,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('products')
-    .setDescription('🛒 Configure the guild shop products')
     .addSubcommandGroup(gr => gr.setName('create').setDescription('Create a new product')
       .addSubcommand(sc => sc
         .setName('collectionable').setDescription('🛒 Create a collectionable product')

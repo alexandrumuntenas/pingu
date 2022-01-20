@@ -17,8 +17,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('levels')
-    .setDescription('Configure the levels system')
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current levels system configuration'))
     .addSubcommand(subcommand => subcommand.setName('setrankupchannel').setDescription('Set the rankUp channel').addStringOption(option =>
       option.setName('channel')

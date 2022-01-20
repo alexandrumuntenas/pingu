@@ -10,8 +10,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('ccmd')
-    .setDescription('Create or remove custom commands')
     .addSubcommand(subcommand => subcommand.setName('create').setDescription('Create a custom command').addStringOption(option => option.setName('command').setDescription('The Custom Command').setRequired(true)).addStringOption(option => option.setName('response').setDescription('The Response to the command').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('remove').setDescription('Remove a custom command').addStringOption(option => option.setName('command').setDescription('The Custom Command').setRequired(true))),
   executeInteraction (client, locale, interaction) {

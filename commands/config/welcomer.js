@@ -18,8 +18,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('welcomer')
-    .setDescription('Configure the welcomer module')
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current welcomer configuration'))
     .addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the welcomer channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('setmessage').setDescription('Set the welcomer message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}').setRequired(true)))

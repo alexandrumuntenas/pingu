@@ -23,8 +23,6 @@ module.exports = {
   alias: [''],
   permissions: [],
   interactionData: new SlashCommandBuilder()
-    .setName('admin')
-    .setDescription('Master command to manage the bot.')
     .addSubcommand(sc => sc.setName('viewcnfcommands').setDescription('Enables or disables the deployment of bot configuration commands.').addBooleanOption(bo => bo.setName('view').setDescription('Do you want the configuration commands to be deployed to your server?').setRequired(true)))
     .addSubcommand(sc => sc.setName('setprefix').setDescription('Set the prefix for the bot').addStringOption(option => option.setName('newprefix').setDescription('Enter the new prefix').setRequired(true)))
     .addSubcommand(sc => sc.setName('setlanguage').setDescription('Set the language for the bot').addStringOption(option => option.setName('language').setDescription('The language to set').setRequired(true).addChoice('Spanish', 'es').addChoice('English', 'en').setRequired(true)))

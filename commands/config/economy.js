@@ -12,8 +12,6 @@ module.exports = {
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName('economy')
-    .setDescription('Configure the economy settings for your server.')
     .addSubcommand(subcommand => subcommand.setName('setcoinname').setDescription('Set the coin name').addStringOption(option => option.setName('coinname').setDescription('Enter the new coin name').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('setcoinicon').setDescription('Set the coin icon').addStringOption(option => option.setName('coinicon').setDescription('Enter the new coin icon').setRequired(true))),
   executeInteraction (client, locale, interaction) {

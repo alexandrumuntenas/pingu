@@ -10,7 +10,7 @@ module.exports = {
   name: 'suggest',
   description: 'Make a suggestion',
   cooldown: 3600000,
-  interactionData: new SlashCommandBuilder().setName('suggest').setDescription('Make a suggestion')
+  interactionData: new SlashCommandBuilder()
     .addStringOption(option => option.setName('suggestion').setDescription('The suggestion to make.').setRequired(true)),
   executeInteraction: async (client, locale, interaction) => {
     const suggestion = interaction.options.getString('suggestion')

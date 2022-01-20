@@ -17,6 +17,7 @@ module.exports = (client) => {
         const command = require(`.${path}`)
         if (command.name) {
           if (!command.interactionData) command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
+          else command.interactionData.setName(command.name).setDescription(command.description || 'Description not set')
           if (!command.isConfigCommand) command.isConfigCommand = false
           commands.set(command.name, command)
           client.console.success(`Comando ${file} cargado`)
