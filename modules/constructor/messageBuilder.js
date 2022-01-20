@@ -1,47 +1,33 @@
-const { MessageEmbed } = require('discord.js')
-const { codeBlock } = require('@discordjs/builders')
+const { MessageEmbed } = require('discord.js');
+const { codeBlock } = require('@discordjs/builders');
 
-module.exports.Status = (message) => {
-  return new MessageEmbed()
+module.exports.Status = (message) => new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<:pingu_null:876103457860370442> ${message}`)
-}
+    .setDescription(`<:pingu_null:876103457860370442> ${message}`);
 
-module.exports.Loader = (message) => {
-  return new MessageEmbed()
+module.exports.Loader = (message) => new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<a:loader:927223896330084412> ${message}`)
-}
+    .setDescription(`<a:loader:927223896330084412> ${message}`);
 
-module.exports.Success = (message) => {
-  return new MessageEmbed()
+module.exports.Success = (message) => new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<:pingu_on:876103503561502730> ${message}`)
-}
+    .setDescription(`<:pingu_on:876103503561502730> ${message}`);
 
-module.exports.Error = (message) => {
-  return new MessageEmbed()
+module.exports.Error = (message) => new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<:pingu_null:876103457860370442> ${message}`)
-}
+    .setDescription(`<:pingu_null:876103457860370442> ${message}`);
 
-module.exports.Info = (message) => {
-  return new MessageEmbed()
+module.exports.Info = (message) => new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`:information_source: ${message}`)
-}
+    .setDescription(`:information_source: ${message}`);
 
-module.exports.Image = (imageURL, imageProvider) => {
-  return new MessageEmbed()
+module.exports.Image = (imageURL, imageProvider) => new MessageEmbed()
     .setImage(imageURL)
-    .setDescription(`:frame_photo: Image via ${imageProvider} API.`)
-}
+    .setDescription(`:frame_photo: Image via ${imageProvider} API.`);
 
-module.exports.Timer = (message) => {
-  return new MessageEmbed()
+module.exports.Timer = (message) => new MessageEmbed()
     .setColor('#2F3136')
-    .setDescription(`<:wait:928374551182721044> ${message}`)
-}
+    .setDescription(`<:wait:928374551182721044> ${message}`);
 
 /**
 * Devuelve un mensaje enriquecido con información del comando
@@ -56,14 +42,14 @@ module.exports.Help = (commandName, commandDescription, commandOptions, commandM
   const embed = new MessageEmbed()
     .setColor('#2F3136')
     .setTitle(`${commandName} • Help Tray`)
-    .setDescription(`${commandDescription || 'No description'}`)
+    .setDescription(`${commandDescription || 'No description'}`);
 
   if (commandOptions) {
-    const optionsNoNSFW = commandOptions.filter(option => !option.isNsfw)
-    const optionsNSFW = commandOptions.filter(option => option.isNsfw)
+    const optionsNoNSFW = commandOptions.filter((option) => !option.isNsfw);
+    const optionsNSFW = commandOptions.filter((option) => option.isNsfw);
 
-    if (optionsNoNSFW) optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true))
-    if (optionsNSFW) optionsNSFW.forEach(option => embed.addField(`:underage: ${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true))
+    if (optionsNoNSFW) optionsNoNSFW.forEach((option) => embed.addField(`${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true));
+    if (optionsNSFW) optionsNSFW.forEach((option) => embed.addField(`:underage: ${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true));
   }
-  return embed
-}
+  return embed;
+};

@@ -14,11 +14,11 @@
 
 module.exports.createSuggestion = async (client, suggestion, callback) => {
   client.pool.query('INSERT INTO `guildSuggestions` (`suggestionId`, `suggestionGuild`, `suggestionAuthor`, `suggestionContent`, `suggestionMessageId`) VALUES (?, ?, ?, ?, ?)', [suggestion.suggestionId, suggestion.suggestionGuild, suggestion.suggestionAuthor, suggestion.suggestionContent, suggestion.suggestionMessage], (err) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    return callback(200)
-  })
-}
+    if (err) client.logError(err);
+    if (err) return callback(500);
+    return callback(200);
+  });
+};
 
 /**
   * Deletes a suggestion
@@ -29,11 +29,11 @@ module.exports.createSuggestion = async (client, suggestion, callback) => {
 
 module.exports.deleteSuggestion = async (client, suggestion, callback) => {
   client.pool.query('DELETE FROM `guildSuggestions` WHERE suggestionGuild = ? AND suggestionId = ?', [suggestion.suggestionGuild, suggestion.suggestionId], (err) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    return callback(200)
-  })
-}
+    if (err) client.logError(err);
+    if (err) return callback(500);
+    return callback(200);
+  });
+};
 
 /**
   * Gets all the suggestions of a guild
@@ -44,11 +44,11 @@ module.exports.deleteSuggestion = async (client, suggestion, callback) => {
 
 module.exports.getSuggestions = async (client, guild, callback) => {
   client.pool.query('SELECT * FROM `guildSuggestions` WHERE suggestionGuild = ?', [guild.suggestionId], (err, rows) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    return callback(200)
-  })
-}
+    if (err) client.logError(err);
+    if (err) return callback(500);
+    return callback(200);
+  });
+};
 
 /**
   * Get a concrete suggestion from guild database
@@ -59,12 +59,12 @@ module.exports.getSuggestions = async (client, guild, callback) => {
 
 module.exports.getSuggestion = async (client, suggestion, callback) => {
   client.pool.query('SELECT * FROM `guildSuggestions` WHERE suggestionGuild = ? AND suggestionId = ?', [suggestion.suggestionGuild, suggestion.suggestionId], (err, result) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    if (result && Object.prototype.hasOwnProperty.call(result, 0)) return callback(result[0])
-    return callback(404)
-  })
-}
+    if (err) client.logError(err);
+    if (err) return callback(500);
+    if (result && Object.prototype.hasOwnProperty.call(result, 0)) return callback(result[0]);
+    return callback(404);
+  });
+};
 
 /**
   * Approve a suggestion
@@ -77,17 +77,17 @@ module.exports.approveSuggestion = async (client, suggestion, callback) => {
   module.exports.getSuggestion(client, { suggestionId: suggestion.suggestionId, suggestionGuild: suggestion.suggestionGuild }, (data) => {
     if (Object.prototype.hasOwnProperty.call(data, 'suggestionId')) {
       client.pool.query('UPDATE `guildSuggestions` SET `suggestionStatus` = ?, `suggestionRevisor` = ? WHERE `suggestionId` = ? AND suggestionGuild = ?', ['2', suggestion.suggestionRevisor, suggestion.suggestionId, suggestion.suggestionGuild], (err) => {
-        if (err) client.logError(err)
-        if (err) return callback(500)
-        return callback(data)
-      })
+        if (err) client.logError(err);
+        if (err) return callback(500);
+        return callback(data);
+      });
     } else if (data === 500) {
-      return callback(500)
+      return callback(500);
     } else {
-      return callback(404)
+      return callback(404);
     }
-  })
-}
+  });
+};
 
 /**
   * Reject a suggestion
@@ -100,14 +100,14 @@ module.exports.rejectSuggestion = async (client, suggestion, callback) => {
   module.exports.getSuggestion(client, { suggestionId: suggestion.suggestionId, suggestionGuild: suggestion.suggestionGuild }, (data) => {
     if (Object.prototype.hasOwnProperty.call(data, 'suggestionId')) {
       client.pool.query('UPDATE `guildSuggestions` SET `suggestionStatus` = ?, `suggestionRevisor` = ? WHERE `suggestionId` = ? AND suggestionGuild = ?', ['1', suggestion.suggestionRevisor, suggestion.suggestionId, suggestion.suggestionGuild], (err) => {
-        if (err) client.logError(err)
-        if (err) return callback(500)
-        return callback(data)
-      })
+        if (err) client.logError(err);
+        if (err) return callback(500);
+        return callback(data);
+      });
     } else if (data === 500) {
-      return callback(500)
+      return callback(500);
     } else {
-      return callback(404)
+      return callback(404);
     }
-  })
-}
+  });
+};

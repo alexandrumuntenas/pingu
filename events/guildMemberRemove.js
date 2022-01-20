@@ -1,4 +1,4 @@
-const getGuildConfig = require('../functions/getGuildConfig')
+const getGuildConfig = require('../functions/getGuildConfig');
 
 module.exports = {
   name: 'guildMemberRemove',
@@ -6,18 +6,18 @@ module.exports = {
     const gMR = client.console.sentry.startTransaction({
       op: 'guildMemberRemove',
       name: 'Guild Member Remove'
-    })
+    });
     if (member.user.id !== client.user.id) {
       getGuildConfig(client, member.guild, (data) => {
         if (data.farewellEnabled !== 0) {
-          const mensaje = client.channels.cache.find(channel => channel.id === data.farewellChannel)
+          const mensaje = client.channels.cache.find((channel) => channel.id === data.farewellChannel);
           if (mensaje) {
-            mensaje.send(data.farewellMessage.replace('{member}', `${member.user.tag}`).replace('{guild}', `${member.guild.name}`))
+            mensaje.send(data.farewellMessage.replace('{member}', `${member.user.tag}`).replace('{guild}', `${member.guild.name}`));
           }
         }
-      })
-      client.pool.query('DELETE FROM `memberData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id])
+      });
+      client.pool.query('DELETE FROM `memberData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id]);
     }
-    gMR.finish()
+    gMR.finish();
   }
-}
+};
