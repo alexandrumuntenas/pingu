@@ -2,9 +2,9 @@ const StringPlaceholder = require('string-placeholder')
 
 /**
  * Solicitar la traducción para la i18n a través de string-placeholder
- * @param {string} idioma El idioma del servidor
- * @param {string} key La clave del array de los idiomas
- * @param {object} placeholders Los datos para reemplazar los placeholders
+ * @param {String} idioma El idioma del servidor
+ * @param {String} key La clave del array de los idiomas
+ * @param {Array<Object>} placeholders Los datos para reemplazar los placeholders
  */
 module.exports = (language, key, placeholders) => {
   const locale = require(`./locales/${language}.json`)[key]
