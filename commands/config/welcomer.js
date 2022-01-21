@@ -6,7 +6,7 @@ const tempFileRemover = require('../../functions/tempFileRemover')
 const guildMemberAdd = require('../../events/guildMemberAdd').execute
 const isHexColor = require('is-hexcolor')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const updateGuildConfig = require('../../functions/updateGuildConfig')
+const { updateGuildConfig } = require('../../modules/guildDataManager.js')
 
 const emojiRelationship = { 0: '<:discord_offline:876102753821278238>', 1: '<:discord_online:876102925129236481>' }
 

@@ -1,6 +1,6 @@
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const getGuildConfig = require('../functions/getGuildConfig')
+const { getGuildConfig } = require('../modules/guildDataManager.js')
 const generateTheCommandListOfTheGuild = require('../functions/generateTheCommandListOfTheGuild')
 
 const rest = new REST({ version: '9' })

@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Error, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const { MessageEmbed } = require('discord.js')
-const updateGuildConfig = require('../../functions/updateGuildConfig')
+const { updateGuildConfig } = require('../../modules/guildDataManager.js')
 
 const columnRelationShip = {
   welcomer: 'welcomeEnabled',

@@ -1,5 +1,5 @@
 const { Error, Timer } = require('../modules/constructor/messageBuilder')
-const getGuildConfig = require('../functions/getGuildConfig')
+const { getGuildConfig } = require('../modules/guildDataManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 

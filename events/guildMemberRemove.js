@@ -1,4 +1,4 @@
-const getGuildConfig = require('../functions/getGuildConfig')
+const { getGuildConfig } = require('../modules/guildDataManager.js')
 
 module.exports = {
   name: 'guildMemberRemove',

@@ -1,3 +1,35 @@
+/** @module GuildDataManager */
+
+/**
+ * Get the guild's configuration from the database.
+ * @param {Client} client - The Bot Client
+ * @param {Guild} guild - The guild
+ * @param {Function} callback - The callback function
+ * @returns Object - The guild configuration
+ */
+
+module.exports.getGuildConfig = (client, guild, callback) => {
+  const gFD = client.console.sentry.startTransaction({
+    op: 'getGuildConfig',
+    name: 'Get Guild Configuration'
+  })
+  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+    if (err) client.logError(err)
+    if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
+      callback(result[0])
+    } else {
+      const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
+      client.pool.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], (err) => {
+        if (err) {
+          client.logError(err)
+          client.console.error(err)
+        }
+        gFD.finish()
+        module.exports(client, guild, callback)
+      })
+    }
+  })
+}
 
 /**
  * @deprecated Use new() instead
@@ -10,7 +42,7 @@
  * @param {Function} callback - The callback function
  */
 
-module.exports = (client, guild, configuration, callback) => {
+module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
   const uGC = client.console.sentry.startTransaction({
     op: 'updateGuildConfig',
     name: 'Update Guild Config'
@@ -37,7 +69,7 @@ module.exports = (client, guild, configuration, callback) => {
  * @param {Function} callback - The callback function
  */
 
-module.exports.new = () => {
+module.exports.updateGuildConfig.next = () => {
   // TODO: Add a check to see if the module exists
   // TODO: Add a check to see if the newconfig includes all module properties
   // TODO: Add a check to see if the newconfig is valid

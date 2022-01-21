@@ -1,7 +1,7 @@
 const { MessageAttachment } = require('discord.js')
 const tempFileRemover = require('../functions/tempFileRemover')
 const { welcomeCard } = require('../modules/canvasProcessing')
-const getGuildConfig = require('../functions/getGuildConfig')
+const { getGuildConfig } = require('../modules/guildDataManager.js')
 const { fetchJoinRoles } = require('../modules/joinroles')
 
 module.exports = {

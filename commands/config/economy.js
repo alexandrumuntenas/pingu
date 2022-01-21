@@ -2,7 +2,7 @@ const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
-const updateGuildConfig = require('../../functions/updateGuildConfig')
+const { updateGuildConfig } = require('../../modules/guildDataManager.js')
 
 module.exports = {
   module: 'economy',

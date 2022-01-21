@@ -1,7 +1,7 @@
 const { Error, Timer } = require('../modules/constructor/messageBuilder')
 const i18n = require('../i18n/i18n')
 const autoresponder = require('../modules/autoresponder')
-const getGuildConfig = require('../functions/getGuildConfig')
+const { getGuildConfig } = require('../modules/guildDataManager.js')
 const { rankUp } = require('../modules/levels')
 const humanizeduration = require('humanize-duration')
 const customcommands = require('../modules/customcommands')

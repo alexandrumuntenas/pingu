@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const guildMemberRemove = require('../../events/guildMemberRemove').execute
-const updateGuildConfig = require('../../functions/updateGuildConfig')
+const { updateGuildConfig } = require('../../modules/guildDataManager.js')
 
 module.exports = {
   module: 'farewell',

@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Status, Help, Error, Loader } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const { isInteger } = require('mathjs')
-const updateGuildConfig = require('../../functions/updateGuildConfig')
+const { updateGuildConfig } = require('../../modules/guildDataManager.js')
 const isHexColor = require('is-hexcolor')
 
 const channelRelationship = { 0: 'Not Setup', 1: 'Same Channel where Message is Sent' }
