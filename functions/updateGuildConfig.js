@@ -1,4 +1,6 @@
+
 /**
+ * @deprecated Use new() instead
  * Update a guild's configuration.
  * @param {Client} client - The Bot Client
  * @param {Guild} guild - The Guild
@@ -23,4 +25,21 @@ module.exports = (client, guild, configuration, callback) => {
   } else {
     throw new Error('Configuration parameter must be an Object with the following properties: column (column to update) and value (new value).')
   }
+}
+
+/**
+ * Update a guild's configuration.
+ * @param {Client} client - The Bot Client
+ * @param {Guild} guild - The Guild
+ * @param {Object} module - The module to update
+ * @param {String} module.column - The module configuration column to update
+ * @param {JSON} module.newconfig - The new configuration value
+ * @param {Function} callback - The callback function
+ */
+
+module.exports.new = () => {
+  // TODO: Add a check to see if the module exists
+  // TODO: Add a check to see if the newconfig includes all module properties
+  // TODO: Add a check to see if the newconfig is valid
+  // TODO: Update current config to new config without replacing the whole thing. (This will require a new function)
 }
