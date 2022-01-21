@@ -32,7 +32,7 @@ module.exports.getGuildConfig = (client, guild, callback) => {
 }
 
 /**
- * @deprecated Use new() instead
+ * @deprecated Use next() instead
  * Update a guild's configuration.
  * @param {Client} client - The Bot Client
  * @param {Guild} guild - The Guild
@@ -69,9 +69,27 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
  * @param {Function} callback - The callback function
  */
 
-module.exports.updateGuildConfig.next = () => {
-  // TODO: Add a check to see if the module exists
-  // TODO: Add a check to see if the newconfig includes all module properties
-  // TODO: Add a check to see if the newconfig is valid
-  // TODO: Update current config to new config without replacing the whole thing. (This will require a new function)
+module.exports.updateGuildConfig.next = (client, guild, module, callback) => {
+  module.exports.getGuildConfig(client, guild, (guildConfig) => {
+    if (Object.prototype.hasOwnProperty.call(guildConfig, module.column)) {
+      guildConfig[module.column] = JSON.parse(guildConfig[module.column])
+      Object.keys(guildConfig[module.column]).forEach((moduleProperty) => {
+        if (module.newconfig[moduleProperty]) {
+          guildConfig[module.column][moduleProperty] = module.newconfig[moduleProperty]
+        }
+      })
+      Object.keys().forEach(moduleConfig => {
+        if (guildConfig[module.column][moduleConfig] === null) {
+          delete guildConfig[module.column][moduleConfig]
+        }
+      })
+      client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [module.column, JSON.stringify(guildConfig[module.column]), guild.id], (err) => {
+        if (err) client.logError(err)
+        if (err) return callback(err)
+        return callback()
+      })
+    } else {
+      throw new Error('The specified module does not exist.')
+    }
+  })
 }
