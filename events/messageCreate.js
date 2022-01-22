@@ -1,7 +1,7 @@
 const { Error, Timer } = require('../modules/constructor/messageBuilder')
 const i18n = require('../i18n/i18n')
 const autoresponder = require('../modules/autoresponder')
-const { getGuildConfig } = require('../modules/guildDataManager.js')
+const { getGuildConfigNext } = require('../modules/guildDataManager.js')
 const { rankUp } = require('../modules/levels')
 const humanizeduration = require('humanize-duration')
 const customcommands = require('../modules/customcommands')
@@ -14,7 +14,7 @@ module.exports = {
       message.author.bot ||
       message.author === client.user
     ) return
-    getGuildConfig(client, message.guild, async (guildData) => {
+    getGuildConfigNext(client, message.guild, async (guildData) => {
       message.database = guildData
       if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
         message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
