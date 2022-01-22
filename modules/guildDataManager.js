@@ -48,14 +48,20 @@ module.exports.getGuildConfigNext = (client, guild, callback) => {
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) client.logError(err)
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      Object.keys(result[0]).forEach((module) => {
-        try {
-          result[0][module] = JSON.parse(result[0][module])
-        } catch (err) {
-          if (err) return err
-        }
-      })
-      callback(result[0])
+      if (result[0].clientVersion === 'pingu@1.0.0') {
+        module.exports.migrateGuildData(client, guild, () => {
+          module.exports.getGuildConfigNext(client, guild, callback)
+        })
+      } else {
+        Object.keys(result[0]).forEach((module) => {
+          try {
+            result[0][module] = JSON.parse(result[0][module])
+          } catch (err) {
+            if (err) return err
+          }
+        })
+        callback(result[0])
+      }
     } else {
       const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
       client.pool.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], (err) => {
@@ -91,7 +97,7 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
       uGC.finish()
       if (err) client.logError(err)
       if (err) return callback(err)
-      return callback()
+      if (callback) return callback()
     })
   } else {
     throw new Error('Configuration parameter must be an Object with the following properties: column (column to update) and value (new value).')
@@ -111,16 +117,26 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
 module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
   module.exports.getGuildConfigNext(client, guild, (guildConfig) => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
+      console.log(botmodule.column)
       try {
         guildConfig[botmodule.column] = JSON.parse(guildConfig[botmodule.column])
       } catch (err) {
         if (err) {
-          client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
-            if (err) client.logError(err)
-            if (err) return callback(err)
-            if (callback) return callback()
-            else return null
-          })
+          if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
+            client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
+              if (err) client.logError(err)
+              if (err) return callback(err)
+              if (callback) return callback()
+              else return null
+            })
+          } else {
+            client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], (err) => {
+              if (err) client.logError(err)
+              if (err) return callback(err)
+              if (callback) return callback()
+              else return null
+            })
+          }
         }
       } finally {
         if (guildConfig[botmodule.column]) {
@@ -177,6 +193,7 @@ module.exports.migrateGuildData = (client, guild, callback) => {
       // Migar módulo de comandos personalizados
       const customcommands = { habilitado: result[0].customcommandsEnabled }
 
+      module.exports.updateGuildConfig(client, guild, { column: 'clientVersion', value: 'pingu@2.0.0' })
       module.exports.updateGuildConfigNext(client, guild, { column: 'general', newconfig: general })
       module.exports.updateGuildConfigNext(client, guild, { column: 'bienvenidas', newconfig: welcomer })
       module.exports.updateGuildConfigNext(client, guild, { column: 'despedidas', newconfig: farewell })
@@ -185,6 +202,7 @@ module.exports.migrateGuildData = (client, guild, callback) => {
       module.exports.updateGuildConfigNext(client, guild, { column: 'sugerencias', newconfig: suggestions })
       module.exports.updateGuildConfigNext(client, guild, { column: 'respuestasPersonalizadas', newconfig: autoresponder })
       module.exports.updateGuildConfigNext(client, guild, { column: 'comandosPersonalizados', newconfig: customcommands })
+      if (callback) callback()
     } else {
       if (callback) callback()
     }
