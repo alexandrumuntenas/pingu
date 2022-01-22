@@ -34,14 +34,13 @@ module.exports.getGuildConfig = (client, guild, callback) => {
 
 /**
  * Get the guild's configuration from the database.
- * @deprecated since 2202. Use next() instead.
  * @param {Client} client - The Bot Client
  * @param {Guild} guild - The guild
  * @param {Function} callback - The callback function
  * @returns Object - The guild configuration
  */
 
-module.exports.getGuildConfig.next = (client, guild, callback) => {
+module.exports.getGuildConfigNext = (client, guild, callback) => {
   const gFD = client.console.sentry.startTransaction({
     op: 'getGuildConfig',
     name: 'Get Guild Configuration'
@@ -50,7 +49,11 @@ module.exports.getGuildConfig.next = (client, guild, callback) => {
     if (err) client.logError(err)
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
       Object.keys(result[0]).forEach((module) => {
-        result[0][module] = JSON.parse(result[0][module])
+        if (Array.isArray(result[0][module])) {
+          result[0][module] = JSON.parse(result[0][module])
+        } else {
+          result[0][module] = result[0][module]
+        }
       })
       callback(result[0])
     } else {
@@ -66,7 +69,6 @@ module.exports.getGuildConfig.next = (client, guild, callback) => {
     }
   })
 }
-
 
 /**
  * @deprecated Use next() instead
@@ -100,33 +102,91 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
  * Update a guild's configuration.
  * @param {Client} client - The Bot Client
  * @param {Guild} guild - The Guild
- * @param {Object} module - The module to update
- * @param {String} module.column - The module configuration column to update
- * @param {JSON} module.newconfig - The new configuration value
+ * @param {Object} botmodule - The module to update
+ * @param {String} botmodule.column - The module configuration column to update
+ * @param {JSON} botmodule.newconfig - The new configuration value
  * @param {Function} callback - The callback function
  */
 
-module.exports.updateGuildConfig.next = (client, guild, module, callback) => {
-  module.exports.getGuildConfig(client, guild, (guildConfig) => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, module.column)) {
-      guildConfig[module.column] = JSON.parse(guildConfig[module.column])
-      Object.keys(guildConfig[module.column]).forEach((moduleProperty) => {
-        if (module.newconfig[moduleProperty]) {
-          guildConfig[module.column][moduleProperty] = module.newconfig[moduleProperty]
-        }
-      })
-      Object.keys().forEach(moduleConfig => {
-        if (guildConfig[module.column][moduleConfig] === null) {
-          delete guildConfig[module.column][moduleConfig]
-        }
-      })
-      client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [module.column, JSON.stringify(guildConfig[module.column]), guild.id], (err) => {
-        if (err) client.logError(err)
-        if (err) return callback(err)
-        return callback()
-      })
+module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
+  module.exports.getGuildConfigNext(client, guild, (guildConfig) => {
+    if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
+      guildConfig[botmodule.column] = JSON.parse(guildConfig[botmodule.column])
+      if (guildConfig[botmodule.column]) {
+        Object.keys(guildConfig[botmodule.column]).forEach((moduleProperty) => {
+          if (botmodule.newconfig[moduleProperty]) {
+            guildConfig[botmodule.column][moduleProperty] = botmodule.newconfig[moduleProperty]
+          }
+        })
+        Object.keys(guildConfig).forEach(moduleConfig => {
+          if (guildConfig[botmodule.column][moduleConfig] === null) {
+            delete guildConfig[botmodule.column][moduleConfig]
+          }
+        })
+        client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], (err) => {
+          if (err) client.logError(err)
+          if (err) return callback(err)
+          if (callback) return callback()
+          else return null
+        })
+      } else {
+        client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
+          if (err) client.logError(err)
+          if (err) return callback(err)
+          if (callback) return callback()
+          else return null
+        })
+      }
     } else {
       throw new Error('The specified module does not exist.')
+    }
+  })
+}
+
+module.exports.migrateGuildData = (client, guild, callback) => {
+  client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+    if (err) client.logError(err)
+    if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
+      const gFD = client.console.sentry.startTransaction({
+        op: 'migrateGuildData',
+        name: 'Migrate Guild Data'
+      })
+
+      if (!result[0].clientVersion === 'pingu@1.0.0') return
+
+      // Migrar configuraciones generales
+      const general = { idioma: result[0].guildLanguage, prefijo: result[0].guildPrefix, interacciones: { habilitado: 1, desplegarComandosDeConfiguracion: result[0].guildViewCnfCmdsEnabled } }
+
+      // Migrar módulo de bienvenidas
+      const welcomer = { habilitado: result[0].welcomeEnabled, canal: result[0].welcomeChannel, mensaje: result[0].welcomeMessage, tarjeta: { habilitado: result[0].welcomeImage, fondo: result[0].welcomeImageCustomBackground, overlay: { color: result[0].welcomeImageCustomOverlayColor, opacidad: result[0].welcomeImageCustomOpacity } } }
+      // Migrar módulo de despedidas
+      const farewell = { habilitado: result[0].farewellEnabled, canal: result[0].farewellChannel, mensaje: result[0].farewellMessage }
+
+      // Migrar módulo de niveles
+      const levels = { habilitado: result[0].levelsEnabled, canal: result[0].levelsChannel, mensaje: result[0].levelsMessage, dificultad: result[0].levelsDifficulty, tarjeta: { fondo: result[0].levelsImageCustomBackground, overlay: { opacidad: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor } } }
+
+      // Migrar módulo de economía
+      const economy = { habilitado: result[0].economyEnabled, moneda: { nombre: result[0].economyCurrency, icono: result[0].economyCurrencyIcon } }
+
+      // Migrar módulo de sugerencias
+      const suggestions = { habilitado: result[0].suggestionsEnabled, canales: { sugerenciasNoRevisadas: result[0].suggestionsChannel, sugerenciasRevisadas: result[0].suggestionsRevChannel } }
+
+      // Migrar módulo de respuestas automáticas
+      const autoresponder = { habilitado: result[0].autoresponderEnabled }
+
+      // Migar módulo de comandos personalizados
+      const customcommands = { habilitado: result[0].customcommandsEnabled }
+
+      module.exports.updateGuildConfigNext(client, guild, { column: 'general', newconfig: general })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'bienvenidas', newconfig: welcomer })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'despedidas', newconfig: farewell })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'niveles', newconfig: levels })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'economia', newconfig: economy })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'sugerencias', newconfig: suggestions })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'respuestasPersonalizadas', newconfig: autoresponder })
+      module.exports.updateGuildConfigNext(client, guild, { column: 'comandosPersonalizados', newconfig: customcommands })
+    } else {
+      if (callback) callback()
     }
   })
 }
