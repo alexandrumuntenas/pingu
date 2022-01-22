@@ -117,7 +117,6 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
 module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
   module.exports.getGuildConfigNext(client, guild, (guildConfig) => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
-      console.log(botmodule.column)
       try {
         guildConfig[botmodule.column] = JSON.parse(guildConfig[botmodule.column])
       } catch (err) {

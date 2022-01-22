@@ -1,4 +1,4 @@
-const { getGuildConfig } = require('../modules/guildDataManager.js')
+const { getGuildConfigNext } = require('../modules/guildDataManager.js')
 
 module.exports = {
   name: 'guildCreate',
@@ -7,7 +7,7 @@ module.exports = {
       op: 'guildCreate',
       name: 'Guild Create'
     })
-    getGuildConfig(client, guild, () => { })
+    getGuildConfigNext(client, guild, () => { })
     gC.finish()
   }
 }

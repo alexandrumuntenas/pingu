@@ -1,6 +1,6 @@
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
-const { getGuildConfig } = require('../modules/guildDataManager.js')
+const { getGuildConfigNext } = require('../modules/guildDataManager.js')
 const generateTheCommandListOfTheGuild = require('../functions/generateTheCommandListOfTheGuild')
 
 const rest = new REST({ version: '9' })
@@ -26,7 +26,7 @@ function updateGuildCommands (client) {
   client.guilds.fetch().then((guilds) => {
     guilds.forEach(guild => {
       client.console.info(`Deploying commands to ${guild.id}`)
-      getGuildConfig(client, guild, (guildConfig) => {
+      getGuildConfigNext(client, guild, (guildConfig) => {
         generateTheCommandListOfTheGuild(client, guildConfig, (commandListOfTheGuild) => {
           rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commandListOfTheGuild })
             .then(() => {
