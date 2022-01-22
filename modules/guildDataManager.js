@@ -49,10 +49,10 @@ module.exports.getGuildConfigNext = (client, guild, callback) => {
     if (err) client.logError(err)
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
       Object.keys(result[0]).forEach((module) => {
-        if (Array.isArray(result[0][module])) {
+        try {
           result[0][module] = JSON.parse(result[0][module])
-        } else {
-          result[0][module] = result[0][module]
+        } catch (err) {
+          if (err) return err
         }
       })
       callback(result[0])
@@ -111,31 +111,36 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
 module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
   module.exports.getGuildConfigNext(client, guild, (guildConfig) => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
-      guildConfig[botmodule.column] = JSON.parse(guildConfig[botmodule.column])
-      if (guildConfig[botmodule.column]) {
-        Object.keys(guildConfig[botmodule.column]).forEach((moduleProperty) => {
-          if (botmodule.newconfig[moduleProperty]) {
-            guildConfig[botmodule.column][moduleProperty] = botmodule.newconfig[moduleProperty]
-          }
-        })
-        Object.keys(guildConfig).forEach(moduleConfig => {
-          if (guildConfig[botmodule.column][moduleConfig] === null) {
-            delete guildConfig[botmodule.column][moduleConfig]
-          }
-        })
-        client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], (err) => {
-          if (err) client.logError(err)
-          if (err) return callback(err)
-          if (callback) return callback()
-          else return null
-        })
-      } else {
-        client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
-          if (err) client.logError(err)
-          if (err) return callback(err)
-          if (callback) return callback()
-          else return null
-        })
+      try {
+        guildConfig[botmodule.column] = JSON.parse(guildConfig[botmodule.column])
+      } catch (err) {
+        if (err) {
+          client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
+            if (err) client.logError(err)
+            if (err) return callback(err)
+            if (callback) return callback()
+            else return null
+          })
+        }
+      } finally {
+        if (guildConfig[botmodule.column]) {
+          Object.keys(guildConfig[botmodule.column]).forEach((moduleProperty) => {
+            if (botmodule.newconfig[moduleProperty]) {
+              guildConfig[botmodule.column][moduleProperty] = botmodule.newconfig[moduleProperty]
+            }
+          })
+          Object.keys(guildConfig).forEach(moduleConfig => {
+            if (guildConfig[botmodule.column][moduleConfig] === null) {
+              delete guildConfig[botmodule.column][moduleConfig]
+            }
+          })
+          client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], (err) => {
+            if (err) client.logError(err)
+            if (err) return callback(err)
+            if (callback) return callback()
+            else return null
+          })
+        }
       }
     } else {
       throw new Error('The specified module does not exist.')
@@ -147,11 +152,6 @@ module.exports.migrateGuildData = (client, guild, callback) => {
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) client.logError(err)
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      const gFD = client.console.sentry.startTransaction({
-        op: 'migrateGuildData',
-        name: 'Migrate Guild Data'
-      })
-
       if (!result[0].clientVersion === 'pingu@1.0.0') return
 
       // Migrar configuraciones generales
