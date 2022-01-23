@@ -1,3 +1,5 @@
+// TODO: REPLACE WITH https://dbots.js.org/#/docs/main/latest/general/services
+
 const topgg = require('topgg-autoposter')
 const Statcord = require('statcord.js')
 
