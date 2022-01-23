@@ -117,39 +117,29 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
 module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
   module.exports.getGuildConfigNext(client, guild, (guildConfig) => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
-      try {
-        guildConfig[botmodule.column] = JSON.parse(guildConfig[botmodule.column])
-      } catch (err) {
-        if (err) {
-          if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-            client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
-              if (err) client.logError(err)
-              if (err) return callback(err)
-              if (callback) return callback()
-              else return null
-            })
-          } else {
-            client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], (err) => {
-              if (err) client.logError(err)
-              if (err) return callback(err)
-              if (callback) return callback()
-              else return null
-            })
-          }
-        }
-      } finally {
-        if (guildConfig[botmodule.column]) {
-          Object.keys(guildConfig[botmodule.column]).forEach((moduleProperty) => {
-            if (botmodule.newconfig[moduleProperty]) {
-              guildConfig[botmodule.column][moduleProperty] = botmodule.newconfig[moduleProperty]
-            }
-          })
-          Object.keys(guildConfig).forEach(moduleConfig => {
-            if (guildConfig[botmodule.column][moduleConfig] === null) {
-              delete guildConfig[botmodule.column][moduleConfig]
-            }
-          })
+      if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
+        procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, (newModuleConfig) => {
+          guildConfig[botmodule.column] = newModuleConfig
           client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], (err) => {
+            if (err) client.logError(err)
+            if (err) return callback(err)
+            if (callback) return callback()
+            else return null
+          })
+        })
+      } else {
+        console.log('in error')
+        if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
+          console.log('here')
+          client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
+            if (err) client.logError(err)
+            if (err) return callback(err)
+            if (callback) return callback()
+            else return null
+          })
+        } else {
+          console.log('here2')
+          client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], (err) => {
             if (err) client.logError(err)
             if (err) return callback(err)
             if (callback) return callback()
@@ -204,6 +194,25 @@ module.exports.migrateGuildData = (client, guild, callback) => {
       if (callback) callback()
     } else {
       if (callback) callback()
+    }
+  })
+}
+
+function procesarObjetosdeConfiguracion (config, newconfig, callback) {
+  let count = 0
+  const newConfigProperties = Object.keys(newconfig)
+  newConfigProperties.forEach((property) => {
+    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
+      procesarObjetosdeConfiguracion(config[property], newconfig[property], (newConfig) => {
+        config[property] = newConfig
+        count++
+      })
+    } else {
+      config[property] = newconfig[property]
+      count++
+    }
+    if (count === newConfigProperties.length) {
+      callback(config)
     }
   })
 }
