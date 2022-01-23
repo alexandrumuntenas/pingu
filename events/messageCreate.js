@@ -15,6 +15,7 @@ module.exports = {
       message.author === client.user
     ) return
     getGuildConfigNext(client, message.guild, async (guildData) => {
+      client.console.fatal(JSON.stringify(guildData))
       message.database = guildData
       if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
         message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)

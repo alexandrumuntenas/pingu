@@ -24,6 +24,7 @@ module.exports.isCommand = async (client, interaction) => {
   ) return
   getGuildConfigNext(client, interaction.guild, async (guildData) => {
     interaction.database = guildData
+    client.console.fatal(JSON.stringify(guildData))
     if (client.commands.has(commandName)) {
       const commandToExecute = client.commands.get(commandName)
       if (commandToExecute.permissions && !interaction.member.permissions.has(commandToExecute.permissions)) {
