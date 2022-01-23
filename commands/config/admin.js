@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Success, Error, Help } = require('../../modules/constructor/messageBuilder')
 const i18n = require('../../i18n/i18n')
 const { MessageEmbed } = require('discord.js')
-const { updateGuildConfig } = require('../../modules/guildDataManager.js')
+const { updateGuildConfig, updateGuildConfigNext } = require('../../modules/guildDataManager.js')
 
 const columnRelationShip = {
   welcomer: 'welcomeEnabled',
@@ -88,14 +88,14 @@ module.exports = {
       case 'viewcnfcommands': {
         if (!Object.prototype.hasOwnProperty.call(message.args, 1)) return message.reply({ embeds: [helpTray] })
         if (message.args[1] === 'true') {
-          updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 1 }, (err) => {
+          updateGuildConfigNext(client, message.guild, { column: 'general', newconfig: { interacciones: { desplegarComandosDeConfiguracion: 1 } } }, (err) => {
             if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
             message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
           })
         } else {
-          updateGuildConfig(client, message.guild, { column: 'guildViewCnfCmdsEnabled', value: 0 }, (err) => {
-            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:ERROR'))] })
-            message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:ENABLE:SUCCESS'))] })
+          updateGuildConfigNext(client, message.guild, { column: 'general', newconfig: { interacciones: { desplegarComandosDeConfiguracion: 0 } } }, (err) => {
+            if (err) return message.reply({ embeds: [Error(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:DISABLE:ERROR'))] })
+            message.reply({ embeds: [Success(i18n(locale, 'ADMIN::VIEWCNFCOMMANDS:DISABLE:SUCCESS'))] })
           })
         }
         break
