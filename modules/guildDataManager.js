@@ -128,9 +128,7 @@ module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
           })
         })
       } else {
-        console.log('in error')
         if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-          console.log('here')
           client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], (err) => {
             if (err) client.logError(err)
             if (err) return callback(err)
@@ -138,7 +136,6 @@ module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
             else return null
           })
         } else {
-          console.log('here2')
           client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], (err) => {
             if (err) client.logError(err)
             if (err) return callback(err)
