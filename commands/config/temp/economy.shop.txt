@@ -37,7 +37,7 @@ module.exports = {
         .addStringOption(option => option.setName('image').setDescription('Product Image'))))
     .addSubcommand(subcommand => subcommand.setName('delete').setDescription('Delete a product').addStringOption(option => option.setName('name').setDescription('Product Name').setRequired(true))),
   executeInteraction (client, locale, interaction) {
-    switch (interaction.options.getSubcommand()) {
+    /*switch (interaction.options.getSubcommand()) {
       case 'collectionable': {
         getShopProduct(client, interaction.guild, interaction.options.getString('name'), (fromDB) => {
           if (!fromDB) {
@@ -117,6 +117,6 @@ module.exports = {
         })
         break
       }
-    }
+    }*/
   }
 }
