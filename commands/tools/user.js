@@ -81,12 +81,10 @@ module.exports = {
     }
   },
   executeLegacy(client, locale, message) {
-    const embed = new MessageEmbed()
-      .setTimestamp()
-      .setFooter({
-        text: "Powered by Pingu",
-        iconURL: client.user.displayAvatarURL(),
-      });
+    const embed = new MessageEmbed().setTimestamp().setFooter({
+      text: "Powered by Pingu",
+      iconURL: client.user.displayAvatarURL(),
+    });
     if (message.mentions.users.first()) {
       message.guild.members
         .fetch(message.mentions.users.first())
