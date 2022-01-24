@@ -5,10 +5,10 @@
         "es2021": true
     },
     "extends": [
-        "standard"
+        "airbnb-base"
     ],
     "parserOptions": {
-        "ecmaVersion": 12
+        "ecmaVersion": "latest"
     },
     "rules": {
     }
