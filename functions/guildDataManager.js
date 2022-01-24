@@ -1,15 +1,16 @@
 /** @module GuildDataManager */
 
+const client = require('../../client')
+
 /**
  * Get the guild's configuration from the database.
  * @deprecated since 2202. Use next() instead.
- * @param {Client} client - The Bot Client
  * @param {Guild} guild - The guild
  * @param {Function} callback - The callback function
  * @returns Object - The guild configuration
  */
 
-module.exports.getGuildConfig = (client, guild, callback) => {
+module.exports.getGuildConfig = (guild, callback) => {
   const gFD = client.console.sentry.startTransaction({
     op: 'getGuildConfig',
     name: 'Get Guild Configuration'
@@ -26,7 +27,7 @@ module.exports.getGuildConfig = (client, guild, callback) => {
           client.console.error(err)
         }
         gFD.finish()
-        module.exports(client, guild, callback)
+        module.exports(guild, callback)
       })
     }
   })
@@ -34,13 +35,12 @@ module.exports.getGuildConfig = (client, guild, callback) => {
 
 /**
  * Get the guild's configuration from the database.
- * @param {Client} client - The Bot Client
  * @param {Guild} guild - The guild
  * @param {Function} callback - The callback function
  * @returns Object - The guild configuration
  */
 
-module.exports.getGuildConfigNext = (client, guild, callback) => {
+module.exports.getGuildConfigNext = (guild, callback) => {
   const gFD = client.console.sentry.startTransaction({
     op: 'getGuildConfig',
     name: 'Get Guild Configuration'
@@ -49,8 +49,8 @@ module.exports.getGuildConfigNext = (client, guild, callback) => {
     if (err) client.logError(err)
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
       if (result[0].clientVersion === 'pingu@1.0.0') {
-        module.exports.migrateGuildData(client, guild, () => {
-          module.exports.getGuildConfigNext(client, guild, callback)
+        module.exports.migrateGuildData(guild, () => {
+          module.exports.getGuildConfigNext(guild, callback)
         })
       } else {
         Object.keys(result[0]).forEach((module) => {
@@ -70,7 +70,7 @@ module.exports.getGuildConfigNext = (client, guild, callback) => {
           client.console.error(err)
         }
         gFD.finish()
-        module.exports(client, guild, callback)
+        module.exports(guild, callback)
       })
     }
   })
@@ -79,7 +79,6 @@ module.exports.getGuildConfigNext = (client, guild, callback) => {
 /**
  * @deprecated Use next() instead
  * Update a guild's configuration.
- * @param {Client} client - The Bot Client
  * @param {Guild} guild - The Guild
  * @param {Object} configuration - The configuration to update
  * @param {String} configuration.column - The configuration column to update
@@ -87,7 +86,7 @@ module.exports.getGuildConfigNext = (client, guild, callback) => {
  * @param {Function} callback - The callback function
  */
 
-module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
+module.exports.updateGuildConfig = (guild, configuration, callback) => {
   const uGC = client.console.sentry.startTransaction({
     op: 'updateGuildConfig',
     name: 'Update Guild Config'
@@ -106,7 +105,7 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
 
 /**
  * Update a guild's configuration.
- * @param {Client} client - The Bot Client
+
  * @param {Guild} guild - The Guild
  * @param {Object} botmodule - The module to update
  * @param {String} botmodule.column - The module configuration column to update
@@ -114,8 +113,8 @@ module.exports.updateGuildConfig = (client, guild, configuration, callback) => {
  * @param {Function} callback - The callback function
  */
 
-module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
-  module.exports.getGuildConfigNext(client, guild, (guildConfig) => {
+module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
+  module.exports.getGuildConfigNext(guild, (guildConfig) => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
       if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
         procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, (newModuleConfig) => {
@@ -150,7 +149,26 @@ module.exports.updateGuildConfigNext = (client, guild, botmodule, callback) => {
   })
 }
 
-module.exports.migrateGuildData = (client, guild, callback) => {
+function procesarObjetosdeConfiguracion (config, newconfig, callback) {
+  let count = 0
+  const newConfigProperties = Object.keys(newconfig)
+  newConfigProperties.forEach((property) => {
+    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
+      procesarObjetosdeConfiguracion(config[property], newconfig[property], (newConfig) => {
+        config[property] = newConfig
+        count++
+      })
+    } else {
+      config[property] = newconfig[property]
+      count++
+    }
+    if (count === newConfigProperties.length) {
+      callback(config)
+    }
+  })
+}
+
+module.exports.migrateGuildData = (guild, callback) => {
   client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) client.logError(err)
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
@@ -179,15 +197,15 @@ module.exports.migrateGuildData = (client, guild, callback) => {
       // Migar módulo de comandos personalizados
       const customcommands = { habilitado: result[0].customcommandsEnabled }
 
-      module.exports.updateGuildConfig(client, guild, { column: 'clientVersion', value: 'pingu@2.0.0' })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'general', newconfig: general })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'bienvenidas', newconfig: welcomer })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'despedidas', newconfig: farewell })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'niveles', newconfig: levels })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'economia', newconfig: economy })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'sugerencias', newconfig: suggestions })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'respuestasPersonalizadas', newconfig: autoresponder })
-      module.exports.updateGuildConfigNext(client, guild, { column: 'comandosPersonalizados', newconfig: customcommands })
+      module.exports.updateGuildConfig(guild, { column: 'clientVersion', value: 'pingu@2.0.0' })
+      module.exports.updateGuildConfigNext(guild, { column: 'general', newconfig: general })
+      module.exports.updateGuildConfigNext(guild, { column: 'bienvenidas', newconfig: welcomer })
+      module.exports.updateGuildConfigNext(guild, { column: 'despedidas', newconfig: farewell })
+      module.exports.updateGuildConfigNext(guild, { column: 'niveles', newconfig: levels })
+      module.exports.updateGuildConfigNext(guild, { column: 'economia', newconfig: economy })
+      module.exports.updateGuildConfigNext(guild, { column: 'sugerencias', newconfig: suggestions })
+      module.exports.updateGuildConfigNext(guild, { column: 'respuestasPersonalizadas', newconfig: autoresponder })
+      module.exports.updateGuildConfigNext(guild, { column: 'comandosPersonalizados', newconfig: customcommands })
       if (callback) callback()
     } else {
       if (callback) callback()
@@ -195,21 +213,30 @@ module.exports.migrateGuildData = (client, guild, callback) => {
   })
 }
 
-function procesarObjetosdeConfiguracion (config, newconfig, callback) {
-  let count = 0
-  const newConfigProperties = Object.keys(newconfig)
-  newConfigProperties.forEach((property) => {
-    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
-      procesarObjetosdeConfiguracion(config[property], newconfig[property], (newConfig) => {
-        config[property] = newConfig
-        count++
-      })
-    } else {
-      config[property] = newconfig[property]
-      count++
+/**
+ * Create the command list of the guild
+ * @param {Guild} guild - The Guild
+ * @param {Function} callback - The callback function
+ * @returns Object - The command list
+ */
+
+module.exports.createGuildInteractionList = (guild, callback) => {
+  module.exports.getGuildConfigNext(guild, (guildConfig) => {
+    let welcome, joinroles, farewell, levels, economy, suggestions, bodyToSend
+    if (guildConfig.welcomeEnabled !== 0) welcome = client.commands.filter(command => command.module === 'welcome') || []
+    if (guildConfig.farewellEnabled !== 0) farewell = client.commands.filter(command => command.module === 'farewell') || []
+    if (guildConfig.joinRolesEnabled !== 0) joinroles = client.commands.filter(command => command.module === 'joinroles') || []
+    if (guildConfig.levelsEnabled !== 0) levels = client.commands.filter(command => command.module === 'levels') || []
+    if (guildConfig.suggestionsEnabled !== 0) suggestions = client.commands.filter(command => command.module === 'suggestions') || []
+    if (guildConfig.economyEnabled !== 0) economy = client.commands.filter(command => command.module === 'economy') || []
+    const nomodule = client.commands.filter(command => !command.module)
+
+    bodyToSend = [].concat(welcome || [], joinroles || [], farewell || [], levels || [], economy || [], suggestions || [], nomodule || [])
+
+    if (guildConfig.guildViewCnfCmdsEnabled === 0) {
+      bodyToSend = bodyToSend.filter(command => command.isConfigCommand === false)
     }
-    if (count === newConfigProperties.length) {
-      callback(config)
-    }
+
+    if (callback) callback(bodyToSend.map(command => command.interactionData.toJSON()))
   })
 }
