@@ -4,6 +4,7 @@ icon: comment-discussion
 ---
 
 # Leveling
+
 > The more you write, the more you earn.
 
 ## The module inside
@@ -29,14 +30,16 @@ Disable this module using `/admin modules disable module: levels`.
 !!!
 
 <!-- markdown-link-check-disable -->
-| Command | Function | Example |
-| --- | --- | --- |
-| levels | Base command to configure the levels module. | /levels |
-| levels viewconfig | Command to query the current configuration of the module.| /levels viewconfig |
-| levels setrankupchannel | Command to modify the channel of the level advance messages. | /levels setrankupchannel channel: \<Disabled/Same Channel Were Message is Sent/This Channel> |
-| levels setrankupmessage message: | Command to modify the level advance message.| /levels setrankupmessage message: {member} got a new level!  |
-| levels setdifficulty difficulty: | Command to modify the difficulty of the module. | /levels difficulty difficulty: 2 |
-| levels configurecard setbackgroundurl: \<URL> setoverlaycolor: \<Hex Color> setoverlayopacity: \<Opacity> | Command to customize the rank card | /levels configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: https://myawesomestocksite.com/photo.png |
+
+| Command                                                                                                   | Function                                                     | Example                                                                                                                        |
+| --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| levels                                                                                                    | Base command to configure the levels module.                 | /levels                                                                                                                        |
+| levels viewconfig                                                                                         | Command to query the current configuration of the module.    | /levels viewconfig                                                                                                             |
+| levels setrankupchannel                                                                                   | Command to modify the channel of the level advance messages. | /levels setrankupchannel channel: \<Disabled/Same Channel Were Message is Sent/This Channel>                                   |
+| levels setrankupmessage message:                                                                          | Command to modify the level advance message.                 | /levels setrankupmessage message: {member} got a new level!                                                                    |
+| levels setdifficulty difficulty:                                                                          | Command to modify the difficulty of the module.              | /levels difficulty difficulty: 2                                                                                               |
+| levels configurecard setbackgroundurl: \<URL> setoverlaycolor: \<Hex Color> setoverlayopacity: \<Opacity> | Command to customize the rank card                           | /levels configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: https://myawesomestocksite.com/photo.png |
+
 <!-- markdown-link-check-enable -->
 
 !!!

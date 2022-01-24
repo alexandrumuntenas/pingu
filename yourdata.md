@@ -20,9 +20,10 @@ Guild ID, User ID, Role ID, Message ID, Message Content, and blah blah blah blah
 Not for another, but 99% of the neologisms (specialized terms) that are used when writing a privacy policy, I do not understand them. And besides, everyone is supposed to understand what happens to their data, right?
 
 ## Chapter 1: The Guild ID
-Let's start with the first chapter of our little story. We talked about the Guild ID, an identifier that identifies (it is the function of an identifier) the Discord servers. 
 
-When Pingu is added to a server, in our database (Maria DB), a record is added in which the bot modules are automatically configured. 
+Let's start with the first chapter of our little story. We talked about the Guild ID, an identifier that identifies (it is the function of an identifier) the Discord servers.
+
+When Pingu is added to a server, in our database (Maria DB), a record is added in which the bot modules are automatically configured.
 The Guild ID is not only limited to the use of configuration (language, prefixes, etc.). Through the Guild ID, we can identify all the data that the modules have registered in our database about a server.
 
 In the level system, when a user chats and the module is active, a record is added or updated in the database, in which a level or experience is added. In the "datasheet", Pingu first picks all data from a server and then, in the case of leveling, takes the record of the specific user.
@@ -51,7 +52,7 @@ In future modules, such as Reaction Roles, we will see that the Role ID will be 
 
 Well, let's get to what may cause the most controversy. Why on earth does Pingu store the content of my messages?
 
-We don't really store it, but we do use it for custom replies. The content of the message is looked up in the "datasheet" of the custom replies to answer your message, in case there is something configured. We are not interested in storing the content of the message. 
+We don't really store it, but we do use it for custom replies. The content of the message is looked up in the "datasheet" of the custom replies to answer your message, in case there is something configured. We are not interested in storing the content of the message.
 
 First of all, we're not interested in storing your conversations about "why are dogs better than cats?" (by the way, I am of the team that favors cats...) and any other subject; and the second, because it would be storing unnecessary information in the database, which would occupy unnecessary space, which can be useful for other data.
 
@@ -63,7 +64,7 @@ This is the only time the message ID is stored.
 
 ## Chapter 6: The generated files
 
-The generated files are part of the bot activity. A user enters a server and a welcome card has to be generated, heard cooking. The bot receives the action and starts working. When generating the files, there is no identifier (Guild, User, Role...) assigned to the file name. The file generator function itself generates a unique identifier of X digits that is assigned to the file and, after sending, it is deleted. 
+The generated files are part of the bot activity. A user enters a server and a welcome card has to be generated, heard cooking. The bot receives the action and starts working. When generating the files, there is no identifier (Guild, User, Role...) assigned to the file name. The file generator function itself generates a unique identifier of X digits that is assigned to the file and, after sending, it is deleted.
 
 ## The end
 

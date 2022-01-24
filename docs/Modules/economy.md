@@ -4,6 +4,7 @@ icon: credit-card
 ---
 
 # Economy
+
 > Do you want to create a roleplay store? A super-epic chachipirulis item store for your server? Create your own economic system on your Discord server.
 
 !!!
@@ -24,29 +25,29 @@ The commands listed below can only be used by the server owner, or by persons wi
 This module can be only used using Slash Commands.
 !!!
 
-| Command | Function | Example |
-| --- | --- | -- |
+| Command                        | Function                                           | Example                                   |
+| ------------------------------ | -------------------------------------------------- | ----------------------------------------- |
 | /economy setcoinname coinname: | Command to modify the name of the server currency. | /economy setcoinname coinname: PinguCoins |
-| /economy setcoinicon coinicon: | Command to modify the icon of your currency.| /economy setcoinicon coinicon: :myemoji: |
+| /economy setcoinicon coinicon: | Command to modify the icon of your currency.       | /economy setcoinicon coinicon: :myemoji:  |
 
 ## Store configuration
 
-| Command | Function | Example |
-| --- | --- | --- |
-| /products create colletionable name:\<name of the product> price:\<price of the product> buyonlyone:\<true/false> (···)| Create a collectionable product. | /products create collectionable name:Star price:400 buyonlyone:true |
-| /products create role name:\<name of the product> price:\<price of the product> buyonlyone:\<true/false> role:\<role> | Create a products that gives a role. | /products create role name: ROLE32 price: 1 buyonlyone: true role: @newrole |
-| /products create message | Create a product that sends a message to a channel | /products create message name:Get 1000$ in MC Server price:1000 buyonlyone:False message:Example destination:#📬・announcements |
-| /products delete name:\<name of the product> | Delete a product. | /products delete name: EX4 |
+| Command                                                                                                                 | Function                                           | Example                                                                                                                         |
+| ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| /products create colletionable name:\<name of the product> price:\<price of the product> buyonlyone:\<true/false> (···) | Create a collectionable product.                   | /products create collectionable name:Star price:400 buyonlyone:true                                                             |
+| /products create role name:\<name of the product> price:\<price of the product> buyonlyone:\<true/false> role:\<role>   | Create a products that gives a role.               | /products create role name: ROLE32 price: 1 buyonlyone: true role: @newrole                                                     |
+| /products create message                                                                                                | Create a product that sends a message to a channel | /products create message name:Get 1000$ in MC Server price:1000 buyonlyone:False message:Example destination:#📬・announcements |
+| /products delete name:\<name of the product>                                                                            | Delete a product.                                  | /products delete name: EX4                                                                                                      |
 
 ## User commands
 
-| Command | Function | Example |
-| --- | --- | --- |
-| /buy name:\<name of the product> properties:\<properties of the command> | Command to buy a product. | /buy name: Get 1000$ in MC Server |
-| /balance | Command to see your balance. | /balance |
-| /inventory | Command to see your inventory. | /inventory |
-| /work | Command to work. | /work |
-| /daily | Command to get your daily reward. | /daily |
+| Command                                                                  | Function                          | Example                           |
+| ------------------------------------------------------------------------ | --------------------------------- | --------------------------------- |
+| /buy name:\<name of the product> properties:\<properties of the command> | Command to buy a product.         | /buy name: Get 1000$ in MC Server |
+| /balance                                                                 | Command to see your balance.      | /balance                          |
+| /inventory                                                               | Command to see your inventory.    | /inventory                        |
+| /work                                                                    | Command to work.                  | /work                             |
+| /daily                                                                   | Command to get your daily reward. | /daily                            |
 
 !!!
 The user commands do have their own prefix version!
