@@ -12,6 +12,7 @@ const { Client, Intents } = require('discord.js')
 const Sentry = require('@sentry/node')
 const mysql = require('mysql2')
 const fs = require('fs')
+const thirdparty = require('./functions/initializeThirdParty')
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING], partials: ['REACTION', 'MESSAGE', 'USER'] })
 
@@ -34,7 +35,6 @@ client.console.info('Cargando Servicios Third-Party')
 client.console.success('Servicios Third-Party Cargados')
 
 if (process.env.ENTORNO === 'public') {
-  const thirdparty = require('./modules/thirdparty')
   client.console.warn('Iniciando sesión como el bot público.')
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
@@ -60,13 +60,16 @@ client.logError = (err) => {
   client.console.error(err)
 }
 
-const loadClientCommands = require('./functions/loadClientCommands')
+const loadClientCommands = require('./functions/loadClientCommandsAndInteractions')
+
 client.commands = loadClientCommands(client)
 
-client.cooldownManager = require('./modules/cooldownManager')
+client.cooldownManager = require('./functions/cooldownManager')
 
-for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
+for (const file of fs.readdirSync('./events').filter((file) => file.endsWith('.js'))) {
   const event = require(`./events/${file}`)
   client.console.success(`Evento ${file} cargado`)
   client.on(event.name, (...args) => event.execute(client, ...args))
 }
+
+module.exports = client
