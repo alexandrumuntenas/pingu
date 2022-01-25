@@ -1,4 +1,4 @@
-const { getGuildConfigNext } = require('../modules/guildDataManager.js')
+const farewell = require('../modules/farewell.js')
 
 module.exports = {
   name: 'guildMemberRemove',
@@ -8,16 +8,10 @@ module.exports = {
       name: 'Guild Member Remove'
     })
     if (member.user.id !== client.user.id) {
-      getGuildConfigNext(client, member.guild, (data) => {
-        if (data.farewellEnabled !== 0) {
-          const mensaje = client.channels.cache.find(channel => channel.id === data.farewellChannel)
-          if (mensaje) {
-            mensaje.send(data.farewellMessage.replace('{member}', `${member.user.tag}`).replace('{guild}', `${member.guild.name}`))
-          }
-        }
-      })
-      client.pool.query('DELETE FROM `memberData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id])
+      farewell.doGuildMemberRemove(member)
+      client.pool.query('DELETE FROM `memberData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id]) // Mover esto a memberManager
     }
+
     gMR.finish()
   }
 }

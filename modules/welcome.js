@@ -23,7 +23,6 @@ module.exports.giveMemberRoles = (member) => {
 } // All this function was made by GH Copilot
 
 const { MessageAttachment } = require('discord.js')
-const client = require('../client')
 
 /**
  * Send the welcome message to the channel configured in the guild
@@ -32,7 +31,7 @@ const client = require('../client')
 
 module.exports.sendWelcomeMessage = (member) => {
   getGuildConfigNext(member.guild, (guildConfig) => {
-    const channel = client.channels.cache.get(guildConfig.welcome.channel)
+    const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
     if (!channel) {
       return
     }
