@@ -31,7 +31,12 @@ const { MessageAttachment } = require('discord.js')
 
 module.exports.sendWelcomeMessage = (member) => {
   getGuildConfigNext(member.guild, (guildConfig) => {
+    if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) {
+      return
+    }
+
     const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
+
     if (!channel) {
       return
     }
