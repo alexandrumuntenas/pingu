@@ -1,37 +1,86 @@
-const { MessageEmbed } = require('discord.js')
+/**
+ * Get a reply of the given trigger.
+ * @param {Guild} guild - The guild to get the reply from.
+ * @param {String} trigger - The trigger to get the reply for.
+ * @param {Function} callback - The callback to call with the result.
+ * @returns {String} Reply
+ */
 
-// TODO: Crear las funciones para crear y eliminar las respuestas personalizadas. Básicamente migrar los query del comando autoresponder.
+const client = require('../client');
 
-module.exports = async (client, message) => {
-  const mCgAR = client.console.sentry.startTransaction({
-    op: 'messageCreate/guildAutoResponder',
-    name: 'Auto Responder'
-  })
-  client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
-    if (err) {
-      client.logError(err)
-      client.console.error(err)
-    }
-    if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      try {
-        client.pool.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `autoresponderTrigger` = ?', [message.guild.id, message.content.toLowerCase()], (err, result) => {
-          if (err) client.logError(err)
-          if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-            const messageSent = new MessageEmbed()
-              .setFooter({ text: 'Powered by Pingu', iconURL: client.user.displayAvatarURL() })
-              .setDescription(result[0].autoresponderResponse)
-              .setColor('BLURPLE')
-            message.channel.send({ embeds: [messageSent] }).catch((err) => { //! Esto se debe eliminar muy pronto
-              client.console.error(err)
-              client.logError(err)
-            })
-          }
-        })
-      } catch (err) {
-        client.logError(err)
-      } finally {
-        mCgAR.finish()
-      }
-    }
-  })
-}
+module.exports.getReply = (guild, trigger, callback) => {
+	if (!callback) {
+		throw new Error('Callback is required');
+	}
+
+	client.pool.query('SELECT 1 FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ?', [trigger, guild.id], (err, result) => {
+		if (err) {
+			client.logError(err);
+		}
+
+		if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
+			callback(result[0]);
+		}
+	});
+};
+
+/**
+ * Create a new auto reply.
+ * @param {Guild} guild - The guild to create the reply in.
+ * @param {Object} autoreply - The autoreply to create.
+ * @param {Strong} autoreply.trigger - The string that will trigger the reply.
+ * @param {String} autoreply.reply - The reply to the trigger.
+ * @param {Object} autoreply.properties - The autoreply properties
+ * @param {Boolean} autoreply.properties.sendEmbed - Whether or not to send the reply as an embed.
+ * @param {?Object} autoreply.properties.sendEmbed.title - The title field of the embed.
+ * @param {?Object} autoreply.properties.sendEmbed.description - The description field of the embed.
+ * @param {?Object} autoreply.properties.sendEmbed.thumbnail - The thumbnail field of the embed.
+ * @param {?Object} autoreply.properties.sendEmbed.image - The image field of the embed.
+ * @param {?Object} autoreply.properties.sendEmbed.url - The url field of the embed.
+ * @param {Functions} callback - The callback to call.
+ * @returns {String} Trigger ID
+ */
+
+const makeId = require('../functions/makeId');
+
+module.exports.createReply = (guild, autoreply, callback) => {
+	if (!callback) {
+		throw new Error('Callback is required');
+	}
+
+	if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) {
+		throw new Error('Trigger is required');
+	}
+
+	if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) {
+		throw new Error('Reply is required');
+	}
+
+	autoreply.properties = autoreply.properties || {};
+	autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false;
+	autoreply.id = makeId(5);
+
+	client.pool.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
+		if (err) {
+			client.logError(err);
+			throw err;
+		}
+
+		callback(autoreply.id);
+	});
+};
+
+/**
+ * Delete an auto reply.
+ * @param {Guild} guild
+ * @param {String} triggerID
+ */
+
+module.exports.deleteReply = (guild, triggerID) => {
+	client.pool.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
+		if (err) {
+			client.logError(err);
+			throw err;
+		}
+	});
+};
