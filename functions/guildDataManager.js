@@ -1,7 +1,8 @@
 /** @module GuildDataManager */
 
-const Client = require('../Client.js');
-const Consolex = require('./consolex.js');
+const Client = require('../client');
+const Database = require('./databaseConnection');
+const Consolex = require('./consolex');
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
@@ -18,7 +19,7 @@ module.exports.getGuildConfig = (guild, callback) => {
 		op: 'getGuildConfig',
 		name: 'Get Guild Configuration',
 	});
-	Client.Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+	Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -27,7 +28,7 @@ module.exports.getGuildConfig = (guild, callback) => {
 			callback(result[0]);
 		} else {
 			const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0;
-			Client.Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
+			Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
 				if (err) {
 					Consolex.handleError(err);
 					Consolex.error(err);
@@ -52,7 +53,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 		op: 'getGuildConfig',
 		name: 'Get Guild Configuration',
 	});
-	Client.Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+	Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -76,7 +77,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 			}
 		} else {
 			const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0;
-			Client.Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
+			Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
 				if (err) {
 					Consolex.handleError(err);
 					Consolex.error(err);
@@ -105,7 +106,7 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
 		name: 'Update Guild Config',
 	});
 	if (typeof configuration === 'object' && !Array.isArray(configuration) && configuration !== null) {
-		Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [configuration.column, configuration.value, guild.id], err => {
+		Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [configuration.column, configuration.value, guild.id], err => {
 			uGC.finish();
 			if (err) {
 				Consolex.handleError(err);
@@ -140,7 +141,7 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 			if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
 				procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
 					guildConfig[botmodule.column] = newModuleConfig;
-					Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
+					Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
 						if (err) {
 							Consolex.handleError(err);
 						}
@@ -157,7 +158,7 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 					});
 				});
 			} else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-				Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
+				Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
 					if (err) {
 						Consolex.handleError(err);
 						return callback(err);
@@ -170,7 +171,7 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 					return null;
 				});
 			} else {
-				Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
+				Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
 					if (err) {
 						Consolex.handleError(err);
 					}
@@ -220,7 +221,7 @@ function procesarObjetosdeConfiguracion(config, newconfig, callback) {
 }
 
 module.exports.migrateGuildData = (guild, callback) => {
-	Client.Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+	Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}

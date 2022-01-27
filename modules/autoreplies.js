@@ -6,14 +6,15 @@
  * @returns {String} Reply
  */
 
-const Client = require('../Client');
+const Consolex = require('../functions/consolex');
+const Database = require('../functions/databaseConnection');
 
 module.exports.getReply = (guild, trigger, callback) => {
 	if (!callback) {
 		throw new Error('Callback is required');
 	}
 
-	Client.Database.query('SELECT 1 FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ?', [trigger, guild.id], (err, result) => {
+	Database.query('SELECT 1 FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ?', [trigger, guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -60,7 +61,7 @@ module.exports.createReply = (guild, autoreply, callback) => {
 	autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false;
 	autoreply.id = makeId(5);
 
-	Client.Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
+	Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
 		if (err) {
 			Consolex.handleError(err);
 			throw err;
@@ -77,7 +78,7 @@ module.exports.createReply = (guild, autoreply, callback) => {
  */
 
 module.exports.deleteReply = (guild, triggerID) => {
-	Client.Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
+	Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
 		if (err) {
 			Consolex.handleError(err);
 			throw err;

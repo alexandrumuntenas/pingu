@@ -1,5 +1,5 @@
-const Client = require('../Client');
 const Consolex = require('../functions/consolex');
+const Database = require('../functions/databaseConnection');
 
 /**
  * Get experiece by chatting.
@@ -51,7 +51,7 @@ module.exports.getLeaderboard = (guild, callback) => {
 		throw new Error('Callback is required.');
 	}
 
-	Client.Database.query(
+	Database.query(
 		'SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25',
 		[guild.id],
 		(err, members) => {

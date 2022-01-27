@@ -36,7 +36,7 @@ module.exports.getDailyMoney = async member => {
  */
 
 module.exports.getLeaderboard = async guild => {
-	Client.Database.query(
+	Database.query(
 		'SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25',
 		[guild.id],
 		(err, members) => {
@@ -63,7 +63,7 @@ module.exports.getLeaderboard = async guild => {
  */
 
 module.exports.fetchShopProducts = async guild => {
-	Client.Database.query('SELECT * FROM `guildEconomyProducts` WHERE `guild` = ?', [guild.id], (err, products) => {
+	Database.query('SELECT * FROM `guildEconomyProducts` WHERE `guild` = ?', [guild.id], (err, products) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -85,7 +85,7 @@ module.exports.fetchShopProducts = async guild => {
  */
 
 module.exports.getShopProduct = async (guild, productIdOrName) => {
-	Client.Database.query('SELECT 1 FROM `guildEconomyProducts` WHERE `guild` = ? AND productId = ? OR productName = ?', [guild.id, productIdOrName, productIdOrName], (err, product) => {
+	Database.query('SELECT 1 FROM `guildEconomyProducts` WHERE `guild` = ? AND productId = ? OR productName = ?', [guild.id, productIdOrName, productIdOrName], (err, product) => {
 		if (err) {
 			Consolex.handleError(err);
 		}

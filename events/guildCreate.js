@@ -9,7 +9,7 @@ module.exports = {
 			op: 'guildCreate',
 			name: 'Guild Create',
 		});
-		getGuildConfigNext(Client, guild, () => { });
+		getGuildConfigNext(guild, () => { });
 		gC.finish();
 	},
 };

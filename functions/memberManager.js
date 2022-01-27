@@ -13,14 +13,14 @@ module.exports.getMember = (member, callback) => {
 		op: 'memberManager.getMember',
 		name: 'memberManager (Get Member)',
 	});
-	Client.Database.query('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
+	Database.query('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
 
 		if (memberData && Object.prototype.hasOwnProperty.call(memberData, 0)) { //! THIS SECTION HAS TO BE REMOVED AND SPLIT IN THE FUTURE
 			memberData[0].ecoBalance = parseInt(memberData[0].ecoBalance, 10);
-			Client.Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err, result) => {
+			Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err, result) => {
 				if (err) {
 					Consolex.handleError(err);
 				}
@@ -51,7 +51,7 @@ module.exports.createMember = (member, callback) => {
 		op: 'memberManager.createMember',
 		name: 'memberManager (Create Member)',
 	});
-	Client.Database.query('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], err => {
+	Database.query('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], err => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -85,7 +85,7 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
 	}
 
 	module.exports.getMember(Client, member, memberData => {
-		Client.Database.query('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ?, `ecoBalance` = ?, `ecoInventory` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, memberDataToUpdate.ecoBalance || memberData.ecoBalance, memberDataToUpdate.ecoInventory || memberData.ecoInventory, member.guild.id, member.id], err => {
+		Database.query('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ?, `ecoBalance` = ?, `ecoInventory` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, memberDataToUpdate.ecoBalance || memberData.ecoBalance, memberDataToUpdate.ecoInventory || memberData.ecoInventory, member.guild.id, member.id], err => {
 			if (err) {
 				Consolex.handleError(err);
 			}

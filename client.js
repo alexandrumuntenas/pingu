@@ -18,19 +18,6 @@ const Client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Disco
 
 const Consolex = require('./functions/consolex');
 
-Client.Database = require('mysql2').createPool({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASS,
-	database: process.env.DB_DATA,
-	charset: 'utf8mb4_unicode_ci',
-	waitForConnections: true,
-	connectionLimit: 100,
-	queueLimit: 0,
-});
-
-Client.Database.config.namedPlaceholders = true;
-
 Consolex.info('Cargando Servicios Third-Party');
 Consolex.success('Servicios Third-Party Cargados');
 

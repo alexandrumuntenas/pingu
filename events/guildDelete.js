@@ -12,7 +12,7 @@ module.exports = {
 		//! THIS HAS TO BE MOVED TO GUILDDATAMANAGER
 		const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles'];
 		databaseTables.forEach(table => {
-			Client.Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
+			Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
 				if (err) {
 					Consolex.handleError(err);
 				}

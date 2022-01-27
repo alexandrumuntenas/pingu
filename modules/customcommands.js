@@ -13,7 +13,7 @@ module.exports.getCustomCommand = (guild, command, callback) => {
 		throw new Error('Callback is required');
 	}
 
-	Client.Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
+	Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -45,7 +45,7 @@ module.exports.getCustomCommand = (guild, command, callback) => {
  * @param {?Boolean} customcommandproperties.sendInEmbed - Whether or not to send the reply in an embed
 */
 module.exports.createCustomCommand = (guild, customcommandproperties) => {
-	Client.Database.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
+	Database.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
 		if (err) {
 			Consolex.handleError(err);
 		}
@@ -58,7 +58,7 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
  * @param {String} command
  */
 module.exports.deleteCustomCommand = (guild, command) => {
-	Client.Database.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
+	Database.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
 		if (err) {
 			Consolex.handleError(err);
 			return err;
@@ -72,14 +72,14 @@ module.exports.deleteCustomCommand = (guild, command) => {
  * @param {String} command
  */
 module.exports.migrateToNewOrganization = (guild, command) => {
-	Client.Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
+	Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
 
 		if (Object.prototype.hasOwnProperty.call(result, '0')) {
 			const customcommandproperties = {command: result[0].customCommand, reply: result[0].messageReturned};
-			Client.Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err => {
+			Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err => {
 				if (err) {
 					Consolex.handleError(err);
 				}
