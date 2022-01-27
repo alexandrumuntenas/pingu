@@ -1,13 +1,13 @@
-const { getGuildConfigNext } = require('../modules/guildDataManager.js')
+const {getGuildConfigNext} = require('../functions/guildDataManager.js');
 
 module.exports = {
-  name: 'guildCreate',
-  execute: async (client, guild) => {
-    const gC = client.console.sentry.startTransaction({
-      op: 'guildCreate',
-      name: 'Guild Create'
-    })
-    getGuildConfigNext(client, guild, () => { })
-    gC.finish()
-  }
-}
+	name: 'guildCreate',
+	execute: async (client, guild) => {
+		const gC = client.console.sentry.startTransaction({
+			op: 'guildCreate',
+			name: 'Guild Create',
+		});
+		getGuildConfigNext(client, guild, () => { });
+		gC.finish();
+	},
+};
