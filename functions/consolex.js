@@ -13,8 +13,6 @@ if (process.env.ENTORNO === 'public') {
 
 Sentry.init(sentryConfig);
 
-module.exports.Sentry = Sentry;
-
 module.exports = {
 	debug: message => {
 		process.stdout.write(`${chalk.bgGrey.whiteBright.bold(` [${getCurrentTime()}] Debug `)} ${message}\n`);
@@ -38,6 +36,7 @@ module.exports = {
 		module.exports.error(err);
 		module.exports.Sentry.captureException(err);
 	},
+	Sentry,
 };
 
 function getCurrentTime() {
