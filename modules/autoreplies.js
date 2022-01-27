@@ -6,16 +6,16 @@
  * @returns {String} Reply
  */
 
-const client = require('../client');
+const Client = require('../Client');
 
 module.exports.getReply = (guild, trigger, callback) => {
 	if (!callback) {
 		throw new Error('Callback is required');
 	}
 
-	client.pool.query('SELECT 1 FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ?', [trigger, guild.id], (err, result) => {
+	Client.Database.query('SELECT 1 FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ?', [trigger, guild.id], (err, result) => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 
 		if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
@@ -60,9 +60,9 @@ module.exports.createReply = (guild, autoreply, callback) => {
 	autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false;
 	autoreply.id = makeId(5);
 
-	client.pool.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
+	Client.Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 			throw err;
 		}
 
@@ -77,9 +77,9 @@ module.exports.createReply = (guild, autoreply, callback) => {
  */
 
 module.exports.deleteReply = (guild, triggerID) => {
-	client.pool.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
+	Client.Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 			throw err;
 		}
 	});

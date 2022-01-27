@@ -3,22 +3,22 @@
  * Autor: Alexandru Muntenas             *
  * Licencia: BSL-1                       *
  * * * * * * * * * * * * * * * * * * * * *
- * Versión desarrollo: 2201              *
+ * Versión desarrollo: NEXT              *
  * Versión pública: 22T1                 *
  * * * * * * * * * * * * * * * * * * * * */
 
 require('dotenv').config();
-const {Client, Intents} = require('discord.js');
-const Sentry = require('@sentry/node');
-const mysql = require('mysql2');
+const Discord = require('discord.js');
+
 const fs = require('fs');
-const thirdparty = require('./functions/initializeThirdParty');
 
-const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING], partials: ['REACTION', 'MESSAGE', 'USER']});
+const initializeThirdParty = require('./functions/initializeThirdParty');
 
-client.console = require('./modules/console');
+const Client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_BANS, Discord.Intents.FLAGS.GUILD_INVITES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING], partials: ['REACTION', 'MESSAGE', 'USER']});
 
-client.pool = mysql.createPool({
+const Consolex = require('./functions/consolex');
+
+Client.Database = require('mysql2').createPool({
 	host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASS,
@@ -29,47 +29,28 @@ client.pool = mysql.createPool({
 	queueLimit: 0,
 });
 
-client.pool.config.namedPlaceholders = true;
+Client.Database.config.namedPlaceholders = true;
 
-client.console.info('Cargando Servicios Third-Party');
-client.console.success('Servicios Third-Party Cargados');
+Consolex.info('Cargando Servicios Third-Party');
+Consolex.success('Servicios Third-Party Cargados');
 
 if (process.env.ENTORNO === 'public') {
-	client.console.warn('Iniciando sesión como el bot público.');
-	Sentry.init({
-		dsn: process.env.SENTRY_DSN,
-		tracesSampleRate: 1.0,
-		environment: 'production',
-	});
-	thirdparty(client);
-	client.login(process.env.PUBLIC_TOKEN);
+	Consolex.warn('Iniciando sesión como el bot público.');
+	initializeThirdParty(Client);
+	Client.login(process.env.PUBLIC_TOKEN);
 } else {
-	client.console.warn('Iniciando sesión como el bot de desarrollo.');
-	Sentry.init({
-		dsn: process.env.SENTRY_DSN,
-		tracesSampleRate: 1.0,
-		environment: 'development',
-	});
-	client.login(process.env.INSIDER_TOKEN);
+	Consolex.warn('Iniciando sesión como el bot de desarrollo.');
+	Client.login(process.env.INSIDER_TOKEN);
 }
 
-client.console.sentry = Sentry;
+const loadClientCommandsAndInteractions = require('./functions/loadClientCommandsAndInteractions');
 
-client.logError = err => {
-	client.console.sentry.captureException(err);
-	client.console.error(err);
-};
-
-const loadClientCommands = require('./functions/loadClientCommandsAndInteractions');
-
-client.commands = loadClientCommands(client);
-
-client.cooldownManager = require('./functions/cooldownManager');
+Client.commands = loadClientCommandsAndInteractions();
 
 for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
 	const event = require(`./events/${file}`);
-	client.console.success(`Evento ${file} cargado`);
-	client.on(event.name, (...args) => event.execute(client, ...args));
+	Consolex.success(`Evento ${file} cargado`);
+	Client.on(event.name, (...args) => event.execute(Client, ...args));
 }
 
-module.exports = client;
+module.exports = Client;

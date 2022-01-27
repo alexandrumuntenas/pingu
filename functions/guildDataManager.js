@@ -1,6 +1,7 @@
 /** @module GuildDataManager */
 
-const client = require('../client.js');
+const Client = require('../Client.js');
+const Consolex = require('./consolex.js');
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
 
@@ -13,23 +14,23 @@ const {Routes} = require('discord-api-types/v9');
  */
 
 module.exports.getGuildConfig = (guild, callback) => {
-	const gFD = client.console.sentry.startTransaction({
+	const gFD = Consolex.Sentry.startTransaction({
 		op: 'getGuildConfig',
 		name: 'Get Guild Configuration',
 	});
-	client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+	Client.Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 
 		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
 			callback(result[0]);
 		} else {
 			const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0;
-			client.pool.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
+			Client.Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
 				if (err) {
-					client.logError(err);
-					client.console.error(err);
+					Consolex.handleError(err);
+					Consolex.error(err);
 				}
 
 				gFD.finish();
@@ -47,17 +48,17 @@ module.exports.getGuildConfig = (guild, callback) => {
  */
 
 module.exports.getGuildConfigNext = (guild, callback) => {
-	const gFD = client.console.sentry.startTransaction({
+	const gFD = Consolex.Sentry.startTransaction({
 		op: 'getGuildConfig',
 		name: 'Get Guild Configuration',
 	});
-	client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+	Client.Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 
 		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-			if (result[0].clientVersion === 'pingu@1.0.0') {
+			if (result[0].ClientVersion === 'pingu@1.0.0') {
 				module.exports.migrateGuildData(guild, () => {
 					module.exports.getGuildConfigNext(guild, callback);
 				});
@@ -75,10 +76,10 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 			}
 		} else {
 			const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0;
-			client.pool.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
+			Client.Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
 				if (err) {
-					client.logError(err);
-					client.console.error(err);
+					Consolex.handleError(err);
+					Consolex.error(err);
 				}
 
 				gFD.finish();
@@ -99,15 +100,15 @@ module.exports.getGuildConfigNext = (guild, callback) => {
  */
 
 module.exports.updateGuildConfig = (guild, configuration, callback) => {
-	const uGC = client.console.sentry.startTransaction({
+	const uGC = Consolex.Sentry.startTransaction({
 		op: 'updateGuildConfig',
 		name: 'Update Guild Config',
 	});
 	if (typeof configuration === 'object' && !Array.isArray(configuration) && configuration !== null) {
-		client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [configuration.column, configuration.value, guild.id], err => {
+		Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [configuration.column, configuration.value, guild.id], err => {
 			uGC.finish();
 			if (err) {
-				client.logError(err);
+				Consolex.handleError(err);
 			}
 
 			if (err) {
@@ -139,9 +140,9 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 			if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
 				procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
 					guildConfig[botmodule.column] = newModuleConfig;
-					client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
+					Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
 						if (err) {
-							client.logError(err);
+							Consolex.handleError(err);
 						}
 
 						if (err) {
@@ -156,9 +157,9 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 					});
 				});
 			} else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-				client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
+				Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
 					if (err) {
-						client.logError(err);
+						Consolex.handleError(err);
 						return callback(err);
 					}
 
@@ -169,9 +170,9 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 					return null;
 				});
 			} else {
-				client.pool.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
+				Client.Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
 					if (err) {
-						client.logError(err);
+						Consolex.handleError(err);
 					}
 
 					if (err) {
@@ -219,13 +220,13 @@ function procesarObjetosdeConfiguracion(config, newconfig, callback) {
 }
 
 module.exports.migrateGuildData = (guild, callback) => {
-	client.pool.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
+	Client.Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 
 		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-			if (!result[0].clientVersion === 'pingu@1.0.0') {
+			if (!result[0].ClientVersion === 'pingu@1.0.0') {
 				return;
 			}
 
@@ -256,7 +257,7 @@ module.exports.migrateGuildData = (guild, callback) => {
 			// Migar módulo de comandos personalizados
 			const customcommands = {habilitado: result[0].customcommandsEnabled};
 
-			module.exports.updateGuildConfig(guild, {column: 'clientVersion', value: 'pingu@2.0.0'});
+			module.exports.updateGuildConfig(guild, {column: 'ClientVersion', value: 'pingu@2.0.0'});
 			module.exports.updateGuildConfigNext(guild, {column: 'general', newconfig: general});
 			module.exports.updateGuildConfigNext(guild, {column: 'bienvenidas', newconfig: welcomer});
 			module.exports.updateGuildConfigNext(guild, {column: 'despedidas', newconfig: farewell});
@@ -295,7 +296,7 @@ module.exports.deployGuildInteractions = guild => {
 			rest
 				.put(
 					Routes.applicationGuildCommands(
-						client.user.id,
+						Client.user.id,
 						guild.id,
 					),
 					{body: guildInteractionList},
@@ -315,30 +316,30 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 
 	let interactionList = [];
 	if (guildConfig.welcomeEnabled !== 0) {
-		interactionList += client.commands.filter(command => command.module === 'welcome') || [];
+		interactionList += Client.commands.filter(command => command.module === 'welcome') || [];
 	}
 
 	if (guildConfig.farewellEnabled !== 0) {
-		interactionList += client.commands.filter(command => command.module === 'farewell') || [];
+		interactionList += Client.commands.filter(command => command.module === 'farewell') || [];
 	}
 
 	if (guildConfig.joinRolesEnabled !== 0) {
-		interactionList += client.commands.filter(command => command.module === 'joinroles') || [];
+		interactionList += Client.commands.filter(command => command.module === 'joinroles') || [];
 	}
 
 	if (guildConfig.levelsEnabled !== 0) {
-		interactionList += client.commands.filter(command => command.module === 'levels') || [];
+		interactionList += Client.commands.filter(command => command.module === 'levels') || [];
 	}
 
 	if (guildConfig.suggestionsEnabled !== 0) {
-		interactionList += client.commands.filter(command => command.module === 'suggestions') || [];
+		interactionList += Client.commands.filter(command => command.module === 'suggestions') || [];
 	}
 
 	if (guildConfig.economyEnabled !== 0) {
-		interactionList += client.commands.filter(command => command.module === 'economy') || [];
+		interactionList += Client.commands.filter(command => command.module === 'economy') || [];
 	}
 
-	interactionList += client.commands.filter(command => !command.module);
+	interactionList += Client.commands.filter(command => !command.module);
 
 	if (guildConfig.guildViewCnfCmdsEnabled === 0) {
 		interactionList = interactionList.filter(command => command.isConfigCommand === false);

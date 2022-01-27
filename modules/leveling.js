@@ -1,8 +1,9 @@
-const client = require('../client');
+const Client = require('../Client');
+const Consolex = require('../functions/consolex');
 
 /**
  * Get experiece by chatting.
- * @param {Member} member
+ * @param {GuildMember} member
  */
 
 const {getMember, updateMember} = require('../functions/memberManager');
@@ -21,7 +22,7 @@ module.exports.getExperience = member => {
 				updateMember(member, {lvlExperience: memberData.lvlExperience});
 			} catch (err) {
 				if (err) {
-					client.logError(err);
+					Consolex.handleError(err);
 				}
 			}
 		});
@@ -30,29 +31,12 @@ module.exports.getExperience = member => {
 
 /**
  * Do level up.
- * @param {Member} member
+ * @param {GuildMember} member
  */
 
 module.exports.doLevelUp = member => {
 	getMember(member, memberData => {
 		updateMember(member, {lvlLevel: memberData.lvlLevel + 1});
-	});
-};
-
-/**
- * Get member rank.
- * @param {Member} member
- */
-
-module.exports.getMemberRank = member => {
-	client.pool.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err, result) => {
-		if (err) {
-			client.logError(err);
-		}
-
-		if (result && Object.prototype.hasOwnProperty.call(result, '0')) {
-			result.filter(r => r.member === member.id).forEach(r => r.lvlRank);
-		}
 	});
 };
 
@@ -67,12 +51,12 @@ module.exports.getLeaderboard = (guild, callback) => {
 		throw new Error('Callback is required.');
 	}
 
-	client.pool.query(
+	Client.Database.query(
 		'SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25',
 		[guild.id],
 		(err, members) => {
 			if (err) {
-				client.logError(err);
+				Consolex.handleError(err);
 			}
 
 			if (
@@ -90,7 +74,7 @@ module.exports.getLeaderboard = (guild, callback) => {
 
 /**
  * Generate the rank card of the member.
- * @param {Member} member
+ * @param {GuildMember} member
  * @param {Function} callback
  * @returns {String} The path of the rank card.
  */

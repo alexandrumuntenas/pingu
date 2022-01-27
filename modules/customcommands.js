@@ -1,4 +1,4 @@
-const client = require('../client');
+const Client = require('../Client');
 
 /**
  * Get the custom command from the database
@@ -13,9 +13,9 @@ module.exports.getCustomCommand = (guild, command, callback) => {
 		throw new Error('Callback is required');
 	}
 
-	client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
+	Client.Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 
 		// New custom command structure { command: String, reply: String, sendDM: Boolean, sendChannel: String, setRole: String, sendInEmbed: Boolean }
@@ -45,9 +45,9 @@ module.exports.getCustomCommand = (guild, command, callback) => {
  * @param {?Boolean} customcommandproperties.sendInEmbed - Whether or not to send the reply in an embed
 */
 module.exports.createCustomCommand = (guild, customcommandproperties) => {
-	client.pool.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
+	Client.Database.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 	});
 };
@@ -58,9 +58,9 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
  * @param {String} command
  */
 module.exports.deleteCustomCommand = (guild, command) => {
-	client.pool.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
+	Client.Database.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 			return err;
 		}
 	});
@@ -72,16 +72,16 @@ module.exports.deleteCustomCommand = (guild, command) => {
  * @param {String} command
  */
 module.exports.migrateToNewOrganization = (guild, command) => {
-	client.pool.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
+	Client.Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
 		if (err) {
-			client.logError(err);
+			Consolex.handleError(err);
 		}
 
 		if (Object.prototype.hasOwnProperty.call(result, '0')) {
 			const customcommandproperties = {command: result[0].customCommand, reply: result[0].messageReturned};
-			client.pool.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err => {
+			Client.Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err => {
 				if (err) {
-					client.logError(err);
+					Consolex.handleError(err);
 				}
 			});
 		}

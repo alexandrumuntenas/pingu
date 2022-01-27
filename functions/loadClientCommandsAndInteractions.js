@@ -1,8 +1,9 @@
 const {Collection} = require('discord.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
+const Consolex = require('../functions/consolex');
 const fs = require('fs');
 
-module.exports = client => {
+module.exports = () => {
 	const commands = new Collection();
 
 	load('./commands');
@@ -28,9 +29,9 @@ module.exports = client => {
 					}
 
 					commands.set(command.name, command);
-					client.console.success(`Comando ${file} cargado`);
+					Consolex.success(`Comando ${file} cargado`);
 				} else {
-					client.console.warn(`Command ${file} is missing a help.name, or help.name is not a string.`);
+					Consolex.warn(`Command ${file} is missing a help.name, or help.name is not a string.`);
 					continue;
 				}
 			} else if (fs.lstatSync(path).isDirectory()) {

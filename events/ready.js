@@ -1,7 +1,5 @@
+const Consolex = require('../functions/consolex');
 const {REST} = require('@discordjs/rest');
-const {Routes} = require('discord-api-types/v9');
-const {getGuildConfigNext} = require('../modules/guildDataManager.js');
-const generateTheCommandListOfTheGuild = require('../functions/generateTheCommandListOfTheGuild');
 
 const rest = new REST({version: '9'});
 if (process.env.ENTORNO === 'desarrollo') {
@@ -12,31 +10,10 @@ if (process.env.ENTORNO === 'desarrollo') {
 
 module.exports = {
 	name: 'ready',
-	execute: client => {
-		client.console.info(`Conectado como ${client.user.tag}!`);
-		if (client.statcord) {
-			client.statcord.autopost();
+	execute: Client => {
+		Consolex.info(`Conectado como ${Client.user.tag}!`);
+		if (Client.statcord) {
+			Client.statcord.autopost();
 		}
-
-		updateGuildCommands(client);
-		setInterval(() => {
-			updateGuildCommands(client);
-		}, 86400000);
 	},
 };
-
-async function updateGuildCommands(client) {
-	const guilds = await client.guilds.fetch();
-	guilds.forEach(guild => {
-		client.console.info(`Deploying commands to ${guild.id}`);
-		getGuildConfigNext(client, guild, guildConfig => {
-			generateTheCommandListOfTheGuild(client, guildConfig, commandListOfTheGuild => {
-				rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), {body: commandListOfTheGuild})
-					.then(() => {
-						client.console.success(`Commands deployed succesfully to ${guild.id}`);
-					})
-					.catch(console.error);
-			});
-		});
-	});
-}

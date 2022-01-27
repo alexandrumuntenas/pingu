@@ -1,151 +1,206 @@
-/* eslint-disable node/no-callback-literal */
-const { getMember, updateMember } = require('./memberManager')
+const Client = require('../Client');
+const {getMember, updateMember} = require('../functions/memberManager');
 
-module.exports.getDailyMoney = async (client, member, callback) => {
-  const EgM = client.console.sentry.startTransaction({
-    op: 'economy.getDailyMoney',
-    name: 'Economy (getDailyMoney)'
-  })
-  const dailyMoney = Math.round(Math.random() * (100 - 5) + 5)
+/**
+ * Get work money.
+ * @param {GuildMember} member
+ * @returns {Number} The amount of money earned.
+ */
 
-  getMember(client, member, (memberInventoryAndBalance) => {
-    updateMember(client, member, { ecoBalance: (parseInt(memberInventoryAndBalance.ecoBalance) + dailyMoney) }, () => {
-      if (callback) callback(dailyMoney)
-    })
-  })
-  EgM.finish()
+module.exports.getWorkMoney = async member => {
+	getMember(member, memberData => {
+		const workMoney = Math.round((Math.random() * 100) + 15);
+		updateMember(member, {ecoBalance: parseInt(memberData.ecoBalance, 10) + workMoney});
+		return workMoney;
+	});
+};
+
+/**
+ * Get daily money.
+ * @param {GuildMember} member
+ * @returns {Number} The amount of money earned.
+ */
+
+module.exports.getDailyMoney = async member => {
+	getMember(member, memberData => {
+		const dailyMoney = Math.round((Math.random() * 100) + (Math.random() * 150) + 50);
+		updateMember(member, {ecoBalance: parseInt(memberData.ecoBalance, 10) + dailyMoney});
+		return dailyMoney;
+	});
+};
+
+/**
+ * Get the guild leaderboard.
+ * @param {Guild} guild
+ * @returns {Array} The guild leaderboard.
+ */
+
+module.exports.getLeaderboard = async guild => {
+	Client.Database.query(
+		'SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25',
+		[guild.id],
+		(err, members) => {
+			if (err) {
+				Consolex.handleError(err);
+				throw new Error('Error getting leaderboard.');
+			}
+
+			if (members
+        && Object.prototype.hasOwnProperty.call(members, '0')
+			) {
+				return members;
+			}
+
+			return [];
+		},
+	);
+};
+
+/**
+ * Get all the products of the guild shop.
+ * @param {Guild} guild
+ * @returns {Array} The guild shop products.
+ */
+
+module.exports.fetchShopProducts = async guild => {
+	Client.Database.query('SELECT * FROM `guildEconomyProducts` WHERE `guild` = ?', [guild.id], (err, products) => {
+		if (err) {
+			Consolex.handleError(err);
+		}
+
+		if (products
+      && Object.prototype.hasOwnProperty.call(products, '0')
+		) {
+			return products;
+		}
+
+		return [];
+	});
+};
+
+/**
+ * Get a guild shop product.
+ * @param {Guild} guild
+ * @param {String} productIdOrName
+ */
+
+module.exports.getShopProduct = async (guild, productIdOrName) => {
+	Client.Database.query('SELECT 1 FROM `guildEconomyProducts` WHERE `guild` = ? AND productId = ? OR productName = ?', [guild.id, productIdOrName, productIdOrName], (err, product) => {
+		if (err) {
+			Consolex.handleError(err);
+		}
+
+		if (Object.prototype.hasOwnProperty.call(product, '0')) {
+			return product[0];
+		}
+
+		throw new Error('Product not found.');
+	});
+};
+
+/**
+ * Add an item to the inventory of a member.
+ * @param {Object} originalInventory
+ * @param {Object} productToAdd - Product to add to the inventory. It's the same as the one returned by getShopProduct.
+ * @param {Function} callback
+ * @returns {Object} The new inventory.
+ */
+
+function addItemToInventory(originalInventory, productToAdd, callback) {
+	if (!(productToAdd || originalInventory || callback)) {
+		throw new Error('Missing parameters.');
+	}
+
+	if (productToAdd.properties.shouldBePurchasedOnce) {
+		if (!Object.prototype.hasOwnProperty.call(originalInventory, productToAdd.productId)) {
+			originalInventory[productToAdd.productId] = 'OnlyOne';
+		}
+	} else {
+		originalInventory[productToAdd.productId] = originalInventory[productToAdd.productId] + 1 || 1;
+	}
+
+	callback(originalInventory);
 }
 
-module.exports.getWorkMoney = async (client, member, callback) => {
-  const EgM = client.console.sentry.startTransaction({
-    op: 'economy.getWorkMoney',
-    name: 'Economy (getWorkMoney)'
-  })
-  const workMoney = Math.floor(Math.random() * 1500) + 1000
+/**
+ * Check if member has a product.
+ * @param {GuildMember} member
+ * @param {String} productIdOrName
+ * @returns {Boolean} If the member has the product.
+ */
 
-  getMember(client, member, (memberData) => {
-    updateMember(client, member, { ecoBalance: (parseInt(memberData.ecoBalance) + workMoney) }, () => {
-      if (callback) callback(workMoney)
-    })
-  })
-  EgM.finish()
-}
+module.exports.checkIfMemberHasProduct = (member, productIdOrName) => {
+	getMember(member, memberData => {
+		if (memberData.ecoInventory[productIdOrName]) {
+			return true;
+		}
 
-module.exports.getLeaderboard = (client, message) => {
-  // TODO: Hacer la función getLeaderboard
-}
+		return false;
+	});
+};
 
-module.exports.fetchShopProducts = (client, guild, callback) => {
-  client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ?', [guild.id], (err, shopProducts) => {
-    if (err) client.logError(err)
-    if (shopProducts && Object.prototype.hasOwnProperty.call(shopProducts, 0)) {
-      callback(shopProducts)
-    } else {
-      throw new Error('ECO_XX02')
-    }
-  })
-}
+/**
+ * Check if the specified product has to be purchased once.
+ * @param {Guild} guild
+ * @param {String} productIdOrName
+ * @returns {Boolean} If the product has to be purchased once.
+ */
 
-module.exports.getShopProduct = (client, guild, productname, callback) => {
-  client.pool.query('SELECT * FROM `guildEconomyProducts` WHERE guild = ? AND productName = ? OR productId = ? LIMIT 1', [guild.id, productname, productname], (err, rows) => {
-    if (err) client.logError(err)
-    if (rows && Object.prototype.hasOwnProperty.call(rows, 0)) {
-      if (callback) callback(rows[0])
-    } else {
-      if (callback) callback()
-    }
-  })
-}
+module.exports.checkIfTheShopProductShouldBePurchasedOnlyOnce = (guild, productIdOrName) => {
+	this.getShopProduct(guild, productIdOrName, product => {
+		if (product.properties.shouldBePurchasedOnce) {
+			return true;
+		}
 
-module.exports.addItemToMemberInventory = (inventoryFromDB, productToAdd, callback) => {
-  let productQuantity = 1
+		return false;
+	});
+};
 
-  if (productToAdd.buyOnlyOne) productQuantity = -1
+/**
+ * Execute the product functions.
+ * @param {GuildMember} member
+ * @param {String} productIdOrName
+ * @param {Function} callback
+ * @returns {Boolean} If the product was executed.
+ */
 
-  const parsedInventoryFromDB = JSON.parse(inventoryFromDB)
+module.exports.executeProductFunctions = (member, productIdOrName, callback) => {
+	this.getShopProduct(member.guild, productIdOrName, product => {
+		if (product.properties.actionOnPurchase) {
+			//! REDESARROLLAR :D
+		}
+	});
+};
 
-  if (parsedInventoryFromDB[productToAdd.productId]) {
-    if (!productToAdd.buyOnlyOne) {
-      if (productToAdd.functionType !== 'giveRole' && productToAdd.functionType !== 'sendMessage') { if (callback) return callback(inventoryFromDB) }
-      parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId]) + productQuantity
-    }
-    if (productToAdd.buyOnlyOne) parsedInventoryFromDB[productToAdd.productId] = parseInt(parsedInventoryFromDB[productToAdd.productId])
-  } else {
-    parsedInventoryFromDB[productToAdd.productId] = productQuantity
-  }
+/**
+ * Buy a product.
+ * @param {GuildMember} member
+ * @param {String} productIdOrName
+ * @param {Function} callback
+ * @returns {Boolean} If the product was bought.
+ */
 
-  Object.keys(parsedInventoryFromDB).forEach(product => {
-    if (parsedInventoryFromDB[product] === null) {
-      delete parsedInventoryFromDB[product]
-    }
-  })
+module.exports.buyProduct = (member, productIdOrName) => {
+	this.getShopProduct(member.guild, productIdOrName, product => {
+		if (member.ecoBalance >= product.properties.price) {
+			return false;
+		}
 
-  const newInventory = JSON.stringify(parsedInventoryFromDB)
+		getMember(member, memberData => {
+			if (this.checkIfTheShopProductShouldBePurchasedOnlyOnce(member.guild, productIdOrName) && this.checkIfMemberHasProduct(member, productIdOrName)) {
+				throw new Error('Product already bought.');
+			}
 
-  if (callback) callback(newInventory)
-}
+			addItemToInventory(memberData.ecoInventory, product, memberInventoryWithTheProduct => {
+				updateMember(member, {ecoBalance: memberData.ecoBalance - product.properties.price, ecoInventory: memberInventoryWithTheProduct});
+				this.executeProductFunctions(member, productIdOrName, allWentAsExpected => {
+					if (allWentAsExpected) {
+						return true;
+					}
 
-module.exports.checkIfMemberHasProduct = (client, member, productId, callback) => {
-  getMember(client, member, (memberInventoryAndBalance) => {
-    const inventory = JSON.parse(memberInventoryAndBalance.ecoInventory)
-    if (Object.prototype.hasOwnProperty.call(inventory, productId)) {
-      return callback(true)
-    } else {
-      return callback(false)
-    }
-  })
-}
-
-module.exports.checkIfTheProductShouldOnlyBePurchasedOnce = (client, productNameOrId, guild, callback) => {
-  module.exports.getShopProduct(client, guild, productNameOrId, (shopProduct) => {
-    const { buyOnlyOne } = JSON.parse(shopProduct.productMeta)
-    if (buyOnlyOne) {
-      return callback(true)
-    } else {
-      return callback(false)
-    }
-  })
-}
-
-module.exports.executeItemFunctions = (client, member, shopProduct, callback) => {
-  const { action } = JSON.parse(shopProduct.productProperties || shopProduct.productMeta)
-
-  if (action && Object.prototype.hasOwnProperty.call(action, 'type')) {
-    switch (action.type) {
-      case 'sendMessage': {
-        if (Object.prototype.hasOwnProperty.call(action, 'message') && Object.prototype.hasOwnProperty.call(action, 'channel')) {
-          member.guild.channels.fetch(action.channel).then(channel => {
-            if (channel) {
-              channel.send(action.message)
-              if (callback) callback(null, 'sendMessage')
-            } else {
-              if (callback) callback(Error('PRODUCT:INVALIDCHANNEL'))
-            }
-          })
-        } else {
-          if (callback) callback(Error('PRODUCT:INVALIDCONFIGURATION'))
-        }
-        break
-      }
-      case 'giveRole': {
-        if (Object.prototype.hasOwnProperty.call(action, 'role')) {
-          member.guild.roles.fetch(action.role).then(role => {
-            if (role) {
-              member.roles.add(role)
-              if (callback) callback(null, 'giveRole')
-            } else {
-              if (callback) callback(Error('PRODUCT:INVALIDROLE'))
-            }
-          })
-        } else {
-          if (callback) callback(Error('PRODUCT:INVALIDCONFIGURATION'))
-        }
-        break
-      }
-      default: {
-        if (callback) callback()
-        break
-      }
-    }
-  }
-}
+					updateMember(member, {ecoBalance: memberData.ecoBalance + product.properties.price, ecoInventory: memberData.ecoInventory});
+				});
+			});
+		});
+	});
+};

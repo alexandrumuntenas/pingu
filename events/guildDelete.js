@@ -1,7 +1,10 @@
+const Client = require('../Client');
+const Consolex = require('../functions/consolex');
+
 module.exports = {
 	name: 'guildDelete',
-	execute: async (client, guild) => {
-		const gD = client.console.sentry.startTransaction({
+	execute: async (Client, guild) => {
+		const gD = Consolex.Sentry.startTransaction({
 			op: 'guildDelete',
 			name: 'Guild Delete',
 		});
@@ -9,9 +12,9 @@ module.exports = {
 		//! THIS HAS TO BE MOVED TO GUILDDATAMANAGER
 		const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles'];
 		databaseTables.forEach(table => {
-			client.pool.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
+			Client.Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
 				if (err) {
-					client.logError(err);
+					Consolex.handleError(err);
 				}
 			});
 		});

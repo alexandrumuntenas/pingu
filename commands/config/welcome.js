@@ -1,4 +1,4 @@
-const client = require('../../client.js');
+const Client = require('../../Client.js');
 const {Permissions} = require('discord.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
 
@@ -13,9 +13,9 @@ module.exports = {
 		.addSubcommand(sc => sc.setName('setmessage').addStringOption(input => input.setName('message').setRequired(true)))
 		.addSubcommand(sc => sc.setName('sendcards').addBooleanOption(input => input.setName('enable').setRequired(true)))
 		.addSubcommandGroup(scg => scg.setName('configurecards')
-			.addSubcommand(sc => sc.setName('setbackground').addStringOption(input => input.setName('backgroundURL')))
-			.addSubcommand(sc => sc.setName('setoverlayopacity').addNumberOption(input => input.setName('overlayOpacity').setRequired(true)))
-			.addSubcommand(sc => sc.setName('setoverlaycolor').addStringOption(input => input.setName('overlayColor').setRequired(true)))
+			.addSubcommand(sc => sc.setName('setbackground').addStringOption(input => input.setName('backgroundurl').setRequired(true)))
+			.addSubcommand(sc => sc.setName('setoverlayopacity').addNumberOption(input => input.setName('overlayopacity').setRequired(true)))
+			.addSubcommand(sc => sc.setName('setoverlaycolor').addStringOption(input => input.setName('overlaycolor').setRequired(true)))
 			.addSubcommand(sc => sc.setName('settitle').addStringOption(input => input.setName('title').setRequired(true)))
 			.addSubcommand(sc => sc.setName('setsubtitle').addStringOption(input => input.setName('subtitle').setRequired(true))))
 		.addSubcommandGroup(scg => scg.setName('configureroles')
@@ -42,6 +42,10 @@ module.exports = {
 			}
 
 			case 'configureroles': {
+				break;
+			}
+
+			default: {
 				break;
 			}
 		}

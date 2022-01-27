@@ -8,7 +8,7 @@ const { millify } = require('millify')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', { family: 'Montserrat' })
 module.exports = {
-  welcomeCard: async (client, member, locale, database) => {
+  welcomeCard: async (Client, member, locale, database) => {
     const uniqueIdentifiers = {
       attachmentSent: randomstring.generate({ charset: 'alphabetic' })
     }

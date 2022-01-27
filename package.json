@@ -2,7 +2,7 @@
   "name": "pingu",
   "version": "22.1.0",
   "description": "Bot de Discord by Alexandru Theodor Muntenas",
-  "main": "app.js",
+  "main": "client.js",
   "dependencies": {
     "@blac-sheep/character-count": "^0.1.2",
     "@discordjs/builders": "^0.11.0",
