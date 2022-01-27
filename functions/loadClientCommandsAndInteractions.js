@@ -1,7 +1,6 @@
 const {Collection} = require('discord.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
 const fs = require('fs');
-const client = require('../client.js');
 
 module.exports = client => {
 	const commands = new Collection();
@@ -16,11 +15,12 @@ module.exports = client => {
 
 			if (file.endsWith('.js') && !file.endsWith('dev.js')) {
 				const command = require(`.${path}`);
-				if (command.name) {
-					if (!command.interactionData) {
-						command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set');
-					} else {
+				if (Object.prototype.hasOwnProperty.call(command, 'name')) {
+					if (Object.prototype.hasOwnProperty.call(command, 'interactionData')) {
+						//! LAS INTERACCIONES SERÁN GESTIONADAS POR UN SUBPROCESO
 						command.interactionData.setName(command.name).setDescription(command.description || 'Description not set');
+					} else {
+						command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set');
 					}
 
 					if (!command.isConfigCommand) {
