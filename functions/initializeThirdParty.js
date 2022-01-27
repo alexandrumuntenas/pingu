@@ -1,34 +1,39 @@
-// TODO: REPLACE WITH https://dbots.js.org/#/docs/main/latest/general/services
+const Statcord = require('statcord.js');
+const dbots = require('dbots');
 
-const topgg = require('topgg-autoposter')
-const Statcord = require('statcord.js')
+module.exports = async client => {
+	const apiKeys = {};
+	if (process.env.BOTLIST_API_TOPGG) {
+		apiKeys.topgg = process.env.BOTLIST_API_TOPGG;
+	}
 
-module.exports = async (client) => {
-  if (process.env.TOPGG_API_KEY) {
-    const ap = topgg.AutoPoster(process.env.TOPGG_API_KEY, client)
-    client.console.info('Publicando Estadísticas a Top.GG')
-    ap.on('posted', (err) => {
-      if (err.status === 503) client.console.warn('TopGG: 503 Servicio no disponible')
-      client.console.success('Estadísticas publicadas en Top.GG')
-    })
-  }
+	const poster = new dbots.Poster({
+		client,
+		apiKeys,
+		clientLibrary: 'discord.js',
+	});
 
-  if (process.env.STATCORD_API_KEY) {
-    client.statcord = new Statcord.Client({
-      client,
-      key: process.env.STATCORD_API_KEY,
-      postCpuStatistics: true,
-      postMemStatistics: true,
-      postNetworkStatistics: true
-    })
+	poster.startInterval();
 
-    client.statcord.on('autopost-start', () => {
-      client.console.info('Publicando estadísticas en Statcord...')
-    })
+	if (process.env.STATCORD_API_KEY) {
+		client.statcord = new Statcord.Client({
+			client,
+			key: process.env.STATCORD_API_KEY,
+			postCpuStatistics: true,
+			postMemStatistics: true,
+			postNetworkStatistics: true,
+		});
 
-    client.statcord.on('post', status => {
-      if (!status) client.console.success('Estadísticas publicadas en Statcord')
-      else client.console.error(status)
-    })
-  }
-}
+		client.statcord.on('autopost-start', () => {
+			client.console.info('Publicando estadísticas en Statcord...');
+		});
+
+		client.statcord.on('post', status => {
+			if (status) {
+				client.console.error(status);
+			} else {
+				client.console.success('Estadísticas publicadas en Statcord');
+			}
+		});
+	}
+};
