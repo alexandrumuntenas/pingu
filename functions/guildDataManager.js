@@ -1,8 +1,8 @@
 /** @module GuildDataManager */
 
 const client = require('../client.js');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const {REST} = require('@discordjs/rest');
+const {Routes} = require('discord-api-types/v9');
 
 /**
  * Get the guild's configuration from the database.
@@ -230,41 +230,41 @@ module.exports.migrateGuildData = (guild, callback) => {
 			}
 
 			// Migrar configuraciones generales
-			const general = { idioma: result[0].guildLanguage, prefijo: result[0].guildPrefix, interacciones: { habilitado: 1, desplegarComandosDeConfiguracion: result[0].guildViewCnfCmdsEnabled } };
+			const general = {idioma: result[0].guildLanguage, prefijo: result[0].guildPrefix, interacciones: {habilitado: 1, desplegarComandosDeConfiguracion: result[0].guildViewCnfCmdsEnabled}};
 
 			// Migrar módulo de bienvenidas
 			const welcomer = {
-				habilitado: result[0].welcomeEnabled, canal: result[0].welcomeChannel, mensaje: result[0].welcomeMessage, tarjeta: { habilitado: result[0].welcomeImage, fondo: result[0].welcomeImageCustomBackground, overlay: { color: result[0].welcomeImageCustomOverlayColor, opacidad: result[0].welcomeImageCustomOpacity } },
+				habilitado: result[0].welcomeEnabled, canal: result[0].welcomeChannel, mensaje: result[0].welcomeMessage, tarjeta: {habilitado: result[0].welcomeImage, fondo: result[0].welcomeImageCustomBackground, overlay: {color: result[0].welcomeImageCustomOverlayColor, opacidad: result[0].welcomeImageCustomOpacity}},
 			};
 			// Migrar módulo de despedidas
-			const farewell = { habilitado: result[0].farewellEnabled, canal: result[0].farewellChannel, mensaje: result[0].farewellMessage };
+			const farewell = {habilitado: result[0].farewellEnabled, canal: result[0].farewellChannel, mensaje: result[0].farewellMessage};
 
 			// Migrar módulo de niveles
 			const levels = {
-				habilitado: result[0].levelsEnabled, canal: result[0].levelsChannel, mensaje: result[0].levelsMessage, dificultad: result[0].levelsDifficulty, tarjeta: { fondo: result[0].levelsImageCustomBackground, overlay: { opacidad: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor } },
+				habilitado: result[0].levelsEnabled, canal: result[0].levelsChannel, mensaje: result[0].levelsMessage, dificultad: result[0].levelsDifficulty, tarjeta: {fondo: result[0].levelsImageCustomBackground, overlay: {opacidad: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor}},
 			};
 
 			// Migrar módulo de economía
-			const economy = { habilitado: result[0].economyEnabled, moneda: { nombre: result[0].economyCurrency, icono: result[0].economyCurrencyIcon } };
+			const economy = {habilitado: result[0].economyEnabled, moneda: {nombre: result[0].economyCurrency, icono: result[0].economyCurrencyIcon}};
 
 			// Migrar módulo de sugerencias
-			const suggestions = { habilitado: result[0].suggestionsEnabled, canales: { sugerenciasNoRevisadas: result[0].suggestionsChannel, sugerenciasRevisadas: result[0].suggestionsRevChannel } };
+			const suggestions = {habilitado: result[0].suggestionsEnabled, canales: {sugerenciasNoRevisadas: result[0].suggestionsChannel, sugerenciasRevisadas: result[0].suggestionsRevChannel}};
 
 			// Migrar módulo de respuestas automáticas
-			const autoresponder = { habilitado: result[0].autoresponderEnabled };
+			const autoresponder = {habilitado: result[0].autoresponderEnabled};
 
 			// Migar módulo de comandos personalizados
-			const customcommands = { habilitado: result[0].customcommandsEnabled };
+			const customcommands = {habilitado: result[0].customcommandsEnabled};
 
-			module.exports.updateGuildConfig(guild, { column: 'clientVersion', value: 'pingu@2.0.0' });
-			module.exports.updateGuildConfigNext(guild, { column: 'general', newconfig: general });
-			module.exports.updateGuildConfigNext(guild, { column: 'bienvenidas', newconfig: welcomer });
-			module.exports.updateGuildConfigNext(guild, { column: 'despedidas', newconfig: farewell });
-			module.exports.updateGuildConfigNext(guild, { column: 'niveles', newconfig: levels });
-			module.exports.updateGuildConfigNext(guild, { column: 'economia', newconfig: economy });
-			module.exports.updateGuildConfigNext(guild, { column: 'sugerencias', newconfig: suggestions });
-			module.exports.updateGuildConfigNext(guild, { column: 'respuestasPersonalizadas', newconfig: autoresponder });
-			module.exports.updateGuildConfigNext(guild, { column: 'comandosPersonalizados', newconfig: customcommands });
+			module.exports.updateGuildConfig(guild, {column: 'clientVersion', value: 'pingu@2.0.0'});
+			module.exports.updateGuildConfigNext(guild, {column: 'general', newconfig: general});
+			module.exports.updateGuildConfigNext(guild, {column: 'bienvenidas', newconfig: welcomer});
+			module.exports.updateGuildConfigNext(guild, {column: 'despedidas', newconfig: farewell});
+			module.exports.updateGuildConfigNext(guild, {column: 'niveles', newconfig: levels});
+			module.exports.updateGuildConfigNext(guild, {column: 'economia', newconfig: economy});
+			module.exports.updateGuildConfigNext(guild, {column: 'sugerencias', newconfig: suggestions});
+			module.exports.updateGuildConfigNext(guild, {column: 'respuestasPersonalizadas', newconfig: autoresponder});
+			module.exports.updateGuildConfigNext(guild, {column: 'comandosPersonalizados', newconfig: customcommands});
 			if (callback) {
 				callback();
 			}
@@ -281,7 +281,7 @@ module.exports.migrateGuildData = (guild, callback) => {
  * @returns Object - The command list
  */
 
-const rest = new REST({ version: '9' });
+const rest = new REST({version: '9'});
 
 if (process.env.ENTORNO === 'desarrollo') {
 	rest.setToken(process.env.INSIDER_TOKEN);
@@ -298,7 +298,7 @@ module.exports.deployGuildInteractions = guild => {
 						client.user.id,
 						guild.id,
 					),
-					{ body: guildInteractionList },
+					{body: guildInteractionList},
 				).catch(err => {
 					if (err) {
 						throw err;
