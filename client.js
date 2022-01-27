@@ -18,9 +18,6 @@ const Client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Disco
 
 const Consolex = require('./functions/consolex');
 
-Consolex.info('Cargando Servicios Third-Party');
-Consolex.success('Servicios Third-Party Cargados');
-
 if (process.env.ENTORNO === 'public') {
 	Consolex.warn('Iniciando sesión como el bot público.');
 	initializeThirdParty(Client);
@@ -30,9 +27,7 @@ if (process.env.ENTORNO === 'public') {
 	Client.login(process.env.INSIDER_TOKEN);
 }
 
-const loadClientCommandsAndInteractions = require('./functions/loadClientCommandsAndInteractions');
-
-Client.commands = loadClientCommandsAndInteractions();
+Client.commands = require('./functions/loadClientCommandsAndInteractions')();
 
 for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
 	const event = require(`./events/${file}`);
