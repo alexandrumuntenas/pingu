@@ -1,5 +1,5 @@
 const fs = require('fs')
-const console = require('./console')
+const console = require('../modules/console')
 
 let cooldownJson
 
