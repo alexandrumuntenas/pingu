@@ -105,3 +105,26 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
 		});
 	});
 };
+
+/**
+ * Delete a member's data from the database.
+ * @param {Member} member
+ * @param {Function} callback
+ */
+module.exports.deleteMember = (member, callback) => {
+	const sentryEvent = Consolex.Sentry.startTransaction({
+		op: 'memberManager.deleteMember',
+		name: 'memberManager (Delete Member)',
+	});
+	Database.query('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id], err => {
+		if (err) {
+			Consolex.handleError(err);
+		}
+
+		if (callback) {
+			callback();
+		}
+
+		sentryEvent.finish();
+	});
+};

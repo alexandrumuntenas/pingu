@@ -1,4 +1,5 @@
 const Consolex = require('../functions/consolex');
+const {deleteMember} = require('../functions/memberManager');
 const farewell = require('../modules/farewell.js');
 
 module.exports = {
@@ -9,10 +10,9 @@ module.exports = {
 			name: 'Guild Member Remove',
 		});
 
-		//! THIS HAS TO BE MOVED TO GUILDDATAMANAGER
 		if (member.user.id !== Client.user.id) {
 			farewell.doGuildMemberRemove(member);
-			Database.query('DELETE FROM `memberData` WHERE member = ? AND guild = ?', [member.user.id, member.guild.id]); // Mover esto a memberManager
+			deleteMember(member);
 		}
 
 		gMR.finish();
