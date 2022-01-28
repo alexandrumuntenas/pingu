@@ -1,5 +1,5 @@
-const Client = require('../Client');
 const Consolex = require('../functions/consolex');
+const {deleteGuildData} = require('../functions/guildDataManager');
 
 module.exports = {
 	name: 'guildDelete',
@@ -9,15 +9,7 @@ module.exports = {
 			name: 'Guild Delete',
 		});
 
-		//! THIS HAS TO BE MOVED TO GUILDDATAMANAGER
-		const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles'];
-		databaseTables.forEach(table => {
-			Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
-				if (err) {
-					Consolex.handleError(err);
-				}
-			});
-		});
+		deleteGuildData(guild);
 		gD.finish();
 	},
 };
