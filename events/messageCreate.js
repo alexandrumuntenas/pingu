@@ -1,66 +1,59 @@
-const Consolex = require('../functions/consolex');
 const CooldownManager = require('../functions/cooldownManager');
 
 const {error, timer} = require('../functions/defaultMessages');
 const i18n = require('../i18n/i18n');
 const {getGuildConfigNext} = require('../functions/guildDataManager.js');
 const humanizeduration = require('humanize-duration');
-const customcommands = require('../modules/customcommands');
+const {runCustomCommand} = require('../modules/customcommands');
+const {getExperience} = require('../modules/leveling');
+const {handleAutoRepliesInMessageCreate} = require('../modules/autoreplies');
 
 module.exports = {
 	name: 'messageCreate',
 	execute: async (Client, message) => {
 		if (
 			message.channel.type === 'dm'
-      || message.author.bot
-      || message.author === Client.user
+			|| message.author.bot
+			|| message.author === Client.user
 		) {
 			return;
 		}
 
-		getGuildConfigNext(message.guild, async guildData => {
-			Consolex.fatal(JSON.stringify(guildData));
-			message.database = guildData;
-			if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
-				message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/);
-			}
+		getGuildConfigNext(message.guild, async guildConfig => {
+			message.guild.configuration = guildConfig;
 
-			if (message.content.startsWith(message.database.guildPrefix) && message.args) {
-				let commandToExecute = message.args[0];
-				message.args.shift();
+			if (message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) {
+				message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/);
+				message.commandName = message.parameters[0];
+				message.parameters.shift();
+				if (CooldownManager.check(message.member, message.guild, {name: message.commandName})) {
+					if (Client.commands.has(message.commandName)) {
+						const commandToExecute = Client.commands.get(message.commandName);
 
-				if (Client.commands.has(commandToExecute)) {
-					commandToExecute = Client.commands.get(commandToExecute);
-					if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
-						message.reply({embeds: [error(i18n(message.database.guildLanguage || 'en', 'COMMAND::PERMERROR'))]});
-						return;
-					}
-
-					if (CooldownManager.check(message.member, message.guild, commandToExecute)) {
-						CooldownManager.add(message.member, message.guild, commandToExecute);
-						if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
-							if (Client.statcord) {
-								Client.statcord.postCommand(commandToExecute.name, message.member.id);
-							}
-
-							await commandToExecute.runCommand(message.database.guildLanguage || 'en', message);
-						} else {
-							message.reply({embeds: [error(i18n(message.database.guildLanguage || 'en', 'COMMAND::LEGACYNOAVALIABLE'))]});
+						if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
+							message.reply({embeds: [error(i18n(message.guild.configuration.common.language || 'en', 'COMMAND::PERMERROR'))]});
+							return;
 						}
-					} else {
-						message.reply({embeds: [timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', {COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, commandToExecute), {round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en']})}))]});
+
+						CooldownManager.add(message.member, message.guild, commandToExecute);
+
+						await commandToExecute.runCommand(message.guild.configuration.common.language || 'en', message);
+					} else if (message.guild.configuration.customcommands.enabled) {
+						CooldownManager.add(message.member, message.guild, message.commandName);
+						runCustomCommand(message, message.commandName);
 					}
-				} else if (CooldownManager.check(message.member, message.guild, commandToExecute)) {
-					CooldownManager.add(message.member, message.guild, commandToExecute);
-					customcommands(message, commandToExecute);
 				} else {
-					message.reply({embeds: [timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', {COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, commandToExecute), {round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en']})}))]});
+					message.reply({embeds: [timer(i18n(message.guild.configuration.common.language || 'en', 'COOLDOWN', {COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), {round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en']})}))]});
+				}
+			} else {
+				if (message.guild.configuration.leveling.enabled) {
+					getExperience(message.member);
+				}
+
+				if (message.guild.configuration.autoreplies.enabled) {
+					handleAutoRepliesInMessageCreate(message);
 				}
 			}
-
-			/* If (message.database.leveling.enabled !== 0) {
-				getExperience(message.member);
-			} */
 		});
 	},
 };

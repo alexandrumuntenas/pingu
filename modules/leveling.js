@@ -8,25 +8,29 @@ const Database = require('../functions/databaseConnection');
 
 const {getMember, updateMember} = require('../functions/memberManager');
 const {getGuildConfigNext} = require('../functions/guildDataManager');
+const CooldownManager = require('../functions/cooldownManager');
 
 module.exports.getExperience = member => {
-	getGuildConfigNext(member.guild, guildConfig => {
-		getMember(member, memberData => {
-			memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15);
-			if (memberData.lvlExperience >= (((memberData.lvlExperience * memberData.lvlExperience) * guildConfig.leveling.difficulty) * 100)) {
-				memberData.lvlExperience -= (((memberData.lvlExperience * memberData.lvlExperience) * guildConfig.leveling.difficulty) * 100);
-				this.doLevelUp(member);
-			}
-
-			try {
-				updateMember(member, {lvlExperience: memberData.lvlExperience});
-			} catch (err) {
-				if (err) {
-					Consolex.handleError(err);
+	if (CooldownManager.check(member, member.guild, {name: 'leveling'})) {
+		CooldownManager.add(member, member.guild, {name: 'leveling', cooldown: 6000});
+		getGuildConfigNext(member.guild, guildConfig => {
+			getMember(member, memberData => {
+				memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15);
+				if (memberData.lvlExperience >= (((memberData.lvlExperience * memberData.lvlExperience) * guildConfig.leveling.difficulty) * 100)) {
+					memberData.lvlExperience -= (((memberData.lvlExperience * memberData.lvlExperience) * guildConfig.leveling.difficulty) * 100);
+					this.doLevelUp(member);
 				}
-			}
+
+				try {
+					updateMember(member, {lvlExperience: memberData.lvlExperience});
+				} catch (err) {
+					if (err) {
+						Consolex.handleError(err);
+					}
+				}
+			});
 		});
-	});
+	}
 };
 
 /**

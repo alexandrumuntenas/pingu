@@ -1,5 +1,6 @@
 const Client = require('../Client');
 const Consolex = require('../functions/consolex');
+const Database = require('../functions/databaseConnection');
 
 /**
  * Get member data from the database.
@@ -13,6 +14,10 @@ module.exports.getMember = (member, callback) => {
 		op: 'memberManager.getMember',
 		name: 'memberManager (Get Member)',
 	});
+	if (!callback) {
+		throw Error('You didn\'t provide a callback.');
+	}
+
 	Database.query('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
 		if (err) {
 			Consolex.handleError(err);
@@ -27,8 +32,10 @@ module.exports.getMember = (member, callback) => {
 
 				if (result && Object.prototype.hasOwnProperty.call(result, '0')) {
 					result.filter(r => r.member === member.id).forEach(r => {
-						member[0].lvlRank = r.lvlRank;
+						memberData[0].lvlRank = r.lvlRank;
 					});
+
+					callback(memberData[0]);
 				}
 			});
 		} else {
@@ -84,7 +91,7 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
 		throw Error('You didn\' provide any data to update.');
 	}
 
-	module.exports.getMember(Client, member, memberData => {
+	this.getMember(member, memberData => {
 		Database.query('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ?, `ecoBalance` = ?, `ecoInventory` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, memberDataToUpdate.ecoBalance || memberData.ecoBalance, memberDataToUpdate.ecoInventory || memberData.ecoInventory, member.guild.id, member.id], err => {
 			if (err) {
 				Consolex.handleError(err);

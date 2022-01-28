@@ -14,13 +14,16 @@ module.exports.getReply = (guild, trigger, callback) => {
 		throw new Error('Callback is required');
 	}
 
-	Database.query('SELECT 1 FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ?', [trigger, guild.id], (err, result) => {
+	Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
 
 		if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
+			result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties);
 			callback(result[0]);
+		} else {
+			callback();
 		}
 	});
 };
@@ -32,12 +35,12 @@ module.exports.getReply = (guild, trigger, callback) => {
  * @param {Strong} autoreply.trigger - The string that will trigger the reply.
  * @param {String} autoreply.reply - The reply to the trigger.
  * @param {Object} autoreply.properties - The autoreply properties
- * @param {Boolean} autoreply.properties.sendEmbed - Whether or not to send the reply as an embed.
- * @param {?Object} autoreply.properties.sendEmbed.title - The title field of the embed.
- * @param {?Object} autoreply.properties.sendEmbed.description - The description field of the embed.
- * @param {?Object} autoreply.properties.sendEmbed.thumbnail - The thumbnail field of the embed.
- * @param {?Object} autoreply.properties.sendEmbed.image - The image field of the embed.
- * @param {?Object} autoreply.properties.sendEmbed.url - The url field of the embed.
+ * @param {Boolean} autoreply.properties.sendInEmbed - Whether or not to send the reply as an embed.
+ * @param {?Object} autoreply.properties.sendInEmbed.title - The title field of the embed.
+ * @param {?Object} autoreply.properties.sendInEmbed.description - The description field of the embed.
+ * @param {?Object} autoreply.properties.sendInEmbed.thumbnail - The thumbnail field of the embed.
+ * @param {?Object} autoreply.properties.sendInEmbed.image - The image field of the embed.
+ * @param {?Object} autoreply.properties.sendInEmbed.url - The url field of the embed.
  * @param {Functions} callback - The callback to call.
  * @returns {String} Trigger ID
  */
@@ -82,6 +85,67 @@ module.exports.deleteReply = (guild, triggerID) => {
 		if (err) {
 			Consolex.handleError(err);
 			throw err;
+		}
+	});
+};
+
+/**
+ * Handle an auto reply.
+ * @param {Message} message
+ */
+
+const Client = require('../client');
+const i18n = require('../i18n/i18n');
+const {MessageEmbed} = require('discord.js');
+
+module.exports.handleAutoRepliesInMessageCreate = message => {
+	this.getReply(message.guild, message.content, replydata => {
+		if (replydata) {
+			const reply = {};
+			if (reply.sendInEmbed) {
+				const embed = new MessageEmbed();
+
+				if (replydata.sendInEmbed.title) {
+					embed.setTitle(replydata.sendEmbed.title);
+				}
+
+				if (reply.sendInEmbed.description) {
+					reply.content = replydata.reply;
+					embed.setDescription(replydata.sendEmbed.description);
+				} else {
+					embed.setDescription(replydata.reply);
+				}
+
+				if (replydata.sendInEmbed.thumbnail) {
+					embed.setThumbnail(replydata.sendEmbed.thumbnail);
+				}
+
+				if (replydata.sendInEmbed.image) {
+					embed.setImage(replydata.sendEmbed.image);
+				}
+
+				if (replydata.sendInEmbed.url) {
+					embed.setURL(replydata.sendEmbed.url);
+				}
+
+				if (replydata.sendInEmbed.color) {
+					embed.setColor(replydata.sendEmbed.color);
+				} else {
+					embed.setColor('#2F3136');
+				}
+
+				embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: Client.user.displayAvatarURL()});
+
+				reply.embeds = [embed];
+			} else {
+				reply.content = replydata.autoreplyReply;
+			}
+
+			try {
+				message.channel.send(reply);
+			} catch (err) {
+				Consolex.handleError(err);
+			}
 		}
 	});
 };

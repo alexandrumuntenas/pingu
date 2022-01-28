@@ -8,41 +8,6 @@ const {Routes} = require('discord-api-types/v9');
 
 /**
  * Get the guild's configuration from the database.
- * @deprecated since 2202. Use ·Next() instead.
- * @param {Guild} guild - The guild
- * @param {Function} callback - The callback function
- * @returns Object - The guild configuration
- */
-
-module.exports.getGuildConfig = (guild, callback) => {
-	const gFD = Consolex.Sentry.startTransaction({
-		op: 'getGuildConfig',
-		name: 'Get Guild Configuration',
-	});
-	Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-		if (err) {
-			Consolex.handleError(err);
-		}
-
-		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-			callback(result[0]);
-		} else {
-			const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0;
-			Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
-				if (err) {
-					Consolex.handleError(err);
-					Consolex.error(err);
-				}
-
-				gFD.finish();
-				module.exports(guild, callback);
-			});
-		}
-	});
-};
-
-/**
- * Get the guild's configuration from the database.
  * @param {Guild} guild - The guild
  * @param {Function} callback - The callback function
  * @returns Object - The guild configuration
@@ -59,7 +24,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 		}
 
 		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-			if (result[0].ClientVersion === 'pingu@1.0.0') {
+			if (result[0].clientVersion === 'pingu@1.0.0') {
 				module.exports.migrateGuildData(guild, () => {
 					module.exports.getGuildConfigNext(guild, callback);
 				});
@@ -221,52 +186,55 @@ function procesarObjetosdeConfiguracion(config, newconfig, callback) {
 }
 
 module.exports.migrateGuildData = (guild, callback) => {
+	console.log('hay que migrar');
 	Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
 		}
 
 		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-			if (!result[0].ClientVersion === 'pingu@1.0.0') {
+			if (!result[0].clientVersion === 'pingu@1.0.0') {
 				return;
 			}
 
+			const BoolRelation = {0: false, 1: true};
+
 			// Migrar configuraciones generales
-			const general = {idioma: result[0].guildLanguage, prefijo: result[0].guildPrefix, interacciones: {habilitado: 1, desplegarComandosDeConfiguracion: result[0].guildViewCnfCmdsEnabled}};
+			const general = {language: result[0].guildLanguage, prefix: result[0].guildPrefix, interactions: {enabled: BoolRelation['1'], deployConfigInteractions: result[0].guildViewCnfCmdsEnabled}};
 
 			// Migrar módulo de bienvenidas
 			const welcomer = {
-				habilitado: result[0].welcomeEnabled, canal: result[0].welcomeChannel, mensaje: result[0].welcomeMessage, tarjeta: {habilitado: result[0].welcomeImage, fondo: result[0].welcomeImageCustomBackground, overlay: {color: result[0].welcomeImageCustomOverlayColor, opacidad: result[0].welcomeImageCustomOpacity}},
+				enabled: BoolRelation[result[0].welcomeEnabled], channel: result[0].welcomeChannel, message: result[0].welcomeMessage, welcomecard: {enabled: BoolRelation[result[0].welcomeImage], background: result[0].welcomeImageCustomBackground, overlay: {color: result[0].welcomeImageCustomOverlayColor, opacity: result[0].welcomeImageCustomOpacity}},
 			};
 			// Migrar módulo de despedidas
-			const farewell = {habilitado: result[0].farewellEnabled, canal: result[0].farewellChannel, mensaje: result[0].farewellMessage};
+			const farewell = {enabled: BoolRelation[result[0].farewellEnabled], channel: result[0].farewellChannel, message: result[0].farewellMessage};
 
 			// Migrar módulo de niveles
 			const levels = {
-				habilitado: result[0].levelsEnabled, canal: result[0].levelsChannel, mensaje: result[0].levelsMessage, dificultad: result[0].levelsDifficulty, tarjeta: {fondo: result[0].levelsImageCustomBackground, overlay: {opacidad: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor}},
+				enabled: BoolRelation[result[0].levelsEnabled], channel: result[0].levelsChannel, message: result[0].levelsMessage, difficulty: result[0].levelsDifficulty, card: {background: result[0].levelsImageCustomBackground, overlay: {opacity: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor}},
 			};
 
 			// Migrar módulo de economía
-			const economy = {habilitado: result[0].economyEnabled, moneda: {nombre: result[0].economyCurrency, icono: result[0].economyCurrencyIcon}};
+			const economy = {enabled: BoolRelation[result[0].economyEnabled], coin: {name: result[0].economyCurrency, icon: result[0].economyCurrencyIcon}};
 
 			// Migrar módulo de sugerencias
-			const suggestions = {habilitado: result[0].suggestionsEnabled, canales: {sugerenciasNoRevisadas: result[0].suggestionsChannel, sugerenciasRevisadas: result[0].suggestionsRevChannel}};
+			const suggestions = {enabled: BoolRelation[result[0].suggestionsEnabled], channels: {suggestionsNotRevised: result[0].suggestionsChannel, suggestionsRevised: result[0].suggestionsRevChannel}};
 
 			// Migrar módulo de respuestas automáticas
-			const autoresponder = {habilitado: result[0].autoresponderEnabled};
+			const autoresponder = {enabled: BoolRelation[result[0].autoresponderEnabled]};
 
 			// Migar módulo de comandos personalizados
-			const customcommands = {habilitado: result[0].customcommandsEnabled};
+			const customcommands = {enabled: BoolRelation[result[0].customcommandsEnabled]};
 
-			module.exports.updateGuildConfig(guild, {column: 'ClientVersion', value: 'pingu@2.0.0'});
-			module.exports.updateGuildConfigNext(guild, {column: 'general', newconfig: general});
-			module.exports.updateGuildConfigNext(guild, {column: 'bienvenidas', newconfig: welcomer});
-			module.exports.updateGuildConfigNext(guild, {column: 'despedidas', newconfig: farewell});
-			module.exports.updateGuildConfigNext(guild, {column: 'niveles', newconfig: levels});
-			module.exports.updateGuildConfigNext(guild, {column: 'economia', newconfig: economy});
-			module.exports.updateGuildConfigNext(guild, {column: 'sugerencias', newconfig: suggestions});
-			module.exports.updateGuildConfigNext(guild, {column: 'respuestasPersonalizadas', newconfig: autoresponder});
-			module.exports.updateGuildConfigNext(guild, {column: 'comandosPersonalizados', newconfig: customcommands});
+			module.exports.updateGuildConfig(guild, {column: 'clientVersion', value: 'pingu@2.0.0'});
+			module.exports.updateGuildConfigNext(guild, {column: 'common', newconfig: general});
+			module.exports.updateGuildConfigNext(guild, {column: 'welcome', newconfig: welcomer});
+			module.exports.updateGuildConfigNext(guild, {column: 'farewell', newconfig: farewell});
+			module.exports.updateGuildConfigNext(guild, {column: 'leveling', newconfig: levels});
+			module.exports.updateGuildConfigNext(guild, {column: 'economy', newconfig: economy});
+			module.exports.updateGuildConfigNext(guild, {column: 'suggestions', newconfig: suggestions});
+			module.exports.updateGuildConfigNext(guild, {column: 'autoreplies', newconfig: autoresponder});
+			module.exports.updateGuildConfigNext(guild, {column: 'customcommands', newconfig: customcommands});
 			if (callback) {
 				callback();
 			}

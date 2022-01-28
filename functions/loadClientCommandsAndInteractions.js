@@ -28,6 +28,10 @@ module.exports = () => {
 						command.isConfigCommand = false;
 					}
 
+					if (!(command.runCommand || command.runInteraction)) {
+						throw new Error(`Command ${command.name} does not have a runCommand or runInteraction function`);
+					}
+
 					commands.set(command.name, command);
 					Consolex.success(`Comando ${file} cargado`);
 				} else {
