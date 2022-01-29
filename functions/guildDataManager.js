@@ -317,6 +317,11 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 	callback(interactionList.map(command => command.interactionData.toJSON()));
 }
 
+/**
+ * Remove all the guild related data from Pingu database.
+ * @param {Guild} guild - The Guild
+ */
+
 module.exports.deleteGuildData = guild => {
 	const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles'];
 	databaseTables.forEach(table => {
