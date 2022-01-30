@@ -3,31 +3,45 @@ const {codeBlock} = require('@discordjs/builders');
 
 module.exports.status = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:pingu_null:876103457860370442> ${message}`);
+	.setDescription(`<:pingu_null:876103457860370442> ${message}`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 module.exports.loader = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<a:loader:927223896330084412> ${message}`);
+	.setDescription(`<a:loader:927223896330084412> ${message}`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 module.exports.success = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:pingu_on:876103503561502730> ${message}`);
+	.setDescription(`<:pingu_on:876103503561502730> ${message}`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 module.exports.error = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:pingu_null:876103457860370442> ${message}`);
+	.setDescription(`<:pingu_null:876103457860370442> ${message}`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 module.exports.info = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`:information_source: ${message}`);
+	.setDescription(`:information_source: ${message}`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 module.exports.image = (imageURL, imageProvider) => new MessageEmbed()
 	.setImage(imageURL)
-	.setDescription(`:frame_photo: Image via ${imageProvider} API.`);
+	.setDescription(`:frame_photo: Image via ${imageProvider} API.`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 module.exports.timer = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:wait:928374551182721044> ${message}`);
+	.setDescription(`<:wait:928374551182721044> ${message}`)
+	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+	.setTimestamp();
 
 /**
 * Devuelve un mensaje enriquecido con información del comando
@@ -42,7 +56,9 @@ module.exports.help = (commandName, commandDescription, commandOptions) => {
 	const embed = new MessageEmbed()
 		.setColor('#2F3136')
 		.setTitle(`${commandName} • Help Tray`)
-		.setDescription(`${commandDescription || 'No description'}`);
+		.setDescription(`${commandDescription || 'No description'}`)
+		.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+		.setTimestamp();
 
 	if (commandOptions) {
 		const optionsNoNSFW = commandOptions.filter(option => !option.isNsfw);
