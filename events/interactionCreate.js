@@ -8,17 +8,17 @@ const humanizeduration = require('humanize-duration');
 
 module.exports = {
 	name: 'interactionCreate',
-	execute: async (Client, interaction) => {
+	execute: async interaction => {
 		if (interaction.isCommand()) {
-			isCommand(Client, interaction).catch(Consolex.handleError);
+			isCommand(interaction).catch(Consolex.handleError);
 		}
 	},
 };
 
-async function isCommand(Client, interaction) {
+async function isCommand(interaction) {
 	if (
 		interaction.channel.type === 'dm'
-		|| interaction.author === Client.user
+		|| interaction.author === process.Client.user
 	) {
 		return;
 	}
@@ -26,8 +26,8 @@ async function isCommand(Client, interaction) {
 	interaction.replyData = await interaction.deferReply({fetchReply: true});
 	getGuildConfigNext(interaction.guild, async guildConfig => {
 		interaction.guild.configuration = guildConfig;
-		if (Client.commands.has(interaction.commandName)) {
-			const interactionToRun = Client.commands.get(interaction.commandName);
+		if (process.Client.commands.has(interaction.commandName)) {
+			const interactionToRun = process.Client.commands.get(interaction.commandName);
 			if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
 				interaction.editReply({embeds: [error(i18n(interaction.guild.configuration.language || 'en', 'COMMAND_PERMISSION_ERROR'))]});
 				return;

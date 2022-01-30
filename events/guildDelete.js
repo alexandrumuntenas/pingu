@@ -3,7 +3,7 @@ const {deleteGuildData} = require('../functions/guildDataManager');
 
 module.exports = {
 	name: 'guildDelete',
-	execute: async (Client, guild) => {
+	execute: async guild => {
 		const gD = Consolex.Sentry.startTransaction({
 			op: 'guildDelete',
 			name: 'Guild Delete',

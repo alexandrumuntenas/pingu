@@ -2,6 +2,7 @@ const {Permissions} = require('discord.js');
 const i18n = require('../../i18n/i18n');
 const {deployGuildInteractions} = require('../../functions/guildDataManager');
 const {success} = require('../../functions/defaultMessages');
+const Consolex = require('../../functions/consolex');
 
 module.exports = {
 	name: 'update',
@@ -11,24 +12,28 @@ module.exports = {
 	cooldown: 1,
 	runInteraction(locale, interaction) {
 		try {
-			deployGuildInteractions(interaction.guild);
-		} catch (err) {
-			if (err) {
-				return interaction.editReply({embeds: [success(i18n(locale, 'UPDATE::ERROR'))]});
-			}
+			deployGuildInteractions(interaction.guild, err => {
+				if (err) {
+					return interaction.editReply({embeds: [success(i18n(locale, 'UPDATE::ERROR'))]});
+				}
 
-			return interaction.editReply({embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))]});
+				return interaction.editReply({embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))]});
+			});
+		} catch (err) {
+			Consolex.handleError(err);
 		}
 	},
 	runCommand(locale, message) {
 		try {
-			deployGuildInteractions(message.guild);
-		} catch (err) {
-			if (err) {
-				return message.reply({embeds: [success(i18n(locale, 'UPDATE::ERROR'))]});
-			}
+			deployGuildInteractions(message.guild, err => {
+				if (err) {
+					return message.reply({embeds: [success(i18n(locale, 'UPDATE::ERROR'))]});
+				}
 
-			return message.reply({embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))]});
+				return message.reply({embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))]});
+			});
+		} catch (err) {
+			Consolex.handleError(err);
 		}
 	},
 };

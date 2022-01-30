@@ -1,4 +1,5 @@
-const Client = require('../Client');
+const Consolex = require('../functions/consolex');
+const Database = require('../functions/databaseConnection');
 const {getMember, updateMember} = require('../functions/memberManager');
 
 /**

@@ -1,4 +1,3 @@
-const Client = require('../Client');
 const Consolex = require('../functions/consolex');
 const Database = require('../functions/databaseConnection');
 
@@ -39,8 +38,8 @@ module.exports.getMember = (member, callback) => {
 				}
 			});
 		} else {
-			module.exports.createMember(Client, member, () => {
-				module.exports.getMember(Client, member, callback);
+			module.exports.createMember(member, () => {
+				module.exports.getMember(member, callback);
 				sentryEvent.finish();
 			});
 		}

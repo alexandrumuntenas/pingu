@@ -1,6 +1,5 @@
 /** @module GuildDataManager */
 
-const Client = require('../client');
 const Database = require('./databaseConnection');
 const Consolex = require('./consolex');
 const {REST} = require('@discordjs/rest');
@@ -49,7 +48,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 				}
 
 				gFD.finish();
-				module.exports(guild, callback);
+				module.exports.getGuildConfigNext(guild, callback);
 			});
 		}
 	});
@@ -186,7 +185,6 @@ function procesarObjetosdeConfiguracion(config, newconfig, callback) {
 }
 
 module.exports.migrateGuildData = (guild, callback) => {
-	console.log('hay que migrar');
 	Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
 		if (err) {
 			Consolex.handleError(err);
@@ -259,56 +257,68 @@ if (process.env.ENTORNO === 'desarrollo') {
 	rest.setToken(process.env.PUBLIC_TOKEN);
 }
 
-module.exports.deployGuildInteractions = guild => {
+/**
+ * Deploy the interactions to the guild.
+ * @param {Guild} guild
+ * @param {Function} callback
+ */
+
+module.exports.deployGuildInteractions = (guild, callback) => {
+	if (!callback) {
+		throw new Error('Callback is required');
+	}
+
 	module.exports.getGuildConfigNext(guild, guildConfig => {
 		createTheInteractionListOfTheGuild(guildConfig, guildInteractionList => {
 			rest
 				.put(
 					Routes.applicationGuildCommands(
-						Client.user.id,
+						process.Client.user.id,
 						guild.id,
 					),
 					{body: guildInteractionList},
 				).catch(err => {
 					if (err) {
-						throw err;
+						callback(err);
 					}
 				});
 		});
 	});
 };
 
+const {Collection} = require('discord.js');
+
 function createTheInteractionListOfTheGuild(guildConfig, callback) {
 	if (!callback) {
 		throw new Error('Callback function is required');
 	}
 
-	let interactionList = [];
+	let interactionList = new Collection();
 	if (guildConfig.welcomeEnabled !== 0) {
-		interactionList += Client.commands.filter(command => command.module === 'welcome') || [];
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'welcome') || []);
 	}
 
 	if (guildConfig.farewellEnabled !== 0) {
-		interactionList += Client.commands.filter(command => command.module === 'farewell') || [];
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'farewell') || []);
 	}
 
 	if (guildConfig.joinRolesEnabled !== 0) {
-		interactionList += Client.commands.filter(command => command.module === 'joinroles') || [];
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'joinroles') || []);
 	}
 
 	if (guildConfig.levelsEnabled !== 0) {
-		interactionList += Client.commands.filter(command => command.module === 'levels') || [];
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'levels') || []);
 	}
 
 	if (guildConfig.suggestionsEnabled !== 0) {
-		interactionList += Client.commands.filter(command => command.module === 'suggestions') || [];
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'suggestions') || []);
 	}
 
 	if (guildConfig.economyEnabled !== 0) {
-		interactionList += Client.commands.filter(command => command.module === 'economy') || [];
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'economy') || []);
 	}
 
-	interactionList += Client.commands.filter(command => !command.module);
+	interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || []);
 
 	if (guildConfig.guildViewCnfCmdsEnabled === 0) {
 		interactionList = interactionList.filter(command => command.isConfigCommand === false);

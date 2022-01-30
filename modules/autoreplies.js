@@ -94,7 +94,6 @@ module.exports.deleteReply = (guild, triggerID) => {
  * @param {Message} message
  */
 
-const Client = require('../client');
 const i18n = require('../i18n/i18n');
 const {MessageEmbed} = require('discord.js');
 
@@ -134,7 +133,7 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
 					embed.setColor('#2F3136');
 				}
 
-				embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: Client.user.displayAvatarURL()});
+				embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL()});
 
 				reply.embeds = [embed];
 			} else {

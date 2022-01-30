@@ -10,10 +10,10 @@ if (process.env.ENTORNO === 'desarrollo') {
 
 module.exports = {
 	name: 'ready',
-	execute: Client => {
-		Consolex.info(`Conectado como ${Client.user.tag}!`);
-		if (Client.statcord) {
-			Client.statcord.autopost();
+	execute: () => {
+		Consolex.info(`Conectado como ${process.Client.user.tag}!`);
+		if (process.Client.statcord) {
+			process.Client.statcord.autopost();
 		}
 	},
 };

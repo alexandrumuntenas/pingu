@@ -14,25 +14,23 @@ const fs = require('fs');
 
 const initializeThirdParty = require('./functions/initializeThirdParty');
 
-const Client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_BANS, Discord.Intents.FLAGS.GUILD_INVITES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING], partials: ['REACTION', 'MESSAGE', 'USER']});
+process.Client = new Discord.Client({intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_BANS, Discord.Intents.FLAGS.GUILD_INVITES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING], partials: ['REACTION', 'MESSAGE', 'USER']});
 
 const Consolex = require('./functions/consolex');
 
 if (process.env.ENTORNO === 'public') {
 	Consolex.warn('Iniciando sesión como el bot público.');
-	initializeThirdParty(Client);
-	Client.login(process.env.PUBLIC_TOKEN);
+	initializeThirdParty(process.Client);
+	process.Client.login(process.env.PUBLIC_TOKEN);
 } else {
 	Consolex.warn('Iniciando sesión como el bot de desarrollo.');
-	Client.login(process.env.INSIDER_TOKEN);
+	process.Client.login(process.env.INSIDER_TOKEN);
 }
 
-Client.commands = require('./functions/loadClientCommandsAndInteractions')();
+process.Client.commands = require('./functions/loadClientCommandsAndInteractions')();
 
 for (const file of fs.readdirSync('./events').filter(file => file.endsWith('.js'))) {
 	const event = require(`./events/${file}`);
 	Consolex.success(`Evento ${file} cargado`);
-	Client.on(event.name, (...args) => event.execute(Client, ...args));
+	process.Client.on(event.name, (...args) => event.execute(...args));
 }
-
-module.exports = Client;

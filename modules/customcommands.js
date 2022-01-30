@@ -1,6 +1,5 @@
 const Database = require('../functions/databaseConnection');
 const Consolex = require('../functions/consolex');
-const Client = require('../client');
 
 /**
  * Get the custom command from the database
@@ -28,7 +27,6 @@ module.exports.getCustomCommand = (guild, command, callback) => {
 				callback(JSON.parse(result[0].customcommandproperties));
 			} else {
 				this.migrateToNewOrganization(guild, command).then(() => {
-					console.log('here?');
 					callback({command, reply: result[0].messageReturned});
 				});
 			}
@@ -142,7 +140,7 @@ module.exports.runCustomCommand = (message, command) => {
 				embed.setColor('#2F3136');
 			}
 
-			embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: Client.user.displayAvatarURL()});
+			embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL()});
 
 			reply.embeds = [embed];
 		} else {

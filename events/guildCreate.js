@@ -4,7 +4,7 @@ const {getGuildConfigNext} = require('../functions/guildDataManager.js');
 
 module.exports = {
 	name: 'guildCreate',
-	execute: async (Client, guild) => {
+	execute: async guild => {
 		const gC = Consolex.Sentry.startTransaction({
 			op: 'guildCreate',
 			name: 'Guild Create',
