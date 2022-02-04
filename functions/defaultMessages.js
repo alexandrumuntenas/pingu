@@ -15,13 +15,13 @@ module.exports.loader = message => new MessageEmbed()
 
 module.exports.success = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:pingu_on:876103503561502730> ${message}`)
+	.setDescription(`<:Blurple_verified_plain:938094790132764682> ${message}`)
 	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
 	.setTimestamp();
 
 module.exports.error = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:pingu_null:876103457860370442> ${message}`)
+	.setDescription(`<:blurple_employee:939096196801257472> ${message}`)
 	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
 	.setTimestamp();
 
@@ -33,13 +33,14 @@ module.exports.info = message => new MessageEmbed()
 
 module.exports.image = (imageURL, imageProvider) => new MessageEmbed()
 	.setImage(imageURL)
-	.setDescription(`:frame_photo: Image via ${imageProvider} API.`)
+	.setDescription(`<:blurple_image:892443053359517696> Image via ${imageProvider} API.`)
 	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
 	.setTimestamp();
 
 module.exports.timer = message => new MessageEmbed()
 	.setColor('#2F3136')
-	.setDescription(`<:wait:928374551182721044> ${message}`)
+	.setImage('https://cdn.discordapp.com/attachments/908413370665938975/939097943036809247/hearties-daniel-lissing.gif')
+	.setDescription(`<:timeout_clock:937404313901359114> ${message}`)
 	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
 	.setTimestamp();
 

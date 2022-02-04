@@ -53,5 +53,8 @@
   "WELCOME::VIEWCONFIG:CHANNEL": "Canal de mensajes de bienvenida",
   "WELCOME::VIEWCONFIG:DESCRIPTION": "Esta mensaje enriquecido muestra la configuración actual del módulo de bienvenida.",
   "WELCOME::VIEWCONFIG:MESSAGE": "Mensaje de bienvenida",
-  "WELCOME::VIEWCONFIG:TITLE": "Configuración del módulo de bienvenida"
+  "WELCOME::VIEWCONFIG:TITLE": "Configuración del módulo de bienvenida",
+  "UPDATE::ERROR": "Se ha producido un error al intentar cargar las interacciones.",
+  "UPDATE::SUCCESS": "Las interacciones se han cargado correctamente.",
+  "COOLDOWN": "El comando está en cooldown. Espere %COOLDOWN% segundos antes de volver a usarlo."
 }
