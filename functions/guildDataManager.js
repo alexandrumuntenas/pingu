@@ -24,9 +24,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 
 		if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
 			if (result[0].clientVersion === 'pingu@1.0.0') {
-				module.exports.migrateGuildData(guild, () => {
-					module.exports.getGuildConfigNext(guild, callback);
-				});
+				module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback));
 			} else {
 				Object.keys(result[0]).forEach(module => {
 					try {
@@ -108,9 +106,6 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
 					Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
 						if (err) {
 							Consolex.handleError(err);
-						}
-
-						if (err) {
 							return callback(err);
 						}
 
@@ -279,8 +274,10 @@ module.exports.deployGuildInteractions = (guild, callback) => {
 					{body: guildInteractionList},
 				).catch(err => {
 					if (err) {
-						callback(err);
+						return callback(err);
 					}
+				}).then(() => {
+					callback();
 				});
 		});
 	});

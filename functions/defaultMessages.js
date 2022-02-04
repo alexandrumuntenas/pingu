@@ -44,34 +44,39 @@ module.exports.timer = message => new MessageEmbed()
 	.setTimestamp();
 
 /**
-* Devuelve un mensaje enriquecido con información del comando
-* @param {String} commandName Nombre del comando
-* @param {String} commandDescription Descripción del comando
-* @param {Array} commandOptions Opciones del comando
-* @param {String} commandModule Opciones del comando
-* @return {MessageEmbed} Mensaje enriquecido
-*/
+ * Generate a help message for a command
+ * @param {Object} command - Object with information about the command.
+ * @param {String} command.name - Command name.
+ * @param {String} command.description - Command description.
+ * @param {String} command.cooldown - Command cooldown.
+ * @param {String} command.module - Command module.
+ * @param {Array.<{name:string,description:string,parameters:string,isNSFW:boolean}>} command.subcommands - Command subcommands.
+ */
 
-module.exports.help = (commandName, commandDescription, commandOptions) => {
-	const embed = new MessageEmbed()
+module.exports.help = command => {
+	if (!command) {
+		throw new Error('No command provided');
+	}
+
+	const embedOptions = new MessageEmbed()
 		.setColor('#2F3136')
-		.setTitle(`${commandName} • Help Tray`)
-		.setDescription(`${commandDescription || 'No description'}`)
+		.setTitle(`${command.name} • Options`)
+		.setDescription(`${command.description || 'No description'}\n\n<:timeout_clock:937404313901359114> Cooldown: ${command.cooldown || '10'}\n<:blurple_guide:937404928706617445> Module: ${command.module || 'No category'}`)
 		.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
 		.setTimestamp();
 
-	if (commandOptions) {
-		const optionsNoNSFW = commandOptions.filter(option => !option.isNsfw);
-		const optionsNSFW = commandOptions.filter(option => option.isNsfw);
+	if (command.subcommands) {
+		const subcommands = command.subcommands.filter(subcommand => !subcommand.isNSFW);
+		const subcommandsNSFW = command.subcommands.filter(subcommand => subcommand.isNSFW);
 
-		if (optionsNoNSFW) {
-			optionsNoNSFW.forEach(option => embed.addField(`${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true));
+		if (subcommands) {
+			subcommands.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:blurple_bot:938094998283501569> Syntax:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true));
 		}
 
-		if (optionsNSFW) {
-			optionsNSFW.forEach(option => embed.addField(`:underage: ${option.option}`, `${option.description || 'No description'}\n\n:gear: Syntax:\n${codeBlock(option.syntax || 'No syntax')}`, true));
+		if (subcommandsNSFW) {
+			subcommandsNSFW.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `:underage: Syntax:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true));
 		}
 	}
 
-	return embed;
+	return [embedOptions];
 };

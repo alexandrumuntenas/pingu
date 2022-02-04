@@ -3,7 +3,7 @@
  * @param {GuildMember} member
  */
 
-const {getGuildConfigNext} = require('../functions/guildDataManager');
+const {getGuildConfigNext, updateGuildConfigNext} = require('../functions/guildDataManager');
 
 module.exports.giveMemberRoles = member => {
 	getGuildConfigNext(member.guild, guildConfig => {
@@ -80,7 +80,7 @@ registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
 	family: 'Montserrat',
 });
 
-module.exports.generateWelcomeCard = member => {
+module.exports.generateWelcomeCard = (member, callback) => {
 	getGuildConfigNext(member.guild, async guildConfig => {
 		const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
 
@@ -90,34 +90,34 @@ module.exports.generateWelcomeCard = member => {
 		ctx.strokeStyle = 'rgba(0,0,0,0)';
 
 		if (
-			guildConfig.welcome.card.background
-      && isValidUrl(guildConfig.welcome.card.background)
-      && isImageUrl(guildConfig.welcome.card.background)
+			guildConfig.welcome.welcomecard.background
+			&& isValidUrl(guildConfig.welcome.welcomecard.background)
+			&& isImageUrl(guildConfig.welcome.welcomecard.background)
 		) {
-			const background = await loadImage(guildConfig.welcome.card.background);
+			const background = await loadImage(guildConfig.welcome.welcomecard.background);
 			const scale = Math.max(
 				canvas.width / background.width,
 				canvas.height / background.height,
 			);
 			ctx.drawImage(
 				background,
-				canvas.width / 2 - (background.width / 2) * scale,
-				canvas.height / 2 - (background.height / 2) * scale,
+				(canvas.width / 2) - ((background.width / 2) * scale),
+				(canvas.height / 2) - ((background.height / 2) * scale),
 				background.width * scale,
 				background.height * scale,
 			);
 			ctx.fillStyle = hexToRgba(
-				guildConfig.welcome.card.overlaycolor || '#272934',
-				guildConfig.welcome.card.overlayopacity || 50,
+				guildConfig.welcome.welcomecard.overlaycolor || '#272934',
+				guildConfig.welcome.welcomecard.overlayopacity || 50,
 			);
 			roundRect(ctx, 25, 25, 1050, 450, 10, ctx.fillStyle, ctx.strokeStyle);
 		} else {
-			ctx.fillStyle = guildConfig.welcome.card.overlaycolor || '#272934';
+			ctx.fillStyle = guildConfig.welcome.welcomecard.overlaycolor || '#272934';
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 		}
 
-		const title = guildConfig.welcome.card.title || `${member.user.tag} just joined the server`;
-		const subtitle = guildConfig.welcome.card.subtitle || `Member #${member.guild.memberCount}`;
+		const title = guildConfig.welcome.welcomecard.title || `${member.user.tag} just joined the server`;
+		const subtitle = guildConfig.welcome.welcomecard.subtitle || `Member #${member.guild.memberCount}`;
 
 		ctx.font = applyText(canvas, title);
 		ctx.fillStyle = '#ffffff';
@@ -143,12 +143,12 @@ module.exports.generateWelcomeCard = member => {
 		const avatar = await loadImage(
 			member.user.displayAvatarURL({format: 'png', size: 512}),
 		);
-		ctx.drawImage(avatar, canvas.width / 2 - 100, 75, 200, 200);
+		ctx.drawImage(avatar, (canvas.width / 2) - 100, 75, 200, 200);
 
 		const buffer = canvas.toBuffer('image/png');
 		writeFileSync(attachmentPath, buffer);
 
-		return attachmentPath;
+		callback(attachmentPath);
 	});
 };
 
@@ -222,6 +222,48 @@ module.exports.doGuildMemberAdd = member => {
 				this.giveMemberRoles(member);
 				this.sendWelcomeMessage(member);
 			}
+		}
+	});
+};
+
+module.exports.addJoinRole = (guild, role, callback) => {
+	getGuildConfigNext(guild, guildConfig => {
+		if (guildConfig.welcome.roles) {
+			const {roles} = guildConfig.welcome;
+			roles.push(`${role.id}`);
+			updateGuildConfigNext(guild, {column: 'welcome', newconfig: {roles}}, err => {
+				if (err && callback) {
+					callback(err);
+				}
+			});
+		} else {
+			const roles = [`${role.id}`];
+			updateGuildConfigNext(guild, {column: 'welcome', newconfig: {roles}}, err => {
+				if (err && callback) {
+					callback(err);
+				}
+			});
+		}
+
+		if (callback) {
+			callback();
+		}
+	});
+};
+
+module.exports.removeJoinRole = (guild, role, callback) => {
+	getGuildConfigNext(guild, guildConfig => {
+		if (guildConfig.welcome.roles) {
+			delete guildConfig.welcome.roles[`${role.id}`];
+			updateGuildConfigNext(guild, {column: 'welcome', newconfig: {roles: guildConfig.welcome.roles}}, err => {
+				if (err && callback) {
+					callback(err);
+				}
+			});
+		}
+
+		if (callback) {
+			callback();
 		}
 	});
 };
