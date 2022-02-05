@@ -72,5 +72,8 @@
   "USER::EMBED:GUILDJOINDATE": "Fecha de ingreso al servidor",
   "PING::BOTPING": "Latencia del bot",
   "PING::GATEWAYPING": "Latencia de nuestra conexión a Discord",
-  "PING::TOTALPING": "Latencia total"
+  "PING::TOTALPING": "Latencia total",
+  "COMMAND::PERMERROR": "No tienes permisos suficientes para usar este comando.",
+  "POLL::NOQUESTION": "Debes especificar una pregunta para la encuesta.",
+  "POLL::DESCRIPTION": "Crea una encuesta con una pregunta y varias opciones."
 }
