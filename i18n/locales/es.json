@@ -75,5 +75,7 @@
   "PING::TOTALPING": "Latencia total",
   "COMMAND::PERMERROR": "No tienes permisos suficientes para usar este comando.",
   "POLL::NOQUESTION": "Debes especificar una pregunta para la encuesta.",
-  "POLL::DESCRIPTION": "Crea una encuesta con una pregunta y varias opciones."
+  "POLL::DESCRIPTION": "Crea una encuesta con una pregunta y varias opciones.",
+  "FLIP::HEADS": "Ha salido cara",
+  "FLIP::TAILS": "Ha salido cruz"
 }
