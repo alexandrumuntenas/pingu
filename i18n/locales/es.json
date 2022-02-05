@@ -69,5 +69,8 @@
   "USER::EMBED:USERID": "ID del usuario",
   "USER::EMBED:MEMBERNAME": "Nombre del miembro",
   "USER::EMBED:ACCOUNTCREATIONDATE": "Fecha de creación de la cuenta",
-  "USER::EMBED:GUILDJOINDATE": "Fecha de ingreso al servidor"
+  "USER::EMBED:GUILDJOINDATE": "Fecha de ingreso al servidor",
+  "PING::BOTPING": "Latencia del bot",
+  "PING::GATEWAYPING": "Latencia de nuestra conexión a Discord",
+  "PING::TOTALPING": "Latencia total"
 }
