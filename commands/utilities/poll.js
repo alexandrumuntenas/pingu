@@ -11,8 +11,6 @@ module.exports = {
 	permissions: [Permissions.FLAGS.MANAGE_MESSAGES],
 	cooldown: 1,
 	interactionData: new SlashCommandBuilder()
-		.setName('poll')
-		.setDescription('📊 Create a poll')
 		.addStringOption(option =>
 			option
 				.setName('question')
