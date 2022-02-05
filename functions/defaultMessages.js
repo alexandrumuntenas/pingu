@@ -8,7 +8,7 @@ module.exports.status = message => new MessageEmbed()
 	.setTimestamp();
 
 module.exports.loader = message => new MessageEmbed()
-	.setColor('#F3375C')
+	.setColor('#FEE75C')
 	.setDescription(`<a:loader:927223896330084412> ${message}`)
 	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
 	.setTimestamp();
@@ -32,6 +32,7 @@ module.exports.info = message => new MessageEmbed()
 	.setTimestamp();
 
 module.exports.image = (imageURL, imageProvider) => new MessageEmbed()
+	.setColor('#2F3136')
 	.setImage(imageURL)
 	.setDescription(`<:blurple_image:892443053359517696> Image via ${imageProvider} API.`)
 	.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
