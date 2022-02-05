@@ -63,5 +63,11 @@
   "SERVER::EMBED:SERVERID": "ID del servidor",
   "SERVER::EMBED:SERVEROWNER": "Dueño del servidor",
   "SERVER::EMBED:SERVERCREATIONDATE": "Fecha de creación del servidor",
-  "SERVER::EMBED:NITROSTATUS": "Estado de Nitro"
+  "SERVER::EMBED:NITROSTATUS": "Estado de Nitro",
+  "USER::EMBED:TITLE": "Información del usuario",
+  "USER::EMBED:USERTAG": "Tag del usuario",
+  "USER::EMBED:USERID": "ID del usuario",
+  "USER::EMBED:MEMBERNAME": "Nombre del miembro",
+  "USER::EMBED:ACCOUNTCREATIONDATE": "Fecha de creación de la cuenta",
+  "USER::EMBED:GUILDJOINDATE": "Fecha de ingreso al servidor"
 }
