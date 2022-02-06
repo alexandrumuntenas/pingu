@@ -1,8 +1,8 @@
 const Database = require('mysql2').createPool({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASS,
-	database: process.env.DB_DATA,
+	host: process.env.DATABASE_HOST,
+	user: process.env.DATABASE_USER,
+	password: process.env.DATABASE_PASSWORD,
+	database: process.env.DATABASE_DATABASE,
 	charset: 'utf8mb4_unicode_ci',
 	waitForConnections: true,
 	connectionLimit: 100,
