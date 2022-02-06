@@ -299,12 +299,8 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'farewell') || []);
 	}
 
-	if (guildConfig.joinRolesEnabled !== 0) {
-		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'joinroles') || []);
-	}
-
 	if (guildConfig.levelsEnabled !== 0) {
-		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'levels') || []);
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'leveling') || []);
 	}
 
 	if (guildConfig.suggestionsEnabled !== 0) {

@@ -95,97 +95,102 @@ registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
 	family: 'Montserrat',
 });
 
+/**
+ * Generate the rank card of the member.
+ * @param {GuildMember} member
+ * @param {Function} callback
+ * @returns {String} The path of the rank card.
+ */
+
 module.exports.generateRankCard = (member, callback) => {
 	if (!callback) {
 		throw new Error('Callback is required.');
 	}
 
-	getGuildConfigNext(member.guild, guildConfig => {
-		getMember(member, async memberData => {
-			const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
-			const canvas = createCanvas(1100, 320);
-			const ctx = canvas.getContext('2d');
-			ctx.strokeStyle = 'rgba(0,0,0,0)';
+	getMember(member, async memberData => {
+		const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
+		const canvas = createCanvas(1100, 320);
+		const ctx = canvas.getContext('2d');
+		ctx.strokeStyle = 'rgba(0,0,0,0)';
 
-			// Establecer fondo del canvas
-			if (
-				guildConfig.levelsImageCustomBackground
-				&& isValidUrl(guildConfig.levelsImageCustomBackground)
-				&& isImageUrl(guildConfig.levelsImageCustomBackground)
-			) {
-				const background = await loadImage(guildConfig.levelsImageCustomBackground);
-				const scale = Math.max(
-					canvas.width / background.width,
-					canvas.height / background.height,
-				);
-				ctx.drawImage(
-					background,
-					(canvas.width / 2) - ((background.width / 2) * scale),
-					(canvas.height / 2) - ((background.height / 2) * scale),
-					background.width * scale,
-					background.height * scale,
-				);
-
-				ctx.fillStyle = hexToRgba(
-					guildConfig.levelsImageCustomOverlayColor || '#272934',
-					guildConfig.levelsImageCustomOpacity || 50,
-				);
-				roundRect(ctx, 16, 16, 1068, 290, 10, ctx.fillStyle, ctx.strokeStyle);
-			} else {
-				ctx.fillStyle = guildConfig.levelsImageCustomOverlayColor || '#272934';
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
-			}
-
-			// Escribir usuario
-			ctx.font = applyText(canvas, member.tag, 40);
-			ctx.textAlign = 'left';
-			ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-			ctx.fillText(`${member.tag}`, 295, 180, 500);
-
-			// Escribir nivel, experiencia y rango
-			ctx.font = '50px "Montserrat SemiBold"';
-			ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-			ctx.textAlign = 'right';
-			ctx.fillText(
-				`Rank #${memberData.lvlRank}  Level ${millify(
-					memberData.lvlLevel,
-				)}`,
-				1050,
-				100,
+		// Establecer fondo del canvas
+		if (
+			member.guild.configuration.levelsImageCustomBackground
+				&& isValidUrl(member.guild.configuration.levelsImageCustomBackground)
+				&& isImageUrl(member.guild.configuration.levelsImageCustomBackground)
+		) {
+			const background = await loadImage(member.guild.configuration.levelsImageCustomBackground);
+			const scale = Math.max(
+				canvas.width / background.width,
+				canvas.height / background.height,
+			);
+			ctx.drawImage(
+				background,
+				(canvas.width / 2) - ((background.width / 2) * scale),
+				(canvas.height / 2) - ((background.height / 2) * scale),
+				background.width * scale,
+				background.height * scale,
 			);
 
-			// Escribir progreso actual (actual/necesario)
-			const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.levelsDifficulty) * 100)} XP`;
-
-			ctx.font = '30px "Montserrat SemiBold"';
-			ctx.textAlign = 'right';
-			ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-			ctx.fillText(actualVSrequired, 1050, 180);
-
-			// Añadir barra de progreso (backdrop)
-			ctx.fillStyle = 'rgba(255,255,255, 0.3)';
-			roundRect(ctx, 295, 200, 755, 70, 10, ctx.fillStyle, ctx.strokeStyle);
-
-			// Añadir barra de progreso
-			ctx.fillStyle = 'rgb(255,255,255)';
-			roundRect(ctx, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.levelsDifficulty) * 100)) * 755, 70, 10,	ctx.fillStyle, ctx.strokeStyle);
-
-			// Añadir avatar de usuario
-			ctx.beginPath();
-			ctx.arc(159, 159, 102, 0, Math.PI * 2, true);
-			ctx.closePath();
-			ctx.clip();
-
-			const avatar = await loadImage(
-				member.user.displayAvatarURL({format: 'png', size: 512}),
+			ctx.fillStyle = hexToRgba(
+				member.guild.configuration.levelsImageCustomOverlayColor || '#272934',
+				member.guild.configuration.levelsImageCustomOpacity || 50,
 			);
-			ctx.drawImage(avatar, 57, 57, 204, 204);
+			roundRect(ctx, 16, 16, 1068, 290, 10, ctx.fillStyle, ctx.strokeStyle);
+		} else {
+			ctx.fillStyle = member.guild.configuration.levelsImageCustomOverlayColor || '#272934';
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+		}
 
-			const buffer = canvas.toBuffer('image/png');
-			writeFileSync(attachmentPath, buffer);
+		// Escribir usuario
+		ctx.font = applyText(canvas, member.user.tag, 40);
+		ctx.textAlign = 'left';
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+		ctx.fillText(`${member.user.tag}`, 295, 180, 500);
 
-			callback(attachmentPath);
-		});
+		// Escribir nivel, experiencia y rango
+		ctx.font = '50px "Montserrat SemiBold"';
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+		ctx.textAlign = 'right';
+		ctx.fillText(
+			`Rank #${memberData.lvlRank}  Level ${millify(
+				memberData.lvlLevel,
+			)}`,
+			1050,
+			100,
+		);
+
+		// Escribir progreso actual (actual/necesario)
+		const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.levelsDifficulty) * 100)} XP`;
+
+		ctx.font = '30px "Montserrat SemiBold"';
+		ctx.textAlign = 'right';
+		ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+		ctx.fillText(actualVSrequired, 1050, 180);
+
+		// Añadir barra de progreso (backdrop)
+		ctx.fillStyle = 'rgba(255,255,255, 0.3)';
+		roundRect(ctx, 295, 200, 755, 70, 10, ctx.fillStyle, ctx.strokeStyle);
+
+		// Añadir barra de progreso
+		ctx.fillStyle = 'rgb(255,255,255)';
+		roundRect(ctx, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.levelsDifficulty) * 100)) * 755, 70, 10,	ctx.fillStyle, ctx.strokeStyle);
+
+		// Añadir avatar de usuario
+		ctx.beginPath();
+		ctx.arc(159, 159, 102, 0, Math.PI * 2, true);
+		ctx.closePath();
+		ctx.clip();
+
+		const avatar = await loadImage(
+			member.user.displayAvatarURL({format: 'png', size: 512}),
+		);
+		ctx.drawImage(avatar, 57, 57, 204, 204);
+
+		const buffer = canvas.toBuffer('image/png');
+		writeFileSync(attachmentPath, buffer);
+
+		callback(attachmentPath);
 	});
 };
 
