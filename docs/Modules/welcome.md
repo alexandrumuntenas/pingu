@@ -34,7 +34,7 @@ Disable this module using `/admin modules disable module: welcomer`.
 | Command | Function | Example |
 | --- | --- | --- |
 | welcome viewconfig | Command to view the set configuration of the module. | !welcome viewconfig |
-| welcome setchannel channel: <channel> | Command to configure the welcome channel. (If it does not exist/work, the message is not sent). | !welcome setchannel #aeropuerto-internacional |
+| welcome setchannel channel: \<channel> | Command to configure the welcome channel. (If it does not exist/work, the message is not sent). | !welcome setchannel #aeropuerto-internacional |
 | welcome setmessage message: | Command to set the welcome message. | !welcomer setmessage {member} has joined {guild}. |
 | welcome configurecard viewconfig | Command to view the set configuration of the welcome card. | !welcome configurecard viewconfig |
 | welcome configurecard sendcards \<true/false> | Command to enable or disable sending the welcome card. | !welcome configurecard sendcards true |

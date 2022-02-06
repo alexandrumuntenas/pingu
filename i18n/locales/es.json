@@ -83,5 +83,17 @@
   "IMAGEAPI::NOCOPYRIGHT": "Sin derechos de autor. Obra de dominio público.",
   "LEVEL": "Nivel",
   "EXPERIENCE": "Experiencia",
-  "RANKING": "Ranking"
+  "RANKING": "Ranking",
+  "FAREWELL::VIEWCONFIG:TITLE": "Configuración del módulo de despedida",
+  "FAREWELL::VIEWCONFIG:DESCRIPTION": "Esta mensaje enriquecido muestra la configuración actual del módulo de despedida.",
+  "FAREWELL::VIEWCONFIG:MESSAGE": "Mensaje de despedida",
+  "FAREWELL::VIEWCONFIG:CHANNEL": "Canal de mensajes de despedida",
+  "FAREWELL::HELP:VIEWCONFIG:DESCRIPTION": "Ver la configuración actual del módulo de despedida.",
+  "FAREWELL::HELP:SETCHANNEL:DESCRIPTION": "Cambiar el canal de mensajes de despedida.",
+  "FAREWELL::HELP:SETMESSAGE:DESCRIPTION": "Cambiar el mensaje de despedida.",
+  "FAREWELL::HELP:DESCRIPTION": "Configurar el módulo de despedida.",
+  "FAREWELL::SETCHANNEL:ERROR": "Se ha producido un error al intentar cambiar el canal.",
+  "FAREWELL::SETCHANNEL:SUCCESS": "El nuevo canal para los mensajes de despedida es %CHANNEL%",
+  "FAREWELL::SETMESSAGE:ERROR": "Se ha producido un error intentar cambiar el mensaje de despedida.",
+  "FAREWELL::SETMESSAGE:SUCCESS": "El nuevo mensaje de despedida es %MESSAGE%"
 }
