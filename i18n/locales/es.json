@@ -80,5 +80,8 @@
   "FLIP::TAILS": "Ha salido cruz",
   "IMAGEAPI::PROVIDER": "Imagen via %PROVIDER%",
   "FETCHINGDATA": "Obteniendo datos...",
-  "IMAGEAPI::NOCOPYRIGHT": "Sin derechos de autor. Obra de dominio público."
+  "IMAGEAPI::NOCOPYRIGHT": "Sin derechos de autor. Obra de dominio público.",
+  "LEVEL": "Nivel",
+  "EXPERIENCE": "Experiencia",
+  "RANKING": "Ranking"
 }
