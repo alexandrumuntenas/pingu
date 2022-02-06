@@ -79,5 +79,6 @@
   "FLIP::HEADS": "Ha salido cara",
   "FLIP::TAILS": "Ha salido cruz",
   "IMAGEAPI::PROVIDER": "Imagen via %PROVIDER%",
-  "FETCHINGDATA": "Obteniendo datos..."
+  "FETCHINGDATA": "Obteniendo datos...",
+  "IMAGEAPI::NOCOPYRIGHT": "Sin derechos de autor. Obra de dominio público."
 }
