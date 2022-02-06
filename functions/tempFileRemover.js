@@ -1,9 +1,20 @@
-const {unlinkSync} = require('fs');
+const {unlinkSync, stat, readdirSync} = require('fs');
 
-module.exports = async path => {
-	if (Object.prototype.toString.call(path) === '[object Object]') {
-		Object.keys(path).forEach(file => unlinkSync(path[file]));
-	} else {
-		unlinkSync(path);
+/**
+ * Remove files older than 10 minutes every 5 minutes
+ */
+
+module.exports = async () => {
+	const files = readdirSync('./modules/temp');
+
+	for (const file of files) {
+		stat(`./modules/temp/${file}`, (err, stats) => {
+			const fileDate = new Date(stats.birthtime);
+			const now = new Date();
+
+			if (now - fileDate > 600000) {
+				unlinkSync(`./modules/temp/${file}`);
+			}
+		});
 	}
 };

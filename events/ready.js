@@ -1,5 +1,6 @@
 const Consolex = require('../functions/consolex');
 const {REST} = require('@discordjs/rest');
+const tempFileRemover = require('../functions/tempFileRemover');
 
 const rest = new REST({version: '9'});
 if (process.env.ENTORNO === 'desarrollo') {
@@ -15,5 +16,10 @@ module.exports = {
 		if (process.Client.statcord) {
 			process.Client.statcord.autopost();
 		}
+
+		tempFileRemover();
+		setInterval(() => {
+			tempFileRemover();
+		}, 600000);
 	},
 };
