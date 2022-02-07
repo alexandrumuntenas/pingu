@@ -80,76 +80,74 @@ registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
 	family: 'Montserrat',
 });
 
-module.exports.generateWelcomeCard = (member, callback) => {
-	getGuildConfigNext(member.guild, async guildConfig => {
-		const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
+module.exports.generateWelcomeCard = async (member, callback) => {
+	const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
 
-		const canvas = createCanvas(1100, 500);
-		const ctx = canvas.getContext('2d');
+	const canvas = createCanvas(1100, 500);
+	const ctx = canvas.getContext('2d');
 
-		ctx.strokeStyle = 'rgba(0,0,0,0)';
+	ctx.strokeStyle = 'rgba(0,0,0,0)';
 
-		if (
-			guildConfig.welcome.welcomecard.background
-			&& isValidUrl(guildConfig.welcome.welcomecard.background)
-			&& isImageUrl(guildConfig.welcome.welcomecard.background)
-		) {
-			const background = await loadImage(guildConfig.welcome.welcomecard.background);
-			const scale = Math.max(
-				canvas.width / background.width,
-				canvas.height / background.height,
-			);
-			ctx.drawImage(
-				background,
-				(canvas.width / 2) - ((background.width / 2) * scale),
-				(canvas.height / 2) - ((background.height / 2) * scale),
-				background.width * scale,
-				background.height * scale,
-			);
-			ctx.fillStyle = hexToRgba(
-				guildConfig.welcome.welcomecard.overlaycolor || '#272934',
-				guildConfig.welcome.welcomecard.overlayopacity || 50,
-			);
-			roundRect(ctx, 25, 25, 1050, 450, 10, ctx.fillStyle, ctx.strokeStyle);
-		} else {
-			ctx.fillStyle = guildConfig.welcome.welcomecard.overlaycolor || '#272934';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-		}
-
-		const title = guildConfig.welcome.welcomecard.title || `${member.user.tag} just joined the server`;
-		const subtitle = guildConfig.welcome.welcomecard.subtitle || `Member #${member.guild.memberCount}`;
-
-		ctx.font = applyText(canvas, title);
-		ctx.fillStyle = '#ffffff';
-		ctx.textAlign = 'center';
-		ctx.fillText(title, canvas.width / 2, 387);
-
-		ctx.font = '30px "Montserrat SemiBold"';
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-		ctx.fillText(subtitle, canvas.width / 2, 437);
-
-		// Añadir avatar de usuario
-		ctx.beginPath();
-		ctx.arc(canvas.width / 2, 175, 125, 0, Math.PI * 2, true);
-		ctx.closePath();
-		ctx.strokeStyle = 'white';
-		ctx.lineWidth = 10;
-		ctx.stroke();
-		ctx.beginPath();
-		ctx.arc(canvas.width / 2, 175, 100, 0, Math.PI * 2, true);
-		ctx.closePath();
-		ctx.clip();
-
-		const avatar = await loadImage(
-			member.user.displayAvatarURL({format: 'png', size: 512}),
+	if (
+		member.guild.configuration.welcome.welcomecard.background
+		&& isValidUrl(member.guild.configuration.welcome.welcomecard.background)
+		&& isImageUrl(member.guild.configuration.welcome.welcomecard.background)
+	) {
+		const background = await loadImage(member.guild.configuration.welcome.welcomecard.background);
+		const scale = Math.max(
+			canvas.width / background.width,
+			canvas.height / background.height,
 		);
-		ctx.drawImage(avatar, (canvas.width / 2) - 100, 75, 200, 200);
+		ctx.drawImage(
+			background,
+			(canvas.width / 2) - ((background.width / 2) * scale),
+			(canvas.height / 2) - ((background.height / 2) * scale),
+			background.width * scale,
+			background.height * scale,
+		);
+		ctx.fillStyle = hexToRgba(
+			member.guild.configuration.welcome.welcomecard.overlay.color || '#272934',
+			member.guild.configuration.welcome.welcomecard.overlay.opacity || 50,
+		);
+		roundRect(ctx, 25, 25, 1050, 450, 10, ctx.fillStyle, ctx.strokeStyle);
+	} else {
+		ctx.fillStyle = member.guild.configuration.welcome.welcomecard.overlay.color || '#272934';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+	}
 
-		const buffer = canvas.toBuffer('image/png');
-		writeFileSync(attachmentPath, buffer);
+	const title = member.guild.configuration.welcome.welcomecard.title || `${member.user.tag} just joined the server`;
+	const subtitle = member.guild.configuration.welcome.welcomecard.subtitle || `Member #${member.guild.memberCount}`;
 
-		callback(attachmentPath);
-	});
+	ctx.font = applyText(canvas, title);
+	ctx.fillStyle = '#ffffff';
+	ctx.textAlign = 'center';
+	ctx.fillText(title, canvas.width / 2, 387);
+
+	ctx.font = '30px "Montserrat SemiBold"';
+	ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+	ctx.fillText(subtitle, canvas.width / 2, 437);
+
+	// Añadir avatar de usuario
+	ctx.beginPath();
+	ctx.arc(canvas.width / 2, 175, 125, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.strokeStyle = 'white';
+	ctx.lineWidth = 10;
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.arc(canvas.width / 2, 175, 100, 0, Math.PI * 2, true);
+	ctx.closePath();
+	ctx.clip();
+
+	const avatar = await loadImage(
+		member.user.displayAvatarURL({format: 'png', size: 512}),
+	);
+	ctx.drawImage(avatar, (canvas.width / 2) - 100, 75, 200, 200);
+
+	const buffer = canvas.toBuffer('image/png');
+	writeFileSync(attachmentPath, buffer);
+
+	callback(attachmentPath);
 };
 
 function applyText(canvas, text, maxlimit) {

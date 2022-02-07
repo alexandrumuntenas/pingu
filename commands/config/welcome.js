@@ -184,8 +184,9 @@ module.exports = {
 					.setTitle(i18n(locale, 'WELCOME::VIEWCONFIG:TITLE'))
 					.setDescription(i18n(locale, 'WELCOME::VIEWCONFIG:DESCRIPTION'))
 					.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'WELCOME::VIEWCONFIG:CHANNEL')}`, `<#${message.guild.configuration.welcome.channel}>` || `❌ ${i18n(locale, 'NOTSET')}`, false)
-					.addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'WELCOME::VIEWCONFIG:MESSAGE')}`, message.guild.configuration.welcome.message || `❌ ${i18n(locale, 'NOTSET')}`, false);
-
+					.addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'WELCOME::VIEWCONFIG:MESSAGE')}`, message.guild.configuration.welcome.message || `❌ ${i18n(locale, 'NOTSET')}`, false)
+					.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()})
+					.setTimestamp();
 				const welcomeCards = new MessageEmbed()
 					.setColor('#2F3136')
 					.setTitle(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE'))
@@ -319,6 +320,8 @@ module.exports = {
 									message.parameters[2] = '0';
 								} else if (parseInt(message.parameters[2], 10) >= 100) {
 									message.parameters[2] = '100';
+								} else {
+									message.parameters[2] = '50';
 								}
 
 								updateGuildConfigNext(message.guild, {column: 'welcome', newconfig: {welcomecard: {overlay: {opacity: parseInt(message.parameters[2], 10)}}}}, err => {
