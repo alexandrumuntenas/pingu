@@ -10,7 +10,7 @@ module.exports = {
 	description: '⚙️ Configure the farewell settings for your server.',
 	permissions: [Permissions.FLAGS.MANAGE_GUILD],
 	cooldown: 1,
-	isConfigCommand: true,
+	isConfigurationCommand: true,
 	interactionData: new SlashCommandBuilder()
 		.addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current farewell configuration'))
 		.addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the farewell channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true)))
