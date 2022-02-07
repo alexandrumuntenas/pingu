@@ -115,11 +115,11 @@ module.exports.generateRankCard = (member, callback) => {
 
 		// Establecer fondo del canvas
 		if (
-			member.guild.configuration.levelsImageCustomBackground
-				&& isValidUrl(member.guild.configuration.levelsImageCustomBackground)
-				&& isImageUrl(member.guild.configuration.levelsImageCustomBackground)
+			member.guild.configuration.leveling.card.background
+			&& isValidUrl(member.guild.configuration.leveling.card.background)
+			&& isImageUrl(member.guild.configuration.leveling.card.background)
 		) {
-			const background = await loadImage(member.guild.configuration.levelsImageCustomBackground);
+			const background = await loadImage(member.guild.configuration.leveling.card.background);
 			const scale = Math.max(
 				canvas.width / background.width,
 				canvas.height / background.height,
@@ -133,12 +133,12 @@ module.exports.generateRankCard = (member, callback) => {
 			);
 
 			ctx.fillStyle = hexToRgba(
-				member.guild.configuration.levelsImageCustomOverlayColor || '#272934',
-				member.guild.configuration.levelsImageCustomOpacity || 50,
+				member.guild.configuration.leveling.card.overlay.color || '#272934',
+				member.guild.configuration.leveling.card.overlay.opacity || 50,
 			);
 			roundRect(ctx, 16, 16, 1068, 290, 10, ctx.fillStyle, ctx.strokeStyle);
 		} else {
-			ctx.fillStyle = member.guild.configuration.levelsImageCustomOverlayColor || '#272934';
+			ctx.fillStyle = member.guild.configuration.leveling.card.overlay.color || '#272934';
 			ctx.fillRect(0, 0, canvas.width, canvas.height);
 		}
 
@@ -159,9 +159,8 @@ module.exports.generateRankCard = (member, callback) => {
 			1050,
 			100,
 		);
-
 		// Escribir progreso actual (actual/necesario)
-		const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.levelsDifficulty) * 100)} XP`;
+		const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)} XP`;
 
 		ctx.font = '30px "Montserrat SemiBold"';
 		ctx.textAlign = 'right';
@@ -174,7 +173,7 @@ module.exports.generateRankCard = (member, callback) => {
 
 		// Añadir barra de progreso
 		ctx.fillStyle = 'rgb(255,255,255)';
-		roundRect(ctx, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.levelsDifficulty) * 100)) * 755, 70, 10,	ctx.fillStyle, ctx.strokeStyle);
+		roundRect(ctx, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)) * 755, 70, 10,	ctx.fillStyle, ctx.strokeStyle);
 
 		// Añadir avatar de usuario
 		ctx.beginPath();
