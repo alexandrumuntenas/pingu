@@ -29,6 +29,8 @@ const {MessageAttachment} = require('discord.js');
  * @param {GuildMember} member
  */
 
+const replaceBracePlaceholdersWithActualData = require('../functions/replacePlaceholdersWithRealData');
+
 module.exports.sendWelcomeMessage = member => {
 	getGuildConfigNext(member.guild, guildConfig => {
 		if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) {
@@ -60,10 +62,6 @@ module.exports.sendWelcomeMessage = member => {
  * @param {GuildMember} member
  */
 
-function replaceBracePlaceholdersWithActualData(message, member) {
-	return message.replace('{member}', `<@${member.user.id}>`).replace('{guild}', `${member.guild.name}`);
-}
-
 /**
  * Create the member welcome card
  * @param {GuildMember} member
@@ -84,9 +82,9 @@ module.exports.generateWelcomeCard = async (member, callback) => {
 	const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
 
 	const canvas = createCanvas(1100, 500);
-	const ctx = canvas.getContext('2d');
+	const finalImageComposition = canvas.getContext('2d');
 
-	ctx.strokeStyle = 'rgba(0,0,0,0)';
+	finalImageComposition.strokeStyle = 'rgba(0,0,0,0)';
 
 	if (
 		member.guild.configuration.welcome.welcomecard.background
@@ -98,51 +96,51 @@ module.exports.generateWelcomeCard = async (member, callback) => {
 			canvas.width / background.width,
 			canvas.height / background.height,
 		);
-		ctx.drawImage(
+		finalImageComposition.drawImage(
 			background,
 			(canvas.width / 2) - ((background.width / 2) * scale),
 			(canvas.height / 2) - ((background.height / 2) * scale),
 			background.width * scale,
 			background.height * scale,
 		);
-		ctx.fillStyle = hexToRgba(
+		finalImageComposition.fillStyle = hexToRgba(
 			member.guild.configuration.welcome.welcomecard.overlay.color || '#272934',
 			member.guild.configuration.welcome.welcomecard.overlay.opacity || 50,
 		);
-		roundRect(ctx, 25, 25, 1050, 450, 10, ctx.fillStyle, ctx.strokeStyle);
+		roundRect(finalImageComposition, 25, 25, 1050, 450, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle);
 	} else {
-		ctx.fillStyle = member.guild.configuration.welcome.welcomecard.overlay.color || '#272934';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		finalImageComposition.fillStyle = member.guild.configuration.welcome.welcomecard.overlay.color || '#272934';
+		finalImageComposition.fillRect(0, 0, canvas.width, canvas.height);
 	}
 
-	const title = member.guild.configuration.welcome.welcomecard.title || `${member.user.tag} just joined the server`;
-	const subtitle = member.guild.configuration.welcome.welcomecard.subtitle || `Member #${member.guild.memberCount}`;
+	const title = replaceBracePlaceholdersWithActualData(member.guild.configuration.welcome.welcomecard.title, member) || `${member.user.tag} just joined the server`;
+	const subtitle = replaceBracePlaceholdersWithActualData(member.guild.configuration.welcome.welcomecard.subtitle, member) || `Member #${member.guild.memberCount}`;
 
-	ctx.font = applyText(canvas, title);
-	ctx.fillStyle = '#ffffff';
-	ctx.textAlign = 'center';
-	ctx.fillText(title, canvas.width / 2, 387);
+	finalImageComposition.font = applyText(canvas, title);
+	finalImageComposition.fillStyle = '#ffffff';
+	finalImageComposition.textAlign = 'center';
+	finalImageComposition.fillText(title, canvas.width / 2, 387);
 
-	ctx.font = '30px "Montserrat SemiBold"';
-	ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-	ctx.fillText(subtitle, canvas.width / 2, 437);
+	finalImageComposition.font = applyText(canvas, subtitle, 30);
+	finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)';
+	finalImageComposition.fillText(subtitle, canvas.width / 2, 437);
 
 	// Añadir avatar de usuario
-	ctx.beginPath();
-	ctx.arc(canvas.width / 2, 175, 125, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.strokeStyle = 'white';
-	ctx.lineWidth = 10;
-	ctx.stroke();
-	ctx.beginPath();
-	ctx.arc(canvas.width / 2, 175, 100, 0, Math.PI * 2, true);
-	ctx.closePath();
-	ctx.clip();
+	finalImageComposition.beginPath();
+	finalImageComposition.arc(canvas.width / 2, 175, 125, 0, Math.PI * 2, true);
+	finalImageComposition.closePath();
+	finalImageComposition.strokeStyle = 'white';
+	finalImageComposition.lineWidth = 10;
+	finalImageComposition.stroke();
+	finalImageComposition.beginPath();
+	finalImageComposition.arc(canvas.width / 2, 175, 100, 0, Math.PI * 2, true);
+	finalImageComposition.closePath();
+	finalImageComposition.clip();
 
 	const avatar = await loadImage(
 		member.user.displayAvatarURL({format: 'png', size: 512}),
 	);
-	ctx.drawImage(avatar, (canvas.width / 2) - 100, 75, 200, 200);
+	finalImageComposition.drawImage(avatar, (canvas.width / 2) - 100, 75, 200, 200);
 
 	const buffer = canvas.toBuffer('image/png');
 	writeFileSync(attachmentPath, buffer);
@@ -151,20 +149,19 @@ module.exports.generateWelcomeCard = async (member, callback) => {
 };
 
 function applyText(canvas, text, maxlimit) {
-	const ctx = canvas.getContext('2d');
+	const finalImageComposition = canvas.getContext('2d');
 	let fontSize = maxlimit || 100;
 
 	do {
-		ctx.font = `${(fontSize -= 1)}px "Montserrat SemiBold"`;
-	} while (ctx.measureText(text).width > canvas.width - 125);
+		finalImageComposition.font = `${(fontSize -= 1)}px "Montserrat SemiBold"`;
+	} while (finalImageComposition.measureText(text).width > canvas.width - 125);
 
-	return ctx.font;
+	return finalImageComposition.font;
 }
 
 // Code from https://stackoverflow.com/a/3368118/17821331
-// Fix: Comprobar si se puede mejorar. ¡Eslint no para de gritar!
 // eslint-disable-next-line max-params
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+function roundRect(finalImageComposition, x, y, width, height, radius, fill, stroke) {
 	if (typeof stroke === 'undefined') {
 		stroke = true;
 	}
@@ -183,28 +180,28 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 		}
 	}
 
-	ctx.beginPath();
-	ctx.moveTo(x + radius.tl, y);
-	ctx.lineTo(x + width - radius.tr, y);
-	ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-	ctx.lineTo(x + width, y + height - radius.br);
-	ctx.quadraticCurveTo(
+	finalImageComposition.beginPath();
+	finalImageComposition.moveTo(x + radius.tl, y);
+	finalImageComposition.lineTo(x + width - radius.tr, y);
+	finalImageComposition.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+	finalImageComposition.lineTo(x + width, y + height - radius.br);
+	finalImageComposition.quadraticCurveTo(
 		x + width,
 		y + height,
 		x + width - radius.br,
 		y + height,
 	);
-	ctx.lineTo(x + radius.bl, y + height);
-	ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-	ctx.lineTo(x, y + radius.tl);
-	ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-	ctx.closePath();
+	finalImageComposition.lineTo(x + radius.bl, y + height);
+	finalImageComposition.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+	finalImageComposition.lineTo(x, y + radius.tl);
+	finalImageComposition.quadraticCurveTo(x, y, x + radius.tl, y);
+	finalImageComposition.closePath();
 	if (fill) {
-		ctx.fill();
+		finalImageComposition.fill();
 	}
 
 	if (stroke) {
-		ctx.stroke();
+		finalImageComposition.stroke();
 	}
 }
 

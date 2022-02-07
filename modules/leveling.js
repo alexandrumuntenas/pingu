@@ -109,9 +109,11 @@ module.exports.generateRankCard = (member, callback) => {
 
 	getMember(member, async memberData => {
 		const attachmentPath = `./modules/temp/${randomstring.generate({charset: 'alphabetic'})}.png`;
+
 		const canvas = createCanvas(1100, 320);
-		const ctx = canvas.getContext('2d');
-		ctx.strokeStyle = 'rgba(0,0,0,0)';
+		const finalImageComposition = canvas.getContext('2d');
+
+		finalImageComposition.strokeStyle = 'rgba(0,0,0,0)';
 
 		// Establecer fondo del canvas
 		if (
@@ -124,7 +126,7 @@ module.exports.generateRankCard = (member, callback) => {
 				canvas.width / background.width,
 				canvas.height / background.height,
 			);
-			ctx.drawImage(
+			finalImageComposition.drawImage(
 				background,
 				(canvas.width / 2) - ((background.width / 2) * scale),
 				(canvas.height / 2) - ((background.height / 2) * scale),
@@ -132,27 +134,27 @@ module.exports.generateRankCard = (member, callback) => {
 				background.height * scale,
 			);
 
-			ctx.fillStyle = hexToRgba(
+			finalImageComposition.fillStyle = hexToRgba(
 				member.guild.configuration.leveling.card.overlay.color || '#272934',
 				member.guild.configuration.leveling.card.overlay.opacity || 50,
 			);
-			roundRect(ctx, 16, 16, 1068, 290, 10, ctx.fillStyle, ctx.strokeStyle);
+			roundRect(finalImageComposition, 16, 16, 1068, 290, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle);
 		} else {
-			ctx.fillStyle = member.guild.configuration.leveling.card.overlay.color || '#272934';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			finalImageComposition.fillStyle = member.guild.configuration.leveling.card.overlay.color || '#272934';
+			finalImageComposition.fillRect(0, 0, canvas.width, canvas.height);
 		}
 
 		// Escribir usuario
-		ctx.font = applyText(canvas, member.user.tag, 40);
-		ctx.textAlign = 'left';
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-		ctx.fillText(`${member.user.tag}`, 295, 180, 500);
+		finalImageComposition.font = applyText(canvas, member.user.tag, 40);
+		finalImageComposition.textAlign = 'left';
+		finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)';
+		finalImageComposition.fillText(`${member.user.tag}`, 295, 180, 500);
 
 		// Escribir nivel, experiencia y rango
-		ctx.font = '50px "Montserrat SemiBold"';
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-		ctx.textAlign = 'right';
-		ctx.fillText(
+		finalImageComposition.font = '50px "Montserrat SemiBold"';
+		finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.5)';
+		finalImageComposition.textAlign = 'right';
+		finalImageComposition.fillText(
 			`Rank #${memberData.lvlRank}  Level ${millify(
 				memberData.lvlLevel,
 			)}`,
@@ -162,29 +164,29 @@ module.exports.generateRankCard = (member, callback) => {
 		// Escribir progreso actual (actual/necesario)
 		const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)} XP`;
 
-		ctx.font = '30px "Montserrat SemiBold"';
-		ctx.textAlign = 'right';
-		ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-		ctx.fillText(actualVSrequired, 1050, 180);
+		finalImageComposition.font = '30px "Montserrat SemiBold"';
+		finalImageComposition.textAlign = 'right';
+		finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)';
+		finalImageComposition.fillText(actualVSrequired, 1050, 180);
 
 		// Añadir barra de progreso (backdrop)
-		ctx.fillStyle = 'rgba(255,255,255, 0.3)';
-		roundRect(ctx, 295, 200, 755, 70, 10, ctx.fillStyle, ctx.strokeStyle);
+		finalImageComposition.fillStyle = 'rgba(255,255,255, 0.3)';
+		roundRect(finalImageComposition, 295, 200, 755, 70, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle);
 
 		// Añadir barra de progreso
-		ctx.fillStyle = 'rgb(255,255,255)';
-		roundRect(ctx, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)) * 755, 70, 10,	ctx.fillStyle, ctx.strokeStyle);
+		finalImageComposition.fillStyle = 'rgb(255,255,255)';
+		roundRect(finalImageComposition, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)) * 755, 70, 10,	finalImageComposition.fillStyle, finalImageComposition.strokeStyle);
 
 		// Añadir avatar de usuario
-		ctx.beginPath();
-		ctx.arc(159, 159, 102, 0, Math.PI * 2, true);
-		ctx.closePath();
-		ctx.clip();
+		finalImageComposition.beginPath();
+		finalImageComposition.arc(159, 159, 102, 0, Math.PI * 2, true);
+		finalImageComposition.closePath();
+		finalImageComposition.clip();
 
 		const avatar = await loadImage(
 			member.user.displayAvatarURL({format: 'png', size: 512}),
 		);
-		ctx.drawImage(avatar, 57, 57, 204, 204);
+		finalImageComposition.drawImage(avatar, 57, 57, 204, 204);
 
 		const buffer = canvas.toBuffer('image/png');
 		writeFileSync(attachmentPath, buffer);
@@ -194,20 +196,20 @@ module.exports.generateRankCard = (member, callback) => {
 };
 
 function applyText(canvas, text, maxlimit) {
-	const ctx = canvas.getContext('2d');
+	const finalImageComposition = canvas.getContext('2d');
 	let fontSize = maxlimit || 100;
 
 	do {
-		ctx.font = `${(fontSize -= 1)}px "Montserrat SemiBold"`;
-	} while (ctx.measureText(text).width > canvas.width - 125);
+		finalImageComposition.font = `${(fontSize -= 1)}px "Montserrat SemiBold"`;
+	} while (finalImageComposition.measureText(text).width > canvas.width - 125);
 
-	return ctx.font;
+	return finalImageComposition.font;
 }
 
 // Code from https://stackoverflow.com/a/3368118/17821331
 // Fix: Comprobar si se puede mejorar. ¡Eslint no para de gritar!
 // eslint-disable-next-line max-params
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+function roundRect(finalImageComposition, x, y, width, height, radius, fill, stroke) {
 	if (typeof stroke === 'undefined') {
 		stroke = true;
 	}
@@ -226,27 +228,27 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 		}
 	}
 
-	ctx.beginPath();
-	ctx.moveTo(x + radius.tl, y);
-	ctx.lineTo(x + width - radius.tr, y);
-	ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-	ctx.lineTo(x + width, y + height - radius.br);
-	ctx.quadraticCurveTo(
+	finalImageComposition.beginPath();
+	finalImageComposition.moveTo(x + radius.tl, y);
+	finalImageComposition.lineTo(x + width - radius.tr, y);
+	finalImageComposition.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
+	finalImageComposition.lineTo(x + width, y + height - radius.br);
+	finalImageComposition.quadraticCurveTo(
 		x + width,
 		y + height,
 		x + width - radius.br,
 		y + height,
 	);
-	ctx.lineTo(x + radius.bl, y + height);
-	ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-	ctx.lineTo(x, y + radius.tl);
-	ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-	ctx.closePath();
+	finalImageComposition.lineTo(x + radius.bl, y + height);
+	finalImageComposition.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
+	finalImageComposition.lineTo(x, y + radius.tl);
+	finalImageComposition.quadraticCurveTo(x, y, x + radius.tl, y);
+	finalImageComposition.closePath();
 	if (fill) {
-		ctx.fill();
+		finalImageComposition.fill();
 	}
 
 	if (stroke) {
-		ctx.stroke();
+		finalImageComposition.stroke();
 	}
 }
