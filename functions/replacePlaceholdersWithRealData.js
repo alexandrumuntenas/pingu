@@ -21,5 +21,5 @@ module.exports = (string, member) => {
 		.replaceAll('{guild.member_count}', `${member.guild.memberCount}`)
 		.replaceAll('{guild.icon_url}', member.guild.iconURL({dynamic: true, format: 'png', size: 1024}))
 		.replaceAll('{guild.id}', `${member.guild.id}`)
-		.replaceAll('{server.verification_level}', member.guild.verificationLevel);
+		.replaceAll('{guild.verification_level}', member.guild.verificationLevel);
 };
