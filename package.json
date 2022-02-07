@@ -7,7 +7,7 @@
     "@blac-sheep/character-count": "^0.1.2",
     "@discordjs/builders": "^0.11.0",
     "@discordjs/opus": "^0.7.0",
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/rest": "^0.3.0-dev.1644235835.b936103",
     "@discordjs/voice": "^0.7.5",
     "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
