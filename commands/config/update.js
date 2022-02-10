@@ -1,7 +1,7 @@
 const {Permissions} = require('discord.js');
 const i18n = require('../../i18n/i18n');
 const {deployGuildInteractions} = require('../../functions/guildDataManager');
-const {success} = require('../../functions/defaultMessages');
+const {success, error} = require('../../functions/defaultMessages');
 const Consolex = require('../../functions/consolex');
 
 module.exports = {
@@ -14,7 +14,8 @@ module.exports = {
 		try {
 			deployGuildInteractions(interaction.guild, err => {
 				if (err) {
-					return interaction.editReply({embeds: [success(i18n(locale, 'UPDATE::ERROR'))]});
+					interaction.editReply({embeds: [error(i18n(locale, 'UPDATE::ERROR'))]});
+					throw err;
 				}
 
 				return interaction.editReply({embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))]});
@@ -27,7 +28,8 @@ module.exports = {
 		try {
 			deployGuildInteractions(message.guild, err => {
 				if (err) {
-					return message.reply({embeds: [success(i18n(locale, 'UPDATE::ERROR'))]});
+					message.reply({embeds: [error(i18n(locale, 'UPDATE::ERROR'))]});
+					throw err;
 				}
 
 				return message.reply({embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))]});
