@@ -55,6 +55,7 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
 	Database.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
 		if (err) {
 			Consolex.handleError(err);
+			throw err;
 		}
 	});
 };
@@ -108,6 +109,14 @@ module.exports.runCustomCommand = (message, command) => {
 	this.getCustomCommand(message.guild, command, customCommand => {
 		const reply = {};
 
+		const linkWarning = new MessageEmbed()
+			.setColor('#2F3136')
+			.setTitle(i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::PROTECTYOURSELFFROMPHISHING'))
+			.setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/941448001942069308/cybersecurity-6949298_640.png')
+			.setURL('https://support.microsoft.com/en-us/windows/protect-yourself-from-phishing-0c7ea947-ba98-3bd9-7184-430e1f860a44')
+			.setDescription(`${i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING')} [Protect yourself from phishing](https://support.microsoft.com/en-us/windows/protect-yourself-from-phishing-0c7ea947-ba98-3bd9-7184-430e1f860a44)`)
+			.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::OFFICIALMESSAGE'), iconURL: 'https://avatars.githubusercontent.com/u/59341776'});
+
 		if (customCommand.sendInEmbed) {
 			const embed = new MessageEmbed();
 
@@ -140,9 +149,9 @@ module.exports.runCustomCommand = (message, command) => {
 				embed.setColor('#2F3136');
 			}
 
-			embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL()});
+			embed.setFooter({text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL()});
 
-			reply.embeds = [embed];
+			reply.embeds = [embed, linkWarning];
 		} else {
 			reply.content = customCommand.reply;
 		}
@@ -153,7 +162,7 @@ module.exports.runCustomCommand = (message, command) => {
 
 		if (customCommand.sendDM) {
 			try {
-				reply.embeds = [new MessageEmbed().setDescription(customCommand.reply)];
+				reply.embeds = reply.embeds || [new MessageEmbed().setDescription(customCommand.reply)];
 				message.author.send(reply);
 				try {
 					message.delete();
