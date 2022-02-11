@@ -126,5 +126,13 @@
   "LEVELING::RANKUP:MESSAGE:ERROR": "Se ha producido un error al intentar cambiar el mensaje de subida de nivel.",
   "LEVELING::RANKUP:MESSAGE:SUCCESS": "El nuevo mensaje de subida de nivel es %MESSAGE%",
   "LEVELING::RANKUP:DIFFICULTY:ERROR": "Se ha producido un error al intentar cambiar la dificultad de nivel.",
-  "LEVELING::RANKUP:DIFFICULTY:SUCCESS": "La nueva dificultad de nivel es %DIFFICULTY%"
+  "LEVELING::RANKUP:DIFFICULTY:SUCCESS": "La nueva dificultad de nivel es %DIFFICULTY%",
+  "CUSTOMCOMMANDS::CREATE:SUCCESS": "Se ha creado el comando personalizado %COMMAND%.",
+  "CUSTOMCOMMANDS::CREATE:ERROR": "Se ha producido un error al intentar crear el comando personalizado %COMMAND%.",
+  "CUSTOMCOMMANDS::DELETE:SUCCESS": "Se ha eliminado el comando personalizado %COMMAND%.",
+  "CUSTOMCOMMANDS::DELETE:ERROR": "Se ha producido un error al intentar eliminar el comando personalizado %COMMAND%.",
+  "CUSTOMCOMMANDS::LINKWARNING": "Hola, aquí el creador de Pingu#5123. Esto es un lugar que aprovecho para advertirte que este mensaje que has recibido ha sido accionado mediante un comando personalizado y que el contenido que puede incluir puede ser fraudulento o no. Es por ello que, por favor, no introduzcas ninguna información personal que se te pueda solicitar. Si se te envían archivos adjuntos, por favor, actúa con mucha precaución a la hora de interactuar con ellos, sobre todo si se tratan de archivos ejecutables, a los cuales, te recomiendo de primera que nunca ejecutes si no proviene de una fuente fiable. Debido a las limitaciones de Discord en los mensajes enriquecidos, te dejo por aquí un artículo de Microsoft sobre consejos de seguridad que debes de tener en cuenta.",
+  "CUSTOMCOMMANDS::PROTECTYOURSELFFROMPHISHING": "Protégete tú mismo del phishing",
+  "CUSTOMCOMMANDS::OFFICIALMESSAGE": "Mensaje oficial por el creador del bot.",
+  "COMMAND::ONLYINTERACTION": "Este comando solo puede ser usado mediante las interacciones de Discord."
 }

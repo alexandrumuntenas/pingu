@@ -36,8 +36,11 @@ module.exports = {
 						}
 
 						CooldownManager.add(message.member, message.guild, commandToExecute);
-
-						await commandToExecute.runCommand(message.guild.configuration.common.language || 'en', message);
+						if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
+							await commandToExecute.runCommand(message.guild.configuration.common.language || 'en', message);
+						} else {
+							message.reply({embeds: [error(i18n(message.guild.configuration.common.language || 'en', 'COMMAND::ONLYINTERACTION'))]});
+						}
 					} else if (message.guild.configuration.customcommands.enabled) {
 						CooldownManager.add(message.member, message.guild, message.commandName);
 						runCustomCommand(message, message.commandName);
