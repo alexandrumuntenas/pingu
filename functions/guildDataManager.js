@@ -207,9 +207,6 @@ module.exports.migrateGuildData = (guild, callback) => {
 				enabled: BoolRelation[result[0].levelsEnabled], channel: result[0].levelsChannel, message: result[0].levelsMessage, difficulty: result[0].levelsDifficulty, card: {background: result[0].levelsImageCustomBackground, overlay: {opacity: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor}},
 			};
 
-			// Migrar módulo de economía
-			const economy = {enabled: BoolRelation[result[0].economyEnabled], coin: {name: result[0].economyCurrency, icon: result[0].economyCurrencyIcon}};
-
 			// Migrar módulo de sugerencias
 			const suggestions = {enabled: BoolRelation[result[0].suggestionsEnabled], channels: {suggestionsNotRevised: result[0].suggestionsChannel, suggestionsRevised: result[0].suggestionsRevChannel}};
 
@@ -224,7 +221,6 @@ module.exports.migrateGuildData = (guild, callback) => {
 			module.exports.updateGuildConfigNext(guild, {column: 'welcome', newconfig: welcomer});
 			module.exports.updateGuildConfigNext(guild, {column: 'farewell', newconfig: farewell});
 			module.exports.updateGuildConfigNext(guild, {column: 'leveling', newconfig: levels});
-			module.exports.updateGuildConfigNext(guild, {column: 'economy', newconfig: economy});
 			module.exports.updateGuildConfigNext(guild, {column: 'suggestions', newconfig: suggestions});
 			module.exports.updateGuildConfigNext(guild, {column: 'autoreplies', newconfig: autoresponder});
 			module.exports.updateGuildConfigNext(guild, {column: 'customcommands', newconfig: customcommands});
@@ -291,24 +287,20 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 	}
 
 	let interactionList = new Collection();
-	if (guildConfig.welcomeEnabled !== 0) {
+	if (guildConfig.welcome.enabled !== 0) {
 		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'welcome') || []);
 	}
 
-	if (guildConfig.farewellEnabled !== 0) {
+	if (guildConfig.farewell.enabled !== 0) {
 		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'farewell') || []);
 	}
 
-	if (guildConfig.levelsEnabled !== 0) {
+	if (guildConfig.leveling.enabled !== 0) {
 		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'leveling') || []);
 	}
 
-	if (guildConfig.suggestionsEnabled !== 0) {
+	if (guildConfig.suggestions.enabled !== 0) {
 		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'suggestions') || []);
-	}
-
-	if (guildConfig.economyEnabled !== 0) {
-		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'economy') || []);
 	}
 
 	if (guildConfig.customcommands.enabled !== 0) {
@@ -317,7 +309,7 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 
 	interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || []);
 
-	if (guildConfig.guildViewCnfCmdsEnabled === 0) {
+	if (guildConfig.common.interactions.enabled === 0) {
 		interactionList = interactionList.filter(command => command.isConfigCommand === false);
 	}
 
