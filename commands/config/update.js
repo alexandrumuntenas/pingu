@@ -9,6 +9,7 @@ module.exports = {
 	description:
 		'⚙️ Deploys and updates the Pingu\'s Slash Commands of the the server.',
 	permissions: [Permissions.FLAGS.MANAGE_GUILD],
+	isConfigurationCommand: true,
 	cooldown: 1,
 	runInteraction(locale, interaction) {
 		try {

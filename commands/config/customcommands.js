@@ -7,6 +7,7 @@ module.exports = {
 	name: 'customcommands',
 	description: '⚙️ Manage the custom commands of your server',
 	cooldown: 5,
+	isConfigurationCommand: true,
 	interactionData: new SlashCommandBuilder()
 		.addSubcommand(sc => sc.setName('create').setDescription('Create a new custom command.')
 			.addStringOption(input => input.setName('name').setRequired(true).setDescription('The name of the command.'))

@@ -13,7 +13,7 @@ module.exports = {
 	description: '⚙️ Configure the leveling module',
 	permissions: [Permissions.FLAGS.MANAGE_GUILD],
 	cooldown: 1,
-	isConfigCommand: true,
+	isConfigurationCommand: true,
 	interactionData: new SlashCommandBuilder()
 		.addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))
 		.addSubcommand(sc => sc.setName('rankup').setDescription('Configure the rankup settings')

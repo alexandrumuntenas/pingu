@@ -14,6 +14,7 @@ module.exports = {
 	description: '⚙️ Configure the welcome module',
 	permissions: [Permissions.FLAGS.MANAGE_GUILD],
 	cooldown: 1,
+	isConfigurationCommand: true,
 	interactionData: new SlashCommandBuilder()
 		.addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true)))
 		.addSubcommand(sc => sc.setName('setmessage').setDescription('Set the welcome message.').addStringOption(input => input.setName('message').setDescription('Set the welcome message. Avaliable placeholders: {}').setRequired(true)))
@@ -28,7 +29,6 @@ module.exports = {
 			.addSubcommand(sc => sc.setName('list').setDescription('List the roles that are granted when someone joins the guild.'))
 			.addSubcommand(sc => sc.setName('give').setDescription('Add a role to grant when someone joins the guild.').addRoleOption(input => input.setName('role').setDescription('Add a role to grant when someone joins the guild.').setRequired(true)))
 			.addSubcommand(sc => sc.setName('remove').setDescription('Remove a role to grant when someone joins the guild.').addRoleOption(input => input.setName('role').setDescription('Remove a role to grant when someone joins the guild.').setRequired(true)))),
-	isConfigurationCommand: true,
 	runInteraction(locale, interaction) {
 		switch (interaction.options.getSubcommand()) {
 			case 'setchannel': {
