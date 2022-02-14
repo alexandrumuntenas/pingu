@@ -322,7 +322,7 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
  */
 
 module.exports.deleteGuildData = guild => {
-	const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles'];
+	const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles', 'guildSuggestions'];
 	databaseTables.forEach(table => {
 		Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
 			if (err) {
