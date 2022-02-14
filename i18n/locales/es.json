@@ -134,5 +134,7 @@
   "CUSTOMCOMMANDS::LINKWARNING": "Hola, aquí el creador de Pingu#5123. Esto es un lugar que aprovecho para advertirte que este mensaje que has recibido ha sido accionado mediante un comando personalizado y que el contenido que puede incluir puede ser fraudulento o no. Es por ello que, por favor, no introduzcas ninguna información personal que se te pueda solicitar. Si se te envían archivos adjuntos, por favor, actúa con mucha precaución a la hora de interactuar con ellos, sobre todo si se tratan de archivos ejecutables, a los cuales, te recomiendo de primera que nunca ejecutes si no proviene de una fuente fiable. Debido a las limitaciones de Discord en los mensajes enriquecidos, te dejo por aquí un artículo de Microsoft sobre consejos de seguridad que debes de tener en cuenta.",
   "CUSTOMCOMMANDS::PROTECTYOURSELFFROMPHISHING": "Protégete tú mismo del phishing",
   "CUSTOMCOMMANDS::OFFICIALMESSAGE": "Mensaje oficial por el creador del bot.",
-  "COMMAND::ONLYINTERACTION": "Este comando solo puede ser usado mediante las interacciones de Discord."
+  "COMMAND::ONLYINTERACTION": "Este comando solo puede ser usado mediante las interacciones de Discord.",
+  "VIEWCUSTOMCOMMANDS::TITLE": "Comandos personalizados del servidor",
+  "VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS": "No hay comandos personalizados en este servidor."
 }

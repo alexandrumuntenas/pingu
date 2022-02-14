@@ -311,6 +311,10 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'economy') || []);
 	}
 
+	if (guildConfig.customcommands.enabled !== 0) {
+		interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'customcommands') || []);
+	}
+
 	interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || []);
 
 	if (guildConfig.guildViewCnfCmdsEnabled === 0) {

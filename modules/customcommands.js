@@ -1,6 +1,36 @@
 const Database = require('../functions/databaseConnection');
 const Consolex = require('../functions/consolex');
 
+module.exports.getCustomCommands = (guild, callback) => {
+	if (!callback) {
+		throw new Error('Callback is required');
+	}
+
+	Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
+		if (err) {
+			Consolex.handleError(err);
+		}
+
+		if (Object.prototype.hasOwnProperty.call(result, '0')) {
+			const customcommands = [];
+			for (let i = 0; i < result.length; i++) {
+				if (Object.prototype.hasOwnProperty.call(result[i], 'customcommandproperties') && result[i].customcommandproperties !== null) {
+					// To Do: Check if the property is an actual valid Object.
+					customcommands.push(JSON.parse(result[i].customcommandproperties));
+				} else {
+					this.migrateToNewOrganization(guild, result[i].customCommand).then(() => {
+						customcommands.push({command: result[i].customCommand, reply: result[i].messageReturned});
+					});
+				}
+			}
+
+			callback(customcommands || []);
+		} else {
+			callback([]);
+		}
+	});
+};
+
 /**
  * Get the custom command from the database
  * @param {Guild} guild
