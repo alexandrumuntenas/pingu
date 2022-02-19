@@ -19,17 +19,25 @@ module.exports = {
 			return;
 		}
 
+		// eslint-disable-next-line complexity
 		getGuildConfigNext(message.guild, async guildConfig => {
 			message.guild.configuration = guildConfig;
-			if (message.mentions.users.first() === process.Client.user) {
-				process.Client.commands.get('help').runCommand(message.guild.configuration.common.language || 'es', message);
-				return;
-			}
 
-			if (message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) {
-				message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/);
+			if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
+				if (message.content.startsWith(`<@!${process.Client.user.id}>`) && message.content.trim().length === message.content.replace(`<@!${process.Client.user.id}>`, '').length) {
+					await process.Client.commands.get('help').runCommand(message.guild.configuration.common.language || 'es', message);
+					return;
+				}
+
+				if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
+					message.parameters = message.content.slice(`<@!${process.Client.user.id}>`.length).trim().split(/ +/);
+				} else {
+					message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/);
+				}
+
 				message.commandName = message.parameters[0];
 				message.parameters.shift();
+
 				if (CooldownManager.check(message.member, message.guild, {name: message.commandName})) {
 					if (process.Client.commands.has(message.commandName)) {
 						const commandToExecute = process.Client.commands.get(message.commandName);
