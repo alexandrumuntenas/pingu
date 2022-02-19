@@ -9,7 +9,7 @@ const {existsSync} = require('fs');
  * @param {Array<Object>} placeholders Los datos para reemplazar los placeholders
  */
 module.exports = (language, key, placeholders) => {
-	if (!existsSync(`./locales/${language}.json`)) {
+	if (!existsSync(`./i18n/locales/${language}.json`)) {
 		handleError(`No se encontró el archivo de idioma ${language}.json`);
 		language = 'es';
 	}
