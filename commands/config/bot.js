@@ -61,6 +61,12 @@ module.exports = {
 						return interaction.editReply({embeds: [error(i18n(locale, 'BOT::SETPREFIX:ERROR'))]});
 					}
 
+					try {
+						interaction.guild.members.cache.get(process.Client.user.id).setNickname(`[${interaction.options.getString('newprefix')}] ${process.Client.user.username}`);
+					} catch (err) {
+						Consolex.handleError(err);
+					}
+
 					return interaction.editReply({embeds: [success(i18n(locale, 'BOT::SETPREFIX:SUCCESS', {PREFIX: interaction.options.getString('newprefix')}))]});
 				});
 				break;
@@ -119,7 +125,7 @@ module.exports = {
 						return interaction.editReply({embeds: [error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', {MODULE: moduleToEnable}))]});
 					}
 
-					return interaction.editReply({ embeds: [success(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', {MODULE: moduleToEnable}))]});
+					return interaction.editReply({embeds: [success(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', {MODULE: moduleToEnable}))]});
 				});
 
 				break;
