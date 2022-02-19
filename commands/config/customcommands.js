@@ -1,3 +1,4 @@
+const {Permissions} = require('discord.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
 const {createCustomCommand, deleteCustomCommand} = require('../../modules/customcommands');
 const i18n = require('../../i18n/i18n');
@@ -7,6 +8,7 @@ module.exports = {
 	name: 'customcommands',
 	description: '⚙️ Manage the custom commands of your server',
 	cooldown: 5,
+	permissions: [Permissions.FLAGS.MANAGE_GUILD],
 	isConfigurationCommand: true,
 	interactionData: new SlashCommandBuilder()
 		.addSubcommand(sc => sc.setName('create').setDescription('Create a new custom command.')
