@@ -21,6 +21,10 @@ module.exports = {
 
 		getGuildConfigNext(message.guild, async guildConfig => {
 			message.guild.configuration = guildConfig;
+			if (message.mentions.users.first() === process.Client.user) {
+				process.Client.commands.get('help').runCommand(message.guild.configuration.common.language || 'es', message);
+				return;
+			}
 
 			if (message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) {
 				message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/);
