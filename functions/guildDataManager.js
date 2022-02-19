@@ -251,16 +251,17 @@ if (process.env.ENTORNO === 'desarrollo') {
 /**
  * Deploy the interactions to the guild.
  * @param {Guild} guild
+ * @param {Boolean} deployConfigInteractions
  * @param {Function} callback
  */
 
-module.exports.deployGuildInteractions = (guild, callback) => {
+module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
 	if (!callback) {
 		throw new Error('Callback is required');
 	}
 
 	module.exports.getGuildConfigNext(guild, guildConfig => {
-		createTheInteractionListOfTheGuild(guildConfig, guildInteractionList => {
+		createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
 			rest
 				.put(
 					Routes.applicationGuildCommands(
@@ -281,7 +282,7 @@ module.exports.deployGuildInteractions = (guild, callback) => {
 
 const {Collection} = require('discord.js');
 
-function createTheInteractionListOfTheGuild(guildConfig, callback) {
+function createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, callback) {
 	if (!callback) {
 		throw new Error('Callback function is required');
 	}
@@ -309,8 +310,8 @@ function createTheInteractionListOfTheGuild(guildConfig, callback) {
 
 	interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || []);
 
-	if (guildConfig.common.interactions.enabled === 0) {
-		interactionList = interactionList.filter(command => command.isConfigCommand === false);
+	if (deployConfigInteractions) {
+		interactionList = interactionList.filter(command => !command.isConfigurationCommand);
 	}
 
 	callback(interactionList.map(command => command.interactionData.toJSON()));
