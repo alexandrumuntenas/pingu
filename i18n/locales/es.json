@@ -136,5 +136,22 @@
   "CUSTOMCOMMANDS::OFFICIALMESSAGE": "Mensaje oficial por el creador del bot.",
   "COMMAND::ONLYINTERACTION": "Este comando solo puede ser usado mediante las interacciones de Discord.",
   "VIEWCUSTOMCOMMANDS::TITLE": "Comandos personalizados del servidor",
-  "VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS": "No hay comandos personalizados en este servidor."
+  "VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS": "No hay comandos personalizados en este servidor.",
+  "BOT::SETPREFIX:ERROR": "Se ha producido un error al intentar cambiar el prefijo del bot.",
+  "BOT::SETPREFIX:SUCCESS": "El nuevo prefijo del bot es %PREFIX%",
+  "BOT::SETLANGUAGE:ERROR": "Se ha producido un error al intentar cambiar el idioma del bot.",
+  "BOT::SETLANGUAGE:SUCCESS": "El nuevo idioma del bot es %LANGUAGE%",
+  "BOT::MODULES:VIEWCONFIG:TITLE": "Configuración de los módulos del bot",
+  "BOT::MODULES:VIEWCONFIG:DESCRIPTION": "Esta es la configuración actual de los módulos del bot.",
+  "BOT::MODULES:VIEWCONFIG:FIELD:CUSTOMCOMMANDS": "Comandos personalizados",
+  "BOT::MODULES:VIEWCONFIG:FIELD:ENABLED": "Habilitado",
+  "BOT::MODULES:VIEWCONFIG:FIELD:DISABLED": "Deshabilitado",
+  "BOT::MODULES:VIEWCONFIG:FIELD:LEVELING": "Leveling",
+  "BOT::MODULES:VIEWCONFIG:FIELD:FAREWELL": "Despedidas",
+  "BOT::MODULES:VIEWCONFIG:FIELD:SUGGESTIONS": "Sugerencias",
+  "BOT::MODULES:VIEWCONFIG:FIELD:WELCOME": "Bienvenidas",
+  "BOT::MODULES:ENABLE:ERROR": "Se ha producido un error al intentar habilitar el módulo %MODULE%.",
+  "BOT::MODULES:ENABLE:SUCCESS": "El módulo %MODULE% ha sido habilitado.",
+  "BOT::MODULES:DISABLE:ERROR": "Se ha producido un error al intentar deshabilitar el módulo %MODULE%.",
+  "BOT::MODULES:DISABLE:SUCCESS": "El módulo %MODULE% ha sido deshabilitado."
 }
