@@ -31,22 +31,22 @@ module.exports = {
 						const commandToExecute = process.Client.commands.get(message.commandName);
 
 						if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
-							message.reply({embeds: [error(i18n(message.guild.configuration.common.language || 'en', 'COMMAND::PERMERROR'))]});
+							message.reply({embeds: [error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::PERMERROR'))]});
 							return;
 						}
 
 						CooldownManager.add(message.member, message.guild, commandToExecute);
 						if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
-							await commandToExecute.runCommand(message.guild.configuration.common.language || 'en', message);
+							await commandToExecute.runCommand(message.guild.configuration.common.language || 'es', message);
 						} else {
-							message.reply({embeds: [error(i18n(message.guild.configuration.common.language || 'en', 'COMMAND::ONLYINTERACTION'))]});
+							message.reply({embeds: [error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::ONLYINTERACTION'))]});
 						}
 					} else if (message.guild.configuration.customcommands.enabled) {
 						CooldownManager.add(message.member, message.guild, message.commandName);
 						runCustomCommand(message, message.commandName);
 					}
 				} else {
-					message.reply({embeds: [timer(i18n(message.guild.configuration.common.language || 'en', 'COOLDOWN', {COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), {round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en']})}))]});
+					message.reply({embeds: [timer(i18n(message.guild.configuration.common.language || 'es', 'COOLDOWN', {COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), {round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en']})}))]});
 				}
 			} else {
 				if (message.guild.configuration.leveling.enabled) {
