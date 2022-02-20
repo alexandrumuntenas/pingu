@@ -18,7 +18,7 @@
     "dbots": "^11.0.0",
     "discord-api-types": "^0.26.0",
     "discord.js": "^13.6.0",
-    "dotenv": "^14.1.0",
+    "dotenv": "^16.0.0",
     "ffmpeg-static": "^4.4.1",
     "flipacoin": "^1.0.0",
     "hex-rgba": "^1.0.2",
