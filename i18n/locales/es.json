@@ -153,5 +153,12 @@
   "BOT::MODULES:ENABLE:ERROR": "Se ha producido un error al intentar habilitar el módulo %MODULE%.",
   "BOT::MODULES:ENABLE:SUCCESS": "El módulo %MODULE% ha sido habilitado.",
   "BOT::MODULES:DISABLE:ERROR": "Se ha producido un error al intentar deshabilitar el módulo %MODULE%.",
-  "BOT::MODULES:DISABLE:SUCCESS": "El módulo %MODULE% ha sido deshabilitado."
+  "BOT::MODULES:DISABLE:SUCCESS": "El módulo %MODULE% ha sido deshabilitado.",
+  "BOT::HELP:DESCRIPTION": "Configura algunos aspectos del bot (prefijo, idioma...) y gestiona los módulos.",
+  "BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION": "Actualiza las interacciones del bot.",
+  "BOT::HELP:SETPREFIX:DESCRIPTION": "Cambia el prefijo del bot.",
+  "BOT::HELP:SETLANGUAGE:DESCRIPTION": "Cambia el idioma del bot.",
+  "BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION": "Muestra la configuración actual de los módulos del bot.",
+  "BOT::HELP:MODULESENABLE:DESCRIPTION": "Habilita un módulo del bot.",
+  "BOT::HELP:MODULESDISABLE:DESCRIPTION": "Deshabilita un módulo del bot."
 }
