@@ -1,7 +1,7 @@
 const fs = require('fs')
 const console = require('../functions/consolex')
 
-let cooldownJson
+let cooldownJson = {}
 
 if (fs.existsSync('./cooldowns.json')) {
   cooldownJson = require('../cooldowns.json')
