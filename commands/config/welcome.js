@@ -260,7 +260,7 @@ module.exports = {
                 if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
                 return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
               })
-            } else if (message.parameters[2] === false) {
+            } else {
               updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: false } } }, err => {
                 if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
                 return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:DISABLED'))] })
@@ -297,12 +297,12 @@ module.exports = {
           case 'overlaycolor': {
             const regex = /^#([0-9a-f]{3}){1,2}$/i
 
-            if (regex.test(message.parameters[2])) {
-              updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
-                if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
-                return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
-              })
-            }
+            if (!regex.test(message.parameters[2])) sendHelp()
+
+            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
+              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
+              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
+            })
 
             break
           }
@@ -338,6 +338,7 @@ module.exports = {
         switch (message.parameters[1].toLowerCase()) {
           case 'give': {
             if (!message.mentions.roles.first()) return viewConfigFallback()
+
             addJoinRole(message.guild, message.mentions.roles.first(), err => {
               if (err) return message.reply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
               return message.reply({ embeds: [success(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
