@@ -24,9 +24,7 @@ module.exports.getExperience = member => {
         try {
           updateMember(member, { lvlExperience: memberData.lvlExperience })
         } catch (err) {
-          if (err) {
-            Consolex.handleError(err)
-          }
+          if (err) Consolex.handleError(err)
         }
       })
     })
@@ -51,29 +49,14 @@ module.exports.doLevelUp = member => {
  */
 
 module.exports.getLeaderboard = (guild, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required.')
-  }
+  if (!callback) throw new Error('Callback is required.')
 
-  Database.query(
-    'SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25',
-    [guild.id],
-    (err, members) => {
-      if (err) {
-        Consolex.handleError(err)
-      }
+  Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25', [guild.id], (err, members) => {
+    if (err) Consolex.handleError(err)
 
-      if (
-        callback &&
-        members &&
-        Object.prototype.hasOwnProperty.call(members, '0')
-      ) {
-        callback(members)
-      } else {
-        callback()
-      }
-    }
-  )
+    if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) callback(members)
+    else callback()
+  })
 }
 
 /**
@@ -161,9 +144,7 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
  */
 
 module.exports.generateRankCard = (member, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required.')
-  }
+  if (!callback) throw new Error('Callback is required.')
 
   getMember(member, async memberData => {
     const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
@@ -174,11 +155,7 @@ module.exports.generateRankCard = (member, callback) => {
     finalImageComposition.strokeStyle = 'rgba(0,0,0,0)'
 
     // Establecer fondo del canvas
-    if (
-      member.guild.configuration.leveling.card.background &&
-      isValidUrl(member.guild.configuration.leveling.card.background) &&
-      isImageUrl(member.guild.configuration.leveling.card.background)
-    ) {
+    if (member.guild.configuration.leveling.card.background && isValidUrl(member.guild.configuration.leveling.card.background) && isImageUrl(member.guild.configuration.leveling.card.background)) {
       const background = await loadImage(member.guild.configuration.leveling.card.background)
       const scale = Math.max(
         canvas.width / background.width,
@@ -212,13 +189,8 @@ module.exports.generateRankCard = (member, callback) => {
     finalImageComposition.font = '50px "Montserrat SemiBold"'
     finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.5)'
     finalImageComposition.textAlign = 'right'
-    finalImageComposition.fillText(
-      `Rank #${memberData.lvlRank}  Level ${millify(
-        memberData.lvlLevel
-      )}`,
-      1050,
-      100
-    )
+    finalImageComposition.fillText(`Rank #${memberData.lvlRank}  Level ${millify(memberData.lvlLevel)}`, 1050, 100)
+
     // Escribir progreso actual (actual/necesario)
     const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)} XP`
 
@@ -241,9 +213,7 @@ module.exports.generateRankCard = (member, callback) => {
     finalImageComposition.closePath()
     finalImageComposition.clip()
 
-    const avatar = await loadImage(
-      member.user.displayAvatarURL({ format: 'png', size: 512 })
-    )
+    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
     finalImageComposition.drawImage(avatar, 57, 57, 204, 204)
 
     const buffer = canvas.toBuffer('image/png')
