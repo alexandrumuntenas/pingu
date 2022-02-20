@@ -13,21 +13,15 @@ module.exports.getMember = (member, callback) => {
     op: 'memberManager.getMember',
     name: 'memberManager (Get Member)'
   })
-  if (!callback) {
-    throw Error('You didn\'t provide a callback.')
-  }
+  if (!callback) throw Error('You didn\'t provide a callback.')
 
   Database.query('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
     if (memberData && Object.prototype.hasOwnProperty.call(memberData, 0)) { //! THIS SECTION HAS TO BE REMOVED AND SPLIT IN THE FUTURE
       memberData[0].ecoBalance = parseInt(memberData[0].ecoBalance, 10)
       Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err2, result) => {
-        if (err2) {
-          Consolex.handleError(err2)
-        }
+        if (err2) Consolex.handleError(err2)
 
         if (result && Object.prototype.hasOwnProperty.call(result, '0')) {
           result.filter(r => r.member === member.id).forEach(r => {
@@ -58,13 +52,9 @@ module.exports.createMember = (member, callback) => {
     name: 'memberManager (Create Member)'
   })
   Database.query('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], err => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
-    if (callback) {
-      callback()
-    }
+    if (callback) callback()
 
     sentryEvent.finish()
   })
@@ -86,19 +76,13 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
     op: 'memberManager.updateMember',
     name: 'memberManager (Update Member)'
   })
-  if (!memberDataToUpdate) {
-    throw Error('You didn\' provide any data to update.')
-  }
+  if (!memberDataToUpdate) throw Error('You didn\' provide any data to update.')
 
   this.getMember(member, memberData => {
     Database.query('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ?, `ecoBalance` = ?, `ecoInventory` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, memberDataToUpdate.ecoBalance || memberData.ecoBalance, memberDataToUpdate.ecoInventory || memberData.ecoInventory, member.guild.id, member.id], err => {
-      if (err) {
-        Consolex.handleError(err)
-      }
+      if (err) Consolex.handleError(err)
 
-      if (callback) {
-        callback()
-      }
+      if (callback) callback()
 
       sentryEvent.finish()
     })
@@ -116,13 +100,9 @@ module.exports.deleteMember = (member, callback) => {
     name: 'memberManager (Delete Member)'
   })
   Database.query('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id], err => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
-    if (callback) {
-      callback()
-    }
+    if (callback) callback()
 
     sentryEvent.finish()
   })
