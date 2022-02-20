@@ -22,33 +22,32 @@ If this condition is met, the user advances in level.
 
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
-!!!
-Enable this module using `/admin modules enable module: levels`.
+> Enable this module using `/bot modules enable module: leveling`.
+>
+> Disable this module using `/bot modules disable module: leveling`.
 
-Disable this module using `/admin modules disable module: levels`.
-!!!
+## Interactions
 
-<!-- markdown-link-check-disable -->
-| Command | Function | Example |
-| --- | --- | --- |
-| levels | Base command to configure the levels module. | /levels |
-| levels viewconfig | Command to query the current configuration of the module.| /levels viewconfig |
-| levels setrankupchannel | Command to modify the channel of the level advance messages. | /levels setrankupchannel channel: \<Disabled/Same Channel Were Message is Sent/This Channel> |
-| levels setrankupmessage message: | Command to modify the level advance message.| /levels setrankupmessage message: {member} got a new level!  |
-| levels setdifficulty difficulty: | Command to modify the difficulty of the module. | /levels difficulty difficulty: 2 |
-| levels configurecard setbackgroundurl: \<URL> setoverlaycolor: \<Hex Color> setoverlayopacity: \<Opacity> | Command to customize the rank card | /levels configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: https://myawesomestocksite.com/photo.png |
-<!-- markdown-link-check-enable -->
+```javascript
+/leveling viewconfig // View the current configuration
+/leveling rankup channel channel: <TextChannel> message: <String> difficulty: <Integer> // Configure the rankup
+/leveling configurecards backgroundurl: <URL> overlayopacity: <Integer> overlaycolor: <Hex Color> // Configure the cards
+```
 
-!!!
-With the integration of Slash Commands, the configuration of levels module becomes much easier.
-!!!
+## Commands
+
+``` javascript
+leveling viewconfig // View the current configuration of the module.
+leveling rankup channel <TextChannel> // Configure the rankup channel.
+leveling rankup message <String> // Configure the rankup message.
+leveling rankup difficulty <Integer> // Configure the rankup.
+leveling configurecards backgroundurl <URL> // Configure the cards background.
+leveling overlayopacity <Integer> // Configure the overlay opacity.
+leveling overlaycolor <Hex Color> // Configure the overlay color.
+```
 
 ## User commands
 
-Users will be able to use /rank to see their level card and /leaderboard to see the server ranking.
-
-!!!
-The user commands do have their own prefix version!
-!!!
+Users will be able to use /rank or `rank` to see their level card and /leaderboard or `leaderboard` to see the server ranking.
 
 ![Rank Card Example](https://cdn.discordapp.com/attachments/926103260111179836/928779386059104347/imCnpLagomxItWHwTgagZWgjrjxHQIpe.png)

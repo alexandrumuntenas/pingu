@@ -10,24 +10,21 @@ In Pingu we have always wanted to give the user the option of being able to conf
 
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
-!!!
-Enable this module using `/admin modules enable module: welcomer`.
+> Enable this module using `/admin modules enable module: welcomer`.
+>
+> Disable this module using `/admin modules disable module: welcomer`.
 
-Disable this module using `/admin modules disable module: welcomer`.
-!!!
+## Interactions
 
-<!-- markdown-link-check-disable -->
-=== Interactions
-
-| Command | Function | Example |
-| --- | --- | --- |
-| /welcome viewconfig | Command to view the set configuration of the module. | /welcome viewconfig |
-| /welcome setchannel channel: <channel> | Command to configure the welcome channel. (If it does not exist/work, the message is not sent). | /welcome setchannel channel:#aeropuerto-internacional |
-| /welcome setmessage message: | Command to set the welcome message. | /welcome setmessage message:{member} has joined {guild}. |
-| /welcome configurecard sendcards: \<true/false> setbackgroundurl: \<URL> setoverlaycolor: \<Hex Color> setoverlayopacity: \<Opacity> title: \<text> subtitle: \<text> | Command to customize the welcome card | /welcome configurecard sendcards: true setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: https://myawesomestocksite.com/photo.png title: {member} has joined the server subtitle: {member_count} |
-| /welcome configureroles list | List the roles that are granted when someone joins the guild. | /welcome configureroles list |
-| /welcome configureroles add role: <role> | Add a role to grant when someone joins the guild. | /welcome configureroles add role: @newcomer |
-| /welcome configureroles remove role: <role> | Remove a role to grant when someone joins the guild. | /welcome configureroles remove role: @newcomer |
+```javascript
+/welcome viewconfig // View the current configuration
+/welcome setchannel channel: <TextChannel> // Set the channel to send welcome messages to
+/welcome setmessage message: <Message> // Set the welcome message
+/welcome configurecard sendcards: <Boolean> setbackgroundurl: <URL> setoverlaycolor: <Hex Color> setoverlayopacity: <Integer> title: <String> subtitle: <String> // Configure the welcome card
+/welcome configureroles list // View the list of roles that can be assigned to new members
+/welcome configureroles add role: <role> // Add a role to the list of roles that can be assigned to new members
+/welcome configureroles remove role: <role> // Remove a role from the list of roles that can be assigned to new members
+```
 
 ==- Commands
 
