@@ -253,6 +253,14 @@ if (process.env.ENTORNO === 'desarrollo') {
 
 const { Collection } = require('discord.js')
 
+/**
+ * Create the interaction list for the requested guild using it's configuration as a base
+ * @param {Object} guildConfig
+ * @param {Boolean} deployConfigInteractions
+ * @param {Function} callback
+ * @returns {Object} The interaction list
+ */
+
 function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractions, callback) {
   if (!callback) {
     throw new Error('Callback function is required')
