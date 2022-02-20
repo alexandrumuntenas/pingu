@@ -65,8 +65,8 @@ module.exports.getLeaderboard = (guild, callback) => {
 
       if (
         callback &&
-				members &&
-				Object.prototype.hasOwnProperty.call(members, '0')
+        members &&
+        Object.prototype.hasOwnProperty.call(members, '0')
       ) {
         callback(members)
       } else {
@@ -94,106 +94,6 @@ const { millify } = require('millify')
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
-
-/**
- * Generate the rank card of the member.
- * @param {GuildMember} member
- * @param {Function} callback
- * @returns {String} The path of the rank card.
- */
-
-module.exports.generateRankCard = (member, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required.')
-  }
-
-  getMember(member, async memberData => {
-    const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
-
-    const canvas = createCanvas(1100, 320)
-    const finalImageComposition = canvas.getContext('2d')
-
-    finalImageComposition.strokeStyle = 'rgba(0,0,0,0)'
-
-    // Establecer fondo del canvas
-    if (
-      member.guild.configuration.leveling.card.background &&
-			isValidUrl(member.guild.configuration.leveling.card.background) &&
-			isImageUrl(member.guild.configuration.leveling.card.background)
-    ) {
-      const background = await loadImage(member.guild.configuration.leveling.card.background)
-      const scale = Math.max(
-        canvas.width / background.width,
-        canvas.height / background.height
-      )
-      finalImageComposition.drawImage(
-        background,
-        (canvas.width / 2) - ((background.width / 2) * scale),
-        (canvas.height / 2) - ((background.height / 2) * scale),
-        background.width * scale,
-        background.height * scale
-      )
-
-      finalImageComposition.fillStyle = hexToRgba(
-        member.guild.configuration.leveling.card.overlay.color || '#272934',
-        member.guild.configuration.leveling.card.overlay.opacity || 50
-      )
-      roundRect(finalImageComposition, 16, 16, 1068, 290, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
-    } else {
-      finalImageComposition.fillStyle = member.guild.configuration.leveling.card.overlay.color || '#272934'
-      finalImageComposition.fillRect(0, 0, canvas.width, canvas.height)
-    }
-
-    // Escribir usuario
-    finalImageComposition.font = applyText(canvas, member.user.tag, 40)
-    finalImageComposition.textAlign = 'left'
-    finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    finalImageComposition.fillText(`${member.user.tag}`, 295, 180, 500)
-
-    // Escribir nivel, experiencia y rango
-    finalImageComposition.font = '50px "Montserrat SemiBold"'
-    finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.5)'
-    finalImageComposition.textAlign = 'right'
-    finalImageComposition.fillText(
-			`Rank #${memberData.lvlRank}  Level ${millify(
-				memberData.lvlLevel
-			)}`,
-			1050,
-			100
-    )
-    // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)} XP`
-
-    finalImageComposition.font = '30px "Montserrat SemiBold"'
-    finalImageComposition.textAlign = 'right'
-    finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    finalImageComposition.fillText(actualVSrequired, 1050, 180)
-
-    // Añadir barra de progreso (backdrop)
-    finalImageComposition.fillStyle = 'rgba(255,255,255, 0.3)'
-    roundRect(finalImageComposition, 295, 200, 755, 70, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
-
-    // Añadir barra de progreso
-    finalImageComposition.fillStyle = 'rgb(255,255,255)'
-    roundRect(finalImageComposition, 295,	200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)) * 755, 70, 10,	finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
-
-    // Añadir avatar de usuario
-    finalImageComposition.beginPath()
-    finalImageComposition.arc(159, 159, 102, 0, Math.PI * 2, true)
-    finalImageComposition.closePath()
-    finalImageComposition.clip()
-
-    const avatar = await loadImage(
-      member.user.displayAvatarURL({ format: 'png', size: 512 })
-    )
-    finalImageComposition.drawImage(avatar, 57, 57, 204, 204)
-
-    const buffer = canvas.toBuffer('image/png')
-    writeFileSync(attachmentPath, buffer)
-
-    callback(attachmentPath)
-  })
-}
 
 function applyText (canvas, text, maxlimit) {
   const finalImageComposition = canvas.getContext('2d')
@@ -251,4 +151,104 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
   if (stroke) {
     finalImageComposition.stroke()
   }
+}
+
+/**
+ * Generate the rank card of the member.
+ * @param {GuildMember} member
+ * @param {Function} callback
+ * @returns {String} The path of the rank card.
+ */
+
+module.exports.generateRankCard = (member, callback) => {
+  if (!callback) {
+    throw new Error('Callback is required.')
+  }
+
+  getMember(member, async memberData => {
+    const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+
+    const canvas = createCanvas(1100, 320)
+    const finalImageComposition = canvas.getContext('2d')
+
+    finalImageComposition.strokeStyle = 'rgba(0,0,0,0)'
+
+    // Establecer fondo del canvas
+    if (
+      member.guild.configuration.leveling.card.background &&
+      isValidUrl(member.guild.configuration.leveling.card.background) &&
+      isImageUrl(member.guild.configuration.leveling.card.background)
+    ) {
+      const background = await loadImage(member.guild.configuration.leveling.card.background)
+      const scale = Math.max(
+        canvas.width / background.width,
+        canvas.height / background.height
+      )
+      finalImageComposition.drawImage(
+        background,
+        (canvas.width / 2) - ((background.width / 2) * scale),
+        (canvas.height / 2) - ((background.height / 2) * scale),
+        background.width * scale,
+        background.height * scale
+      )
+
+      finalImageComposition.fillStyle = hexToRgba(
+        member.guild.configuration.leveling.card.overlay.color || '#272934',
+        member.guild.configuration.leveling.card.overlay.opacity || 50
+      )
+      roundRect(finalImageComposition, 16, 16, 1068, 290, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
+    } else {
+      finalImageComposition.fillStyle = member.guild.configuration.leveling.card.overlay.color || '#272934'
+      finalImageComposition.fillRect(0, 0, canvas.width, canvas.height)
+    }
+
+    // Escribir usuario
+    finalImageComposition.font = applyText(canvas, member.user.tag, 40)
+    finalImageComposition.textAlign = 'left'
+    finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)'
+    finalImageComposition.fillText(`${member.user.tag}`, 295, 180, 500)
+
+    // Escribir nivel, experiencia y rango
+    finalImageComposition.font = '50px "Montserrat SemiBold"'
+    finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.5)'
+    finalImageComposition.textAlign = 'right'
+    finalImageComposition.fillText(
+      `Rank #${memberData.lvlRank}  Level ${millify(
+        memberData.lvlLevel
+      )}`,
+      1050,
+      100
+    )
+    // Escribir progreso actual (actual/necesario)
+    const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)} XP`
+
+    finalImageComposition.font = '30px "Montserrat SemiBold"'
+    finalImageComposition.textAlign = 'right'
+    finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.8)'
+    finalImageComposition.fillText(actualVSrequired, 1050, 180)
+
+    // Añadir barra de progreso (backdrop)
+    finalImageComposition.fillStyle = 'rgba(255,255,255, 0.3)'
+    roundRect(finalImageComposition, 295, 200, 755, 70, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
+
+    // Añadir barra de progreso
+    finalImageComposition.fillStyle = 'rgb(255,255,255)'
+    roundRect(finalImageComposition, 295, 200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)) * 755, 70, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
+
+    // Añadir avatar de usuario
+    finalImageComposition.beginPath()
+    finalImageComposition.arc(159, 159, 102, 0, Math.PI * 2, true)
+    finalImageComposition.closePath()
+    finalImageComposition.clip()
+
+    const avatar = await loadImage(
+      member.user.displayAvatarURL({ format: 'png', size: 512 })
+    )
+    finalImageComposition.drawImage(avatar, 57, 57, 204, 204)
+
+    const buffer = canvas.toBuffer('image/png')
+    writeFileSync(attachmentPath, buffer)
+
+    callback(attachmentPath)
+  })
 }

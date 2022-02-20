@@ -205,7 +205,7 @@ module.exports = {
         roles = roles || []
         roles = roles.map(role => `<@&${role}>`).join(', ')
 
-        const welcomeRoles = 	new MessageEmbed()
+        const welcomeRoles = new MessageEmbed()
           .setColor('#2F3136')
           .setTitle(i18n(locale, 'WELCOME::LISTROLES:TITLE'))
           .setDescription(roles || i18n(locale, 'NOSET'))

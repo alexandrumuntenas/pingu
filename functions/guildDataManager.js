@@ -88,6 +88,33 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
 }
 
 /**
+ *
+ * @param {*} config
+ * @param {*} newconfig
+ * @param {*} callback
+ */
+
+function procesarObjetosdeConfiguracion (config, newconfig, callback) {
+  let count = 0
+  const newConfigProperties = Object.keys(newconfig)
+  newConfigProperties.forEach(property => {
+    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
+      procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
+        config[property] = newConfig
+        count += 1
+      })
+    } else {
+      config[property] = newconfig[property]
+      count += 1
+    }
+
+    if (count === newConfigProperties.length) {
+      callback(config)
+    }
+  })
+}
+
+/**
  * Update a guild's configuration.
 
  * @param {Guild} guild - The Guild
@@ -148,33 +175,6 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
       }
     } else {
       throw new Error('The specified module does not exist.')
-    }
-  })
-}
-
-/**
- *
- * @param {*} config
- * @param {*} newconfig
- * @param {*} callback
- */
-
-function procesarObjetosdeConfiguracion (config, newconfig, callback) {
-  let count = 0
-  const newConfigProperties = Object.keys(newconfig)
-  newConfigProperties.forEach(property => {
-    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
-      procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
-        config[property] = newConfig
-        count += 1
-      })
-    } else {
-      config[property] = newconfig[property]
-      count += 1
-    }
-
-    if (count === newConfigProperties.length) {
-      callback(config)
     }
   })
 }
@@ -248,38 +248,6 @@ if (process.env.ENTORNO === 'desarrollo') {
   rest.setToken(process.env.PUBLIC_TOKEN)
 }
 
-/**
- * Deploy the interactions to the guild.
- * @param {Guild} guild
- * @param {Boolean} deployConfigInteractions
- * @param {Function} callback
- */
-
-module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required')
-  }
-
-  module.exports.getGuildConfigNext(guild, guildConfig => {
-    createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
-      rest
-        .put(
-          Routes.applicationGuildCommands(
-            process.Client.user.id,
-            guild.id
-          ),
-          { body: guildInteractionList }
-        ).catch(err => {
-          if (err) {
-            return callback(err)
-          }
-        }).then(() => {
-          callback()
-        })
-    })
-  })
-}
-
 const { Collection } = require('discord.js')
 
 function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractions, callback) {
@@ -315,6 +283,38 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
   }
 
   callback(interactionList.map(command => command.interactionData.toJSON()))
+}
+
+/**
+ * Deploy the interactions to the guild.
+ * @param {Guild} guild
+ * @param {Boolean} deployConfigInteractions
+ * @param {Function} callback
+ */
+
+module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
+  if (!callback) {
+    throw new Error('Callback is required')
+  }
+
+  module.exports.getGuildConfigNext(guild, guildConfig => {
+    createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
+      rest
+        .put(
+          Routes.applicationGuildCommands(
+            process.Client.user.id,
+            guild.id
+          ),
+          { body: guildInteractionList }
+        ).catch(err => {
+          if (err) {
+            return callback(err)
+          }
+        }).then(() => {
+          callback()
+        })
+    })
+  })
 }
 
 /**

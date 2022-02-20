@@ -20,6 +20,8 @@ module.exports.doGuildMemberRemove = member => {
  * @param {GuildMember} member
  */
 
+const replacePlaceholdersWithRealData = require('../functions/replacePlaceholdersWithRealData')
+
 module.exports.sendFarewellMessage = member => {
   getGuildConfigNext(member.guild, guildConfig => {
     if (!Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'channel')) {
@@ -31,16 +33,6 @@ module.exports.sendFarewellMessage = member => {
       return
     }
 
-    channel.send(replaceBracePlaceholdersWithActualData(guildConfig.farewell.message || '{member} left {server}!', member))
+    channel.send(replacePlaceholdersWithRealData(guildConfig.farewell.message || '{member} left {server}!', member))
   })
-}
-/**
- * Replace in the farewell message all the brace placeholders with the actual data.
- * Known placeholders: {member} GuildMember, {guild} Guild name
- * @param {String} message
- * @param {GuildMember} member
- */
-
-function replaceBracePlaceholdersWithActualData (message, member) {
-  return message.replace('{member}', `<@${member.user.id}>`).replace('{guild}', `${member.guild.name}`)
 }

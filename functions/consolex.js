@@ -3,15 +3,21 @@ const boxen = require('boxen')
 const moment = require('moment')
 const Sentry = require('@sentry/node')
 
-const sentryConfig = { dsn: process.env.SENTRY_DSN, tracesSampleRate: 1.0 }
+if (process.env.SENTRY_DSN) {
+  const sentryConfig = { dsn: process.env.SENTRY_DSN, tracesSampleRate: 1.0 }
 
-if (process.env.ENTORNO === 'public') {
-  sentryConfig.environment = 'production'
-} else {
-  sentryConfig.environment = 'development'
+  if (process.env.ENTORNO === 'public') {
+    sentryConfig.environment = 'production'
+  } else {
+    sentryConfig.environment = 'development'
+  }
+
+  Sentry.init(sentryConfig)
 }
 
-Sentry.init(sentryConfig)
+function getCurrentTime () {
+  return moment().format('MMM Do YY H:mm:ss')
+}
 
 module.exports = {
   debug: message => {
@@ -37,8 +43,4 @@ module.exports = {
     module.exports.Sentry.captureException(err)
   },
   Sentry
-}
-
-function getCurrentTime () {
-  return moment().format('MMM Do YY H:mm:ss')
 }

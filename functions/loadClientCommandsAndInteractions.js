@@ -6,8 +6,6 @@ const fs = require('fs')
 module.exports = () => {
   const commands = new Collection()
 
-  load('./commands')
-
   function load (directory) {
     const files = fs.readdirSync(directory)
 
@@ -29,13 +27,13 @@ module.exports = () => {
           }
 
           if (!(command.runCommand || command.runInteraction)) {
-            throw new Error(`Command ${command.name} does not have a runCommand or runInteraction function`)
+            throw new Error(`El comando ${command.name} no tiene una propiedad runInteraction o runCommand. Este comando no podrá ser utilizado por el usuario.`)
           }
 
           commands.set(command.name, command)
           Consolex.success(`Comando ${file} cargado`)
         } else {
-          Consolex.warn(`Command ${file} is missing a help.name, or help.name is not a string.`)
+          Consolex.warn(`Command ${file} no tiene una propiedad name. Este comando no podrá ser utilizado por el usuario.`)
           continue
         }
       } else if (fs.lstatSync(path).isDirectory()) {
@@ -43,6 +41,8 @@ module.exports = () => {
       }
     }
   }
+
+  load('./commands')
 
   return commands
 }

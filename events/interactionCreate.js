@@ -6,19 +6,10 @@ const { getGuildConfigNext } = require('../functions/guildDataManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
-module.exports = {
-  name: 'interactionCreate',
-  execute: async interaction => {
-    if (interaction.isCommand()) {
-      isCommand(interaction).catch(Consolex.handleError)
-    }
-  }
-}
-
 async function isCommand (interaction) {
   if (
     interaction.channel.type === 'dm' ||
-		interaction.author === process.Client.user
+    interaction.author === process.Client.user
   ) {
     return
   }
@@ -44,4 +35,13 @@ async function isCommand (interaction) {
       interaction.editReply({ content: i18n(interaction.guild.configuration.common.language || 'es', 'COMMAND_NOT_FOUND') })
     }
   })
+}
+
+module.exports = {
+  name: 'interactionCreate',
+  execute: async interaction => {
+    if (interaction.isCommand()) {
+      isCommand(interaction).catch(Consolex.handleError)
+    }
+  }
 }
