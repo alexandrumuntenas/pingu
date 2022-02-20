@@ -5,6 +5,8 @@ const { error, success, help } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')
 
+const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
+
 module.exports = {
   name: 'welcome',
   description: '⚙️ Configure the welcome module',
@@ -78,7 +80,7 @@ module.exports = {
             else newconfig.welcomecard.overlay = { opacity: overlayopacity }
           }
 
-          if (overlaycolor) {
+          if (overlaycolor && hexRegexTester.test(overlaycolor)) {
             modifiedconfig.addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, overlaycolor || `❌ ${i18n(locale, 'NOTSET')}`, true)
 
             if (newconfig.welcomecard.overlay) newconfig.welcomecard.overlay.color = overlaycolor
@@ -295,9 +297,7 @@ module.exports = {
           }
 
           case 'overlaycolor': {
-            const regex = /^#([0-9a-f]{3}){1,2}$/i
-
-            if (!regex.test(message.parameters[2])) sendHelp()
+            if (!hexRegexTester.test(message.parameters[2])) return sendHelp()
 
             updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
               if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })

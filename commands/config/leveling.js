@@ -7,6 +7,7 @@ const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const { error, success, help } = require('../../functions/defaultMessages')
 
 const channelRelationShip = { 0: 'disabled', 1: 'Same Channel Where Message Is Sent' }
+const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 
 module.exports = {
   name: 'leveling',
@@ -128,7 +129,7 @@ module.exports = {
             newconfig.overlayOpacity = overlayOpacity
           }
 
-          if (overlayColor) {
+          if (overlayColor && overlayColor.test(overlayColor)) {
             modifiedconfig.addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, overlayColor, true)
             newconfig.overlayColor = overlayColor
           }
@@ -240,9 +241,7 @@ module.exports = {
           }
 
           case 'overlaycolor': {
-            const regex = /^#([0-9a-f]{3}){1,2}$/i
-
-            if (!regex.test(message.parameters[2])) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
+            if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
 
             updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
               if (err) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
