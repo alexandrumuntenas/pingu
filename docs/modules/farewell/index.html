@@ -25,11 +25,11 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.698675681531" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.698677231342" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.698675681531" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.698677231342" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.698675681531" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.698677231342" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -46,7 +46,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">22T2</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">NEXT</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -264,6 +264,9 @@
         </div>
     </div>
 </div>
+<doc-panels>
+   <doc-panel id="interactions">
+       <template #title>Interactions</template>
 <div class="table-wrapper scrollbar overflow-hidden">
 <table class="comfortable">
 <thead>
@@ -280,23 +283,51 @@
 <td>/farewell viewconfig</td>
 </tr>
 <tr>
-<td>/farewell setchannel channel: <farewell channel></td>
+<td>/farewell setchannel channel: &lt;farewell channel&gt;</td>
 <td>Command to configure the farewell channel. (If it does not exist/work, the message is not sent).</td>
 <td>/farewell setchannel channel:#aeropuerto-internacional</td>
 </tr>
 <tr>
-<td>/wecomer setmessage message:</td>
+<td>/farewell setmessage message:</td>
 <td>Command to set the farewell message.</td>
 <td>/farewell setmessage message:{member} left {guild}.</td>
-</tr>
-<tr>
-<td>/farewell simulate</td>
-<td>Simulate the event GuildMemberRemove (A.K.A. Check if everything is working as intended)</td>
-<td>/farewell simulate</td>
 </tr>
 </tbody>
 </table>
 </div>
+   </doc-panel>
+   <doc-panel id="commands" collapsed>
+       <template #title>Commands</template>
+<div class="table-wrapper scrollbar overflow-hidden">
+<table class="comfortable">
+<thead>
+<tr>
+<th>Command</th>
+<th>Function</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>farewell viewconfig</td>
+<td>Command to view the set configuration of the module.</td>
+<td>!farewell viewconfig</td>
+</tr>
+<tr>
+<td>farewell setchannel &lt;channel&gt;</td>
+<td>Command to configure the farewell channel. (If it does not exist/work, the message is not sent).</td>
+<td>!farewell setchannel #aeropuerto-internacional</td>
+</tr>
+<tr>
+<td>farewell setmessage &lt;message···&gt;</td>
+<td>Command to set the farewell message.</td>
+<td>!farewell setmessage {member} left {guild}.</td>
+</tr>
+</tbody>
+</table>
+</div>
+   </doc-panel>
+</doc-panels>
 
 
 
@@ -308,11 +339,11 @@
             
 <nav class="flex mt-14">
     <div class="w-1/2">
-        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/modules/joinroles/">
+        <a class="px-5 py-4 h-full flex items-center break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-l-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/modules/welcome/">
             <svg xmlns="http://www.w3.org/2000/svg" class="mr-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19 11H7.41l5.29-5.29a.996.996 0 10-1.41-1.41l-7 7a1 1 0 000 1.42l7 7a1.024 1.024 0 001.42-.01.996.996 0 000-1.41L7.41 13H19c.55 0 1-.45 1-1s-.45-1-1-1z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
             <span>
                 <span class="block text-xs font-normal text-gray-400 dark:text-dark-400">Previous</span>
-                <span class="block mt-1">Join Roles</span>
+                <span class="block mt-1">Welcome</span>
             </span>
         </a>
     </div>
