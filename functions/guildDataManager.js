@@ -35,7 +35,10 @@ module.exports.getGuildConfigNext = (guild, callback) => {
             }
           }
         })
-        callback(result[0])
+
+        if (callback) {
+          callback(result[0])
+        }
       }
     } else {
       // TODO: Actualizar esta sección a la nueva versión de gestión de datos
