@@ -18,35 +18,26 @@ module.exports.getGuildConfigNext = (guild, callback) => {
     name: 'Get Guild Configuration'
   })
   Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (result[0].clientVersion === 'pingu@1.0.0') {
-        module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback))
-      } else {
+      if (result[0].clientVersion === 'pingu@1.0.0') module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback))
+      else {
         Object.keys(result[0]).forEach(module => {
           try {
             result[0][module] = JSON.parse(result[0][module])
           } catch (err2) {
-            if (err2) {
-              return err
-            }
+            if (err2) return err
           }
         })
 
-        if (callback) {
-          callback(result[0])
-        }
+        if (callback) callback(result[0])
       }
     } else {
       //! Será eliminado en la actualización de junio.
       const topChannel = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
       Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, topChannel.id, topChannel.id, topChannel.id], err2 => {
-        if (err2) {
-          Consolex.handleError(err2)
-        }
+        if (err2) Consolex.handleError(err2)
 
         gFD.finish()
         module.exports.getGuildConfigNext(guild, callback)
@@ -75,9 +66,6 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
       uGC.finish()
       if (err) {
         Consolex.handleError(err)
-      }
-
-      if (err) {
         return callback(err)
       }
 
@@ -85,9 +73,7 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
         return callback()
       }
     })
-  } else {
-    throw new Error('Configuration parameter must be an Object with the following properties: column (column to update) and value (new value).')
-  }
+  } else throw new Error('Configuration parameter must be an Object with the following properties: column (column to update) and value (new value).')
 }
 
 /**
@@ -163,9 +149,6 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
         Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
           if (err) {
             Consolex.handleError(err)
-          }
-
-          if (err) {
             return callback(err)
           }
 
@@ -176,22 +159,16 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
           return null
         })
       }
-    } else {
-      throw new Error('The specified module does not exist.')
-    }
+    } else throw new Error('The specified module does not exist.')
   })
 }
 
 module.exports.migrateGuildData = (guild, callback) => {
   Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (!result[0].clientVersion === 'pingu@1.0.0') {
-        return
-      }
+      if (!result[0].clientVersion === 'pingu@1.0.0') return
 
       const BoolRelation = { 0: false, 1: true }
 
@@ -227,12 +204,8 @@ module.exports.migrateGuildData = (guild, callback) => {
       module.exports.updateGuildConfigNext(guild, { column: 'suggestions', newconfig: suggestions })
       module.exports.updateGuildConfigNext(guild, { column: 'autoreplies', newconfig: autoresponder })
       module.exports.updateGuildConfigNext(guild, { column: 'customcommands', newconfig: customcommands })
-      if (callback) {
-        callback()
-      }
-    } else if (callback) {
-      callback()
-    }
+      if (callback) callback()
+    } else if (callback) callback()
   })
 }
 
@@ -245,11 +218,8 @@ module.exports.migrateGuildData = (guild, callback) => {
 
 const rest = new REST({ version: '9' })
 
-if (process.env.ENTORNO === 'desarrollo') {
-  rest.setToken(process.env.INSIDER_TOKEN)
-} else {
-  rest.setToken(process.env.PUBLIC_TOKEN)
-}
+if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKEN)
+else rest.setToken(process.env.PUBLIC_TOKEN)
 
 const { Collection } = require('discord.js')
 
@@ -262,36 +232,23 @@ const { Collection } = require('discord.js')
  */
 
 function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractions, callback) {
-  if (!callback) {
-    throw new Error('Callback function is required')
-  }
+  if (!callback) throw new Error('Callback function is required')
 
   let interactionList = new Collection()
-  if (guildConfig.welcome.enabled !== 0) {
-    interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'welcome') || [])
-  }
 
-  if (guildConfig.farewell.enabled !== 0) {
-    interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'farewell') || [])
-  }
+  if (guildConfig.welcome.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'welcome') || [])
 
-  if (guildConfig.leveling.enabled !== 0) {
-    interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'leveling') || [])
-  }
+  if (guildConfig.farewell.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'farewell') || [])
 
-  if (guildConfig.suggestions.enabled !== 0) {
-    interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'suggestions') || [])
-  }
+  if (guildConfig.leveling.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'leveling') || [])
 
-  if (guildConfig.customcommands.enabled !== 0) {
-    interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'customcommands') || [])
-  }
+  if (guildConfig.suggestions.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'suggestions') || [])
+
+  if (guildConfig.customcommands.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'customcommands') || [])
 
   interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || [])
 
-  if (!deployConfigInteractions) {
-    interactionList = interactionList.filter(command => !command.isConfigurationCommand)
-  }
+  if (!deployConfigInteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 
   callback(interactionList.map(command => command.interactionData.toJSON()))
 }
@@ -304,26 +261,13 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
  */
 
 module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required')
-  }
+  if (!callback) throw new Error('Callback is required')
 
   module.exports.getGuildConfigNext(guild, guildConfig => {
     createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
-      rest
-        .put(
-          Routes.applicationGuildCommands(
-            process.Client.user.id,
-            guild.id
-          ),
-          { body: guildInteractionList }
-        ).catch(err => {
-          if (err) {
-            return callback(err)
-          }
-        }).then(() => {
-          callback()
-        })
+      rest.put(
+        Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
+        .catch(err => { if (err) return callback(err) }).then(() => { callback() })
     })
   })
 }
@@ -337,9 +281,7 @@ module.exports.deleteGuildData = guild => {
   const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles', 'guildSuggestions']
   databaseTables.forEach(table => {
     Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
-      if (err) {
-        Consolex.handleError(err)
-      }
+      if (err) Consolex.handleError(err)
     })
   })
 }
