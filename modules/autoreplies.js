@@ -10,14 +10,10 @@ const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
 module.exports.getReply = (guild, trigger, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required')
-  }
+  if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
       result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
@@ -48,17 +44,11 @@ module.exports.getReply = (guild, trigger, callback) => {
 const makeId = require('../functions/makeId')
 
 module.exports.createReply = (guild, autoreply, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required')
-  }
+  if (!callback) throw new Error('Callback is required')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) {
-    throw new Error('Trigger is required')
-  }
+  if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) throw new Error('Trigger is required')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) {
-    throw new Error('Reply is required')
-  }
+  if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) throw new Error('Reply is required')
 
   autoreply.properties = autoreply.properties || {}
   autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false
@@ -104,41 +94,26 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
       if (reply.sendInEmbed) {
         const embed = new MessageEmbed()
 
-        if (replydata.sendInEmbed.title) {
-          embed.setTitle(replydata.sendEmbed.title)
-        }
+        if (replydata.sendInEmbed.title) embed.setTitle(replydata.sendEmbed.title)
 
         if (reply.sendInEmbed.description) {
           reply.content = replydata.reply
           embed.setDescription(replydata.sendEmbed.description)
-        } else {
-          embed.setDescription(replydata.reply)
-        }
+        } else embed.setDescription(replydata.reply)
 
-        if (replydata.sendInEmbed.thumbnail) {
-          embed.setThumbnail(replydata.sendEmbed.thumbnail)
-        }
+        if (replydata.sendInEmbed.thumbnail) embed.setThumbnail(replydata.sendEmbed.thumbnail)
 
-        if (replydata.sendInEmbed.image) {
-          embed.setImage(replydata.sendEmbed.image)
-        }
+        if (replydata.sendInEmbed.image) embed.setImage(replydata.sendEmbed.image)
 
-        if (replydata.sendInEmbed.url) {
-          embed.setURL(replydata.sendEmbed.url)
-        }
+        if (replydata.sendInEmbed.url) embed.setURL(replydata.sendEmbed.url)
 
-        if (replydata.sendInEmbed.color) {
-          embed.setColor(replydata.sendEmbed.color)
-        } else {
-          embed.setColor('#2F3136')
-        }
+        if (replydata.sendInEmbed.color) embed.setColor(replydata.sendEmbed.color)
+        else embed.setColor('#2F3136')
 
         embed.setFooter({ text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL() })
 
         reply.embeds = [embed]
-      } else {
-        reply.content = replydata.autoreplyReply
-      }
+      } else reply.content = replydata.autoreplyReply
 
       try {
         message.channel.send(reply)
