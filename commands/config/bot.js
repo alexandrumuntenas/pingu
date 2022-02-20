@@ -1,5 +1,3 @@
-/* eslint-disable max-depth */
-/* eslint-disable complexity */
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions, MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
@@ -62,9 +60,7 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
         updateGuildConfigNext(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
-          }
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
 
           try {
             interaction.guild.members.cache.get(process.Client.user.id).setNickname(`[${interaction.options.getString('newprefix')}] ${process.Client.user.username}`)
@@ -79,10 +75,7 @@ module.exports = {
 
       case 'setlanguage': {
         updateGuildConfigNext(interaction.guild, { column: 'common', newconfig: { language: interaction.options.getString('language') } }, err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:ERROR'))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:ERROR'))] })
           return interaction.editReply({ embeds: [success(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: interaction.options.getString('language') }))] })
         })
         break
@@ -128,10 +121,7 @@ module.exports = {
         const moduleToEnable = interaction.options.getString('module')
 
         updateGuildConfigNext(interaction.guild, { column: moduleToEnable, newconfig: { enabled: true } }, err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: moduleToEnable }))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: moduleToEnable }))] })
           return interaction.editReply({ embeds: [success(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', { MODULE: moduleToEnable }))] })
         })
 
@@ -142,10 +132,7 @@ module.exports = {
         const moduleToDisable = interaction.options.getString('module')
 
         updateGuildConfigNext(interaction.guild, { column: moduleToDisable, newconfig: { enabled: false } }, err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: moduleToDisable }))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: moduleToDisable }))] })
           return interaction.editReply({ embeds: [success(i18n(locale, 'BOT::MODULES:DISABLE:SUCCESS', { MODULE: moduleToDisable }))] })
         })
 
@@ -158,8 +145,6 @@ module.exports = {
     }
   },
   runCommand (locale, message) {
-    // Distrubición de los subcomandos: updateinteractions, modules viewconfig, setprefix, modules disable, setlanguage, modules enable, modules viewconfig
-
     function sendHelp () {
       message.reply({
         embeds: help({
@@ -200,146 +185,122 @@ module.exports = {
       })
     }
 
-    if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
-      switch (message.parameters[0]) {
-        case 'setprefix': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
-            const prefix = message.parameters[1]
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
+      sendHelp()
+    }
 
-            updateGuildConfigNext(message.guild, { column: 'common', newconfig: { prefix } }, err => {
-              if (err) {
-                return message.channel.send({ embeds: [error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
-              }
+    switch (message.parameters[0]) {
+      case 'setprefix': {
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) sendHelp()
 
-              try {
-                message.guild.members.cache.get(process.Client.user.id).setNickname(`[${prefix}] ${process.Client.user.username}`)
-              } catch (err2) {
-                Consolex.handleError(err2)
-              }
-
-              return message.channel.send({ embeds: [success(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: prefix }))] })
-            })
-          } else {
-            sendHelp()
-          }
-
-          break
-        }
-
-        case 'setlanguage': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1) && avaliableLanguages.includes(message.parameters[1])) {
-            updateGuildConfigNext(message.guild, { column: 'common', newconfig: { language: message.parameters[1] } }, err => {
-              if (err) {
-                return message.channel.send({ embeds: [error(i18n(message.parameters[1], 'BOT::SETLANGUAGE:ERROR'))] })
-              }
-
-              return message.channel.send({ embeds: [success(i18n(message.parameters[1], 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: message.parameters[1] }))] })
-            })
-          } else {
-            sendHelp()
-          }
-
-          break
-        }
-
-        case 'updateinteractions': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
-            if (message.parameters[1] === 'true') {
-              message.parameters[1] = true
-            } else {
-              message.parameters[1] = false
-            }
-          }
-
-          updateGuildConfigNext(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
+        updateGuildConfigNext(message.guild, { column: 'common', newconfig: { prefix: message.parameters[1] } }, err => {
+          if (err) return message.channel.send({ embeds: [error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
 
           try {
-            deployGuildInteractions(message.guild, message.parameters[1], err => {
-              if (err) {
-                message.reply({ embeds: [error(i18n(locale, 'UPDATE::ERROR'))] })
-                throw err
-              }
-
-              return message.reply({ embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))] })
-            })
-          } catch (err) {
-            Consolex.handleError(err)
+            message.guild.members.cache.get(process.Client.user.id).setNickname(`[${message.parameters[1]}] ${process.Client.user.username}`)
+          } catch (err2) {
+            Consolex.handleError(err2)
           }
 
-          break
-        }
+          return message.channel.send({ embeds: [success(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: message.parameters[1] }))] })
+        })
 
-        case 'modules': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
-            switch (message.parameters[1]) {
-              case 'viewconfig': {
-                const botConfigEmbed = new MessageEmbed()
-                  .setColor('#2F3136')
-                  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-                  .setTimestamp()
-                  .setTitle(i18n(locale, 'BOT::MODULES:VIEWCONFIG:TITLE'))
-                  .setDescription(i18n(locale, 'BOT::MODULES:VIEWCONFIG:DESCRIPTION'))
-                  .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:CUSTOMCOMMANDS'), message.guild.configuration.customcommands.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-                  .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:FAREWELL'), message.guild.configuration.farewell.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-                  .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:LEVELING'), message.guild.configuration.leveling.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-                  .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:SUGGESTIONS'), message.guild.configuration.suggestions.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-                  .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:WELCOME'), message.guild.configuration.welcome.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-
-                message.reply({ embeds: [botConfigEmbed] })
-                break
-              }
-
-              case 'enable': {
-                if (Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2])) {
-                  updateGuildConfigNext(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
-                    if (err) {
-                      return message.reply({ embeds: [error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: message.parameters[2] }))] })
-                    }
-
-                    return message.reply({ embeds: [success(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
-                  })
-                } else {
-                  sendHelp()
-                }
-
-                break
-              }
-
-              case 'disable': {
-                if (Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2])) {
-                  updateGuildConfigNext(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
-                    if (err) {
-                      return message.reply({ embeds: [error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: message.parameters[2] }))] })
-                    }
-
-                    return message.reply({ embeds: [success(i18n(locale, 'BOT::MODULES:DISABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
-                  })
-                } else {
-                  sendHelp()
-                }
-
-                break
-              }
-
-              default: {
-                sendHelp()
-                break
-              }
-            }
-          } else {
-            sendHelp()
-          }
-
-          break
-        }
-
-        default: {
-          sendHelp()
-          break
-        }
+        break
       }
-    } else {
-      sendHelp()
+
+      case 'setlanguage': {
+        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && avaliableLanguages.includes(message.parameters[1]))) sendHelp()
+
+        updateGuildConfigNext(message.guild, { column: 'common', newconfig: { language: message.parameters[1] } }, err => {
+          if (err) return message.channel.send({ embeds: [error(i18n(message.parameters[1], 'BOT::SETLANGUAGE:ERROR'))] })
+          return message.channel.send({ embeds: [success(i18n(message.parameters[1], 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: message.parameters[1] }))] })
+        })
+
+        break
+      }
+
+      case 'updateinteractions': {
+        if (message.parameters[1] === 'true') {
+          message.parameters[1] = true
+        } else {
+          message.parameters[1] = false
+        }
+
+        updateGuildConfigNext(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
+
+        try {
+          deployGuildInteractions(message.guild, message.parameters[1], err => {
+            if (err) {
+              message.reply({ embeds: [error(i18n(locale, 'UPDATE::ERROR'))] })
+              throw err
+            }
+
+            return message.reply({ embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))] })
+          })
+        } catch (err) {
+          Consolex.handleError(err)
+        }
+
+        break
+      }
+
+      case 'modules': {
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) sendHelp()
+
+        switch (message.parameters[1]) {
+          case 'viewconfig': {
+            const botConfigEmbed = new MessageEmbed()
+              .setColor('#2F3136')
+              .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+              .setTimestamp()
+              .setTitle(i18n(locale, 'BOT::MODULES:VIEWCONFIG:TITLE'))
+              .setDescription(i18n(locale, 'BOT::MODULES:VIEWCONFIG:DESCRIPTION'))
+              .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:CUSTOMCOMMANDS'), message.guild.configuration.customcommands.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
+              .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:FAREWELL'), message.guild.configuration.farewell.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
+              .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:LEVELING'), message.guild.configuration.leveling.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
+              .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:SUGGESTIONS'), message.guild.configuration.suggestions.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
+              .addField(i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:WELCOME'), message.guild.configuration.welcome.enabled ? i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(locale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
+
+            message.reply({ embeds: [botConfigEmbed] })
+            break
+          }
+
+          case 'enable': {
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) sendHelp()
+
+            updateGuildConfigNext(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
+              if (err) return message.reply({ embeds: [error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: message.parameters[2] }))] })
+              return message.reply({ embeds: [success(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
+            })
+
+            break
+          }
+
+          case 'disable': {
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) sendHelp()
+
+            updateGuildConfigNext(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
+              if (err) return message.reply({ embeds: [error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: message.parameters[2] }))] })
+
+              return message.reply({ embeds: [success(i18n(locale, 'BOT::MODULES:DISABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
+            })
+
+            break
+          }
+
+          default: {
+            sendHelp()
+            break
+          }
+        }
+
+        break
+      }
+
+      default: {
+        sendHelp()
+        break
+      }
     }
   }
 }
