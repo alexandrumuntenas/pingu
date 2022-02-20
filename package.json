@@ -4,7 +4,7 @@
   "description": "Bot de Discord by Alexandru Theodor Muntenas",
   "main": "client.js",
   "dependencies": {
-    "@blac-sheep/character-count": "^0.1.2",
+    "@blac-sheep/character-count": "^0.2.0",
     "@discordjs/builders": "^0.12.0",
     "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.3.0",
