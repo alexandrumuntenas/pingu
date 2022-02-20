@@ -8,9 +8,7 @@ const { getGuildConfigNext } = require('../functions/guildDataManager')
 module.exports.doGuildMemberRemove = member => {
   getGuildConfigNext(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'farewell') && Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'enabled')) {
-      if (guildConfig.farewell.enabled) {
-        this.sendFarewellMessage(member)
-      }
+      if (guildConfig.farewell.enabled) this.sendFarewellMessage(member)
     }
   })
 }
@@ -24,14 +22,10 @@ const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPla
 
 module.exports.sendFarewellMessage = member => {
   getGuildConfigNext(member.guild, guildConfig => {
-    if (!Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'channel')) {
-      return
-    }
+    if (!Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'channel')) return
 
     const channel = member.guild.channels.cache.get(guildConfig.farewell.channel)
-    if (!channel) {
-      return
-    }
+    if (!channel) return
 
     channel.send(reemplazarPlaceholdersConDatosReales(guildConfig.farewell.message || '{member} left {server}!', member))
   })
