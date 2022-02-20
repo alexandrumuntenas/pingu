@@ -29,8 +29,8 @@ module.exports.getGuildConfigNext = (guild, callback) => {
         Object.keys(result[0]).forEach(module => {
           try {
             result[0][module] = JSON.parse(result[0][module])
-          } catch (err) {
-            if (err) {
+          } catch (err2) {
+            if (err2) {
               return err
             }
           }
@@ -38,11 +38,11 @@ module.exports.getGuildConfigNext = (guild, callback) => {
         callback(result[0])
       }
     } else {
-      const chx = guild.channels.cache.filter(chx => chx.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
-      Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, chx.id, chx.id, chx.id], err => {
-        if (err) {
-          Consolex.handleError(err)
-          Consolex.error(err)
+      // TODO: Actualizar esta sección a la nueva versión de gestión de datos
+      const topChannel = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
+      Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, topChannel.id, topChannel.id, topChannel.id], err2 => {
+        if (err2) {
+          Consolex.handleError(err2)
         }
 
         gFD.finish()

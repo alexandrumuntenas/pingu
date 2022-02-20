@@ -68,8 +68,8 @@ module.exports = {
 
           try {
             interaction.guild.members.cache.get(process.Client.user.id).setNickname(`[${interaction.options.getString('newprefix')}] ${process.Client.user.username}`)
-          } catch (err) {
-            Consolex.handleError(err)
+          } catch (err2) {
+            Consolex.handleError(err2)
           }
 
           return interaction.editReply({ embeds: [success(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
@@ -211,8 +211,8 @@ module.exports = {
 
               try {
                 message.guild.members.cache.get(process.Client.user.id).setNickname(`[${prefix}] ${process.Client.user.username}`)
-              } catch (err) {
-                Consolex.handleError(err)
+              } catch (err2) {
+                Consolex.handleError(err2)
               }
 
               return message.channel.send({ embeds: [success(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: prefix }))] })

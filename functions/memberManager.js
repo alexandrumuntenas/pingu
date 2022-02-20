@@ -24,9 +24,9 @@ module.exports.getMember = (member, callback) => {
 
     if (memberData && Object.prototype.hasOwnProperty.call(memberData, 0)) { //! THIS SECTION HAS TO BE REMOVED AND SPLIT IN THE FUTURE
       memberData[0].ecoBalance = parseInt(memberData[0].ecoBalance, 10)
-      Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err, result) => {
-        if (err) {
-          Consolex.handleError(err)
+      Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err2, result) => {
+        if (err2) {
+          Consolex.handleError(err2)
         }
 
         if (result && Object.prototype.hasOwnProperty.call(result, '0')) {
