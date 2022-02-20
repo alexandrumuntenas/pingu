@@ -31,7 +31,7 @@ module.exports = {
 
         let rankUpChannel = interaction.member.guild.configuration.leveling.channel
 
-        rankUpChannel = channelRelationShip[rankUpChannel] ? channelRelationShip[rankUpChannel] : `<#${rankUpChannel}>`;
+        rankUpChannel = channelRelationShip[rankUpChannel] ? channelRelationShip[rankUpChannel] : `<#${rankUpChannel}>`
 
         const levelingBasicConfig = new MessageEmbed()
           .setColor('#2F3136')
@@ -185,7 +185,7 @@ module.exports = {
 
         let rankUpChannel = message.member.guild.configuration.leveling.channel
 
-        rankUpChannel = channelRelationShip[rankUpChannel] ? channelRelationShip[rankUpChannel] : `<#${rankUpChannel}>`;
+        rankUpChannel = channelRelationShip[rankUpChannel] ? channelRelationShip[rankUpChannel] : `<#${rankUpChannel}>`
 
         const levelingBasicConfig = new MessageEmbed()
           .setColor('#2F3136')
