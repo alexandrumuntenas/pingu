@@ -25,11 +25,12 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.698682143718" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.698700025534" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.698682143718" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.698700025534" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.698682143718" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.698700025534" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.698700025534" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -46,7 +47,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">NEXT</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">2202</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -246,85 +247,34 @@
 <p>Configure the global aspects of Pingu, such as the prefix and its language.</p>
 </blockquote>
 <p>The following commands can only be used by the server owner or by persons with the <a href="https://discord.com/developers/docs/topics/permissions">MANAGE_GUILDS*</a> permission.</p>
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Command</th>
-<th>Function</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>admin setprefix newprefix:</td>
-<td>Change the prefix used to activate the bot.</td>
-<td>/admin setprefix newprefix: &gt;</td>
-</tr>
-<tr>
-<td>admin setlanguage language:</td>
-<td>Change the language used in bot responses</td>
-<td>!admin setlanguage en</td>
-</tr>
-<tr>
-<td>admin modules enable module:</td>
-<td>Enables a module</td>
-<td>!admin modules enable module: Welcomer</td>
-</tr>
-<tr>
-<td>admin modules disable module:</td>
-<td>Disable a module</td>
-<td>!admin modules disable module: Welcomer</td>
-</tr>
-<tr>
-<td>admin viewcnfcommands view true/false</td>
-<td>Enables or disables the deployment of bot configuration commands.</td>
-<td>/admin viewcnfcommands view true/false</td>
-</tr>
-</tbody>
-</table>
-</div>
-<doc-panel id="prefix-commands" collapsed>
-    <template #title>Prefix Commands</template>
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Command</th>
-<th>Function</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>admin setprefix &lt;newprefix&gt;</td>
-<td>Change the prefix used to activate the bot.</td>
-<td><p>!admin setprefix &gt;</p><p></p><p>!admin setprefix .</p></td>
-</tr>
-<tr>
-<td>admin setlanguage &lt;language&gt;</td>
-<td>Change the language used in bot responses</td>
-<td><p>!admin setlanguage en</p><p>!admin setlanguage es</p><p>!setlanguage fr</p></td>
-</tr>
-<tr>
-<td>admin modules enable &lt;módulo&gt;</td>
-<td>Enables a module</td>
-<td>!admin modules enable welcomer</td>
-</tr>
-<tr>
-<td>admin modules disable &lt;módulo&gt;</td>
-<td>Disable a module</td>
-<td>!admin modules disable welcomer</td>
-</tr>
-<tr>
-<td>admin viewcnfcommands view true/false</td>
-<td>Enables or disables the deployment of bot configuration commands.</td>
-<td>/admin viewcnfcommands view true/false</td>
-</tr>
-</tbody>
-</table>
-</div>
-</doc-panel>
+<doc-anchor-target id="interactions">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#interactions">#</doc-anchor-trigger>
+        <span>Interactions</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-javascript"><code v-pre class="language-javascript">/bot setprefix newprefix: &lt;String&gt; // Change the prefix
+/bot setlanguage language: &lt;English/Spanish&gt; // Change the language
+/bot modules enable module: &lt;Module&gt; // Enable a module
+/bot modules disable module: &lt;Module&gt; // Disable a module
+/bot modules viewconfig // View if the modules are enabled or disabled
+/bot interactions update // Update the interactions of the guild</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="commands">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#commands">#</doc-anchor-trigger>
+        <span>Commands</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-javascript"><code v-pre class="language-javascript">bot setprefix &lt;prefix&gt; // Change the prefix
+bot setlanguage &lt;language[en/es]&gt; // Change the language
+bot modules enable &lt;Module&gt; // Enable a module
+bot modules disable &lt;Module&gt; // Disable a module
+bot modules viewconfig // View if the modules are enabled or disabled
+bot updateinteractions &lt;Boolean&gt; // Update the interactions of the guild</code></pre>
+</doc-codeblock></div>
 <div class="flex mb-6">
     <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
     <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
@@ -338,7 +288,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>The default prefix is <code v-pre>!</code>, and the default language is <code v-pre>en</code> (English).</p>
+<p>The default prefix is <code v-pre>!</code>, and the default language is <code v-pre>es</code> (Spanish).</p>
         </div>
     </div>
 </div>
@@ -355,7 +305,7 @@
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>Remember to use the command <code v-pre>!update</code> if you are using for the first time the bot in your server.</p>
+<p>Remember to use the command <code v-pre>@Pingu bot updateinteractions</code> if you are using for the first time the bot in your server.</p>
         </div>
     </div>
 </div>
@@ -383,7 +333,7 @@
         <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/modules/autoresponder/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">Autoresponder</span>
+                <span class="block mt-1">Autoresponder (NOTUPDATED)</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -431,6 +381,6 @@
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "System", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "System", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>

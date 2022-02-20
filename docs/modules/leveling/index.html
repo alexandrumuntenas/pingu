@@ -27,11 +27,12 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.698682143718" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.698700025534" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.698682143718" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.698700025534" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.698682143718" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.698700025534" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.698700025534" defer></script>
     <link href="/pingu/resources/css/katex.css?v=1.11.2" rel="stylesheet" />
     <script id="katex-js" type="text/javascript" src="/pingu/resources/js/katex.js?v=1.11.2" defer></script>
 </head>
@@ -50,7 +51,7 @@
             <div class="flex items-center px-2 md:px-6">
                 <a id="docs-site-logo" href="/pingu/" class="flex items-center leading-snug text-xl">
                     <span class="dark:text-white font-semibold line-clamp-1 md:line-clamp-2">Pingu • The Discord Bot</span>
-                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">NEXT</span>
+                </a><span class="hidden px-2 py-1 ml-4 text-sm font-semibold leading-none text-root-logo-label-text bg-root-logo-label-bg rounded-sm md:inline-block">2202</span>
             </div>
 
             <span class="hidden h-8 border-r md:inline-block dark:border-dark-650"></span>
@@ -266,110 +267,43 @@
     </h2>
 </doc-anchor-target>
 <p>The commands listed below can only be used by the server owner, or by persons with the <a href="https://discord.com/developers/docs/topics/permissions">MANAGE_GUILD*</a> permission.</p>
-<div class="flex mb-6">
-    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3">
-<p>Enable this module using <code v-pre>/admin modules enable module: levels</code>.</p>
-<p>Disable this module using <code v-pre>/admin modules disable module: levels</code>.</p>
-        </div>
-    </div>
-</div>
-<!-- markdown-link-check-disable -->
-<div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable">
-<thead>
-<tr>
-<th>Command</th>
-<th>Function</th>
-<th>Example</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>levels</td>
-<td>Base command to configure the levels module.</td>
-<td>/levels</td>
-</tr>
-<tr>
-<td>levels viewconfig</td>
-<td>Command to query the current configuration of the module.</td>
-<td>/levels viewconfig</td>
-</tr>
-<tr>
-<td>levels setrankupchannel</td>
-<td>Command to modify the channel of the level advance messages.</td>
-<td>/levels setrankupchannel channel: &lt;Disabled/Same Channel Were Message is Sent/This Channel&gt;</td>
-</tr>
-<tr>
-<td>levels setrankupmessage message:</td>
-<td>Command to modify the level advance message.</td>
-<td>/levels setrankupmessage message: {member} got a new level!</td>
-</tr>
-<tr>
-<td>levels setdifficulty difficulty:</td>
-<td>Command to modify the difficulty of the module.</td>
-<td>/levels difficulty difficulty: 2</td>
-</tr>
-<tr>
-<td>levels configurecard setbackgroundurl: &lt;URL&gt; setoverlaycolor: &lt;Hex Color&gt; setoverlayopacity: &lt;Opacity&gt;</td>
-<td>Command to customize the rank card</td>
-<td>/levels configurecard setoverlayopacity: 1 setoverlaycolor: #0AFFFF setbackgroundurl: <a href="https://myawesomestocksite.com/photo.png">https://myawesomestocksite.com/photo.png</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- markdown-link-check-enable -->
-<div class="flex mb-6">
-    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3">
-<p>With the integration of Slash Commands, the configuration of levels module becomes much easier.</p>
-        </div>
-    </div>
-</div>
+<blockquote>
+<p>Enable this module using <code v-pre>/bot modules enable module: leveling</code>.</p>
+<p>Disable this module using <code v-pre>/bot modules disable module: leveling</code>.</p>
+</blockquote>
+<doc-anchor-target id="interactions">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#interactions">#</doc-anchor-trigger>
+        <span>Interactions</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-javascript"><code v-pre class="language-javascript">/leveling viewconfig // View the current configuration
+/leveling rankup channel channel: &lt;TextChannel&gt; message: &lt;String&gt; difficulty: &lt;Integer&gt; // Configure the rankup
+/leveling configurecards backgroundurl: &lt;URL&gt; overlayopacity: &lt;Integer&gt; overlaycolor: &lt;Hex Color&gt; // Configure the cards</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="commands">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#commands">#</doc-anchor-trigger>
+        <span>Commands</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-javascript"><code v-pre class="language-javascript">leveling viewconfig // View the current configuration of the module.
+leveling rankup channel &lt;TextChannel&gt; // Configure the rankup channel.
+leveling rankup message &lt;String&gt; // Configure the rankup message.
+leveling rankup difficulty &lt;Integer&gt; // Configure the rankup.
+leveling configurecards backgroundurl &lt;URL&gt; // Configure the cards background.
+leveling overlayopacity &lt;Integer&gt; // Configure the overlay opacity.
+leveling overlaycolor &lt;Hex Color&gt; // Configure the overlay color.</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="user-commands">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#user-commands">#</doc-anchor-trigger>
         <span>User commands</span>
     </h2>
 </doc-anchor-target>
-<p>Users will be able to use /rank to see their level card and /leaderboard to see the server ranking.</p>
-<div class="flex mb-6">
-    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3">
-<p>The user commands do have their own prefix version!</p>
-        </div>
-    </div>
-</div>
+<p>Users will be able to use /rank or <code v-pre>rank</code> to see their level card and /leaderboard or <code v-pre>leaderboard</code> to see the server ranking.</p>
 <p><figure class="content-center">
     <img src="https://cdn.discordapp.com/attachments/926103260111179836/928779386059104347/imCnpLagomxItWHwTgagZWgjrjxHQIpe.png" alt="Rank Card Example" />
     <figcaption class="caption">Rank Card Example</figcaption>
@@ -399,7 +333,7 @@
         <a class="px-5 py-4 -mx-px h-full flex items-center justify-end break-all md:break-normal font-medium text-blue-500 dark:text-blue-400 border border-gray-300 hover:border-gray-400 dark:border-dark-650 dark:hover:border-dark-450 rounded-r-lg transition-colors duration-150 relative hover:z-5" href="/pingu/docs/modules/suggestions/">
             <span>
                 <span class="block text-xs font-normal text-right text-gray-400 dark:text-dark-400">Next</span>
-                <span class="block mt-1">Suggestions</span>
+                <span class="block mt-1">Suggestions (NOTUPDATED)</span>
             </span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ml-3" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" overflow="visible"><path d="M19.92 12.38a1 1 0 00-.22-1.09l-7-7a.996.996 0 10-1.41 1.41l5.3 5.3H5c-.55 0-1 .45-1 1s.45 1 1 1h11.59l-5.29 5.29a.996.996 0 000 1.41c.19.2.44.3.7.3s.51-.1.71-.29l7-7c.09-.09.16-.21.21-.33z" /><path fill="none" d="M0 0h24v24H0z" /></svg>
         </a>
@@ -447,6 +381,6 @@
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "Leveling", icon: "file", hasPrism: false, hasMermaid: false, hasMath: true }</script>
+        <script>window.__DOCS__ = { "title": "Leveling", icon: "file", hasPrism: true, hasMermaid: false, hasMath: true }</script>
     </body>
 </html>
