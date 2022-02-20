@@ -267,7 +267,10 @@ module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callb
     createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
       rest.put(
         Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
-        .catch(err => { if (err) return callback(err) }).then(() => { callback() })
+        .catch(err => {
+          if (err) return callback(err)
+          return callback()
+        }).then(() => { callback() })
     })
   })
 }

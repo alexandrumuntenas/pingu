@@ -53,7 +53,7 @@ module.exports.getSuggestions = (member, callback) => {
       }
     }
 
-    callback(suggestions)
+    return callback(suggestions)
   })
 }
 
@@ -63,7 +63,8 @@ module.exports.getSuggestion = (guild, suggestionID, callback) => {
   Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ? AND `id` = ?', [guild.id, suggestionID], (err, rows) => {
     if (err) return Consolex.handleError(err)
 
-    if (Object.prototype.hasOwnProperty.call(rows, '0')) return JSON.parse(rows[0].properties)
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) return callback(JSON.parse(rows[0].properties))
+    return callback()
   })
 }
 
