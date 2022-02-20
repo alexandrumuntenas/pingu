@@ -20,24 +20,10 @@ module.exports = {
       .setDescription('📦 Manage the modules of your server')
       .addSubcommand(sc => sc.setName('enable')
         .setDescription('Enable a module.')
-        .addStringOption(input => input.setName('module')
-          .setRequired(true).setDescription('The name of the module.')
-          .addChoice('customcommands', 'customcommands')
-          .addChoice('farewell', 'farewell')
-          .addChoice('leveling', 'leveling')
-          .addChoice('welcome', 'welcome')
-          .addChoice('suggestions', 'suggestions')
-        ))
+        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions')))
       .addSubcommand(sc => sc.setName('disable')
         .setDescription('Disable a module.')
-        .addStringOption(input => input.setName('module')
-          .setRequired(true).setDescription('The name of the module.')
-          .addChoice('customcommands', 'customcommands')
-          .addChoice('farewell', 'farewell')
-          .addChoice('leveling', 'leveling')
-          .addChoice('welcome', 'welcome')
-          .addChoice('suggestions', 'suggestions')
-        ))
+        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions')))
       .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the status of the modules of your server.'))
     )
     .addSubcommand(sc => sc.setName('setprefix').setDescription('Set the prefix of your server.').addStringOption(input => input.setName('newprefix').setDescription('The new prefix of the bot.').setRequired(true)))
@@ -151,47 +137,22 @@ module.exports = {
           name: 'bot',
           description: i18n(locale, 'BOT::HELP:DESCRIPTION'),
           subcommands: [
-            {
-              name: 'updateinteractions',
-              description: i18n(locale, 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION'),
-              parameters: '<configinteractions[true/false]>'
-            },
-            {
-              name: 'setprefix',
-              description: i18n(locale, 'BOT::HELP:SETPREFIX:DESCRIPTION'),
-              parameters: '<prefix>'
-            },
-            {
-              name: 'setlanguage',
-              description: i18n(locale, 'BOT::HELP:SETLANGUAGE:DESCRIPTION'),
-              parameters: '<language[en/es]>'
-            },
-            {
-              name: 'modules viewconfig',
-              description: i18n(locale, 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION')
-            },
-            {
-              name: 'modules enable',
-              description: i18n(locale, 'BOT::HELP:MODULESENABLE:DESCRIPTION'),
-              parameters: '<module>'
-            },
-            {
-              name: 'modules disable',
-              description: i18n(locale, 'BOT::HELP:MODULESDISABLE:DESCRIPTION'),
-              parameters: '<module>'
-            }
+            { name: 'updateinteractions', description: i18n(locale, 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION'), parameters: '<configinteractions[true/false]>' },
+            { name: 'setprefix', description: i18n(locale, 'BOT::HELP:SETPREFIX:DESCRIPTION'), parameters: '<prefix>' },
+            { name: 'setlanguage', description: i18n(locale, 'BOT::HELP:SETLANGUAGE:DESCRIPTION'), parameters: '<language[en/es]>' },
+            { name: 'modules viewconfig', description: i18n(locale, 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION') },
+            { name: 'modules enable', description: i18n(locale, 'BOT::HELP:MODULESENABLE:DESCRIPTION'), parameters: '<module>' },
+            { name: 'modules disable', description: i18n(locale, 'BOT::HELP:MODULESDISABLE:DESCRIPTION'), parameters: '<module>' }
           ]
         })
       })
     }
 
-    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
-      sendHelp()
-    }
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return sendHelp()
 
     switch (message.parameters[0]) {
       case 'setprefix': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) sendHelp()
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
 
         updateGuildConfigNext(message.guild, { column: 'common', newconfig: { prefix: message.parameters[1] } }, err => {
           if (err) return message.channel.send({ embeds: [error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
@@ -209,7 +170,7 @@ module.exports = {
       }
 
       case 'setlanguage': {
-        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && avaliableLanguages.includes(message.parameters[1]))) sendHelp()
+        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && avaliableLanguages.includes(message.parameters[1]))) return sendHelp()
 
         updateGuildConfigNext(message.guild, { column: 'common', newconfig: { language: message.parameters[1] } }, err => {
           if (err) return message.channel.send({ embeds: [error(i18n(message.parameters[1], 'BOT::SETLANGUAGE:ERROR'))] })
@@ -245,7 +206,7 @@ module.exports = {
       }
 
       case 'modules': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) sendHelp()
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
 
         switch (message.parameters[1]) {
           case 'viewconfig': {
@@ -266,7 +227,7 @@ module.exports = {
           }
 
           case 'enable': {
-            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) sendHelp()
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
 
             updateGuildConfigNext(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
               if (err) return message.reply({ embeds: [error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: message.parameters[2] }))] })
@@ -277,7 +238,7 @@ module.exports = {
           }
 
           case 'disable': {
-            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) sendHelp()
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
 
             updateGuildConfigNext(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
               if (err) return message.reply({ embeds: [error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: message.parameters[2] }))] })
