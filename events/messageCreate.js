@@ -11,13 +11,7 @@ const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
 module.exports = {
   name: 'messageCreate',
   execute: async message => {
-    if (
-      message.channel.type === 'dm' ||
-			message.author.bot ||
-			message.author === process.Client.user
-    ) {
-      return
-    }
+    if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
 
     getGuildConfigNext(message.guild, async guildConfig => {
       message.guild.configuration = guildConfig
@@ -37,10 +31,10 @@ module.exports = {
           return
         }
 
-        if (CooldownManager.check(message.member, message.guild, { name: message.commandName })) {
-          if (process.Client.commands.has(message.commandName)) {
-            const commandToExecute = process.Client.commands.get(message.commandName)
+        const commandToExecute = process.Client.commands.get(message.commandName)
 
+        if (CooldownManager.check(message.member, message.guild, message.commandName)) {
+          if (process.Client.commands.has(message.commandName)) {
             if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
               message.reply({ embeds: [error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::PERMERROR'))] })
               return
