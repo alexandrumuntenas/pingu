@@ -247,8 +247,6 @@ module.exports = {
 						}
 					}
 
-					console.log(message.parameters[1]);
-
 					try {
 						deployGuildInteractions(message.guild, message.parameters[1], err => {
 							if (err) {
