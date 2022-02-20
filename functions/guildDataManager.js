@@ -41,7 +41,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
         }
       }
     } else {
-      // TODO: Actualizar esta sección a la nueva versión de gestión de datos
+      //! Será eliminado en la actualización de junio.
       const topChannel = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
       Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, topChannel.id, topChannel.id, topChannel.id], err2 => {
         if (err2) {
@@ -196,7 +196,7 @@ module.exports.migrateGuildData = (guild, callback) => {
       const BoolRelation = { 0: false, 1: true }
 
       // Migrar configuraciones generales
-      const general = { language: result[0].guildLanguage, prefix: result[0].guildPrefix, interactions: { enabled: BoolRelation['1'], deployConfigInteractions: result[0].guildViewCnfCmdsEnabled } }
+      const general = { language: result[0].guildLanguage, prefix: result[0].guildPrefix, interactions: { enabled: BoolRelation['1'] } }
 
       // Migrar módulo de bienvenidas
       const welcomer = {

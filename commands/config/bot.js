@@ -113,6 +113,8 @@ module.exports = {
               throw err
             }
 
+            updateGuildConfigNext(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') } } })
+
             return interaction.editReply({ embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))] })
           })
         } catch (err) {
@@ -248,6 +250,8 @@ module.exports = {
               message.parameters[1] = false
             }
           }
+
+          updateGuildConfigNext(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
 
           try {
             deployGuildInteractions(message.guild, message.parameters[1], err => {
