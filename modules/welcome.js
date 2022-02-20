@@ -29,7 +29,7 @@ const { MessageAttachment } = require('discord.js')
  * @param {GuildMember} member
  */
 
-const replaceBracePlaceholdersWithActualData = require('../functions/replacePlaceholdersWithRealData')
+const replaceBracePlaceholdersWithActualData = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendWelcomeMessage = member => {
   getGuildConfigNext(member.guild, guildConfig => {

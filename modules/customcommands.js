@@ -1,7 +1,7 @@
 /* eslint-disable node/no-callback-literal */
 const Database = require('../functions/databaseConnection')
 const Consolex = require('../functions/consolex')
-const replacePlaceholdersWithRealData = require('../functions/replacePlaceholdersWithRealData')
+const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = (guild, callback) => {
   if (!callback) {
@@ -162,10 +162,10 @@ module.exports.runCustomCommand = (message, command) => {
       }
 
       if (customCommand.sendInEmbed.description) {
-        reply.content = replacePlaceholdersWithRealData(customCommand.reply, message.member)
-        embed.setDescription(replacePlaceholdersWithRealData(customCommand.sendEmbed.description, message.member))
+        reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)
+        embed.setDescription(reemplazarPlaceholdersConDatosReales(customCommand.sendEmbed.description, message.member))
       } else {
-        embed.setDescription(replacePlaceholdersWithRealData(customCommand.reply, message.member))
+        embed.setDescription(reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member))
       }
 
       if (customCommand.sendInEmbed.thumbnail) {
@@ -190,7 +190,7 @@ module.exports.runCustomCommand = (message, command) => {
 
       reply.embeds = [embed, linkWarning]
     } else {
-      reply.content = replacePlaceholdersWithRealData(customCommand.reply, message.member)
+      reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)
     }
 
     if (customCommand.setRole) {
@@ -199,7 +199,7 @@ module.exports.runCustomCommand = (message, command) => {
 
     if (customCommand.sendDM) {
       try {
-        reply.embeds = reply.embeds || [new MessageEmbed().setDescription(replacePlaceholdersWithRealData(customCommand.reply, message.member))]
+        reply.embeds = reply.embeds || [new MessageEmbed().setDescription(reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member))]
         message.author.send(reply)
         try {
           message.delete()

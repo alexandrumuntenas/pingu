@@ -20,7 +20,7 @@ module.exports.doGuildMemberRemove = member => {
  * @param {GuildMember} member
  */
 
-const replacePlaceholdersWithRealData = require('../functions/replacePlaceholdersWithRealData')
+const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendFarewellMessage = member => {
   getGuildConfigNext(member.guild, guildConfig => {
@@ -33,6 +33,6 @@ module.exports.sendFarewellMessage = member => {
       return
     }
 
-    channel.send(replacePlaceholdersWithRealData(guildConfig.farewell.message || '{member} left {server}!', member))
+    channel.send(reemplazarPlaceholdersConDatosReales(guildConfig.farewell.message || '{member} left {server}!', member))
   })
 }
