@@ -14,10 +14,7 @@ module.exports.createSuggestion = (member, suggestion) => {
   const suggestionProperties = { id: makeId(5), guild: member.guild.id, author: member.id, suggestion, status: 'pending' }
 
   Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `properties`) VALUES (?, ?, ?)', [suggestionProperties.id, suggestionProperties.guild, JSON.stringify(suggestionProperties)], err => {
-    if (err) {
-      Consolex.handleError(err)
-      return
-    }
+    if (err) return Consolex.handleError(err)
 
     return suggestionProperties
   })
@@ -31,9 +28,7 @@ module.exports.createSuggestion = (member, suggestion) => {
 
 module.exports.deleteSuggestion = (member, suggestionID) => {
   Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionID, member.guild.id], err => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
   })
 }
 
@@ -45,15 +40,10 @@ module.exports.deleteSuggestion = (member, suggestionID) => {
  */
 
 module.exports.getSuggestions = (member, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required.')
-  }
+  if (!callback) throw new Error('Callback is required.')
 
   Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [member.guild.id], (err, rows) => {
-    if (err) {
-      Consolex.handleError(err)
-      return
-    }
+    if (err) return Consolex.handleError(err)
 
     const suggestions = []
 
@@ -68,19 +58,12 @@ module.exports.getSuggestions = (member, callback) => {
 }
 
 module.exports.getSuggestion = (guild, suggestionID, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required.')
-  }
+  if (!callback) throw new Error('Callback is required.')
 
   Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ? AND `id` = ?', [guild.id, suggestionID], (err, rows) => {
-    if (err) {
-      Consolex.handleError(err)
-      return
-    }
+    if (err) return Consolex.handleError(err)
 
-    if (Object.prototype.hasOwnProperty.call(rows, '0')) {
-      return JSON.parse(rows[0].properties)
-    }
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) return JSON.parse(rows[0].properties)
   })
 }
 
@@ -118,8 +101,6 @@ module.exports.rejectSuggestion = (member, suggestionID) => {
 
 module.exports.updateSuggestion = (member, suggestion) => {
   Database.query('UPDATE `guildSuggestions` SET `properties` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion), suggestion.id, member.guild.id], err => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
   })
 }
