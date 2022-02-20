@@ -120,8 +120,8 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       const customcommandproperties = { command: result[0].customCommand, reply: result[0].messageReturned }
-      Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err => {
-        if (err) {
+      Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
+        if (err2) {
           Consolex.handleError(err)
         }
 
