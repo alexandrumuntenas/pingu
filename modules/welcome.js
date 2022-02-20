@@ -12,9 +12,7 @@ module.exports.giveMemberRoles = member => {
         if (guildConfig.welcome.roles.length > 0) {
           guildConfig.welcome.roles.forEach(role => {
             const roleToGive = member.guild.roles.cache.get(role)
-            if (roleToGive) {
-              member.roles.add(roleToGive)
-            }
+            if (roleToGive) member.roles.add(roleToGive)
           })
         }
       }
@@ -33,15 +31,11 @@ const replaceBracePlaceholdersWithActualData = require('../functions/reemplazarP
 
 module.exports.sendWelcomeMessage = member => {
   getGuildConfigNext(member.guild, guildConfig => {
-    if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) {
-      return
-    }
+    if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) return
 
     const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
 
-    if (!channel) {
-      return
-    }
+    if (!channel) return
 
     const message = { content: replaceBracePlaceholdersWithActualData(guildConfig.welcome.message || '{member} joined {server}!', member) }
 
@@ -137,11 +131,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
 
   finalImageComposition.strokeStyle = 'rgba(0,0,0,0)'
 
-  if (
-    member.guild.configuration.welcome.welcomecard.background &&
-    isValidUrl(member.guild.configuration.welcome.welcomecard.background) &&
-    isImageUrl(member.guild.configuration.welcome.welcomecard.background)
-  ) {
+  if (member.guild.configuration.welcome.welcomecard.background && isValidUrl(member.guild.configuration.welcome.welcomecard.background) && isImageUrl(member.guild.configuration.welcome.welcomecard.background)) {
     const background = await loadImage(member.guild.configuration.welcome.welcomecard.background)
     const scale = Math.max(
       canvas.width / background.width,
@@ -188,9 +178,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
   finalImageComposition.closePath()
   finalImageComposition.clip()
 
-  const avatar = await loadImage(
-    member.user.displayAvatarURL({ format: 'png', size: 512 })
-  )
+  const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
   finalImageComposition.drawImage(avatar, (canvas.width / 2) - 100, 75, 200, 200)
 
   const buffer = canvas.toBuffer('image/png')
@@ -219,24 +207,21 @@ module.exports.addJoinRole = (guild, role, callback) => {
   getGuildConfigNext(guild, guildConfig => {
     if (guildConfig.welcome.roles) {
       const { roles } = guildConfig.welcome
+
       roles.push(`${role.id}`)
+
       updateGuildConfigNext(guild, { column: 'welcome', newconfig: { roles } }, err => {
-        if (err && callback) {
-          callback(err)
-        }
+        if (err && callback) callback(err)
       })
     } else {
       const roles = [`${role.id}`]
+
       updateGuildConfigNext(guild, { column: 'welcome', newconfig: { roles } }, err => {
-        if (err && callback) {
-          callback(err)
-        }
+        if (err && callback) callback(err)
       })
     }
 
-    if (callback) {
-      callback()
-    }
+    if (callback) callback()
   })
 }
 
@@ -244,15 +229,12 @@ module.exports.removeJoinRole = (guild, role, callback) => {
   getGuildConfigNext(guild, guildConfig => {
     if (guildConfig.welcome.roles) {
       delete guildConfig.welcome.roles[`${role.id}`]
+
       updateGuildConfigNext(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }, err => {
-        if (err && callback) {
-          callback(err)
-        }
+        if (err && callback) callback(err)
       })
     }
 
-    if (callback) {
-      callback()
-    }
+    if (callback) callback()
   })
 }
