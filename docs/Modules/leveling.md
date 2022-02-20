@@ -45,7 +45,7 @@ With the integration of Slash Commands, the configuration of levels module becom
 
 ## User commands
 
-Users will be able to use /rank to see their level card and /levelstop to see the server ranking.
+Users will be able to use /rank to see their level card and /leaderboard to see the server ranking.
 
 !!!
 The user commands do have their own prefix version!

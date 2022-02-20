@@ -1,7 +1,6 @@
+const Consolex = require('../functions/consolex')
 const { REST } = require('@discordjs/rest')
-const { Routes } = require('discord-api-types/v9')
-const getGuildConfig = require('../functions/getGuildConfig')
-const generateTheCommandListOfTheGuild = require('../functions/generateTheCommandListOfTheGuild')
+const eliminadorArchivosTemporales = require('../functions/eliminadorArchivosTemporales')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') {
@@ -12,29 +11,15 @@ if (process.env.ENTORNO === 'desarrollo') {
 
 module.exports = {
   name: 'ready',
-  execute: (client) => {
-    client.console.info(`Conectado como ${client.user.tag}!`)
-    if (client.statcord) client.statcord.autopost()
-    updateGuildCommands(client)
-    setInterval(() => {
-      updateGuildCommands(client)
-    }, 86400000)
-  }
-}
+  execute: () => {
+    Consolex.info(`Conectado como ${process.Client.user.tag}!`)
+    if (process.Client.statcord) {
+      process.Client.statcord.autopost()
+    }
 
-function updateGuildCommands (client) {
-  client.guilds.fetch().then((guilds) => {
-    guilds.forEach(guild => {
-      client.console.info(`Deploying commands to ${guild.id}`)
-      getGuildConfig(client, guild, (guildConfig) => {
-        generateTheCommandListOfTheGuild(client, guildConfig, (commandListOfTheGuild) => {
-          rest.put(Routes.applicationGuildCommands(client.user.id, guild.id), { body: commandListOfTheGuild })
-            .then(() => {
-              client.console.success(`Commands deployed succesfully to ${guild.id}`)
-            })
-            .catch(console.error)
-        })
-      })
-    })
-  })
+    eliminadorArchivosTemporales()
+    setInterval(() => {
+      eliminadorArchivosTemporales()
+    }, 600000)
+  }
 }

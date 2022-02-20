@@ -1,113 +1,125 @@
-/* eslint-disable node/no-callback-literal */
-/*
- * Suggestions Module
- * Avaliable methods: createSuggestion, deleteSuggestion, getSuggestions, getSuggestion, approveSuggestion, rejectSuggestion
- * Released on 22T1 (Snapshot 2112)
-*/
+const Consolex = require('../functions/consolex')
+const Database = require('../functions/databaseConnection')
 
 /**
-  * Creates a new suggestion
-  * @param {Client} client The base client for interacting with the Discord API
-  * @param {Object} suggestion 'suggestion' object. Needs the following parameters: 'suggestionContent', 'suggestionAuthor' (only ID), 'suggestionGuild' (only ID), 'suggestionMessage' (only ID) (refers to the message that the bot sent when it was creating the suggestion)
-  * @return {String} Suggestion ID
-*/
+ * Create a new suggestion in the guild.
+ * @param {GuildMember} member
+ * @param {String} suggestion
+ * @returns {Object} The suggestion object.
+ */
 
-module.exports.createSuggestion = async (client, suggestion, callback) => {
-  client.pool.query('INSERT INTO `guildSuggestions` (`suggestionId`, `suggestionGuild`, `suggestionAuthor`, `suggestionContent`, `suggestionMessageId`) VALUES (?, ?, ?, ?, ?)', [suggestion.suggestionId, suggestion.suggestionGuild, suggestion.suggestionAuthor, suggestion.suggestionContent, suggestion.suggestionMessage], (err) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    return callback(200)
+const makeId = require('../functions/makeId')
+
+module.exports.createSuggestion = (member, suggestion) => {
+  const suggestionProperties = { id: makeId(5), guild: member.guild.id, author: member.id, suggestion, status: 'pending' }
+
+  Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `properties`) VALUES (?, ?, ?)', [suggestionProperties.id, suggestionProperties.guild, JSON.stringify(suggestionProperties)], err => {
+    if (err) {
+      Consolex.handleError(err)
+      return
+    }
+
+    return suggestionProperties
   })
 }
 
 /**
-  * Deletes a suggestion
-  * @param {Client} client The base client for interacting with the Discord API
-  * @param {Object} suggestion 'suggestion' object. Needs the following parameters: 'suggestionId', 'suggestionGuild' (only ID)
-  * @return {Int} Status || 200 = Success || 500 = Error
-*/
+ * Delete a suggestion.
+ * @param {GuildMember} member
+ * @param {String} suggestionID
+ */
 
-module.exports.deleteSuggestion = async (client, suggestion, callback) => {
-  client.pool.query('DELETE FROM `guildSuggestions` WHERE suggestionGuild = ? AND suggestionId = ?', [suggestion.suggestionGuild, suggestion.suggestionId], (err) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    return callback(200)
-  })
-}
-
-/**
-  * Gets all the suggestions of a guild
-  * @param {Client} client The base client for interacting with the Discord API
-  * @param {GuildManager} guild The guild to get the suggestions of
-  * @return {String} Suggestion ID
-*/
-
-module.exports.getSuggestions = async (client, guild, callback) => {
-  client.pool.query('SELECT * FROM `guildSuggestions` WHERE suggestionGuild = ?', [guild.suggestionId], (err, rows) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    return callback(200)
-  })
-}
-
-/**
-  * Get a concrete suggestion from guild database
-  * @param {Client} client The base client for interacting with the Discord API
-  * @param {Object} suggestion 'suggestion' object. Needs the following parameters: 'suggestionId', 'suggestionGuild' (only ID)
-  * @return {Int} Status || 200 = Success || 500 = Error || 404 = Not Found
-*/
-
-module.exports.getSuggestion = async (client, suggestion, callback) => {
-  client.pool.query('SELECT * FROM `guildSuggestions` WHERE suggestionGuild = ? AND suggestionId = ?', [suggestion.suggestionGuild, suggestion.suggestionId], (err, result) => {
-    if (err) client.logError(err)
-    if (err) return callback(500)
-    if (result && Object.prototype.hasOwnProperty.call(result, 0)) return callback(result[0])
-    return callback(404)
-  })
-}
-
-/**
-  * Approve a suggestion
-  * @param {Client} client The base client for interacting with the Discord API
-  * @param {Object} suggestion 'suggestion' object. Needs the following parameters: 'suggestionId', 'suggestionGuild' (only ID), 'suggestionRevisor' (only member ID)
-  * @return {Int} Status || 200 = Success || 500 = Error || 404 = Not Found
-*/
-
-module.exports.approveSuggestion = async (client, suggestion, callback) => {
-  module.exports.getSuggestion(client, { suggestionId: suggestion.suggestionId, suggestionGuild: suggestion.suggestionGuild }, (data) => {
-    if (Object.prototype.hasOwnProperty.call(data, 'suggestionId')) {
-      client.pool.query('UPDATE `guildSuggestions` SET `suggestionStatus` = ?, `suggestionRevisor` = ? WHERE `suggestionId` = ? AND suggestionGuild = ?', ['2', suggestion.suggestionRevisor, suggestion.suggestionId, suggestion.suggestionGuild], (err) => {
-        if (err) client.logError(err)
-        if (err) return callback(500)
-        return callback(data)
-      })
-    } else if (data === 500) {
-      return callback(500)
-    } else {
-      return callback(404)
+module.exports.deleteSuggestion = (member, suggestionID) => {
+  Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionID, member.guild.id], err => {
+    if (err) {
+      Consolex.handleError(err)
     }
   })
 }
 
 /**
-  * Reject a suggestion
-  * @param {Client} client The base client for interacting with the Discord API
-  * @param {Object} suggestion 'suggestion' object. Needs the following parameters: 'suggestionId', 'suggestionGuild' (only ID), 'suggestionRevisor' (only member ID)
-  * @return {Int} Status || 200 = Success || 500 = Error || 404 = Not Found
-*/
+ * Get all the suggestions in the guild.
+ * @param {GuildMember} member
+ * @param {Function} callback
+ * @returns {Array} Suggestions
+ */
 
-module.exports.rejectSuggestion = async (client, suggestion, callback) => {
-  module.exports.getSuggestion(client, { suggestionId: suggestion.suggestionId, suggestionGuild: suggestion.suggestionGuild }, (data) => {
-    if (Object.prototype.hasOwnProperty.call(data, 'suggestionId')) {
-      client.pool.query('UPDATE `guildSuggestions` SET `suggestionStatus` = ?, `suggestionRevisor` = ? WHERE `suggestionId` = ? AND suggestionGuild = ?', ['1', suggestion.suggestionRevisor, suggestion.suggestionId, suggestion.suggestionGuild], (err) => {
-        if (err) client.logError(err)
-        if (err) return callback(500)
-        return callback(data)
-      })
-    } else if (data === 500) {
-      return callback(500)
-    } else {
-      return callback(404)
+module.exports.getSuggestions = (member, callback) => {
+  if (!callback) {
+    throw new Error('Callback is required.')
+  }
+
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [member.guild.id], (err, rows) => {
+    if (err) {
+      Consolex.handleError(err)
+      return
+    }
+
+    const suggestions = []
+
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) {
+      for (let i = 0; i < rows.length; i++) {
+        suggestions.push(JSON.parse(rows[i].properties))
+      }
+    }
+
+    callback(suggestions)
+  })
+}
+
+module.exports.getSuggestion = (guild, suggestionID, callback) => {
+  if (!callback) {
+    throw new Error('Callback is required.')
+  }
+
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ? AND `id` = ?', [guild.id, suggestionID], (err, rows) => {
+    if (err) {
+      Consolex.handleError(err)
+      return
+    }
+
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) {
+      return JSON.parse(rows[0].properties)
+    }
+  })
+}
+
+/**
+ * Approve a suggestion.
+ * @param {GuildMember} member - The member who is approving the suggestion.
+ * @param {String} suggestionID - The suggestion ID.
+ */
+
+module.exports.approveSuggestion = (member, suggestionID) => {
+  this.getSuggestion(member.guild, suggestionID, suggestion => {
+    suggestion.status = 'approved'
+    this.updateSuggestion(member, suggestion)
+  })
+}
+
+/**
+ * Reject a suggestion.
+ * @param {GuildMember} member - The member who is rejecting the suggestion.
+ * @param {String} suggestionID - The suggestion ID.
+ */
+
+module.exports.rejectSuggestion = (member, suggestionID) => {
+  this.getSuggestion(member.guild, suggestionID, suggestion => {
+    suggestion.status = 'rejected'
+    this.updateSuggestion(member, suggestion)
+  })
+}
+
+/**
+ * Update a suggestion.
+ * @param {GuildMember} member
+ * @param {Object} suggestion
+ */
+
+module.exports.updateSuggestion = (member, suggestion) => {
+  Database.query('UPDATE `guildSuggestions` SET `properties` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion), suggestion.id, member.guild.id], err => {
+    if (err) {
+      Consolex.handleError(err)
     }
   })
 }

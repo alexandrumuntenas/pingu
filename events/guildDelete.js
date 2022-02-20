@@ -1,16 +1,15 @@
+const Consolex = require('../functions/consolex')
+const { deleteGuildData } = require('../functions/guildDataManager')
+
 module.exports = {
   name: 'guildDelete',
-  execute: async (client, guild) => {
-    const gD = client.console.sentry.startTransaction({
+  execute: async guild => {
+    const gD = Consolex.Sentry.startTransaction({
       op: 'guildDelete',
       name: 'Guild Delete'
     })
-    const databaseTables = ['guildData', 'guildAutoResponder', 'guildEconomyProducts', 'guildJoinRoles', 'guildJoinRoles', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles']
-    databaseTables.forEach(table => {
-      client.pool.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], (err) => {
-        if (err) client.logError(err)
-      })
-    })
+
+    deleteGuildData(guild)
     gD.finish()
   }
 }

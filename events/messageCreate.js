@@ -1,62 +1,72 @@
-const { Error, Timer } = require('../modules/constructor/messageBuilder')
+const CooldownManager = require('../functions/cooldownManager')
+
+const { error, timer } = require('../functions/defaultMessages')
 const i18n = require('../i18n/i18n')
-const autoresponder = require('../modules/autoresponder')
-const getGuildConfig = require('../functions/getGuildConfig')
-const { rankUp } = require('../modules/levels')
+const { getGuildConfigNext } = require('../functions/guildDataManager.js')
 const humanizeduration = require('humanize-duration')
-const customcommands = require('../modules/customcommands')
+const { runCustomCommand } = require('../modules/customcommands')
+const { getExperience } = require('../modules/leveling')
+const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
 
 module.exports = {
   name: 'messageCreate',
-  execute: async (client, message) => {
+  execute: async message => {
     if (
       message.channel.type === 'dm' ||
-      message.author.bot ||
-      message.author === client.user
-    ) return
-    getGuildConfig(client, message.guild, async (guildData) => {
-      message.database = guildData
-      if (message.content.startsWith(message.database.guildPrefix) && message.content !== message.database.guildPrefix) {
-        message.args = message.content.slice(message.database.guildPrefix.length).trim().split(/ +/)
-      }
-      if (message.content.startsWith(message.database.guildPrefix) && message.args) {
-        let commandToExecute = message.args[0]
-        message.args.shift()
+			message.author.bot ||
+			message.author === process.Client.user
+    ) {
+      return
+    }
 
-        if (client.commands.has(commandToExecute)) {
-          commandToExecute = client.commands.get(commandToExecute)
-          if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
-            message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND::PERMERROR'))] })
-            return
-          }
-          if (client.cooldownManager.check(message.member, message.guild, commandToExecute)) {
-            client.cooldownManager.add(message.member, message.guild, commandToExecute)
-            if (Object.prototype.hasOwnProperty.call(commandToExecute, 'executeLegacy')) {
-              if (client.statcord) client.statcord.postCommand(commandToExecute.name, message.member.id)
-              await commandToExecute.executeLegacy(client, message.database.guildLanguage || 'en', message)
-            } else {
-              message.reply({ embeds: [Error(i18n(message.database.guildLanguage || 'en', 'COMMAND::LEGACYNOAVALIABLE'))] })
+    getGuildConfigNext(message.guild, async guildConfig => {
+      message.guild.configuration = guildConfig
+
+      if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
+        if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
+          message.parameters = message.content.slice(`<@!${process.Client.user.id}>`.length).trim().split(/ +/)
+        } else {
+          message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/)
+        }
+
+        message.commandName = message.parameters[0]
+        message.parameters.shift()
+
+        if (!message.commandName) {
+          await process.Client.commands.get('help').runCommand(message.guild.configuration.common.language || 'es', message)
+          return
+        }
+
+        if (CooldownManager.check(message.member, message.guild, { name: message.commandName })) {
+          if (process.Client.commands.has(message.commandName)) {
+            const commandToExecute = process.Client.commands.get(message.commandName)
+
+            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
+              message.reply({ embeds: [error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::PERMERROR'))] })
+              return
             }
-          } else {
-            message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(client.cooldownManager.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
-            return
+
+            CooldownManager.add(message.member, message.guild, commandToExecute)
+            if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
+              await commandToExecute.runCommand(message.guild.configuration.common.language || 'es', message)
+            } else {
+              message.reply({ embeds: [error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::ONLYINTERACTION'))] })
+            }
+          } else if (message.guild.configuration.customcommands.enabled) {
+            CooldownManager.add(message.member, message.guild, message.commandName)
+            runCustomCommand(message, message.commandName)
           }
         } else {
-          if (client.cooldownManager.check(message.member, message.guild, commandToExecute)) {
-            client.cooldownManager.add(message.member, message.guild, commandToExecute)
-            customcommands(client, message, commandToExecute)
-          } else {
-            message.reply({ embeds: [Timer(i18n(message.database.guildLanguage || 'en', 'COOLDOWN', { COOLDOWN: humanizeduration(client.cooldownManager.ttl(message.member, message.guild, commandToExecute), { round: true, language: message.database.guildLanguage || 'en', fallbacks: ['en'] }) }))] })
-            return
-          }
+          message.reply({ embeds: [timer(i18n(message.guild.configuration.common.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
         }
-      }
-      if (message.database.levelsEnabled !== 0) {
-        rankUp(client, message)
-      }
+      } else {
+        if (message.guild.configuration.leveling.enabled) {
+          getExperience(message.member)
+        }
 
-      if (message.database.autoresponderEnabled !== 0) {
-        autoresponder(client, message)
+        if (message.guild.configuration.autoreplies.enabled) {
+          handleAutoRepliesInMessageCreate(message)
+        }
       }
     })
   }
