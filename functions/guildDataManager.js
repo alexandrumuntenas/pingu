@@ -310,7 +310,7 @@ function createTheInteractionListOfTheGuild(guildConfig, deployConfigInteraction
 
 	interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || []);
 
-	if (deployConfigInteractions) {
+	if (!deployConfigInteractions) {
 		interactionList = interactionList.filter(command => !command.isConfigurationCommand);
 	}
 

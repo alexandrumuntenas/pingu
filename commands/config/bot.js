@@ -107,7 +107,7 @@ module.exports = {
 
 			case 'update': {
 				try {
-					deployGuildInteractions(interaction.guild, interaction.options.getBoolean('configinteractions') || true, err => {
+					deployGuildInteractions(interaction.guild, interaction.options.getBoolean('configinteractions'), err => {
 						if (err) {
 							interaction.editReply({embeds: [error(i18n(locale, 'UPDATE::ERROR'))]});
 							throw err;
@@ -239,8 +239,18 @@ module.exports = {
 				}
 
 				case 'updateinteractions': {
+					if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
+						if (message.parameters[1] === 'true') {
+							message.parameters[1] = true;
+						} else {
+							message.parameters[1] = false;
+						}
+					}
+
+					console.log(message.parameters[1]);
+
 					try {
-						deployGuildInteractions(message.guild, message.parameters[1] || true, err => {
+						deployGuildInteractions(message.guild, message.parameters[1], err => {
 							if (err) {
 								message.reply({embeds: [error(i18n(locale, 'UPDATE::ERROR'))]});
 								throw err;
