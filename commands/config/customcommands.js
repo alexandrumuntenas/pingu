@@ -7,7 +7,7 @@ const { success, error } = require('../../functions/defaultMessages')
 module.exports = {
   name: 'customcommands',
   description: '⚙️ Manage the custom commands of your server',
-  cooldown: 5,
+  cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()

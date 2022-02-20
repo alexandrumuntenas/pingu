@@ -12,7 +12,7 @@ module.exports = {
   name: 'leveling',
   description: '⚙️ Configure the leveling module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1,
+  cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))

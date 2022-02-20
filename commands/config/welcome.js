@@ -9,7 +9,7 @@ module.exports = {
   name: 'welcome',
   description: '⚙️ Configure the welcome module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1,
+  cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true)))

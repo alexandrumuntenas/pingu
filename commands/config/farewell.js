@@ -9,7 +9,7 @@ module.exports = {
   name: 'farewell',
   description: '⚙️ Configure the farewell settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1,
+  cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current farewell configuration'))

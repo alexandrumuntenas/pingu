@@ -5,7 +5,6 @@ module.exports = {
   name: 'embed',
   description: '📝 Create an embed message',
   permissions: [Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS],
-  cooldown: 1,
   interactionData: new SlashCommandBuilder()
     .addStringOption(option => option.setName('title').setDescription('Sets the embed title. (256 characters max)').setRequired(true))
     .addStringOption(option => option.setName('description').setDescription('Sets the embed description. (4096 characters max)').setRequired(true))

@@ -6,11 +6,8 @@ const Sentry = require('@sentry/node')
 if (process.env.SENTRY_DSN) {
   const sentryConfig = { dsn: process.env.SENTRY_DSN, tracesSampleRate: 1.0 }
 
-  if (process.env.ENTORNO === 'public') {
-    sentryConfig.environment = 'production'
-  } else {
-    sentryConfig.environment = 'development'
-  }
+  if (process.env.ENTORNO === 'public') sentryConfig.environment = 'production'
+  else sentryConfig.environment = 'development'
 
   Sentry.init(sentryConfig)
 }

@@ -11,7 +11,7 @@ const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', '
 module.exports = {
   name: 'bot',
   description: '🤖 Manage the bot configuration of your server',
-  cooldown: 5,
+  cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: false,
   interactionData: new SlashCommandBuilder()

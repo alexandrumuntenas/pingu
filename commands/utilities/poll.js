@@ -9,7 +9,6 @@ module.exports = {
   name: 'poll',
   description: '📊 Create a poll',
   permissions: [Permissions.FLAGS.MANAGE_MESSAGES],
-  cooldown: 1,
   interactionData: new SlashCommandBuilder()
     .addStringOption(option => option.setName('question').setDescription('Type your question. E.g. Did you like the stream?').setRequired(true))
     .addStringOption(option => option.setName('option_a').setDescription('Type your choice'))
