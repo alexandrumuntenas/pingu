@@ -70,7 +70,7 @@ module.exports = {
       })
     }
 
-    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) sendHelp()
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return sendHelp()
     switch (message.parameters[0]) {
       case 'viewconfig': {
         const farewellBasicConfig = new MessageEmbed()
@@ -87,7 +87,7 @@ module.exports = {
       }
 
       case 'setchannel': {
-        if (!message.mentions.channels.first()) sendHelp()
+        if (!message.mentions.channels.first()) return sendHelp()
         updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
           if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
           return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
@@ -96,7 +96,7 @@ module.exports = {
       }
 
       case 'setmessage': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) sendHelp()
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
         updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
           if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
           return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
