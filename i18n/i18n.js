@@ -15,6 +15,7 @@ module.exports = (language, key, placeholders) => {
   }
 
   let translation = require(`./locales/${language}.json`)[key]
+
   if (placeholders) {
     try {
       translation = stringPlaceholder(translation, placeholders, { before: '%', after: '%' })
@@ -26,9 +27,7 @@ module.exports = (language, key, placeholders) => {
     }
   }
 
-  if (!translation) {
-    translation = 'Error al intentar obtener la traducción para este mensaje (╯°□°）╯︵ ┻━┻'
-  }
+  if (!translation) translation = 'Error al intentar obtener la traducción para este mensaje (╯°□°）╯︵ ┻━┻'
 
   return translation
 }
