@@ -4,7 +4,7 @@
  * Licencia: BSL-1                       *
  * * * * * * * * * * * * * * * * * * * * *
  * Versión desarrollo: NEXT              *
- * Versión pública: 22T1                 *
+ * Versión pública: 22T2                 *
  * * * * * * * * * * * * * * * * * * * * */
 
 require('dotenv').config()
