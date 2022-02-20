@@ -21,8 +21,8 @@ module.exports = {
         process.Client.users.fetch(row.member).then(user => {
           count++
           leaderboardStr = `${leaderboardStr}\n${count}. **${user.username
-					}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel
-					}, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
+          }#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel
+          }, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
           if (count === leaderboard.length) {
             interaction.editReply({
               embeds: [leaderboardEmbed.setDescription(leaderboardStr)]
@@ -47,8 +47,8 @@ module.exports = {
         process.Client.users.fetch(row.member).then(user => {
           count++
           leaderboardStr = `${leaderboardStr}\n${count}. **${user.username
-					}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel
-					}, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
+          }#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel
+          }, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
           if (count === leaderboard.length) {
             message.reply({
               embeds: [leaderboardEmbed.setDescription(leaderboardStr)]
