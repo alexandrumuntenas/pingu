@@ -111,8 +111,8 @@ module.exports = {
 
     if (options.length === 0) {
       interaction.editReply({ embeds: [embed] })
-      interaction.replyData.react('876106253355585627').then(() => {
-        interaction.replyData.react('876106307269181460')
+      interaction.deferReply.react('876106253355585627').then(() => {
+        interaction.deferReply.react('876106307269181460')
       })
     } else {
       const arr = []
@@ -128,7 +128,7 @@ module.exports = {
       interaction.editReply({ embeds: [embed] })
       count = 0
       do {
-        interaction.replyData.react(alphabet[count])
+        interaction.deferReply.react(alphabet[count])
         count++
       } while (count < options.length)
     }

@@ -14,7 +14,7 @@ async function isCommand (interaction) {
     return
   }
 
-  interaction.replyData = await interaction.deferReply({ fetchReply: true })
+  interaction.deferReply = await interaction.deferReply({ fetchReply: true })
   getGuildConfigNext(interaction.guild, async guildConfig => {
     interaction.guild.configuration = guildConfig
     if (process.Client.commands.has(interaction.commandName)) {
