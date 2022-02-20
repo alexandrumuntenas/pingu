@@ -5,9 +5,7 @@
  */
 
 module.exports = (string, member) => {
-  if (!string || !member) {
-    throw new Error('Missing required parameters')
-  }
+  if (!string || !member) throw new Error('Missing required parameters')
 
   return string
     .replaceAll('{user}', member)
