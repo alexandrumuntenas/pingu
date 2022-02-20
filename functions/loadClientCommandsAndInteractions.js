@@ -14,6 +14,7 @@ module.exports = () => {
 
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
+
         if (Object.prototype.hasOwnProperty.call(command, 'name')) {
           if (Object.prototype.hasOwnProperty.call(command, 'interactionData')) {
             //! LAS INTERACCIONES SERÁN GESTIONADAS POR UN SUBPROCESO
@@ -22,13 +23,9 @@ module.exports = () => {
             command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
           }
 
-          if (!command.isConfigCommand) {
-            command.isConfigCommand = false
-          }
+          if (!command.isConfigCommand) command.isConfigCommand = false
 
-          if (!(command.runCommand || command.runInteraction)) {
-            throw new Error(`El comando ${command.name} no tiene una propiedad runInteraction o runCommand. Este comando no podrá ser utilizado por el usuario.`)
-          }
+          if (!(command.runCommand || command.runInteraction)) throw new Error(`El comando ${command.name} no tiene una propiedad runInteraction o runCommand. Este comando no podrá ser utilizado por el usuario.`)
 
           commands.set(command.name, command)
           Consolex.success(`Comando ${file} cargado`)
@@ -36,9 +33,7 @@ module.exports = () => {
           Consolex.warn(`Command ${file} no tiene una propiedad name. Este comando no podrá ser utilizado por el usuario.`)
           continue
         }
-      } else if (fs.lstatSync(path).isDirectory()) {
-        load(path)
-      }
+      } else if (fs.lstatSync(path).isDirectory()) load(path)
     }
   }
 
