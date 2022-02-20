@@ -1,5 +1,6 @@
 const Database = require('../functions/databaseConnection');
 const Consolex = require('../functions/consolex');
+const replacePlaceholdersWithRealData = require('../functions/replacePlaceholdersWithRealData');
 
 module.exports.getCustomCommands = (guild, callback) => {
 	if (!callback) {
@@ -155,10 +156,10 @@ module.exports.runCustomCommand = (message, command) => {
 			}
 
 			if (customCommand.sendInEmbed.description) {
-				reply.content = customCommand.reply;
-				embed.setDescription(customCommand.sendEmbed.description);
+				reply.content = replacePlaceholdersWithRealData(customCommand.reply, message.member);
+				embed.setDescription(replacePlaceholdersWithRealData(customCommand.sendEmbed.description, message.member));
 			} else {
-				embed.setDescription(customCommand.reply);
+				embed.setDescription(replacePlaceholdersWithRealData(customCommand.reply, message.member));
 			}
 
 			if (customCommand.sendInEmbed.thumbnail) {
@@ -183,7 +184,7 @@ module.exports.runCustomCommand = (message, command) => {
 
 			reply.embeds = [embed, linkWarning];
 		} else {
-			reply.content = customCommand.reply;
+			reply.content = replacePlaceholdersWithRealData(customCommand.reply, message.member);
 		}
 
 		if (customCommand.setRole) {
@@ -192,7 +193,7 @@ module.exports.runCustomCommand = (message, command) => {
 
 		if (customCommand.sendDM) {
 			try {
-				reply.embeds = reply.embeds || [new MessageEmbed().setDescription(customCommand.reply)];
+				reply.embeds = reply.embeds || [new MessageEmbed().setDescription(replacePlaceholdersWithRealData(customCommand.reply, message.member))];
 				message.author.send(reply);
 				try {
 					message.delete();
