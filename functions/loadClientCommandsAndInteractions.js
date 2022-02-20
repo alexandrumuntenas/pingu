@@ -8,7 +8,7 @@ module.exports = () => {
 
   load('./commands')
 
-  async function load (directory) {
+  function load (directory) {
     const files = fs.readdirSync(directory)
 
     for (const file of files) {

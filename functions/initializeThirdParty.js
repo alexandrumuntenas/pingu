@@ -3,7 +3,7 @@ const Consolex = require('./consolex')
 const Statcord = require('statcord.js')
 const dbots = require('dbots')
 
-module.exports = async () => {
+module.exports = () => {
   const apiKeys = {}
 
   const services = ['bladelist', 'blist', 'botsondiscord', 'carbon', 'dbots', 'discordboats', 'discordbotlist', 'discordbotlisteu', 'discordbotsgg', 'discordextremelist', 'discordlabs', 'discordlistology', 'discordlistspace', 'discordscom', 'discordservices', 'disforge', 'fateslist', 'infinitynbotlist', 'listcord', 'motionbotlist', 'spacebotslist', 'topcord', 'topgg', 'voidbots', 'wonderbotlist', 'yabl']

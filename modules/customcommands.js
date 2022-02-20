@@ -1,3 +1,4 @@
+/* eslint-disable node/no-callback-literal */
 const Database = require('../functions/databaseConnection')
 const Consolex = require('../functions/consolex')
 const replacePlaceholdersWithRealData = require('../functions/replacePlaceholdersWithRealData')
@@ -19,7 +20,7 @@ module.exports.getCustomCommands = (guild, callback) => {
           // To Do: Check if the property is an actual valid Object.
           customcommands.push(JSON.parse(result[i].customcommandproperties))
         } else {
-          this.migrateToNewOrganization(guild, result[i].customCommand).then(() => {
+          this.migrateToNewOrganization(guild, result[i].customCommand, () => {
             customcommands.push({ command: result[i].customCommand, reply: result[i].messageReturned })
           })
         }
@@ -57,7 +58,7 @@ module.exports.getCustomCommand = (guild, command, callback) => {
         // To Do: Check if the property is an actual valid Object.
         callback(JSON.parse(result[0].customcommandproperties))
       } else {
-        this.migrateToNewOrganization(guild, command).then(() => {
+        this.migrateToNewOrganization(guild, command, () => {
           callback({ command, reply: result[0].messageReturned })
         })
       }
@@ -109,8 +110,9 @@ module.exports.deleteCustomCommand = (guild, command) => {
  * Update the custom command properties in the database to use the new structures
  * @param {Guild} guild
  * @param {String} command
+ * @param {Function} callback
  */
-module.exports.migrateToNewOrganization = async (guild, command) => {
+module.exports.migrateToNewOrganization = (guild, command, callback) => {
   Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
     if (err) {
       Consolex.handleError(err)
@@ -121,6 +123,10 @@ module.exports.migrateToNewOrganization = async (guild, command) => {
       Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err => {
         if (err) {
           Consolex.handleError(err)
+        }
+
+        if (callback) {
+          callback()
         }
       })
     }

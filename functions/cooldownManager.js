@@ -52,6 +52,6 @@ module.exports.saveCooldownCollectionIntoJsonFile = () => {
   })
 }
 
-setInterval(async () => {
+setInterval(() => {
   module.exports.saveCooldownCollectionIntoJsonFile()
 }, 60000)

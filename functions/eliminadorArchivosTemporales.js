@@ -5,11 +5,15 @@ const consolex = require('./consolex')
  * Remove files older than 10 minutes every 5 minutes
  */
 
-module.exports = async () => {
+module.exports = () => {
   const files = readdirSync('./modules/temp')
 
   for (const file of files) {
     stat(`./modules/temp/${file}`, (err, stats) => {
+      if (err) {
+        consolex.handleError(err)
+      }
+
       const fileDate = new Date(stats.birthtime)
       const now = new Date()
 
