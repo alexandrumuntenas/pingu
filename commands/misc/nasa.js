@@ -26,12 +26,12 @@ module.exports = {
             .setImage(resource.hdurl)
             .addField(
               '+ Info',
-							`<:blurple_image:892443053359517696> ${resource.copyright || i18n(locale, 'IMAGEAPI::NOCOPYRIGHT')
-							}\n<a:ultimahora:876105976573472778> ${i18n(
-								locale,
-								'IMAGEAPI::PROVIDER',
-								{ PROVIDER: 'Nasa.gov' }
-							)}`
+              `<:blurple_image:892443053359517696> ${resource.copyright || i18n(locale, 'IMAGEAPI::NOCOPYRIGHT')
+              }\n<a:ultimahora:876105976573472778> ${i18n(
+                locale,
+                'IMAGEAPI::PROVIDER',
+                { PROVIDER: 'Nasa.gov' }
+              )}`
             )
           interaction.editReply({ embeds: [embed] })
         } else {
@@ -61,12 +61,12 @@ module.exports = {
                 .setImage(resource.hdurl)
                 .addField(
                   '+ Info',
-									`<:blurple_image:892443053359517696> ${resource.copyright || i18n(locale, 'IMAGEAPI::NOCOPYRIGHT')
-									}\n<a:ultimahora:876105976573472778> ${i18n(
-										locale,
-										'IMAGEAPI::PROVIDER',
-										{ PROVIDER: 'Nasa.gov' }
-									)}`
+                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n(locale, 'IMAGEAPI::NOCOPYRIGHT')
+                  }\n<a:ultimahora:876105976573472778> ${i18n(
+                    locale,
+                    'IMAGEAPI::PROVIDER',
+                    { PROVIDER: 'Nasa.gov' }
+                  )}`
                 )
               msg.edit({ embeds: [embed] })
             } else {

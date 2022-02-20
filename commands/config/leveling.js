@@ -24,8 +24,8 @@ module.exports = {
       .addStringOption(input => input.setName('backgroundurl').setDescription('Set the background image url.'))
       .addNumberOption(input => input.setName('overlayopacity').setDescription('Set the overlay opacity.'))
       .addStringOption(input => input.setName('overlaycolor').setDescription('Set the overlay color.'))),
-  runInteraction(locale, interaction) {
-    function viewConfigFallback() {
+  runInteraction (locale, interaction) {
+    function viewConfigFallback () {
       generateRankCard(interaction.member, card => {
         const attachmentRankCard = new MessageAttachment(card, 'rankcard.png')
 
@@ -150,8 +150,8 @@ module.exports = {
     }
   },
   // eslint-disable-next-line complexity
-  runCommand(locale, message) {
-    function sendHelp() {
+  runCommand (locale, message) {
+    function sendHelp () {
       message.reply({
         embeds: help({
           name: 'leveling',
@@ -171,7 +171,7 @@ module.exports = {
       })
     }
 
-    function viewConfigFallback() {
+    function viewConfigFallback () {
       generateRankCard(message.member, card => {
         const attachmentRankCard = new MessageAttachment(card, 'rankcard.png')
 
