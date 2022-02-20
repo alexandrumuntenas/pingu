@@ -4,20 +4,15 @@ const Consolex = require('../functions/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = (guild, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required')
-  }
+  if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       const customcommands = []
       for (let i = 0; i < result.length; i++) {
         if (Object.prototype.hasOwnProperty.call(result[i], 'customcommandproperties') && result[i].customcommandproperties !== null) {
-          // To Do: Check if the property is an actual valid Object.
           customcommands.push(JSON.parse(result[i].customcommandproperties))
         } else {
           this.migrateToNewOrganization(guild, result[i].customCommand, () => {
@@ -42,20 +37,13 @@ module.exports.getCustomCommands = (guild, callback) => {
  */
 
 module.exports.getCustomCommand = (guild, command, callback) => {
-  if (!callback) {
-    throw new Error('Callback is required')
-  }
+  if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
-
-    // New custom command structure { command: String, reply: String, sendDM: Boolean, sendChannel: String, setRole: String, sendInEmbed: Boolean }
+    if (err) Consolex.handleError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       if (Object.prototype.hasOwnProperty.call(result[0], 'customcommandproperties') && result[0].customcommandproperties !== null) {
-        // To Do: Check if the property is an actual valid Object.
         callback(JSON.parse(result[0].customcommandproperties))
       } else {
         this.migrateToNewOrganization(guild, command, () => {
@@ -114,20 +102,14 @@ module.exports.deleteCustomCommand = (guild, command) => {
  */
 module.exports.migrateToNewOrganization = (guild, command, callback) => {
   Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
-    if (err) {
-      Consolex.handleError(err)
-    }
+    if (err) Consolex.handleError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       const customcommandproperties = { command: result[0].customCommand, reply: result[0].messageReturned }
       Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
-        if (err2) {
-          Consolex.handleError(err)
-        }
+        if (err2) Consolex.handleError(err)
 
-        if (callback) {
-          callback()
-        }
+        if (callback) callback()
       })
     }
   })
@@ -157,45 +139,28 @@ module.exports.runCustomCommand = (message, command) => {
     if (customCommand.sendInEmbed) {
       const embed = new MessageEmbed()
 
-      if (customCommand.sendInEmbed.title) {
-        embed.setTitle(customCommand.sendEmbed.title)
-      }
+      if (customCommand.sendInEmbed.title) embed.setTitle(customCommand.sendEmbed.title)
 
       if (customCommand.sendInEmbed.description) {
         reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)
         embed.setDescription(reemplazarPlaceholdersConDatosReales(customCommand.sendEmbed.description, message.member))
-      } else {
-        embed.setDescription(reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member))
-      }
+      } else embed.setDescription(reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member))
 
-      if (customCommand.sendInEmbed.thumbnail) {
-        embed.setThumbnail(customCommand.sendEmbed.thumbnail)
-      }
+      if (customCommand.sendInEmbed.thumbnail) embed.setThumbnail(customCommand.sendEmbed.thumbnail)
 
-      if (customCommand.sendInEmbed.image) {
-        embed.setImage(customCommand.sendEmbed.image)
-      }
+      if (customCommand.sendInEmbed.image) embed.setImage(customCommand.sendEmbed.image)
 
-      if (customCommand.sendInEmbed.url) {
-        embed.setURL(customCommand.sendEmbed.url)
-      }
+      if (customCommand.sendInEmbed.url) embed.setURL(customCommand.sendEmbed.url)
 
-      if (customCommand.sendInEmbed.color) {
-        embed.setColor(customCommand.sendEmbed.color)
-      } else {
-        embed.setColor('#2F3136')
-      }
+      if (customCommand.sendInEmbed.color) embed.setColor(customCommand.sendEmbed.color)
+      else embed.setColor('#2F3136')
 
       embed.setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
       reply.embeds = [embed, linkWarning]
-    } else {
-      reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)
-    }
+    } else reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)
 
-    if (customCommand.setRole) {
-      message.member.roles.add(customCommand.setRole)
-    }
+    if (customCommand.setRole) message.member.roles.add(customCommand.setRole)
 
     if (customCommand.sendDM) {
       try {
@@ -215,13 +180,8 @@ module.exports.runCustomCommand = (message, command) => {
 
     if (customCommand.sendChannel) {
       const customChannelToSend = message.guild.channel.cache.get(customCommand.sendChannel)
-      if (customChannelToSend) {
-        customChannelToSend.send(reply)
-      } else {
-        message.reply(reply)
-      }
-    } else {
-      message.reply(reply)
-    }
+      if (customChannelToSend) customChannelToSend.send(reply)
+      else message.reply(reply)
+    } else message.reply(reply)
   })
 }
