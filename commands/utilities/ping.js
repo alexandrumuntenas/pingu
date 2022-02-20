@@ -15,6 +15,7 @@ module.exports = {
       .addField(`<:timeout_clock:937404313901359114> ${i18n(locale, 'PING::TOTALPING')}`, `${Math.round(process.Client.ws.ping + (Math.abs(Date.now() - interaction.createdTimestamp)))}ms`, true)
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
+
     interaction.editReply({ embeds: [embed] })
   },
   runCommand (locale, message) {
@@ -26,6 +27,7 @@ module.exports = {
       .addField(`<:timeout_clock:937404313901359114> ${i18n(locale, 'PING::TOTALPING')}`, `${Math.round(process.Client.ws.ping + (Math.abs(Date.now() - message.createdTimestamp)))}ms`, true)
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
+
     message.channel.send({ embeds: [embed] })
   }
 }
