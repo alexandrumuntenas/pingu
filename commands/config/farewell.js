@@ -9,7 +9,7 @@ module.exports = {
   name: 'farewell',
   description: '⚙️ Configure the farewell settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1,
+  cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current farewell configuration'))
@@ -34,24 +34,16 @@ module.exports = {
 
       case 'setchannel': {
         updateGuildConfigNext(interaction.guild, { column: 'farewell', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
-          if (err) {
-            interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
-            return
-          }
-
-          interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
 
       case 'setmessage': {
         updateGuildConfigNext(interaction.guild, { column: 'farewell', newconfig: { message: interaction.options.getString('message') } }, err => {
-          if (err) {
-            interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
-            return
-          }
-
-          interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
+          return interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
         break
       }
@@ -78,61 +70,45 @@ module.exports = {
       })
     }
 
-    if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
-      switch (message.parameters[0]) {
-        case 'viewconfig': {
-          const farewellBasicConfig = new MessageEmbed()
-            .setColor('#2F3136')
-            .setTitle(i18n(locale, 'FAREWELL::VIEWCONFIG:TITLE'))
-            .setDescription(i18n(locale, 'FAREWELL::VIEWCONFIG:DESCRIPTION'))
-            .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'FAREWELL::VIEWCONFIG:CHANNEL')}`, message.guild.configuration.farewell.channel ? `<#${message.guild.configuration.farewell.channel}>` : i18n(locale, 'NOSET'))
-            .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'FAREWELL::VIEWCONFIG:MESSAGE')}`, message.guild.configuration.farewell.message ? message.guild.configuration.farewell.message : i18n(locale, 'NOSET'))
-            .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-            .setTimestamp()
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return sendHelp()
+    switch (message.parameters[0]) {
+      case 'viewconfig': {
+        const farewellBasicConfig = new MessageEmbed()
+          .setColor('#2F3136')
+          .setTitle(i18n(locale, 'FAREWELL::VIEWCONFIG:TITLE'))
+          .setDescription(i18n(locale, 'FAREWELL::VIEWCONFIG:DESCRIPTION'))
+          .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'FAREWELL::VIEWCONFIG:CHANNEL')}`, message.guild.configuration.farewell.channel ? `<#${message.guild.configuration.farewell.channel}>` : i18n(locale, 'NOSET'))
+          .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'FAREWELL::VIEWCONFIG:MESSAGE')}`, message.guild.configuration.farewell.message ? message.guild.configuration.farewell.message : i18n(locale, 'NOSET'))
+          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+          .setTimestamp()
 
-          message.reply({ embeds: [farewellBasicConfig] })
-          break
-        }
-
-        case 'setchannel': {
-          if (message.mentions.channels.first()) {
-            updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
-              if (err) {
-                message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
-                return
-              }
-
-              message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
-            })
-          } else {
-            sendHelp()
-          }
-
-          break
-        }
-
-        case 'setmessage': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
-            updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
-              if (err) {
-                message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
-                return
-              }
-
-              message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
-            })
-          }
-
-          break
-        }
-
-        default: {
-          sendHelp()
-          break
-        }
+        message.reply({ embeds: [farewellBasicConfig] })
+        break
       }
-    } else {
-      sendHelp()
+
+      case 'setchannel': {
+        if (!message.mentions.channels.first()) return sendHelp()
+        updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
+          if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
+          return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+        })
+        break
+      }
+
+      case 'setmessage': {
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
+        updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
+          if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
+          return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
+        })
+
+        break
+      }
+
+      default: {
+        sendHelp()
+        break
+      }
     }
   }
 }

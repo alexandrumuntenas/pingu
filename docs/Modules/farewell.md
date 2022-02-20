@@ -8,26 +8,22 @@ icon: diff-removed
 
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
-!!!
-Enable this module using `/admin modules enable module: farewell`.
+> Enable this module using `/bot modules enable module: farewell`.
+>
+> Disable this module using `/bot modules disable module: farewell`.
 
-Disable this module using `/admin modules disable module: farewell`.
-!!!
+## Interactions
 
-=== Interactions
+```javascript
+/farewell viewconfig // View the current configuration
+/farewell setchannel channel: <TextChannel> // Set the channel to send farewell messages to
+/farewell setmessage message: <String> // Set the farewell message
+```
 
-| Command | Function | Example |
-| --- | --- | --- |
-| /farewell viewconfig | Command to view the set configuration of the module. | /farewell viewconfig |
-| /farewell setchannel channel: \<farewell channel> | Command to configure the farewell channel. (If it does not exist/work, the message is not sent). | /farewell setchannel channel:#aeropuerto-internacional |
-| /farewell setmessage message: | Command to set the farewell message. | /farewell setmessage message:{member} left {guild}. |
+## Commands
 
-==- Commands
-
-| Command | Function | Example |
-| --- | --- | --- |
-| farewell viewconfig | Command to view the set configuration of the module. | !farewell viewconfig |
-| farewell setchannel \<channel> | Command to configure the farewell channel. (If it does not exist/work, the message is not sent). | !farewell setchannel #aeropuerto-internacional |
-| farewell setmessage \<message···> | Command to set the farewell message. | !farewell setmessage {member} left {guild}. |
-
-===
+```javascript
+farewell viewconfig // View the current configuration of the module.
+farewell setchannel <TextChannel> // Configure the farewell channel.
+farewell setmessage <String> // Set the farewell message.
+```

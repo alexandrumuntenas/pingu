@@ -1,19 +1,17 @@
-/* eslint-disable max-depth */
-/* eslint-disable complexity */
-
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const { error, success, help } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
-const Consolex = require('../../functions/consolex')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')
+
+const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 
 module.exports = {
   name: 'welcome',
   description: '⚙️ Configure the welcome module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1,
+  cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true)))
@@ -33,10 +31,7 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'setchannel': {
         updateGuildConfigNext(interaction.guild, { column: 'welcome', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
           return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
@@ -44,10 +39,7 @@ module.exports = {
 
       case 'setmessage': {
         updateGuildConfigNext(interaction.guild, { column: 'welcome', newconfig: { message: interaction.options.getString('message') } }, err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
           return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
         break
@@ -83,20 +75,16 @@ module.exports = {
           if (overlayopacity) {
             modifiedconfig.addField(`:flashlight: ${i18n(locale, 'OVERLAYOPACITY')}`, overlayopacity ? `${overlayopacity}%` : `❌ ${i18n(locale, 'NOTSET')}`, true)
             newconfig.welcomecard.overlay.opacity = overlayopacity
-            if (newconfig.welcomecard.overlay) {
-              newconfig.welcomecard.overlay.opacity = overlayopacity
-            } else {
-              newconfig.welcomecard.overlay = { opacity: overlayopacity }
-            }
+
+            if (newconfig.welcomecard.overlay) newconfig.welcomecard.overlay.opacity = overlayopacity
+            else newconfig.welcomecard.overlay = { opacity: overlayopacity }
           }
 
-          if (overlaycolor) {
+          if (overlaycolor && hexRegexTester.test(overlaycolor)) {
             modifiedconfig.addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, overlaycolor || `❌ ${i18n(locale, 'NOTSET')}`, true)
-            if (newconfig.welcomecard.overlay) {
-              newconfig.welcomecard.overlay.color = overlaycolor
-            } else {
-              newconfig.welcomecard.overlay = { color: overlaycolor }
-            }
+
+            if (newconfig.welcomecard.overlay) newconfig.welcomecard.overlay.color = overlaycolor
+            else newconfig.welcomecard.overlay = { color: overlaycolor }
           }
 
           if (title) {
@@ -110,11 +98,7 @@ module.exports = {
           }
 
           updateGuildConfigNext(interaction.guild, { column: 'welcome', newconfig }, err => {
-            if (err) {
-              Consolex.handleError(err)
-              return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
-            }
-
+            if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -133,6 +117,7 @@ module.exports = {
               .setImage('attachment://welcomecard.png')
               .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
               .setTimestamp()
+
             return interaction.editReply({ embeds: [actualconfig], files: [welcomecard] })
           })
         }
@@ -142,10 +127,7 @@ module.exports = {
 
       case 'give': {
         addJoinRole(interaction.guild, interaction.options.getRole('role'), err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
           return interaction.editReply({ embeds: [success(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
@@ -153,10 +135,7 @@ module.exports = {
 
       case 'remove': {
         removeJoinRole(interaction.guild, interaction.options.getRole('role'), err => {
-          if (err) {
-            return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
-          }
-
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
           return interaction.editReply({ embeds: [success(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
@@ -187,6 +166,7 @@ module.exports = {
           .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'WELCOME::VIEWCONFIG:MESSAGE')}`, message.guild.configuration.welcome.message || `❌ ${i18n(locale, 'NOTSET')}`, false)
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
           .setTimestamp()
+
         const welcomeCards = new MessageEmbed()
           .setColor('#2F3136')
           .setTitle(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE'))
@@ -242,203 +222,155 @@ module.exports = {
       })
     }
 
-    if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
-      switch (message.parameters[0].toLowerCase()) {
-        case 'viewconfig': {
-          viewConfigFallback()
-          break
-        }
+    if (!(Object.prototype.hasOwnProperty.call(message.parameters, 0))) return sendHelp()
 
-        case 'setchannel': {
-          if (message.mentions.channel.first()) {
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { channel: message.mentions.channel.first().id } }, err => {
-              if (err) {
-                return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
-              }
-
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channel.first() }))] })
-            })
-          }
-
-          break
-        }
-
-        case 'setmessage': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
-              if (err) {
-                return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
-              }
-
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
-            })
-          } else {
-            sendHelp()
-          }
-
-          break
-        }
-
-        case 'configurecards': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 2)) {
-            switch (message.parameters[1].toLowerCase()) {
-              case 'sendcards': {
-                if (message.parameters[2] === true) {
-                  updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: true } } }, err => {
-                    if (err) {
-                      return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
-                    }
-
-                    return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
-                  })
-                } else if (message.parameters[2] === false) {
-                  updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: false } } }, err => {
-                    if (err) {
-                      return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
-                    }
-
-                    return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:DISABLED'))] })
-                  })
-                }
-
-                break
-              }
-
-              case 'backgroundurl': {
-                updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { background: message.parameters.slice(2).join(' ') } } }, err => {
-                  if (err) {
-                    return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:ERROR'))] })
-                  }
-
-                  return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { BACKGROUND: message.parameters.slice(2).join(' ') }))] })
-                })
-                break
-              }
-
-              case 'overlayopacity': {
-                if (parseInt(message.parameters[2], 10) <= 0) {
-                  message.parameters[2] = '0'
-                } else if (parseInt(message.parameters[2], 10) >= 100) {
-                  message.parameters[2] = '100'
-                } else {
-                  message.parameters[2] = '50'
-                }
-
-                updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
-                  if (err) {
-                    return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))] })
-                  }
-
-                  return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: message.parameters[2] }))] })
-                })
-                break
-              }
-
-              case 'overlaycolor': {
-                const regex = /^#([0-9a-f]{3}){1,2}$/i
-
-                if (regex.test(message.parameters[2])) {
-                  updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
-                    if (err) {
-                      return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
-                    }
-
-                    return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
-                  })
-                }
-
-                break
-              }
-
-              case 'title': {
-                updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { title: message.parameters.slice(2).join(' ') } } }, err => {
-                  if (err) {
-                    return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:ERROR'))] })
-                  }
-
-                  return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:SUCCESS', { TITLE: message.parameters.slice(2).join(' ') }))] })
-                })
-                break
-              }
-
-              case 'subtitle': {
-                updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { subtitle: message.parameters.slice(2).join(' ') } } }, err => {
-                  if (err) {
-                    return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:ERROR'))] })
-                  }
-
-                  return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:SUCCESS', { SUBTITLE: message.parameters.slice(2).join(' ') }))] })
-                })
-                break
-              }
-
-              default: {
-                viewConfigFallback()
-                break
-              }
-            }
-          } else {
-            viewConfigFallback()
-          }
-
-          break
-        }
-
-        case 'configureroles': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1)) {
-            switch (message.parameters[1].toLowerCase()) {
-              case 'give': {
-                if (message.mentions.roles.first()) {
-                  addJoinRole(message.guild, message.mentions.roles.first(), err => {
-                    if (err) {
-                      return message.reply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
-                    }
-
-                    return message.reply({ embeds: [success(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
-                  })
-                  break
-                } else {
-                  viewConfigFallback()
-                }
-
-                break
-              }
-
-              case 'remove': {
-                if (message.mentions.roles.first()) {
-                  removeJoinRole(message.guild, message.mentions.roles.first(), err => {
-                    if (err) {
-                      return message.reply({ embeds: [error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
-                    }
-
-                    return message.reply({ embeds: [success(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
-                  })
-                } else {
-                  viewConfigFallback()
-                }
-
-                break
-              }
-
-              default: {
-                sendHelp()
-                break
-              }
-            }
-          } else {
-            viewConfigFallback()
-          }
-
-          break
-        }
-
-        default: {
-          sendHelp()
-          break
-        }
+    switch (message.parameters[0].toLowerCase()) {
+      case 'viewconfig': {
+        viewConfigFallback()
+        break
       }
-    } else {
-      sendHelp()
+
+      case 'setchannel': {
+        if (!message.mentions.channel.first()) return sendHelp()
+
+        updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { channel: message.mentions.channel.first().id } }, err => {
+          if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
+          return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channel.first() }))] })
+        })
+
+        break
+      }
+
+      case 'setmessage': {
+        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1))) return sendHelp()
+
+        updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
+          if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
+          return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
+        })
+
+        break
+      }
+
+      case 'configurecards': {
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 2)) return viewConfigFallback()
+
+        switch (message.parameters[1].toLowerCase()) {
+          case 'sendcards': {
+            if (message.parameters[2] === true) {
+              updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: true } } }, err => {
+                if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
+                return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
+              })
+            } else {
+              updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: false } } }, err => {
+                if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
+                return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:DISABLED'))] })
+              })
+            }
+
+            break
+          }
+
+          case 'backgroundurl': {
+            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { background: message.parameters.slice(2).join(' ') } } }, err => {
+              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:ERROR'))] })
+              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { BACKGROUND: message.parameters.slice(2).join(' ') }))] })
+            })
+            break
+          }
+
+          case 'overlayopacity': {
+            if (parseInt(message.parameters[2], 10) <= 0) {
+              message.parameters[2] = '0'
+            } else if (parseInt(message.parameters[2], 10) >= 100) {
+              message.parameters[2] = '100'
+            } else {
+              message.parameters[2] = '50'
+            }
+
+            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
+              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))] })
+              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: message.parameters[2] }))] })
+            })
+            break
+          }
+
+          case 'overlaycolor': {
+            if (!hexRegexTester.test(message.parameters[2])) return sendHelp()
+
+            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
+              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
+              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
+            })
+
+            break
+          }
+
+          case 'title': {
+            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { title: message.parameters.slice(2).join(' ') } } }, err => {
+              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:ERROR'))] })
+              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:SUCCESS', { TITLE: message.parameters.slice(2).join(' ') }))] })
+            })
+            break
+          }
+
+          case 'subtitle': {
+            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { subtitle: message.parameters.slice(2).join(' ') } } }, err => {
+              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:ERROR'))] })
+              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:SUCCESS', { SUBTITLE: message.parameters.slice(2).join(' ') }))] })
+            })
+            break
+          }
+
+          default: {
+            viewConfigFallback()
+            break
+          }
+        }
+
+        break
+      }
+
+      case 'configureroles': {
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return viewConfigFallback()
+
+        switch (message.parameters[1].toLowerCase()) {
+          case 'give': {
+            if (!message.mentions.roles.first()) return viewConfigFallback()
+
+            addJoinRole(message.guild, message.mentions.roles.first(), err => {
+              if (err) return message.reply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
+              return message.reply({ embeds: [success(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
+            })
+
+            break
+          }
+
+          case 'remove': {
+            if (!message.mentions.roles.first()) return viewConfigFallback()
+
+            removeJoinRole(message.guild, message.mentions.roles.first(), err => {
+              if (err) return message.reply({ embeds: [error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
+              return message.reply({ embeds: [success(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
+            })
+
+            break
+          }
+
+          default: {
+            sendHelp()
+            break
+          }
+        }
+
+        break
+      }
+
+      default: {
+        sendHelp()
+        break
+      }
     }
   }
 }

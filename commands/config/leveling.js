@@ -7,12 +7,13 @@ const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const { error, success, help } = require('../../functions/defaultMessages')
 
 const channelRelationShip = { 0: 'disabled', 1: 'Same Channel Where Message Is Sent' }
+const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 
 module.exports = {
   name: 'leveling',
   description: '⚙️ Configure the leveling module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1,
+  cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))
@@ -94,12 +95,8 @@ module.exports = {
           }
 
           updateGuildConfigNext(interaction.guild, { column: 'leveling', newconfig }, err => {
-            if (err) {
-              interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::RANKUP:ERROR'))] })
-              return
-            }
-
-            interaction.editReply({ embeds: [modifiedconfig] })
+            if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::RANKUP:ERROR'))] })
+            return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
           viewConfigFallback()
@@ -132,18 +129,14 @@ module.exports = {
             newconfig.overlayOpacity = overlayOpacity
           }
 
-          if (overlayColor) {
+          if (overlayColor && overlayColor.test(overlayColor)) {
             modifiedconfig.addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, overlayColor, true)
             newconfig.overlayColor = overlayColor
           }
 
           updateGuildConfigNext(interaction.guild, { column: 'leveling', newconfig }, err => {
-            if (err) {
-              interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
-              return
-            }
-
-            interaction.editReply({ embeds: [modifiedconfig] })
+            if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
+            return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
           viewConfigFallback()
@@ -212,146 +205,117 @@ module.exports = {
       })
     }
 
-    if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
-      switch (message.parameters[0]) {
-        case 'viewconfig': {
-          viewConfigFallback()
-          break
-        }
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return sendHelp()
 
-        case 'configurecards': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1) && Object.prototype.hasOwnProperty.call(message.parameters, 2)) {
-            switch (message.parameters[1]) {
-              case 'backgroundurl': {
-                updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { background: message.parameters[2] } } }, err => {
-                  if (err) {
-                    message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:ERROR'))
-                    return
-                  }
-
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
-                })
-
-                break
-              }
-
-              case 'overlayopacity': {
-                if (parseInt(message.parameters[2], 10) <= 0) {
-                  message.parameters[2] = '0'
-                } else if (parseInt(message.parameters[2], 10) >= 100) {
-                  message.parameters[2] = '100'
-                }
-
-                updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
-                  if (err) {
-                    message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))
-                    return
-                  }
-
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
-                })
-
-                break
-              }
-
-              case 'overlaycolor': {
-                const regex = /^#([0-9a-f]{3}){1,2}$/i
-
-                if (regex.test(message.parameters[2])) {
-                  updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
-                    if (err) {
-                      return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
-                    }
-
-                    return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
-                  })
-                } else {
-                  message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
-                }
-
-                break
-              }
-
-              default: {
-                sendHelp()
-                break
-              }
-            }
-          } else {
-            sendHelp()
-          }
-
-          break
-        }
-
-        case 'rankup': {
-          if (Object.prototype.hasOwnProperty.call(message.parameters, 1) && Object.prototype.hasOwnProperty.call(message.parameters, 2)) {
-            switch (message.parameters[1]) {
-              case 'channel': {
-                if (message.mentions.channels.first()) {
-                  updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { channel: message.mentions.channels.first().id } }, err => {
-                    if (err) {
-                      message.reply(i18n(locale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
-                      return
-                    }
-
-                    message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
-                  })
-                } else {
-                  sendHelp()
-                }
-
-                break
-              }
-
-              case 'message': {
-                const rankupMessage = message.parameters.slice(2).join(' ')
-                updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { message: rankupMessage } }, err => {
-                  if (err) {
-                    message.reply(i18n(locale, 'LEVELING::RANKUP:MESSAGE:ERROR'))
-                    return
-                  }
-
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:MESSAGE:SUCCESS', { MESSAGE: rankupMessage }))] })
-                })
-                break
-              }
-
-              case 'difficulty': {
-                if (parseInt(message.parameters[2], 10) <= 0) {
-                  message.parameters[2] = '0'
-                } else if (parseInt(message.parameters[2], 10) >= 100) {
-                  message.parameters[2] = '100'
-                }
-
-                updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { difficulty: parseInt(message.parameters[2], 10) } }, err => {
-                  if (err) {
-                    message.reply(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:ERROR'))
-                    return
-                  }
-
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.parameters[2], 10) }))] })
-                })
-                break
-              }
-
-              default: {
-                sendHelp()
-                break
-              }
-            }
-          }
-
-          break
-        }
-
-        default: {
-          sendHelp()
-          break
-        }
+    switch (message.parameters[0]) {
+      case 'viewconfig': {
+        viewConfigFallback()
+        break
       }
-    } else {
-      sendHelp()
+
+      case 'configurecards': {
+        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && Object.prototype.hasOwnProperty.call(message.parameters, 2))) return sendHelp()
+        switch (message.parameters[1]) {
+          case 'backgroundurl': {
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { background: message.parameters[2] } } }, err => {
+              if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:ERROR'))
+              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
+            })
+
+            break
+          }
+
+          case 'overlayopacity': {
+            if (parseInt(message.parameters[2], 10) <= 0) {
+              message.parameters[2] = '0'
+            } else if (parseInt(message.parameters[2], 10) >= 100) {
+              message.parameters[2] = '100'
+            }
+
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
+              if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))
+              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
+            })
+
+            break
+          }
+
+          case 'overlaycolor': {
+            if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
+
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
+              if (err) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
+              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
+            })
+
+            break
+          }
+
+          default: {
+            sendHelp()
+            break
+          }
+        }
+
+        break
+      }
+
+      case 'rankup': {
+        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && Object.prototype.hasOwnProperty.call(message.parameters, 2))) return sendHelp()
+        switch (message.parameters[1]) {
+          case 'channel': {
+            if (!message.mentions.channels.first()) return sendHelp()
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { channel: message.mentions.channels.first().id } }, err => {
+              if (err) return message.reply(i18n(locale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
+              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+            })
+
+            break
+          }
+
+          case 'message': {
+            const rankupMessage = message.parameters.slice(2).join(' ')
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { message: rankupMessage } }, err => {
+              if (err) {
+                message.reply(i18n(locale, 'LEVELING::RANKUP:MESSAGE:ERROR'))
+                return
+              }
+
+              message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:MESSAGE:SUCCESS', { MESSAGE: rankupMessage }))] })
+            })
+            break
+          }
+
+          case 'difficulty': {
+            if (parseInt(message.parameters[2], 10) <= 0) {
+              message.parameters[2] = '0'
+            } else if (parseInt(message.parameters[2], 10) >= 100) {
+              message.parameters[2] = '100'
+            }
+
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { difficulty: parseInt(message.parameters[2], 10) } }, err => {
+              if (err) {
+                message.reply(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:ERROR'))
+                return
+              }
+
+              message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.parameters[2], 10) }))] })
+            })
+            break
+          }
+
+          default: {
+            sendHelp()
+            break
+          }
+        }
+        break
+      }
+
+      default: {
+        sendHelp()
+        break
+      }
     }
   }
 }

@@ -8,12 +8,7 @@ module.exports = {
   description:
     '🔢 Generates a random number between 1 and the specified number',
   interactionData: new SlashCommandBuilder()
-    .addIntegerOption(option =>
-      option
-        .setName('maxnumber')
-        .setDescription('Enter an integer')
-        .setRequired(true)
-    ),
+    .addIntegerOption(option => option.setName('maxnumber').setDescription('Enter an integer').setRequired(true)),
   runInteraction (client, locale, interaction) {
     const messageSent = new MessageEmbed().setColor('#007BFF')
     const specifiedRandom = Math.round(

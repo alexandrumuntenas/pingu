@@ -14,11 +14,7 @@ module.exports = () => {
     }
   }
 
-  const poster = new dbots.Poster({
-    Client: process.Client,
-    apiKeys,
-    ClientLibrary: 'discord.js'
-  })
+  const poster = new dbots.Poster({ Client: process.Client, apiKeys, ClientLibrary: 'discord.js' })
 
   poster.startInterval()
 
@@ -36,11 +32,8 @@ module.exports = () => {
     })
 
     process.Client.statcord.on('post', status => {
-      if (status) {
-        Consolex.error(status)
-      } else {
-        Consolex.success('Estadísticas publicadas en Statcord')
-      }
+      if (status) Consolex.error(status)
+      else Consolex.success('Estadísticas publicadas en Statcord')
     })
   }
 }

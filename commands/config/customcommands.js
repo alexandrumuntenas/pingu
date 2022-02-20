@@ -7,7 +7,7 @@ const { success, error } = require('../../functions/defaultMessages')
 module.exports = {
   name: 'customcommands',
   description: '⚙️ Manage the custom commands of your server',
-  cooldown: 5,
+  cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
@@ -36,37 +36,14 @@ module.exports = {
           customcommand.sendInEmbed.description = customcommand.reply
         }
 
-        if (interaction.options.getBoolean('sendtodm')) {
-          customcommand.sendDM = true
-        }
-
-        if (interaction.options.getString('sendinembed_title')) {
-          customcommand.sendInEmbed.title = interaction.options.getString('sendinembed_title')
-        }
-
-        if (interaction.options.getString('sendinembed_description')) {
-          customcommand.sendInEmbed.description = interaction.options.getString('sendinembed_description')
-        }
-
-        if (interaction.options.getString('sendinembed_thumbnail')) {
-          customcommand.sendInEmbed.thumbnail = interaction.options.getString('sendinembed_thumbnail')
-        }
-
-        if (interaction.options.getString('sendinembed_image')) {
-          customcommand.sendInEmbed.image = interaction.options.getString('sendinembed_image')
-        }
-
-        if (interaction.options.getString('sendinembed_url')) {
-          customcommand.sendInEmbed.url = interaction.options.getString('sendinembed_url')
-        }
-
-        if (interaction.options.getString('sendinembed_color')) {
-          customcommand.sendInEmbed.color = interaction.options.getString('sendinembed_color')
-        }
-
-        if (interaction.options.getRole('role')) {
-          customcommand.setRole = interaction.options.getRole('role').id
-        }
+        if (interaction.options.getBoolean('sendtodm')) customcommand.sendDM = true
+        if (interaction.options.getString('sendinembed_title')) customcommand.sendInEmbed.title = interaction.options.getString('sendinembed_title')
+        if (interaction.options.getString('sendinembed_description')) customcommand.sendInEmbed.description = interaction.options.getString('sendinembed_description')
+        if (interaction.options.getString('sendinembed_thumbnail')) customcommand.sendInEmbed.thumbnail = interaction.options.getString('sendinembed_thumbnail')
+        if (interaction.options.getString('sendinembed_image')) customcommand.sendInEmbed.image = interaction.options.getString('sendinembed_image')
+        if (interaction.options.getString('sendinembed_url')) customcommand.sendInEmbed.url = interaction.options.getString('sendinembed_url')
+        if (interaction.options.getString('sendinembed_color')) customcommand.sendInEmbed.color = interaction.options.getString('sendinembed_color')
+        if (interaction.options.getRole('role')) customcommand.setRole = interaction.options.getRole('role').id
 
         try {
           createCustomCommand(interaction.guild, customcommand)

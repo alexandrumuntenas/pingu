@@ -3,13 +3,13 @@
  * @param {number} longitud La longitud del identificador generado
  */
 module.exports = function (length) {
-  let result = ''
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const charactersLength = characters.length
+  let generatedID = ''
+
+  const charactersAvaliable = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
   for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() *
-            charactersLength))
+    generatedID += charactersAvaliable.charAt(Math.floor(Math.random() * charactersAvaliable.length))
   }
 
-  return result
+  return generatedID
 }

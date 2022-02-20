@@ -9,30 +9,31 @@ icon: cpu
 
 The following commands can only be used by the server owner or by persons with the [MANAGE_GUILDS\*](https://discord.com/developers/docs/topics/permissions) permission.
 
-| Command | Function | Example |
-| --- | --- | --- |
-| admin setprefix newprefix: | Change the prefix used to activate the bot. | /admin setprefix newprefix: > |
-| admin setlanguage language: | Change the language used in bot responses | !admin setlanguage en |
-| admin modules enable module: | Enables a module | !admin modules enable module: Welcomer |
-| admin modules disable module: | Disable a module | !admin modules disable module: Welcomer |
-| admin viewcnfcommands view true/false | Enables or disables the deployment of bot configuration commands. | /admin viewcnfcommands view true/false |
+## Interactions
 
-==- Prefix Commands
+```javascript
+/bot setprefix newprefix: <String> // Change the prefix
+/bot setlanguage language: <English/Spanish> // Change the language
+/bot modules enable module: <Module> // Enable a module
+/bot modules disable module: <Module> // Disable a module
+/bot modules viewconfig // View if the modules are enabled or disabled
+/bot interactions update // Update the interactions of the guild
+```
 
-| Command | Function | Example |
-| --- | --- | --- |
-| admin setprefix \<newprefix> | Change the prefix used to activate the bot. | <p>!admin setprefix ></p><p></p><p>!admin setprefix .</p> |
-| admin setlanguage \<language> | Change the language used in bot responses | <p>!admin setlanguage en</p><p>!admin setlanguage es</p><p>!setlanguage fr</p> |
-| admin modules enable \<módulo> | Enables a module | !admin modules enable welcomer |
-| admin modules disable \<módulo> | Disable a module | !admin modules disable welcomer |
-| admin viewcnfcommands view true/false | Enables or disables the deployment of bot configuration commands. | /admin viewcnfcommands view true/false |
-
-==-
-
-!!!
-The default prefix is `!`, and the default language is `en` (English).
-!!!
+## Commands
+```javascript
+bot setprefix <prefix> // Change the prefix
+bot setlanguage <language[en/es]> // Change the language
+bot modules enable <Module> // Enable a module
+bot modules disable <Module> // Disable a module
+bot modules viewconfig // View if the modules are enabled or disabled
+bot updateinteractions <Boolean> // Update the interactions of the guild
+```
 
 !!!
-Remember to use the command `!update` if you are using for the first time the bot in your server.
+The default prefix is `!`, and the default language is `es` (Spanish).
+!!!
+
+!!!
+Remember to use the command `@Pingu bot updateinteractions` if you are using for the first time the bot in your server.
 !!!
