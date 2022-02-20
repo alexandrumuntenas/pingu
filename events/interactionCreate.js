@@ -1,29 +1,28 @@
-const { Error, Timer } = require("../modules/constructor/messageBuilder");
-const getGuildConfig = require("../functions/getGuildConfig");
-const i18n = require("../i18n/i18n");
-const humanizeduration = require("humanize-duration");
+const { Error, Timer } = require('../modules/constructor/messageBuilder')
+const getGuildConfig = require('../functions/getGuildConfig')
+const i18n = require('../i18n/i18n')
+const humanizeduration = require('humanize-duration')
 
 module.exports = {
-  name: "interactionCreate",
+  name: 'interactionCreate',
   execute: async (client, interaction) => {
     if (interaction.isCommand()) {
       module.exports.isCommand(client, interaction).catch((err) => {
-        client.console.fatal(err);
-        client.logError(err);
-      });
+        client.console.fatal(err)
+        client.logError(err)
+      })
     }
-  },
-};
+  }
+}
 
 module.exports.isCommand = async (client, interaction) => {
-  const { commandName } = interaction;
-  interaction.replyData = await interaction.deferReply({ fetchReply: true });
-  if (interaction.channel.type === "dm" || interaction.author === client.user)
-    return;
+  const { commandName } = interaction
+  interaction.replyData = await interaction.deferReply({ fetchReply: true })
+  if (interaction.channel.type === 'dm' || interaction.author === client.user) { return }
   getGuildConfig(client, interaction.guild, async (guildData) => {
-    interaction.database = guildData;
+    interaction.database = guildData
     if (client.commands.has(commandName)) {
-      const commandToExecute = client.commands.get(commandName);
+      const commandToExecute = client.commands.get(commandName)
       if (
         commandToExecute.permissions &&
         !interaction.member.permissions.has(commandToExecute.permissions)
@@ -32,13 +31,13 @@ module.exports.isCommand = async (client, interaction) => {
           embeds: [
             Error(
               i18n(
-                interaction.database.guildLanguage || "en",
-                "COMMAND_PERMISSION_ERROR"
+                interaction.database.guildLanguage || 'en',
+                'COMMAND_PERMISSION_ERROR'
               )
-            ),
-          ],
-        });
-        return;
+            )
+          ]
+        })
+        return
       }
       if (
         client.cooldownManager.check(
@@ -51,19 +50,18 @@ module.exports.isCommand = async (client, interaction) => {
           interaction.member,
           interaction.guild,
           commandToExecute
-        );
-        if (client.statcord)
-          client.statcord.postCommand(commandToExecute.name, "000000000000000");
+        )
+        if (client.statcord) { client.statcord.postCommand(commandToExecute.name, '000000000000000') }
         await commandToExecute.executeInteraction(
           client,
-          interaction.database.guildLanguage || "en",
+          interaction.database.guildLanguage || 'en',
           interaction
-        );
+        )
       } else {
         interaction.editReply({
           embeds: [
             Timer(
-              i18n(interaction.database.guildLanguage || "en", "COOLDOWN", {
+              i18n(interaction.database.guildLanguage || 'en', 'COOLDOWN', {
                 COOLDOWN: humanizeduration(
                   client.cooldownManager.ttl(
                     interaction.member,
@@ -72,20 +70,20 @@ module.exports.isCommand = async (client, interaction) => {
                   ),
                   {
                     round: true,
-                    language: interaction.database.guildLanguage || "en",
-                    fallbacks: ["en"],
+                    language: interaction.database.guildLanguage || 'en',
+                    fallbacks: ['en']
                   }
-                ),
+                )
               })
-            ),
-          ],
-        });
+            )
+          ]
+        })
       }
     } else {
       interaction.editReply({
         content:
-          "This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `update`.",
-      });
+          'This command is not longer working on Pingu. To remove this command from the list, please redeploy the commands using `update`.'
+      })
     }
-  });
-};
+  })
+}

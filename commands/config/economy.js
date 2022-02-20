@@ -1,183 +1,186 @@
-const { Permissions } = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { Success, Help } = require("../../modules/constructor/messageBuilder");
-const i18n = require("../../i18n/i18n");
-const updateGuildConfig = require("../../functions/updateGuildConfig");
+const { Permissions } = require('discord.js')
+const { SlashCommandBuilder } = require('@discordjs/builders')
+const { Success, Help } = require('../../modules/constructor/messageBuilder')
+const i18n = require('../../i18n/i18n')
+const updateGuildConfig = require('../../functions/updateGuildConfig')
 
 module.exports = {
-  module: "economy",
-  name: "economy",
-  description: "⚙️ Configure the economy settings for your server.",
+  module: 'economy',
+  name: 'economy',
+  description: '⚙️ Configure the economy settings for your server.',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 1,
   isConfigCommand: true,
   interactionData: new SlashCommandBuilder()
-    .setName("economy")
-    .setDescription("Configure the economy settings for your server.")
+    .setName('economy')
+    .setDescription('Configure the economy settings for your server.')
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("setcoinname")
-        .setDescription("Set the coin name")
+        .setName('setcoinname')
+        .setDescription('Set the coin name')
         .addStringOption((option) =>
           option
-            .setName("coinname")
-            .setDescription("Enter the new coin name")
+            .setName('coinname')
+            .setDescription('Enter the new coin name')
             .setRequired(true)
         )
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("setcoinicon")
-        .setDescription("Set the coin icon")
+        .setName('setcoinicon')
+        .setDescription('Set the coin icon')
         .addStringOption((option) =>
           option
-            .setName("coinicon")
-            .setDescription("Enter the new coin icon")
+            .setName('coinicon')
+            .setDescription('Enter the new coin icon')
             .setRequired(true)
         )
     ),
-  executeInteraction(client, locale, interaction) {
+  executeInteraction (client, locale, interaction) {
     switch (interaction.options.getSubcommand()) {
-      case "setcoinname": {
+      case 'setcoinname': {
         updateGuildConfig(
           client,
           interaction.guild,
           {
-            column: "economyCurrency",
-            value: interaction.options.getString("coinname"),
+            column: 'economyCurrency',
+            value: interaction.options.getString('coinname')
           },
           (err) => {
-            if (err)
+            if (err) {
               return interaction.editReply({
-                embeds: [Error(i18n(locale, "ECONOMY::SETCOINNAME:ERROR"))],
-              });
+                embeds: [Error(i18n(locale, 'ECONOMY::SETCOINNAME:ERROR'))]
+              })
+            }
             interaction.editReply({
               embeds: [
                 Success(
-                  i18n(locale, "ECCONOMY::SETCOINNAME:SUCCESS", {
-                    CURRENCY: interaction.options.getString("coinname"),
+                  i18n(locale, 'ECCONOMY::SETCOINNAME:SUCCESS', {
+                    CURRENCY: interaction.options.getString('coinname')
                   })
-                ),
-              ],
-            });
+                )
+              ]
+            })
           }
-        );
-        break;
+        )
+        break
       }
-      case "setcoinicon": {
+      case 'setcoinicon': {
         updateGuildConfig(
           client,
           interaction.guild,
           {
-            column: "economyCurrencyIcon",
-            value: interaction.options.getString("coinicon"),
+            column: 'economyCurrencyIcon',
+            value: interaction.options.getString('coinicon')
           },
           (err) => {
-            if (err)
+            if (err) {
               return interaction.editReply({
-                embeds: [Error(i18n(locale, "ECONOMY::SETCOINICON:ERROR"))],
-              });
+                embeds: [Error(i18n(locale, 'ECONOMY::SETCOINICON:ERROR'))]
+              })
+            }
             interaction.editReply({
               embeds: [
                 Success(
-                  i18n(locale, "ECONOMY::SETCOINICON:SUCCESS", {
-                    CURRENCY: interaction.options.getString("coinicon"),
+                  i18n(locale, 'ECONOMY::SETCOINICON:SUCCESS', {
+                    CURRENCY: interaction.options.getString('coinicon')
                   })
-                ),
-              ],
-            });
+                )
+              ]
+            })
           }
-        );
-        break;
+        )
+        break
       }
     }
   },
-  executeLegacy(client, locale, message) {
+  executeLegacy (client, locale, message) {
     const helpTray = Help(
-      "economy",
-      i18n(locale, "ECONOMY::HELPTRAY:DESCRIPTION"),
+      'economy',
+      i18n(locale, 'ECONOMY::HELPTRAY:DESCRIPTION'),
       [
         {
-          option: "setcoinname",
-          description: i18n(locale, "ECONOMY::HELPTRAY:OPTION:SETCOINNAME"),
-          syntax: "setcoinname <new currency>",
-          isNsfw: false,
+          option: 'setcoinname',
+          description: i18n(locale, 'ECONOMY::HELPTRAY:OPTION:SETCOINNAME'),
+          syntax: 'setcoinname <new currency>',
+          isNsfw: false
         },
         {
-          option: "setcoinicon",
-          description: i18n(locale, "ECONOMY::HELPTRAY:OPTION:SETCOINICON"),
-          syntax: "setcoinicon <:emoji:>",
-          isNsfw: false,
-        },
+          option: 'setcoinicon',
+          description: i18n(locale, 'ECONOMY::HELPTRAY:OPTION:SETCOINICON'),
+          syntax: 'setcoinicon <:emoji:>',
+          isNsfw: false
+        }
       ]
-    );
+    )
     if (
       !(
         Object.prototype.hasOwnProperty.call(message.args, 0) &&
         Object.prototype.hasOwnProperty.call(message.args, 1)
       )
-    )
-      return message.reply({ embeds: [helpTray] });
+    ) { return message.reply({ embeds: [helpTray] }) }
     switch (message.args[0]) {
-      case "setcoinname": {
+      case 'setcoinname': {
         updateGuildConfig(
           client,
           message.guild,
           {
-            column: "economyCurrency",
+            column: 'economyCurrency',
             value: message.content.replace(
               `${message.database.guildPrefix}economy setcoinname `,
-              ""
-            ),
+              ''
+            )
           },
           (err) => {
-            if (err)
+            if (err) {
               return message.reply({
-                embeds: [Error(i18n(locale, "ECONOMY::SETCOINNAME:ERROR"))],
-              });
+                embeds: [Error(i18n(locale, 'ECONOMY::SETCOINNAME:ERROR'))]
+              })
+            }
             message.reply({
               embeds: [
                 Success(
-                  i18n(locale, "ECONOMY::SETCOINNAME:SUCCESS", {
+                  i18n(locale, 'ECONOMY::SETCOINNAME:SUCCESS', {
                     CURRENCY: message.content.replace(
                       `${message.database.guildPrefix}economy setcoinname `,
-                      ""
-                    ),
+                      ''
+                    )
                   })
-                ),
-              ],
-            });
+                )
+              ]
+            })
           }
-        );
-        break;
+        )
+        break
       }
-      case "setcoinicon": {
+      case 'setcoinicon': {
         updateGuildConfig(
           client,
           message.guild,
-          { column: "economyCurrencyIcon", value: message.args[1] },
+          { column: 'economyCurrencyIcon', value: message.args[1] },
           (err) => {
-            if (err)
+            if (err) {
               return message.reply({
-                embeds: [Error(i18n(locale, "ECONOMY::SETCOINICON:ERROR"))],
-              });
+                embeds: [Error(i18n(locale, 'ECONOMY::SETCOINICON:ERROR'))]
+              })
+            }
             message.reply({
               embeds: [
                 Success(
-                  i18n(locale, "ECONOMY::SETCOINICON:SUCCESS", {
-                    CURRENCY: message.args[1],
+                  i18n(locale, 'ECONOMY::SETCOINICON:SUCCESS', {
+                    CURRENCY: message.args[1]
                   })
-                ),
-              ],
-            });
+                )
+              ]
+            })
           }
-        );
-        break;
+        )
+        break
       }
       default: {
-        message.reply({ embeds: [helpTray] });
-        break;
+        message.reply({ embeds: [helpTray] })
+        break
       }
     }
-  },
-};
+  }
+}

@@ -1,22 +1,21 @@
-const { Error, Timer } = require("../modules/constructor/messageBuilder");
-const i18n = require("../i18n/i18n");
-const autoresponder = require("../modules/autoresponder");
-const getGuildConfig = require("../functions/getGuildConfig");
-const { rankUp } = require("../modules/levels");
-const humanizeduration = require("humanize-duration");
-const customcommands = require("../modules/customcommands");
+const { Error, Timer } = require('../modules/constructor/messageBuilder')
+const i18n = require('../i18n/i18n')
+const autoresponder = require('../modules/autoresponder')
+const getGuildConfig = require('../functions/getGuildConfig')
+const { rankUp } = require('../modules/levels')
+const humanizeduration = require('humanize-duration')
+const customcommands = require('../modules/customcommands')
 
 module.exports = {
-  name: "messageCreate",
+  name: 'messageCreate',
   execute: async (client, message) => {
     if (
-      message.channel.type === "dm" ||
+      message.channel.type === 'dm' ||
       message.author.bot ||
       message.author === client.user
-    )
-      return;
+    ) { return }
     getGuildConfig(client, message.guild, async (guildData) => {
-      message.database = guildData;
+      message.database = guildData
       if (
         message.content.startsWith(message.database.guildPrefix) &&
         message.content !== message.database.guildPrefix
@@ -24,17 +23,17 @@ module.exports = {
         message.args = message.content
           .slice(message.database.guildPrefix.length)
           .trim()
-          .split(/ +/);
+          .split(/ +/)
       }
       if (
         message.content.startsWith(message.database.guildPrefix) &&
         message.args
       ) {
-        let commandToExecute = message.args[0];
-        message.args.shift();
+        let commandToExecute = message.args[0]
+        message.args.shift()
 
         if (client.commands.has(commandToExecute)) {
-          commandToExecute = client.commands.get(commandToExecute);
+          commandToExecute = client.commands.get(commandToExecute)
           if (
             commandToExecute.permissions &&
             !message.member.permissions.has(commandToExecute.permissions)
@@ -43,13 +42,13 @@ module.exports = {
               embeds: [
                 Error(
                   i18n(
-                    message.database.guildLanguage || "en",
-                    "COMMAND::PERMERROR"
+                    message.database.guildLanguage || 'en',
+                    'COMMAND::PERMERROR'
                   )
-                ),
-              ],
-            });
-            return;
+                )
+              ]
+            })
+            return
           }
           if (
             client.cooldownManager.check(
@@ -62,40 +61,41 @@ module.exports = {
               message.member,
               message.guild,
               commandToExecute
-            );
+            )
             if (
               Object.prototype.hasOwnProperty.call(
                 commandToExecute,
-                "executeLegacy"
+                'executeLegacy'
               )
             ) {
-              if (client.statcord)
+              if (client.statcord) {
                 client.statcord.postCommand(
                   commandToExecute.name,
                   message.member.id
-                );
+                )
+              }
               await commandToExecute.executeLegacy(
                 client,
-                message.database.guildLanguage || "en",
+                message.database.guildLanguage || 'en',
                 message
-              );
+              )
             } else {
               message.reply({
                 embeds: [
                   Error(
                     i18n(
-                      message.database.guildLanguage || "en",
-                      "COMMAND::LEGACYNOAVALIABLE"
+                      message.database.guildLanguage || 'en',
+                      'COMMAND::LEGACYNOAVALIABLE'
                     )
-                  ),
-                ],
-              });
+                  )
+                ]
+              })
             }
           } else {
             message.reply({
               embeds: [
                 Timer(
-                  i18n(message.database.guildLanguage || "en", "COOLDOWN", {
+                  i18n(message.database.guildLanguage || 'en', 'COOLDOWN', {
                     COOLDOWN: humanizeduration(
                       client.cooldownManager.ttl(
                         message.member,
@@ -104,15 +104,15 @@ module.exports = {
                       ),
                       {
                         round: true,
-                        language: message.database.guildLanguage || "en",
-                        fallbacks: ["en"],
+                        language: message.database.guildLanguage || 'en',
+                        fallbacks: ['en']
                       }
-                    ),
+                    )
                   })
-                ),
-              ],
-            });
-            return;
+                )
+              ]
+            })
+            return
           }
         } else {
           if (
@@ -126,13 +126,13 @@ module.exports = {
               message.member,
               message.guild,
               commandToExecute
-            );
-            customcommands(client, message, commandToExecute);
+            )
+            customcommands(client, message, commandToExecute)
           } else {
             message.reply({
               embeds: [
                 Timer(
-                  i18n(message.database.guildLanguage || "en", "COOLDOWN", {
+                  i18n(message.database.guildLanguage || 'en', 'COOLDOWN', {
                     COOLDOWN: humanizeduration(
                       client.cooldownManager.ttl(
                         message.member,
@@ -141,25 +141,25 @@ module.exports = {
                       ),
                       {
                         round: true,
-                        language: message.database.guildLanguage || "en",
-                        fallbacks: ["en"],
+                        language: message.database.guildLanguage || 'en',
+                        fallbacks: ['en']
                       }
-                    ),
+                    )
                   })
-                ),
-              ],
-            });
-            return;
+                )
+              ]
+            })
+            return
           }
         }
       }
       if (message.database.levelsEnabled !== 0) {
-        rankUp(client, message);
+        rankUp(client, message)
       }
 
       if (message.database.autoresponderEnabled !== 0) {
-        autoresponder(client, message);
+        autoresponder(client, message)
       }
-    });
-  },
-};
+    })
+  }
+}

@@ -1,14 +1,14 @@
-const { MessageEmbed } = require("discord.js");
-const Math = require("mathjs");
+const { MessageEmbed } = require('discord.js')
+const Math = require('mathjs')
 
 module.exports = {
-  name: "ping",
-  description: "🏓 Pong!",
+  name: 'ping',
+  description: '🏓 Pong!',
   cooldown: 1,
-  executeInteraction(client, locale, interaction) {
+  executeInteraction (client, locale, interaction) {
     const embed = new MessageEmbed()
-      .setColor("#9DF63F")
-      .setTitle("🏓 Pong!")
+      .setColor('#9DF63F')
+      .setTitle('🏓 Pong!')
       .setDescription(
         `🕑 Bot: **${
           Date.now() - interaction.createdTimestamp
@@ -18,13 +18,13 @@ module.exports = {
           client.ws.ping + (Date.now() - interaction.createdTimestamp)
         )}ms**`
       )
-      .setTimestamp();
-    interaction.editReply({ embeds: [embed] });
+      .setTimestamp()
+    interaction.editReply({ embeds: [embed] })
   },
-  executeLegacy(client, locale, message) {
+  executeLegacy (client, locale, message) {
     const embed = new MessageEmbed()
-      .setColor("#9DF63F")
-      .setTitle("🏓 Pong!")
+      .setColor('#9DF63F')
+      .setTitle('🏓 Pong!')
       .setDescription(
         `🕑 Bot: **${
           Date.now() - message.createdTimestamp
@@ -34,7 +34,7 @@ module.exports = {
           client.ws.ping + (Date.now() - message.createdTimestamp)
         )}ms**`
       )
-      .setTimestamp();
-    message.channel.send({ embeds: [embed] });
-  },
-};
+      .setTimestamp()
+    message.channel.send({ embeds: [embed] })
+  }
+}
