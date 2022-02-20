@@ -6,27 +6,27 @@
  * @returns {String} Reply
  */
 
-const Consolex = require('../functions/consolex');
-const Database = require('../functions/databaseConnection');
+const Consolex = require('../functions/consolex')
+const Database = require('../functions/databaseConnection')
 
 module.exports.getReply = (guild, trigger, callback) => {
-	if (!callback) {
-		throw new Error('Callback is required');
-	}
+  if (!callback) {
+    throw new Error('Callback is required')
+  }
 
-	Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
-		if (err) {
-			Consolex.handleError(err);
-		}
+  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
+    if (err) {
+      Consolex.handleError(err)
+    }
 
-		if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-			result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties);
-			callback(result[0]);
-		} else {
-			callback();
-		}
-	});
-};
+    if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
+      result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
+      callback(result[0])
+    } else {
+      callback()
+    }
+  })
+}
 
 /**
  * Create a new auto reply.
@@ -45,34 +45,34 @@ module.exports.getReply = (guild, trigger, callback) => {
  * @returns {String} Trigger ID
  */
 
-const makeId = require('../functions/makeId');
+const makeId = require('../functions/makeId')
 
 module.exports.createReply = (guild, autoreply, callback) => {
-	if (!callback) {
-		throw new Error('Callback is required');
-	}
+  if (!callback) {
+    throw new Error('Callback is required')
+  }
 
-	if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) {
-		throw new Error('Trigger is required');
-	}
+  if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) {
+    throw new Error('Trigger is required')
+  }
 
-	if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) {
-		throw new Error('Reply is required');
-	}
+  if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) {
+    throw new Error('Reply is required')
+  }
 
-	autoreply.properties = autoreply.properties || {};
-	autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false;
-	autoreply.id = makeId(5);
+  autoreply.properties = autoreply.properties || {}
+  autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false
+  autoreply.id = makeId(5)
 
-	Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
-		if (err) {
-			Consolex.handleError(err);
-			throw err;
-		}
+  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
+    if (err) {
+      Consolex.handleError(err)
+      throw err
+    }
 
-		callback(autoreply.id);
-	});
-};
+    callback(autoreply.id)
+  })
+}
 
 /**
  * Delete an auto reply.
@@ -81,70 +81,70 @@ module.exports.createReply = (guild, autoreply, callback) => {
  */
 
 module.exports.deleteReply = (guild, triggerID) => {
-	Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
-		if (err) {
-			Consolex.handleError(err);
-			throw err;
-		}
-	});
-};
+  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
+    if (err) {
+      Consolex.handleError(err)
+      throw err
+    }
+  })
+}
 
 /**
  * Handle an auto reply.
  * @param {Message} message
  */
 
-const i18n = require('../i18n/i18n');
-const {MessageEmbed} = require('discord.js');
+const i18n = require('../i18n/i18n')
+const { MessageEmbed } = require('discord.js')
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
-	this.getReply(message.guild, message.content, replydata => {
-		if (replydata) {
-			const reply = {};
-			if (reply.sendInEmbed) {
-				const embed = new MessageEmbed();
+  this.getReply(message.guild, message.content, replydata => {
+    if (replydata) {
+      const reply = {}
+      if (reply.sendInEmbed) {
+        const embed = new MessageEmbed()
 
-				if (replydata.sendInEmbed.title) {
-					embed.setTitle(replydata.sendEmbed.title);
-				}
+        if (replydata.sendInEmbed.title) {
+          embed.setTitle(replydata.sendEmbed.title)
+        }
 
-				if (reply.sendInEmbed.description) {
-					reply.content = replydata.reply;
-					embed.setDescription(replydata.sendEmbed.description);
-				} else {
-					embed.setDescription(replydata.reply);
-				}
+        if (reply.sendInEmbed.description) {
+          reply.content = replydata.reply
+          embed.setDescription(replydata.sendEmbed.description)
+        } else {
+          embed.setDescription(replydata.reply)
+        }
 
-				if (replydata.sendInEmbed.thumbnail) {
-					embed.setThumbnail(replydata.sendEmbed.thumbnail);
-				}
+        if (replydata.sendInEmbed.thumbnail) {
+          embed.setThumbnail(replydata.sendEmbed.thumbnail)
+        }
 
-				if (replydata.sendInEmbed.image) {
-					embed.setImage(replydata.sendEmbed.image);
-				}
+        if (replydata.sendInEmbed.image) {
+          embed.setImage(replydata.sendEmbed.image)
+        }
 
-				if (replydata.sendInEmbed.url) {
-					embed.setURL(replydata.sendEmbed.url);
-				}
+        if (replydata.sendInEmbed.url) {
+          embed.setURL(replydata.sendEmbed.url)
+        }
 
-				if (replydata.sendInEmbed.color) {
-					embed.setColor(replydata.sendEmbed.color);
-				} else {
-					embed.setColor('#2F3136');
-				}
+        if (replydata.sendInEmbed.color) {
+          embed.setColor(replydata.sendEmbed.color)
+        } else {
+          embed.setColor('#2F3136')
+        }
 
-				embed.setFooter({text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL()});
+        embed.setFooter({ text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL() })
 
-				reply.embeds = [embed];
-			} else {
-				reply.content = replydata.autoreplyReply;
-			}
+        reply.embeds = [embed]
+      } else {
+        reply.content = replydata.autoreplyReply
+      }
 
-			try {
-				message.channel.send(reply);
-			} catch (err) {
-				Consolex.handleError(err);
-			}
-		}
-	});
-};
+      try {
+        message.channel.send(reply)
+      } catch (err) {
+        Consolex.handleError(err)
+      }
+    }
+  })
+}
