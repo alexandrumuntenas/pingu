@@ -6,7 +6,7 @@ const dbots = require('dbots')
 module.exports = () => {
   const apiKeys = {}
 
-  const services = ['bladelist', 'blist', 'botsondiscord', 'carbon', 'dbots', 'discordboats', 'discordbotlist', 'discordbotlisteu', 'discordbotsgg', 'discordextremelist', 'discordlabs', 'discordlistology', 'discordlistspace', 'discordscom', 'discordservices', 'disforge', 'fateslist', 'infinitynbotlist', 'listcord', 'motionbotlist', 'spacebotslist', 'topcord', 'topgg', 'voidbots', 'wonderbotlist', 'yabl']
+  const services = ['bladelist', 'blist', 'botsondiscord', 'carbon', 'dbots', 'discordbotlist', 'discordbotlisteu', 'discordbotsgg', 'discordextremelist', 'discordlabs', 'discordlistology', 'discordlistspace', 'discordscom', 'discordservices', 'disforge', 'fateslist', 'infinitynbotlist', 'listcord', 'motionbotlist', 'spacebotslist', 'topcord', 'topgg', 'voidbots', 'wonderbotlist', 'yabl']
 
   for (const service of services) {
     if (process.env[`${service.toUpperCase()}`]) {
