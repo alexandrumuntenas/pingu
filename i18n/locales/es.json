@@ -150,6 +150,7 @@
   "BOT::MODULES:VIEWCONFIG:FIELD:FAREWELL": "Despedidas",
   "BOT::MODULES:VIEWCONFIG:FIELD:SUGGESTIONS": "Sugerencias",
   "BOT::MODULES:VIEWCONFIG:FIELD:WELCOME": "Bienvenidas",
+  "BOT::MODULES:VIEWCONFIG:FIELD:AUTOREPLY": "Respuestas automáticas",
   "BOT::MODULES:ENABLE:ERROR": "Se ha producido un error al intentar habilitar el módulo %MODULE%.",
   "BOT::MODULES:ENABLE:SUCCESS": "El módulo %MODULE% ha sido habilitado.",
   "BOT::MODULES:DISABLE:ERROR": "Se ha producido un error al intentar deshabilitar el módulo %MODULE%.",
@@ -160,5 +161,7 @@
   "BOT::HELP:SETLANGUAGE:DESCRIPTION": "Cambia el idioma del bot.",
   "BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION": "Muestra la configuración actual de los módulos del bot.",
   "BOT::HELP:MODULESENABLE:DESCRIPTION": "Habilita un módulo del bot.",
-  "BOT::HELP:MODULESDISABLE:DESCRIPTION": "Deshabilita un módulo del bot."
+  "BOT::HELP:MODULESDISABLE:DESCRIPTION": "Deshabilita un módulo del bot.",
+  "AUTOREPLY::ADD:ERROR": "Se ha producido un error al intentar añadir la respuesta automática.",
+  "AUTOREPLY::ADD:SUCCESS": "Se ha añadido la respuesta automática para %MESSAGE%."
 }

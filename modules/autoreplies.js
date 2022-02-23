@@ -24,6 +24,8 @@ module.exports.getReply = (guild, trigger, callback) => {
   })
 }
 
+const makeId = require('../functions/makeId')
+
 /**
  * Create a new auto reply.
  * @param {Guild} guild - The guild to create the reply in.
@@ -31,7 +33,8 @@ module.exports.getReply = (guild, trigger, callback) => {
  * @param {Strong} autoreply.trigger - The string that will trigger the reply.
  * @param {String} autoreply.reply - The reply to the trigger.
  * @param {Object} autoreply.properties - The autoreply properties
- * @param {Boolean} autoreply.properties.sendInEmbed - Whether or not to send the reply as an embed.
+ * @param {Object} autoreply.properties.sendInEmbed - The properties for the embed.
+ * @param {?Boolean} autorreply.properties.sendInEmbed.enabled - Whether or not to send the reply as an embed.
  * @param {?Object} autoreply.properties.sendInEmbed.title - The title field of the embed.
  * @param {?Object} autoreply.properties.sendInEmbed.description - The description field of the embed.
  * @param {?Object} autoreply.properties.sendInEmbed.thumbnail - The thumbnail field of the embed.
@@ -41,8 +44,6 @@ module.exports.getReply = (guild, trigger, callback) => {
  * @returns {String} Trigger ID
  */
 
-const makeId = require('../functions/makeId')
-
 module.exports.createReply = (guild, autoreply, callback) => {
   if (!callback) throw new Error('Callback is required')
 
@@ -51,16 +52,17 @@ module.exports.createReply = (guild, autoreply, callback) => {
   if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) throw new Error('Reply is required')
 
   autoreply.properties = autoreply.properties || {}
-  autoreply.properties.sendEmbed = autoreply.properties.sendEmbed || false
+  autoreply.properties.sendInEmbed = autoreply.properties.sendInEmbed || { enabled: false }
   autoreply.id = makeId(5)
 
   Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
     if (err) {
       Consolex.handleError(err)
+      callback(err)
       throw err
     }
 
-    callback(autoreply.id)
+    return callback()
   })
 }
 
@@ -79,47 +81,91 @@ module.exports.deleteReply = (guild, triggerID) => {
   })
 }
 
+const { MessageEmbed } = require('discord.js')
+
 /**
  * Handle an auto reply.
  * @param {Message} message
  */
 
-const i18n = require('../i18n/i18n')
-const { MessageEmbed } = require('discord.js')
-
 module.exports.handleAutoRepliesInMessageCreate = message => {
   this.getReply(message.guild, message.content, replydata => {
-    if (replydata) {
+    if (replydata.autoreplyProperties) {
       const reply = {}
-      if (reply.sendInEmbed) {
+      console.log(replydata.autoreplyProperties.sendInEmbed.enabled)
+      if (replydata.autoreplyProperties.sendInEmbed.enabled) {
         const embed = new MessageEmbed()
 
-        if (replydata.sendInEmbed.title) embed.setTitle(replydata.sendEmbed.title)
+        if (replydata.autoreplyProperties.sendInEmbed.title) embed.setTitle(replydata.autoreplyProperties.sendEmbed.title)
 
-        if (reply.sendInEmbed.description) {
-          reply.content = replydata.reply
-          embed.setDescription(replydata.sendEmbed.description)
-        } else embed.setDescription(replydata.reply)
+        if (replydata.autoreplyProperties.sendInEmbed.description) {
+          reply.content = replydata.autoreplyProperties.sendInEmbed.reply
+          embed.setDescription(replydata.autoreplyProperties.sendEmbed.description)
+        } else embed.setDescription(replydata.autoreplyReply)
 
-        if (replydata.sendInEmbed.thumbnail) embed.setThumbnail(replydata.sendEmbed.thumbnail)
+        if (replydata.autoreplyProperties.sendInEmbed.thumbnail) embed.setThumbnail(replydata.autoreplyProperties.sendEmbed.thumbnail)
 
-        if (replydata.sendInEmbed.image) embed.setImage(replydata.sendEmbed.image)
+        if (replydata.autoreplyProperties.sendInEmbed.image) embed.setImage(replydata.autoreplyProperties.sendEmbed.image)
 
-        if (replydata.sendInEmbed.url) embed.setURL(replydata.sendEmbed.url)
+        if (replydata.autoreplyProperties.sendInEmbed.url) embed.setURL(replydata.autoreplyProperties.sendEmbed.url)
 
-        if (replydata.sendInEmbed.color) embed.setColor(replydata.sendEmbed.color)
+        if (replydata.autoreplyProperties.sendInEmbed.color) embed.setColor(replydata.autoreplyProperties.sendEmbed.color)
         else embed.setColor('#2F3136')
 
-        embed.setFooter({ text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING'), iconURL: process.Client.user.displayAvatarURL() })
+        embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
 
         reply.embeds = [embed]
-      } else reply.content = replydata.autoreplyReply
+      } else reply.content = replydata.autoreplyProperties.autoreplyReply
 
       try {
         message.channel.send(reply)
       } catch (err) {
         Consolex.handleError(err)
       }
+    }
+  })
+}
+
+const randomstring = require('randomstring')
+const fs = require('fs')
+
+/**
+ * Generate a .txt
+ * @param {Guild} guild
+ * @param {Function} callback
+ * @returns {String} Path to the generated file
+ */
+
+module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
+  let fileContent = ''
+  const filePath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
+
+  this.getReplies(guild, (replies) => {
+    replies.forEach(reply => {
+      fileContent += `Autoreply ID: ${reply.autoreplyID}\nAutoreply Trigger: ${reply.autoreplyTrigger}\nAutoreply Reply:${reply.autoreplyReply}\nProperties: ${reply.autoreplyProperties}\n--------------------\n`
+    })
+
+    fs.writeFileSync(filePath, fileContent)
+
+    callback(filePath)
+  })
+}
+
+module.exports.getReplies = (guild, callback) => {
+  if (!callback) throw new Error('Callback is required')
+
+  Database.query('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
+    if (err) {
+      Consolex.handleError(err)
+      throw err
+    }
+
+    if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
+      result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
+      callback(result)
+    } else {
+      // eslint-disable-next-line node/no-callback-literal
+      callback([])
     }
   })
 }
