@@ -93,7 +93,7 @@ module.exports = {
               throw err
             }
 
-            updateGuildConfigNext(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') } } })
+            updateGuildConfigNext(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') || false } } })
 
             return interaction.editReply({ embeds: [success(i18n(locale, 'UPDATE::SUCCESS'))] })
           })

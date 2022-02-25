@@ -92,7 +92,6 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
   this.getReply(message.guild, message.content, replydata => {
     if (replydata.autoreplyProperties) {
       const reply = {}
-      console.log(replydata.autoreplyProperties.sendInEmbed.enabled)
       if (replydata.autoreplyProperties.sendInEmbed.enabled) {
         const embed = new MessageEmbed()
 
