@@ -25,12 +25,12 @@
     
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.699323507322" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.699324951232" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.699323507322" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.699324951232" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.699323507322" defer></script>
-    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.699323507322" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.699324951232" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.699324951232" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -254,12 +254,23 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-javascript"><code v-pre class="language-javascript">/bot setprefix newprefix: &lt;String&gt; // Change the prefix
-/bot setlanguage language: &lt;English/Spanish&gt; // Change the language
-/bot modules enable module: &lt;Module&gt; // Enable a module
-/bot modules disable module: &lt;Module&gt; // Disable a module
-/bot modules viewconfig // View if the modules are enabled or disabled
-/bot interactions update // Update the interactions of the guild</code></pre>
+<pre class="language-javascript"><code v-pre class="language-javascript">// Change the prefix
+/bot setprefix newprefix: &lt;String&gt;
+
+// Change the language
+/bot setlanguage language: &lt;English/Spanish&gt;
+
+// Enable a module
+/bot modules enable module: &lt;Module&gt;
+
+// Disable a module
+/bot modules disable module: &lt;Module&gt;
+
+// View if the modules are enabled or disabled
+/bot modules viewconfig
+
+// Update the interactions of the guild
+/bot interactions update</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="commands">
     <h2>
@@ -268,12 +279,23 @@
     </h2>
 </doc-anchor-target>
 <div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-javascript"><code v-pre class="language-javascript">bot setprefix &lt;prefix&gt; // Change the prefix
-bot setlanguage &lt;language[en/es]&gt; // Change the language
-bot modules enable &lt;Module&gt; // Enable a module
-bot modules disable &lt;Module&gt; // Disable a module
-bot modules viewconfig // View if the modules are enabled or disabled
-bot updateinteractions &lt;Boolean&gt; // Update the interactions of the guild</code></pre>
+<pre class="language-javascript"><code v-pre class="language-javascript">// Change the prefix
+bot setprefix &lt;prefix&gt;
+
+// Change the language
+bot setlanguage &lt;language[en/es]&gt;
+
+// Enable a module
+bot modules enable &lt;Module&gt;
+
+// Disable a module
+bot modules disable &lt;Module&gt;
+
+// View if the modules are enabled or disabled
+bot modules viewconfig
+
+// Update the interactions of the guild
+bot updateinteractions &lt;Boolean&gt;</code></pre>
 </doc-codeblock></div>
 <div class="flex mb-6">
     <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
@@ -288,24 +310,7 @@ bot updateinteractions &lt;Boolean&gt; // Update the interactions of the guild</
             </svg>
         </div>
         <div class="pr-5 ml-3">
-<p>The default prefix is <code v-pre>!</code>, and the default language is <code v-pre>es</code> (Spanish).</p>
-        </div>
-    </div>
-</div>
-<div class="flex mb-6">
-    <div class="flex-shrink-0 w-1 rounded-tl rounded-bl bg-blue-500 dark:bg-blue-400"></div>
-    <div class="flex w-full py-4 border border-l-0 border-gray-300 rounded-tr rounded-br doc-alert bg-white dark:bg-dark-700 dark:border-dark-700" role="alert">
-        <div class="flex items-center ml-4 h-7">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mb-px text-blue-500 dark:text-blue-400" width="22" height="22" viewBox="0 0 24 24" role="presentation">
-                <g fill="currentColor"><g>
-                    <path d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm0 20c-4.96 0-9-4.04-9-9s4.04-9 9-9 9 4.04 9 9-4.04 9-9 9z"></path>
-                    <path d="M12 11c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1s1-.45 1-1v-4c0-.55-.45-1-1-1zM12.01 7c-.56 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"></path>
-                    <path fill="none" d="M0 0h24v24H0z"></path>
-                </g></g>
-            </svg>
-        </div>
-        <div class="pr-5 ml-3">
-<p>Remember to use the command <code v-pre>@Pingu bot updateinteractions</code> if you are using for the first time the bot in your server.</p>
+<p>If you are using the bot for the first time, you can use it&#x27;s default prefix <code v-pre>!</code>, or by mentioning the bot. The default language is <code v-pre>es</code> (Spanish). I suggest using the command <code v-pre>@Pingu bot updateinteractions</code> if you are using for the first time the bot in your server.</p>
         </div>
     </div>
 </div>
