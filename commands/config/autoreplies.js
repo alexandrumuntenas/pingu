@@ -6,6 +6,7 @@ const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'autoreplies',
+  module: 'autoreplies',
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   interactionData: new SlashCommandBuilder()

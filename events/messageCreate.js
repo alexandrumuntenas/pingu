@@ -35,6 +35,10 @@ module.exports = {
 
         if (CooldownManager.check(message.member, message.guild, message.commandName)) {
           if (process.Client.commands.has(message.commandName)) {
+            if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) {
+              return message.reply({ embeds: [error(i18n(message.guild.configuration.language || 'es', 'COMMAND::NOT_ENABLED'))] })
+            }
+
             if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) {
               message.reply({ embeds: [error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::PERMERROR'))] })
               return

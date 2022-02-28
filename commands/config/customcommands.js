@@ -6,6 +6,7 @@ const { success, error } = require('../../functions/defaultMessages')
 
 module.exports = {
   name: 'customcommands',
+  module: 'customcommands',
   description: '⚙️ Manage the custom commands of your server',
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],

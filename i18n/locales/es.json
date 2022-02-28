@@ -163,5 +163,8 @@
   "BOT::HELP:MODULESENABLE:DESCRIPTION": "Habilita un módulo del bot.",
   "BOT::HELP:MODULESDISABLE:DESCRIPTION": "Deshabilita un módulo del bot.",
   "AUTOREPLY::ADD:ERROR": "Se ha producido un error al intentar añadir la respuesta automática.",
-  "AUTOREPLY::ADD:SUCCESS": "Se ha añadido la respuesta automática para %MESSAGE%."
+  "AUTOREPLY::ADD:SUCCESS": "Se ha añadido la respuesta automática para %MESSAGE%.",
+  "COMMAND::NOT_ENABLED": "Este comando no está habilitado.",
+  "COMMAND::NOT_FOUND": "Este comando no existe.",
+  "COMMAND::PERMISSION_ERROR": "No tienes permiso para usar este comando."
 }

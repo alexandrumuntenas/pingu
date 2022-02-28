@@ -11,6 +11,7 @@ const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 
 module.exports = {
   name: 'leveling',
+  module: 'leveling',
   description: '⚙️ Configure the leveling module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 1000,

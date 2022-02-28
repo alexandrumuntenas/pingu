@@ -90,7 +90,7 @@ const { MessageEmbed } = require('discord.js')
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
   this.getReply(message.guild, message.content, replydata => {
-    if (replydata.autoreplyProperties) {
+    if (replydata && Object.prototype.hasOwnProperty.call(replydata, 'autoreplyProperties')) {
       const reply = {}
       if (replydata.autoreplyProperties.sendInEmbed.enabled) {
         const embed = new MessageEmbed()

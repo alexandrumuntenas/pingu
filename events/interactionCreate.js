@@ -19,8 +19,13 @@ async function isCommand (interaction) {
     interaction.guild.configuration = guildConfig
     if (process.Client.commands.has(interaction.commandName)) {
       const interactionToRun = process.Client.commands.get(interaction.commandName)
+
+      if (interactionToRun.module && !guildConfig[interactionToRun.module].enabled) {
+        return interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::NOT_ENABLED'))] })
+      }
+
       if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
-        interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND_PERMISSION_ERROR'))] })
+        interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::PERMISSION_ERROR'))] })
         return
       }
 
@@ -32,7 +37,7 @@ async function isCommand (interaction) {
         interaction.editReply({ embeds: [timer(i18n(interaction.guild.configuration.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
     } else {
-      interaction.editReply({ content: i18n(interaction.guild.configuration.common.language || 'es', 'COMMAND_NOT_FOUND') })
+      interaction.editReply({ content: i18n(interaction.guild.configuration.common.language || 'es', 'COMMAND::NOT_FOUND') })
     }
   })
 }

@@ -9,6 +9,7 @@ const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 
 module.exports = {
   name: 'welcome',
+  module: 'welcome',
   description: '⚙️ Configure the welcome module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 1000,

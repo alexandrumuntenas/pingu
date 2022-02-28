@@ -21,7 +21,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
     if (err) Consolex.handleError(err)
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (result[0].clientVersion === 'pingu@1.0.0') module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback))
+      if (result[0].clientVersion === 'pingu@1.0.0') return module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback))
       else {
         Object.keys(result[0]).forEach(module => {
           try {
@@ -188,7 +188,7 @@ module.exports.migrateGuildData = (guild, callback) => {
       }
 
       // Migrar módulo de sugerencias
-      const suggestions = { enabled: BoolRelation[result[0].suggestionsEnabled], channels: { suggestionsNotRevised: result[0].suggestionsChannel, suggestionsRevised: result[0].suggestionsRevChannel } }
+      const suggestions = { enabled: BoolRelation[result[0].suggestionsEnabled], channels: { review: result[0].suggestionsChannel, reviewed: result[0].suggestionsRevChannel } }
 
       // Migrar módulo de respuestas automáticas
       const autoresponder = { enabled: BoolRelation[result[0].autoresponderEnabled] }
