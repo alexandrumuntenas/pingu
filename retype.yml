@@ -2,8 +2,13 @@ input: .
 output: .retype
 url: alexandrumuntenas.github.io/pingu/
 branding:
-  title: Pingu • The Discord Bot
-  label: 2202
+  title: Pingu
+  label: 22T1
+  logo: botavatar.png
+  logoAlign: left
+
+favicon: botavatar.png
+
 links:
 - text: Home
   link: /README.md
@@ -28,5 +33,10 @@ links:
   link: https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands
   icon: diff-added
   target: blank
+
+edit:
+  repo: "https://github.com/alexandrumuntenas/pingu/"
+  label: "Improve this page"
+
 footer:
-  copyright: "&copy; Copyright {{ year }}. All rights reserved."
+  copyright: "&copy; Copyright {{ year }} Alexandru Muntenas. All rights reserved."
