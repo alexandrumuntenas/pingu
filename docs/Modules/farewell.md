@@ -15,15 +15,25 @@ The commands listed below can only be used by the server owner, or by persons wi
 ## Interactions
 
 ```javascript
-/farewell viewconfig // View the current configuration
-/farewell setchannel channel: <TextChannel> // Set the channel to send farewell messages to
-/farewell setmessage message: <String> // Set the farewell message
+// View the current configuration
+/farewell viewconfig
+
+// Set the channel to send farewell messages to
+/farewell setchannel channel: <TextChannel>
+
+// Set the farewell message
+/farewell setmessage message: <String>
 ```
 
 ## Commands
 
 ```javascript
-farewell viewconfig // View the current configuration of the module.
-farewell setchannel <TextChannel> // Configure the farewell channel.
-farewell setmessage <String> // Set the farewell message.
+// View the current configuration of the module.
+farewell viewconfig
+
+// Configure the farewell channel.
+farewell setchannel <TextChannel>
+
+// Set the farewell message.
+farewell setmessage <String>
 ```

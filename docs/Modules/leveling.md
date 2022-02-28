@@ -29,21 +29,39 @@ The commands listed below can only be used by the server owner, or by persons wi
 ## Interactions
 
 ```javascript
-/leveling viewconfig // View the current configuration
-/leveling rankup channel channel: <TextChannel> message: <String> difficulty: <Integer> // Configure the rankup
-/leveling configurecards backgroundurl: <URL> overlayopacity: <Integer> overlaycolor: <Hex Color> // Configure the cards
+// View the current configuration
+/leveling viewconfig
+
+// Configure the rankup
+/leveling rankup channel channel: <TextChannel> message: <String> difficulty: <Integer>
+
+// Configure the cards
+/leveling configurecards backgroundurl: <URL> overlayopacity: <Integer> overlaycolor: <Hex Color>
 ```
 
 ## Commands
 
 ``` javascript
-leveling viewconfig // View the current configuration of the module.
-leveling rankup channel <TextChannel> // Configure the rankup channel.
-leveling rankup message <String> // Configure the rankup message.
-leveling rankup difficulty <Integer> // Configure the rankup.
-leveling configurecards backgroundurl <URL> // Configure the cards background.
-leveling overlayopacity <Integer> // Configure the overlay opacity.
-leveling overlaycolor <Hex Color> // Configure the overlay color.
+// View the current configuration of the module.
+leveling viewconfig
+
+// Configure the rankup channel.
+leveling rankup channel <TextChannel>
+
+// Configure the rankup message.
+leveling rankup message <String>
+
+// Configure the rankup difficulty.
+leveling rankup difficulty <Integer>
+
+// Configure the cards background.
+leveling configurecards backgroundurl <URL>
+
+// Configure the overlay opacity.
+leveling overlayopacity <Integer>
+
+// Configure the overlay color.
+leveling overlaycolor <Hex Color>
 ```
 
 ## User commands

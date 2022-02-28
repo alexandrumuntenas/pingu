@@ -1,9 +1,13 @@
 ---
 order: 93
-icon: git-pull-request-draft
+icon: light-bulb
 ---
 
-# Suggestions (NOTUPDATED)
+# Suggestions (IN PROGRESS)
+
+!!!warning
+This module is being updated to accomplish with the new client updates.
+!!!
 
 >  Do you want to allow your users to send you suggestions? Pingu can help you. This module comes with commands so you can set up a workflow quickly.
 

@@ -1,6 +1,6 @@
 ---
 order: 96
-icon: reply
+icon: hubot
 ---
 
 # Custom Commands
@@ -12,9 +12,17 @@ The commands listed below can only be used by the server owner, or by persons wi
 >
 > Disable this module using `/bot modules disable module: customcommands`.
 
+## Interactions
+
 ```javascript
-/customcommands create name: <String> reply: <String> sendinembed: <Boolean> sendinembed_title: <String> sendinembed_description: <String> sendinembed_thumbnail: <String> sendinembed_image: <Boolean> sendinembed_url: <URL> sendinembed_color: <HexColor> role: <Role> channel: <TextChannel> sendtodm: <Boolean> // Create a new custom command
-/customcommands remove command: <String> // Delete a custom command
+// Create a new custom command
+/customcommands create name: <String> reply: <String> sendinembed: <Boolean> sendinembed_title: <String> sendinembed_description: <String> sendinembed_thumbnail: <String> sendinembed_image: <Boolean> sendinembed_url: <URL> sendinembed_color: <HexColor> role: <Role> channel: <TextChannel> sendtodm: <Boolean>
+
+// Delete a custom command
+/customcommands remove command: <String>
+
+// View the guild custom commands (Works with prefixes)
+/viewcustomcommands
 ```
 
 !!!success

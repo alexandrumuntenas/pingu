@@ -12,6 +12,8 @@ The commands listed below can only be used by the server owner, or by persons wi
 >
 > Disable this module using `/bot modules disable module: autoreplies`.
 
+## Interactions
+
 ```javascript
 // Create a new autoreply
 /autoreplies create trigger: <String> reply: <String> sendinembed: <Boolean> sendinembed_title: <String> sendinembed_description: <String> sendinembed_thumbnail: <String> sendinembed_image: <Boolean> sendinembed_url: <URL> sendinembed_color: <HexColor> role: <Role>

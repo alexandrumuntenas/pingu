@@ -12,28 +12,46 @@ The following commands can only be used by the server owner or by persons with t
 ## Interactions
 
 ```javascript
-/bot setprefix newprefix: <String> // Change the prefix
-/bot setlanguage language: <English/Spanish> // Change the language
-/bot modules enable module: <Module> // Enable a module
-/bot modules disable module: <Module> // Disable a module
-/bot modules viewconfig // View if the modules are enabled or disabled
-/bot interactions update // Update the interactions of the guild
+// Change the prefix
+/bot setprefix newprefix: <String>
+
+// Change the language
+/bot setlanguage language: <English/Spanish>
+
+// Enable a module
+/bot modules enable module: <Module>
+
+// Disable a module
+/bot modules disable module: <Module>
+
+// View if the modules are enabled or disabled
+/bot modules viewconfig
+
+// Update the interactions of the guild
+/bot interactions update
 ```
 
 ## Commands
 ```javascript
-bot setprefix <prefix> // Change the prefix
-bot setlanguage <language[en/es]> // Change the language
-bot modules enable <Module> // Enable a module
-bot modules disable <Module> // Disable a module
-bot modules viewconfig // View if the modules are enabled or disabled
-bot updateinteractions <Boolean> // Update the interactions of the guild
+// Change the prefix
+bot setprefix <prefix>
+
+// Change the language
+bot setlanguage <language[en/es]>
+
+// Enable a module
+bot modules enable <Module>
+
+// Disable a module
+bot modules disable <Module>
+
+// View if the modules are enabled or disabled
+bot modules viewconfig
+
+// Update the interactions of the guild
+bot updateinteractions <Boolean>
 ```
 
 !!!
-The default prefix is `!`, and the default language is `es` (Spanish).
-!!!
-
-!!!
-Remember to use the command `@Pingu bot updateinteractions` if you are using for the first time the bot in your server.
+If you are using the bot for the first time, you can use it's default prefix `!`, or by mentioning the bot. The default language is `es` (Spanish). I suggest using the command `@Pingu bot updateinteractions` if you are using for the first time the bot in your server.
 !!!
