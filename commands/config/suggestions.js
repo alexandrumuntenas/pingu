@@ -9,6 +9,7 @@ module.exports = {
   module: 'suggestions',
   description: '⚙️ Configure the suggestions module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
+  isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommandGroup(scg => scg.setName('setchannel').setDescription('Configure the channels required in order to use the suggestions module')
       .addSubcommand(sc => sc.setName('review').setDescription('The channel where newly submitted suggestions will be reviewed')
