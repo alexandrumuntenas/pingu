@@ -13,7 +13,7 @@ module.exports = {
   description: '🤖 Manage the bot configuration of your server',
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  isConfigurationCommand: false,
+  isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommandGroup(scg => scg
       .setName('modules')
