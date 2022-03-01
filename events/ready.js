@@ -17,7 +17,10 @@ module.exports = {
     if (process.env.ENTORNO === 'public') initializeThirdParty(process.Client)
 
     eliminadorArchivosTemporales()
+    process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
+
     setInterval(() => {
+      process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
       eliminadorArchivosTemporales()
     }, 600000)
   }
