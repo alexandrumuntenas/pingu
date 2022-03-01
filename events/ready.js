@@ -6,7 +6,7 @@ const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKEN)
 else rest.setToken(process.env.PUBLIC_TOKEN)
 
-const initializeThirdParty = require('./functions/initializeThirdParty')
+const initializeThirdParty = require('../functions/initializeThirdParty')
 
 module.exports = {
   name: 'ready',
