@@ -98,7 +98,6 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
         if (replydata.autoreplyProperties.sendInEmbed.title) embed.setTitle(replydata.autoreplyProperties.sendEmbed.title)
 
         if (replydata.autoreplyProperties.sendInEmbed.description) {
-          reply.content = replydata.autoreplyProperties.sendInEmbed.reply
           embed.setDescription(replydata.autoreplyProperties.sendEmbed.description)
         } else embed.setDescription(replydata.autoreplyReply)
 
@@ -114,7 +113,7 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
         embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
 
         reply.embeds = [embed]
-      } else reply.content = replydata.autoreplyProperties.autoreplyReply
+      } else reply.content = replydata.autoreplyReply
 
       try {
         message.channel.send(reply)
