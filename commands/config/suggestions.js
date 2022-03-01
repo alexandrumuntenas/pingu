@@ -25,12 +25,12 @@ module.exports = {
         if (interaction.options.getChannel('channel')) {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { review: interaction.options.getChannel('channel').id } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEW:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEW:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEW:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
           })
         } else {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { review: null } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEW:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEW:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEW:SUCCESS', { CHANNEL: i18n(locale, 'UNSET') }))] })
           })
         }
 
@@ -41,12 +41,12 @@ module.exports = {
         if (interaction.options.getChannel('channel')) {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { approved: interaction.options.getChannel('channel').id } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:APPROVED:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:APPROVED:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:APPROVED:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
           })
         } else {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { approved: null } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:APPROVED:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:APPROVED:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:APPROVED:SUCCESS', { CHANNEL: i18n(locale, 'UNSET') }))] })
           })
         }
 
@@ -57,12 +57,12 @@ module.exports = {
         if (interaction.options.getChannel('channel')) {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { denied: interaction.options.getChannel('channel').id } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:DENIED:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
           })
         } else {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { denied: null } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:DENIED:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS', { CHANNEL: i18n(locale, 'UNSET') }))] })
           })
         }
 
@@ -73,20 +73,17 @@ module.exports = {
         if (interaction.options.getChannel('channel')) {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { reviewed: interaction.options.getChannel('channel').id } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEWED:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
           })
         } else {
           updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: { reviewed: null } } }, err => {
             if (err) return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEWED:ERROR'))] })
-            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS'))] })
+            return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS', { CHANNEL: i18n(locale, 'UNSET') }))] })
           })
         }
 
         break
       }
     }
-  },
-  runCommand (locale, message) {
-
   }
 }
