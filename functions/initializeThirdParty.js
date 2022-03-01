@@ -14,7 +14,7 @@ module.exports = () => {
     }
   }
 
-  const poster = new dbots.Poster({ Client: process.Client, apiKeys, ClientLibrary: 'discord.js' })
+  const poster = new dbots.Poster({ client: process.Client, apiKeys, ClientLibrary: 'discord.js' })
 
   poster.startInterval()
 
