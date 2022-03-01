@@ -84,22 +84,25 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
 
 function procesarObjetosdeConfiguracion (config, newconfig, callback) {
   let count = 0
-  const newConfigProperties = Object.keys(newconfig)
-  newConfigProperties.forEach(property => {
-    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
-      procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
-        config[property] = newConfig
+  if (newconfig instanceof Object === false) callback(newconfig)
+  else {
+    const newConfigProperties = Object.keys(newconfig)
+    newConfigProperties.forEach(property => {
+      if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
+        procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
+          config[property] = newConfig
+          count += 1
+        })
+      } else {
+        config[property] = newconfig[property]
         count += 1
-      })
-    } else {
-      config[property] = newconfig[property]
-      count += 1
-    }
+      }
 
-    if (count === newConfigProperties.length) {
-      callback(config)
-    }
-  })
+      if (count === newConfigProperties.length) {
+        callback(config)
+      }
+    })
+  }
 }
 
 /**
