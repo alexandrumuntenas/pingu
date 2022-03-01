@@ -9,6 +9,7 @@
   "SUBTITLE": "Subtítulo",
   "TITLE": "Título",
   "VIEWLINK": "Ver enlace",
+  "UNSET": "No establecido",
   "WELCOME::CONFIGURECARDS:ACTUALCONFIG": "La configuración actual de las tarjetas de bienvenida es:",
   "WELCOME::CONFIGURECARDS:BACKGROUNDURL:ERROR": "Se ha producido un error al intentar cambiar la URL del fondo.",
   "WELCOME::CONFIGURECARDS:BACKGROUNDURL:SUCCESS": "La nueva URL del fondo es %URL%",
@@ -166,5 +167,13 @@
   "AUTOREPLY::ADD:SUCCESS": "Se ha añadido la respuesta automática para %MESSAGE%.",
   "COMMAND::NOT_ENABLED": "Este comando no está habilitado.",
   "COMMAND::NOT_FOUND": "Este comando no existe.",
-  "COMMAND::PERMISSION_ERROR": "No tienes permiso para usar este comando."
+  "COMMAND::PERMISSION_ERROR": "No tienes permiso para usar este comando.",
+  "SUGGESTIONS::SETCHANNEL:REVIEW:ERROR": "Se ha producido un error al intentar cambiar el canal de sugerencias pendientes de revisión.",
+  "SUGGESTIONS::SETCHANNEL:REVIEW:SUCCESS": "El canal de sugerencias pendientes de revisión ha sido cambiado a %CHANNEL%.",
+  "SUGGESTIONS::SETCHANNEL:APPROVED:ERROR": "Se ha producido un error al intentar cambiar el canal de sugerencias aprobadas.",
+  "SUGGESTIONS::SETCHANNEL:APPROVED:SUCCESS": "El canal de sugerencias aprobadas ha sido cambiado a %CHANNEL%.",
+  "SUGGESTIONS::SETCHANNEL:DENIED:ERROR": "Se ha producido un error al intentar cambiar el canal de sugerencias rechazadas.",
+  "SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS": "El canal de sugerencias rechazadas ha sido cambiado a %CHANNEL%.",
+  "SUGGESTIONS::SETCHANNEL:REVIEWED:ERROR": "Se ha producido un error al intentar cambiar el canal de sugerencias revisadas.",
+  "SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS": "El canal de sugerencias revisadas ha sido cambiado a %CHANNEL%."
 }
