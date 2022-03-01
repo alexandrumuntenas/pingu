@@ -84,6 +84,7 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
 
 function procesarObjetosdeConfiguracion (config, newconfig, callback) {
   let count = 0
+  if (newconfig instanceof Object === false) return callback(newconfig)
   const newConfigProperties = Object.keys(newconfig)
   newConfigProperties.forEach(property => {
     if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
