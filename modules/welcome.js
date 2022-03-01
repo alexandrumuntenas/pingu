@@ -154,8 +154,8 @@ module.exports.generateWelcomeCard = async (member, callback) => {
     finalImageComposition.fillRect(0, 0, canvas.width, canvas.height)
   }
 
-  const title = replaceBracePlaceholdersWithActualData(member.guild.configuration.welcome.welcomecard.title, member) || `${member.user.tag} just joined the server`
-  const subtitle = replaceBracePlaceholdersWithActualData(member.guild.configuration.welcome.welcomecard.subtitle, member) || `Member #${member.guild.memberCount}`
+  const title = replaceBracePlaceholdersWithActualData(member.guild.configuration.welcome.welcomecard.title || '{user.tag} just joined the server', member)
+  const subtitle = replaceBracePlaceholdersWithActualData(member.guild.configuration.welcome.welcomecard.subtitle || 'Member #{guild.member_count}', member)
 
   finalImageComposition.font = applyText(canvas, title)
   finalImageComposition.fillStyle = '#ffffff'
