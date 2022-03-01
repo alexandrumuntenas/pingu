@@ -12,12 +12,12 @@ const CooldownManager = require('../functions/cooldownManager')
 
 module.exports.getExperience = member => {
   if (CooldownManager.check(member, member.guild, { name: 'leveling' })) {
-    CooldownManager.add(member, member.guild, { name: 'leveling', cooldown: 6000 })
+    CooldownManager.add(member, member.guild, { name: 'leveling', cooldown: 60000 })
     getGuildConfigNext(member.guild, guildConfig => {
       getMember(member, memberData => {
         memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
-        if (memberData.lvlExperience >= (((memberData.lvlExperience * memberData.lvlExperience) * guildConfig.leveling.difficulty) * 100)) {
-          memberData.lvlExperience -= (((memberData.lvlExperience * memberData.lvlExperience) * guildConfig.leveling.difficulty) * 100)
+
+        if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
           this.doLevelUp(member)
         }
 
@@ -38,7 +38,30 @@ module.exports.getExperience = member => {
 
 module.exports.doLevelUp = member => {
   getMember(member, memberData => {
-    updateMember(member, { lvlLevel: memberData.lvlLevel + 1 })
+    updateMember(member, { lvlLevel: memberData.lvlLevel + 1, lvlExperience: 0 })
+  })
+}
+
+// In progress...
+
+module.exports.sendLevelUpMessage = member => {
+  getGuildConfigNext(member.guild, guildConfig => {
+    if (guildConfig.leveling.enabled) {
+      getMember(member, memberData => {
+        const channelWhereLevelUpMessageIsSent = member.guild.channels.cache.get(guildConfig.leveling.channel)
+        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', member)
+
+        if (channelWhereLevelUpMessageIsSent) {
+          channelWhereLevelUpMessageIsSent.send({ content })
+        } else {
+          try {
+            member.user.send({ content })
+          } catch (err) {
+            if (err) Consolex.error(`Error sending message to user because of: ${err}`)
+          }
+        }
+      })
+    }
   })
 }
 
@@ -73,6 +96,7 @@ const isValidUrl = require('is-valid-http-url')
 const isImageUrl = require('is-image-url')
 const hexToRgba = require('hex-rgba')
 const { millify } = require('millify')
+const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
