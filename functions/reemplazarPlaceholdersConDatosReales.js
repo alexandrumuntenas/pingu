@@ -8,7 +8,7 @@
 module.exports = (string, member, customplaceholders) => {
   if (!string || !member) throw new Error('Missing required parameters')
 
-  string = string
+  let finalstring = string
     .replaceAll('{user}', member)
     .replaceAll('{user.mention}', member)
     .replaceAll('{user.name}', member.user.username)
@@ -43,10 +43,10 @@ module.exports = (string, member, customplaceholders) => {
   if (customplaceholders && typeof (customplaceholders) === 'object') {
     for (const placeholder in customplaceholders) {
       if (Object.prototype.hasOwnProperty.call(customplaceholders, placeholder)) {
-        string = string.replaceAll(`{${placeholder}}`, customplaceholders[placeholder])
+        finalstring = finalstring.replaceAll(`{${placeholder}}`, customplaceholders[placeholder])
       }
     }
   }
 
-  return string
+  return finalstring
 }
