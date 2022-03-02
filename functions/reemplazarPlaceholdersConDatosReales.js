@@ -1,13 +1,14 @@
 /**
  * Replace the custom bot placeholders with real data.
  * @param {String} string
- * @param {GuildMember} member
+ * @param {GuildMember} member´
+ * @param {{placeholder: value}} customplaceholders
  */
 
-module.exports = (string, member) => {
+module.exports = (string, member, customplaceholders) => {
   if (!string || !member) throw new Error('Missing required parameters')
 
-  return string
+  string = string
     .replaceAll('{user}', member)
     .replaceAll('{user.mention}', member)
     .replaceAll('{user.name}', member.user.username)
@@ -38,4 +39,14 @@ module.exports = (string, member) => {
     .replaceAll('{server.icon_url}', member.guild.iconURL({ dynamic: true, format: 'png', size: 1024 }))
     .replaceAll('{server.id}', `${member.guild.id}`)
     .replaceAll('{server.verification_level}', member.guild.verificationLevel)
+
+  if (customplaceholders && typeof (customplaceholders) === 'object') {
+    for (const placeholder in customplaceholders) {
+      if (Object.prototype.hasOwnProperty.call(customplaceholders, placeholder)) {
+        string = string.replaceAll(`{${placeholder}}`, customplaceholders[placeholder])
+      }
+    }
+  }
+
+  return string
 }
