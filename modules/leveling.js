@@ -12,7 +12,7 @@ const CooldownManager = require('../functions/cooldownManager')
 
 module.exports.getExperience = message => {
   if (CooldownManager.check(message.member, message.guild, { name: 'leveling' })) {
-    CooldownManager.add(message.member, message.guild, { name: 'leveling', cooldown: 1 })
+    CooldownManager.add(message.member, message.guild, { name: 'leveling', cooldown: 60000 })
     getGuildConfigNext(message.guild, guildConfig => {
       getMember(message.member, memberData => {
         memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
@@ -49,7 +49,7 @@ module.exports.sendLevelUpMessage = message => {
             }
             case 'dm': {
               try {
-                message.user.send({ content })
+                message.author.send({ content })
               } catch (err) {
                 if (err) Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
               }
