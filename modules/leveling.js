@@ -37,7 +37,7 @@ module.exports.sendLevelUpMessage = message => {
     if (guildConfig.leveling.enabled) {
       getMember(message, memberData => {
         const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)
-        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member)
+        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel) + 1, oldlevel: parseInt(memberData.lvlLevel) })
 
         if (channelWhereLevelUpMessageIsSent) {
           channelWhereLevelUpMessageIsSent.send({ content })

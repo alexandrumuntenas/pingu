@@ -63,3 +63,12 @@ They are the same placeholders but with different names.
 !!!info
 They are the same placeholders but with different names.
 !!!
+
+## Module specific placeholders
+
+### Leveling
+
+| Placeholder       | Data Placed           |
+|-------------------|-----------------------|
+| {newlevel}        | New Level             |
+| {oldlevel}        | Level before update   |
