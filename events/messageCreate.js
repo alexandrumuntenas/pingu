@@ -55,7 +55,7 @@ module.exports = {
         }
       } else {
         if (message.guild.configuration.leveling.enabled) {
-          getExperience(message.member)
+          getExperience(message)
         }
 
         if (message.guild.configuration.autoreplies.enabled) {

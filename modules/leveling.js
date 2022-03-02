@@ -3,26 +3,27 @@ const Database = require('../functions/databaseConnection')
 
 /**
  * Get experiece by chatting.
- * @param {GuildMember} member
+ * @param {Message} message
  */
 
 const { getMember, updateMember } = require('../functions/memberManager')
 const { getGuildConfigNext } = require('../functions/guildDataManager')
 const CooldownManager = require('../functions/cooldownManager')
 
-module.exports.getExperience = member => {
-  if (CooldownManager.check(member, member.guild, { name: 'leveling' })) {
-    CooldownManager.add(member, member.guild, { name: 'leveling', cooldown: 60000 })
-    getGuildConfigNext(member.guild, guildConfig => {
-      getMember(member, memberData => {
+module.exports.getExperience = message => {
+  if (CooldownManager.check(message.member, message.guild, { name: 'leveling' })) {
+    CooldownManager.add(message.member, message.guild, { name: 'leveling', cooldown: 1 })
+    getGuildConfigNext(message.guild, guildConfig => {
+      getMember(message.member, memberData => {
         memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
         if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
-          this.doLevelUp(member)
+          this.sendLevelUpMessage(message)
+          return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
         }
 
         try {
-          updateMember(member, { lvlExperience: memberData.lvlExperience })
+          updateMember(message.member, { lvlExperience: memberData.lvlExperience })
         } catch (err) {
           if (err) Consolex.handleError(err)
         }
@@ -31,33 +32,32 @@ module.exports.getExperience = member => {
   }
 }
 
-/**
- * Do level up.
- * @param {GuildMember} member
- */
-
-module.exports.doLevelUp = member => {
-  getMember(member, memberData => {
-    updateMember(member, { lvlLevel: memberData.lvlLevel + 1, lvlExperience: 0 })
-  })
-}
-
-// In progress...
-
-module.exports.sendLevelUpMessage = member => {
-  getGuildConfigNext(member.guild, guildConfig => {
+module.exports.sendLevelUpMessage = message => {
+  getGuildConfigNext(message.guild, guildConfig => {
     if (guildConfig.leveling.enabled) {
-      getMember(member, memberData => {
-        const channelWhereLevelUpMessageIsSent = member.guild.channels.cache.get(guildConfig.leveling.channel)
-        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', member)
+      getMember(message, memberData => {
+        const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)
+        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member)
 
         if (channelWhereLevelUpMessageIsSent) {
           channelWhereLevelUpMessageIsSent.send({ content })
         } else {
-          try {
-            member.user.send({ content })
-          } catch (err) {
-            if (err) Consolex.error(`Error sending message to user because of: ${err}`)
+          switch (guildConfig.leveling.channel) {
+            case 'same': {
+              message.reply({ content })
+              break
+            }
+            case 'dm': {
+              try {
+                message.user.send({ content })
+              } catch (err) {
+                if (err) Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
+              }
+              break
+            }
+            default: {
+              break
+            }
           }
         }
       })
