@@ -19,7 +19,7 @@ module.exports.getExperience = message => {
 
         if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
           this.sendLevelUpMessage(message)
-          return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
+          return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
         }
 
         try {
@@ -37,7 +37,7 @@ module.exports.sendLevelUpMessage = message => {
     if (guildConfig.leveling.enabled) {
       getMember(message, memberData => {
         const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)
-        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel) + 1, oldlevel: parseInt(memberData.lvlLevel) })
+        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel, 10) + 1, oldlevel: parseInt(memberData.lvlLevel, 10) })
 
         if (channelWhereLevelUpMessageIsSent) {
           channelWhereLevelUpMessageIsSent.send({ content })
