@@ -128,6 +128,14 @@
   "LEVELING::RANKUP:MESSAGE:SUCCESS": "El nuevo mensaje de subida de nivel es %MESSAGE%",
   "LEVELING::RANKUP:DIFFICULTY:ERROR": "Se ha producido un error al intentar cambiar la dificultad de nivel.",
   "LEVELING::RANKUP:DIFFICULTY:SUCCESS": "La nueva dificultad de nivel es %DIFFICULTY%",
+  "LEVELING::HELP:CONFIGURECARDS:OVERLAYOPACITY:DESCRIPTION": "Cambiar la opacidad de la superposición de la tarjeta de rango.",
+  "LEVELING::HELP:CONFIGURECARDS:OVERLAYCOLOR:DESCRIPTION": "Cambiar el color de la superposición de la tarjeta de rango.",
+  "LEVELING::HELP:CONFIGURECARDS:BACKGROUNDURL:DESCRIPTION": "Cambiar la URL del fondo de la tarjeta de rango.",
+  "LEVELING::HELP:CONFIGURECARDS:VIEWCONFIG:DESCRIPTION": "Ver la configuración actual de la tarjeta de rango.",
+  "LEVELING::HELP:VIEWCONFIG:DESCRIPTION": "Ver la configuración actual del módulo de leveling.",
+  "LEVELING::HELP:RANKUP:CHANNEL:DESCRIPTION": "Cambiar el canal de mensajes de subida de nivel.",
+  "LEVELING::HELP:RANKUP:MESSAGE:DESCRIPTION": "Cambiar el mensaje de subida de nivel.",
+  "LEVELING::HELP:RANKUP:DIFFICULTY:DESCRIPTION": "Cambiar la dificultad de nivel.",
   "CUSTOMCOMMANDS::CREATE:SUCCESS": "Se ha creado el comando personalizado %COMMAND%.",
   "CUSTOMCOMMANDS::CREATE:ERROR": "Se ha producido un error al intentar crear el comando personalizado %COMMAND%.",
   "CUSTOMCOMMANDS::DELETE:SUCCESS": "Se ha eliminado el comando personalizado %COMMAND%.",
@@ -175,5 +183,8 @@
   "SUGGESTIONS::SETCHANNEL:DENIED:ERROR": "Se ha producido un error al intentar cambiar el canal de sugerencias rechazadas.",
   "SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS": "El canal de sugerencias rechazadas ha sido cambiado a %CHANNEL%.",
   "SUGGESTIONS::SETCHANNEL:REVIEWED:ERROR": "Se ha producido un error al intentar cambiar el canal de sugerencias revisadas.",
-  "SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS": "El canal de sugerencias revisadas ha sido cambiado a %CHANNEL%."
+  "SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS": "El canal de sugerencias revisadas ha sido cambiado a %CHANNEL%.",
+  "LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT": "Mismo canal en el cual se envía el mensaje",
+  "LEVELING::RANKUP:CHANNEL:DM": "Canal privado",
+  "LEVELING::RANKUP:CHANNEL:DISABLED": "Deshabilitado"
 }

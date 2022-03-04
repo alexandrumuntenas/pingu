@@ -33,7 +33,8 @@ The commands listed below can only be used by the server owner, or by persons wi
 /leveling viewconfig
 
 // Configure the rankup
-/leveling rankup channel channel: <TextChannel> message: <String> difficulty: <Integer>
+// "This channel" option will take the channel Where this interaction is used as the rankup channel
+/leveling rankup channel channel: <String(This channel/Same channel where message is sent/Send to user DM/Disabled)> message: <String> difficulty: <Integer>
 
 // Configure the cards
 /leveling configurecards backgroundurl: <URL> overlayopacity: <Integer> overlaycolor: <Hex Color>
@@ -46,7 +47,11 @@ The commands listed below can only be used by the server owner, or by persons wi
 leveling viewconfig
 
 // Configure the rankup channel.
-leveling rankup channel <TextChannel>
+// This = This channel option will take the channel Where this command is used as the rankup channel
+// Same = Same channel where message is sent
+// Send = Send to user DM
+// Disabled = Disabled
+leveling rankup channel <String(this/same/dm/disabled)>
 
 // Configure the rankup message.
 leveling rankup message <String>

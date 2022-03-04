@@ -19,7 +19,7 @@ module.exports = {
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))
     .addSubcommand(sc => sc.setName('rankup').setDescription('Configure the rankup settings')
-      .addChannelOption(input => input.setName('channel').setDescription('Set the channel where rank up message is sent.'))
+      .addStringOption(input => input.setName('channel').setDescription('Set the channel where rank up message is sent.').addChoice('This channel', 'this').addChoice('Same channel where message is sent', 'same').addChoice('Send to user DM', 'dm').addChoice('Disable', 'disabled'))
       .addStringOption(input => input.setName('message').setDescription('Set the rankup message.'))
       .addNumberOption(input => input.setName('difficulty').setDescription('Set the difficulty of the leveling system.')))
     .addSubcommand(sc => sc.setName('configurecards').setDescription('Configure the rank cards.')
@@ -67,7 +67,7 @@ module.exports = {
       }
 
       case 'rankup': {
-        const rankUpChannel = interaction.options.getChannel('channel')
+        const rankUpChannel = interaction.options.getString('channel')
         const rankUpMessage = interaction.options.getString('message')
         const difficulty = interaction.options.getNumber('difficulty')
         const newconfig = {}
@@ -81,8 +81,33 @@ module.exports = {
             .setTimestamp()
 
           if (rankUpChannel) {
-            modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, `<#${rankUpChannel}>`, true)
-            newconfig.channel = rankUpChannel
+            switch (rankUpChannel) {
+              case 'this': {
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, `<#${interaction.channel.id}>`, true)
+                newconfig.channel = interaction.channel.id
+                break
+              }
+              case 'same': {
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT'), true)
+                newconfig.channel = rankUpChannel
+                break
+              }
+              case 'dm': {
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:DM'), true)
+                newconfig.channel = rankUpChannel
+                break
+              }
+              case 'disabled': {
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:DISABLED'), true)
+                newconfig.channel = rankUpChannel
+                break
+              }
+              default: {
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT'), true)
+                newconfig.channel = rankUpChannel
+                break
+              }
+            }
           }
 
           if (rankUpMessage) {
@@ -165,7 +190,7 @@ module.exports = {
             { name: 'configurecards backgroundurl', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:BACKGROUNDURL:DESCRIPTION'), parameters: '<url>' },
             { name: 'configurecards overlayopacity', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:OVERLAYOPACITY:DESCRIPTION'), parameters: '<0-100>' },
             { name: 'configurecards overlaycolor', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:OVERLAYCOLOR:DESCRIPTION'), parameters: '<hex color>' },
-            { name: 'rankup channel', description: i18n(locale, 'LEVELING::HELP:RANKUP:CHANNEL:DESCRIPTION'), parameters: '<channel mention>' },
+            { name: 'rankup channel', description: i18n(locale, 'LEVELING::HELP:RANKUP:CHANNEL:DESCRIPTION'), parameters: '<this/same/dm/disabled>' },
             { name: 'rankup message', description: i18n(locale, 'LEVELING::HELP:RANKUP:MESSAGE:DESCRIPTION'), parameters: '<message>' },
             { name: 'rankup difficulty', description: i18n(locale, 'LEVELING::HELP:RANKUP:DIFFICULTY:DESCRIPTION'), parameters: '<difficulty>' }
           ]
@@ -265,10 +290,33 @@ module.exports = {
         if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && Object.prototype.hasOwnProperty.call(message.parameters, 2))) return sendHelp()
         switch (message.parameters[1]) {
           case 'channel': {
-            if (!message.mentions.channels.first()) return sendHelp()
-            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { channel: message.mentions.channels.first().id } }, err => {
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && ['this', 'same', 'dm', 'disabled'].includes(message.parameters[2]))) return sendHelp()
+            if (message.parameters[2] === 'this') message.parameters[2] = message.channel.id
+
+            updateGuildConfigNext(message.guild, { column: 'leveling', newconfig: { channel: message.parameters[2] } }, err => {
               if (err) return message.reply(i18n(locale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
-              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+              switch (message.parameters[2]) {
+                case 'this': {
+                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
+                  break
+                }
+                case 'same': {
+                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT') }))] })
+                  break
+                }
+                case 'dm': {
+                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DM') }))] })
+                  break
+                }
+                case 'disabled': {
+                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DISABLED') }))] })
+                  break
+                }
+                default: {
+                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
+                  break
+                }
+              }
             })
 
             break

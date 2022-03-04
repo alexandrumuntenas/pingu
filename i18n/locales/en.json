@@ -175,5 +175,16 @@
   "SUGGESTIONS::SETCHANNEL:DENIED:ERROR": "An error has occurred while trying to change the rejected suggestions channel.",
   "SUGGESTIONS::SETCHANNEL:DENIED:SUCCESS": "The rejected suggestions channel has been changed to %CHANNEL%.",
   "SUGGESTIONS::SETCHANNEL:REVIEWED:ERROR": "An error occurred while trying to change the reviewed suggestions channel.",
-  "SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS": "The reviewed suggestions channel has been changed to %CHANNEL%."
+  "SUGGESTIONS::SETCHANNEL:REVIEWED:SUCCESS": "The reviewed suggestions channel has been changed to %CHANNEL%.",
+  "LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT": "Same channel on which the message is sent.",
+  "LEVELING::RANKUP:CHANNEL:DM": "Private channel",
+  "LEVELING::RANKUP:CHANNEL:DISABLED": "Disabled",
+  "LEVELING::HELP:CONFIGURECARDS:OVERLAYOPACITY:DESCRIPTION": "Change the opacity of the range card overlay.",
+  "LEVELING::HELP:CONFIGURECARDS:OVERLAYCOLOR:DESCRIPTION": "Change the color of the rank card overlay.",
+  "LEVELING::HELP:CONFIGURECARDS:BACKGROUNDURL:DESCRIPTION": "Change the URL of the rank card background.",
+  "LEVELING::HELP:CONFIGURECARDS:VIEWCONFIG:DESCRIPTION": "View the current configuration of the range card.",
+  "LEVELING::HELP:VIEWCONFIG:DESCRIPTION": "View the current configuration of the leveling module.",
+  "LEVELING::HELP:RANKUP:CHANNEL:DESCRIPTION": "Change the leveling up message channel.",
+  "LEVELING::HELP:RANKUP:MESSAGE:DESCRIPTION": "Change the level up message.",
+  "LEVELING::HELP:RANKUP:DIFFICULTY:DESCRIPTION": "Change the level difficulty."
 }
