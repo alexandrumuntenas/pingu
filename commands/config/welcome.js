@@ -4,6 +4,7 @@ const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const { error, success, help } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')
+const { ChannelType } = require('discord-api-types/v9')
 
 const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 
@@ -15,7 +16,7 @@ module.exports = {
   cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
-    .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true)))
+    .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true).addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
     .addSubcommand(sc => sc.setName('setmessage').setDescription('Set the welcome message.').addStringOption(input => input.setName('message').setDescription('Set the welcome message. Avaliable placeholders: {}').setRequired(true)))
     .addSubcommand(sc => sc.setName('configurecards').setDescription('Configure the welcome card.')
       .addBooleanOption(input => input.setName('sendcards').setDescription('Send welcome card along with the welcome message.'))

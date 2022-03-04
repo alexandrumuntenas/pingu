@@ -3,6 +3,7 @@ const { Permissions } = require('discord.js')
 const { success } = require('../../functions/defaultMessages')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const i18n = require('../../i18n/i18n')
+const { ChannelType } = require('discord-api-types/v9')
 
 module.exports = {
   name: 'suggestions',
@@ -13,11 +14,11 @@ module.exports = {
   interactionData: new SlashCommandBuilder()
     .addSubcommandGroup(scg => scg.setName('setchannel').setDescription('Configure the channels required in order to use the suggestions module')
       .addSubcommand(sc => sc.setName('review').setDescription('The channel where newly submitted suggestions will be reviewed')
-        .addChannelOption(input => input.setName('channel').setDescription('The channel where newly submitted suggestions will be reviewed').setRequired(true)))
+        .addChannelOption(input => input.setName('channel').setDescription('The channel where newly submitted suggestions will be reviewed').setRequired(true).addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
       .addSubcommand(sc => sc.setName('approved').setDescription('The channel where approved suggestions will be announced')
-        .addChannelOption(input => input.setName('channel').setDescription('The channel where approved suggestions will be announced')))
+        .addChannelOption(input => input.setName('channel').setDescription('The channel where approved suggestions will be announced').addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
       .addSubcommand(sc => sc.setName('denied').setDescription('The channel where denied suggestions will be announced')
-        .addChannelOption(input => input.setName('channel').setDescription('The channel where approved suggestions will be announced')))
+        .addChannelOption(input => input.setName('channel').setDescription('The channel where approved suggestions will be announced').addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
       .addSubcommand(sc => sc.setName('reviewed').setDescription('The channel where reviewed suggestions will be announced')
         .addChannelOption(input => input.setName('channel').setDescription('The channel where reviewed suggestions will be announced')))),
   runInteraction (locale, interaction) {

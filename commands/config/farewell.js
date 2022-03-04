@@ -3,6 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { success, error, help } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
+const { ChannelType } = require('discord-api-types/v9')
 
 module.exports = {
   module: 'farewell',
@@ -13,7 +14,7 @@ module.exports = {
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(subcommand => subcommand.setName('viewconfig').setDescription('View the current farewell configuration'))
-    .addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the farewell channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true)))
+    .addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the farewell channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true).addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
     .addSubcommand(subcommand => subcommand.setName('setmessage').setDescription('Set the farewell message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('simulate').setDescription('Simulate the farewell message')),
   runInteraction (locale, interaction) {
