@@ -28,12 +28,12 @@
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="/pingu/botavatar.png" rel="icon" />
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.699527653158" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.699729049027" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.699527653158" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.699729049027" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.699527653158" defer></script>
-    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.699527653158" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.699729049027" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.699729049027" defer></script>
     <link href="/pingu/resources/css/katex.css?v=1.11.2" rel="stylesheet" />
     <script id="katex-js" type="text/javascript" src="/pingu/resources/js/katex.js?v=1.11.2" defer></script>
 </head>
@@ -287,7 +287,8 @@
 /leveling viewconfig
 
 // Configure the rankup
-/leveling rankup channel channel: &lt;TextChannel&gt; message: &lt;String&gt; difficulty: &lt;Integer&gt;
+// &quot;This channel&quot; option will take the channel Where this interaction is used as the rankup channel
+/leveling rankup channel channel: &lt;String(This channel/Same channel where message is sent/Send to user DM/Disabled)&gt; message: &lt;String&gt; difficulty: &lt;Integer&gt;
 
 // Configure the cards
 /leveling configurecards backgroundurl: &lt;URL&gt; overlayopacity: &lt;Integer&gt; overlaycolor: &lt;Hex Color&gt;</code></pre>
@@ -303,7 +304,11 @@
 leveling viewconfig
 
 // Configure the rankup channel.
-leveling rankup channel &lt;TextChannel&gt;
+// This = This channel option will take the channel Where this command is used as the rankup channel
+// Same = Same channel where message is sent
+// Send = Send to user DM
+// Disabled = Disabled
+leveling rankup channel &lt;String(this/same/dm/disabled)&gt;
 
 // Configure the rankup message.
 leveling rankup message &lt;String&gt;
