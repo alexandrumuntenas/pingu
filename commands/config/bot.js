@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions, MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const { deployGuildInteractions, updateGuildConfigNext } = require('../../functions/guildDataManager')
-const { success, error, help } = require('../../functions/defaultMessages')
+const { success, error, help, info } = require('../../functions/defaultMessages')
 const Consolex = require('../../functions/consolex')
 
 const avaliableLanguages = ['en', 'es']
@@ -127,6 +127,7 @@ module.exports = {
       }
 
       default: {
+        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

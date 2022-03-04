@@ -1,4 +1,5 @@
 {
+  "INTERACTIONS::NOT_UPDATED": "Estás intentando utilizar una función de una interacción que ya no existe, o que ha cambiado su estructura de subcomandos. Por favor, actualice las interacciones",
   "BACKGROUND": "Fondo",
   "DISABLED": "Deshabilitado",
   "ENABLED": "Habilitado",

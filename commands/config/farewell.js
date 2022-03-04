@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { success, error, help } = require('../../functions/defaultMessages')
+const { success, error, help, info } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const { ChannelType } = require('discord-api-types/v9')
@@ -50,6 +50,7 @@ module.exports = {
       }
 
       default: {
+        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

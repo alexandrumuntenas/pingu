@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const i18n = require('../../i18n/i18n')
 const { generateRankCard } = require('../../modules/leveling')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
-const { error, success, help } = require('../../functions/defaultMessages')
+const { error, success, help, info } = require('../../functions/defaultMessages')
 
 const channelRelationShip = { 0: 'disabled', 1: 'Same Channel Where Message Is Sent' }
 const hexRegexTester = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
@@ -172,6 +172,7 @@ module.exports = {
       }
 
       default: {
+        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

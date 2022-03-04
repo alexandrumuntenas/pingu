@@ -1,7 +1,7 @@
 const { Permissions, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { createReply, deleteReply, generateTxtWithAllTheGuildAutoReplies } = require('../../modules/autoreplies')
-const { success, error } = require('../../functions/defaultMessages')
+const { success, error, info } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -44,6 +44,11 @@ module.exports = {
         generateTxtWithAllTheGuildAutoReplies(interaction.guild, (txtPath) => {
           interaction.editReply({ files: [new MessageAttachment(txtPath, 'autoreplies.txt')] })
         })
+        break
+      }
+      default: {
+        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        break
       }
     }
   }

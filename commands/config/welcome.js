@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
-const { error, success, help } = require('../../functions/defaultMessages')
+const { error, success, help, info } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')
 const { ChannelType } = require('discord-api-types/v9')
@@ -152,6 +152,7 @@ module.exports = {
       }
 
       default: {
+        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }
