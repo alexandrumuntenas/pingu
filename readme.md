@@ -50,7 +50,7 @@ Well, leaving the story behind, let's talk about what Pingu is capable of. You c
 
 Start using Pingu by adding it directly from Discord, or using this [link](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands).
 
-After adding it, run `!update` to deploy all Slash Commands. It is recommended to run it because we are revamping the help commands and bot documentation.
+After adding it, run `@Pingu bot interactionupdate true` to deploy all Slash Commands. (Issue related [#221](https://github.com/alexandrumuntenas/pingu/issues/221))
 
 ## Roadmap
 
