@@ -7,7 +7,7 @@
   <h3 align="center">Pingu</h3>
 
   <p align="center">
-    We differ from other bots because I am very customizable and at what cost? FREE!
+    I differ from other bots because I am very customizable and free!
     <br/>
     <br/>
     <a href="https://alexandrumuntenas.github.io/pingu/"><strong>Explore the docs »</strong></a>
@@ -44,11 +44,11 @@ Days before the end of the school year in June, Wired Penguin was officially ren
 
 Well, leaving the story behind, let's talk about what Pingu is capable of. You can customize most aspects of the welcome module (the background of the cards; the opacity, blur and color of the overlay; channel and message), farewells (message and channel), leveling (leveling difficulty; background of the rank cards, as well as the opacity, blur and color of the overlay; leveling message and sending method), economy (custom currency; custom products, which can perform different functions), etc.
 
-[What are you waiting for? Start using Pingu!](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands)
+[What are you waiting for? Start using Pingu!](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands)
 
 ## Getting Started
 
-Start using Pingu by adding it directly from Discord, or using this [link](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands).
+Start using Pingu by adding it directly from Discord, or using this [link](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands).
 
 After adding it, run `!update` to deploy all Slash Commands. It is recommended to run it because we are revamping the help commands and bot documentation.
 
