@@ -31,7 +31,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
         }
       })
 
-      if (callback) callback(result[0])
+      if (callback) callback(result[0] || {})
     } else {
       //! Será eliminado en la actualización de junio.
       const topChannel = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
