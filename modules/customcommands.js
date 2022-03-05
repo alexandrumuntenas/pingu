@@ -122,19 +122,10 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
  */
 
 const { MessageEmbed } = require('discord.js')
-const i18n = require('../i18n/i18n')
 
 module.exports.runCustomCommand = (message, command) => {
   this.getCustomCommand(message.guild, command, customCommand => {
     const reply = {}
-
-    const linkWarning = new MessageEmbed()
-      .setColor('#2F3136')
-      .setTitle(i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::PROTECTYOURSELFFROMPHISHING'))
-      .setThumbnail('https://cdn.discordapp.com/attachments/908413370665938975/941448001942069308/cybersecurity-6949298_640.png')
-      .setURL('https://support.microsoft.com/en-us/windows/protect-yourself-from-phishing-0c7ea947-ba98-3bd9-7184-430e1f860a44')
-      .setDescription(`${i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::LINKWARNING')} [Protect yourself from phishing](https://support.microsoft.com/en-us/windows/protect-yourself-from-phishing-0c7ea947-ba98-3bd9-7184-430e1f860a44)`)
-      .setFooter({ text: i18n(message.guild.configuration.common.language || 'en', 'CUSTOMCOMMANDS::OFFICIALMESSAGE'), iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
 
     if (customCommand.sendInEmbed) {
       const embed = new MessageEmbed()
@@ -155,9 +146,9 @@ module.exports.runCustomCommand = (message, command) => {
       if (customCommand.sendInEmbed.color) embed.setColor(customCommand.sendEmbed.color)
       else embed.setColor('#2F3136')
 
-      embed.setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+      embed.setFooter({ text: `Powered by Pingu || ⚠️ This is a custom command made by ${message.guild.name}.`, iconURL: process.Client.user.displayAvatarURL() })
 
-      reply.embeds = [embed, linkWarning]
+      reply.embeds = [embed]
     } else reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)
 
     if (customCommand.setRole) message.member.roles.add(customCommand.setRole)
