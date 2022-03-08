@@ -1,14 +1,14 @@
 const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
+const { getMember, updateMember } = require('../functions/memberManager')
+const { getGuildConfigNext } = require('../functions/guildDataManager')
+const CooldownManager = require('../functions/cooldownManager')
+
 /**
  * Get experiece by chatting.
  * @param {Message} message
  */
-
-const { getMember, updateMember } = require('../functions/memberManager')
-const { getGuildConfigNext } = require('../functions/guildDataManager')
-const CooldownManager = require('../functions/cooldownManager')
 
 module.exports.getExperience = message => {
   if (CooldownManager.check(message.member, message.guild, { name: 'leveling' })) {
@@ -18,7 +18,7 @@ module.exports.getExperience = message => {
         memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
         if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
-          this.sendLevelUpMessage(message)
+          module.exports.sendLevelUpMessage(message)
           return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
         }
 
@@ -83,13 +83,6 @@ module.exports.getLeaderboard = (guild, callback) => {
     else callback()
   })
 }
-
-/**
- * Generate the rank card of the member.
- * @param {GuildMember} member
- * @param {Function} callback
- * @returns {String} The path of the rank card.
- */
 
 const { registerFont, createCanvas, loadImage } = require('canvas')
 const { writeFileSync } = require('fs')
@@ -264,6 +257,6 @@ module.exports.resetLeaderboard = (guild, callback) => {
       Consolex.handleError(err)
       return callback(err)
     }
-    callback(null)
+    return callback(null)
   })
 }
