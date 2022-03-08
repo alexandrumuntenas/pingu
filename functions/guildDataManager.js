@@ -71,6 +71,8 @@ module.exports.updateGuildConfig = (guild, configuration, callback) => {
       if (callback) {
         return callback()
       }
+
+      return null
     })
   } else throw new Error('Configuration parameter must be an Object with the following properties: column (column to update) and value (new value).')
 }

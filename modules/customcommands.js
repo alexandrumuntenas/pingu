@@ -91,6 +91,8 @@ module.exports.deleteCustomCommand = (guild, command) => {
       Consolex.handleError(err)
       return err
     }
+
+    return null
   })
 }
 

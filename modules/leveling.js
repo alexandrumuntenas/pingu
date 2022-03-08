@@ -27,6 +27,8 @@ module.exports.getExperience = message => {
         } catch (err) {
           if (err) Consolex.handleError(err)
         }
+
+        return null
       })
     })
   }
