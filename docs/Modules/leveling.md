@@ -38,6 +38,9 @@ The commands listed below can only be used by the server owner, or by persons wi
 
 // Configure the cards
 /leveling configurecards backgroundurl: <URL> overlayopacity: <Integer> overlaycolor: <Hex Color>
+
+// Reset the leaderboard
+/leveling resetleaderboard (From 22T2)
 ```
 
 ## Commands

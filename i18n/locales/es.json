@@ -1,4 +1,6 @@
 {
+  "LEVELING::RESETLEADERBOARD:SUCCESS": "Se ha restablecido el leaderboard correctamente",
+  "LEVELING::RESETLEADERBOARD:ERROR": "Se ha producido un error al intentar restablecer el leaderboard",
   "INTERACTIONS::NOT_UPDATED": "Estás intentando utilizar una función de una interacción que ya no existe, o que ha cambiado su estructura de subcomandos. Por favor, actualice las interacciones",
   "BACKGROUND": "Fondo",
   "DISABLED": "Deshabilitado",

@@ -2,7 +2,7 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const i18n = require('../../i18n/i18n')
-const { generateRankCard } = require('../../modules/leveling')
+const { generateRankCard, resetLeaderboard } = require('../../modules/leveling')
 const { updateGuildConfigNext } = require('../../functions/guildDataManager')
 const { error, success, help, info } = require('../../functions/defaultMessages')
 
@@ -14,7 +14,7 @@ module.exports = {
   module: 'leveling',
   description: '⚙️ Configure the leveling module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  cooldown: 1000,
+  cooldown: 1,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))
@@ -25,7 +25,8 @@ module.exports = {
     .addSubcommand(sc => sc.setName('configurecards').setDescription('Configure the rank cards.')
       .addStringOption(input => input.setName('backgroundurl').setDescription('Set the background image url.'))
       .addNumberOption(input => input.setName('overlayopacity').setDescription('Set the overlay opacity.'))
-      .addStringOption(input => input.setName('overlaycolor').setDescription('Set the overlay color.'))),
+      .addStringOption(input => input.setName('overlaycolor').setDescription('Set the overlay color.')))
+    .addSubcommand(sc => sc.setName('resetleaderboard').setDescription('Reset the leaderboard.')),
   runInteraction (locale, interaction) {
     function viewConfigFallback () {
       generateRankCard(interaction.member, card => {
@@ -168,6 +169,14 @@ module.exports = {
           viewConfigFallback()
         }
 
+        break
+      }
+
+      case 'resetleaderboard': {
+        resetLeaderboard(interaction.guild, (err) => {
+          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::RESETLEADERBOARD:ERROR'))] })
+          return interaction.editReply({ embeds: [success(i18n(locale, 'LEVELING::RESETLEADERBOARD:SUCCESS'))] })
+        })
         break
       }
 

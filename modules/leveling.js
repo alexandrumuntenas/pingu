@@ -247,3 +247,23 @@ module.exports.generateRankCard = (member, callback) => {
     callback(attachmentPath)
   })
 }
+
+/**
+ * Reset the leaderboard from the guild.
+ * @param {Guild} guild
+ * @param {Function} callback
+ * @returns {?String} Error
+ */
+
+module.exports.resetLeaderboard = (guild, callback) => {
+  if (!guild) throw new Error('Guild is required.')
+  if (!callback) throw new Error('Callback is required.')
+
+  Database.query('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
+    if (err) {
+      Consolex.handleError(err)
+      return callback(err)
+    }
+    callback(null)
+  })
+}
