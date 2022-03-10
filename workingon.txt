@@ -1,0 +1,50 @@
+=== SUGGESTIONS MODULE ===
+
+= CONFIGURATION STRUCTURE =
+
+{
+  enabled: <Boolean>,
+  dmupdates: <Boolean>,
+  setlogs: <TextChannel.id>,
+  setchannel: <TextChannel.id>,
+  setreviewer: <Role.id>,
+  setcooldown: <Integer>,
+  communityafter: <Boolean>,
+  communitybefore: <Boolean>,
+  votingtimelimit: <Integer>,
+  setvotingchannel: <TextChannel.id>,
+}
+
+= SUGGESTION STRUCTURE =
+
+{
+  id: <Integer>,
+  suggestion: <String>,
+  notes: <Array{
+      {
+        user: <User.id>,
+        note: <String>,
+        timestamp: <Date>,
+      }
+    }>,
+  status: <String(approved/pending/reviewed/rejected)>,
+  timestamp: <Date>,
+  reviewer: <User.id>,
+  ?votingresults: {
+      yes: <Integer>,
+      no: <Integer>,
+      abstain: <Integer>, // GUILD MEMBER COUNT
+    },
+  }
+}
+
+= VOTING PROCEDURE =
+
+MessageEmbed with the following fields:
+- Author of the suggestion
+- It's suggestion
+- Voting options
+- Voting endtime
+- Voting results (posted after voting endtime)
+
+And :thumbsup: (In favor) :back_of_hand: (Abstain) :thumbsdown: (Against)
