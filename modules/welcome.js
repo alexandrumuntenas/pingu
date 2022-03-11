@@ -40,7 +40,7 @@ module.exports.sendWelcomeMessage = member => {
     const message = { content: replaceBracePlaceholdersWithActualData(guildConfig.welcome.message || '{member} joined {server}!', member) }
 
     if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'card') && Object.prototype.hasOwnProperty.call(guildConfig.welcome.card, 'enabled')) {
-      this.generateWelcomeCard(member, paths => {
+      module.exports.generateWelcomeCard(member, paths => {
         message.files = [new MessageAttachment(paths.attachmentSent)]
       })
     }
@@ -196,8 +196,8 @@ module.exports.doGuildMemberAdd = member => {
   getGuildConfigNext(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (guildConfig.welcome.enabled) {
-        this.giveMemberRoles(member)
-        this.sendWelcomeMessage(member)
+        module.exports.giveMemberRoles(member)
+        module.exports.sendWelcomeMessage(member)
       }
     }
   })

@@ -89,7 +89,7 @@ const { MessageEmbed } = require('discord.js')
  */
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
-  this.getReply(message.guild, message.content, replydata => {
+  module.exports.getReply(message.guild, message.content, replydata => {
     if (replydata && Object.prototype.hasOwnProperty.call(replydata, 'autoreplyProperties')) {
       const reply = {}
       if (replydata.autoreplyProperties.sendInEmbed.enabled) {
@@ -138,7 +138,7 @@ module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
   let fileContent = ''
   const filePath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
-  this.getReplies(guild, (replies) => {
+  module.exports.getReplies(guild, (replies) => {
     replies.forEach(reply => {
       fileContent += `Autoreply ID: ${reply.autoreplyID}\nAutoreply Trigger: ${reply.autoreplyTrigger}\nAutoreply Reply:${reply.autoreplyReply}\nProperties: ${reply.autoreplyProperties}\n--------------------\n`
     })

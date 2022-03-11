@@ -81,10 +81,11 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
  * @param {String} suggestionID - The suggestion ID.
  */
 
-module.exports.approveSuggestion = (member, suggestionID) => {
-  this.getSuggestion(member.guild, suggestionID, suggestion => {
-    suggestion.status = 'approved'
-    this.updateSuggestion(member, suggestion)
+module.exports.approveSuggestion = (member, suggestionId) => {
+  module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
+    Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
+      if (err) Consolex.handleError(err)
+    })
   })
 }
 
@@ -94,21 +95,21 @@ module.exports.approveSuggestion = (member, suggestionID) => {
  * @param {String} suggestionID - The suggestion ID.
  */
 
-module.exports.rejectSuggestion = (member, suggestionID) => {
-  this.getSuggestion(member.guild, suggestionID, suggestion => {
-    suggestion.status = 'rejected'
-    this.updateSuggestion(member, suggestion)
+module.exports.rejectSuggestion = (member, suggestionId) => {
+  module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
+    Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
+      if (err) Consolex.handleError(err)
+    })
   })
 }
 
 /**
- * Update a suggestion.
- * @param {GuildMember} member
- * @param {Object} suggestion
+ * Add a note to a suggestion
+ * @param {Member} member - The member who is adding a note to the suggestion
+ * @param {String} suggestionId
+ * @param {String} note
  */
 
-module.exports.updateSuggestion = (member, suggestion) => {
-  Database.query('UPDATE `guildSuggestions` SET `properties` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion), suggestion.id, member.guild.id], err => {
-    if (err) Consolex.handleError(err)
-  })
+module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
+
 }

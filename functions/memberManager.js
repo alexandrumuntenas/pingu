@@ -77,7 +77,7 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
   })
   if (!memberDataToUpdate) throw Error('You didn\' provide any data to update.')
 
-  this.getMember(member, memberData => {
+  module.exports.getMember(member, memberData => {
     Database.query('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, member.guild.id, member.id], err => {
       if (err) Consolex.handleError(err)
 

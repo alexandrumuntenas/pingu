@@ -8,7 +8,7 @@ const { getGuildConfigNext } = require('../functions/guildDataManager')
 module.exports.doGuildMemberRemove = member => {
   getGuildConfigNext(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'farewell') && Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'enabled')) {
-      if (guildConfig.farewell.enabled) this.sendFarewellMessage(member)
+      if (guildConfig.farewell.enabled) module.exports.sendFarewellMessage(member)
     }
   })
 }

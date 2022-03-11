@@ -1,5 +1,9 @@
 === SUGGESTIONS MODULE ===
 
+= NOW WORKING =
+Actualizar los métodos del módulo para utilizar las nuevas propiedades.
+Y luego crear comandos para terminar la interaccion con estos.
+
 = CONFIGURATION STRUCTURE =
 
 {

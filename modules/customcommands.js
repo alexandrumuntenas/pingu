@@ -15,7 +15,7 @@ module.exports.getCustomCommands = (guild, callback) => {
         if (Object.prototype.hasOwnProperty.call(result[i], 'customcommandproperties') && result[i].customcommandproperties !== null) {
           customcommands.push(JSON.parse(result[i].customcommandproperties))
         } else {
-          this.migrateToNewOrganization(guild, result[i].customCommand, () => {
+          module.exports.migrateToNewOrganization(guild, result[i].customCommand, () => {
             customcommands.push({ command: result[i].customCommand, reply: result[i].messageReturned })
           })
         }
@@ -46,7 +46,7 @@ module.exports.getCustomCommand = (guild, command, callback) => {
       if (Object.prototype.hasOwnProperty.call(result[0], 'customcommandproperties') && result[0].customcommandproperties !== null) {
         callback(JSON.parse(result[0].customcommandproperties))
       } else {
-        this.migrateToNewOrganization(guild, command, () => {
+        module.exports.migrateToNewOrganization(guild, command, () => {
           callback({ command, reply: result[0].messageReturned })
         })
       }
@@ -126,7 +126,7 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
 const { MessageEmbed } = require('discord.js')
 
 module.exports.runCustomCommand = (message, command) => {
-  this.getCustomCommand(message.guild, command, customCommand => {
+  module.exports.getCustomCommand(message.guild, command, customCommand => {
     const reply = {}
 
     if (customCommand.sendInEmbed) {
