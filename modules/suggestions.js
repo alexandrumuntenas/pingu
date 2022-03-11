@@ -5,29 +5,28 @@ const Database = require('../functions/databaseConnection')
  * Create a new suggestion in the guild.
  * @param {GuildMember} member
  * @param {String} suggestion
- * @returns {Object} The suggestion object.
+ * @returns {String} The suggestion id.
  */
 
 const makeId = require('../functions/makeId')
 
 module.exports.createSuggestion = (member, suggestion) => {
-  const suggestionProperties = { id: makeId(5), guild: member.guild.id, author: member.id, suggestion, status: 'pending' }
-
-  Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `properties`) VALUES (?, ?, ?)', [suggestionProperties.id, suggestionProperties.guild, JSON.stringify(suggestionProperties)], err => {
+  const suggestionId = makeId(5)
+  Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
     if (err) return Consolex.handleError(err)
 
-    return suggestionProperties
+    return suggestionId
   })
 }
 
 /**
  * Delete a suggestion.
  * @param {GuildMember} member
- * @param {String} suggestionID
+ * @param {String} suggestionId The suggestion id.
  */
 
-module.exports.deleteSuggestion = (member, suggestionID) => {
-  Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionID, member.guild.id], err => {
+module.exports.deleteSuggestion = (member, suggestionId) => {
+  Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, member.guild.id], err => {
     if (err) Consolex.handleError(err)
   })
 }
@@ -49,7 +48,7 @@ module.exports.getSuggestions = (member, callback) => {
 
     if (Object.prototype.hasOwnProperty.call(rows, '0')) {
       for (let i = 0; i < rows.length; i++) {
-        suggestions.push(JSON.parse(rows[i].properties))
+        suggestions.push(rows[i])
       }
     }
 
@@ -57,13 +56,21 @@ module.exports.getSuggestions = (member, callback) => {
   })
 }
 
-module.exports.getSuggestion = (guild, suggestionID, callback) => {
+/**
+ * Get a suggestion by id from the guild.
+ * @param {Guild} guild
+ * @param {String} suggestionId
+ * @param {Function} callback
+ * @returns {Object} Suggestionb
+ */
+
+module.exports.getSuggestion = (guild, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ? AND `id` = ?', [guild.id, suggestionID], (err, rows) => {
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], (err, rows) => {
     if (err) return Consolex.handleError(err)
 
-    if (Object.prototype.hasOwnProperty.call(rows, '0')) return callback(JSON.parse(rows[0].properties))
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) return callback(rows[0])
     return callback()
   })
 }
