@@ -34,7 +34,7 @@ module.exports = {
         const customcommand = { command: interaction.options.getString('name'), reply: interaction.options.getString('reply') }
 
         if (interaction.options.getBoolean('sendinembed')) {
-          customcommand.sendInEmbed = true
+          customcommand.sendInEmbed = { enabled: true } 
           customcommand.sendInEmbed.description = customcommand.reply
         }
 
