@@ -94,11 +94,18 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
  * Approve a suggestion.
  * @param {GuildMember} member - The member who is approving the suggestion.
  * @param {String} suggestionID - The suggestion ID.
+ * @param {Function} callback - The callback function.
+ * @returns {?Error} - Error
  */
 
-module.exports.approveSuggestion = (member, suggestionId) => {
+module.exports.approveSuggestion = (member, suggestionId, callback) => {
+  if (!callback) throw new Error('Callback is required.')
   Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
-    if (err) Consolex.handleError(err)
+    if (err) {
+      Consolex.handleError(err)
+      return callback(err)
+    }
+    return callback(err)
   })
 }
 
@@ -106,11 +113,18 @@ module.exports.approveSuggestion = (member, suggestionId) => {
  * Reject a suggestion.
  * @param {GuildMember} member - The member who is rejecting the suggestion.
  * @param {String} suggestionID - The suggestion ID.
+ * @param {Function} callback - The callback function.
+ * @returns {?Error} - Error
  */
 
-module.exports.rejectSuggestion = (member, suggestionId) => {
+module.exports.rejectSuggestion = (member, suggestionId, callback) => {
+  if (!callback) throw new Error('Callback is required.')
   Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['rejected', suggestionId, member.guild.id], err => {
-    if (err) Consolex.handleError(err)
+    if (err) {
+      Consolex.handleError(err)
+      return callback(err)
+    }
+    return callback(err)
   })
 }
 
@@ -119,11 +133,20 @@ module.exports.rejectSuggestion = (member, suggestionId) => {
  * @param {Member} member - The member who is adding a note to the suggestion
  * @param {String} suggestionId - The suggestion ID.
  * @param {String} note - The note to add.
+ * @param {Function} callback - The callback function.
+ * @returns {?Error} - Error
  */
 
-module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
+module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
   module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
     suggestion.notes.push({ user: member.id, note, timestamp: new Date() })
+    Database.query('UPDATE `guildSuggestions` SET `notes` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion.notes), suggestionId, member.guild.id], err => {
+      if (err) {
+        Consolex.handleError(err)
+        return callback(err)
+      }
+      return callback()
+    })
   })
 }
 
