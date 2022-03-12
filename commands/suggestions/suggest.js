@@ -17,8 +17,6 @@ module.exports = {
     })
   },
   runCommand (locale, message) {
-    console.log(message.parameters[0])
-
     if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
       return message.reply({
         embeds: help({

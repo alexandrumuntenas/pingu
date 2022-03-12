@@ -124,3 +124,27 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
     suggestion.notes.push({ user: member.id, note, timestamp: new Date() })
   })
 }
+
+/**
+ * Get all the suggestions a member has done in a guild.
+ * @param {GuildMember} member - The member we are checking for.
+ * @param {Function} callback - The callback function.
+ */
+
+module.exports.getMemberSuggestions = (member, callback) => {
+  if (!callback) throw new Error('Callback is required.')
+
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `author` = ? AND `guild` = ? ORDER BY `timestamp` DESC LIMIT 10', [member.id, member.guild.id], (err, rows) => {
+    if (err) return Consolex.handleError(err)
+
+    const suggestions = []
+
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) {
+      for (let i = 0; i < rows.length; i++) {
+        suggestions.push(rows[i])
+      }
+    }
+
+    return callback(suggestions)
+  })
+}
