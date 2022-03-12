@@ -38,9 +38,9 @@ module.exports = {
         })
         break
       }
-      /*case 'blacklist': {
+      /* case 'blacklist': {
         break
-      }*/
+      } */
       default: {
         interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
