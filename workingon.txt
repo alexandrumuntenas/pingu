@@ -1,8 +1,9 @@
 === SUGGESTIONS MODULE ===
 
 = NOW WORKING =
-Actualizar los métodos del módulo para utilizar las nuevas propiedades.
-Y luego crear comandos para terminar la interaccion con estos.
+Hacer todas las acciones pendientes que desencadenan las opciones de aprobación, denegación y añadir nota a la sugerencia.
+Además, queda pendiente hacer el sistema de vetado de usuarios. Y ver por qué no se guarda en la base de datos el revisor
+de la sugerencia.
 
 = CONFIGURATION STRUCTURE =
 
