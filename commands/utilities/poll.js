@@ -67,8 +67,8 @@ module.exports = {
 
     if (options.length === 0) {
       interaction.editReply({ embeds: [embed] })
-      interaction.deferReply.react('👍').then(() => {
-        interaction.deferReply.react('👎')
+      interaction.deferredReply.react('👍').then(() => {
+        interaction.deferredReply.react('👎')
       })
     } else {
       const pollOptions = []
@@ -84,7 +84,7 @@ module.exports = {
       interaction.editReply({ embeds: [embed] })
       count = 0
       do {
-        interaction.deferReply.react(alphabet[count])
+        interaction.deferredReply.react(alphabet[count])
         count++
       } while (count < options.length)
     }

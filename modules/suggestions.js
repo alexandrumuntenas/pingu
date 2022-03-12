@@ -73,7 +73,7 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
     if (Object.prototype.hasOwnProperty.call(rows, '0')) {
       try {
         rows[0].notes = JSON.parse(rows[0].notes)
-      } catch (err) {
+      } catch {
         rows[0].notes = []
       }
       return callback(rows[0])
@@ -89,10 +89,8 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
  */
 
 module.exports.approveSuggestion = (member, suggestionId) => {
-  module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-    Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
-      if (err) Consolex.handleError(err)
-    })
+  Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
+    if (err) Consolex.handleError(err)
   })
 }
 
@@ -103,10 +101,8 @@ module.exports.approveSuggestion = (member, suggestionId) => {
  */
 
 module.exports.rejectSuggestion = (member, suggestionId) => {
-  module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-    Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
-      if (err) Consolex.handleError(err)
-    })
+  Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['rejected', suggestionId, member.guild.id], err => {
+    if (err) Consolex.handleError(err)
   })
 }
 
@@ -119,6 +115,6 @@ module.exports.rejectSuggestion = (member, suggestionId) => {
 
 module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
   module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-    suggestion.notes.push({ user: member.id, note: note, timestamp: new Date() })
+    suggestion.notes.push({ user: member.id, note, timestamp: new Date() })
   })
 }

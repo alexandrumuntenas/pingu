@@ -4,17 +4,18 @@ const { existsSync } = require('fs')
 
 /**
  * Solicitar la traducción para la i18n a través de string-placeholder
- * @param {String} idioma El idioma del servidor
+ * @param {String} language El idioma del servidor
  * @param {String} key La clave del array de los idiomas
  * @param {Array<Object>} placeholders Los datos para reemplazar los placeholders
  */
 module.exports = (language, key, placeholders) => {
-  if (!existsSync(`./i18n/locales/${language}.json`)) {
-    handleError(`No se encontró el archivo de idioma ${language}.json`)
-    language = 'es'
+  let languageToUse = language
+  if (!existsSync(`./i18n/locales/${languageToUse}.json`)) {
+    handleError(`No se encontró el archivo de idioma ${languageToUse}.json`)
+    languageToUse = 'es'
   }
 
-  let translation = require(`./locales/${language}.json`)[key]
+  let translation = require(`./locales/${languageToUse}.json`)[key]
 
   if (placeholders) {
     try {
