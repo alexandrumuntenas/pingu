@@ -5,17 +5,23 @@ const Database = require('../functions/databaseConnection')
  * Create a new suggestion in the guild.
  * @param {GuildMember} member - The member who created the suggestion.
  * @param {String} suggestion - The suggestion to be made.
+ * @param {Function} callback - The callback function.
  * @returns {String} - The suggestion id.
  */
 
 const makeId = require('../functions/makeId')
 
-module.exports.createSuggestion = (member, suggestion) => {
+module.exports.createSuggestion = (member, suggestion, callback) => {
+  if (!callback) throw new Error('Callback is required.')
+
   const suggestionId = makeId(5)
   Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
-    if (err) return Consolex.handleError(err)
+    if (err) {
+      Consolex.handleError(err)
+      return callback()
+    }
 
-    return suggestionId
+    return callback(suggestionId)
   })
 }
 
@@ -33,15 +39,15 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
 
 /**
  * Get all the suggestions in the guild.
- * @param {GuildMember} member - The member.
+ * @param {Guild} guild - The guild.
  * @param {Function} callback - The callback function.
  * @returns {Array} - Suggestions
  */
 
-module.exports.getSuggestions = (member, callback) => {
+module.exports.getSuggestions = (guild, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [member.guild.id], (err, rows) => {
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, rows) => {
     if (err) return Consolex.handleError(err)
 
     const suggestions = []
