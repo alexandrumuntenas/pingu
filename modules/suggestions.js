@@ -21,6 +21,8 @@ module.exports.createSuggestion = (member, suggestion, callback) => {
       return callback()
     }
 
+    module.exports.afterCreatingSuggestion(member, suggestionId)
+
     return callback(suggestionId)
   })
 }
@@ -146,5 +148,48 @@ module.exports.getMemberSuggestions = (member, callback) => {
     }
 
     return callback(suggestions)
+  })
+}
+
+const { getGuildConfigNext } = require('../functions/guildDataManager')
+const { MessageEmbed } = require('discord.js')
+const unixTime = require('unix-time')
+const i18n = require('../i18n/i18n')
+
+/** The actions taken after creating the suggestion */
+
+module.exports.afterCreatingSuggestion = (member, suggestionId) => {
+  getGuildConfigNext(member.guild, guildConfig => {
+    module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
+      if (guildConfig.suggestions.channel) {
+        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
+
+        if (channel) {
+          const suggestionNotification = new MessageEmbed()
+            .setColor('#dd9323')
+            .setThumbnail(member.user.displayAvatarURL())
+            .addField(':bulb: Submitter', member.user.tag, true)
+            .addField(':pencil: Suggestion', suggestion.suggestion)
+            .addField(':clock2: Creation Date', `<t:${unixTime(suggestion.timestamp)}>`, true)
+            .addField(':id: Identificador', `${suggestion.id}`, true)
+            .setFooter({ text: member.guild.name, iconURL: member.guild.iconURL() })
+          channel.send({ embeds: [suggestionNotification] })
+        }
+      }
+
+      if (guildConfig.suggestions.dmupdates) {
+        const suggestionNotificationForDM = new MessageEmbed()
+          .setAuthor({ name: member.guild.name, iconURL: member.guild.iconURL() })
+          .setColor('#dd9323')
+          .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::REGISTEREDSUCCESSFULLY', { AUTHOR: member, SUGGESTIONID: `\`${suggestion.id}\`` }))
+          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+
+        try {
+          member.user.send({ embeds: [suggestionNotificationForDM] })
+        } catch (err) {
+          Consolex.handleError(err)
+        }
+      }
+    })
   })
 }
