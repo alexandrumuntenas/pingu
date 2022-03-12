@@ -204,5 +204,12 @@
   "SUGGEST::ERROR": "Se ha producido un error al intentar enviar la sugerencia.",
   "SUGGEST::SUCCESS": "Se ha enviado la sugerencia. Este su identificador: %SUGGESTIONID%",
   "SUGGEST::DESCRIPTION": "Realiza una sugerencia en el servidor.",
-  "SUGGESTIONS::REGISTEREDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia ha sido registrada con éxito. Su identificador es %SUGGESTIONID%. Buen día."
+  "SUGGESTIONS::REGISTEREDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia ha sido registrada con éxito. Su identificador es %SUGGESTIONID%. Buen día.",
+  "SUGGESTIONS::APPROVEDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia (%SUGGESTIONID%) ha sido aprobada con éxito por %REVIEWER%. Buen día.",
+  "SUGGESTION::APPROVE:ERROR": "Se ha producido un error al intentar aprobar la sugerencia.",
+  "SUGGESTION::APPROVE:SUCCESS": "Se ha aprobado la sugerencia con identificador %SUGGESTIONID%.",
+  "SUGGESTION::REJECT:ERROR": "Se ha producido un error al intentar rechazar la sugerencia.",
+  "SUGGESTION::REJECT:SUCCESS": "Se ha rechazado la sugerencia con identificador %SUGGESTIONID%.",
+  "SUGGESTION::ADDNOTE:ERROR": "Se ha producido un error al intentar añadir una nota a la sugerencia.",
+  "SUGGESTION::ADDNOTE:SUCCESS": "Se ha añadido la nota a la sugerencia con identificador %SUGGESTIONID%."
 }

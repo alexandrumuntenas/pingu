@@ -105,6 +105,8 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
       Consolex.handleError(err)
       return callback(err)
     }
+
+    module.exports.afterSuggestionApproval(member, suggestionId)
     return callback(err)
   })
 }
@@ -216,3 +218,53 @@ module.exports.afterCreatingSuggestion = (member, suggestionId) => {
     })
   })
 }
+
+/**
+ * Actions taken after a suggestion is approved.
+ * @param {GuildMember} member - The member who approved the suggestion.
+ * @param {String} suggestionId - The suggestion ID.
+ */
+
+module.exports.afterSuggestionApproval = (member, suggestionId) => {
+  getGuildConfigNext(member.guild, guildConfig => {
+    module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
+      const author = member.guild.members.cache.get(suggestion.author)
+      if (guildConfig.suggestions.channel) {
+        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
+
+        if (channel) {
+          const suggestionNotification = new MessageEmbed()
+            .setColor('#05d43f')
+            .setThumbnail(member.user.displayAvatarURL())
+            .addField(':bulb: Submitter', `${author.user.username}#${author.user.discriminator}`, true)
+            .addField(':pencil: Suggestion', suggestion.suggestion)
+            .addField(':clock2: Creation Date', `<t:${unixTime(suggestion.timestamp)}>`, true)
+            .addField(':id: Identificador', `${suggestion.id}`, true)
+            .addField(':white_check_mark: Reviewer', `${member.user.tag}`, false)
+            .setFooter({ text: member.guild.name, iconURL: member.guild.iconURL() })
+          channel.send({ embeds: [suggestionNotification] })
+        }
+      }
+
+      if (guildConfig.suggestions.dmupdates) {
+        const suggestionNotificationForDM = new MessageEmbed()
+          .setAuthor({ name: member.guild.name, iconURL: member.guild.iconURL() })
+          .setColor('#05d43f')
+          .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::APPROVEDSUCCESSFULLY', { AUTHOR: author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
+          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+
+        try {
+          member.user.send({ embeds: [suggestionNotificationForDM] })
+        } catch (err) {
+          Consolex.handleError(err)
+        }
+      }
+    })
+  })
+}
+
+/*
+module.exports.logSuggestionStatus = (member, suggestionId, status) => {
+
+}
+*/
