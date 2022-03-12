@@ -3,9 +3,9 @@ const Database = require('../functions/databaseConnection')
 
 /**
  * Create a new suggestion in the guild.
- * @param {GuildMember} member
- * @param {String} suggestion
- * @returns {String} The suggestion id.
+ * @param {GuildMember} member - The member who created the suggestion.
+ * @param {String} suggestion - The suggestion to be made.
+ * @returns {String} - The suggestion id.
  */
 
 const makeId = require('../functions/makeId')
@@ -21,21 +21,21 @@ module.exports.createSuggestion = (member, suggestion) => {
 
 /**
  * Delete a suggestion.
- * @param {GuildMember} member
- * @param {String} suggestionId The suggestion id.
+ * @param {Guild} guild - The member who is deleting the suggestion.
+ * @param {String} suggestionId - The suggestion id.
  */
 
-module.exports.deleteSuggestion = (member, suggestionId) => {
-  Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, member.guild.id], err => {
+module.exports.deleteSuggestion = (guild, suggestionId) => {
+  Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], err => {
     if (err) Consolex.handleError(err)
   })
 }
 
 /**
  * Get all the suggestions in the guild.
- * @param {GuildMember} member
- * @param {Function} callback
- * @returns {Array} Suggestions
+ * @param {GuildMember} member - The member.
+ * @param {Function} callback - The callback function.
+ * @returns {Array} - Suggestions
  */
 
 module.exports.getSuggestions = (member, callback) => {
@@ -58,10 +58,10 @@ module.exports.getSuggestions = (member, callback) => {
 
 /**
  * Get a suggestion by id from the guild.
- * @param {Guild} guild
- * @param {String} suggestionId
- * @param {Function} callback
- * @returns {Object} Suggestionb
+ * @param {Guild} guild - The guild.
+ * @param {String} suggestionId - The suggestion id.
+ * @param {Function} callback - The callback.
+ * @returns {{id: Integer, suggestion: String, notes: Array[{user: User.Id, note: String, timestamp: Date}], status: String(approved, pending, reviewed, rejected), timestamp: Date, reviewer: User.Id, ?votingresults: {yes: Integer, no: Integer, abstain: Guild.Member_Count}}} Suggestion
  */
 
 module.exports.getSuggestion = (guild, suggestionId, callback) => {
@@ -70,7 +70,14 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
   Database.query('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], (err, rows) => {
     if (err) return Consolex.handleError(err)
 
-    if (Object.prototype.hasOwnProperty.call(rows, '0')) return callback(rows[0])
+    if (Object.prototype.hasOwnProperty.call(rows, '0')) {
+      try {
+        rows[0].notes = JSON.parse(rows[0].notes)
+      } catch (err) {
+        rows[0].notes = []
+      }
+      return callback(rows[0])
+    }
     return callback()
   })
 }
@@ -106,10 +113,12 @@ module.exports.rejectSuggestion = (member, suggestionId) => {
 /**
  * Add a note to a suggestion
  * @param {Member} member - The member who is adding a note to the suggestion
- * @param {String} suggestionId
- * @param {String} note
+ * @param {String} suggestionId - The suggestion ID.
+ * @param {String} note - The note to add.
  */
 
 module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
-
+  module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
+    suggestion.notes.push({ user: member.id, note: note, timestamp: new Date() })
+  })
 }
