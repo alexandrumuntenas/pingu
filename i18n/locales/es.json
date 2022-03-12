@@ -203,5 +203,6 @@
   "SUGGESTIONS::SETVOTINGCHANNEL:SUCCESS": "Se ha establecido %CHANNEL% como canal de votación.",
   "SUGGEST::ERROR": "Se ha producido un error al intentar enviar la sugerencia.",
   "SUGGEST::SUCCESS": "Se ha enviado la sugerencia. Este su identificador: %SUGGESTIONID%",
-  "SUGGEST::DESCRIPTION": "Realiza una sugerencia en el servidor."
+  "SUGGEST::DESCRIPTION": "Realiza una sugerencia en el servidor.",
+  "SUGGESTIONS::REGISTEREDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia ha sido registrada con éxito. Su identificador es %SUGGESTIONID%. Buen día."
 }
