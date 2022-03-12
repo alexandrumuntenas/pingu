@@ -8,6 +8,7 @@ const i18n = require('../../i18n/i18n')
 module.exports = {
   name: 'suggestions',
   module: 'suggestions',
+  cooldown: 1000,
   description: '⚙️ Configure the suggestions module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: false,
@@ -17,7 +18,6 @@ module.exports = {
     .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the channel where the bot will send the suggestions').addChannelOption(input => input.setName('channel').setDescription('Set the channel where the bot will send the suggestions').addChannelType(ChannelType.GuildText).setRequired(true)))
     .addSubcommand(sc => sc.setName('setreviewer').setDescription('Set the role that can review suggestions').addRoleOption(input => input.setName('role').setDescription('Set the role that can review suggestions')))
     .addSubcommand(sc => sc.setName('setcooldown').setDescription('Set the cooldown between suggestions').addIntegerOption(input => input.setName('cooldown').setDescription('Set the cooldown between suggestions')))
-    .addSubcommand(sc => sc.setName('communitybefore').setDescription('Before sending the suggestion to the staff, make the community review it.').addBooleanOption(input => input.setName('enable').setDescription('Before sending the suggestion to the staff, make the community review it.').setRequired(true)))
     .addSubcommand(sc => sc.setName('communityafter').setDescription('After sending the suggestion to the staff, make the community review it.').addBooleanOption(input => input.setName('enable').setDescription('After sending the suggestion to the staff, make the community review it.').setRequired(true)))
     .addSubcommand(sc => sc.setName('votingtimelimit').setDescription('Set the time limit for the voting phase').addIntegerOption(input => input.setName('time').setDescription('Set the time limit for the voting phase in minutes').setRequired(true)))
     .addSubcommand(sc => sc.setName('setvotingchannel').setDescription('Set the channel where the bot will send the voting results').addChannelOption(input => input.setName('channel').setDescription('Set the channel where the bot will send the voting results').addChannelType(ChannelType.GuildText).setRequired(true))),
@@ -59,6 +59,7 @@ module.exports = {
         })
         break
       }
+      /*
       case 'communitybefore': {
         updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { communitybefore: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ERROR'))] })
@@ -67,6 +68,7 @@ module.exports = {
         })
         break
       }
+      */
       case 'communityafter': {
         updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { communityafter: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ERROR'))] })
