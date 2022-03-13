@@ -26,6 +26,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
       Object.keys(result[0]).forEach(module => {
         try {
           result[0][module] = JSON.parse(result[0][module])
+          return
         } catch (err2) {
           if (err2) return err
         }
