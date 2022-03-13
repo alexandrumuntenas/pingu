@@ -23,7 +23,7 @@ module.exports = {
           message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/)
         }
 
-        message.commandName = message.parameters[0]
+        [message.commandName] = message.parameters
         message.parameters.shift()
 
         if (!message.commandName) {
