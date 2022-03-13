@@ -28,7 +28,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
           result[0][module] = JSON.parse(result[0][module])
           return
         } catch (err2) {
-          if (err2) return err
+          Consolex.debug(`Error parsing JSON for guild ${guild.id} in module ${module}`)
         }
       })
 
