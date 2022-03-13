@@ -12,7 +12,7 @@ const { Routes } = require('discord-api-types/v9')
  * @returns Object - The guild configuration
  */
 
-module.exports.getGuildConfigNext = (guild, callback) => {
+module.exports.getGuildConfig = (guild, callback) => {
   const gFD = Consolex.Sentry.startTransaction({
     op: 'getGuildConfig',
     name: 'Get Guild Configuration'
@@ -21,7 +21,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
     if (err) Consolex.handleError(err)
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (result[0].clientVersion === 'pingu@1.0.0') return module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback))
+      if (result[0].clientVersion === 'pingu@1.0.0') return module.exports.migrateGuildData(guild, () => module.exports.getGuildConfig(guild, callback))
 
       Object.keys(result[0]).forEach(module => {
         try {
@@ -39,7 +39,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
         if (err2) Consolex.handleError(err2)
 
         gFD.finish()
-        return module.exports.getGuildConfigNext(guild, callback)
+        return module.exports.getGuildConfig(guild, callback)
       })
     }
   })
@@ -86,7 +86,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
  */
 
 module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
-  module.exports.getGuildConfigNext(guild, guildConfig => {
+  module.exports.getGuildConfig(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
       if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
         procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
@@ -189,7 +189,7 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
   if (!callback) throw new Error('Callback is required')
 
-  module.exports.getGuildConfigNext(guild, guildConfig => {
+  module.exports.getGuildConfig(guild, guildConfig => {
     createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
       rest.put(
         Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })

@@ -2,7 +2,7 @@ const CooldownManager = require('../functions/cooldownManager')
 
 const { error, timer } = require('../functions/defaultMessages')
 const i18n = require('../i18n/i18n')
-const { getGuildConfigNext } = require('../functions/guildDataManager.js')
+const { getGuildConfig } = require('../functions/guildDataManager.js')
 const humanizeduration = require('humanize-duration')
 const { runCustomCommand } = require('../modules/customcommands')
 const { getExperience } = require('../modules/leveling')
@@ -13,7 +13,7 @@ module.exports = {
   execute: async message => {
     if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
 
-    getGuildConfigNext(message.guild, async guildConfig => {
+    getGuildConfig(message.guild, async guildConfig => {
       message.guild.configuration = guildConfig
 
       if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {

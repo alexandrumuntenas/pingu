@@ -1,6 +1,6 @@
 const Consolex = require('../functions/consolex')
 
-const { getGuildConfigNext } = require('../functions/guildDataManager.js')
+const { getGuildConfig } = require('../functions/guildDataManager.js')
 
 module.exports = {
   name: 'guildCreate',
@@ -9,7 +9,7 @@ module.exports = {
       op: 'guildCreate',
       name: 'Guild Create'
     })
-    getGuildConfigNext(guild)
+    getGuildConfig(guild)
     gC.finish()
   }
 }

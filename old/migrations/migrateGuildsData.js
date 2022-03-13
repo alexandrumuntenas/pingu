@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { getGuildConfigNext } = require('../../functions/guildDataManager')
+const { getGuildConfig } = require('../../functions/guildDataManager')
 const Discord = require('discord.js')
 const Consolex = require('../../functions/consolex')
 // Eliminar comentario a la siguiente línea para que funcione el actualizador.
@@ -14,7 +14,7 @@ Client.on('ready', () => {
   Client.guilds.fetch().then(guilds => {
     for (const guild of guilds.values()) {
       setTimeout(() => {
-        getGuildConfigNext(guild, () => Consolex.info(`[${guild.id}] Updated`))
+        getGuildConfig(guild, () => Consolex.info(`[${guild.id}] Updated`))
       }, 2500)
     }
   })

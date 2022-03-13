@@ -2,7 +2,7 @@ const Consolex = require('../functions/consolex')
 const CooldownManager = require('../functions/cooldownManager')
 
 const { error, timer } = require('../functions/defaultMessages')
-const { getGuildConfigNext } = require('../functions/guildDataManager.js')
+const { getGuildConfig } = require('../functions/guildDataManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
@@ -10,7 +10,7 @@ async function isCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true })
-  getGuildConfigNext(interaction.guild, async guildConfig => {
+  getGuildConfig(interaction.guild, async guildConfig => {
     interaction.guild.configuration = guildConfig
     if (process.Client.commands.has(interaction.commandName)) {
       const interactionToRun = process.Client.commands.get(interaction.commandName)

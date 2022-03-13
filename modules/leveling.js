@@ -2,7 +2,7 @@ const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
 const { getMember, updateMember } = require('../functions/memberManager')
-const { getGuildConfigNext } = require('../functions/guildDataManager')
+const { getGuildConfig } = require('../functions/guildDataManager')
 const CooldownManager = require('../functions/cooldownManager')
 
 /**
@@ -13,7 +13,7 @@ const CooldownManager = require('../functions/cooldownManager')
 module.exports.getExperience = message => {
   if (CooldownManager.check(message.member, message.guild, { name: 'leveling' })) {
     CooldownManager.add(message.member, message.guild, { name: 'leveling', cooldown: 60000 })
-    getGuildConfigNext(message.guild, guildConfig => {
+    getGuildConfig(message.guild, guildConfig => {
       getMember(message.member, memberData => {
         memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
@@ -37,7 +37,7 @@ module.exports.getExperience = message => {
 const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendLevelUpMessage = message => {
-  getGuildConfigNext(message.guild, guildConfig => {
+  getGuildConfig(message.guild, guildConfig => {
     if (guildConfig.leveling.enabled) {
       getMember(message, memberData => {
         const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)

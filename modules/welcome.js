@@ -3,10 +3,10 @@
  * @param {GuildMember} member
  */
 
-const { getGuildConfigNext, updateGuildConfigNext } = require('../functions/guildDataManager')
+const { getGuildConfig, updateGuildConfigNext } = require('../functions/guildDataManager')
 
 module.exports.giveMemberRoles = member => {
-  getGuildConfigNext(member.guild, guildConfig => {
+  getGuildConfig(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'roles')) {
         if (guildConfig.welcome.roles.length > 0) {
@@ -30,7 +30,7 @@ const { MessageAttachment } = require('discord.js')
 const replaceBracePlaceholdersWithActualData = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendWelcomeMessage = member => {
-  getGuildConfigNext(member.guild, guildConfig => {
+  getGuildConfig(member.guild, guildConfig => {
     if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) return
 
     const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
@@ -193,7 +193,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
  */
 
 module.exports.doGuildMemberAdd = member => {
-  getGuildConfigNext(member.guild, guildConfig => {
+  getGuildConfig(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (guildConfig.welcome.enabled) {
         module.exports.giveMemberRoles(member)
@@ -204,7 +204,7 @@ module.exports.doGuildMemberAdd = member => {
 }
 
 module.exports.addJoinRole = (guild, role, callback) => {
-  getGuildConfigNext(guild, guildConfig => {
+  getGuildConfig(guild, guildConfig => {
     if (guildConfig.welcome.roles) {
       const { roles } = guildConfig.welcome
 
@@ -226,7 +226,7 @@ module.exports.addJoinRole = (guild, role, callback) => {
 }
 
 module.exports.removeJoinRole = (guild, role, callback) => {
-  getGuildConfigNext(guild, guildConfig => {
+  getGuildConfig(guild, guildConfig => {
     if (guildConfig.welcome.roles) {
       delete guildConfig.welcome.roles[`${role.id}`]
 

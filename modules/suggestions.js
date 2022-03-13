@@ -176,7 +176,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
   })
 }
 
-const { getGuildConfigNext } = require('../functions/guildDataManager')
+const { getGuildConfig } = require('../functions/guildDataManager')
 const { MessageEmbed } = require('discord.js')
 const unixTime = require('unix-time')
 const i18n = require('../i18n/i18n')
@@ -184,7 +184,7 @@ const i18n = require('../i18n/i18n')
 /** The actions taken after creating the suggestion */
 
 module.exports.afterCreatingSuggestion = (member, suggestionId) => {
-  getGuildConfigNext(member.guild, guildConfig => {
+  getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
         const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
@@ -226,7 +226,7 @@ module.exports.afterCreatingSuggestion = (member, suggestionId) => {
  */
 
 module.exports.afterSuggestionApproval = (member, suggestionId) => {
-  getGuildConfigNext(member.guild, guildConfig => {
+  getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       const author = member.guild.members.cache.get(suggestion.author)
       if (guildConfig.suggestions.channel) {
