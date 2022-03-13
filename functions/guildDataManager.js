@@ -22,17 +22,16 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
       if (result[0].clientVersion === 'pingu@1.0.0') return module.exports.migrateGuildData(guild, () => module.exports.getGuildConfigNext(guild, callback))
-      else {
-        Object.keys(result[0]).forEach(module => {
-          try {
-            result[0][module] = JSON.parse(result[0][module])
-          } catch (err2) {
-            if (err2) return err
-          }
-        })
 
-        if (callback) callback(result[0] || {})
-      }
+      Object.keys(result[0]).forEach(module => {
+        try {
+          result[0][module] = JSON.parse(result[0][module])
+        } catch (err2) {
+          if (err2) return err
+        }
+      })
+
+      if (callback) callback(result[0] || {})
     } else {
       //! Será eliminado en la actualización de junio.
       const topChannel = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
