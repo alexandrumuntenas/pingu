@@ -1,6 +1,7 @@
 require('dotenv').config()
 const { getGuildConfigNext } = require('../../functions/guildDataManager')
 const Discord = require('discord.js')
+const Consolex = require('../../functions/consolex')
 // Eliminar comentario a la siguiente línea para que funcione el actualizador.
 // const Database = require('../../functions/databaseConnection')
 
@@ -9,11 +10,11 @@ const Client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Disc
 Client.login(process.env.PUBLIC_TOKEN)
 
 Client.on('ready', () => {
-  console.log('Bot is ready!')
+  Consolex.info('Bot is ready!')
   Client.guilds.fetch().then(guilds => {
     for (const guild of guilds.values()) {
       setTimeout(() => {
-        getGuildConfigNext(guild, () => console.log(`[${guild.id}] Updated`))
+        getGuildConfigNext(guild, () => Consolex.info(`[${guild.id}] Updated`))
       }, 2500)
     }
   })
