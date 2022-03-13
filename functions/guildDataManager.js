@@ -26,9 +26,8 @@ module.exports.getGuildConfigNext = (guild, callback) => {
       Object.keys(result[0]).forEach(module => {
         try {
           result[0][module] = JSON.parse(result[0][module])
-          return
         } catch (err2) {
-          Consolex.debug(`Error parsing JSON for guild ${guild.id} in module ${module}`)
+          if (!err2.constructor.name === 'SyntaxError') Consolex.handleError(err2)
         }
       })
 
@@ -40,7 +39,7 @@ module.exports.getGuildConfigNext = (guild, callback) => {
         if (err2) Consolex.handleError(err2)
 
         gFD.finish()
-        module.exports.getGuildConfigNext(guild, callback)
+        return module.exports.getGuildConfigNext(guild, callback)
       })
     }
   })

@@ -1,3 +1,6 @@
+const Consolex = require('../functions/consolex')
+const Database = require('../functions/databaseConnection')
+
 /**
  * Get a reply of the given trigger.
  * @param {Guild} guild - The guild to get the reply from.
@@ -5,9 +8,6 @@
  * @param {Function} callback - The callback to call with the result.
  * @returns {String} Reply
  */
-
-const Consolex = require('../functions/consolex')
-const Database = require('../functions/databaseConnection')
 
 module.exports.getReply = (guild, trigger, callback) => {
   if (!callback) throw new Error('Callback is required')
@@ -149,6 +149,13 @@ module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
   })
 }
 
+/**
+ * Get all the auto replies in a guild.
+ * @param {Guild} guild - The guild to get the replies from.
+ * @param {Function} callback - The callback to call.
+ * @returns {Array} Array of autoreply objects.
+ */
+
 module.exports.getReplies = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
 
@@ -159,7 +166,6 @@ module.exports.getReplies = (guild, callback) => {
     }
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
       callback(result)
     } else {
       // eslint-disable-next-line node/no-callback-literal

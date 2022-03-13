@@ -7,12 +7,7 @@ const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
 async function isCommand (interaction) {
-  if (
-    interaction.channel.type === 'dm' ||
-    interaction.author === process.Client.user
-  ) {
-    return
-  }
+  if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true })
   getGuildConfigNext(interaction.guild, async guildConfig => {
@@ -25,8 +20,7 @@ async function isCommand (interaction) {
       }
 
       if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
-        interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::PERMISSION_ERROR'))] })
-        return
+        return interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::PERMISSION_ERROR'))] })
       }
 
       if (CooldownManager.check(interaction.member, interaction.guild, interactionToRun.name)) {
@@ -34,10 +28,10 @@ async function isCommand (interaction) {
 
         await interactionToRun.runInteraction(interaction.guild.configuration.common.language || 'es', interaction)
       } else {
-        interaction.editReply({ embeds: [timer(i18n(interaction.guild.configuration.common.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+        return interaction.editReply({ embeds: [timer(i18n(interaction.guild.configuration.common.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
     } else {
-      interaction.editReply({ content: i18n(interaction.guild.configuration.common.language || 'es', 'COMMAND::NOT_FOUND') })
+      return interaction.editReply({ content: i18n(interaction.guild.configuration.common.language || 'es', 'COMMAND::NOT_FOUND') })
     }
   })
 }
