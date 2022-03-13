@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { updateGuildConfigNext } = require('../../functions/guildDataManager')
+const { updateGuildConfig } = require('../../functions/guildDataManager')
 const { error, success, help, info } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')
@@ -32,7 +32,7 @@ module.exports = {
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setchannel': {
-        updateGuildConfigNext(interaction.guild, { column: 'welcome', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
+        updateGuildConfig(interaction.guild, { column: 'welcome', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
           if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
           return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
@@ -40,7 +40,7 @@ module.exports = {
       }
 
       case 'setmessage': {
-        updateGuildConfigNext(interaction.guild, { column: 'welcome', newconfig: { message: interaction.options.getString('message') } }, err => {
+        updateGuildConfig(interaction.guild, { column: 'welcome', newconfig: { message: interaction.options.getString('message') } }, err => {
           if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
           return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
@@ -99,7 +99,7 @@ module.exports = {
             newconfig.welcomecard.subtitle = subtitle
           }
 
-          updateGuildConfigNext(interaction.guild, { column: 'welcome', newconfig }, err => {
+          updateGuildConfig(interaction.guild, { column: 'welcome', newconfig }, err => {
             if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
@@ -236,7 +236,7 @@ module.exports = {
       case 'setchannel': {
         if (!message.mentions.channel.first()) return sendHelp()
 
-        updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { channel: message.mentions.channel.first().id } }, err => {
+        updateGuildConfig(message.guild, { column: 'welcome', newconfig: { channel: message.mentions.channel.first().id } }, err => {
           if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
           return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channel.first() }))] })
         })
@@ -247,7 +247,7 @@ module.exports = {
       case 'setmessage': {
         if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1))) return sendHelp()
 
-        updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
+        updateGuildConfig(message.guild, { column: 'welcome', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
           if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
           return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
         })
@@ -261,12 +261,12 @@ module.exports = {
         switch (message.parameters[1].toLowerCase()) {
           case 'sendcards': {
             if (message.parameters[2] === true) {
-              updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: true } } }, err => {
+              updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: true } } }, err => {
                 if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
                 return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
               })
             } else {
-              updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: false } } }, err => {
+              updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: false } } }, err => {
                 if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
                 return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:DISABLED'))] })
               })
@@ -276,7 +276,7 @@ module.exports = {
           }
 
           case 'backgroundurl': {
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { background: message.parameters.slice(2).join(' ') } } }, err => {
+            updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { background: message.parameters.slice(2).join(' ') } } }, err => {
               if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:ERROR'))] })
               return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { BACKGROUND: message.parameters.slice(2).join(' ') }))] })
             })
@@ -292,7 +292,7 @@ module.exports = {
               message.parameters[2] = '50'
             }
 
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
+            updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
               if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))] })
               return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: message.parameters[2] }))] })
             })
@@ -302,7 +302,7 @@ module.exports = {
           case 'overlaycolor': {
             if (!hexRegexTester.test(message.parameters[2])) return sendHelp()
 
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
+            updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
               if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
               return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
             })
@@ -311,7 +311,7 @@ module.exports = {
           }
 
           case 'title': {
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { title: message.parameters.slice(2).join(' ') } } }, err => {
+            updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { title: message.parameters.slice(2).join(' ') } } }, err => {
               if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:ERROR'))] })
               return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:SUCCESS', { TITLE: message.parameters.slice(2).join(' ') }))] })
             })
@@ -319,7 +319,7 @@ module.exports = {
           }
 
           case 'subtitle': {
-            updateGuildConfigNext(message.guild, { column: 'welcome', newconfig: { welcomecard: { subtitle: message.parameters.slice(2).join(' ') } } }, err => {
+            updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { subtitle: message.parameters.slice(2).join(' ') } } }, err => {
               if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:ERROR'))] })
               return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:SUCCESS', { SUBTITLE: message.parameters.slice(2).join(' ') }))] })
             })

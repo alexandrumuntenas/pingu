@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const { ChannelType } = require('discord-api-types/v9')
-const { updateGuildConfigNext } = require('../../functions/guildDataManager')
+const { updateGuildConfig } = require('../../functions/guildDataManager')
 const { success, info, error } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 
@@ -24,7 +24,7 @@ module.exports = {
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'dmupdates': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
           if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
           else interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
@@ -32,28 +32,28 @@ module.exports = {
         break
       }
       case 'setlogs': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { logs: interaction.options.getChannel('channel').id } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { logs: interaction.options.getChannel('channel').id } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETLOGS:ERROR'))] })
           interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETLOGS:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setchannel': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { channel: interaction.options.getChannel('channel').id } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { channel: interaction.options.getChannel('channel').id } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
           interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setreviewer': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { reviewer: interaction.options.getRole('role').id } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { reviewer: interaction.options.getRole('role').id } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETREVIEWER:ERROR'))] })
           interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETREVIEWER:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
       }
       case 'setcooldown': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { cooldown: interaction.options.getInteger('cooldown') } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { cooldown: interaction.options.getInteger('cooldown') } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:ERROR'))] })
           interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:SUCCESS', { COOLDOWN: interaction.options.getInteger('cooldown') }))] })
         })
@@ -61,7 +61,7 @@ module.exports = {
       }
       /*
       case 'communitybefore': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { communitybefore: interaction.options.getBoolean('enable') } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { communitybefore: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ERROR'))] })
           if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ENABLED'))] })
           else interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:DISABLED'))] })
@@ -70,7 +70,7 @@ module.exports = {
       }
       */
       case 'communityafter': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { communityafter: interaction.options.getBoolean('enable') } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { communityafter: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ERROR'))] })
           if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ENABLED'))] })
           else interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:DISABLED'))] })
@@ -78,14 +78,14 @@ module.exports = {
         break
       }
       case 'votingtimelimit': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { voting: { timelimit: interaction.options.getInteger('time') } } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { voting: { timelimit: interaction.options.getInteger('time') } } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::VOTINGTIMELIMIT:ERROR'))] })
           interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::VOTINGTIMELIMIT:SUCCESS', { TIME: interaction.options.getInteger('time') }))] })
         })
         break
       }
       case 'setvotingchannel': {
-        updateGuildConfigNext(interaction.guild, { column: 'suggestions', newconfig: { voting: { channel: interaction.options.getChannel('channel').id } } }, (err) => {
+        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { voting: { channel: interaction.options.getChannel('channel').id } } }, (err) => {
           if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETVOTINGCHANNEL:ERROR'))] })
           interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETVOTINGCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })

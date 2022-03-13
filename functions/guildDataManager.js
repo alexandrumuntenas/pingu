@@ -85,7 +85,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
  * @param {Function} callback - The callback function
  */
 
-module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
+module.exports.updateGuildConfig = (guild, botmodule, callback) => {
   module.exports.getGuildConfig(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
       if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {

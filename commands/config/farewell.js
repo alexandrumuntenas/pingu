@@ -2,7 +2,7 @@ const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { success, error, help, info } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
-const { updateGuildConfigNext } = require('../../functions/guildDataManager')
+const { updateGuildConfig } = require('../../functions/guildDataManager')
 const { ChannelType } = require('discord-api-types/v9')
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
       }
 
       case 'setchannel': {
-        updateGuildConfigNext(interaction.guild, { column: 'farewell', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
+        updateGuildConfig(interaction.guild, { column: 'farewell', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
           if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
           return interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
@@ -42,7 +42,7 @@ module.exports = {
       }
 
       case 'setmessage': {
-        updateGuildConfigNext(interaction.guild, { column: 'farewell', newconfig: { message: interaction.options.getString('message') } }, err => {
+        updateGuildConfig(interaction.guild, { column: 'farewell', newconfig: { message: interaction.options.getString('message') } }, err => {
           if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
           return interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
@@ -90,7 +90,7 @@ module.exports = {
 
       case 'setchannel': {
         if (!message.mentions.channels.first()) return sendHelp()
-        updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
+        updateGuildConfig(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
           if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
           return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
         })
@@ -99,7 +99,7 @@ module.exports = {
 
       case 'setmessage': {
         if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
-        updateGuildConfigNext(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
+        updateGuildConfig(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
           if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
           return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
         })

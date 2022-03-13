@@ -3,7 +3,7 @@
  * @param {GuildMember} member
  */
 
-const { getGuildConfig, updateGuildConfigNext } = require('../functions/guildDataManager')
+const { getGuildConfig, updateGuildConfig } = require('../functions/guildDataManager')
 
 module.exports.giveMemberRoles = member => {
   getGuildConfig(member.guild, guildConfig => {
@@ -210,13 +210,13 @@ module.exports.addJoinRole = (guild, role, callback) => {
 
       roles.push(`${role.id}`)
 
-      updateGuildConfigNext(guild, { column: 'welcome', newconfig: { roles } }, err => {
+      updateGuildConfig(guild, { column: 'welcome', newconfig: { roles } }, err => {
         if (err && callback) callback(err)
       })
     } else {
       const roles = [`${role.id}`]
 
-      updateGuildConfigNext(guild, { column: 'welcome', newconfig: { roles } }, err => {
+      updateGuildConfig(guild, { column: 'welcome', newconfig: { roles } }, err => {
         if (err && callback) callback(err)
       })
     }
@@ -230,7 +230,7 @@ module.exports.removeJoinRole = (guild, role, callback) => {
     if (guildConfig.welcome.roles) {
       delete guildConfig.welcome.roles[`${role.id}`]
 
-      updateGuildConfigNext(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }, err => {
+      updateGuildConfig(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }, err => {
         if (err && callback) callback(err)
       })
     }
