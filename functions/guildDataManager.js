@@ -46,38 +46,6 @@ module.exports.getGuildConfigNext = (guild, callback) => {
 }
 
 /**
- * @deprecated Use ·Next() instead
- * Update a guild's configuration.
- * @param {Guild} guild - The Guild
- * @param {Object} configuration - The configuration to update
- * @param {String} configuration.column - The configuration column to update
- * @param {String} configuration.value - The new configuration value
- * @param {Function} callback - The callback function
- */
-
-module.exports.updateGuildConfig = (guild, configuration, callback) => {
-  const uGC = Consolex.Sentry.startTransaction({
-    op: 'updateGuildConfig',
-    name: 'Update Guild Config'
-  })
-  if (typeof configuration === 'object' && !Array.isArray(configuration) && configuration !== null) {
-    Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [configuration.column, configuration.value, guild.id], err => {
-      uGC.finish()
-      if (err) {
-        Consolex.handleError(err)
-        return callback(err)
-      }
-
-      if (callback) {
-        return callback()
-      }
-
-      return null
-    })
-  } else throw new Error('Configuration parameter must be an Object with the following properties: column (column to update) and value (new value).')
-}
-
-/**
  *
  * @param {*} config
  * @param {*} newconfig
@@ -164,52 +132,6 @@ module.exports.updateGuildConfigNext = (guild, botmodule, callback) => {
         })
       }
     } else throw new Error('The specified module does not exist.')
-  })
-}
-
-module.exports.migrateGuildData = (guild, callback) => {
-  Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-    if (err) Consolex.handleError(err)
-
-    if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (!result[0].clientVersion === 'pingu@1.0.0') return
-
-      const BoolRelation = { 0: false, 1: true }
-
-      // Migrar configuraciones generales
-      const general = { language: result[0].guildLanguage, prefix: result[0].guildPrefix, interactions: { enabled: BoolRelation['1'] } }
-
-      // Migrar módulo de bienvenidas
-      const welcomer = {
-        enabled: BoolRelation[result[0].welcomeEnabled], channel: result[0].welcomeChannel, message: result[0].welcomeMessage, welcomecard: { enabled: BoolRelation[result[0].welcomeImage], background: result[0].welcomeImageCustomBackground, overlay: { color: result[0].welcomeImageCustomOverlayColor, opacity: result[0].welcomeImageCustomOpacity } }
-      }
-      // Migrar módulo de despedidas
-      const farewell = { enabled: BoolRelation[result[0].farewellEnabled], channel: result[0].farewellChannel, message: result[0].farewellMessage }
-
-      // Migrar módulo de niveles
-      const levels = {
-        enabled: BoolRelation[result[0].levelsEnabled], channel: result[0].levelsChannel, message: result[0].levelsMessage, difficulty: result[0].levelsDifficulty, card: { background: result[0].levelsImageCustomBackground, overlay: { opacity: result[0].levelsImageCutomOpacity, color: result[0].levelsImageCustomOverlayColor } }
-      }
-
-      // Migrar módulo de sugerencias
-      const suggestions = { enabled: BoolRelation[result[0].suggestionsEnabled], channels: { review: result[0].suggestionsChannel, reviewed: result[0].suggestionsRevChannel } }
-
-      // Migrar módulo de respuestas automáticas
-      const autoresponder = { enabled: BoolRelation[result[0].autoresponderEnabled] }
-
-      // Migar módulo de comandos personalizados
-      const customcommands = { enabled: BoolRelation[result[0].customcommandsEnabled] }
-
-      module.exports.updateGuildConfig(guild, { column: 'clientVersion', value: 'pingu@2.0.0' })
-      module.exports.updateGuildConfigNext(guild, { column: 'common', newconfig: general })
-      module.exports.updateGuildConfigNext(guild, { column: 'welcome', newconfig: welcomer })
-      module.exports.updateGuildConfigNext(guild, { column: 'farewell', newconfig: farewell })
-      module.exports.updateGuildConfigNext(guild, { column: 'leveling', newconfig: levels })
-      module.exports.updateGuildConfigNext(guild, { column: 'suggestions', newconfig: suggestions })
-      module.exports.updateGuildConfigNext(guild, { column: 'autoreplies', newconfig: autoresponder })
-      module.exports.updateGuildConfigNext(guild, { column: 'customcommands', newconfig: customcommands })
-      if (callback) callback()
-    } else if (callback) callback()
   })
 }
 
