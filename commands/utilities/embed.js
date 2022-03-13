@@ -11,7 +11,7 @@ module.exports = {
     .addStringOption(option => option.setName('footer').setDescription('Sets the embed footer. (2048 characters max)'))
     .addStringOption(option => option.setName('thumbnail').setDescription('Adds an image/gif to the upper-right corner of your embed. (Use a direct media link.)'))
     .addStringOption(option => option.setName('image').setDescription('Adds an image/gif to the bottom of your embed. (Use a direct media link.)')),
-  runInteraction (client, locale, interaction) {
+  runInteraction (locale, interaction) {
     const title = interaction.options.getString('title')
     const description = interaction.options.getString('description')
     const footer = interaction.options.getString('footer')
