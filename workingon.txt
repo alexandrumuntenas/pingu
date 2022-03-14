@@ -1,7 +1,7 @@
 === SUGGESTIONS MODULE ===
 
 = NOW WORKING =
-Hacer todas las acciones pendientes que desencadenan las opciones de aprobación, denegación y añadir nota a la sugerencia.
+Después de haber hecho que se desencadenen X acciones después de X evento, ahora hay que ajustarlo a las necesidades reales.
 Además, queda pendiente hacer el sistema de vetado de usuarios. Y ver por qué no se guarda en la base de datos el revisor
 de la sugerencia.
 
