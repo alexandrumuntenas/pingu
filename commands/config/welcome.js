@@ -260,7 +260,7 @@ module.exports = {
 
         switch (message.parameters[1].toLowerCase()) {
           case 'sendcards': {
-            if (message.parameters[2] === true) {
+            if (message.parameters[2] === 'true') {
               updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: true } } }, err => {
                 if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
                 return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
