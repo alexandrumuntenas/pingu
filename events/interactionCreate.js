@@ -9,7 +9,7 @@ const humanizeduration = require('humanize-duration')
 async function isCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
-  interaction.deferredReply = await interaction.deferReply({ fetchReply: true })
+  interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
   getGuildConfig(interaction.guild, async guildConfig => {
     interaction.guild.configuration = guildConfig
     if (process.Client.commands.has(interaction.commandName)) {
