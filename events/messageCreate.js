@@ -10,7 +10,7 @@ const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
 
 module.exports = {
   name: 'messageCreate',
-  execute: async message => {
+  execute: async message => { // skipcq: JS-0116
     if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
 
     getGuildConfig(message.guild, async guildConfig => {

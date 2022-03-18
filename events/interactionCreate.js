@@ -38,7 +38,7 @@ async function isCommand (interaction) {
 
 module.exports = {
   name: 'interactionCreate',
-  execute: async interaction => {
+  execute: async interaction => { // skipcq: JS-0116
     if (interaction.isCommand()) {
       isCommand(interaction).catch(Consolex.handleError)
     }
