@@ -21,7 +21,6 @@ module.exports = {
 
     setInterval(() => {
       process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
-      eliminadorArchivosTemporales()
     }, 600000)
   }
 }
