@@ -9,10 +9,6 @@ const Database = require('../functions/databaseConnection')
  */
 
 module.exports.getMember = (member, callback) => {
-  const sentryEvent = Consolex.Sentry.startTransaction({
-    op: 'memberManager.getMember',
-    name: 'memberManager (Get Member)'
-  })
   if (!callback) throw Error('You didn\'t provide a callback.')
 
   Database.query('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
@@ -33,7 +29,6 @@ module.exports.getMember = (member, callback) => {
     } else {
       module.exports.createMember(member, () => {
         module.exports.getMember(member, callback)
-        sentryEvent.finish()
       })
     }
   })
@@ -46,16 +41,10 @@ module.exports.getMember = (member, callback) => {
  */
 
 module.exports.createMember = (member, callback) => {
-  const sentryEvent = Consolex.Sentry.startTransaction({
-    op: 'memberManager.createMember',
-    name: 'memberManager (Create Member)'
-  })
   Database.query('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], err => {
     if (err) Consolex.handleError(err)
 
     if (callback) callback()
-
-    sentryEvent.finish()
   })
 }
 
@@ -71,10 +60,6 @@ module.exports.createMember = (member, callback) => {
  */
 
 module.exports.updateMember = (member, memberDataToUpdate, callback) => {
-  const sentryEvent = Consolex.Sentry.startTransaction({
-    op: 'memberManager.updateMember',
-    name: 'memberManager (Update Member)'
-  })
   if (!memberDataToUpdate) throw Error('You didn\' provide any data to update.')
 
   module.exports.getMember(member, memberData => {
@@ -82,8 +67,6 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
       if (err) Consolex.handleError(err)
 
       if (callback) callback()
-
-      sentryEvent.finish()
     })
   })
 }
@@ -94,15 +77,9 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
  * @param {Function} callback
  */
 module.exports.deleteMember = (member, callback) => {
-  const sentryEvent = Consolex.Sentry.startTransaction({
-    op: 'memberManager.deleteMember',
-    name: 'memberManager (Delete Member)'
-  })
   Database.query('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id], err => {
     if (err) Consolex.handleError(err)
 
     if (callback) callback()
-
-    sentryEvent.finish()
   })
 }

@@ -13,10 +13,6 @@ const { Routes } = require('discord-api-types/v9')
  */
 
 module.exports.getGuildConfig = (guild, callback) => {
-  const gFD = Consolex.Sentry.startTransaction({
-    op: 'getGuildConfig',
-    name: 'Get Guild Configuration'
-  })
   Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) Consolex.handleError(err)
 
@@ -38,7 +34,6 @@ module.exports.getGuildConfig = (guild, callback) => {
       Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, topChannel.id, topChannel.id, topChannel.id], err2 => {
         if (err2) Consolex.handleError(err2)
 
-        gFD.finish()
         return module.exports.getGuildConfig(guild, callback)
       })
     }
