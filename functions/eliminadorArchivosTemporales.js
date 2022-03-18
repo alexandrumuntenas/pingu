@@ -6,15 +6,16 @@ const consolex = require('./consolex')
  */
 
 module.exports = () => {
-  let files
   try {
-    files = readdirSync('./modules/temp')
+    eliminarArchivos(readdirSync('./modules/temp'))
   } catch {
     mkdirSync('./modules/temp')
   } finally {
-    files = readdirSync('./modules/temp')
+    eliminarArchivos(readdirSync('./modules/temp'))
   }
+}
 
+function eliminarArchivos (files) {
   for (const file of files) {
     stat(`./modules/temp/${file}`, (err, stats) => {
       if (err) consolex.handleError(err)
