@@ -2,9 +2,9 @@ name: Check Markdown links
 
 on:
   push:
-    branches: [ 22T1 ]
+    branches: [ main ]
   pull_request:
-    branches: [ 22T1 ]
+    branches: [ main ]
 
 jobs:
   markdown-link-check:
