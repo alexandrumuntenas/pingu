@@ -1,4 +1,4 @@
-const { unlinkSync, stat, readdirSync } = require('fs')
+const { unlinkSync, stat, readdirSync, mkdirSync } = require('fs')
 const consolex = require('./consolex')
 
 /**
@@ -6,7 +6,14 @@ const consolex = require('./consolex')
  */
 
 module.exports = () => {
-  const files = readdirSync('./modules/temp')
+  let files
+  try {
+    files = readdirSync('./modules/temp')
+  } catch {
+    mkdirSync('./modules/temp')
+  } finally {
+    files = readdirSync('./modules/temp')
+  }
 
   for (const file of files) {
     stat(`./modules/temp/${file}`, (err, stats) => {
