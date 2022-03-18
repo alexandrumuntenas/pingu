@@ -85,16 +85,14 @@ module.exports.getLeaderboard = (guild, callback) => {
       let memberCount = 0
       members.forEach(async member => {
         try {
-          member.user = await process.Client.users.fetch(member.member)
+          member.user = await process.Client.users.fetch(member.member) // skipcq: JS-0040
         } catch {
-          member.user = { username: 'Mysterious User', discriminator: '0000' }
+          member.user = { username: 'Mysterious User', discriminator: '0000' } // skipcq: JS-0040
         } finally {
           memberCount++
         }
 
-        if (memberCount === members.length) {
-          return callback(members)
-        }
+        if (memberCount === members.length) return callback(members)
       })
     } else callback()
   })
