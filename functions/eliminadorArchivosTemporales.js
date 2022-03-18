@@ -1,19 +1,7 @@
 const { unlinkSync, stat, readdirSync, mkdirSync } = require('fs')
 const consolex = require('./consolex')
 
-/**
- * Remove files older than 10 minutes every 5 minutes
- */
-
-module.exports = () => {
-  try {
-    eliminarArchivos(readdirSync('./modules/temp'))
-  } catch {
-    mkdirSync('./modules/temp')
-  } finally {
-    eliminarArchivos(readdirSync('./modules/temp'))
-  }
-}
+/** Función que elimina los archivos temporales */
 
 function eliminarArchivos (files) {
   for (const file of files) {
@@ -30,3 +18,23 @@ function eliminarArchivos (files) {
     })
   }
 }
+
+/**
+ * Comprobar si existe directorio de archivos temporales y si no existe crearlo; luego ejecutar la función eliminarArchivos
+ */
+
+module.exports = () => {
+  try {
+    eliminarArchivos(readdirSync('./modules/temp'))
+  } catch {
+    mkdirSync('./modules/temp')
+    consolex.info('Eliminador de Archivos temporales ha creado el directorio de archivos temporales')
+    eliminarArchivos(readdirSync('./modules/temp'))
+  }
+}
+
+/** Establecer intervalo en el cual se ejecutará el eliminador de archivos temporales */
+
+setInterval(() => {
+  module.exports()
+}, 300000)
