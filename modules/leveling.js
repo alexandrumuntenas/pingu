@@ -81,8 +81,22 @@ module.exports.getLeaderboard = (guild, callback) => {
   Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25', [guild.id], (err, members) => {
     if (err) Consolex.handleError(err)
 
-    if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) callback(members)
-    else callback()
+    if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) {
+      let memberCount = 0
+      members.forEach(async member => {
+        try {
+          member.user = await process.Client.users.fetch(member.member)
+        } catch {
+          member.user = { username: 'Mysterious User', discriminator: '0000' }
+        } finally {
+          memberCount++
+        }
+
+        if (memberCount === members.length) {
+          return callback(members)
+        }
+      })
+    } else callback()
   })
 }
 

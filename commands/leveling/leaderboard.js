@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { getLeaderboard } = require('../../modules/leveling')
+const { loader } = require('../../functions/defaultMessages')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -17,36 +18,38 @@ module.exports = {
       let leaderboardStr = ''
       let count = 0
 
-      leaderboard.forEach(row => {
-        process.Client.users.fetch(row.member).then(user => {
-          count++
-          leaderboardStr = `${leaderboardStr}\n${count}. **${user.username}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel}, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
-          if (count === leaderboard.length) {
-            interaction.editReply({
-              embeds: [leaderboardEmbed.setDescription(leaderboardStr)]
-            })
-          }
-        })
+      leaderboard.forEach(registro => {
+        count++
+        leaderboardStr = `${leaderboardStr}\n${count}. **${registro.user.username || 'Mysterious User'}#${registro.user.discriminator || '0000'}** (${i18n(locale, 'LEVEL')}: ${registro.lvlLevel}, ${i18n(locale, 'EXPERIENCE')} ${registro.lvlExperience}) `
+
+        if (count === leaderboard.length) {
+          interaction.editReply({
+            embeds: [leaderboardEmbed.setDescription(leaderboardStr)]
+          })
+        }
       })
     })
   },
   runCommand (locale, message) {
-    getLeaderboard(message.guild, leaderboard => {
-      const leaderboardEmbed = new MessageEmbed()
-        .setColor('#FEE75C')
-        .setTitle(`:trophy: ${i18n(locale, 'RANKING')} TOP 25`)
-        .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-        .setTimestamp()
+    message.reply({ embeds: [loader(i18n(locale, 'OBTAININGDATA'))] }).then(_message => {
+      getLeaderboard(message.guild, leaderboard => {
+        const leaderboardEmbed = new MessageEmbed()
+          .setColor('#FEE75C')
+          .setTitle(`:trophy: ${i18n(locale, 'RANKING')} TOP 25`)
+          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+          .setTimestamp()
 
-      let leaderboardStr = ''
-      let count = 0
+        _message.edit({ embeds: [loader(i18n(locale, 'PROCESSINGDATA'))] })
 
-      leaderboard.forEach(row => {
-        process.Client.users.fetch(row.member).then(user => {
+        let leaderboardStr = ''
+        let count = 0
+
+        leaderboard.forEach(registro => {
           count++
-          leaderboardStr = `${leaderboardStr}\n${count}. **${user.username}#${user.discriminator}** (${i18n(locale, 'LEVEL')}: ${row.lvlLevel}, ${i18n(locale, 'EXPERIENCE')} ${row.lvlExperience}) `
+          leaderboardStr = `${leaderboardStr}\n${count}. **${registro.user.username || 'Mysterious User'}#${registro.user.discriminator || '0000'}** (${i18n(locale, 'LEVEL')}: ${registro.lvlLevel}, ${i18n(locale, 'EXPERIENCE')} ${registro.lvlExperience}) `
+
           if (count === leaderboard.length) {
-            message.reply({
+            _message.edit({
               embeds: [leaderboardEmbed.setDescription(leaderboardStr)]
             })
           }

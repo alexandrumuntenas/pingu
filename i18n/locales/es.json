@@ -211,5 +211,7 @@
   "SUGGESTION::REJECT:ERROR": "Se ha producido un error al intentar rechazar la sugerencia.",
   "SUGGESTION::REJECT:SUCCESS": "Se ha rechazado la sugerencia con identificador %SUGGESTIONID%.",
   "SUGGESTION::ADDNOTE:ERROR": "Se ha producido un error al intentar añadir una nota a la sugerencia.",
-  "SUGGESTION::ADDNOTE:SUCCESS": "Se ha añadido la nota a la sugerencia con identificador %SUGGESTIONID%."
+  "SUGGESTION::ADDNOTE:SUCCESS": "Se ha añadido la nota a la sugerencia con identificador %SUGGESTIONID%.",
+  "OBTAININGDATA": "Obteniendo datos...",
+  "PROCESSINGDATA": "Procesando datos..."
 }
