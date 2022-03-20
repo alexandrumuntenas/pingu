@@ -206,6 +206,8 @@
   "SUGGEST::DESCRIPTION": "Realiza una sugerencia en el servidor.",
   "SUGGESTIONS::REGISTEREDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia ha sido registrada con éxito. Su identificador es %SUGGESTIONID%. Buen día.",
   "SUGGESTIONS::APPROVEDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia (%SUGGESTIONID%) ha sido aprobada con éxito por %REVIEWER%. Buen día.",
+  "SUGGESTIONS::REJECTEDSUCCESSFULLY": "Hola %AUTHOR%. Tu sugerencia (%SUGGESTIONID%) ha sido rechazada con éxito por %REVIEWER%. Buen día.",
+  "SUGGESTIONS::NOTEADDEDSUCCESSFULLY": "Hola %AUTHOR%. %REVIEWER% ha añadido la siguiente nota a tu sugerencia (%SUGGESTIONID%): %NOTE%",
   "SUGGESTION::APPROVE:ERROR": "Se ha producido un error al intentar aprobar la sugerencia.",
   "SUGGESTION::APPROVE:SUCCESS": "Se ha aprobado la sugerencia con identificador %SUGGESTIONID%.",
   "SUGGESTION::REJECT:ERROR": "Se ha producido un error al intentar rechazar la sugerencia.",

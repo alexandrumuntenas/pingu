@@ -100,7 +100,7 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
 
 module.exports.approveSuggestion = (member, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
-  Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['approved', suggestionId, member.guild.id], err => {
+  Database.query('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['approved', member.id, suggestionId, member.guild.id], err => {
     if (err) {
       Consolex.handleError(err)
       return callback(err)
@@ -121,7 +121,7 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
 
 module.exports.rejectSuggestion = (member, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
-  Database.query('UPDATE `guildSuggestions` SET `status` = ? WHERE `id` = ? AND `guild` = ?', ['rejected', suggestionId, member.guild.id], err => {
+  Database.query('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['rejected', member.id, suggestionId, member.guild.id], err => {
     if (err) {
       Consolex.handleError(err)
       return callback(err)
@@ -148,6 +148,7 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
         Consolex.handleError(err)
         return callback(err)
       }
+      module.exports.afterAddingANoteToASuggestion(member, suggestionId, note)
       return callback()
     })
   })
@@ -230,15 +231,13 @@ module.exports.afterSuggestionApproval = (member, suggestionId) => {
         const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
 
         if (channel) {
-          const suggestionNotification = new MessageEmbed()
-            .setColor('#05d43f')
-            .setThumbnail(member.user.displayAvatarURL())
-            .addField(':bulb: Submitter', `${author.user.username}#${author.user.discriminator}`, true)
+          const suggestionNotification = new MessageEmbed().setColor('#05d43f')
+            .setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
+            .setTitle('Approved a suggestion')
             .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':clock2: Creation Date', `<t:${unixTime(suggestion.timestamp)}>`, true)
-            .addField(':id: Identificador', `${suggestion.id}`, true)
-            .addField(':white_check_mark: Reviewer', `${member.user.tag}`, false)
-            .setFooter({ text: member.guild.name, iconURL: member.guild.iconURL() })
+            .addField(':bulb: Submitter', `${author}`, true)
+            .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
+            .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() }).setTimestamp()
           channel.send({ embeds: [suggestionNotification] })
         }
       }
@@ -270,15 +269,14 @@ module.exports.afterSuggestionRejection = (member, suggestionId) => {
         const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
 
         if (channel) {
-          const suggestionNotification = new MessageEmbed()
-            .setColor('#dd9323')
-            .setThumbnail(member.user.displayAvatarURL())
-            .addField(':bulb: Submitter', `${author.user.username}#${author.user.discriminator}`, true)
+          const suggestionNotification = new MessageEmbed().setColor('#cf000f')
+            .setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
+            .setTitle('Rejected a suggestion')
             .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':clock2: Creation Date', `<t:${unixTime(suggestion.timestamp)}>`, true)
-            .addField(':id: Identificador', `${suggestion.id}`, true)
-            .addField(':x: Reviewer', `${member.user.tag}`, false)
-            .setFooter({ text: member.guild.name, iconURL: member.guild.iconURL() })
+            .addField(':bulb: Submitter', `${author}`, true)
+            .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
+            .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() })
+            .setTimestamp()
           channel.send({ embeds: [suggestionNotification] })
         }
       }
@@ -312,13 +310,14 @@ module.exports.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
         if (channel) {
           const suggestionNotification = new MessageEmbed()
             .setColor('#dd9323')
-            .setThumbnail(member.user.displayAvatarURL())
+            .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL() })
+            .setTitle('Added a new note to a suggestion')
+            .setThumbnail(author.user.displayAvatarURL())
             .addField(':bulb: Submitter', `${author.user.username}#${author.user.discriminator}`, true)
             .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':clock2: Creation Date', `<t:${unixTime(suggestion.timestamp)}>`, true)
-            .addField(':id: Identificador', `${suggestion.id}`, true)
-            .addField(':pencil2: Note', note, false)
-            .setFooter({ text: member.guild.name, iconURL: member.guild.iconURL() })
+            .addField(':clipboard: Staff Note', note)
+            .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() })
+            .setTimestamp()
           channel.send({ embeds: [suggestionNotification] })
         }
       }
@@ -329,6 +328,7 @@ module.exports.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
           .setColor('#dd9323')
           .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::NOTEADDEDSUCCESSFULLY', { AUTHOR: author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\``, NOTE: note }))
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+          .setTimestamp()
 
         try {
           author.user.send({ embeds: [suggestionNotificationForDM] })
