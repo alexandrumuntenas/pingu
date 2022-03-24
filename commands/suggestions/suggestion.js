@@ -19,22 +19,22 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'approve': {
         approveSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTION::APPROVE:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTION::APPROVE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTION::APPROVE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTION::APPROVE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'reject': {
         rejectSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTION::REJECT:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTION::REJECT:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTION::REJECT:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTION::REJECT:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'addnote': {
         addNoteToSuggestion(interaction.member, interaction.options.getString('suggestion'), interaction.options.getString('note'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTION::ADDNOTE:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTION::ADDNOTE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTION::ADDNOTE:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTION::ADDNOTE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }

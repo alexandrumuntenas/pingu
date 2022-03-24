@@ -31,7 +31,7 @@ module.exports = {
     })
   },
   runCommand (locale, message) {
-    message.reply({ embeds: [loader(i18n(locale, 'OBTAININGDATA'))] }).then(_message => {
+    message.reply({ embeds: [plantillas.precargador(i18n(locale, 'OBTAININGDATA'))] }).then(_message => {
       getLeaderboard(message.guild, leaderboard => {
         const leaderboardEmbed = new MessageEmbed()
           .setColor('#FEE75C')
@@ -39,7 +39,7 @@ module.exports = {
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
           .setTimestamp()
 
-        _message.edit({ embeds: [loader(i18n(locale, 'PROCESSINGDATA'))] })
+        _message.edit({ embeds: [plantillas.precargador(i18n(locale, 'PROCESSINGDATA'))] })
 
         let leaderboardStr = ''
         let count = 0

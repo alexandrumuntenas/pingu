@@ -16,11 +16,11 @@ async function isCommand (interaction) {
       const interactionToRun = process.Client.commands.get(interaction.commandName)
 
       if (interactionToRun.module && !guildConfig[interactionToRun.module].enabled) {
-        return interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::NOT_ENABLED'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::NOT_ENABLED'))] })
       }
 
       if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
-        return interaction.editReply({ embeds: [error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::PERMISSION_ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.configuration.language || 'es', 'COMMAND::PERMISSION_ERROR'))] })
       }
 
       if (CooldownManager.check(interaction.member, interaction.guild, interactionToRun.name)) {
@@ -28,7 +28,7 @@ async function isCommand (interaction) {
 
         await interactionToRun.runInteraction(interaction.guild.configuration.common.language || 'es', interaction)
       } else {
-        return interaction.editReply({ embeds: [timer(i18n(interaction.guild.configuration.common.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+        return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.configuration.common.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
     } else {
       return interaction.editReply({ content: i18n(interaction.guild.configuration.common.language || 'es', 'COMMAND::NOT_FOUND') })

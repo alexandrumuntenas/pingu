@@ -27,7 +27,7 @@ module.exports.plantillas.estado = message => new MessageEmbed()
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.carga = message => new MessageEmbed()
+module.exports.plantillas.precargador = message => new MessageEmbed()
   .setColor('#FEE75C')
   .setDescription(`<a:loader:927223896330084412> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })

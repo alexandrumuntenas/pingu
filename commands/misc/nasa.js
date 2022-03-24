@@ -41,7 +41,7 @@ module.exports = {
   },
   runCommand (locale, message) {
     message
-      .reply({ embeds: [loader(i18n(locale, 'FETCHINGDATA'))] })
+      .reply({ embeds: [plantillas.precargador(i18n(locale, 'FETCHINGDATA'))] })
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)

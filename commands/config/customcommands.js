@@ -49,9 +49,9 @@ module.exports = {
 
         try {
           createCustomCommand(interaction.guild, customcommand)
-          interaction.editReply({ embeds: [success(i18n(locale, 'CUSTOMCOMMANDS::CREATE:SUCCESS', { COMMAND: customcommand.command }))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'CUSTOMCOMMANDS::CREATE:SUCCESS', { COMMAND: customcommand.command }))] })
         } catch {
-          interaction.editReply({ embeds: [error(i18n(locale, 'CUSTOMCOMMANDS::CREATE:ERROR', { COMMAND: customcommand.command }))] })
+          interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'CUSTOMCOMMANDS::CREATE:ERROR', { COMMAND: customcommand.command }))] })
         }
 
         break
@@ -60,9 +60,9 @@ module.exports = {
       case 'delete': {
         try {
           deleteCustomCommand(interaction.guild, interaction.options.getString('name'))
-          interaction.editReply({ embeds: [success(i18n(locale, 'CUSTOMCOMMANDS::DELETE:SUCCESS', { COMMAND: interaction.options.getString('name') }))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'CUSTOMCOMMANDS::DELETE:SUCCESS', { COMMAND: interaction.options.getString('name') }))] })
         } catch {
-          interaction.editReply({ embeds: [error(i18n(locale, 'CUSTOMCOMMANDS::DELETE:ERROR', { COMMAND: interaction.options.getString('name') }))] })
+          interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'CUSTOMCOMMANDS::DELETE:ERROR', { COMMAND: interaction.options.getString('name') }))] })
         }
 
         break

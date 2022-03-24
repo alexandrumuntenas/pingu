@@ -122,7 +122,7 @@ module.exports = {
           }
 
           updateGuildConfig(interaction.guild, { column: 'leveling', newconfig }, err => {
-            if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::RANKUP:ERROR'))] })
+            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::RANKUP:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -162,7 +162,7 @@ module.exports = {
           }
 
           updateGuildConfig(interaction.guild, { column: 'leveling', newconfig }, err => {
-            if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
+            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -174,8 +174,8 @@ module.exports = {
 
       case 'resetleaderboard': {
         resetLeaderboard(interaction.guild, (err) => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'LEVELING::RESETLEADERBOARD:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'LEVELING::RESETLEADERBOARD:SUCCESS'))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::RESETLEADERBOARD:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RESETLEADERBOARD:SUCCESS'))] })
         })
         break
       }
@@ -190,7 +190,7 @@ module.exports = {
   runCommand (locale, message) {
     function sendHelp () {
       message.reply({
-        embeds: help({
+        embeds: plantillas.ayuda({
           name: 'leveling',
           description: i18n(locale, 'LEVELING::DESCRIPTION'),
           module: 'leveling',
@@ -255,7 +255,7 @@ module.exports = {
           case 'backgroundurl': {
             updateGuildConfig(message.guild, { column: 'leveling', newconfig: { card: { background: message.parameters[2] } } }, err => {
               if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:ERROR'))
-              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
+              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
             })
 
             break
@@ -270,18 +270,18 @@ module.exports = {
 
             updateGuildConfig(message.guild, { column: 'leveling', newconfig: { card: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
               if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))
-              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
+              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
             })
 
             break
           }
 
           case 'overlaycolor': {
-            if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
+            if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
 
             updateGuildConfig(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
-              if (err) return message.reply({ embeds: [error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
-              return message.reply({ embeds: [success(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
+              if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
+              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
             })
 
             break
@@ -307,23 +307,23 @@ module.exports = {
               if (err) return message.reply(i18n(locale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
               switch (message.parameters[2]) {
                 case 'this': {
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
                   break
                 }
                 case 'same': {
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT') }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT') }))] })
                   break
                 }
                 case 'dm': {
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DM') }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DM') }))] })
                   break
                 }
                 case 'disabled': {
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DISABLED') }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DISABLED') }))] })
                   break
                 }
                 default: {
-                  message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
                   break
                 }
               }
@@ -340,7 +340,7 @@ module.exports = {
                 return
               }
 
-              message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:MESSAGE:SUCCESS', { MESSAGE: rankupMessage }))] })
+              message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:MESSAGE:SUCCESS', { MESSAGE: rankupMessage }))] })
             })
             break
           }
@@ -358,7 +358,7 @@ module.exports = {
                 return
               }
 
-              message.reply({ embeds: [success(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.parameters[2], 10) }))] })
+              message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.parameters[2], 10) }))] })
             })
             break
           }

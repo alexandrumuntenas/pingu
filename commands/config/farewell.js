@@ -35,16 +35,16 @@ module.exports = {
 
       case 'setchannel': {
         updateGuildConfig(interaction.guild, { column: 'farewell', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
 
       case 'setmessage': {
         updateGuildConfig(interaction.guild, { column: 'farewell', newconfig: { message: interaction.options.getString('message') } }, err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
         break
       }
@@ -58,7 +58,7 @@ module.exports = {
   runCommand (locale, message) {
     function sendHelp () {
       message.reply({
-        embeds: help({
+        embeds: plantillas.ayuda({
           name: 'farewell',
           description: i18n(locale, 'FAREWELL::HELP:DESCRIPTION'),
           cooldown: 1,
@@ -91,8 +91,8 @@ module.exports = {
       case 'setchannel': {
         if (!message.mentions.channels.first()) return sendHelp()
         updateGuildConfig(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
-          if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
-          return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
+          if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
+          return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
         })
         break
       }
@@ -100,8 +100,8 @@ module.exports = {
       case 'setmessage': {
         if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
         updateGuildConfig(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
-          if (err) return message.reply({ embeds: [error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
-          return message.reply({ embeds: [success(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
+          if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
+          return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
         })
 
         break
