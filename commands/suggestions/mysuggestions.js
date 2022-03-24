@@ -18,7 +18,7 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         interaction.editReply({ embeds: [memberSuggestions] })
       } else {
-        interaction.editReply({ embeds: [info(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   },
@@ -31,7 +31,7 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         message.reply({ embeds: [memberSuggestions] })
       } else {
-        message.reply({ embeds: [info(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        message.reply({ embeds: [plantillas.informacion(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   }
