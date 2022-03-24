@@ -137,3 +137,21 @@ module.exports.plantillas.ayuda = command => {
 
   return [embedOptions]
 }
+
+module.exports.acciones = {}
+
+const Consolex = require('./consolex')
+
+/**
+ * Envía un mensaje directo a un usuario.
+ * @param {User} user
+ * @param {Message} message
+ */
+
+module.exports.acciones.enviarMD = (user, message) => {
+  try {
+    user.send(message)
+  } catch {
+    Consolex.error(`Error al enviar el mensaje privado a ${user.id}.`)
+  }
+}
