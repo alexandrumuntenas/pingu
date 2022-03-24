@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const { ChannelType } = require('discord-api-types/v9')
 const { updateGuildConfig } = require('../../functions/guildDataManager')
-const { success, info, error } = require('../../functions/defaultMessages')
+const { success, info, error } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {

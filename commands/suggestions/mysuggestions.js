@@ -1,5 +1,5 @@
 const { getMemberSuggestions } = require('../../modules/suggestions')
-const { info } = require('../../functions/defaultMessages')
+const { info } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 const { MessageEmbed } = require('discord.js')
 const unixTime = require('unix-time')

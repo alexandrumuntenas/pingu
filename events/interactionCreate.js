@@ -1,7 +1,7 @@
 const Consolex = require('../functions/consolex')
 const CooldownManager = require('../functions/cooldownManager')
 
-const { error, timer } = require('../functions/defaultMessages')
+const { error, timer } = require('../functions/messageManager')
 const { getGuildConfig } = require('../functions/guildDataManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')

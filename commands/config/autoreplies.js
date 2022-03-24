@@ -1,7 +1,7 @@
 const { Permissions, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { createReply, deleteReply, generateTxtWithAllTheGuildAutoReplies } = require('../../modules/autoreplies')
-const { success, error, info } = require('../../functions/defaultMessages')
+const { success, error, info } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
