@@ -1,5 +1,5 @@
 const { getMemberSuggestions } = require('../../modules/suggestions')
-const { info } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 const { MessageEmbed } = require('discord.js')
 const unixTime = require('unix-time')
@@ -18,7 +18,7 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         interaction.editReply({ embeds: [memberSuggestions] })
       } else {
-        interaction.editReply({ embeds: [info(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   },
@@ -31,7 +31,7 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         message.reply({ embeds: [memberSuggestions] })
       } else {
-        message.reply({ embeds: [info(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        message.reply({ embeds: [plantillas.informacion(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   }

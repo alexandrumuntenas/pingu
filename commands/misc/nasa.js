@@ -1,7 +1,7 @@
 const fetch = require('superagent')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { loader } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'nasa',
@@ -41,7 +41,7 @@ module.exports = {
   },
   runCommand (locale, message) {
     message
-      .reply({ embeds: [loader(i18n(locale, 'FETCHINGDATA'))] })
+      .reply({ embeds: [plantillas.precargador(i18n(locale, 'FETCHINGDATA'))] })
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)

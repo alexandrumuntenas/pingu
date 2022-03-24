@@ -1,7 +1,7 @@
 const { getCustomCommands } = require('../../modules/customcommands')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { status } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'viewcustomcommands',
@@ -9,7 +9,7 @@ module.exports = {
   module: 'customcommands',
   runInteraction (locale, interaction) {
     getCustomCommands(interaction.guild, customcommands => {
-      if (customcommands.length === 0) return interaction.editReply({ embeds: [status(i18n(locale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
+      if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n(locale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
       const embed = new MessageEmbed()
         .setColor('#2F3136')
@@ -28,7 +28,7 @@ module.exports = {
   },
   runCommand (locale, message) {
     getCustomCommands(message.guild, customcommands => {
-      if (customcommands.length === 0) return message.reply({ embeds: [status(i18n(locale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
+      if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n(locale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
       const embed = new MessageEmbed()
         .setColor('#2F3136')
