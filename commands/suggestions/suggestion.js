@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const { approveSuggestion, rejectSuggestion, addNoteToSuggestion } = require('../../modules/suggestions')
-const { error, success, info } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'suggestion',

@@ -1,7 +1,7 @@
 const fetch = require('superagent')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { loader } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'nasa',

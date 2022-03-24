@@ -1,7 +1,7 @@
 const { getCustomCommands } = require('../../modules/customcommands')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { status } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'viewcustomcommands',

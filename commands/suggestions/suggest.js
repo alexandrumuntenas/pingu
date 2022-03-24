@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { createSuggestion } = require('../../modules/suggestions')
-const { error, success, help } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {

@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 const { getLeaderboard } = require('../../modules/leveling')
-const { loader } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {

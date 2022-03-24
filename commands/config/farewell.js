@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { success, error, help, info } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 const { updateGuildConfig } = require('../../functions/guildDataManager')
 const { ChannelType } = require('discord-api-types/v9')

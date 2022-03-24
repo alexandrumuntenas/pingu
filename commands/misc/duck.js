@@ -1,5 +1,5 @@
 const fetch = require('superagent')
-const { image } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'duck',

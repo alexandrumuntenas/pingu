@@ -2,7 +2,7 @@ const { Permissions } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { createCustomCommand, deleteCustomCommand } = require('../../modules/customcommands')
 const i18n = require('../../i18n/i18n')
-const { success, error, info } = require('../../functions/messageManager')
+const { plantillas } = require('../../functions/messageManager')
 const { ChannelType } = require('discord-api-types/v9')
 
 module.exports = {
