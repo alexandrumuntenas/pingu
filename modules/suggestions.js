@@ -222,7 +222,7 @@ module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
           embeds: [
             defaultDMEmbed(member.guild)
               .setColor('#dd9323')
-              .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::REGISTEREDSUCCESSFULLY', { AUTHOR: suggestion.author, SUGGESTIONID: `\`${suggestion.id}\`` }))
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::REGISTEREDSUCCESSFULLY', { AUTHOR: suggestion.author, SUGGESTIONID: `\`${suggestion.id}\`` }))
           ]
         })
       }
@@ -253,7 +253,7 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
           embeds: [
             defaultDMEmbed(member.guild)
               .setColor('#05d43f')
-              .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::APPROVEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::APPROVEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
           ]
         })
       }
@@ -284,7 +284,7 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
           embeds: [
             defaultDMEmbed(member.guild)
               .setColor('#dd9323')
-              .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::REJECTEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::REJECTEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
           ]
         })
       }
@@ -316,7 +316,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
           embeds: [
             defaultDMEmbed(member.guild)
               .setColor('#dd9323')
-              .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::NOTEADDEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\``, NOTE: note }))
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::NOTEADDEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\``, NOTE: note }))
           ]
         })
       }
