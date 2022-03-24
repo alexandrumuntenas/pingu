@@ -11,7 +11,7 @@ module.exports.plantillas = {}
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.status = message => new MessageEmbed()
+module.exports.plantillas.estado = message => new MessageEmbed()
   .setColor('#2F3136')
   .setDescription(`<:pingu_null:876103457860370442> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -27,7 +27,7 @@ module.exports.plantillas.status = message => new MessageEmbed()
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.loader = message => new MessageEmbed()
+module.exports.plantillas.carga = message => new MessageEmbed()
   .setColor('#FEE75C')
   .setDescription(`<a:loader:927223896330084412> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -40,7 +40,7 @@ module.exports.plantillas.loader = message => new MessageEmbed()
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.success = message => new MessageEmbed()
+module.exports.plantillas.conexito = message => new MessageEmbed()
   .setColor('#57F287')
   .setDescription(`<:Blurple_verified_plain:938094790132764682> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -65,7 +65,7 @@ module.exports.plantillas.error = message => new MessageEmbed()
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.info = message => new MessageEmbed()
+module.exports.plantillas.informacion = message => new MessageEmbed()
   .setColor('#5865F2')
   .setDescription(`:information_source: ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -78,7 +78,7 @@ module.exports.plantillas.info = message => new MessageEmbed()
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.image = (imageURL, imageProvider) => new MessageEmbed()
+module.exports.plantillas.imagen = (imageURL, imageProvider) => new MessageEmbed()
   .setColor('#2F3136')
   .setImage(imageURL)
   .setDescription(`<:blurple_image:892443053359517696> Image via ${imageProvider} API.`)
@@ -91,7 +91,7 @@ module.exports.plantillas.image = (imageURL, imageProvider) => new MessageEmbed(
  * @returns MessageEmbed
  */
 
-module.exports.plantillas.timer = message => new MessageEmbed()
+module.exports.plantillas.contador = message => new MessageEmbed()
   .setColor('#F3375C')
   .setImage('https://cdn.discordapp.com/attachments/908413370665938975/939097943036809247/hearties-daniel-lissing.gif')
   .setDescription(`<:timeout_clock:937404313901359114> ${message}`)
@@ -110,7 +110,7 @@ module.exports.plantillas.timer = message => new MessageEmbed()
  * @returns {Array.<MessageEmbed>}
  */
 
-module.exports.plantillas.help = command => {
+module.exports.plantillas.ayuda = command => {
   if (!command) {
     throw new Error('No command provided')
   }
