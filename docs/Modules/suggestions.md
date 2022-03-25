@@ -6,7 +6,7 @@ icon: light-bulb
 # Suggestions (IN PROGRESS)
 
 !!!warning
-This module is being updated to accomplish with the new client updates.
+This module is still not avaliable. It will be soon.
 !!!
 
 >  Do you want to allow your users to send you suggestions? Pingu can help you. This module comes with commands so you can set up a workflow quickly.
