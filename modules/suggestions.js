@@ -239,14 +239,14 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
           embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
             .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::APPROVED'))
-            .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
+            .addField(`:white_check_mark: ${i18n(guildConfig.common.language || 'es', 'APPROVEDBY')}`, `${member} \`[${member.id}]\``, false)
           ]
         })
       } else if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
           embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
             .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::APPROVED'))
-            .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
+            .addField(`:white_check_mark: ${i18n(guildConfig.common.language || 'es', 'APPROVEDBY')}`, `${member} \`[${member.id}]\``, false)
           ]
         })
       }
@@ -273,14 +273,14 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
           embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
             .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::REJECTED'))
-            .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
+            .addField(`:x: ${i18n(guildConfig.common.language || 'es', 'REJECTEDBY')}`, `${member} \`[${member.id}]\``, false)
           ]
         })
       } else if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
           embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
             .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::REJECTED'))
-            .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
+            .addField(`:x: ${i18n(guildConfig.common.language || 'es', 'REJECTEDBY')}`, `${member} \`[${member.id}]\``, false)
           ]
         })
       }
@@ -308,7 +308,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
           embeds: [defaultEmbed(member, suggestion)
             .setColor('#dd9323')
             .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::NOTEADDED'))
-            .addField(':clipboard: Staff Note', note)
+            .addField(`:clipboard: ${i18n(guildConfig.common.language || 'es', 'STAFFNOTE')}`, note)
           ]
         })
       } else if (guildConfig.suggestions.channel) {
@@ -316,7 +316,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
           embeds: [defaultEmbed(member, suggestion)
             .setColor('#dd9323')
             .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::NOTEADDED'))
-            .addField(':clipboard: Staff Note', note)
+            .addField(`:clipboard: ${i18n(guildConfig.common.language || 'es', 'STAFFNOTE')}`, note)
           ]
         })
       }
