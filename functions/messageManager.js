@@ -155,3 +155,19 @@ module.exports.acciones.enviarMD = (user, message) => {
     Consolex.error(`Error al enviar el mensaje privado a ${user.id}.`)
   }
 }
+
+/**
+ * Envia un mensaje a un determinado canal.
+ * @param {Guild} guild
+ * @param {Channel.id} channel
+ * @param {Message} message
+ */
+
+module.exports.acciones.enviarMensajeACanal = (guild, channel, message) => {
+  const channelToSend = guild.channels.cache.get(channel)
+  try {
+    channelToSend.send(message)
+  } catch {
+    Consolex.error(`Error al enviar el mensaje a ${channelToSend.id}. El canal no existe o no tengo permisos para enviar mensajes.`)
+  }
+}

@@ -205,16 +205,12 @@ module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          channel.send({
-            embeds: [defaultEmbed(member, suggestion)
-              .setColor('#dd9323')
-              .setTitle('Created a suggestion')
-            ]
-          })
-        }
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion)
+            .setColor('#dd9323')
+            .setTitle('Created a suggestion')
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
@@ -236,16 +232,12 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          channel.send({
-            embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
-              .setTitle('Approved a suggestion')
-              .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
-            ]
-          })
-        }
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
+            .setTitle('Approved a suggestion')
+            .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
@@ -267,16 +259,12 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          channel.send({
-            embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
-              .setTitle('Rejected a suggestion')
-              .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
-            ]
-          })
-        }
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
+            .setTitle('Rejected a suggestion')
+            .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
@@ -298,17 +286,13 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          channel.send({
-            embeds: [defaultEmbed(member, suggestion)
-              .setColor('#dd9323')
-              .setTitle('Added a new note to a suggestion')
-              .addField(':clipboard: Staff Note', note)
-            ]
-          })
-        }
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion)
+            .setColor('#dd9323')
+            .setTitle('Added a new note to a suggestion')
+            .addField(':clipboard: Staff Note', note)
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
