@@ -10,6 +10,16 @@ const { runCustomCommand } = require('../modules/customcommands')
 const { getExperience } = require('../modules/leveling')
 const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
 
+function ejecutarFunciones(message) { // skipcq: JS-D1001
+  if (message.guild.configuration.leveling.enabled) {
+    getExperience(message)
+  }
+
+  if (message.guild.configuration.autoreplies.enabled) {
+    handleAutoRepliesInMessageCreate(message)
+  }
+}
+
 module.exports = {
   name: 'messageCreate',
   execute: async message => { // skipcq: JS-0116
@@ -52,15 +62,5 @@ module.exports = {
 
       return ejecutarFunciones(message)
     })
-  }
-}
-
-function ejecutarFunciones (message) {
-  if (message.guild.configuration.leveling.enabled) {
-    getExperience(message)
-  }
-
-  if (message.guild.configuration.autoreplies.enabled) {
-    handleAutoRepliesInMessageCreate(message)
   }
 }
