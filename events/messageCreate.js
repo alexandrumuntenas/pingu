@@ -1,3 +1,5 @@
+/* eslint consistent-return: "error" */
+
 const CooldownManager = require('../functions/cooldownManager')
 
 const { plantillas } = require('../functions/messageManager')
@@ -10,9 +12,10 @@ const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
 
 module.exports = {
   name: 'messageCreate',
-  execute: async message => { // skipcq: JS-0116
+  execute: async message => {
     if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
 
+    // TODO: Convertir messageCreate en solo una interfaz de una función
     getGuildConfig(message.guild, async guildConfig => {
       message.guild.configuration = guildConfig
 
@@ -26,32 +29,29 @@ module.exports = {
         [message.commandName] = message.parameters
         message.parameters.shift()
 
-        if (!message.commandName) {
-          await process.Client.commands.get('help').runCommand(message.guild.configuration.common.language || 'es', message)
-          return
-        }
+        if (!message.commandName) return await process.Client.commands.get('help').runCommand(message.guild.configuration.common.language, message)
 
         const commandToExecute = process.Client.commands.get(message.commandName)
 
         if (CooldownManager.check(message.member, message.guild, message.commandName)) {
           if (process.Client.commands.has(message.commandName)) {
-            if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.language || 'es', 'COMMAND::NOT_ENABLED'))] })
+            if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
 
-            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::PERMERROR'))] })
+            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::PERMERROR'))] })
 
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
             if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
-              await commandToExecute.runCommand(message.guild.configuration.common.language || 'es', message)
+              await commandToExecute.runCommand(message.guild.configuration.common.language, message)
             } else {
-              message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language || 'es', 'COMMAND::ONLYINTERACTION'))] })
+              message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
             }
           } else if (message.guild.configuration.customcommands.enabled) {
             CooldownManager.add(message.member, message.guild, message.commandName)
             runCustomCommand(message, message.commandName)
           }
         } else {
-          message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language || 'es', 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+          message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
         }
       } else {
         if (message.guild.configuration.leveling.enabled) {
