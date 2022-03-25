@@ -1,7 +1,7 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { updateGuildConfig } = require('../../functions/guildDataManager')
-const { error, success, help, info } = require('../../functions/defaultMessages')
+const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')
 const { ChannelType } = require('discord-api-types/v9')
@@ -33,16 +33,16 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'setchannel': {
         updateGuildConfig(interaction.guild, { column: 'welcome', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
-          return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
 
       case 'setmessage': {
         updateGuildConfig(interaction.guild, { column: 'welcome', newconfig: { message: interaction.options.getString('message') } }, err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
-          return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
         break
       }
@@ -100,7 +100,7 @@ module.exports = {
           }
 
           updateGuildConfig(interaction.guild, { column: 'welcome', newconfig }, err => {
-            if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
+            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -129,16 +129,16 @@ module.exports = {
 
       case 'give': {
         addJoinRole(interaction.guild, interaction.options.getRole('role'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
       }
 
       case 'remove': {
         removeJoinRole(interaction.guild, interaction.options.getRole('role'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
       }
@@ -152,7 +152,7 @@ module.exports = {
       }
 
       default: {
-        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }
@@ -201,7 +201,7 @@ module.exports = {
 
     function sendHelp () {
       message.reply({
-        embeds: help({
+        embeds: plantillas.ayuda({
           name: 'welcome',
           cooldown: '1',
           module: 'welcome',
@@ -237,8 +237,8 @@ module.exports = {
         if (!message.mentions.channel.first()) return sendHelp()
 
         updateGuildConfig(message.guild, { column: 'welcome', newconfig: { channel: message.mentions.channel.first().id } }, err => {
-          if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
-          return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channel.first() }))] })
+          if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
+          return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channel.first() }))] })
         })
 
         break
@@ -248,8 +248,8 @@ module.exports = {
         if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1))) return sendHelp()
 
         updateGuildConfig(message.guild, { column: 'welcome', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
-          if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
-          return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
+          if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETMESSAGE:ERROR'))] })
+          return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
         })
 
         break
@@ -262,13 +262,13 @@ module.exports = {
           case 'sendcards': {
             if (message.parameters[2] === 'true') {
               updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: true } } }, err => {
-                if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
-                return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
+                if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
+                return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:ENABLED'))] })
               })
             } else {
               updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { enabled: false } } }, err => {
-                if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
-                return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:DISABLED'))] })
+                if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:ERROR'))] })
+                return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:SENDCARDS:SUCCESS:DISABLED'))] })
               })
             }
 
@@ -277,8 +277,8 @@ module.exports = {
 
           case 'backgroundurl': {
             updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { background: message.parameters.slice(2).join(' ') } } }, err => {
-              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:ERROR'))] })
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { BACKGROUND: message.parameters.slice(2).join(' ') }))] })
+              if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:ERROR'))] })
+              return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { BACKGROUND: message.parameters.slice(2).join(' ') }))] })
             })
             break
           }
@@ -293,8 +293,8 @@ module.exports = {
             }
 
             updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
-              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))] })
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: message.parameters[2] }))] })
+              if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))] })
+              return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: message.parameters[2] }))] })
             })
             break
           }
@@ -303,8 +303,8 @@ module.exports = {
             if (!hexRegexTester.test(message.parameters[2])) return sendHelp()
 
             updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { overlay: { color: message.parameters[2] } } } }, err => {
-              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
+              if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
+              return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
             })
 
             break
@@ -312,16 +312,16 @@ module.exports = {
 
           case 'title': {
             updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { title: message.parameters.slice(2).join(' ') } } }, err => {
-              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:ERROR'))] })
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:SUCCESS', { TITLE: message.parameters.slice(2).join(' ') }))] })
+              if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:ERROR'))] })
+              return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:TITLE:SUCCESS', { TITLE: message.parameters.slice(2).join(' ') }))] })
             })
             break
           }
 
           case 'subtitle': {
             updateGuildConfig(message.guild, { column: 'welcome', newconfig: { welcomecard: { subtitle: message.parameters.slice(2).join(' ') } } }, err => {
-              if (err) return message.channel.send({ embeds: [error(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:ERROR'))] })
-              return message.channel.send({ embeds: [success(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:SUCCESS', { SUBTITLE: message.parameters.slice(2).join(' ') }))] })
+              if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:ERROR'))] })
+              return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::CONFIGURECARDS:SUBTITLE:SUCCESS', { SUBTITLE: message.parameters.slice(2).join(' ') }))] })
             })
             break
           }
@@ -343,8 +343,8 @@ module.exports = {
             if (!message.mentions.roles.first()) return viewConfigFallback()
 
             addJoinRole(message.guild, message.mentions.roles.first(), err => {
-              if (err) return message.reply({ embeds: [error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
-              return message.reply({ embeds: [success(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
+              if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::GIVEROLE:ERROR'))] })
+              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
             })
 
             break
@@ -354,8 +354,8 @@ module.exports = {
             if (!message.mentions.roles.first()) return viewConfigFallback()
 
             removeJoinRole(message.guild, message.mentions.roles.first(), err => {
-              if (err) return message.reply({ embeds: [error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
-              return message.reply({ embeds: [success(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
+              if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'WELCOME::REMOVEROLE:ERROR'))] })
+              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: message.mentions.roles.first() }))] })
             })
 
             break

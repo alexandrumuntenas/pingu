@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const { approveSuggestion, rejectSuggestion, addNoteToSuggestion } = require('../../modules/suggestions')
-const { error, success, info } = require('../../functions/defaultMessages')
+const { plantillas } = require('../../functions/messageManager')
 
 module.exports = {
   name: 'suggestion',
@@ -19,22 +19,22 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'approve': {
         approveSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTION::APPROVE:ERROR'))] })
-          return interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTION::APPROVE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTION::APPROVE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTION::APPROVE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'reject': {
         rejectSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTION::REJECT:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTION::REJECT:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTION::REJECT:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTION::REJECT:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'addnote': {
         addNoteToSuggestion(interaction.member, interaction.options.getString('suggestion'), interaction.options.getString('note'), err => {
-          if (err) return interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTION::ADDNOTE:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTION::ADDNOTE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTION::ADDNOTE:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTION::ADDNOTE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
@@ -42,7 +42,7 @@ module.exports = {
         break
       } */
       default: {
-        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

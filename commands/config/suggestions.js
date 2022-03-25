@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const { ChannelType } = require('discord-api-types/v9')
 const { updateGuildConfig } = require('../../functions/guildDataManager')
-const { success, info, error } = require('../../functions/defaultMessages')
+const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -25,74 +25,74 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'dmupdates': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
-          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
-          else interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
+          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
         })
         break
       }
       case 'setlogs': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { logs: interaction.options.getChannel('channel').id } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETLOGS:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETLOGS:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETLOGS:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETLOGS:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setchannel': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { channel: interaction.options.getChannel('channel').id } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setreviewer': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { reviewer: interaction.options.getRole('role').id } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETREVIEWER:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETREVIEWER:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETREVIEWER:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETREVIEWER:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
       }
       case 'setcooldown': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { cooldown: interaction.options.getInteger('cooldown') } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:SUCCESS', { COOLDOWN: interaction.options.getInteger('cooldown') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:SUCCESS', { COOLDOWN: interaction.options.getInteger('cooldown') }))] })
         })
         break
       }
       /*
       case 'communitybefore': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { communitybefore: interaction.options.getBoolean('enable') } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ERROR'))] })
-          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ENABLED'))] })
-          else interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:DISABLED'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ERROR'))] })
+          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:ENABLED'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::COMMUNITYBEFORE:DISABLED'))] })
         })
         break
       }
       */
       case 'communityafter': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { communityafter: interaction.options.getBoolean('enable') } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ERROR'))] })
-          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ENABLED'))] })
-          else interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:DISABLED'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ERROR'))] })
+          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:ENABLED'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::COMMUNITYAFTER:DISABLED'))] })
         })
         break
       }
       case 'votingtimelimit': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { voting: { timelimit: interaction.options.getInteger('time') } } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::VOTINGTIMELIMIT:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::VOTINGTIMELIMIT:SUCCESS', { TIME: interaction.options.getInteger('time') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::VOTINGTIMELIMIT:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::VOTINGTIMELIMIT:SUCCESS', { TIME: interaction.options.getInteger('time') }))] })
         })
         break
       }
       case 'setvotingchannel': {
         updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { voting: { channel: interaction.options.getChannel('channel').id } } }, (err) => {
-          if (err) interaction.editReply({ embeds: [error(i18n(locale, 'SUGGESTIONS::SETVOTINGCHANNEL:ERROR'))] })
-          interaction.editReply({ embeds: [success(i18n(locale, 'SUGGESTIONS::SETVOTINGCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETVOTINGCHANNEL:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETVOTINGCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       default: {
-        interaction.editReply({ embeds: [info(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

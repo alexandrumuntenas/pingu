@@ -21,7 +21,7 @@ module.exports.createSuggestion = (member, suggestion, callback) => {
       return callback()
     }
 
-    module.exports.afterCreatingSuggestion(member, suggestionId)
+    module.exports.events.afterCreatingSuggestion(member, suggestionId)
 
     return callback(suggestionId)
   })
@@ -49,18 +49,12 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
 module.exports.getSuggestions = (guild, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, rows) => {
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, suggestions) => {
     if (err) return Consolex.handleError(err)
 
-    const suggestions = []
+    if (Object.prototype.hasOwnProperty.call(suggestions, '0')) return callback(suggestions)
 
-    if (Object.prototype.hasOwnProperty.call(rows, '0')) {
-      for (let i = 0; i < rows.length; i++) {
-        suggestions.push(rows[i])
-      }
-    }
-
-    return callback(suggestions)
+    return callback()
   })
 }
 
@@ -75,7 +69,7 @@ module.exports.getSuggestions = (guild, callback) => {
 module.exports.getSuggestion = (guild, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], (err, rows) => {
+  Database.query('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], async (err, rows) => {
     if (err) return Consolex.handleError(err)
 
     if (Object.prototype.hasOwnProperty.call(rows, '0')) {
@@ -84,6 +78,8 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
       } catch {
         rows[0].notes = []
       }
+
+      rows[0].author = await guild.members.cache.get(rows[0].author) // skipcq: JS-0040
       return callback(rows[0])
     }
     return callback()
@@ -106,7 +102,7 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
       return callback(err)
     }
 
-    module.exports.afterSuggestionApproval(member, suggestionId)
+    module.exports.events.afterSuggestionApproval(member, suggestionId)
     return callback(err)
   })
 }
@@ -126,7 +122,7 @@ module.exports.rejectSuggestion = (member, suggestionId, callback) => {
       Consolex.handleError(err)
       return callback(err)
     }
-    module.exports.afterSuggestionRejection(member, suggestionId)
+    module.exports.events.afterSuggestionRejection(member, suggestionId)
     return callback(err)
   })
 }
@@ -148,7 +144,7 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
         Consolex.handleError(err)
         return callback(err)
       }
-      module.exports.afterAddingANoteToASuggestion(member, suggestionId, note)
+      module.exports.events.afterAddingANoteToASuggestion(member, suggestionId, note)
       return callback()
     })
   })
@@ -180,42 +176,55 @@ module.exports.getMemberSuggestions = (member, callback) => {
 
 const { getGuildConfig } = require('../functions/guildDataManager')
 const { MessageEmbed } = require('discord.js')
-const unixTime = require('unix-time')
 const i18n = require('../i18n/i18n')
+
+module.exports.events = {}
+
+/** Estructura prederminada de los mensajes enviados a través de los canales */
+
+const defaultEmbed = (member, suggestion) => {
+  const embed = new MessageEmbed()
+    .setAuthor({ name: member.user.tag || 'Mysterious User#0000', iconURL: member.user.displayAvatarURL() || 'https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png' })
+    .addField(':bulb: Submitter', `${suggestion.author.user.username || 'Mysterious User'}#${suggestion.author.user.discriminator || '0000'}`, true)
+    .addField(':pencil: Suggestion', suggestion.suggestion)
+    .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() }).setTimestamp()
+  return embed
+}
+
+/** Estructura prederminada de los mensajes enviados a través de MD */
+
+const defaultDMEmbed = (guild) => {
+  const embed = new MessageEmbed()
+    .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
+    .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
+
+  return embed
+}
+
+const messageManager = require('../functions/messageManager')
 
 /** The actions taken after creating the suggestion */
 
-module.exports.afterCreatingSuggestion = (member, suggestionId) => {
+module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          const suggestionNotification = new MessageEmbed()
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion)
             .setColor('#dd9323')
-            .setThumbnail(member.user.displayAvatarURL())
-            .addField(':bulb: Submitter', member.user.tag, true)
-            .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':clock2: Creation Date', `<t:${unixTime(suggestion.timestamp)}>`, true)
-            .addField(':id: Identificador', `${suggestion.id}`, true)
-            .setFooter({ text: member.guild.name, iconURL: member.guild.iconURL() })
-          channel.send({ embeds: [suggestionNotification] })
-        }
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::CREATED'))
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
-        const suggestionNotificationForDM = new MessageEmbed()
-          .setAuthor({ name: member.guild.name, iconURL: member.guild.iconURL() })
-          .setColor('#dd9323')
-          .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::REGISTEREDSUCCESSFULLY', { AUTHOR: member, SUGGESTIONID: `\`${suggestion.id}\`` }))
-          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-
-        try {
-          member.user.send({ embeds: [suggestionNotificationForDM] })
-        } catch (err) {
-          Consolex.handleError(err)
-        }
+        messageManager.acciones.enviarMD(suggestion.author, {
+          embeds: [
+            defaultDMEmbed(member.guild)
+              .setColor('#dd9323')
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::REGISTEREDSUCCESSFULLY', { AUTHOR: suggestion.author, SUGGESTIONID: `\`${suggestion.id}\`` }))
+          ]
+        })
       }
     })
   })
@@ -223,37 +232,33 @@ module.exports.afterCreatingSuggestion = (member, suggestionId) => {
 
 /** Actions taken after a suggestion is approved. */
 
-module.exports.afterSuggestionApproval = (member, suggestionId) => {
+module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-      const author = member.guild.members.cache.get(suggestion.author)
-      if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          const suggestionNotification = new MessageEmbed().setColor('#05d43f')
-            .setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
-            .setTitle('Approved a suggestion')
-            .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':bulb: Submitter', `${author}`, true)
-            .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
-            .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() }).setTimestamp()
-          channel.send({ embeds: [suggestionNotification] })
-        }
+      if (guildConfig.suggestions.logs) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::APPROVED'))
+            .addField(`:white_check_mark: ${i18n(guildConfig.common.language || 'es', 'APPROVEDBY')}`, `${member} \`[${member.id}]\``, false)
+          ]
+        })
+      } else if (guildConfig.suggestions.channel) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::APPROVED'))
+            .addField(`:white_check_mark: ${i18n(guildConfig.common.language || 'es', 'APPROVEDBY')}`, `${member} \`[${member.id}]\``, false)
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
-        const suggestionNotificationForDM = new MessageEmbed()
-          .setAuthor({ name: member.guild.name, iconURL: member.guild.iconURL() })
-          .setColor('#05d43f')
-          .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::APPROVEDSUCCESSFULLY', { AUTHOR: author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
-          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-
-        try {
-          author.user.send({ embeds: [suggestionNotificationForDM] })
-        } catch (err) {
-          Consolex.handleError(err)
-        }
+        messageManager.acciones.enviarMD(suggestion.author, {
+          embeds: [
+            defaultDMEmbed(member.guild)
+              .setColor('#05d43f')
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::APPROVEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
+          ]
+        })
       }
     })
   })
@@ -261,38 +266,33 @@ module.exports.afterSuggestionApproval = (member, suggestionId) => {
 
 /** Actions taken after a suggestion is rejected. */
 
-module.exports.afterSuggestionRejection = (member, suggestionId) => {
+module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-      const author = member.guild.members.cache.get(suggestion.author)
-      if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          const suggestionNotification = new MessageEmbed().setColor('#cf000f')
-            .setAuthor({ name: member.user.tag, iconURL: member.user.displayAvatarURL() })
-            .setTitle('Rejected a suggestion')
-            .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':bulb: Submitter', `${author}`, true)
-            .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
-            .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() })
-            .setTimestamp()
-          channel.send({ embeds: [suggestionNotification] })
-        }
+      if (guildConfig.suggestions.logs) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::REJECTED'))
+            .addField(`:x: ${i18n(guildConfig.common.language || 'es', 'REJECTEDBY')}`, `${member} \`[${member.id}]\``, false)
+          ]
+        })
+      } else if (guildConfig.suggestions.channel) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::REJECTED'))
+            .addField(`:x: ${i18n(guildConfig.common.language || 'es', 'REJECTEDBY')}`, `${member} \`[${member.id}]\``, false)
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
-        const suggestionNotificationForDM = new MessageEmbed()
-          .setAuthor({ name: member.guild.name, iconURL: member.guild.iconURL() })
-          .setColor('#dd9323')
-          .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::REJECTEDSUCCESSFULLY', { AUTHOR: author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
-          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-
-        try {
-          member.user.send({ embeds: [suggestionNotificationForDM] })
-        } catch (err) {
-          Consolex.handleError(err)
-        }
+        messageManager.acciones.enviarMD(suggestion.author, {
+          embeds: [
+            defaultDMEmbed(member.guild)
+              .setColor('#dd9323')
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::REJECTEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\`` }))
+          ]
+        })
       }
     })
   })
@@ -300,41 +300,35 @@ module.exports.afterSuggestionRejection = (member, suggestionId) => {
 
 /** Actions taken after adding a note to a suggestion */
 
-module.exports.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
+module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-      const author = member.guild.members.cache.get(suggestion.author)
-      if (guildConfig.suggestions.channel) {
-        const channel = member.guild.channels.cache.get(guildConfig.suggestions.channel)
-
-        if (channel) {
-          const suggestionNotification = new MessageEmbed()
+      if (guildConfig.suggestions.logs) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
+          embeds: [defaultEmbed(member, suggestion)
             .setColor('#dd9323')
-            .setAuthor({ name: `${member.user.tag}`, iconURL: member.user.displayAvatarURL() })
-            .setTitle('Added a new note to a suggestion')
-            .setThumbnail(author.user.displayAvatarURL())
-            .addField(':bulb: Submitter', `${author.user.username}#${author.user.discriminator}`, true)
-            .addField(':pencil: Suggestion', suggestion.suggestion)
-            .addField(':clipboard: Staff Note', note)
-            .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() })
-            .setTimestamp()
-          channel.send({ embeds: [suggestionNotification] })
-        }
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::NOTEADDED'))
+            .addField(`:clipboard: ${i18n(guildConfig.common.language || 'es', 'STAFFNOTE')}`, note)
+          ]
+        })
+      } else if (guildConfig.suggestions.channel) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
+          embeds: [defaultEmbed(member, suggestion)
+            .setColor('#dd9323')
+            .setTitle(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS_EVENTS::NOTEADDED'))
+            .addField(`:clipboard: ${i18n(guildConfig.common.language || 'es', 'STAFFNOTE')}`, note)
+          ]
+        })
       }
 
       if (guildConfig.suggestions.dmupdates) {
-        const suggestionNotificationForDM = new MessageEmbed()
-          .setAuthor({ name: member.guild.name, iconURL: member.guild.iconURL() })
-          .setColor('#dd9323')
-          .setDescription(i18n(guildConfig.common.language | 'es', 'SUGGESTIONS::NOTEADDEDSUCCESSFULLY', { AUTHOR: author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\``, NOTE: note }))
-          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-          .setTimestamp()
-
-        try {
-          author.user.send({ embeds: [suggestionNotificationForDM] })
-        } catch (err) {
-          Consolex.handleError(err)
-        }
+        messageManager.acciones.enviarMD(suggestion.author, {
+          embeds: [
+            defaultDMEmbed(member.guild)
+              .setColor('#dd9323')
+              .setDescription(i18n(guildConfig.common.language || 'es', 'SUGGESTIONS::NOTEADDEDSUCCESSFULLY', { AUTHOR: suggestion.author, REVIEWER: member.user.tag, SUGGESTIONID: `\`${suggestion.id}\``, NOTE: note }))
+          ]
+        })
       }
     })
   })

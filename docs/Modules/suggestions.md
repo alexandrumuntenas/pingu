@@ -17,21 +17,48 @@ The commands listed below can only be used by the server owner, or by persons wi
 >
 > Disable this module using `/bot modules disable module: suggestions`.
 
-| Command | Function | Example |
-| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| /suggestions viewconfig | Command to view the acutal config of the module. | /suggestions viewconfig |
-| /suggestions setchannel channel:\<Channel>| Command to set where the suggestions are sent. | /suggestions setchannel channel:#suggestions |
-| /suggestions unsetchannel | Command to unset the suggestions channel. | /suggestions unsetchannel |
-| /suggestions setrevisedchannel channel:\<Channel> | Command to set where revised suggestions are sent. | /suggestions revisedchannel channel:#revisedsuggestions |
-| /suggestions unsetrevisedchannel | Command to unset the revised suggestions channel. | /suggestions unsetrevisedchannel |
+```javascript
+
+// Enable DM updates
+/suggestions dmupdates enable: <Boolean>
+
+// Set the channel to send suggestions updates to
+/suggestions setlogs channel: <TextChannel>
+
+// Set the channel where newly created suggestions are sent
+/suggestions setchannel channel: <TextChannel>
+
+// Set the reviewer role
+/suggestions setreviewer role: <Role>
+
+// Set the cooldown for suggestions creation
+/suggestions setcooldown cooldown: <Integer>
+
+// Set if the community has to vote for suggestions after approval
+/suggestions communityafter enable: <Boolean>
+
+// Set the maximum time for the community to vote for suggestions after approval
+/suggestions votingtimelimit time: <Integer>
+
+// Set the channel where the suggestions are sent for community voting
+/suggestions setvotingchannel channel: <TextChannel>
+```
 
 ## Commands to handle suggestions
 
-| Command | Function | Example |
-| --- | --- | --- |
-| /suggestion approve id:\<ID> | Command to approve a suggestion. | /suggestion approve id:1234567890 |
-| /suggestion reject id:\<ID> reason:\<Reason>| Command to dismiss a suggestion. | /suggestion reject id:1234567890 reason:Something interesting |
+```javascript
+// Approve a suggestion
+/suggestion approve suggestion: <String[The Suggestion ID]>
+
+// Reject a suggestion
+/suggestion reject suggestion: <String[The Suggestion ID]>
+
+// Add a note to a suggestion
+/suggestion addnote suggestion: <String[The Suggestion ID]> note: <String[The Note]>
+```
 
 ## Users Commands
 
-Users should use the `/suggest` command to submit suggestions.
+Users should use the `/suggest` interaction or the `suggest` command to submit suggestions.
+
+And the interaction `/mysuggestions` or the command `mysuggestions` to see the suggestions that the user has submitted.
