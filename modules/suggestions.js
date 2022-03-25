@@ -79,7 +79,7 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
         rows[0].notes = []
       }
 
-      rows[0].author = await guild.members.cache.get(rows[0].author)
+      rows[0].author = await guild.members.cache.get(rows[0].author) // skipcq: JS-0040
       return callback(rows[0])
     }
     return callback()
@@ -180,6 +180,8 @@ const i18n = require('../i18n/i18n')
 
 module.exports.events = {}
 
+/** Estructura prederminada de los mensajes enviados a través de los canales */
+
 const defaultEmbed = (member, suggestion) => {
   const embed = new MessageEmbed()
     .setAuthor({ name: member.user.tag || 'Mysterious User#0000', iconURL: member.user.displayAvatarURL() || 'https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png' })
@@ -188,6 +190,8 @@ const defaultEmbed = (member, suggestion) => {
     .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() }).setTimestamp()
   return embed
 }
+
+/** Estructura prederminada de los mensajes enviados a través de MD */
 
 const defaultDMEmbed = (guild) => {
   const embed = new MessageEmbed()
