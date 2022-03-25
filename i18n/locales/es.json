@@ -215,5 +215,9 @@
   "SUGGESTION::ADDNOTE:ERROR": "Se ha producido un error al intentar añadir una nota a la sugerencia.",
   "SUGGESTION::ADDNOTE:SUCCESS": "Se ha añadido la nota a la sugerencia con identificador %SUGGESTIONID%.",
   "OBTAININGDATA": "Obteniendo datos...",
-  "PROCESSINGDATA": "Procesando datos..."
+  "PROCESSINGDATA": "Procesando datos...",
+  "SUGGESTIONS_EVENTS::CREATED": "Ha creado una sugerencia",
+  "SUGGESTIONS_EVENTS::APPROVED": "Ha aprobado una sugerencia",
+  "SUGGESTIONS_EVENTS::REJECTED": "Ha rechazado una sugerencia",
+  "SUGGESTIONS_EVENTS::NOTEADDED": "Ha añadido una nota a una sugerencia"
 }

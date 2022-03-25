@@ -1,9 +1,8 @@
 === SUGGESTIONS MODULE ===
 
 = NOW WORKING =
-Después de haber hecho que se desencadenen X acciones después de X evento, ahora hay que ajustarlo a las necesidades reales.
-Además, queda pendiente hacer el sistema de vetado de usuarios. Y ver por qué no se guarda en la base de datos el revisor
-de la sugerencia.
+Con este módulo queda por seguir con las votaciones y queda pendiente hacer el sistema de vetado de usuarios.
+Para sumar, se deberá reformar los commandHandler e interactionHandler para comprobar que el usuario tiene X rol, si es posible.
 
 = CONFIGURATION STRUCTURE =
 
