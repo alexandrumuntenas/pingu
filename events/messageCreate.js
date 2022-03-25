@@ -40,11 +40,7 @@ module.exports = {
 
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
-            if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
-              return commandToExecute.runCommand(message.guild.configuration.common.language, message)
-            } else {
-              return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
-            }
+            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] });
           } else if (message.guild.configuration.customcommands.enabled) {
             CooldownManager.add(message.member, message.guild, message.commandName)
             return runCustomCommand(message, message.commandName)
