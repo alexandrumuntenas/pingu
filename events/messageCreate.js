@@ -15,7 +15,6 @@ module.exports = {
   execute: async message => {
     if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
 
-    // TODO: Convertir messageCreate en solo una interfaz de una función
     getGuildConfig(message.guild, async guildConfig => {
       message.guild.configuration = guildConfig
 
