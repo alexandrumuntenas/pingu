@@ -167,6 +167,8 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 
   if (guildConfig.customcommands.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'customcommands') || [])
 
+  if (guildConfig.autoreplies.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'autoreplies') || [])
+
   interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || [])
 
   if (!deployConfigInteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
