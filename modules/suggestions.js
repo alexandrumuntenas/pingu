@@ -235,7 +235,14 @@ module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
 module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-      if (guildConfig.suggestions.channel) {
+      if (guildConfig.suggestions.logs) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
+            .setTitle('Approved a suggestion')
+            .addField(':white_check_mark: Approved by', `${member} \`[${member.id}]\``, false)
+          ]
+        })
+      } else if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
           embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
             .setTitle('Approved a suggestion')
@@ -262,7 +269,14 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
 module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-      if (guildConfig.suggestions.channel) {
+      if (guildConfig.suggestions.logs) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
+          embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
+            .setTitle('Rejected a suggestion')
+            .addField(':white_check_mark: Rejected by', `${member} \`[${member.id}]\``, false)
+          ]
+        })
+      } else if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
           embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
             .setTitle('Rejected a suggestion')
@@ -289,7 +303,15 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
 module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
   getGuildConfig(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
-      if (guildConfig.suggestions.channel) {
+      if (guildConfig.suggestions.logs) {
+        messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
+          embeds: [defaultEmbed(member, suggestion)
+            .setColor('#dd9323')
+            .setTitle('Added a new note to a suggestion')
+            .addField(':clipboard: Staff Note', note)
+          ]
+        })
+      } else if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
           embeds: [defaultEmbed(member, suggestion)
             .setColor('#dd9323')
