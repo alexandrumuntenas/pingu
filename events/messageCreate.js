@@ -10,7 +10,7 @@ const { runCustomCommand } = require('../modules/customcommands')
 const { getExperience } = require('../modules/leveling')
 const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
 
-function ejecutarFunciones(message) { // skipcq: JS-D1001
+function ejecutarFunciones (message) { // skipcq: JS-D1001
   if (message.guild.configuration.leveling.enabled) {
     getExperience(message)
   }
