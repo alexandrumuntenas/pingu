@@ -1,6 +1,6 @@
 {
   "name": "pingu",
-  "version": "22.1.0",
+  "version": "22.2.0",
   "description": "Bot de Discord by Alexandru Theodor Muntenas",
   "main": "client.js",
   "dependencies": {
@@ -40,9 +40,6 @@
     "superagent": "^7.0.2",
     "unix-time": "^1.0.1"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexandrumuntenas/pingu.git"
@@ -59,5 +56,8 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0"
+  },
+  "scripts": {
+    "dev": "nodemon . --ignore cooldowns.json"
   }
 }
