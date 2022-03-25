@@ -28,7 +28,7 @@ module.exports = {
         [message.commandName] = message.parameters
         message.parameters.shift()
 
-        if (!message.commandName) return await process.Client.commands.get('help').runCommand(message.guild.configuration.common.language, message)
+        if (!message.commandName) return process.Client.commands.get('help').runCommand(message.guild.configuration.common.language, message)
 
         const commandToExecute = process.Client.commands.get(message.commandName)
 
@@ -41,16 +41,16 @@ module.exports = {
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
             if (Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand')) {
-              await commandToExecute.runCommand(message.guild.configuration.common.language, message)
+              return commandToExecute.runCommand(message.guild.configuration.common.language, message)
             } else {
-              message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
+              return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
             }
           } else if (message.guild.configuration.customcommands.enabled) {
             CooldownManager.add(message.member, message.guild, message.commandName)
-            runCustomCommand(message, message.commandName)
+            return runCustomCommand(message, message.commandName)
           }
         } else {
-          message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
         }
       } else {
         if (message.guild.configuration.leveling.enabled) {
