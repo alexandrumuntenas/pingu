@@ -17,8 +17,6 @@ module.exports.getGuildConfig = (guild, callback) => {
     if (err) Consolex.handleError(err)
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      if (result[0].clientVersion === 'pingu@1.0.0') return module.exports.migrateGuildData(guild, () => module.exports.getGuildConfig(guild, callback))
-
       Object.keys(result[0]).forEach(module => {
         try {
           result[0][module] = JSON.parse(result[0][module])
