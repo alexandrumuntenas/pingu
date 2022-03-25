@@ -1,9 +1,14 @@
 const { Collection } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const Consolex = require('../functions/consolex')
+const Consolex = require('./consolex')
 const fs = require('fs')
 
-module.exports = () => {
+/**
+ * Carga los comandos e interacciones del bot.
+ * @returns {Collection} - Colección con los comandos y las interacciones.
+ */
+
+module.exports.cargarComandoseInteracciones = () => {
   const commands = new Collection()
 
   function load (directory) {
@@ -17,7 +22,6 @@ module.exports = () => {
 
         if (Object.prototype.hasOwnProperty.call(command, 'name')) {
           if (Object.prototype.hasOwnProperty.call(command, 'interactionData')) {
-            //! LAS INTERACCIONES SERÁN GESTIONADAS POR UN SUBPROCESO
             command.interactionData.setName(command.name).setDescription(command.description || 'Description not set')
           } else {
             command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
@@ -41,3 +45,44 @@ module.exports = () => {
 
   return commands
 }
+
+const { unlinkSync, stat, readdirSync, mkdirSync } = require('fs')
+const consolex = require('./consolex')
+
+/** Función que elimina los archivos temporales */
+
+function eliminarArchivos (files) {
+  for (const file of files) {
+    stat(`./modules/temp/${file}`, (err, stats) => {
+      if (err) consolex.handleError(err)
+
+      const fileDate = new Date(stats.birthtime)
+      const now = new Date()
+
+      if (now - fileDate >= 600000) {
+        consolex.info(`Eliminador de Archivos temporales ha eliminado ${file}`)
+        unlinkSync(`./modules/temp/${file}`)
+      }
+    })
+  }
+}
+
+/**
+ * Comprobar si existe directorio de archivos temporales y si no existe crearlo; luego ejecutar la función eliminarArchivos
+ */
+
+module.exports.eliminadorArchivosTemporales = () => {
+  try {
+    eliminarArchivos(readdirSync('./modules/temp'))
+  } catch {
+    mkdirSync('./modules/temp')
+    consolex.info('Eliminador de Archivos temporales ha creado el directorio de archivos temporales')
+    eliminarArchivos(readdirSync('./modules/temp'))
+  }
+}
+
+/** Establecer intervalo en el cual se ejecutará el eliminador de archivos temporales */
+
+setInterval(() => {
+  module.exports.eliminadorArchivosTemporales()
+}, 300000)
