@@ -27,12 +27,9 @@ module.exports.getGuildConfig = (guild, callback) => {
 
       if (callback) callback(result[0] || {})
     } else {
-      //! Será eliminado en la actualización de junio.
-      const topChannel = guild.channels.cache.filter(channel => channel.type === 'GUILD_TEXT').find(x => x.position === 0) || 0
-      Database.query('INSERT INTO `guildData` (`guild`, `welcomeChannel`, `farewellChannel`, `levelsChannel`) VALUES (?, ?, ?, ?)', [guild.id, topChannel.id, topChannel.id, topChannel.id], err2 => {
+      Database.query('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id], err2 => {
         if (err2) Consolex.handleError(err2)
-
-        return module.exports.getGuildConfig(guild, callback)
+        module.exports.getGuildConfig(guild, callback)
       })
     }
   })
