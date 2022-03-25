@@ -30,7 +30,7 @@ links:
   target: blank
 
 - text: Add to Discord
-  link: https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=1933044831&scope=bot%20applications.commands
+  link: https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands
   icon: diff-added
   target: blank
 
