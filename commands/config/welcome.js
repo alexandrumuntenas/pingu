@@ -234,7 +234,7 @@ module.exports = {
       }
 
       case 'setchannel': {
-        if (!message.mentions.channel.first()) return sendHelp()
+        if (!message.mentions.channels.first()) return sendHelp()
 
         updateGuildConfig(message.guild, { column: 'welcome', newconfig: { channel: message.mentions.channel.first().id } }, err => {
           if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'WELCOME::SETCHANNEL:ERROR'))] })
