@@ -1,3 +1,7 @@
+---
+icon: checklist
+order: 1000
+---
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
