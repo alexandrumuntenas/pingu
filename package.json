@@ -29,7 +29,6 @@
     "millify": "^4.0.0",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3",
-    "ora-classic": "^5.4.2",
     "radio-browser": "^2.1.9",
     "random-int": "^3.0.0",
     "randomstring": "^1.2.1",
@@ -58,6 +57,7 @@
     "eslint-plugin-promise": "^6.0.0"
   },
   "scripts": {
-    "dev": "nodemon . --ignore cooldowns.json"
+    "dev": "nodemon . --ignore cooldowns.json",
+    "checktranslations": "node i18n/checktranslations.js"
   }
 }
