@@ -48,3 +48,28 @@ The commands listed below can only be used by the server owner, or by persons wi
 Users should use the `/suggest` interaction or the `suggest` command to submit suggestions.
 
 And the interaction `/mysuggestions` or the command `mysuggestions` to see the suggestions that the user has submitted.
+
+## How does it work?
+### DM Updates
+
+Every action that is taken with a person's suggestion, Pingu will notify (if configured) via DM to its author. DM activity logging is enabled by using the `/suggestions dmupdates enable: true` interaction.
+
+Each time one of the following actions related to a suggestion happens:
+- Sending suggestion
+- Suggestion approval
+- Suggestion rejection
+- Note added by the staff to the suggestion
+
+The author will receive a DM, if enabled.
+
+### Suggestions Logging
+
+When a suggestion is approved or rejected, or a note has been added to it, if a "log" channel has been configured, the bot will send activity updates to that channel. In case it does not exist, notifications will be sent to the channel where new suggestions are created, in which the "Suggestion creation" message will be updated. To enable this, please use the `/suggestions setlogs channel: <TextChannel>` interaction.
+
+### Approving or Rejecting Suggestions
+
+To approve or reject a suggestion, use their respective commands `/suggestion approve suggestion: <Suggestion ID>` or `/suggestion reject suggestion: <Suggestion ID>`.
+
+### Adding Notes to Suggestions
+
+To add a note to a suggestion, use the `/suggestion addnote suggestion: <Suggestion ID> note: <Note>` command. After adding the note, if DM updates are enabled, the author will receive a message. Also, if the log channel is configured, the event will be logged.
