@@ -61,7 +61,7 @@
   "UPDATE::ERROR": "An error occurred while trying to load interactions.",
   "UPDATE::SUCCESS": "The interactions have been successfully loaded.",
   "COOLDOWN": "The command is in cooldown. Wait %COOLDOWN% seconds before using it again.",
-  "HELP::HELPINGGUILDS": "Helping more than %GUILDS% servers.",
+  "HELP::HELPINGGUILDS": "Helping %GUILDS% servers.",
   "SERVER::EMBED:TITLE": "Server information.",
   "SERVER::EMBED:SERVERNAME": "Server name",
   "SERVER::EMBED:SERVERID": "Server ID",

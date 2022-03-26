@@ -61,7 +61,7 @@
   "UPDATE::ERROR": "Se ha producido un error al intentar cargar las interacciones.",
   "UPDATE::SUCCESS": "Las interacciones se han cargado correctamente.",
   "COOLDOWN": "El comando está en cooldown. Espere %COOLDOWN% segundos antes de volver a usarlo.",
-  "HELP::HELPINGGUILDS": "Ayudando a más de %GUILDS% servidores.",
+  "HELP::HELPINGGUILDS": "Ayudando a %GUILDS% servidores.",
   "SERVER::EMBED:TITLE": "Información del servidor",
   "SERVER::EMBED:SERVERNAME": "Nombre del servidor",
   "SERVER::EMBED:SERVERID": "ID del servidor",
