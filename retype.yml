@@ -3,7 +3,7 @@ output: .retype
 url: alexandrumuntenas.github.io/pingu/
 branding:
   title: Pingu
-  label: 22T1
+  label: pre-22T2
   logo: botavatar.png
   logoAlign: left
 
@@ -19,14 +19,14 @@ links:
   icon: issue-opened
   target: blank
 
-- text: Discussions
-  link: https://github.com/alexandrumuntenas/pingu/discussions
-  icon: comment-discussion
-  target: blank
-
 - text: GitHub
   link: https://github.com/alexandrumuntenas/pingu
   icon: mark-github
+  target: blank
+
+- text: Discord Support Server
+  link: https://discord.com/invite/dgFHBSuUst
+  icon: comment-discussion
   target: blank
 
 - text: Add to Discord
