@@ -42,20 +42,6 @@ module.exports = {
         })
         break
       }
-      case 'setreviewer': {
-        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { reviewer: interaction.options.getRole('role').id } }, (err) => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETREVIEWER:ERROR'))] })
-          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETREVIEWER:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
-        })
-        break
-      }
-      case 'setcooldown': {
-        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { cooldown: interaction.options.getInteger('cooldown') } }, (err) => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:ERROR'))] })
-          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETCOOLDOWN:SUCCESS', { COOLDOWN: interaction.options.getInteger('cooldown') }))] })
-        })
-        break
-      }
       default: {
         interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
