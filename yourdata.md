@@ -20,7 +20,7 @@ Guild ID, User ID, Role ID, Message ID, Message Content, and blah blah blah blah
 Not for another, but 99% of the neologisms (specialized terms) that are used when writing a privacy policy, I do not understand them. And besides, everyone is supposed to understand what happens to their data, right?
 
 ## Chapter 1: The Guild ID
-Let's start with the first chapter of our little story. We talked about the Guild ID, an identifier that identifies (it is the function of an identifier) the Discord servers. 
+Let's start with the first chapter of our little story. We talked about the Guild ID, an identifier that identifies (it is the function of an identifier) the Discord servers.
 
 When Pingu is added to a server, in our database (Maria DB), a record is added in which the bot modules are automatically configured. 
 The Guild ID is not only limited to the use of configuration (language, prefixes, etc.). Through the Guild ID, we can identify all the data that the modules have registered in our database about a server.
@@ -63,10 +63,10 @@ This is the only time the message ID is stored.
 
 ## Chapter 6: The generated files
 
-The generated files are part of the bot activity. A user enters a server and a welcome card has to be generated, heard cooking. The bot receives the action and starts working. When generating the files, there is no identifier (Guild, User, Role...) assigned to the file name. The file generator function itself generates a unique identifier of X digits that is assigned to the file and, after sending, it is deleted. 
+The generated files are part of the bot activity. A user enters a server and a welcome card has to be generated, heard cooking. The bot receives the action and starts working. When generating the files, there is no identifier (Guild, User, Role...) assigned to the file name. The file generator function itself generates a unique identifier of X digits that is assigned to the file and, after sending, it is deleted.
 
 ## The end
 
-To finish our story, remember that if you have any questions about your data, you can open a ticket on our [support server](https://discord.com/invite/q55kCfekyy) and I will assist you in the best possible way.
+To finish our story, remember that if you have any questions about your data, you can open a ticket on our [support server](https://discord.com/invite/dgFHBSuUst) and I will assist you in the best possible way.
 
-[!ref Pingu's Support Server](https://discord.com/invite/q55kCfekyy)
+[!ref Pingu's Support Server](https://discord.com/invite/dgFHBSuUst)

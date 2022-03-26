@@ -36,9 +36,9 @@
 
 ## About The Project
 
-I started Pingu as a project to learn how to program in Javascript and NodeJS, but as time went by, I realized I had something really cool on my hands. With the idea of being a free and customizable bot, we have developed super configurable and easy to use modules. 
+I started Pingu as a project to learn how to program in Javascript and NodeJS, but as time went by, I realized I had something really cool on my hands. With the idea of being a free and customizable bot, we have developed super configurable and easy to use modules.
 
-Its development began last April 4, 2021 (if I remember correctly). Initially it was called 24h (I had been inspired by a public television channel in Spain), but in May of the same year, it was renamed Wired Penguin (Wired came from the ethernet connection and Penguin, for using GNU/Linux as operating system). 
+Its development began last April 4, 2021 (if I remember correctly). Initially it was called 24h (I had been inspired by a public television channel in Spain), but in May of the same year, it was renamed Wired Penguin (Wired came from the ethernet connection and Penguin, for using GNU/Linux as operating system).
 
 Days before the end of the school year in June, Wired Penguin was officially renamed to Pingu, and since then, it has been improving considerably. Starting in July of the same year, I started working on improving the security of the bot and the database. If you want to see the code catastrophe that Pingu was hosting before September 2021,  view the repository [alexandrumuntenas/pingu-old](https://github.com/alexandrumuntenas/pingu-old).
 
@@ -50,7 +50,7 @@ Well, leaving the story behind, let's talk about what Pingu is capable of. You c
 
 Start using Pingu by adding it directly from Discord, or using this [link](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands).
 
-After adding it, run `@Pingu bot interactionupdate true` to deploy all Slash Commands. (Issue related [#221](https://github.com/alexandrumuntenas/pingu/issues/221))
+After adding it, run `@Pingu bot updateinteractions true` to deploy all Slash Commands. (Issue related [#221](https://github.com/alexandrumuntenas/pingu/issues/221))
 
 ## Roadmap
 
