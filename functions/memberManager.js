@@ -15,7 +15,7 @@ module.exports.getMember = (member, callback) => {
     if (err) Consolex.handleError(err)
 
     if (memberData && Object.prototype.hasOwnProperty.call(memberData, 0)) { //! THIS SECTION HAS TO BE REMOVED AND SPLIT IN THE FUTURE
-      Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY lvlLevel DESC, lvlExperience DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err2, result) => {
+      Database.query('SELECT member, ROW_NUMBER() OVER (ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err2, result) => {
         if (err2) Consolex.handleError(err2)
 
         if (result && Object.prototype.hasOwnProperty.call(result, '0')) {

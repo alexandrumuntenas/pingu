@@ -78,7 +78,7 @@ module.exports.sendLevelUpMessage = message => {
 module.exports.getLeaderboard = (guild, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC LIMIT 25', [guild.id], (err, members) => {
+  Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
     if (err) Consolex.handleError(err)
 
     if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) {
