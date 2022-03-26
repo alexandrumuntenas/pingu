@@ -26,12 +26,12 @@
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="/pingu/botavatar.png" rel="icon" />
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.701638048748" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.701638810153" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.701638048748" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.701638810153" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.701638048748" defer></script>
-    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.701638048748" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.701638810153" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.701638810153" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -308,6 +308,48 @@
 </doc-anchor-target>
 <p>Users should use the <code v-pre>/suggest</code> interaction or the <code v-pre>suggest</code> command to submit suggestions.</p>
 <p>And the interaction <code v-pre>/mysuggestions</code> or the command <code v-pre>mysuggestions</code> to see the suggestions that the user has submitted.</p>
+<doc-anchor-target id="how-does-it-work">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#how-does-it-work">#</doc-anchor-trigger>
+        <span>How does it work?</span>
+    </h2>
+</doc-anchor-target>
+<doc-anchor-target id="dm-updates">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#dm-updates">#</doc-anchor-trigger>
+        <span>DM Updates</span>
+    </h3>
+</doc-anchor-target>
+<p>Every action that is taken with a person&#x27;s suggestion, Pingu will notify (if configured) via DM to its author. DM activity logging is enabled by using the <code v-pre>/suggestions dmupdates enable: true</code> interaction.</p>
+<p>Each time one of the following actions related to a suggestion happens:</p>
+<ul>
+<li>Sending suggestion</li>
+<li>Suggestion approval</li>
+<li>Suggestion rejection</li>
+<li>Note added by the staff to the suggestion</li>
+</ul>
+<p>The author will receive a DM, if enabled.</p>
+<doc-anchor-target id="suggestions-logging">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#suggestions-logging">#</doc-anchor-trigger>
+        <span>Suggestions Logging</span>
+    </h3>
+</doc-anchor-target>
+<p>When a suggestion is approved or rejected, or a note has been added to it, if a &quot;log&quot; channel has been configured, the bot will send activity updates to that channel. In case it does not exist, notifications will be sent to the channel where new suggestions are created, in which the &quot;Suggestion creation&quot; message will be updated. To enable this, please use the <code v-pre>/suggestions setlogs channel: &lt;TextChannel&gt;</code> interaction.</p>
+<doc-anchor-target id="approving-or-rejecting-suggestions">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#approving-or-rejecting-suggestions">#</doc-anchor-trigger>
+        <span>Approving or Rejecting Suggestions</span>
+    </h3>
+</doc-anchor-target>
+<p>To approve or reject a suggestion, use their respective commands <code v-pre>/suggestion approve suggestion: &lt;Suggestion ID&gt;</code> or <code v-pre>/suggestion reject suggestion: &lt;Suggestion ID&gt;</code>.</p>
+<doc-anchor-target id="adding-notes-to-suggestions">
+    <h3>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#adding-notes-to-suggestions">#</doc-anchor-trigger>
+        <span>Adding Notes to Suggestions</span>
+    </h3>
+</doc-anchor-target>
+<p>To add a note to a suggestion, use the <code v-pre>/suggestion addnote suggestion: &lt;Suggestion ID&gt; note: &lt;Note&gt;</code> command. After adding the note, if DM updates are enabled, the author will receive a message. Also, if the log channel is configured, the event will be logged.</p>
 
 
 
