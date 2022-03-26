@@ -321,11 +321,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
 module.exports.addUserToBlacklist = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
   getGuildConfig(guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
-      guildConfig.suggestions.blacklist.push(user.id)
-    } else {
-      guildConfig.suggestions.blacklist = [user.id]
-    }
+    Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
     updateGuildConfig(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
