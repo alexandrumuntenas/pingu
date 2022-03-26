@@ -12,7 +12,6 @@ module.exports = {
     .addStringOption(input => input.setName('suggestion').setDescription('The suggestion').setRequired(true)),
   runInteraction (locale, interaction) {
     checkIfUserIsBlacklisted(interaction.guild, interaction.member, isBlacklisted => {
-      console.log(isBlacklisted)
       if (!isBlacklisted) {
         createSuggestion(interaction.member, interaction.options.getString('suggestion'), suggestionId => {
           if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGEST::ERROR'))] })
