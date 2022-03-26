@@ -11,7 +11,6 @@ const CooldownManager = require('../functions/cooldownManager')
  */
 
 module.exports.getExperience = message => {
-  console.log(CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience'))
   if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
     CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
     getGuildConfig(message.guild, guildConfig => {
