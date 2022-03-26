@@ -11,6 +11,9 @@ const fs = require('fs')
 module.exports.cargarComandoseInteracciones = () => {
   const commands = new Collection()
 
+  /**
+  * Carga los comandos del bot.
+   */
   function load (directory) {
     const files = fs.readdirSync(directory)
 
