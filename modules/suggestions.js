@@ -318,7 +318,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
  * @param {User} user
  */
 
-module.exports.blacklistuser = (guild, user, callback) => {
+module.exports.addUserToBlacklist = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
   getGuildConfig(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
@@ -327,7 +327,7 @@ module.exports.blacklistuser = (guild, user, callback) => {
       guildConfig.suggestions.blacklist = [user.id]
     }
 
-    updateGuildConfig(guild, { column: 'suggestions', value: { blacklist: guildConfig.suggestions.blacklist } }, err => {
+    updateGuildConfig(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
       return callback()
     })
@@ -365,10 +365,10 @@ module.exports.removeUserFromBlacklist = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
   getGuildConfig(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
-      guildConfig.suggestions.blacklist = guildConfig.suggestions.blacklist.filter(id => id !== user.id)
+      delete guildConfig.suggestions.blacklist[guildConfig.suggestions.blacklist.indexOf(user.id)]
     }
 
-    updateGuildConfig(guild, { column: 'suggestions', value: { blacklist: guildConfig.suggestions.blacklist } }, err => {
+    updateGuildConfig(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
       return callback()
     })
