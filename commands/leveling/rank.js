@@ -5,7 +5,7 @@ module.exports = {
   name: 'rank',
   module: 'leveling',
   description: '🏅 Get your rank',
-  cooldown: 10000,
+  cooldown: 1,
   runInteraction (locale, interaction) {
     generateRankCard(interaction.member, card => {
       const rankCardAttachment = new MessageAttachment(card, 'rankcard.png')

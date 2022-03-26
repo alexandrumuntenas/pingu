@@ -23,10 +23,11 @@ module.exports.add = (member, guild, command) => {
 }
 
 module.exports.check = (member, guild, commandName) => {
-  if (cooldown[`${commandName}${member.id}${guild.id}`] > Date.now()) return false
-
-  delete cooldown[`${commandName}${member.id}${guild.id}`]
-  return true
+  if (cooldown[`${commandName}${member.id}${guild.id}`] >= Date.now()) return false
+  else {
+    delete cooldown[`${commandName}${member.id}${guild.id}`]
+    return true
+  }
 }
 
 module.exports.ttl = (member, guild, commandName) => {
