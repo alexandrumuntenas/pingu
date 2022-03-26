@@ -10,9 +10,9 @@ In Pingu we have always wanted to give the user the option of being able to conf
 
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
-> Enable this module using `/bot modules enable module: welcomer`.
+> Enable this module using `/bot modules enable module: welcome`.
 >
-> Disable this module using `/bot modules disable module: welcomer`.
+> Disable this module using `/bot modules disable module: welcome`.
 
 ## Interactions
 

@@ -3,10 +3,10 @@ order: 93
 icon: light-bulb
 ---
 
-# Suggestions (IN PROGRESS)
+# Suggestions (PRW)
 
 !!!warning
-This module is still not avaliable. It will be soon.
+This module is currently in the preview phase, that is to say, in a phase in which the public's opinion is very important to improve it. If you want to make any suggestion to improve this module, please use the suggestion channel of our Discord server.
 !!!
 
 >  Do you want to allow your users to send you suggestions? Pingu can help you. This module comes with commands so you can set up a workflow quickly.
@@ -28,20 +28,9 @@ The commands listed below can only be used by the server owner, or by persons wi
 // Set the channel where newly created suggestions are sent
 /suggestions setchannel channel: <TextChannel>
 
-// Set the reviewer role
-/suggestions setreviewer role: <Role>
-
 // Set the cooldown for suggestions creation
 /suggestions setcooldown cooldown: <Integer>
 
-// Set if the community has to vote for suggestions after approval
-/suggestions communityafter enable: <Boolean>
-
-// Set the maximum time for the community to vote for suggestions after approval
-/suggestions votingtimelimit time: <Integer>
-
-// Set the channel where the suggestions are sent for community voting
-/suggestions setvotingchannel channel: <TextChannel>
 ```
 
 ## Commands to handle suggestions
