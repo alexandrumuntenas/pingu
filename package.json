@@ -20,6 +20,7 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "flipacoin": "^1.0.0",
+    "gamedig": "^4.0.2",
     "hex-rgba": "^1.0.2",
     "humanize-duration": "^3.27.1",
     "is-hexcolor": "^1.0.0",
