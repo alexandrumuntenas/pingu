@@ -341,11 +341,12 @@ module.exports.addUserToBlacklist = (guild, user, callback) => {
 module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
   getGuildConfig(guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
+    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist')) {
       return callback(guildConfig.suggestions.blacklist.includes(user.id))
+    } else {
+      // eslint-disable-next-line node/no-callback-literal
+      return callback(false)
     }
-    // eslint-disable-next-line node/no-callback-literal
-    return callback(false)
   })
 }
 

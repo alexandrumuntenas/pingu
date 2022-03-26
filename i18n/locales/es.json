@@ -214,5 +214,6 @@
   "SUGGESTIONS_EVENTS::NOTEADDED": "Ha añadido una nota a una sugerencia",
   "REJECTEDBY": "Rechazado por",
   "APPROVEDBY": "Aprobado por",
-  "STAFFNOTE": "Nota de staff"
+  "STAFFNOTE": "Nota de staff",
+  "SUGGEST::BLACKLISTED": "Te encuentras en la lista negra. No puedes realizar sugerencias."
 }

@@ -214,5 +214,6 @@
   "SUGGESTIONS_EVENTS::NOTEADDED": "Added a note to a suggestion",
   "REJECTEDBY": "Rejected by",
   "APPROVEDBY": "Approved by",
-  "STAFFNOTE": "Staff note"
+  "STAFFNOTE": "Staff note",
+  "SUGGEST::BLACKLISTED": "You are blacklisted. You are not allowed to make suggestions."
 }
