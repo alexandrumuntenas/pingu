@@ -25,6 +25,13 @@ module.exports.getGuildConfig = (guild, callback) => {
         }
       })
 
+      if (result[0].common === null) {
+        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
+          if (err2) Consolex.handleError(err2)
+          return module.exports.getGuildConfig(guild, callback)
+        })
+      }
+
       if (callback) callback(result[0] || {})
     } else {
       Database.query('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id], err2 => {
