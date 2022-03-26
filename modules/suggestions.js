@@ -174,7 +174,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
   })
 }
 
-const { getGuildConfig } = require('../functions/guildDataManager')
+const { getGuildConfig, updateGuildConfig } = require('../functions/guildDataManager')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../i18n/i18n')
 
@@ -308,6 +308,69 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
           ]
         })
       }
+    })
+  })
+}
+
+/**
+ * Prohibe que un usuario pueda crear sugerencias en el servidor
+ * @param {Guild} guild
+ * @param {User} user
+ */
+
+module.exports.blacklistuser = (guild, user, callback) => {
+  if (!callback) return new Error('Callback is required')
+  getGuildConfig(guild, guildConfig => {
+    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
+      guildConfig.suggestions.blacklist.push(user.id)
+    } else {
+      guildConfig.suggestions.blacklist = [user.id]
+    }
+
+    updateGuildConfig(guild, { column: 'suggestions', value: { blacklist: guildConfig.suggestions.blacklist } }, err => {
+      if (err) return callback(err)
+      return callback()
+    })
+  })
+}
+
+/**
+ * Comprueba si el usuario está en la lista negra
+ * @param {Guild} guild
+ * @param {User} user
+ * @param {Function} callback
+ * @returns {Boolean}
+ */
+
+module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
+  if (!callback) return new Error('Callback is required')
+  getGuildConfig(guild, guildConfig => {
+    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
+      return callback(guildConfig.suggestions.blacklist.includes(user.id))
+    }
+    // eslint-disable-next-line node/no-callback-literal
+    return callback(false)
+  })
+}
+
+/**
+ * Elimina un usuario de la lista negra
+ * @param {Guild} guild
+ * @param {User} user
+ * @param {Function} callback
+ * @returns {Error}
+ */
+
+module.exports.removeUserFromBlacklist = (guild, user, callback) => {
+  if (!callback) return new Error('Callback is required')
+  getGuildConfig(guild, guildConfig => {
+    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
+      guildConfig.suggestions.blacklist = guildConfig.suggestions.blacklist.filter(id => id !== user.id)
+    }
+
+    updateGuildConfig(guild, { column: 'suggestions', value: { blacklist: guildConfig.suggestions.blacklist } }, err => {
+      if (err) return callback(err)
+      return callback()
     })
   })
 }

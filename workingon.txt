@@ -1,8 +1,10 @@
 === SUGGESTIONS MODULE ===
 
 = NOW WORKING =
-Con este módulo queda por seguir con las votaciones y queda pendiente hacer el sistema de vetado de usuarios.
-Para sumar, se deberá reformar los commandHandler e interactionHandler para comprobar que el usuario tiene X rol, si es posible.
+Trabajando en el sistema de vetado de usuarios.
+
+= PTE =
+Traducir las funciones al castellano y traducir al inglés el fichero español.
 
 = CONFIGURATION STRUCTURE =
 
@@ -58,3 +60,4 @@ And :thumbsup: (In favor) :back_of_hand: (Abstain) :thumbsdown: (Against)
 == A trabajar =
 - Se deberá crear un script que se deberá ejecutar ANTES de inicializar el bot. Este script comprobará la existencia de todas las tablas en la base de datos configurada, y si no existen, crearlas. (Genial para la incorporación de las nuevas actualizaciones).
 - Comenzar a experimentar con Docker para facilitar la instalación del bot y su mantenimiento.
+- Para sumar, se deberá reformar los commandHandler e interactionHandler para comprobar que el usuario tiene X rol, si es posible.
