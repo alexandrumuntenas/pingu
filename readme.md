@@ -21,7 +21,7 @@
 
 <center>
 
-![Contributors](https://img.shields.io/github/contributors/alexandrumuntenas/pingu?color=dark-green) ![Issues](https://img.shields.io/github/issues/alexandrumuntenas/pingu) ![License](https://img.shields.io/github/license/alexandrumuntenas/pingu) [![gitlocalized ](https://gitlocalize.com/repo/7231/whole_project/badge.svg)](https://gitlocalize.com/repo/7231/whole_project?utm_source=badge)
+![Contributors](https://img.shields.io/github/contributors/alexandrumuntenas/pingu?color=dark-green) ![Issues](https://img.shields.io/github/issues/alexandrumuntenas/pingu) ![License](https://img.shields.io/github/license/alexandrumuntenas/pingu) [![gitlocalized ](https://gitlocalize.com/repo/7231/whole_project/badge.svg)](https://gitlocalize.com/repo/7231)
 
 </center>
 
