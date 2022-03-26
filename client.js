@@ -32,3 +32,7 @@ for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.j
   Consolex.success(`Evento ${file} cargado`)
   process.Client.on(event.name, (...args) => event.execute(...args))
 }
+
+process.on('exit', () => {
+  process.Client.destroy()
+})
