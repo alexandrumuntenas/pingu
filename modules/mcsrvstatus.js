@@ -18,7 +18,7 @@ registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-BoldItalic.ttf',
 module.exports.convertirMOTDaImagen = (motd, callback) => {
   const motdProcesado = module.exports.procesarMOTD(motd)
   const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
-  const canvas = createCanvas(1440, 144)
+  const canvas = createCanvas(1568, 144)
   const ctx = canvas.getContext('2d')
 
   if (!callback) throw new Error('Callback is required')
@@ -53,102 +53,56 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
  */
 
 module.exports.pingAEmoji = ping => {
-  if (ping <= 50) return '<:the_connection_is_excellent:939550716555583508>'
-  else if (ping > 50 && ping <= 200) return '<:the_connection_is_good:939550800965931049>'
-  else if (ping > 200) return '<:the_connection_is_bad:939550935460478987>'
+  if (ping <= 150) return '<:the_connection_is_excellent:939550716555583508>'
+  else if (ping > 150 && ping <= 350) return '<:the_connection_is_good:939550800965931049>'
+  else if (ping > 350) return '<:the_connection_is_bad:939550935460478987>'
 }
 
-/**
- * Traduce el código de color de chat de Minecraft a su
- * respectivo valor color hexadecimal.
- * @param {String} color - Color como Código de Chat
- * @returns {String} Valor Hexadecimal del color
- */
-
-module.exports.convertirColorCodigoChatAHexadecimal = color => {
-  switch (color) {
-    case '0': {
-      return '#000000'
-    }
-    case '1': {
-      return '#0000AA'
-    }
-    case '2': {
-      return '#00AA00'
-    }
-    case '3': {
-      return '#00AAAA'
-    }
-    case '4': {
-      return '#AA0000'
-    }
-    case '5': {
-      return '#AA00AA'
-    }
-    case '6': {
-      return '#AA5500'
-    }
-    case '7': {
-      return '#AAAAAA'
-    }
-    case '8': {
-      return '#555555'
-    }
-    case '9': {
-      return '#5555FF'
-    }
-    case 'a': {
-      return '#55FF55'
-    }
-    case 'b': {
-      return '#55FFFF'
-    }
-    case 'c': {
-      return '#FF5555'
-    }
-    case 'd': {
-      return '#FF55FF'
-    }
-    case 'e': {
-      return '#FFFF55'
-    }
-    case 'f': {
-      return '#FFFFFF'
-    }
-    case 'r': {
-      return '#FFFFFF'
-    }
-    default: {
-      return color
-    }
-  }
+const coloresDeMinecraft = {
+  dark_red: '#AA0000',
+  red: '#FF5555',
+  gold: '#FFAA00',
+  yellow: '#FFFF55',
+  dark_green: '#00AA00',
+  green: '#55FF55',
+  aqua: '#55FFFF',
+  dark_aqua: '#00AAAA',
+  dark_blue: '#0000AA',
+  blue: '#5555FF',
+  light_purple: '#FF55FF',
+  dark_purple: '#AA00AA',
+  white: '#FFFFFF',
+  gray: '#AAAAAA',
+  dark_gray: '#555555',
+  black: '#000000',
+  0: '#000000',
+  1: '#0000AA',
+  2: '#00AA00',
+  3: '#00AAAA',
+  4: '#AA0000',
+  5: '#AA00AA',
+  6: '#AA5500',
+  7: '#AAAAAA',
+  8: '#555555',
+  9: '#5555FF',
+  a: '#55FF55',
+  b: '#55FFFF',
+  c: '#FF5555',
+  d: '#FF55FF',
+  e: '#FFFF55',
+  f: '#FFFFFF'
 }
 
-module.exports.convertirFormatoCodigoChataPropiedad = formato => {
-  switch (formato) {
-    case 'o': {
-      return 'Italic'
-    }
-    case 'l': {
-      return 'Bold'
-    }
-    case 'm': {
-      return 'Strikethrough'
-    }
-    case 'n': {
-      return 'Underline'
-    }
-    case 'k': {
-      return 'Obfuscated'
-    }
-    default: {
-      return formato
-    }
-  }
+const formatoCodigoChat = {
+  o: 'Italic',
+  l: 'Bold',
+  m: 'Strikethrough',
+  n: 'Underline',
+  k: 'Obfuscated',
+  r: ''
 }
 
-const cssColorNameToHex = require('convert-css-color-name-to-hex')
-
+const comprobarSiTextoEsUnColorHexadecimal = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 /**
  * Procesa el MOTD de un servidor de Minecraft para convertirlo
  * a una matriz procesable por convertirMOTDaImagen()
@@ -160,30 +114,42 @@ module.exports.procesarMOTD = motd => {
   if (typeof motd === 'string') {
     motd.trim().split('§').forEach(trozoDeTexto => {
       const codigoOriginal = trozoDeTexto.substring(0, 1)
-      const color = module.exports.convertirColorCodigoChatAHexadecimal(codigoOriginal)
-      let text = trozoDeTexto.substring(1)
-      if (text.includes('\n')) {
-        const newText = []
-        text = text.split('\n')
-
-        text.forEach(trozoDeTexto => {
-          newText.push(trozoDeTexto.trim())
-        })
-
-        text = newText.join('\n')
-      }
-      if (codigoOriginal === color) {
-        motdProcesado.push({ text, format: module.exports.convertirFormatoCodigoChataPropiedad(codigoOriginal) })
+      const text = limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.substring(1))
+      if (coloresDeMinecraft[codigoOriginal]) {
+        motdProcesado.push({ color: coloresDeMinecraft[codigoOriginal], text })
       } else {
-        motdProcesado.push({ color, text })
+        motdProcesado.push({ text, format: formatoCodigoChat[codigoOriginal] || formatoCodigoChat.r })
       }
     })
-    console.log(motdProcesado)
     return motdProcesado
   } else if (Array.isArray(motd)) {
     motd.forEach(trozoDeTexto => {
-      /** Procesar nombres CSS de colro a hexadecimales */
+      if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text') && Object.prototype.hasOwnProperty.call(trozoDeTexto, 'color') && comprobarSiTextoEsUnColorHexadecimal.test(trozoDeTexto.color)) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text), color: trozoDeTexto.color })
+      else if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text') && Object.prototype.hasOwnProperty.call(trozoDeTexto, 'color')) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text), color: coloresDeMinecraft[trozoDeTexto.color] || coloresDeMinecraft.f })
+      else if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text')) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text) })
+      else motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto) })
     })
+    motdProcesado[0].text = motdProcesado[0].text.replace(/^\s+/, '')
+    return motdProcesado
   }
   return []
+}
+
+/** Limpia los textos de los espacios iniciales y finales manteniendo el salto de linea, es decir
+  * String.trim(), manteniendo saltos de línea.
+*/
+
+function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea (texto) {
+  if (texto.includes('\n')) {
+    const textoProcesado = []
+    texto = texto.split('\n')
+
+    texto.forEach(trozoDeTexto => {
+      textoProcesado.push(trozoDeTexto.trim())
+    })
+
+    return textoProcesado.join('\n')
+  }
+
+  return texto
 }
