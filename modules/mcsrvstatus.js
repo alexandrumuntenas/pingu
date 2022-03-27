@@ -102,6 +102,25 @@ const formatoCodigoChat = {
   r: ''
 }
 
+/** Limpia los textos de los espacios iniciales y finales manteniendo el salto de linea, es decir
+  * String.trim(), manteniendo saltos de línea.
+*/
+
+function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(texto) {
+  if (texto.includes('\n')) {
+    const textoProcesado = []
+    const textoOfrecido = texto.split('\n')
+
+    textoOfrecido.forEach(trozoDeTexto => {
+      textoProcesado.push(trozoDeTexto.trim())
+    })
+
+    return textoProcesado.join('\n')
+  }
+
+  return texto
+}
+
 const comprobarSiTextoEsUnColorHexadecimal = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 /**
  * Procesa el MOTD de un servidor de Minecraft para convertirlo
@@ -133,23 +152,4 @@ module.exports.procesarMOTD = motd => {
     return motdProcesado
   }
   return []
-}
-
-/** Limpia los textos de los espacios iniciales y finales manteniendo el salto de linea, es decir
-  * String.trim(), manteniendo saltos de línea.
-*/
-
-function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea (texto) {
-  if (texto.includes('\n')) {
-    const textoProcesado = []
-    texto = texto.split('\n')
-
-    texto.forEach(trozoDeTexto => {
-      textoProcesado.push(trozoDeTexto.trim())
-    })
-
-    return textoProcesado.join('\n')
-  }
-
-  return texto
 }
