@@ -106,7 +106,7 @@ const formatoCodigoChat = {
   * String.trim(), manteniendo saltos de línea.
 */
 
-function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(texto) {
+function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea (texto) {
   if (texto.includes('\n')) {
     const textoProcesado = []
     const textoOfrecido = texto.split('\n')
