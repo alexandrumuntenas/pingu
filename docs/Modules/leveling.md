@@ -66,10 +66,10 @@ leveling rankup difficulty <Integer>
 leveling configurecards backgroundurl <URL>
 
 // Configure the overlay opacity.
-leveling overlayopacity <Integer>
+leveling configurecards overlayopacity <Integer>
 
 // Configure the overlay color.
-leveling overlaycolor <Hex Color>
+leveling configurecards overlaycolor <Hex Color>
 ```
 
 ## User commands
