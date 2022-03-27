@@ -206,7 +206,7 @@ module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callb
  */
 
 module.exports.deleteGuildData = guild => {
-  const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildLevelsRankupRoles', 'guildReactionRoles', 'guildSuggestions']
+  const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildSuggestions']
   databaseTables.forEach(table => {
     Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
       if (err) Consolex.handleError(err)
