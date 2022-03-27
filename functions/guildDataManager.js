@@ -19,7 +19,7 @@ module.exports.getGuildConfig = (guild, callback) => {
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
       Object.keys(result[0]).forEach(module => {
         try {
-          result[0][module] = JSON.parse(result[0][module])
+          result[0][module] = JSON.parse(result[0][module].trim())
         } catch (err2) {
           if (!err2.constructor.name === 'SyntaxError') Consolex.handleError(err2)
         }
