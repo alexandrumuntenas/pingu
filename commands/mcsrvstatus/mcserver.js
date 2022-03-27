@@ -7,7 +7,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 
 module.exports = {
   name: 'mcserver',
-  // module: 'mcsrvstatus',
+  module: 'mcsrvstatus',
   description: '🖥️ Ping a specified Minecraft server',
   interactionData: new SlashCommandBuilder().addStringOption(input => input.setName('ip_or_address').setRequired(true).setDescription('The IP or address of the server')).addStringOption(input => input.setName('port').setDescription('The port of the server')),
   cooldown: 1,
@@ -30,7 +30,7 @@ module.exports = {
     })
   },
   runCommand (locale, message) {
-    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n(locale, 'MCPING::NO_HOST'))] })
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) message.reply({ embeds: plantillas.ayuda() })
     Gamedig.query({ type: 'minecraft', host: message.guild.configuration.mcsrvstatus.host, port: message.guild.configuration.mcsrvstatus.port ? message.guild.configuration.mcsrvstatus.port : 25565 }).then((state) => {
       convertirMOTDaImagen(state.raw.vanilla.raw.description.extra || state.raw.vanilla.raw.description || state.name, motd => {
         const attachment = new MessageAttachment(motd, 'motd.png')
