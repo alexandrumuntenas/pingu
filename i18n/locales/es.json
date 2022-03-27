@@ -215,5 +215,7 @@
   "REJECTEDBY": "Rechazado por",
   "APPROVEDBY": "Aprobado por",
   "STAFFNOTE": "Nota de staff",
-  "SUGGEST::BLACKLISTED": "Te encuentras en la lista negra. No puedes realizar sugerencias."
+  "SUGGEST::BLACKLISTED": "Te encuentras en la lista negra. No puedes realizar sugerencias.",
+  "MCPING::ERROR": "Se ha producido un error al intentar conectar con el servidor.",
+  "MCPING::NO_HOST": "No se ha especificado un servidor."
 }
