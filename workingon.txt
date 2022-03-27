@@ -4,3 +4,11 @@
 - Se deberá crear un script que se deberá ejecutar ANTES de inicializar el bot. Este script comprobará la existencia de todas las tablas en la base de datos configurada, y si no existen, crearlas. (Genial para la incorporación de las nuevas actualizaciones).
 - Comenzar a experimentar con Docker para facilitar la instalación del bot y su mantenimiento.
 - Para sumar, se deberá reformar los commandHandler e interactionHandler para comprobar que el usuario tiene X rol, si es posible.
+
+
+=== MÓDULO MINECRAFT ===
+- Queda por hacer el limpiador de formato para los parámetros que no están en el MOTD
+- Se tiene que hacer el comando de configuración
+- Hacer que el bot haga un ping cada 5-10 minutos a los servidores de Minecraft y actualizar
+  sus estadísticas en el sidebar.
+- Acabar el comando mcserver, toma de argumentos e introducirlo en query.
