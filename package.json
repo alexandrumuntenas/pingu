@@ -14,7 +14,6 @@
     "boxen": "5.1.2",
     "canvas": "^2.8.0",
     "chalk": "4.1.2",
-    "convert-css-color-name-to-hex": "^0.1.1",
     "dbots": "^11.0.0",
     "discord-api-types": "^0.30.0",
     "discord-modals": "^1.2.8",
