@@ -1,8 +1,10 @@
 <br/>
+<center>
+
+  [![](https://top.gg/api/widget/827199539185975417.svg)](https://top.gg/bot/827199539185975417)
+
+</center>
 <p align="center">
-  <a href="https://github.com/alexandrumuntenas/pingu">
-    <img src="https://cdn.discordapp.com/attachments/907917245567598592/907917308620587059/Instagram_Profiles1.png" alt="Logo" width="80" height="80">
-  </a>
 
   <h3 align="center">Pingu</h3>
 
@@ -13,9 +15,6 @@
     <a href="https://alexandrumuntenas.github.io/pingu/"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
-    <a href="https://github.com/alexandrumuntenas/pingu/issues">Report Bug</a>
-     • 
-    <a href="https://github.com/alexandrumuntenas/pingu/issues">Request Feature</a>
   </p>
 </p>
 
@@ -25,24 +24,15 @@
 
 </center>
 
-## Table Of Contents
-
-* [About the Project](#about-the-project)
-* [Getting Started](#getting-started)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
-* [Authors](#authors)
-
 ## About The Project
 
-I started Pingu as a project to learn how to program in Javascript and NodeJS, but as time went by, I realized I had something really cool on my hands. With the idea of being a free and customizable bot, we have developed super configurable and easy to use modules.
+I started Pingu as a project to learn how to program in Javascript and NodeJS, but as time went by, I realized I had something really cool on my hands. With the idea of being a free and customizable bot, I have developed super configurable and easy to use modules.
 
 Its development began last April 4, 2021 (if I remember correctly). Initially it was called 24h (I had been inspired by a public television channel in Spain), but in May of the same year, it was renamed Wired Penguin (Wired came from the ethernet connection and Penguin, for using GNU/Linux as operating system).
 
 Days before the end of the school year in June, Wired Penguin was officially renamed to Pingu, and since then, it has been improving considerably. Starting in July of the same year, I started working on improving the security of the bot and the database. If you want to see the code catastrophe that Pingu was hosting before September 2021,  view the repository [alexandrumuntenas/pingu-old](https://github.com/alexandrumuntenas/pingu-old).
 
-Well, leaving the story behind, let's talk about what Pingu is capable of. You can customize most aspects of the welcome module (the background of the cards; the opacity, blur and color of the overlay; channel and message), farewells (message and channel), leveling (leveling difficulty; background of the rank cards, as well as the opacity, blur and color of the overlay; leveling message and sending method), economy (custom currency; custom products, which can perform different functions), etc.
+Well, leaving the story behind, let's talk about what Pingu is capable of. You can customize most aspects of the welcome module (the background of the cards; the opacity, blur and color of the overlay; channel and message), farewells (message and channel), leveling (leveling difficulty; background of the rank cards, as well as the opacity, blur and color of the overlay; leveling message and sending method), etc.
 
 [What are you waiting for? Start using Pingu!](https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands)
 
