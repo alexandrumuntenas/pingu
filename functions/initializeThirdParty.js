@@ -14,7 +14,25 @@ module.exports = () => {
     }
   }
 
-  const poster = new dbots.Poster({ client: process.Client, apiKeys, ClientLibrary: 'discord.js' })
+  const poster = new dbots.Poster({ client: process.Client, apiKeys, clientLibrary: 'discord.js' })
+
+  poster.post()
+
+  poster.addHandler('autopostSuccess', (result) => {
+    Consolex.debug(`Autoposting to ${result.request.host} successful!`)
+  })
+
+  poster.addHandler('autopostFail', (result) => {
+    Consolex.error(`Autoposting to ${result.request.host} failed!`)
+  })
+
+  poster.addHandler('postSuccess', (result) => {
+    Consolex.success(`Posting to ${result.request.host} successful!`)
+  })
+
+  poster.addHandler('postFail', (result) => {
+    Consolex.error(`Posting to ${result.request.host} error!`)
+  })
 
   poster.startInterval()
 

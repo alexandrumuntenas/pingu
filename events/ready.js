@@ -14,7 +14,7 @@ module.exports = {
     Consolex.info(`Conectado como ${process.Client.user.tag}!`)
 
     if (process.Client.statcord) process.Client.statcord.autopost()
-    if (process.env.ENTORNO === 'public') initializeThirdParty(process.Client)
+    if (process.env.ENTORNO === 'public') initializeThirdParty()
 
     eliminadorArchivosTemporales()
     process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
