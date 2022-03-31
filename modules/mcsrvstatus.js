@@ -153,3 +153,20 @@ module.exports.procesarMOTD = motd => {
   }
   return []
 }
+
+/**
+ * Retirar de los textos el formato devuelto por los servidores de Minecraft
+ * @param {String} texto - Texto a limpiar
+ * @returns Texto limpio
+ */
+
+module.exports.limpiarFormatoDeLosTextos = (texto) => {
+  const textoProcesadoPreparadoConFormato = module.exports.procesarMOTD(texto.text || texto)
+  console.log(textoProcesadoPreparadoConFormato)
+  const textoProcesado = []
+  textoProcesadoPreparadoConFormato.forEach(trozoDeTexto => {
+    textoProcesado.push(trozoDeTexto.text)
+  })
+
+  return textoProcesado.join(' ')
+}
