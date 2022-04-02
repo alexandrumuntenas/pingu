@@ -172,3 +172,33 @@ module.exports.limpiarFormatoDeLosTextos = (texto) => {
 
   return textoProcesado.join(' ')
 }
+
+const Gamedig = require('gamedig')
+
+/**
+ * Conectar con el servidor de minecraft y procesar toda su información
+ * para que pueda ser usado por el bot.
+ * @param {Object} host - Host de un servidor de Minecraft
+ * @param {String} host.ip - IP del servidor de Minecraft
+ * @param {Number} host.port - Puerto del servidor de Minecraft
+ * @param {Function} callback
+ * @returns {Object} - Objeto con la información del servidor de Minecraft
+ */
+
+module.exports.obtenerDatosDelServidor = (host, callback) => {
+  if (!callback) throw new Error('Debe proporcionar un callback')
+  Gamedig.query({ type: 'minecraft', host: host.ip, port: host.port ? host.port : 25565 }).then((state) => {
+    const servidor = {}
+    module.exports.convertirMOTDaImagen(state.raw.vanilla.raw.description.extra, motd => {
+      servidor.motd = motd
+    })
+    servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.description.extra) || 'Unknown version'
+    servidor.jugadores = `${state.raw.vanilla.raw.players.online} / ${state.raw.vanilla.raw.players.max}`
+    servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping }
+    servidor.direccion = `${host.ip}${host.port ? ':' + host.port : ''}`
+
+    return callback(servidor)
+  }).catch(() => {
+    return callback()
+  })
+}
