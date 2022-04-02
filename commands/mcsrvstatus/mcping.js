@@ -21,10 +21,10 @@ module.exports = {
           .setImage('attachment://motd.png')
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 
-        interaction.editReply({ files: [attachment], embeds: [embed] })
-      } else {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
+        return interaction.editReply({ files: [attachment], embeds: [embed] })
       }
+
+      return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
     })
   },
   runCommand (locale, message) {
@@ -42,9 +42,9 @@ module.exports = {
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 
           return _message.edit({ files: [attachment], embeds: [embed] })
-        } else {
-          return _message.edit({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
         }
+
+        return _message.edit({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
       })
     })
   }

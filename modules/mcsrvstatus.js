@@ -77,7 +77,7 @@ module.exports.pingAEmoji = ping => {
   if (ping <= 150) return '<:the_connection_is_excellent:939550716555583508>'
   else if (ping > 150 && ping <= 350) return '<:the_connection_is_good:939550800965931049>'
   else if (ping > 350) return '<:the_connection_is_bad:939550935460478987>'
-  else return '<:discord_offline:876102753821278238>'
+  return '<:discord_offline:876102753821278238>'
 }
 
 const coloresDeMinecraft = {
@@ -196,10 +196,9 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
     servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.version.name) || 'Unknown version'
     servidor.jugadores = `${state.raw.vanilla.raw.players.online || ':infinity:'}/${state.raw.vanilla.raw.players.max || ':infinity:'}` || 'Unknown players'
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
-    servidor.direccion = `${host.ip}${host.port ? ':' + host.port : ''}` || host.ip
+    servidor.direccion = `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
     return callback(servidor)
-  }).catch((error) => {
-    console.log(error)
+  }).catch(() => {
     return callback()
   })
 }
