@@ -77,6 +77,7 @@ module.exports.pingAEmoji = ping => {
   if (ping <= 150) return '<:the_connection_is_excellent:939550716555583508>'
   else if (ping > 150 && ping <= 350) return '<:the_connection_is_good:939550800965931049>'
   else if (ping > 350) return '<:the_connection_is_bad:939550935460478987>'
+  else return '<:discord_offline:876102753821278238>'
 }
 
 const coloresDeMinecraft = {
@@ -187,18 +188,18 @@ const Gamedig = require('gamedig')
 
 module.exports.obtenerDatosDelServidor = (host, callback) => {
   if (!callback) throw new Error('Debe proporcionar un callback')
-  Gamedig.query({ type: 'minecraft', host: host.ip, port: host.port ? host.port : 25565 }).then((state) => {
+  Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port.trim() : 25565 }).then((state) => {
     const servidor = {}
-    module.exports.convertirMOTDaImagen(state.raw.vanilla.raw.description.extra, motd => {
+    module.exports.convertirMOTDaImagen(state.raw.vanilla.raw.description.extra || state.raw.vanilla.raw.description || state.name, motd => {
       servidor.motd = motd
     })
-    servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.description.extra) || 'Unknown version'
-    servidor.jugadores = `${state.raw.vanilla.raw.players.online} / ${state.raw.vanilla.raw.players.max}`
-    servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping }
-    servidor.direccion = `${host.ip}${host.port ? ':' + host.port : ''}`
-
+    servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.version.name) || 'Unknown version'
+    servidor.jugadores = `${state.raw.vanilla.raw.players.online || ':infinity:'}/${state.raw.vanilla.raw.players.max || ':infinity:'}` || 'Unknown players'
+    servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
+    servidor.direccion = `${host.ip}${host.port ? ':' + host.port : ''}` || host.ip
     return callback(servidor)
-  }).catch(() => {
+  }).catch((error) => {
+    console.log(error)
     return callback()
   })
 }

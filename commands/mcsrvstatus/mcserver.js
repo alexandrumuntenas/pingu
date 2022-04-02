@@ -21,7 +21,6 @@ module.exports = {
           .addField(':desktop: Address', datosDelServidor.direccion, false)
           .setImage('attachment://motd.png')
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
-
         interaction.editReply({ files: [attachment], embeds: [embed] })
       } else {
         return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
