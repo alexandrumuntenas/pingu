@@ -1,11 +1,19 @@
 const { createCanvas, registerFont } = require('canvas')
 const { writeFileSync } = require('fs')
 const randomstring = require('randomstring')
+const { motdParser } = require('@sfirew/mc-motd-parser')
 
 registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-Regular.ttf', { family: 'Courier Prime Regular' })
 registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-Italic.ttf', { family: 'Courier Prime Italic' })
 registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-Bold.ttf', { family: 'Courier Prime Bold' })
 registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-BoldItalic.ttf', { family: 'Courier Prime Bold Italic' })
+
+/** Comprobar si texto solo tiene espacios; devuelve falso si solo hay 1 */
+
+function tieneSoloEspacios (texto) {
+  if (texto.length === 1) return false
+  return texto.trim().length === 0
+}
 
 /**
  * Procesar la descripción recibida de un servidor de Minecraft
@@ -16,27 +24,40 @@ registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-BoldItalic.ttf',
 */
 
 module.exports.convertirMOTDaImagen = (motd, callback) => {
-  const motdProcesado = module.exports.procesarMOTD(motd)
-  const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
-  const canvas = createCanvas(1568, 144)
-  const ctx = canvas.getContext('2d')
-
   if (!callback) throw new Error('Callback is required')
 
-  let posicionEjeX = 0
-  let posicionEjeY = 64
+  const motdProcesado = module.exports.procesarMOTD(motd)
+  const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+  const canvas = createCanvas(1688, 144)
+  const ctx = canvas.getContext('2d')
+
+  ctx.fillStyle = '#16100c'
+  ctx.fillRect(0, 0, 1688, 144)
+
+  let posicionEjeX = 20
+  let posicionEjeY = 60
+
+  if (!motdProcesado[0].color) {
+    ctx.fillStyle = '#FFFFFF'
+  }
+
   motdProcesado.forEach(trozoDeTexto => {
-    if (trozoDeTexto.text.startsWith('\n')) {
-      posicionEjeX = 0
+    if (trozoDeTexto.text === '\n') {
+      posicionEjeX = 20
       posicionEjeY += 64
-    }
-    ctx.font = `64px "Courier Prime ${trozoDeTexto.format || 'Regular'}"`
-    ctx.fillStyle = trozoDeTexto.color || ctx.fillStyle
-    ctx.fillText(trozoDeTexto.text, posicionEjeX, posicionEjeY)
-    posicionEjeX += ctx.measureText(trozoDeTexto.text).width
-    if (trozoDeTexto.text.endsWith('\n')) {
-      posicionEjeX = 0
-      posicionEjeY += 64
+    } else if (!tieneSoloEspacios(trozoDeTexto.text)) {
+      if (trozoDeTexto.text.startsWith('\n')) {
+        posicionEjeX = 20
+        posicionEjeY += 64
+      }
+      ctx.font = `64px "Courier Prime ${trozoDeTexto.format || 'Regular'}"`
+      ctx.fillStyle = trozoDeTexto.color || ctx.fillStyle
+      ctx.fillText(trozoDeTexto.text, posicionEjeX, posicionEjeY)
+      posicionEjeX += ctx.measureText(trozoDeTexto.text).width
+      if (trozoDeTexto.text.endsWith('\n')) {
+        posicionEjeX = 20
+        posicionEjeY += 64
+      }
     }
   })
 
@@ -93,15 +114,6 @@ const coloresDeMinecraft = {
   f: '#FFFFFF'
 }
 
-const formatoCodigoChat = {
-  o: 'Italic',
-  l: 'Bold',
-  m: 'Strikethrough',
-  n: 'Underline',
-  k: 'Obfuscated',
-  r: ''
-}
-
 /** Limpia los textos de los espacios iniciales y finales manteniendo el salto de linea, es decir
   * String.trim(), manteniendo saltos de línea.
 */
@@ -131,16 +143,7 @@ const comprobarSiTextoEsUnColorHexadecimal = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 module.exports.procesarMOTD = motd => {
   const motdProcesado = []
   if (typeof motd === 'string') {
-    motd.trim().split('§').forEach(trozoDeTexto => {
-      const codigoOriginal = trozoDeTexto.substring(0, 1)
-      const text = limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.substring(1))
-      if (coloresDeMinecraft[codigoOriginal]) {
-        motdProcesado.push({ color: coloresDeMinecraft[codigoOriginal], text })
-      } else {
-        motdProcesado.push({ text, format: formatoCodigoChat[codigoOriginal] || formatoCodigoChat.r })
-      }
-    })
-    return motdProcesado
+    return motdParser.textToJSON(limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(motd)).extra
   } else if (Array.isArray(motd)) {
     motd.forEach(trozoDeTexto => {
       if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text') && Object.prototype.hasOwnProperty.call(trozoDeTexto, 'color') && comprobarSiTextoEsUnColorHexadecimal.test(trozoDeTexto.color)) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text), color: trozoDeTexto.color })
@@ -148,10 +151,10 @@ module.exports.procesarMOTD = motd => {
       else if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text')) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text) })
       else motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto) })
     })
-    motdProcesado[0].text = motdProcesado[0].text.replace(/^\s+/, '')
+
     return motdProcesado
   }
-  return []
+  return [{ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(motd) }]
 }
 
 /**
@@ -162,7 +165,6 @@ module.exports.procesarMOTD = motd => {
 
 module.exports.limpiarFormatoDeLosTextos = (texto) => {
   const textoProcesadoPreparadoConFormato = module.exports.procesarMOTD(texto.text || texto)
-  console.log(textoProcesadoPreparadoConFormato)
   const textoProcesado = []
   textoProcesadoPreparadoConFormato.forEach(trozoDeTexto => {
     textoProcesado.push(trozoDeTexto.text)
