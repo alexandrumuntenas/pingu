@@ -3,10 +3,10 @@
  * @param {GuildMember} member
  */
 
-const { obtenerConfiguracionDelGuild, actualizarConfiguracionDelGuild } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
 
 module.exports.giveMemberRoles = member => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'roles')) {
         if (guildConfig.welcome.roles.length > 0) {
@@ -30,7 +30,7 @@ const { MessageAttachment } = require('discord.js')
 const replaceBracePlaceholdersWithActualData = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendWelcomeMessage = member => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) return
 
     const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
@@ -193,7 +193,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
  */
 
 module.exports.doGuildMemberAdd = member => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (guildConfig.welcome.enabled) {
         module.exports.giveMemberRoles(member)
@@ -204,19 +204,19 @@ module.exports.doGuildMemberAdd = member => {
 }
 
 module.exports.addJoinRole = (guild, role, callback) => {
-  obtenerConfiguracionDelGuild(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (guildConfig.welcome.roles) {
       const { roles } = guildConfig.welcome
 
       roles.push(`${role.id}`)
 
-      actualizarConfiguracionDelGuild(guild, { column: 'welcome', newconfig: { roles } }, err => {
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles } }, err => {
         if (err && callback) callback(err)
       })
     } else {
       const roles = [`${role.id}`]
 
-      actualizarConfiguracionDelGuild(guild, { column: 'welcome', newconfig: { roles } }, err => {
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles } }, err => {
         if (err && callback) callback(err)
       })
     }
@@ -226,11 +226,11 @@ module.exports.addJoinRole = (guild, role, callback) => {
 }
 
 module.exports.removeJoinRole = (guild, role, callback) => {
-  obtenerConfiguracionDelGuild(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (guildConfig.welcome.roles) {
       delete guildConfig.welcome.roles[`${role.id}`]
 
-      actualizarConfiguracionDelGuild(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }, err => {
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }, err => {
         if (err && callback) callback(err)
       })
     }

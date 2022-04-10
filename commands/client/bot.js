@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions, MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { deployGuildInteractions, actualizarConfiguracionDelGuild } = require('../../functions/guildManager')
+const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 const Consolex = require('../../functions/consolex')
 
@@ -45,7 +45,7 @@ module.exports = {
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
-        actualizarConfiguracionDelGuild(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
 
           try {
@@ -60,7 +60,7 @@ module.exports = {
       }
 
       case 'setlanguage': {
-        actualizarConfiguracionDelGuild(interaction.guild, { column: 'common', newconfig: { language: interaction.options.getString('language') } }, err => {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { language: interaction.options.getString('language') } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: interaction.options.getString('language') }))] })
         })
@@ -87,13 +87,13 @@ module.exports = {
 
       case 'update': {
         try {
-          deployGuildInteractions(interaction.guild, interaction.options.getBoolean('configinteractions'), err => {
+          subirInteraccionesDelServidor(interaction.guild, interaction.options.getBoolean('configinteractions'), err => {
             if (err) {
               interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'UPDATE::ERROR'))] })
               throw err
             }
 
-            actualizarConfiguracionDelGuild(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') || false } } })
+            actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') || false } } })
 
             return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'UPDATE::SUCCESS'))] })
           })
@@ -107,7 +107,7 @@ module.exports = {
       case 'enable': {
         const moduleToEnable = interaction.options.getString('module')
 
-        actualizarConfiguracionDelGuild(interaction.guild, { column: moduleToEnable, newconfig: { enabled: true } }, err => {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: moduleToEnable, newconfig: { enabled: true } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: moduleToEnable }))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', { MODULE: moduleToEnable }))] })
         })
@@ -118,7 +118,7 @@ module.exports = {
       case 'disable': {
         const moduleToDisable = interaction.options.getString('module')
 
-        actualizarConfiguracionDelGuild(interaction.guild, { column: moduleToDisable, newconfig: { enabled: false } }, err => {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: moduleToDisable, newconfig: { enabled: false } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: moduleToDisable }))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::MODULES:DISABLE:SUCCESS', { MODULE: moduleToDisable }))] })
         })
@@ -156,7 +156,7 @@ module.exports = {
       case 'setprefix': {
         if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
 
-        actualizarConfiguracionDelGuild(message.guild, { column: 'common', newconfig: { prefix: message.parameters[1] } }, err => {
+        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { prefix: message.parameters[1] } }, err => {
           if (err) return message.channel.send({ embeds: [plantillas.error(i18n(locale, 'BOT::SETPREFIX:ERROR'))] })
 
           try {
@@ -174,7 +174,7 @@ module.exports = {
       case 'setlanguage': {
         if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && avaliableLanguages.includes(message.parameters[1]))) return sendHelp()
 
-        actualizarConfiguracionDelGuild(message.guild, { column: 'common', newconfig: { language: message.parameters[1] } }, err => {
+        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { language: message.parameters[1] } }, err => {
           if (err) return message.channel.send({ embeds: [plantillas.error(i18n(message.parameters[1], 'BOT::SETLANGUAGE:ERROR'))] })
           return message.channel.send({ embeds: [plantillas.conexito(i18n(message.parameters[1], 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: message.parameters[1] }))] })
         })
@@ -189,10 +189,10 @@ module.exports = {
           message.parameters[1] = false
         }
 
-        actualizarConfiguracionDelGuild(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
+        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
 
         try {
-          deployGuildInteractions(message.guild, message.parameters[1], err => {
+          subirInteraccionesDelServidor(message.guild, message.parameters[1], err => {
             if (err) {
               message.reply({ embeds: [plantillas.error(i18n(locale, 'UPDATE::ERROR'))] })
               throw err
@@ -232,7 +232,7 @@ module.exports = {
           case 'enable': {
             if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
 
-            actualizarConfiguracionDelGuild(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
+            actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
               if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: message.parameters[2] }))] })
               return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::MODULES:ENABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
             })
@@ -243,7 +243,7 @@ module.exports = {
           case 'disable': {
             if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
 
-            actualizarConfiguracionDelGuild(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
+            actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
               if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: message.parameters[2] }))] })
 
               return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::MODULES:DISABLE:SUCCESS', { MODULE: message.parameters[2] }))] })

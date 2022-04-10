@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
-const { actualizarConfiguracionDelGuild } = require('../../functions/guildManager')
+const { actualizarConfiguracionDelServidor } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
@@ -15,7 +15,7 @@ module.exports = {
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setdefaulthost': {
-        actualizarConfiguracionDelGuild(interaction.guild, { column: 'mcsrvstatus', newconfig: { host: interaction.options.getString('host'), port: interaction.options.getNumber('port') } }, err => {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { host: interaction.options.getString('host'), port: interaction.options.getNumber('port') } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCSRVSTATUS::SETDEFAULTHOST:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'MCSRVSTATUS::SETDEFAULTHOST:SUCCESS', { HOST: interaction.options.getString('host') }))] })
         })

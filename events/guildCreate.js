@@ -1,8 +1,8 @@
-const { obtenerConfiguracionDelGuild } = require('../functions/guildManager.js')
+const { obtenerConfiguracionDelServidor } = require('../functions/guildManager.js')
 
 module.exports = {
   name: 'guildCreate',
   execute: async guild => { // skipcq: JS-0116
-    obtenerConfiguracionDelGuild(guild)
+    obtenerConfiguracionDelServidor(guild)
   }
 }

@@ -12,7 +12,7 @@ const { Routes } = require('discord-api-types/v9')
  * @returns Object - La configuración del guild.
  */
 
-module.exports.obtenerConfiguracionDelGuild = (guild, callback) => {
+module.exports.obtenerConfiguracionDelServidor = (guild, callback) => {
   Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) Consolex.handleError(err)
 
@@ -28,7 +28,7 @@ module.exports.obtenerConfiguracionDelGuild = (guild, callback) => {
       if (result[0].common === null) {
         Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
           if (err2) Consolex.handleError(err2)
-          return module.exports.obtenerConfiguracionDelGuild(guild, callback)
+          return module.exports.obtenerConfiguracionDelServidor(guild, callback)
         })
       }
 
@@ -36,7 +36,7 @@ module.exports.obtenerConfiguracionDelGuild = (guild, callback) => {
     } else {
       Database.query('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id], err2 => {
         if (err2) Consolex.handleError(err2)
-        module.exports.obtenerConfiguracionDelGuild(guild, callback)
+        module.exports.obtenerConfiguracionDelServidor(guild, callback)
       })
     }
   })
@@ -68,17 +68,16 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
 }
 
 /**
- * Update a guild's configuration.
-
- * @param {Guild} guild - The Guild
- * @param {Object} botmodule - The module to update
- * @param {String} botmodule.column - The module configuration column to update
- * @param {JSON} botmodule.newconfig - The new configuration value
- * @param {Function} callback - The callback function
+ * Actualiza la configuración de un guild.
+ * @param {Guild} guild - El guild del cual se quiere actualizar la configuración.
+ * @param {Object} botmodule - El módulo del cual se quiere actualizar la configuración.
+ * @param {String} botmodule.column - La columna del módulo del cual se quiere actualizar la configuración.
+ * @param {JSON} botmodule.newconfig - La nueva configuración del módulo.
+ * @param {Function} callback - La función que se ejecutará cuando se actualice la configuración.
  */
 
-module.exports.actualizarConfiguracionDelGuild = (guild, botmodule, callback) => {
-  module.exports.obtenerConfiguracionDelGuild(guild, guildConfig => {
+module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback) => {
+  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
       if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
         procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
@@ -127,13 +126,6 @@ module.exports.actualizarConfiguracionDelGuild = (guild, botmodule, callback) =>
   })
 }
 
-/**
- * Deploy the interactions to the guild
- * @param {Guild} guild - The Guild
- * @param {Function} callback - The callback function
- * @returns Object - The command list
- */
-
 const rest = new REST({ version: '9' })
 
 if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
@@ -142,14 +134,14 @@ else rest.setToken(process.env.INSIDER_TOKEN)
 const { Collection } = require('discord.js')
 
 /**
- * Create the interaction list for the requested guild using it's configuration as a base
- * @param {Object} guildConfig
- * @param {Boolean} deployConfigInteractions
- * @param {Function} callback
- * @returns {Object} The interaction list
+ * Crea el listado de interacciones de un servidor bajo demanda
+ * @param {Object} guildConfig - La configuración del servidor.
+ * @param {Boolean} deployConfigInteractions - Indica si las interacciones de configuración deben ser incluídas.
+ * @param {Function} callback - La función que se ejecutará cuando se haya creado el listado de interacciones.
+ * @returns {Object} - El listado de interacciones.
  */
 
-function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractions, callback) {
+function crearListadoDeInteraccionesDeUnGuild (guildConfig, deployConfigInteractions, callback) {
   if (!callback) throw new Error('Callback function is required')
 
   let interactionList = new Collection()
@@ -168,16 +160,19 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 }
 
 /**
- * Deploy the interactions to the guild.
- * @param {Guild} guild
- * @param {Boolean} deployConfigInteractions
- * @param {Function} callback
+ * Subir interacciones de un servidor.
+ * @param {Guild} guild - El servidor del cual se quiere subir las interacciones.
+ * @param {?Boolean} deployConfigInteractions - Deprecated: Indica si las interacciones de configuración deben ser incluídas.
+ * @param {Function} callback - La función que se ejecutará cuando se haya subido las interacciones.
  */
 
-module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
+module.exports.subirInteraccionesDelServidor = (guild, deployConfigInteractions, callback) => {
+  if (deployConfigInteractions) {
+    Consolex.warn('The parameter "deployConfigInteractions" is being deprecated. The interaction deployment parameters will be pulled off the guild configuration.')
+  }
   if (!callback) throw new Error('Callback is required')
-  module.exports.obtenerConfiguracionDelGuild(guild, guildConfig => {
-    createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
+  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
+    crearListadoDeInteraccionesDeUnGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
       rest.put(
         Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
         .catch(err => {
@@ -193,7 +188,7 @@ module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callb
  * @param {Guild} guild - The Guild
  */
 
-module.exports.deleteGuildData = guild => {
+module.exports.eliminarDatosDelServidor = guild => {
   const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildSuggestions']
   databaseTables.forEach(table => {
     Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {

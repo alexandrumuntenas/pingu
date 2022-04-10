@@ -174,7 +174,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
   })
 }
 
-const { obtenerConfiguracionDelGuild, actualizarConfiguracionDelGuild } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../i18n/i18n')
 
@@ -206,7 +206,7 @@ const messageManager = require('../functions/messageManager')
 /** The actions taken after creating the suggestion */
 
 module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
@@ -233,7 +233,7 @@ module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
 /** Actions taken after a suggestion is approved. */
 
 module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.logs) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
@@ -260,7 +260,7 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
 /** Actions taken after a suggestion is rejected. */
 
 module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.logs) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
@@ -287,7 +287,7 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
 /** Actions taken after adding a note to a suggestion */
 
 module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.logs) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
@@ -320,10 +320,10 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
 
 module.exports.addUserToBlacklist = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
-  obtenerConfiguracionDelGuild(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild, guildConfig => {
     Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
-    actualizarConfiguracionDelGuild(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
+    actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
       return callback()
     })
@@ -340,7 +340,7 @@ module.exports.addUserToBlacklist = (guild, user, callback) => {
 
 module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
-  obtenerConfiguracionDelGuild(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist')) return callback(guildConfig.suggestions.blacklist.includes(user.id))
 
     // eslint-disable-next-line node/no-callback-literal
@@ -358,12 +358,12 @@ module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
 
 module.exports.removeUserFromBlacklist = (guild, user, callback) => {
   if (!callback) return new Error('Callback is required')
-  obtenerConfiguracionDelGuild(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
       delete guildConfig.suggestions.blacklist[guildConfig.suggestions.blacklist.indexOf(user.id)]
     }
 
-    actualizarConfiguracionDelGuild(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
+    actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
       return callback()
     })

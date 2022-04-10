@@ -3,10 +3,10 @@
  * @param {GuildMember} member
  */
 
-const { obtenerConfiguracionDelGuild } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
 
 module.exports.doGuildMemberRemove = member => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'farewell') && Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'enabled')) {
       if (guildConfig.farewell.enabled) module.exports.sendFarewellMessage(member)
     }
@@ -21,7 +21,7 @@ module.exports.doGuildMemberRemove = member => {
 const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendFarewellMessage = member => {
-  obtenerConfiguracionDelGuild(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     if (!Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'channel')) return
 
     const channel = member.guild.channels.cache.get(guildConfig.farewell.channel)
