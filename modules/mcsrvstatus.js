@@ -206,16 +206,13 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
 
 /* A partir de aquí solo habrá código relacionado con las tareas de actualización de datos */
 
+/** Actualiza el side */
 function actualizarNumeroDeJugadoresDelSidebar (guild) {
   obtenerConfiguracionDelServidor(guild, config => {
-    if (config.mcsrvstatus.enabled) {
+    if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
-        process.Client.guilds.resolve(guild.id).channels.fetch().then(channels => {
-          const sidebar = channels.find(channel => channel.name === '@PINGU:MCSRVSTATS:PLAYERCOUNT')
-          if (sidebar) {
-            sidebar.edit({ name: `🎭 Players: ${servidor.jugadores}` })
-          }
-        })
+        const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
+        if (sidebarPlayercount) sidebarPlayercount.edit({ name: `🎭 Players: ${servidor.jugadores}` })
       })
     }
   })
