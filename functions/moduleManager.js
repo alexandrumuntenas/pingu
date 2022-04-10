@@ -34,7 +34,7 @@ const { readdirSync } = require('fs')
 
 module.exports.registrarModulos = () => {
   const directorioDeModulos = readdirSync('./modules')
-
+  modulos.push({ nombre: 'common' })
   directorioDeModulos.forEach(modulo => {
     if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
       const { nombre, descripcion } = require(`../modules/${modulo}`)
@@ -46,3 +46,9 @@ module.exports.registrarModulos = () => {
 }
 
 module.exports.registroDeModulos = modulos
+
+// Check if module exists
+module.exports.comprobarSiElModuloExiste = (modulo) => {
+  if (!modulos.find(m => m.nombre === modulo)) return false
+  return true
+}
