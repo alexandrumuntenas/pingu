@@ -26,7 +26,7 @@ if (process.env.ENTORNO === 'public') {
 }
 
 process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
-process.Client.modules = require('./functions/moduleManager').registrarModulos()
+process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
 for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.js'))) {
   const event = require(`./events/${file}`)
