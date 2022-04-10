@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alexandrumuntenas.github.io/pingu/sitemap.xml.gz
+Sitemap: https://alexandrumuntenas.dev/pingu/sitemap.xml.gz
