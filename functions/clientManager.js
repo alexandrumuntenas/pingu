@@ -22,7 +22,6 @@ module.exports.cargarComandoseInteracciones = () => {
 
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
-
         if (Object.prototype.hasOwnProperty.call(command, 'name')) {
           if (Object.prototype.hasOwnProperty.call(command, 'interactionData')) {
             command.interactionData.setName(command.name).setDescription(command.description || 'Description not set')
