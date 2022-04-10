@@ -26,11 +26,12 @@
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="/pingu/botavatar.png" rel="icon" />
-    <link href="/pingu/resources/css/retype.css?v=1.11.2.702904796311" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=1.11.2.702904912252" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.702904796311" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=1.11.2.702904912252" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=1.11.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.702904796311" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=1.11.2.702904912252" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=1.11.2.702904912252" defer></script>
 </head>
     <body>
         <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -250,6 +251,23 @@
 <blockquote>
 <p>Do you have a Minecraft server and would you like to have a gallery of tools to get information about it?</p>
 </blockquote>
+<doc-anchor-target id="user-commands">
+    <h2>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#user-commands">#</doc-anchor-trigger>
+        <span>User Commands</span>
+    </h2>
+</doc-anchor-target>
+<div class="codeblock-wrapper"><doc-codeblock>
+<pre class="language-javascript"><code v-pre class="language-javascript">// Get the status of a Minecraft server
+/mcserver ip_or_address: &lt;String&gt; port: &lt;Number&gt;
+
+mcserver &lt;ip or adress&gt; &lt;port&gt;
+
+// Get the status of the guild Minecraft Server
+/mcping
+
+mcping</code></pre>
+</doc-codeblock></div>
 
 
 
@@ -330,6 +348,6 @@
 
         <div id="docs-overlay-target"></div>
 
-        <script>window.__DOCS__ = { "title": "Minecraft Server Status (IN PROGRESS)", icon: "file", hasPrism: false, hasMermaid: false, hasMath: false }</script>
+        <script>window.__DOCS__ = { "title": "Minecraft Server Status (IN PROGRESS)", icon: "file", hasPrism: true, hasMermaid: false, hasMath: false }</script>
     </body>
 </html>
