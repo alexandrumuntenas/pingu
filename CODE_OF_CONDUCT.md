@@ -1,5 +1,5 @@
 ---
-icon: checklist
+icon: code-of-conduct
 order: 1000
 ---
 # Contributor Covenant Code of Conduct

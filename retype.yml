@@ -1,13 +1,28 @@
-input: .
+# -----------------------------------------------------------------------------
+
+input: ./
+
+# -----------------------------------------------------------------------------
+
 output: .retype
-url: alexandrumuntenas.github.io/pingu/
+
+# -----------------------------------------------------------------------------
+
+url: https://alexandrumuntenas.dev/pingu/
+
+# -----------------------------------------------------------------------------
+
+poweredByRetype: true
+
+# -----------------------------------------------------------------------------
+
 branding:
   title: Pingu
-  label: pre-22T2
   logo: botavatar.png
   logoAlign: left
+  label: 22T1
 
-favicon: botavatar.png
+# -----------------------------------------------------------------------------
 
 links:
 - text: Home
@@ -34,9 +49,34 @@ links:
   icon: diff-added
   target: blank
 
-edit:
-  repo: "https://github.com/alexandrumuntenas/pingu/"
-  label: "Improve this page"
-
 footer:
   copyright: "&copy; Copyright {{ year }} Alexandru Muntenas. All rights reserved."
+
+cname: alexandrumuntenas.dev
+
+edit:
+  repo: "https://github.com/alexandrumuntenas/pingu"
+  label: "Improve this page"
+
+editor:
+  enabled: true
+
+favicon: botavatar.png
+
+generator:
+  recase: all
+
+markdown:
+  lineBreaks: soft
+
+meta:
+  title: " | Pingu · The OSS Discord Bot Project"
+
+search:
+  hotkeys:
+    - "/"
+  maxResults: 20
+  minChars: 2
+  mode: full
+  noResultsFoundMsg: "No results"
+  placeholder: Search
