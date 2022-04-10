@@ -12,7 +12,7 @@ const { Routes } = require('discord-api-types/v9')
  * @returns Object - The guild configuration
  */
 
-module.exports.getGuildConfig = (guild, callback) => {
+module.exports.obtenerConfiguracionDelGuild = (guild, callback) => {
   Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
     if (err) Consolex.handleError(err)
 
@@ -28,7 +28,7 @@ module.exports.getGuildConfig = (guild, callback) => {
       if (result[0].common === null) {
         Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
           if (err2) Consolex.handleError(err2)
-          return module.exports.getGuildConfig(guild, callback)
+          return module.exports.obtenerConfiguracionDelGuild(guild, callback)
         })
       }
 
@@ -36,7 +36,7 @@ module.exports.getGuildConfig = (guild, callback) => {
     } else {
       Database.query('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id], err2 => {
         if (err2) Consolex.handleError(err2)
-        module.exports.getGuildConfig(guild, callback)
+        module.exports.obtenerConfiguracionDelGuild(guild, callback)
       })
     }
   })
@@ -83,7 +83,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
  */
 
 module.exports.updateGuildConfig = (guild, botmodule, callback) => {
-  module.exports.getGuildConfig(guild, guildConfig => {
+  module.exports.obtenerConfiguracionDelGuild(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
       if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
         procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
@@ -181,7 +181,7 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 
 module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
   if (!callback) throw new Error('Callback is required')
-  module.exports.getGuildConfig(guild, guildConfig => {
+  module.exports.obtenerConfiguracionDelGuild(guild, guildConfig => {
     createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
       rest.put(
         Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })

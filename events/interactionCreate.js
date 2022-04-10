@@ -2,7 +2,7 @@ const Consolex = require('../functions/consolex')
 const CooldownManager = require('../functions/cooldownManager')
 
 const { plantillas } = require('../functions/messageManager')
-const { getGuildConfig } = require('../functions/guildManager.js')
+const { obtenerConfiguracionDelGuild } = require('../functions/guildManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 
@@ -10,7 +10,7 @@ async function isCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
-  getGuildConfig(interaction.guild, async guildConfig => {
+  obtenerConfiguracionDelGuild(interaction.guild, async guildConfig => {
     interaction.guild.configuration = guildConfig
     if (process.Client.comandos.has(interaction.commandName)) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)
