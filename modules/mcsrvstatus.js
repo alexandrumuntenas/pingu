@@ -175,6 +175,7 @@ module.exports.limpiarFormatoDeLosTextos = (texto) => {
 }
 
 const Gamedig = require('gamedig')
+const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
 
 /**
  * Conectar con el servidor de minecraft y procesar toda su información
@@ -201,4 +202,37 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
   }).catch(() => {
     return callback()
   })
+}
+
+/* A partir de aquí solo habrá código relacionado con las tareas de actualización de datos */
+
+function actualizarNumeroDeJugadoresDelSidebar (guild) {
+  obtenerConfiguracionDelServidor(guild, config => {
+    if (config.mcsrvstatus.enabled) {
+      module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
+        process.Client.guilds.resolve(guild.id).channels.fetch().then(channels => {
+          const sidebar = channels.find(channel => channel.name === '@PINGU:MCSRVSTATS:PLAYERCOUNT')
+          if (sidebar) {
+            sidebar.edit({ name: `🎭 Players: ${servidor.jugadores}` })
+          }
+        })
+      })
+    }
+  })
+}
+
+module.exports.comenzarActualizarDatosDeLosServidores = () => {
+  process.Client.guilds.fetch().then(guilds => {
+    guilds.forEach(guild => {
+      actualizarNumeroDeJugadoresDelSidebar(guild)
+    })
+  })
+
+  setInterval(() => {
+    process.Client.guilds.fetch().then(guilds => {
+      guilds.forEach(guild => {
+        actualizarNumeroDeJugadoresDelSidebar(guild)
+      })
+    })
+  }, 300000)
 }

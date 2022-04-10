@@ -7,6 +7,7 @@ if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKE
 else rest.setToken(process.env.PUBLIC_TOKEN)
 
 const initializeThirdParty = require('../functions/initializeThirdParty')
+const { comenzarActualizarDatosDeLosServidores } = require('../modules/mcsrvstatus')
 
 module.exports = {
   name: 'ready',
@@ -18,6 +19,8 @@ module.exports = {
 
     eliminadorArchivosTemporales()
     process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
+
+    comenzarActualizarDatosDeLosServidores()
 
     setInterval(() => {
       process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
