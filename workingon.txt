@@ -11,4 +11,3 @@
 - Se tiene que hacer el comando de configuración
 - Hacer que el bot haga un ping cada 5-10 minutos a los servidores de Minecraft y actualizar
   sus estadísticas en el sidebar.
-- Acabar el comando mcserver, toma de argumentos e introducirlo en query.
