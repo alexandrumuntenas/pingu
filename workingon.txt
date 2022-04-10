@@ -7,7 +7,5 @@
 
 
 === MÓDULO MINECRAFT ===
-- Queda por hacer el limpiador de formato para los parámetros que no están en el MOTD
-- Se tiene que hacer el comando de configuración
 - Hacer que el bot haga un ping cada 5-10 minutos a los servidores de Minecraft y actualizar
   sus estadísticas en el sidebar.
