@@ -219,5 +219,7 @@
   "MCPING::ERROR": "Se ha producido un error al intentar conectar con el servidor.",
   "MCPING::NO_HOST": "No se ha especificado un servidor.",
   "MCSRVSTATUS::SETDEFAULTHOST:ERROR": "Se ha producido un error al intentar establecer el servidor por defecto.",
-  "MCSRVSTATUS::SETDEFAULTHOST:SUCCESS": "Se ha establecido %HOST% como servidor por defecto."
+  "MCSRVSTATUS::SETDEFAULTHOST:SUCCESS": "Se ha establecido %HOST% como servidor por defecto.",
+  "MCSRVSTATUS::SETPANELCHANNEL:ERROR": "Se ha producido un error al intentar establecer el canal del panel de estado.",
+  "MCSRVSTATUS::SETPANELCHANNEL:SUCCESS": "Se ha establecido %CHANNEL% como canal del panel de estado.",
 }
