@@ -78,7 +78,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
  */
 
 module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback) => {
-  if (process.Client.modules.includes(botmodule.column || botmodule.modulo) === false) throw new Error('The module does not exist')
+  if (!comprobarSiElModuloExiste(botmodule.column || botmodule.modulo)) throw new Error('The module does not exist')
 
   botmodule.column = botmodule.modulo || botmodule.column
 
@@ -135,6 +135,7 @@ if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
 else rest.setToken(process.env.INSIDER_TOKEN)
 
 const { Collection } = require('discord.js')
+const { comprobarSiElModuloExiste } = require('./moduleManager')
 
 /**
  * Crea el listado de interacciones de un servidor bajo demanda
@@ -150,7 +151,7 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig, deployConfigInteract
   let interactionList = new Collection()
 
   process.Client.modulos.forEach(module => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled !== 0) {
+    if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled) {
       interactionList = interactionList.concat(module.comandos || [])
     }
   })
