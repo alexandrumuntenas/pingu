@@ -3,7 +3,7 @@ const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const i18n = require('../../i18n/i18n')
 const { generateRankCard, resetLeaderboard } = require('../../modules/leveling')
-const { updateGuildConfig } = require('../../functions/guildManager')
+const { actualizarConfiguracionDelGuild } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 
 const channelRelationShip = { 0: 'disabled', 1: 'Same Channel Where Message Is Sent' }
@@ -121,7 +121,7 @@ module.exports = {
             newconfig.difficulty = difficulty
           }
 
-          updateGuildConfig(interaction.guild, { column: 'leveling', newconfig }, err => {
+          actualizarConfiguracionDelGuild(interaction.guild, { column: 'leveling', newconfig }, err => {
             if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::RANKUP:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
@@ -161,7 +161,7 @@ module.exports = {
             newconfig.overlayColor = overlayColor
           }
 
-          updateGuildConfig(interaction.guild, { column: 'leveling', newconfig }, err => {
+          actualizarConfiguracionDelGuild(interaction.guild, { column: 'leveling', newconfig }, err => {
             if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
@@ -253,7 +253,7 @@ module.exports = {
         if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && Object.prototype.hasOwnProperty.call(message.parameters, 2))) return sendHelp()
         switch (message.parameters[1]) {
           case 'backgroundurl': {
-            updateGuildConfig(message.guild, { column: 'leveling', newconfig: { card: { background: message.parameters[2] } } }, err => {
+            actualizarConfiguracionDelGuild(message.guild, { column: 'leveling', newconfig: { card: { background: message.parameters[2] } } }, err => {
               if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:ERROR'))
               return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
             })
@@ -268,7 +268,7 @@ module.exports = {
               message.parameters[2] = '100'
             }
 
-            updateGuildConfig(message.guild, { column: 'leveling', newconfig: { card: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
+            actualizarConfiguracionDelGuild(message.guild, { column: 'leveling', newconfig: { card: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
               if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))
               return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
             })
@@ -279,7 +279,7 @@ module.exports = {
           case 'overlaycolor': {
             if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
 
-            updateGuildConfig(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
+            actualizarConfiguracionDelGuild(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
               if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
               return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
             })
@@ -303,7 +303,7 @@ module.exports = {
             if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && ['this', 'same', 'dm', 'disabled'].includes(message.parameters[2]))) return sendHelp()
             if (message.parameters[2] === 'this') message.parameters[2] = message.channel.id
 
-            updateGuildConfig(message.guild, { column: 'leveling', newconfig: { channel: message.parameters[2] } }, err => {
+            actualizarConfiguracionDelGuild(message.guild, { column: 'leveling', newconfig: { channel: message.parameters[2] } }, err => {
               if (err) return message.reply(i18n(locale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
               switch (message.parameters[2]) {
                 case 'this': {
@@ -334,7 +334,7 @@ module.exports = {
 
           case 'message': {
             const rankupMessage = message.parameters.slice(2).join(' ')
-            updateGuildConfig(message.guild, { column: 'leveling', newconfig: { message: rankupMessage } }, err => {
+            actualizarConfiguracionDelGuild(message.guild, { column: 'leveling', newconfig: { message: rankupMessage } }, err => {
               if (err) {
                 message.reply(i18n(locale, 'LEVELING::RANKUP:MESSAGE:ERROR'))
                 return
@@ -352,7 +352,7 @@ module.exports = {
               message.parameters[2] = '100'
             }
 
-            updateGuildConfig(message.guild, { column: 'leveling', newconfig: { difficulty: parseInt(message.parameters[2], 10) } }, err => {
+            actualizarConfiguracionDelGuild(message.guild, { column: 'leveling', newconfig: { difficulty: parseInt(message.parameters[2], 10) } }, err => {
               if (err) {
                 message.reply(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:ERROR'))
                 return

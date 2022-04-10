@@ -174,7 +174,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
   })
 }
 
-const { obtenerConfiguracionDelGuild, updateGuildConfig } = require('../functions/guildManager')
+const { obtenerConfiguracionDelGuild, actualizarConfiguracionDelGuild } = require('../functions/guildManager')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../i18n/i18n')
 
@@ -323,7 +323,7 @@ module.exports.addUserToBlacklist = (guild, user, callback) => {
   obtenerConfiguracionDelGuild(guild, guildConfig => {
     Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
-    updateGuildConfig(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
+    actualizarConfiguracionDelGuild(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
       return callback()
     })
@@ -363,7 +363,7 @@ module.exports.removeUserFromBlacklist = (guild, user, callback) => {
       delete guildConfig.suggestions.blacklist[guildConfig.suggestions.blacklist.indexOf(user.id)]
     }
 
-    updateGuildConfig(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
+    actualizarConfiguracionDelGuild(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
       if (err) return callback(err)
       return callback()
     })

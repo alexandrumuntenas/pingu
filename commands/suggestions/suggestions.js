@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions } = require('discord.js')
 const { ChannelType } = require('discord-api-types/v9')
-const { updateGuildConfig } = require('../../functions/guildManager')
+const { actualizarConfiguracionDelGuild } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
@@ -20,7 +20,7 @@ module.exports = {
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'dmupdates': {
-        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
+        actualizarConfiguracionDelGuild(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
           if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
           else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
@@ -28,14 +28,14 @@ module.exports = {
         break
       }
       case 'setlogs': {
-        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { logs: interaction.options.getChannel('channel').id } }, (err) => {
+        actualizarConfiguracionDelGuild(interaction.guild, { column: 'suggestions', newconfig: { logs: interaction.options.getChannel('channel').id } }, (err) => {
           if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETLOGS:ERROR'))] })
           interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETLOGS:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setchannel': {
-        updateGuildConfig(interaction.guild, { column: 'suggestions', newconfig: { channel: interaction.options.getChannel('channel').id } }, (err) => {
+        actualizarConfiguracionDelGuild(interaction.guild, { column: 'suggestions', newconfig: { channel: interaction.options.getChannel('channel').id } }, (err) => {
           if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
           interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })

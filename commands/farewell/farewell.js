@@ -2,7 +2,7 @@ const { Permissions, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
-const { updateGuildConfig } = require('../../functions/guildManager')
+const { actualizarConfiguracionDelGuild } = require('../../functions/guildManager')
 const { ChannelType } = require('discord-api-types/v9')
 
 module.exports = {
@@ -34,7 +34,7 @@ module.exports = {
       }
 
       case 'setchannel': {
-        updateGuildConfig(interaction.guild, { column: 'farewell', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
+        actualizarConfiguracionDelGuild(interaction.guild, { column: 'farewell', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
@@ -42,7 +42,7 @@ module.exports = {
       }
 
       case 'setmessage': {
-        updateGuildConfig(interaction.guild, { column: 'farewell', newconfig: { message: interaction.options.getString('message') } }, err => {
+        actualizarConfiguracionDelGuild(interaction.guild, { column: 'farewell', newconfig: { message: interaction.options.getString('message') } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
@@ -90,7 +90,7 @@ module.exports = {
 
       case 'setchannel': {
         if (!message.mentions.channels.first()) return sendHelp()
-        updateGuildConfig(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
+        actualizarConfiguracionDelGuild(message.guild, { column: 'farewell', newconfig: { channel: message.mentions.channels.first().id } }, err => {
           if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETCHANNEL:ERROR'))] })
           return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETCHANNEL:SUCCESS', { CHANNEL: message.mentions.channels.first() }))] })
         })
@@ -99,7 +99,7 @@ module.exports = {
 
       case 'setmessage': {
         if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
-        updateGuildConfig(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
+        actualizarConfiguracionDelGuild(message.guild, { column: 'farewell', newconfig: { message: message.parameters.slice(1).join(' ') } }, err => {
           if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'FAREWELL::SETMESSAGE:ERROR'))] })
           return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'FAREWELL::SETMESSAGE:SUCCESS', { MESSAGE: message.parameters.slice(1).join(' ') }))] })
         })

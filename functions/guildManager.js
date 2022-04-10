@@ -6,10 +6,10 @@ const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
 
 /**
- * Get the guild's configuration from the database.
- * @param {Guild} guild - The guild
- * @param {Function} callback - The callback function
- * @returns Object - The guild configuration
+ * Obtiene la configuración de un guild específico.
+ * @param {Guild} guild - El guild del cual se quiere obtener la configuración.
+ * @param {Function} callback - La función que se ejecutará cuando se obtenga la configuración.
+ * @returns Object - La configuración del guild.
  */
 
 module.exports.obtenerConfiguracionDelGuild = (guild, callback) => {
@@ -42,12 +42,7 @@ module.exports.obtenerConfiguracionDelGuild = (guild, callback) => {
   })
 }
 
-/**
- *
- * @param {*} config
- * @param {*} newconfig
- * @param {*} callback
- */
+/** Procesa la configuración de un objeto. */
 
 function procesarObjetosdeConfiguracion (config, newconfig, callback) {
   let count = 0
@@ -82,7 +77,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
  * @param {Function} callback - The callback function
  */
 
-module.exports.updateGuildConfig = (guild, botmodule, callback) => {
+module.exports.actualizarConfiguracionDelGuild = (guild, botmodule, callback) => {
   module.exports.obtenerConfiguracionDelGuild(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
       if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
