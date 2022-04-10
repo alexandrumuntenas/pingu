@@ -1,4 +1,4 @@
-const { deleteGuildData } = require('../functions/guildDataManager')
+const { deleteGuildData } = require('../functions/guildManager')
 
 module.exports = {
   name: 'guildDelete',

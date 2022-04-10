@@ -1,6 +1,6 @@
 const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { updateGuildConfig } = require('../../functions/guildDataManager')
+const { updateGuildConfig } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 const { generateWelcomeCard, addJoinRole, removeJoinRole } = require('../../modules/welcome')

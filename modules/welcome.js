@@ -3,7 +3,7 @@
  * @param {GuildMember} member
  */
 
-const { getGuildConfig, updateGuildConfig } = require('../functions/guildDataManager')
+const { getGuildConfig, updateGuildConfig } = require('../functions/guildManager')
 
 module.exports.giveMemberRoles = member => {
   getGuildConfig(member.guild, guildConfig => {

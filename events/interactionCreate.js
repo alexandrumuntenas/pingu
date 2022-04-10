@@ -2,7 +2,7 @@ const Consolex = require('../functions/consolex')
 const CooldownManager = require('../functions/cooldownManager')
 
 const { plantillas } = require('../functions/messageManager')
-const { getGuildConfig } = require('../functions/guildDataManager.js')
+const { getGuildConfig } = require('../functions/guildManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 

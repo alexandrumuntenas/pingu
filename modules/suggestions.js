@@ -174,7 +174,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
   })
 }
 
-const { getGuildConfig, updateGuildConfig } = require('../functions/guildDataManager')
+const { getGuildConfig, updateGuildConfig } = require('../functions/guildManager')
 const { MessageEmbed } = require('discord.js')
 const i18n = require('../i18n/i18n')
 

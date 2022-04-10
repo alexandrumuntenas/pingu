@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { getGuildConfig } = require('../../functions/guildDataManager')
+const { getGuildConfig } = require('../../functions/guildManager')
 const Discord = require('discord.js')
 const Consolex = require('../../functions/consolex')
 // Eliminar comentario a la siguiente línea para que funcione el actualizador.

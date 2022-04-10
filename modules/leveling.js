@@ -2,7 +2,7 @@ const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
 const { getMember, updateMember } = require('../functions/memberManager')
-const { getGuildConfig } = require('../functions/guildDataManager')
+const { getGuildConfig } = require('../functions/guildManager')
 const CooldownManager = require('../functions/cooldownManager')
 
 /**

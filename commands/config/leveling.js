@@ -3,7 +3,7 @@ const { Permissions, MessageEmbed, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const i18n = require('../../i18n/i18n')
 const { generateRankCard, resetLeaderboard } = require('../../modules/leveling')
-const { updateGuildConfig } = require('../../functions/guildDataManager')
+const { updateGuildConfig } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 
 const channelRelationShip = { 0: 'disabled', 1: 'Same Channel Where Message Is Sent' }

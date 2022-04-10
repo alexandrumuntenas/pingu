@@ -4,7 +4,7 @@ const CooldownManager = require('../functions/cooldownManager')
 
 const { plantillas } = require('../functions/messageManager')
 const i18n = require('../i18n/i18n')
-const { getGuildConfig } = require('../functions/guildDataManager.js')
+const { getGuildConfig } = require('../functions/guildManager.js')
 const humanizeduration = require('humanize-duration')
 const { runCustomCommand } = require('../modules/customcommands')
 const { getExperience } = require('../modules/leveling')

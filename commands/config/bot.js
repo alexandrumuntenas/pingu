@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions, MessageEmbed } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { deployGuildInteractions, updateGuildConfig } = require('../../functions/guildDataManager')
+const { deployGuildInteractions, updateGuildConfig } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 const Consolex = require('../../functions/consolex')
 

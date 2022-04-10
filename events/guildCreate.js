@@ -1,4 +1,4 @@
-const { getGuildConfig } = require('../functions/guildDataManager.js')
+const { getGuildConfig } = require('../functions/guildManager.js')
 
 module.exports = {
   name: 'guildCreate',
