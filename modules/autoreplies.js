@@ -13,7 +13,7 @@ module.exports.getReply = (guild, trigger, callback) => {
   if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
-    if (err) Consolex.handleError(err)
+    if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
       result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
@@ -57,7 +57,7 @@ module.exports.createReply = (guild, autoreply, callback) => {
 
   Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
     if (err) {
-      Consolex.handleError(err)
+      Consolex.gestionarError(err)
       callback(err)
       throw err
     }
@@ -75,7 +75,7 @@ module.exports.createReply = (guild, autoreply, callback) => {
 module.exports.deleteReply = (guild, triggerID) => {
   Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
     if (err) {
-      Consolex.handleError(err)
+      Consolex.gestionarError(err)
       throw err
     }
   })
@@ -118,7 +118,7 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
       try {
         message.channel.send(reply)
       } catch (err) {
-        Consolex.handleError(err)
+        Consolex.gestionarError(err)
       }
     }
   })
@@ -161,7 +161,7 @@ module.exports.getReplies = (guild, callback) => {
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
     if (err) {
-      Consolex.handleError(err)
+      Consolex.gestionarError(err)
       throw err
     }
 

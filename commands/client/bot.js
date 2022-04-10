@@ -51,7 +51,7 @@ module.exports = {
           try {
             interaction.guild.members.cache.get(process.Client.user.id).setNickname(`[${interaction.options.getString('newprefix')}] ${process.Client.user.username}`)
           } catch (err2) {
-            Consolex.handleError(err2)
+            Consolex.gestionarError(err2)
           }
 
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
@@ -98,7 +98,7 @@ module.exports = {
             return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'UPDATE::SUCCESS'))] })
           })
         } catch (err) {
-          Consolex.handleError(err)
+          Consolex.gestionarError(err)
         }
 
         break
@@ -162,7 +162,7 @@ module.exports = {
           try {
             message.guild.members.cache.get(process.Client.user.id).setNickname(`[${message.parameters[1]}] ${process.Client.user.username}`)
           } catch (err2) {
-            Consolex.handleError(err2)
+            Consolex.gestionarError(err2)
           }
 
           return message.channel.send({ embeds: [plantillas.conexito(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: message.parameters[1] }))] })
@@ -201,7 +201,7 @@ module.exports = {
             return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'UPDATE::SUCCESS'))] })
           })
         } catch (err) {
-          Consolex.handleError(err)
+          Consolex.gestionarError(err)
         }
 
         break

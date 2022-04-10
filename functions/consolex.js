@@ -35,7 +35,7 @@ module.exports = {
   fatal: message => {
     process.stdout.write(`${boxen(`${chalk.yellow('[FATAL]')} ${chalk.yellow(`[${getCurrentTime()}]`)}\n${message}`, { padding: 1, align: 'center' })}\n`)
   },
-  handleError: err => {
+  gestionarError: err => {
     module.exports.error(err)
     module.exports.Sentry.captureException(err)
   },

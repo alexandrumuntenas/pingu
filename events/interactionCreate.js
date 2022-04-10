@@ -40,7 +40,7 @@ module.exports = {
   name: 'interactionCreate',
   execute: async interaction => { // skipcq: JS-0116
     if (interaction.isCommand()) {
-      isCommand(interaction).catch(Consolex.handleError)
+      isCommand(interaction).catch(Consolex.gestionarError)
     }
   }
 }

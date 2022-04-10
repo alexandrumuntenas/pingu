@@ -14,20 +14,20 @@ const { Routes } = require('discord-api-types/v9')
 
 module.exports.obtenerConfiguracionDelServidor = (guild, callback) => {
   Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-    if (err) Consolex.handleError(err)
+    if (err) Consolex.gestionarError(err)
 
     if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
       Object.keys(result[0]).forEach(module => {
         try {
           result[0][module] = JSON.parse(result[0][module].trim())
         } catch (err2) {
-          if (!err2.constructor.name === 'SyntaxError') Consolex.handleError(err2)
+          if (!err2.constructor.name === 'SyntaxError') Consolex.gestionarError(err2)
         }
       })
 
       if (result[0].common === null) {
         Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
-          if (err2) Consolex.handleError(err2)
+          if (err2) Consolex.gestionarError(err2)
           return module.exports.obtenerConfiguracionDelServidor(guild, callback)
         })
       }
@@ -35,7 +35,7 @@ module.exports.obtenerConfiguracionDelServidor = (guild, callback) => {
       if (callback) callback(result[0] || {})
     } else {
       Database.query('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id], err2 => {
-        if (err2) Consolex.handleError(err2)
+        if (err2) Consolex.gestionarError(err2)
         module.exports.obtenerConfiguracionDelServidor(guild, callback)
       })
     }
@@ -84,7 +84,7 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
           guildConfig[botmodule.column] = newModuleConfig
           Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
             if (err) {
-              Consolex.handleError(err)
+              Consolex.gestionarError(err)
               return callback(err)
             }
 
@@ -98,7 +98,7 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
       } else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
         Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
           if (err) {
-            Consolex.handleError(err)
+            Consolex.gestionarError(err)
             return callback(err)
           }
 
@@ -111,7 +111,7 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
       } else {
         Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
           if (err) {
-            Consolex.handleError(err)
+            Consolex.gestionarError(err)
             return callback(err)
           }
 
@@ -192,7 +192,7 @@ module.exports.eliminarDatosDelServidor = guild => {
   const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildSuggestions']
   databaseTables.forEach(table => {
     Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
-      if (err) Consolex.handleError(err)
+      if (err) Consolex.gestionarError(err)
     })
   })
 }

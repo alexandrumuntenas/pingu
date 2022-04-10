@@ -25,7 +25,7 @@ module.exports.getExperience = message => {
         try {
           updateMember(message.member, { lvlExperience: memberData.lvlExperience })
         } catch (err) {
-          if (err) Consolex.handleError(err)
+          if (err) Consolex.gestionarError(err)
         }
 
         return null
@@ -79,7 +79,7 @@ module.exports.getLeaderboard = (guild, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
   Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
-    if (err) Consolex.handleError(err)
+    if (err) Consolex.gestionarError(err)
 
     if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) {
       let memberCount = 0
@@ -268,7 +268,7 @@ module.exports.resetLeaderboard = (guild, callback) => {
 
   Database.query('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
     if (err) {
-      Consolex.handleError(err)
+      Consolex.gestionarError(err)
       return callback(err)
     }
     return callback(null)
