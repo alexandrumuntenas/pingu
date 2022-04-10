@@ -184,8 +184,8 @@ module.exports.subirInteraccionesDelServidor = (guild, deployConfigInteractions,
 }
 
 /**
- * Remove all the guild related data from Pingu database.
- * @param {Guild} guild - The Guild
+ * Elimina todos los datos de un servidor de la base de datos del bot.
+ * @param {Guild} guild - El servidor del cual se quiere eliminar los datos.
  */
 
 module.exports.eliminarDatosDelServidor = guild => {
