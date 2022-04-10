@@ -141,10 +141,12 @@ module.exports.updateGuildConfig = (guild, botmodule, callback) => {
 
 const rest = new REST({ version: '9' })
 
-if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKEN)
-else rest.setToken(process.env.PUBLIC_TOKEN)
+if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
+else rest.setToken(process.env.INSIDER_TOKEN)
 
 const { Collection } = require('discord.js')
+
+// TODO: HAY QUE REFORMAR ESTA #~|@3~|€ YA!
 
 /**
  * Create the interaction list for the requested guild using it's configuration as a base
@@ -171,6 +173,8 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 
   if (guildConfig.autoreplies.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'autoreplies') || [])
 
+  if (guildConfig.mcsrvstatus.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'mcsrvstatus') || [])
+
   interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || [])
 
   if (!deployConfigInteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
@@ -187,7 +191,6 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 
 module.exports.deployGuildInteractions = (guild, deployConfigInteractions, callback) => {
   if (!callback) throw new Error('Callback is required')
-
   module.exports.getGuildConfig(guild, guildConfig => {
     createTheInteractionListOfTheGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
       rest.put(
