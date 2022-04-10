@@ -25,7 +25,7 @@ if (process.env.ENTORNO === 'public') {
   process.Client.login(process.env.INSIDER_TOKEN)
 }
 
-process.Client.commands = require('./functions/clientTools').cargarComandoseInteracciones()
+process.Client.commands = require('./functions/clientManager').cargarComandoseInteracciones()
 
 for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.js'))) {
   const event = require(`./events/${file}`)
