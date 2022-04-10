@@ -10,7 +10,7 @@ module.exports = {
   description: '🖥️ Ping a specified Minecraft server',
   interactionData: new SlashCommandBuilder().addStringOption(input => input.setName('ip_or_address').setRequired(true).setDescription('The IP or address of the server')).addStringOption(input => input.setName('port').setDescription('The port of the server')),
   cooldown: 10000,
-  runInteraction(locale, interaction) {
+  runInteraction (locale, interaction) {
     obtenerDatosDelServidor({ ip: interaction.options.getString('ip_or_address'), port: interaction.options.getString('port') }, datosDelServidor => {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -27,7 +27,7 @@ module.exports = {
       }
     })
   },
-  runCommand(locale, message) {
+  runCommand (locale, message) {
     if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
       return message.reply({
         embeds: plantillas.ayuda({
