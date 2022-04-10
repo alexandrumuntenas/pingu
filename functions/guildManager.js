@@ -160,7 +160,6 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
   let interactionList = new Collection()
 
   process.Client.modules.forEach(module => {
-    
     if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled !== 0) {
       interactionList = interactionList.concat(module.comandos || [])
     }
