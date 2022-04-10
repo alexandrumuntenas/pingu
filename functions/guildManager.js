@@ -71,32 +71,22 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
  * Actualiza la configuración de un guild.
  * @param {Guild} guild - El guild del cual se quiere actualizar la configuración.
  * @param {Object} botmodule - El módulo del cual se quiere actualizar la configuración.
- * @param {String} botmodule.column - La columna del módulo del cual se quiere actualizar la configuración.
+ * @param {?String} botmodule.column - ¡Deprecated! La columna del módulo del cual se quiere actualizar la configuración.
+ * @param {?String} botmodule.modulo - La columna del módulo del cual se quiere actualizar la configuración.
  * @param {JSON} botmodule.newconfig - La nueva configuración del módulo.
  * @param {Function} callback - La función que se ejecutará cuando se actualice la configuración.
  */
 
 module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback) => {
+  if (process.Client.modules.includes(botmodule.column || botmodule.modulo) === false) throw new Error('The module does not exist')
+
+  botmodule.column = botmodule.modulo || botmodule.column
+
   module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, botmodule.column)) {
-      if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
-        procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
-          guildConfig[botmodule.column] = newModuleConfig
-          Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
-            if (err) {
-              Consolex.gestionarError(err)
-              return callback(err)
-            }
-
-            if (callback) {
-              return callback()
-            }
-
-            return null
-          })
-        })
-      } else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
+    if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
+      procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
+        guildConfig[botmodule.column] = newModuleConfig
+        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
           if (err) {
             Consolex.gestionarError(err)
             return callback(err)
@@ -108,21 +98,34 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
 
           return null
         })
-      } else {
-        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
-          if (err) {
-            Consolex.gestionarError(err)
-            return callback(err)
-          }
+      })
+    } else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
+      Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
+        if (err) {
+          Consolex.gestionarError(err)
+          return callback(err)
+        }
 
-          if (callback) {
-            return callback()
-          }
+        if (callback) {
+          return callback()
+        }
 
-          return null
-        })
-      }
-    } else throw new Error('The specified module does not exist.')
+        return null
+      })
+    } else {
+      Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
+        if (err) {
+          Consolex.gestionarError(err)
+          return callback(err)
+        }
+
+        if (callback) {
+          return callback()
+        }
+
+        return null
+      })
+    }
   })
 }
 
