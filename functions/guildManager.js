@@ -165,7 +165,7 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
     }
   })
 
-  interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || [])
+  interactionList = interactionList.concat(process.Client.comandos.filter(command => !command.module) || [])
 
   if (!deployConfigInteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 

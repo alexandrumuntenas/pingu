@@ -38,12 +38,12 @@ module.exports = {
         [message.commandName] = message.parameters
         message.parameters.shift()
 
-        if (!message.commandName) return process.Client.commands.get('help').runCommand(message.guild.configuration.common.language, message)
+        if (!message.commandName) return process.Client.comandos.get('help').runCommand(message.guild.configuration.common.language, message)
 
-        const commandToExecute = process.Client.commands.get(message.commandName)
+        const commandToExecute = process.Client.comandos.get(message.commandName)
 
         if (CooldownManager.check(message.member, message.guild, message.commandName)) {
-          if (process.Client.commands.has(message.commandName)) {
+          if (process.Client.comandos.has(message.commandName)) {
             if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
 
             if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::PERMERROR'))] })

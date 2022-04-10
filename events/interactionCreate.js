@@ -12,8 +12,8 @@ async function isCommand (interaction) {
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
   getGuildConfig(interaction.guild, async guildConfig => {
     interaction.guild.configuration = guildConfig
-    if (process.Client.commands.has(interaction.commandName)) {
-      const interactionToRun = process.Client.commands.get(interaction.commandName)
+    if (process.Client.comandos.has(interaction.commandName)) {
+      const interactionToRun = process.Client.comandos.get(interaction.commandName)
 
       if (interactionToRun.module && !guildConfig[interactionToRun.module].enabled) {
         return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })

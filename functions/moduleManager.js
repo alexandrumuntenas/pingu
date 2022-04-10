@@ -13,11 +13,11 @@ module.exports.registrarModulo = (modulo) => {
   // eslint-disable-next-line no-constant-condition
   if (!typeof modulo === 'object') throw new Error('El módulo debe ser un objeto')
   if (!Object.prototype.hasOwnProperty.call(modulo, 'nombre') && !Object.prototype.hasOwnProperty.call(modulo, 'descripcion') && !Object.prototype.hasOwnProperty.call(modulo, 'comandos')) throw new Error('El módulo no tiene nombre, descripción o comandos')
-  if (!process.Client.commands) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
+  if (!process.Client.comandos) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
 
   Consolex.warn(`Registrando módulo ${modulo.nombre}`)
 
-  modulo.comandos = process.Client.commands.filter(command => command.module === modulo.nombre) || []
+  modulo.comandos = process.Client.comandos.filter(command => command.module === modulo.nombre) || []
   Consolex.info(`El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
 
   if (!modulos.find(m => m.nombre === modulo.nombre)) {
