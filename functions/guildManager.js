@@ -146,8 +146,6 @@ else rest.setToken(process.env.INSIDER_TOKEN)
 
 const { Collection } = require('discord.js')
 
-// TODO: HAY QUE REFORMAR ESTA #~|@3~|€ YA!
-
 /**
  * Create the interaction list for the requested guild using it's configuration as a base
  * @param {Object} guildConfig
@@ -161,19 +159,12 @@ function createTheInteractionListOfTheGuild (guildConfig, deployConfigInteractio
 
   let interactionList = new Collection()
 
-  if (guildConfig.welcome.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'welcome') || [])
-
-  if (guildConfig.farewell.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'farewell') || [])
-
-  if (guildConfig.leveling.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'leveling') || [])
-
-  if (guildConfig.suggestions.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'suggestions') || [])
-
-  if (guildConfig.customcommands.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'customcommands') || [])
-
-  if (guildConfig.autoreplies.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'autoreplies') || [])
-
-  if (guildConfig.mcsrvstatus.enabled !== 0) interactionList = interactionList.concat(process.Client.commands.filter(command => command.module === 'mcsrvstatus') || [])
+  process.Client.modules.forEach(module => {
+    console.log(guildConfig[module.name])
+    if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled !== 0) {
+      interactionList = interactionList.concat(module.comandos || [])
+    }
+  })
 
   interactionList = interactionList.concat(process.Client.commands.filter(command => !command.module) || [])
 
