@@ -29,11 +29,11 @@
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="/pingu/botavatar.png" rel="icon" />
-    <link href="/pingu/resources/css/retype.css?v=2.2.703426390982" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=2.2.703428243762" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=2.2.703426390982" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=2.2.703428243762" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=2.2.703426390982" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=2.2.703428243762" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -242,7 +242,7 @@
     </h2>
 </doc-anchor-target>
 <div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable" user="" user.id="" user.name="" user.tag="" user.avatar_url="" user.mention="">
+<table class="comfortable">
 <thead>
 <tr>
 <th>Placeholder</th>
@@ -251,34 +251,34 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
+<td>{user}</td>
 <td>User Mention</td>
 </tr>
 <tr>
-<td></td>
+<td>{user.id}</td>
 <td>User ID</td>
 </tr>
 <tr>
-<td></td>
+<td>{user.name}</td>
 <td>User Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{user.tag}</td>
 <td>User Tag</td>
 </tr>
 <tr>
-<td></td>
+<td>{user.avatar_url}</td>
 <td>User Avatar</td>
 </tr>
 <tr>
-<td></td>
+<td>{user.mention}</td>
 <td>User Mention</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable" member="" member.id="" member.name="" member.tag="" member.avatar_url="" member.mention="">
+<table class="comfortable">
 <thead>
 <tr>
 <th>Placeholder</th>
@@ -287,34 +287,34 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
+<td>{member}</td>
 <td>Member Mention</td>
 </tr>
 <tr>
-<td></td>
+<td>{member.id}</td>
 <td>Member ID</td>
 </tr>
 <tr>
-<td></td>
+<td>{member.name}</td>
 <td>Member Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{member.tag}</td>
 <td>Member Tag</td>
 </tr>
 <tr>
-<td></td>
+<td>{member.avatar_url}</td>
 <td>Member Avatar</td>
 </tr>
 <tr>
-<td></td>
+<td>{member.mention}</td>
 <td>Member Mention</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable" player="" player.id="" player.name="" player.tag="" player.avatar_url="" player.mention="">
+<table class="comfortable">
 <thead>
 <tr>
 <th>Placeholder</th>
@@ -323,27 +323,27 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
+<td>{player}</td>
 <td>Player Mention</td>
 </tr>
 <tr>
-<td></td>
+<td>{player.id}</td>
 <td>Player ID</td>
 </tr>
 <tr>
-<td></td>
+<td>{player.name}</td>
 <td>Player Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{player.tag}</td>
 <td>Player Tag</td>
 </tr>
 <tr>
-<td></td>
+<td>{player.avatar_url}</td>
 <td>Player Avatar</td>
 </tr>
 <tr>
-<td></td>
+<td>{player.mention}</td>
 <td>Player Mention</td>
 </tr>
 </tbody>
@@ -373,7 +373,7 @@
     </h2>
 </doc-anchor-target>
 <div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable" guild="" guild.id="" guild.name="" guild.icon_url="" guild.member_count="" guild.verification_level="">
+<table class="comfortable">
 <thead>
 <tr>
 <th>Placeholder</th>
@@ -382,34 +382,34 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
+<td>{guild}</td>
 <td>Guild Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{guild.id}</td>
 <td>Guild ID</td>
 </tr>
 <tr>
-<td></td>
+<td>{guild.name}</td>
 <td>Guild Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{guild.icon_url}</td>
 <td>Guild Icon</td>
 </tr>
 <tr>
-<td></td>
+<td>{guild.member_count}</td>
 <td>Guild Member Count</td>
 </tr>
 <tr>
-<td></td>
+<td>{guild.verification_level}</td>
 <td>Guild Verification Level</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable" server="" server.id="" server.name="" server.icon_url="" server.member_count="" server.verification_level="">
+<table class="comfortable">
 <thead>
 <tr>
 <th>Placeholder</th>
@@ -418,27 +418,27 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
+<td>{server}</td>
 <td>Server Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{server.id}</td>
 <td>Server ID</td>
 </tr>
 <tr>
-<td></td>
+<td>{server.name}</td>
 <td>Server Name</td>
 </tr>
 <tr>
-<td></td>
+<td>{server.icon_url}</td>
 <td>Server Icon</td>
 </tr>
 <tr>
-<td></td>
+<td>{server.member_count}</td>
 <td>Server Member Count</td>
 </tr>
 <tr>
-<td></td>
+<td>{server.verification_level}</td>
 <td>Server Verification Level</td>
 </tr>
 </tbody>
@@ -474,7 +474,7 @@
     </h3>
 </doc-anchor-target>
 <div class="table-wrapper scrollbar overflow-hidden">
-<table class="comfortable" newlevel="" oldlevel="">
+<table class="comfortable">
 <thead>
 <tr>
 <th>Placeholder</th>
@@ -483,11 +483,11 @@
 </thead>
 <tbody>
 <tr>
-<td></td>
+<td>{newlevel}</td>
 <td>New Level</td>
 </tr>
 <tr>
-<td></td>
+<td>{oldlevel}</td>
 <td>Level before update</td>
 </tr>
 </tbody>
