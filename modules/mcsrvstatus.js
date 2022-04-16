@@ -190,7 +190,7 @@ const consolex = require('../functions/consolex')
 
 module.exports.obtenerDatosDelServidor = (host, callback) => {
   if (!callback) throw new Error('Debe proporcionar un callback')
-  Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port.trim() : 25565 }).then((state) => {
+  Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
     const servidor = {}
     module.exports.convertirMOTDaImagen(state.raw.vanilla.raw.description.extra || state.raw.vanilla.raw.description || state.name, motd => {
       servidor.motd = motd
