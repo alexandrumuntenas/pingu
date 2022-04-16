@@ -135,7 +135,7 @@ const fs = require('fs')
  */
 
 module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
-  let fileContent = ''
+  let fileContent = 'Pingu · The OSS Discord Bot. Learn more about Pingu at https://alexandrumuntenas.dev/pingu\n\n'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
   module.exports.getReplies(guild, (replies) => {
