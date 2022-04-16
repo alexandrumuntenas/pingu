@@ -136,7 +136,7 @@ const fs = require('fs')
 
 module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
   let fileContent = ''
-  const filePath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
+  const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
   module.exports.getReplies(guild, (replies) => {
     replies.forEach(reply => {

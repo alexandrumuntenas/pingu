@@ -124,7 +124,7 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
  */
 
 module.exports.generateWelcomeCard = async (member, callback) => {
-  const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+  const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
 
   const canvas = createCanvas(1100, 500)
   const finalImageComposition = canvas.getContext('2d')

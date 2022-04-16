@@ -179,7 +179,7 @@ module.exports.generateRankCard = (member, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
   getMember(member, async memberData => {
-    const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+    const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
 
     const canvas = createCanvas(1100, 320)
     const finalImageComposition = canvas.getContext('2d')

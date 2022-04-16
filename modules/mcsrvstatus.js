@@ -27,7 +27,7 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
   if (!callback) throw new Error('Callback is required')
 
   const motdProcesado = module.exports.procesarMOTD(motd)
-  const attachmentPath = `./modules/temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+  const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
   const canvas = createCanvas(1688, 144)
   const ctx = canvas.getContext('2d')
 

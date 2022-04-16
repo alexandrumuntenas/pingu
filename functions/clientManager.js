@@ -55,7 +55,7 @@ const consolex = require('./consolex')
 
 function eliminarArchivos (files) {
   for (const file of files) {
-    stat(`./modules/temp/${file}`, (err, stats) => {
+    stat(`./temp/${file}`, (err, stats) => {
       if (err) consolex.handleError(err)
 
       const fileDate = new Date(stats.birthtime)
@@ -63,7 +63,7 @@ function eliminarArchivos (files) {
 
       if (now - fileDate >= 600000) {
         consolex.info(`Eliminador de Archivos temporales ha eliminado ${file}`)
-        unlinkSync(`./modules/temp/${file}`)
+        unlinkSync(`./temp/${file}`)
       }
     })
   }
@@ -75,11 +75,11 @@ function eliminarArchivos (files) {
 
 module.exports.eliminadorArchivosTemporales = () => {
   try {
-    eliminarArchivos(readdirSync('./modules/temp'))
+    eliminarArchivos(readdirSync('./temp'))
   } catch {
-    mkdirSync('./modules/temp')
+    mkdirSync('./temp')
     consolex.info('Eliminador de Archivos temporales ha creado el directorio de archivos temporales')
-    eliminarArchivos(readdirSync('./modules/temp'))
+    eliminarArchivos(readdirSync('./temp'))
   }
 }
 
