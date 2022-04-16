@@ -4,7 +4,5 @@ cooldowns.json
 /.vscode
 /node_modules
 /modules/temp
-/modules/sources/fonts
-/modules/sources/customBackgrounds
 */dist/
 *.dev.js

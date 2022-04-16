@@ -56,7 +56,7 @@ const isValidUrl = require('is-valid-http-url')
 const isImageUrl = require('is-image-url')
 const hexToRgba = require('hex-rgba')
 
-registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
+registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
 

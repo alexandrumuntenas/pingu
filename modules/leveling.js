@@ -106,7 +106,7 @@ const isImageUrl = require('is-image-url')
 const hexToRgba = require('hex-rgba')
 const { millify } = require('millify')
 
-registerFont('./modules/sources/fonts/Montserrat/Montserrat-SemiBold.ttf', {
+registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
 

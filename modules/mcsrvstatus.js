@@ -3,10 +3,10 @@ const { writeFileSync } = require('fs')
 const randomstring = require('randomstring')
 const { motdParser } = require('@sfirew/mc-motd-parser')
 
-registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-Regular.ttf', { family: 'Courier Prime Regular' })
-registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-Italic.ttf', { family: 'Courier Prime Italic' })
-registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-Bold.ttf', { family: 'Courier Prime Bold' })
-registerFont('./modules/sources/fonts/CourierPrime/CourierPrime-BoldItalic.ttf', { family: 'Courier Prime Bold Italic' })
+registerFont('./fonts/Courier_Prime/CourierPrime-Regular.ttf', { family: 'Courier Prime Regular' })
+registerFont('./fonts/Courier_Prime/CourierPrime-Italic.ttf', { family: 'Courier Prime Italic' })
+registerFont('./fonts/Courier_Prime/CourierPrime-Bold.ttf', { family: 'Courier Prime Bold' })
+registerFont('./fonts/Courier_Prime/CourierPrime-BoldItalic.ttf', { family: 'Courier Prime Bold Italic' })
 
 /** Comprobar si texto solo tiene espacios; devuelve falso si solo hay 1 */
 
