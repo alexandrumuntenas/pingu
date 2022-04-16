@@ -67,6 +67,8 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
   }
 }
 
+const { comprobarSiElModuloExiste } = require('./moduleManager')
+
 /**
  * Actualiza la configuración de un guild.
  * @param {Guild} guild - El guild del cual se quiere actualizar la configuración.
@@ -135,7 +137,6 @@ if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
 else rest.setToken(process.env.INSIDER_TOKEN)
 
 const { Collection } = require('discord.js')
-const { comprobarSiElModuloExiste } = require('./moduleManager')
 
 /**
  * Crea el listado de interacciones de un servidor bajo demanda
