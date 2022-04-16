@@ -10,7 +10,7 @@ module.exports = {
   cooldown: 1000,
   description: '⚙️ Configure the Minecraft Server Status module',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  isConfigurationCommand: false,
+  isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('setdefaulthost').setDescription('Set the default host for the Minecraft Server Status module').addStringOption(input => input.setName('host').setDescription('The host to use').setRequired(true)).addNumberOption(input => input.setName('port').setDescription('The port to use')))
     .addSubcommand(sc => sc.setName('setpanelchannel').setDescription('Set the channel where the Minecraft Server Status panel will be sent').addChannelOption(input => input.setName('channel').setDescription('The channel where to post updates').setRequired(true).addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
