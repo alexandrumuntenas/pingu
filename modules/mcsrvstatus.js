@@ -263,6 +263,7 @@ function actualizarDatosDelPanel (guild) {
 }
 
 module.exports.comenzarActualizarDatosDeLosServidores = () => {
+  consolex.info('Actualizando datos de los de minecraft configurados...')
   process.Client.guilds.fetch().then(guilds => {
     guilds.forEach(guild => {
       actualizarNumeroDeJugadoresDelSidebar(guild)
@@ -271,6 +272,7 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
   })
 
   setInterval(() => {
+    consolex.info('Actualizando datos de los de minecraft configurados...')
     process.Client.guilds.fetch().then(guilds => {
       guilds.forEach(guild => {
         actualizarNumeroDeJugadoresDelSidebar(guild)
