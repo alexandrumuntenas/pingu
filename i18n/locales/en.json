@@ -215,5 +215,13 @@
   "REJECTEDBY": "Rejected by",
   "APPROVEDBY": "Approved by",
   "STAFFNOTE": "Staff note",
-  "SUGGEST::BLACKLISTED": "You are blacklisted. You are not allowed to make suggestions."
+  "SUGGEST::BLACKLISTED": "You are blacklisted. You are not allowed to make suggestions.",
+  "MCPING::ERROR": "An error occurred while trying to connect to the server.",
+  "MCPING::NO_HOST": "A server has not been specified.",
+  "MCSRVSTATUS::SETDEFAULTHOST:ERROR": "An error has occurred while trying to set the default server.",
+  "MCSRVSTATUS::SETDEFAULTHOST:SUCCESS": "%HOST% has been set as the default server.",
+  "MCSRVSTATUS::SETPANELCHANNEL:ERROR": "An error occurred while trying to set the status panel channel.",
+  "MCSRVSTATUS::SETPANELCHANNEL:SUCCESS": "%CHANNEL% has been set as the status panel channel.",
+  "MCSRVSTATUS::SIDEBARPLAYERCOUNT:ERROR": "An error has occurred while trying to set the channel to display the number of players.",
+  "MCSRVSTATUS::SIDEBARPLAYERCOUNT:SUCCESS": "%CHANNEL% has been set as the channel for displaying the number of players."
 }
