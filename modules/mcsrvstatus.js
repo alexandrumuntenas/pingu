@@ -10,7 +10,7 @@ registerFont('./fonts/Courier_Prime/CourierPrime-BoldItalic.ttf', { family: 'Cou
 
 /** Comprobar si texto solo tiene espacios; devuelve falso si solo hay 1 */
 
-function tieneSoloEspacios(texto) {
+function tieneSoloEspacios (texto) {
   if (texto.length === 1) return false
   return texto.trim().length === 0
 }
@@ -119,7 +119,7 @@ const coloresDeMinecraft = {
   * String.trim(), manteniendo saltos de línea.
 */
 
-function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(texto) {
+function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea (texto) {
   if (texto.includes('\n')) {
     const textoProcesado = []
     const textoOfrecido = texto.split('\n')
@@ -207,7 +207,7 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
 
 /* A partir de aquí solo habrá código relacionado con las tareas de actualización de datos */
 
-function actualizarNumeroDeJugadoresDelSidebar(guild) {
+function actualizarNumeroDeJugadoresDelSidebar (guild) {
   obtenerConfiguracionDelServidor(guild, config => {
     const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount && sidebarPlayercount) {
@@ -221,7 +221,7 @@ function actualizarNumeroDeJugadoresDelSidebar(guild) {
 const { MessageAttachment, MessageEmbed } = require('discord.js')
 const { createHash } = require('crypto')
 
-function actualizarDatosDelPanel(guild) {
+function actualizarDatosDelPanel (guild) {
   obtenerConfiguracionDelServidor(guild, config => {
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.messagePanelChannel) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
