@@ -11,30 +11,30 @@ icon: code
 
 | Placeholder       | Data Placed           |
 |-------------------|-----------------------|
-| {user}            | User Mention          |
-| {user.id}         | User ID               |
-| {user.name}       | User Name             |
-| {user.tag}        | User Tag              |
-| {user.avatar_url} | User Avatar           |
-| {user.mention}    | User Mention          |
+| &#123;user&#125;            | User Mention          |
+| &#123;user.id&#125;         | User ID               |
+| &#123;user.name&#125;       | User Name             |
+| &#123;user.tag&#125;        | User Tag              |
+| &#123;user.avatar_url&#125; | User Avatar           |
+| &#123;user.mention&#125;    | User Mention          |
 
 | Placeholder       | Data Placed           |
 |-------------------|-----------------------|
-| {member}          | Member Mention        |
-| {member.id}       | Member ID             |
-| {member.name}     | Member Name           |
-| {member.tag}      | Member Tag            |
-| {member.avatar_url} | Member Avatar       |
-| {member.mention} | Member Mention         |
+| &#123;member&#125;          | Member Mention        |
+| &#123;member.id&#125;       | Member ID             |
+| &#123;member.name&#125;     | Member Name           |
+| &#123;member.tag&#125;      | Member Tag            |
+| &#123;member.avatar_url&#125; | Member Avatar       |
+| &#123;member.mention&#125; | Member Mention         |
 
 | Placeholder       | Data Placed           |
 |-------------------|-----------------------|
-| {player}          | Player Mention        |
-| {player.id}       | Player ID             |
-| {player.name}     | Player Name           |
-| {player.tag}      | Player Tag            |
-| {player.avatar_url} | Player Avatar       |
-| {player.mention} | Player Mention         |
+| &#123;player&#125;          | Player Mention        |
+| &#123;player.id&#125;       | Player ID             |
+| &#123;player.name&#125;     | Player Name           |
+| &#123;player.tag&#125;      | Player Tag            |
+| &#123;player.avatar_url&#125; | Player Avatar       |
+| &#123;player.mention&#125; | Player Mention         |
 
 !!!info
 They are the same placeholders but with different names.
@@ -44,21 +44,21 @@ They are the same placeholders but with different names.
 
 | Placeholder       | Data Placed           |
 |-------------------|-----------------------|
-| {guild}           | Guild Name            |
-| {guild.id}        | Guild ID              |
-| {guild.name}      | Guild Name            |
-| {guild.icon_url}  | Guild Icon            |
-| {guild.member_count}     | Guild Member Count           |
-| {guild.verification_level} | Guild Verification Level    |
+| &#123;guild&#125;           | Guild Name            |
+| &#123;guild.id&#125;        | Guild ID              |
+| &#123;guild.name&#125;      | Guild Name            |
+| &#123;guild.icon_url&#125;  | Guild Icon            |
+| &#123;guild.member_count&#125;     | Guild Member Count           |
+| &#123;guild.verification_level&#125; | Guild Verification Level    |
 
 | Placeholder       | Data Placed           |
 |-------------------|-----------------------|
-| {server}          | Server Name           |
-| {server.id}       | Server ID             |
-| {server.name}     | Server Name           |
-| {server.icon_url} | Server Icon           |
-| {server.member_count}     | Server Member Count           |
-| {server.verification_level} | Server Verification Level    |
+| &#123;server&#125;          | Server Name           |
+| &#123;server.id&#125;       | Server ID             |
+| &#123;server.name&#125;     | Server Name           |
+| &#123;server.icon_url&#125; | Server Icon           |
+| &#123;server.member_count&#125;     | Server Member Count           |
+| &#123;server.verification_level&#125; | Server Verification Level    |
 
 !!!info
 They are the same placeholders but with different names.
@@ -70,5 +70,5 @@ They are the same placeholders but with different names.
 
 | Placeholder       | Data Placed           |
 |-------------------|-----------------------|
-| {newlevel}        | New Level             |
-| {oldlevel}        | Level before update   |
+| &#123;newlevel&#125;        | New Level             |
+| &#123;oldlevel&#125;        | Level before update   |
