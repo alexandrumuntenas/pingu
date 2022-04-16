@@ -28,8 +28,8 @@ module.exports = {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { messagePanelChannel: interaction.options.getChannel('channel').id } }, err => {
           if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
           interaction.options.getChannel('channel').send('<:Blurple_verified_plain:938094790132764682> ').then(msg => {
-            actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: msg.id } }, err => {
-              if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
+            actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: msg.id } }, _err => {
+              if (_err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
             })
           })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'MCSRVSTATUS::SETPANELCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
