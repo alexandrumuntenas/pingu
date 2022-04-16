@@ -29,22 +29,17 @@ links:
   link: /README.md
   icon: home
 
-- text: Issues
-  link: https://github.com/alexandrumuntenas/pingu/issues
-  icon: issue-opened
-  target: blank
-
 - text: GitHub
   link: https://github.com/alexandrumuntenas/pingu
   icon: mark-github
   target: blank
 
-- text: Discord Support Server
+- text: Support Server
   link: https://discord.com/invite/dgFHBSuUst
   icon: comment-discussion
   target: blank
 
-- text: Add to Discord
+- text: Add to Server
   link: https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands
   icon: diff-added
   target: blank
