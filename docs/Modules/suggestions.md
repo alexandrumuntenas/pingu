@@ -5,11 +5,14 @@ icon: light-bulb
 
 # Suggestions (PRW)
 
+>  Do you want to allow your users to send you suggestions? Pingu can help you. This module comes with commands so you can set up a workflow quickly.
+
 !!!warning
 This module is currently in the preview phase, that is to say, in a phase in which the public's opinion is very important to improve it. If you want to make any suggestion to improve this module, please use the suggestion channel of our Discord server.
 !!!
 
->  Do you want to allow your users to send you suggestions? Pingu can help you. This module comes with commands so you can set up a workflow quickly.
+## Module Configuration
+
 
 The commands listed below can only be used by the server owner, or by persons with the [MANAGE_GUILD\*](https://discord.com/developers/docs/topics/permissions) permission.
 
