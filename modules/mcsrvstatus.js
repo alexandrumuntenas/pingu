@@ -242,17 +242,23 @@ function actualizarDatosDelPanel (guild) {
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
         }
 
+        function fallback () {
+          try {
+            process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send({ embeds: [embed], files: [attachment] }).then(newMessage => {
+              actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
+            })
+          } catch {
+            consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
+          }
+        }
+
         try {
           process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).messages.fetch(config.mcsrvstatus.messagePanelId).then(message => {
-            message.edit({ embeds: [embed], files: [attachment] })
+            message.edit({ embeds: [embed], files: [attachment] }).catch(() => {
+              fallback()
+            })
           }).catch(() => {
-            try {
-              process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send({ embeds: [embed], files: [attachment] }).then(newMessage => {
-                actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
-              })
-            } catch {
-              consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
-            }
+            fallback()
           })
         } catch {
           consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
