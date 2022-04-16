@@ -196,7 +196,7 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
       servidor.motd = motd
     })
     servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.version.name) || 'Unknown version'
-    servidor.jugadores = `${state.raw.vanilla.raw.players.online || '···'}/${state.raw.vanilla.raw.players.max || '···'}` || 'Unknown players'
+    servidor.jugadores = `${state.raw.vanilla.raw.players.online}/${state.raw.vanilla.raw.players.max}` || 'Unknown players'
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
     servidor.direccion = `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
     return callback(servidor)
