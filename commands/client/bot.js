@@ -6,7 +6,7 @@ const { plantillas } = require('../../functions/messageManager')
 const Consolex = require('../../functions/consolex')
 
 const avaliableLanguages = ['en', 'es']
-const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', 'customcommands', 'leveling']
+const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', 'customcommands', 'leveling', 'mcsrvstatus']
 
 module.exports = {
   name: 'bot',
@@ -20,10 +20,10 @@ module.exports = {
       .setDescription('📦 Manage the modules of your server')
       .addSubcommand(sc => sc.setName('enable')
         .setDescription('Enable a module.')
-        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies')))
+        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies').addChoice('mcsrvstatus', 'mcsrvstatus')))
       .addSubcommand(sc => sc.setName('disable')
         .setDescription('Disable a module.')
-        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies')))
+        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies').addChoice('mcsrvstatus', 'mcsrvstatus')))
       .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the status of the modules of your server.'))
     )
     .addSubcommand(sc => sc.setName('setprefix').setDescription('Set the prefix of your server.').addStringOption(input => input.setName('newprefix').setDescription('The new prefix of the bot.').setRequired(true)))
