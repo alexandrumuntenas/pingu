@@ -17,7 +17,7 @@ require('discord-modals')(process.Client)
 
 const Consolex = require('./functions/consolex')
 
-if (process.env.ENTORNO === 'public') {
+if (process.env.ENTORNO === 'publico') {
   Consolex.warn('Iniciando sesión como el bot público.')
   process.Client.login(process.env.PUBLIC_TOKEN)
 } else {
