@@ -10,7 +10,7 @@ registerFont('./fonts/Courier_Prime/CourierPrime-BoldItalic.ttf', { family: 'Cou
 
 /** Comprobar si texto solo tiene espacios; devuelve falso si solo hay 1 */
 
-function tieneSoloEspacios (texto) {
+function tieneSoloEspacios(texto) {
   if (texto.length === 1) return false
   return texto.trim().length === 0
 }
@@ -119,7 +119,7 @@ const coloresDeMinecraft = {
   * String.trim(), manteniendo saltos de línea.
 */
 
-function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea (texto) {
+function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(texto) {
   if (texto.includes('\n')) {
     const textoProcesado = []
     const textoOfrecido = texto.split('\n')
@@ -175,7 +175,8 @@ module.exports.limpiarFormatoDeLosTextos = (texto) => {
 }
 
 const Gamedig = require('gamedig')
-const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
+const consolex = require('../functions/consolex')
 
 /**
  * Conectar con el servidor de minecraft y procesar toda su información
@@ -195,7 +196,7 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
       servidor.motd = motd
     })
     servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.version.name) || 'Unknown version'
-    servidor.jugadores = `${state.raw.vanilla.raw.players.online || ':infinity:'}/${state.raw.vanilla.raw.players.max || ':infinity:'}` || 'Unknown players'
+    servidor.jugadores = `${state.raw.vanilla.raw.players.online || '···'}/${state.raw.vanilla.raw.players.max || '···'}` || 'Unknown players'
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
     servidor.direccion = `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
     return callback(servidor)
@@ -206,13 +207,56 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
 
 /* A partir de aquí solo habrá código relacionado con las tareas de actualización de datos */
 
-/** Actualiza el side */
-function actualizarNumeroDeJugadoresDelSidebar (guild) {
+function actualizarNumeroDeJugadoresDelSidebar(guild) {
   obtenerConfiguracionDelServidor(guild, config => {
-    if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount) {
+    const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
+    if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount && sidebarPlayercount) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
-        const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
-        if (sidebarPlayercount) sidebarPlayercount.edit({ name: `🎭 Players: ${servidor.jugadores}` })
+        sidebarPlayercount.edit({ name: `🎭 Players: ${servidor.jugadores}` })
+      })
+    }
+  })
+}
+
+const { MessageAttachment, MessageEmbed } = require('discord.js')
+const { createHash } = require('crypto')
+
+function actualizarDatosDelPanel(guild) {
+  obtenerConfiguracionDelServidor(guild, config => {
+    if (config.mcsrvstatus.enabled && config.mcsrvstatus.messagePanelChannel) {
+      module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
+        const attachment = new MessageAttachment(servidor.motd || './setup/defaultresourcesforguilds/emptymotd.png', 'motd.png')
+        const embed = new MessageEmbed()
+        if (servidor) {
+          embed
+            .addField(':radio_button: Version', servidor.version, true)
+            .addField(':busts_in_silhouette: Players', servidor.jugadores, true)
+            .addField(`${servidor.ping.emoji} Ping`, `${servidor.ping.ms}ms` || 'Failed to fetch server ping', true)
+            .addField(':desktop: Address', servidor.direccion, false)
+            .setImage('attachment://motd.png')
+            .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
+        } else {
+          embed
+            .setTitle(':x: Error')
+            .setDescription('Failed to fetch server data')
+            .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
+        }
+
+        try {
+          process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).messages.fetch(config.mcsrvstatus.messagePanelId).then(message => {
+            message.edit({ embeds: [embed], files: [attachment] })
+          }).catch(() => {
+            try {
+              process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send({ embeds: [embed], files: [attachment] }).then(newMessage => {
+                actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
+              })
+            } catch {
+              consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
+            }
+          })
+        } catch {
+          consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
+        }
       })
     }
   })
@@ -222,6 +266,7 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
   process.Client.guilds.fetch().then(guilds => {
     guilds.forEach(guild => {
       actualizarNumeroDeJugadoresDelSidebar(guild)
+      actualizarDatosDelPanel(guild)
     })
   })
 
@@ -229,6 +274,7 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
     process.Client.guilds.fetch().then(guilds => {
       guilds.forEach(guild => {
         actualizarNumeroDeJugadoresDelSidebar(guild)
+        actualizarDatosDelPanel(guild)
       })
     })
   }, 300000)
