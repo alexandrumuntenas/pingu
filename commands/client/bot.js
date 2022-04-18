@@ -42,7 +42,7 @@ module.exports = {
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
       .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.').addBooleanOption(input => input.setName('configinteractions').setDescription('Deploy the configuration interactions?')))),
-  runInteraction(locale, interaction) {
+  runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
@@ -132,8 +132,8 @@ module.exports = {
       }
     }
   },
-  runCommand(locale, message) {
-    function sendHelp() {
+  runCommand (locale, message) {
+    function sendHelp () {
       message.reply({
         embeds: plantillas.ayuda({
           name: 'bot',
