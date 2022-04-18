@@ -65,5 +65,4 @@ Contributions are what make the open source community such an amazing place to b
 
 Distributed under the *BSL-1.0 License* License. See [LICENSE](https://github.com/alexandrumuntenas/pingu/blob/main/LICENSE) for more information.
 
-## Authors
-* [Alexandru Theodor Muntenas](https://github.com/alexandrumuntenas/)
+A proyect by [Alexandru Theodor Muntenas](https://github.com/alexandrumuntenas/).
