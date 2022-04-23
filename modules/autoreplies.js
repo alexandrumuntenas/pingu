@@ -58,14 +58,8 @@ module.exports.crearRespuestaPersonalizada = (guild, autoreply, callback) => {
   })
 }
 
-/**
- * Delete an auto reply.
- * @param {Guild} guild
- * @param {String} triggerID
- */
-
-module.exports.eliminarRespuestaPersonalizada = (guild, triggerID) => {
-  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
+module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPersonalizada) => {
+  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
     if (err) {
       Consolex.gestionarError(err)
       throw err
