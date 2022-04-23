@@ -9,7 +9,7 @@ const Database = require('../functions/databaseConnection')
  * @returns {String} Reply
  */
 
-module.exports.getReply = (guild, trigger, callback) => {
+module.exports.obtenerRespuestaPersonalizada = (guild, trigger, callback) => {
   if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
@@ -90,7 +90,7 @@ const { MessageEmbed } = require('discord.js')
  */
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
-  module.exports.getReply(message.guild, message.content, replydata => {
+  module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, replydata => {
     if (replydata && Object.prototype.hasOwnProperty.call(replydata, 'autoreplyProperties')) {
       const reply = {}
       if (replydata.autoreplyProperties.sendInEmbed.enabled) {
