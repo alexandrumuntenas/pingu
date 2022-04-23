@@ -86,6 +86,7 @@ const { MessageEmbed } = require('discord.js')
 /**
  * Handle an auto reply.
  * @param {Message} message
+ * @deprecated Reemplazado por {@link functions:eventManager.funcionesDeTerceros}
  */
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
