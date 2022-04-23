@@ -139,7 +139,7 @@ module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = 
   let fileContent = 'Pingu · The OSS Discord Bot. Learn more about Pingu at https://alexandrumuntenas.dev/pingu\n\n'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
-  module.exports.fetchReplies(guild, (replies) => {
+  module.exports.obtenerRespuestasPersonalizadas(guild, (replies) => {
     replies.forEach(reply => {
       fileContent += `Autoreply ID: ${reply.autoreplyID}\nAutoreply Trigger: ${reply.autoreplyTrigger}\nAutoreply Reply:${reply.autoreplyReply}\nProperties: ${reply.autoreplyProperties}\n--------------------\n`
     })
@@ -157,7 +157,7 @@ module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = 
  * @returns {Array} Array of autoreply objects.
  */
 
-module.exports.fetchReplies = (guild, callback) => {
+module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
