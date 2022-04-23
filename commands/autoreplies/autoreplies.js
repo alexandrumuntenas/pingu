@@ -1,6 +1,6 @@
 const { Permissions, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { crearRespuestaPersonalizada, deleteReply, generateTxtWithAllTheGuildAutoReplies } = require('../../modules/autoreplies')
+const { crearRespuestaPersonalizada, eliminarRespuestaPersonalizda, generateTxtWithAllTheGuildAutoReplies } = require('../../modules/autoreplies')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
@@ -34,7 +34,7 @@ module.exports = {
         break
       }
       case 'remove': {
-        deleteReply(interaction.guild, interaction.options.getString('trigger'), (err) => {
+        eliminarRespuestaPersonalizda(interaction.guild, interaction.options.getString('trigger'), (err) => {
           if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(locale, 'AUTOREPLY::REMOVE:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'AUTOREPLY::REMOVE:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
         })
