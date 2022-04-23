@@ -21,35 +21,35 @@ const crearTextoAleatorio = require('randomstring').generate
 /**
  * Crea una nueva respuesta personalizada.
  * @param {Guild} guild - El servidor
- * @param {Object} autoreply - Un objeto con los datos de la respuesta personalizada.
- * @param {Strong} autoreply.desencadenante - El desencadenante de la respuesta personalizada.
- * @param {String} autoreply.respuesta - La respuesta personalizada.
- * @param {Object} autoreply.propiedades - Un objeto con las propiedades de la respuesta personalizada.
- * @param {?Object} autoreply.propiedades.enviarEnEmbed - Un objeto con las propiedades del mensaje enriquecido.
- * @param {?Boolean} autorreply.propiedades.enviarEnEmbed.habilitado - Si se debe enviar en un mensaje enriquecido.
- * @param {?Object} autoreply.propiedades.enviarEnEmbed.titulo - El título del mensaje enriquecido.
- * @param {?Object} autoreply.propiedades.enviarEnEmbed.descripcion - La descripción del mensaje enriquecido.
- * @param {?Object} autoreply.propiedades.enviarEnEmbed.thumbnail - La URL del thumbnail del mensaje enriquecido.
- * @param {?Object} autoreply.propiedades.enviarEnEmbed.imagen - La URL de la imagen del mensaje enriquecido.
- * @param {?Object} autoreply.propiedades.enviarEnEmbed.url - La URL del mensaje enriquecido.
+ * @param {Object} respuestaPersonalizada - Un objeto con los datos de la respuesta personalizada.
+ * @param {Strong} respuestaPersonalizada.desencadenante - El desencadenante de la respuesta personalizada.
+ * @param {String} respuestaPersonalizada.respuesta - La respuesta personalizada.
+ * @param {Object} respuestaPersonalizada.propiedades - Un objeto con las propiedades de la respuesta personalizada.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed - Un objeto con las propiedades del mensaje enriquecido.
+ * @param {?Boolean} respuestaPersonalizada.propiedades.enviarEnEmbed.habilitado - Si se debe enviar en un mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.titulo - El título del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.descripcion - La descripción del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail - La URL del thumbnail del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.imagen - La URL de la imagen del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.url - La URL del mensaje enriquecido.
  * @param {Functions} callback - La función que se ejecutará cuando se haya creado la respuesta personalizada.
  * @returns {String} Identificador de la respuesta personalizada.
  */
 
 // TODO: Pasar a través de callback el identificador de la respuesta personalizada
 
-module.exports.crearRespuestaPersonalizada = (guild, autoreply, callback) => {
+module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, callback) => {
   if (!callback) throw new Error('Se requiere un callback')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'desencadenante')) throw new Error('Se requiere un desencadenante')
+  if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'respuesta')) throw new Error('Se requiere una respuesta')
+  if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'respuesta')) throw new Error('Se requiere una respuesta')
 
-  autoreply.propiedades = autoreply.propiedades || {}
-  autoreply.propiedades.enviarEnEmbed = autoreply.propiedades.enviarEnEmbed || { habilitado: false }
-  autoreply.identificador = crearTextoAleatorio({ length: 10, charset: 'alphanumeric' })
+  respuestaPersonalizada.propiedades = respuestaPersonalizada.propiedades || {}
+  respuestaPersonalizada.propiedades.enviarEnEmbed = respuestaPersonalizada.propiedades.enviarEnEmbed || { habilitado: false }
+  respuestaPersonalizada.identificador = crearTextoAleatorio({ length: 10, charset: 'alphanumeric' })
 
-  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.identificador, autoreply.desencadenante, autoreply.respuesta, JSON.stringify(autoreply.propiedades)], err => {
+  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
     if (err) {
       Consolex.gestionarError(err)
       callback(err)
