@@ -19,29 +19,29 @@ module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback)
 const makeId = require('../functions/makeId')
 
 /**
- * Create a new auto reply.
- * @param {Guild} guild - The guild to create the reply in.
- * @param {Object} autoreply - The autoreply to create.
- * @param {Strong} autoreply.trigger - The string that will trigger the reply.
- * @param {String} autoreply.reply - The reply to the trigger.
- * @param {Object} autoreply.properties - The autoreply properties
- * @param {Object} autoreply.properties.sendInEmbed - The properties for the embed.
- * @param {?Boolean} autorreply.properties.sendInEmbed.enabled - Whether or not to send the reply as an embed.
- * @param {?Object} autoreply.properties.sendInEmbed.title - The title field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.description - The description field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.thumbnail - The thumbnail field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.image - The image field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.url - The url field of the embed.
- * @param {Functions} callback - The callback to call.
- * @returns {String} Trigger ID
+ * Crea una nueva respuesta personalizada.
+ * @param {Guild} guild - El servidor
+ * @param {Object} autoreply - Un objeto con los datos de la respuesta personalizada.
+ * @param {Strong} autoreply.desencadenante - El desencadenante de la respuesta personalizada.
+ * @param {String} autoreply.respuesta - La respuesta personalizada.
+ * @param {Object} autoreply.propiedades - Un objeto con las propiedades de la respuesta personalizada.
+ * @param {?Object} autoreply.propiedades.enviarEnUnMensajeEnriquecido - Un objeto con las propiedades del mensaje enriquecido.
+ * @param {?Boolean} autorreply.propiedades.sendInEmbed.habilitado - Si se debe enviar en un mensaje enriquecido.
+ * @param {?Object} autoreply.propiedades.sendInEmbed.titulo - El título del mensaje enriquecido.
+ * @param {?Object} autoreply.propiedades.sendInEmbed.descripcion - La descripción del mensaje enriquecido.
+ * @param {?Object} autoreply.propiedades.sendInEmbed.thumbnail - La URL del thumbnail del mensaje enriquecido.
+ * @param {?Object} autoreply.propiedades.sendInEmbed.imagen - La URL de la imagen del mensaje enriquecido.
+ * @param {?Object} autoreply.propiedades.sendInEmbed.url - La URL del mensaje enriquecido.
+ * @param {Functions} callback - La función que se ejecutará cuando se haya creado la respuesta personalizada.
+ * @returns {String} ID de la respuesta personalizada.
  */
 
 module.exports.crearRespuestaPersonalizada = (guild, autoreply, callback) => {
   if (!callback) throw new Error('Callback is required')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) throw new Error('Trigger is required')
+  if (!Object.prototype.hasOwnProperty.call(autoreply, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) throw new Error('Reply is required')
+  if (!Object.prototype.hasOwnProperty.call(autoreply, 'respuesta')) throw new Error('Se requiere una respuesta')
 
   autoreply.properties = autoreply.properties || {}
   autoreply.properties.sendInEmbed = autoreply.properties.sendInEmbed || { enabled: false }
