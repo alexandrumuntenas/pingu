@@ -8,8 +8,8 @@ module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback)
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
-      callback(result[0])
+      const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: JSON.parse(result[0].autoreplyProperties) }
+      callback(respuestaPersonalizada)
     } else {
       callback()
     }
@@ -77,32 +77,34 @@ const { MessageEmbed } = require('discord.js')
  * @deprecated Reemplazado por {@link functions:eventManager.funcionesDeTerceros}
  */
 
+// TODO: Incorporar con el eventManager.
+
 module.exports.handleAutoRepliesInMessageCreate = message => {
-  module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, replydata => {
-    if (replydata && Object.prototype.hasOwnProperty.call(replydata, 'autoreplyProperties')) {
+  module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
+    if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
       const reply = {}
-      if (replydata.autoreplyProperties.sendInEmbed.enabled) {
+      if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
         const embed = new MessageEmbed()
 
-        if (replydata.autoreplyProperties.sendInEmbed.title) embed.setTitle(replydata.autoreplyProperties.sendEmbed.title)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.title) embed.setTitle(respuestaPersonalizada.propiedades.sendEmbed.title)
 
-        if (replydata.autoreplyProperties.sendInEmbed.description) {
-          embed.setDescription(replydata.autoreplyProperties.sendEmbed.description)
-        } else embed.setDescription(replydata.autoreplyReply)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.description) {
+          embed.setDescription(respuestaPersonalizada.propiedades.sendEmbed.description)
+        } else embed.setDescription(respuestaPersonalizada.respuesta)
 
-        if (replydata.autoreplyProperties.sendInEmbed.thumbnail) embed.setThumbnail(replydata.autoreplyProperties.sendEmbed.thumbnail)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail) embed.setThumbnail(respuestaPersonalizada.propiedades.sendEmbed.thumbnail)
 
-        if (replydata.autoreplyProperties.sendInEmbed.image) embed.setImage(replydata.autoreplyProperties.sendEmbed.image)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.imagen) embed.setImage(respuestaPersonalizada.propiedades.sendEmbed.image)
 
-        if (replydata.autoreplyProperties.sendInEmbed.url) embed.setURL(replydata.autoreplyProperties.sendEmbed.url)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.url) embed.setURL(respuestaPersonalizada.propiedades.sendEmbed.url)
 
-        if (replydata.autoreplyProperties.sendInEmbed.color) embed.setColor(replydata.autoreplyProperties.sendEmbed.color)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.color) embed.setColor(respuestaPersonalizada.propiedades.sendEmbed.color)
         else embed.setColor('#2F3136')
 
         embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
 
         reply.embeds = [embed]
-      } else reply.content = replydata.autoreplyReply
+      } else reply.content = respuestaPersonalizada.respuesta
 
       try {
         message.channel.send(reply)
