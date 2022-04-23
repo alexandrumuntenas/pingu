@@ -1,6 +1,6 @@
 const { Permissions, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { createReply, deleteReply, generateTxtWithAllTheGuildAutoReplies } = require('../../modules/autoreplies')
+const { crearRespuestaPersonalizada, eliminarRespuestaPersonalizada, generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor } = require('../../modules/autoreplies')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
@@ -27,21 +27,21 @@ module.exports = {
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'add': {
-        createReply(interaction.guild, { trigger: interaction.options.getString('trigger'), reply: interaction.options.getString('reply'), properties: { sendInEmbed: { enabled: interaction.options.getBoolean('sendinembed'), title: interaction.options.getString('sendinembed_title'), description: interaction.options.getString('sendinembed_description'), thumbnail: interaction.options.getString('sendinembed_thumbnail'), image: interaction.options.getString('sendinembed_image'), url: interaction.options.getString('sendinembed_url'), color: interaction.options.getString('sendinembed_color') } } }, (err) => {
+        crearRespuestaPersonalizada(interaction.guild, { trigger: interaction.options.getString('trigger'), reply: interaction.options.getString('reply'), properties: { sendInEmbed: { enabled: interaction.options.getBoolean('sendinembed'), title: interaction.options.getString('sendinembed_title'), description: interaction.options.getString('sendinembed_description'), thumbnail: interaction.options.getString('sendinembed_thumbnail'), image: interaction.options.getString('sendinembed_image'), url: interaction.options.getString('sendinembed_url'), color: interaction.options.getString('sendinembed_color') } } }, (err) => {
           if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(locale, 'AUTOREPLY::ADD:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'AUTOREPLY::ADD:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
         })
         break
       }
       case 'remove': {
-        deleteReply(interaction.guild, interaction.options.getString('trigger'), (err) => {
+        eliminarRespuestaPersonalizada(interaction.guild, interaction.options.getString('trigger'), (err) => {
           if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(locale, 'AUTOREPLY::REMOVE:ERROR'))] })
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'AUTOREPLY::REMOVE:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
         })
         break
       }
       case 'list': {
-        generateTxtWithAllTheGuildAutoReplies(interaction.guild, (txtPath) => {
+        generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor(interaction.guild, (txtPath) => {
           interaction.editReply({ files: [new MessageAttachment(txtPath, 'autoreplies.txt')] })
         })
         break

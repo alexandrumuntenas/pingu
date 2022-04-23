@@ -1,61 +1,71 @@
 const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
-/**
- * Get a reply of the given trigger.
- * @param {Guild} guild - The guild to get the reply from.
- * @param {String} trigger - The trigger to get the reply for.
- * @param {Function} callback - The callback to call with the result.
- * @returns {String} Reply
- */
+function traducirAntiguasPropiedadesALasNuevas (propiedades) {
+  if (Object.prototype.hasOwnProperty.call(propiedades, 'sendInEmbed')) {
+    propiedades.enviarEnEmbed = { habilitado: propiedades.sendInEmbed.enabled || false, titulo: propiedades.sendInEmbed.title || null, descripcion: propiedades.sendInEmbed.description || null, thumbnail: propiedades.sendInEmbed.thumbnail || null, imagen: propiedades.sendInEmbed.image || null, color: propiedades.sendInEmbed.color || null, url: propiedades.sendInEmbed.url || null }
 
-module.exports.getReply = (guild, trigger, callback) => {
-  if (!callback) throw new Error('Callback is required')
+    Object.keys(propiedades.enviarEnEmbed).forEach(key => {
+      if (propiedades.enviarEnEmbed[key] === null) {
+        delete propiedades.enviarEnEmbed[key]
+      }
+    })
 
-  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
+    delete propiedades.sendInEmbed
+  }
+
+  return propiedades
+}
+
+module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
+  if (!callback) throw new Error('Se requiere un callback')
+
+  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      result[0].autoreplyProperties = JSON.parse(result[0].autoreplyProperties)
-      callback(result[0])
+      const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
+      callback(respuestaPersonalizada)
     } else {
       callback()
     }
   })
 }
 
-const makeId = require('../functions/makeId')
+const crearTextoAleatorio = require('randomstring').generate
 
 /**
- * Create a new auto reply.
- * @param {Guild} guild - The guild to create the reply in.
- * @param {Object} autoreply - The autoreply to create.
- * @param {Strong} autoreply.trigger - The string that will trigger the reply.
- * @param {String} autoreply.reply - The reply to the trigger.
- * @param {Object} autoreply.properties - The autoreply properties
- * @param {Object} autoreply.properties.sendInEmbed - The properties for the embed.
- * @param {?Boolean} autorreply.properties.sendInEmbed.enabled - Whether or not to send the reply as an embed.
- * @param {?Object} autoreply.properties.sendInEmbed.title - The title field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.description - The description field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.thumbnail - The thumbnail field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.image - The image field of the embed.
- * @param {?Object} autoreply.properties.sendInEmbed.url - The url field of the embed.
- * @param {Functions} callback - The callback to call.
- * @returns {String} Trigger ID
+ * Crea una nueva respuesta personalizada.
+ * @param {Guild} guild - El servidor
+ * @param {Object} respuestaPersonalizada - Un objeto con los datos de la respuesta personalizada.
+ * @param {Strong} respuestaPersonalizada.desencadenante - El desencadenante de la respuesta personalizada.
+ * @param {String} respuestaPersonalizada.respuesta - La respuesta personalizada.
+ * @param {Object} respuestaPersonalizada.propiedades - Un objeto con las propiedades de la respuesta personalizada.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed - Un objeto con las propiedades del mensaje enriquecido.
+ * @param {?Boolean} respuestaPersonalizada.propiedades.enviarEnEmbed.habilitado - Si se debe enviar en un mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.titulo - El título del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.descripcion - La descripción del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail - La URL del thumbnail del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.imagen - La URL de la imagen del mensaje enriquecido.
+ * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.url - La URL del mensaje enriquecido.
+ * @param {Functions} callback - La función que se ejecutará cuando se haya creado la respuesta personalizada.
+ * @returns {String} Identificador de la respuesta personalizada.
  */
 
-module.exports.createReply = (guild, autoreply, callback) => {
-  if (!callback) throw new Error('Callback is required')
+// TODO: Pasar a través de callback el identificador de la respuesta personalizada
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) throw new Error('Trigger is required')
+module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, callback) => {
+  if (!callback) throw new Error('Se requiere un callback')
 
-  if (!Object.prototype.hasOwnProperty.call(autoreply, 'reply')) throw new Error('Reply is required')
+  if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
-  autoreply.properties = autoreply.properties || {}
-  autoreply.properties.sendInEmbed = autoreply.properties.sendInEmbed || { enabled: false }
-  autoreply.id = makeId(5)
+  if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'respuesta')) throw new Error('Se requiere una respuesta')
 
-  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, autoreply.id, autoreply.trigger, autoreply.reply, JSON.stringify(autoreply.properties)], err => {
+  respuestaPersonalizada.propiedades = respuestaPersonalizada.propiedades || {}
+  respuestaPersonalizada.propiedades.enviarEnEmbed = respuestaPersonalizada.propiedades.enviarEnEmbed || { habilitado: false }
+  respuestaPersonalizada.identificador = crearTextoAleatorio({ length: 10, charset: 'alphanumeric' })
+
+  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
     if (err) {
       Consolex.gestionarError(err)
       callback(err)
@@ -66,14 +76,8 @@ module.exports.createReply = (guild, autoreply, callback) => {
   })
 }
 
-/**
- * Delete an auto reply.
- * @param {Guild} guild
- * @param {String} triggerID
- */
-
-module.exports.deleteReply = (guild, triggerID) => {
-  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [triggerID, guild.id], err => {
+module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPersonalizada) => {
+  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
     if (err) {
       Consolex.gestionarError(err)
       throw err
@@ -83,37 +87,34 @@ module.exports.deleteReply = (guild, triggerID) => {
 
 const { MessageEmbed } = require('discord.js')
 
-/**
- * Handle an auto reply.
- * @param {Message} message
- */
+// TODO: Incorporar con el eventManager.
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
-  module.exports.getReply(message.guild, message.content, replydata => {
-    if (replydata && Object.prototype.hasOwnProperty.call(replydata, 'autoreplyProperties')) {
+  module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
+    if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
       const reply = {}
-      if (replydata.autoreplyProperties.sendInEmbed.enabled) {
+      if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
         const embed = new MessageEmbed()
 
-        if (replydata.autoreplyProperties.sendInEmbed.title) embed.setTitle(replydata.autoreplyProperties.sendEmbed.title)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.title) embed.setTitle(respuestaPersonalizada.propiedades.sendEmbed.title)
 
-        if (replydata.autoreplyProperties.sendInEmbed.description) {
-          embed.setDescription(replydata.autoreplyProperties.sendEmbed.description)
-        } else embed.setDescription(replydata.autoreplyReply)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.description) {
+          embed.setDescription(respuestaPersonalizada.propiedades.sendEmbed.description)
+        } else embed.setDescription(respuestaPersonalizada.respuesta)
 
-        if (replydata.autoreplyProperties.sendInEmbed.thumbnail) embed.setThumbnail(replydata.autoreplyProperties.sendEmbed.thumbnail)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail) embed.setThumbnail(respuestaPersonalizada.propiedades.sendEmbed.thumbnail)
 
-        if (replydata.autoreplyProperties.sendInEmbed.image) embed.setImage(replydata.autoreplyProperties.sendEmbed.image)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.imagen) embed.setImage(respuestaPersonalizada.propiedades.sendEmbed.image)
 
-        if (replydata.autoreplyProperties.sendInEmbed.url) embed.setURL(replydata.autoreplyProperties.sendEmbed.url)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.url) embed.setURL(respuestaPersonalizada.propiedades.sendEmbed.url)
 
-        if (replydata.autoreplyProperties.sendInEmbed.color) embed.setColor(replydata.autoreplyProperties.sendEmbed.color)
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.color) embed.setColor(respuestaPersonalizada.propiedades.sendEmbed.color)
         else embed.setColor('#2F3136')
 
         embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
 
         reply.embeds = [embed]
-      } else reply.content = replydata.autoreplyReply
+      } else reply.content = respuestaPersonalizada.respuesta
 
       try {
         message.channel.send(reply)
@@ -127,18 +128,11 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
 const randomstring = require('randomstring')
 const fs = require('fs')
 
-/**
- * Generate a .txt
- * @param {Guild} guild
- * @param {Function} callback
- * @returns {String} Path to the generated file
- */
-
-module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
-  let fileContent = 'Pingu · The OSS Discord Bot. Learn more about Pingu at https://alexandrumuntenas.dev/pingu\n\n'
+module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild, callback) => {
+  let fileContent = '𝗣𝗶𝗻𝗴𝘂 · 𝗧𝗵𝗲 𝗢𝗦𝗦 𝗕𝗼𝘁.\n𝘓𝘦𝘢𝘳𝘯 𝘮𝘰𝘳𝘦 𝘢𝘣𝘰𝘶𝘵 𝘗𝘪𝘯𝘨𝘶 𝘢𝘵 𝘩𝘵𝘵𝘱𝘴://𝘢𝘭𝘦𝘹𝘢𝘯𝘥𝘳𝘶𝘮𝘶𝘯𝘵𝘦𝘯𝘢𝘴.𝘥𝘦𝘷/𝘱𝘪𝘯𝘨𝘶'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
-  module.exports.getReplies(guild, (replies) => {
+  module.exports.obtenerRespuestasPersonalizadas(guild, (replies) => {
     replies.forEach(reply => {
       fileContent += `Autoreply ID: ${reply.autoreplyID}\nAutoreply Trigger: ${reply.autoreplyTrigger}\nAutoreply Reply:${reply.autoreplyReply}\nProperties: ${reply.autoreplyProperties}\n--------------------\n`
     })
@@ -149,14 +143,7 @@ module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
   })
 }
 
-/**
- * Get all the auto replies in a guild.
- * @param {Guild} guild - The guild to get the replies from.
- * @param {Function} callback - The callback to call.
- * @returns {Array} Array of autoreply objects.
- */
-
-module.exports.getReplies = (guild, callback) => {
+module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
