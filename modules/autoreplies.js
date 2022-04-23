@@ -1,6 +1,22 @@
 const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
+function traducirAntiguasPropiedadesALasNuevas (propiedades) {
+  if (Object.prototype.hasOwnProperty.call(propiedades, 'sendInEmbed')) {
+    propiedades.enviarEnEmbed = { habilitado: propiedades.sendInEmbed.enabled || false, titulo: propiedades.sendInEmbed.title || null, descripcion: propiedades.sendInEmbed.description || null, thumbnail: propiedades.sendInEmbed.thumbnail || null, imagen: propiedades.sendInEmbed.image || null, color: propiedades.sendInEmbed.color || null, url: propiedades.sendInEmbed.url || null }
+
+    Object.keys(propiedades.enviarEnEmbed).forEach(key => {
+      if (propiedades.enviarEnEmbed[key] === null) {
+        delete propiedades.enviarEnEmbed[key]
+      }
+    })
+
+    delete propiedades.sendInEmbed
+  }
+
+  return propiedades
+}
+
 module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
   if (!callback) throw new Error('Callback is required')
 
