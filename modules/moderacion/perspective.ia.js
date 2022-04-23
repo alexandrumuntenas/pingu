@@ -6,3 +6,7 @@ module.exports.analizarMensaje = (message, callback) => {
     callback(resultado)
   })
 }
+
+module.exports.interpretarResultados = (resultado, callback) => {
+
+}
