@@ -11,26 +11,28 @@ const CooldownManager = require('../functions/cooldownManager')
  */
 
 module.exports.getExperience = message => {
-  if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
-    CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
-    obtenerConfiguracionDelServidor(message.guild, guildConfig => {
-      getMember(message.member, memberData => {
-        memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
+  if (message.guild.configuration.leveling.enabled) {
+    if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
+      CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
+      obtenerConfiguracionDelServidor(message.guild, guildConfig => {
+        getMember(message.member, memberData => {
+          memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
-        if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
-          module.exports.sendLevelUpMessage(message)
-          return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
-        }
+          if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
+            module.exports.sendLevelUpMessage(message)
+            return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
+          }
 
-        try {
-          updateMember(message.member, { lvlExperience: memberData.lvlExperience })
-        } catch (err) {
-          if (err) Consolex.gestionarError(err)
-        }
+          try {
+            updateMember(message.member, { lvlExperience: memberData.lvlExperience })
+          } catch (err) {
+            if (err) Consolex.gestionarError(err)
+          }
 
-        return null
+          return null
+        })
       })
-    })
+    }
   }
 }
 
@@ -274,3 +276,5 @@ module.exports.resetLeaderboard = (guild, callback) => {
     return callback(null)
   })
 }
+
+module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience }]

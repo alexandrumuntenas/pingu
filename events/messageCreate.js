@@ -7,23 +7,7 @@ const i18n = require('../i18n/i18n')
 const { obtenerConfiguracionDelServidor } = require('../functions/guildManager.js')
 const humanizeduration = require('humanize-duration')
 const { runCustomCommand } = require('../modules/customcommands')
-const { getExperience } = require('../modules/leveling')
-const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
-const { GestorIncializadorDeAccionesEnmessageCreate } = require('../modules/moderation')
-
-function ejecutarFunciones (message) { // skipcq: JS-D1001
-  if (message.guild.configuration.leveling.enabled) {
-    getExperience(message)
-  }
-
-  if (message.guild.configuration.autoreplies.enabled) {
-    handleAutoRepliesInMessageCreate(message)
-  }
-
-  if (true || message.guild.configuration.moderation.enabled) { // Ahora se hace un bypass!
-    GestorIncializadorDeAccionesEnmessageCreate(message)
-  }
-}
+const { ejecutarFuncionesDeTerceros } = require('../functions/eventManager')
 
 module.exports = {
   name: 'messageCreate',
@@ -65,7 +49,7 @@ module.exports = {
         }
       }
 
-      return ejecutarFunciones(message)
+      return ejecutarFuncionesDeTerceros('messageCreate', message)
     })
   }
 }

@@ -29,7 +29,7 @@ require('./functions/eventManager').cargarEventos()
 
 process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
-process.Client.eventos = { funcionesDeTerceros: require('./functions/eventManager').funcionesDeTerceros }
+process.Client.eventos = require('./functions/eventManager').funcionesDeTerceros
 
 // TODO: Incorporar los eventos de proceso en eventManager
 

@@ -12,8 +12,9 @@ module.exports.cargarEventos = () => {
 const funcionesDeTerceros = {}
 
 module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion) => {
-  if (!funcionesDeTerceros[evento]) funcionesDeTerceros[evento] = [].push(funcion)
+  if (!funcionesDeTerceros[evento]) funcionesDeTerceros[evento] = [funcion]
   else funcionesDeTerceros[evento].push(funcion)
+  Consolex.warn(`Funciones de terceros inyectadas en evento ${evento}`)
 }
 
 module.exports.ejecutarFuncionesDeTerceros = (evento, ...args) => {
