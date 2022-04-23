@@ -1,6 +1,6 @@
 const { Permissions, MessageAttachment } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { crearRespuestaPersonalizada, eliminarRespuestaPersonalizda, generateTxtWithAllTheGuildAutoReplies } = require('../../modules/autoreplies')
+const { crearRespuestaPersonalizada, eliminarRespuestaPersonalizda, generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor } = require('../../modules/autoreplies')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
 
@@ -41,7 +41,7 @@ module.exports = {
         break
       }
       case 'list': {
-        generateTxtWithAllTheGuildAutoReplies(interaction.guild, (txtPath) => {
+        generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor(interaction.guild, (txtPath) => {
           interaction.editReply({ files: [new MessageAttachment(txtPath, 'autoreplies.txt')] })
         })
         break

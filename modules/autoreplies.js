@@ -135,7 +135,7 @@ const fs = require('fs')
  * @returns {String} Path to the generated file
  */
 
-module.exports.generateTxtWithAllTheGuildAutoReplies = (guild, callback) => {
+module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild, callback) => {
   let fileContent = 'Pingu · The OSS Discord Bot. Learn more about Pingu at https://alexandrumuntenas.dev/pingu\n\n'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
