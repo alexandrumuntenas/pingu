@@ -24,9 +24,12 @@ if (process.env.ENTORNO === 'publico') {
 }
 
 process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
-process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
 require('./functions/eventManager').cargarEventos()
+
+process.Client.modulos = require('./functions/moduleManager').registrarModulos()
+
+process.Client.eventos = { funcionesDeTerceros: require('./functions/eventManager').funcionesDeTerceros }
 
 // TODO: Incorporar los eventos de proceso en eventManager
 
