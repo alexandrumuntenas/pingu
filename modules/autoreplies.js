@@ -44,7 +44,7 @@ const makeId = require('../functions/makeId')
  * @returns {String} Trigger ID
  */
 
-module.exports.createReply = (guild, autoreply, callback) => {
+module.exports.crearRespuestaPersonalizada = (guild, autoreply, callback) => {
   if (!callback) throw new Error('Callback is required')
 
   if (!Object.prototype.hasOwnProperty.call(autoreply, 'trigger')) throw new Error('Trigger is required')
