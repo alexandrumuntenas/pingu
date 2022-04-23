@@ -24,7 +24,7 @@ module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback)
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: JSON.parse(result[0].autoreplyProperties) }
+      const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
       callback(respuestaPersonalizada)
     } else {
       callback()
