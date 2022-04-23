@@ -1,18 +1,10 @@
 const Consolex = require('../functions/consolex')
 const Database = require('../functions/databaseConnection')
 
-/**
- * Get a reply of the given trigger.
- * @param {Guild} guild - The guild to get the reply from.
- * @param {String} trigger - The trigger to get the reply for.
- * @param {Function} callback - The callback to call with the result.
- * @returns {String} Reply
- */
-
-module.exports.obtenerRespuestaPersonalizada = (guild, trigger, callback) => {
+module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
   if (!callback) throw new Error('Callback is required')
 
-  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [trigger.toLowerCase(), guild.id], (err, result) => {
+  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
