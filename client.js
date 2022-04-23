@@ -28,11 +28,7 @@ if (process.env.ENTORNO === 'publico') {
 process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
 process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
-for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.js'))) {
-  const event = require(`./events/${file}`)
-  Consolex.success(`Evento ${file} cargado`)
-  process.Client.on(event.name, (...args) => event.execute(...args))
-}
+require('./functions/eventManager').cargarEventos()
 
 process.on('exit', () => {
   process.Client.destroy()
