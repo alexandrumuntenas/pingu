@@ -18,7 +18,7 @@ function traducirAntiguasPropiedadesALasNuevas (propiedades) {
 }
 
 module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
-  if (!callback) throw new Error('Callback is required')
+  if (!callback) throw new Error('Se requiere un callback')
 
   Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
@@ -87,12 +87,6 @@ module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPe
 
 const { MessageEmbed } = require('discord.js')
 
-/**
- * Handle an auto reply.
- * @param {Message} message
- * @deprecated Reemplazado por {@link functions:eventManager.funcionesDeTerceros}
- */
-
 // TODO: Incorporar con el eventManager.
 
 module.exports.handleAutoRepliesInMessageCreate = message => {
@@ -134,13 +128,6 @@ module.exports.handleAutoRepliesInMessageCreate = message => {
 const randomstring = require('randomstring')
 const fs = require('fs')
 
-/**
- * Generate a .txt
- * @param {Guild} guild
- * @param {Function} callback
- * @returns {String} Path to the generated file
- */
-
 module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild, callback) => {
   let fileContent = '𝗣𝗶𝗻𝗴𝘂 · 𝗧𝗵𝗲 𝗢𝗦𝗦 𝗕𝗼𝘁.\n𝘓𝘦𝘢𝘳𝘯 𝘮𝘰𝘳𝘦 𝘢𝘣𝘰𝘶𝘵 𝘗𝘪𝘯𝘨𝘶 𝘢𝘵 𝘩𝘵𝘵𝘱𝘴://𝘢𝘭𝘦𝘹𝘢𝘯𝘥𝘳𝘶𝘮𝘶𝘯𝘵𝘦𝘯𝘢𝘴.𝘥𝘦𝘷/𝘱𝘪𝘯𝘨𝘶'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
@@ -155,13 +142,6 @@ module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = 
     callback(filePath)
   })
 }
-
-/**
- * Get all the auto replies in a guild.
- * @param {Guild} guild - The guild to get the replies from.
- * @param {Function} callback - The callback to call.
- * @returns {Array} Array of autoreply objects.
- */
 
 module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
