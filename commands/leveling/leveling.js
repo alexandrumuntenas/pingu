@@ -42,7 +42,7 @@ module.exports = {
           .setDescription(i18n(locale, 'LEVELING::VIEWCONFIG:DESCRIPTION'))
           .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPCHANNEL')}`, interaction.member.guild.configuration.leveling.channel ? rankUpChannel : i18n(locale, 'NOSET'))
           .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPMESSAGE')}`, interaction.member.guild.configuration.leveling.message ? interaction.member.guild.configuration.leveling.message : i18n(locale, 'NOSET'))
-          .addField(`<:reddit_upvote:876106253355585627> ${i18n(locale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, interaction.member.guild.configuration.leveling.difficulty ? `${interaction.member.guild.configuration.leveling.difficulty}` : i18n(locale, 'NOSET'))
+          .addField(`<:trendingdown_green:967797814212034601> ${i18n(locale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, interaction.member.guild.configuration.leveling.difficulty ? `${interaction.member.guild.configuration.leveling.difficulty}` : i18n(locale, 'NOSET'))
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
           .setTimestamp()
 
@@ -117,7 +117,7 @@ module.exports = {
           }
 
           if (difficulty) {
-            modifiedconfig.addField(`<:reddit_upvote:876106253355585627> ${i18n(locale, 'LEVELING::RANKUP:DIFFICULTY')}`, difficulty, true)
+            modifiedconfig.addField(`<:trendingdown_green:967797814212034601> ${i18n(locale, 'LEVELING::RANKUP:DIFFICULTY')}`, difficulty, true)
             newconfig.difficulty = difficulty
           }
 
@@ -222,7 +222,7 @@ module.exports = {
           .setDescription(i18n(locale, 'LEVELING::VIEWCONFIG:DESCRIPTION'))
           .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPCHANNEL')}`, message.member.guild.configuration.leveling.channel ? rankUpChannel : i18n(locale, 'NOSET'))
           .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPMESSAGE')}`, message.member.guild.configuration.leveling.message ? message.member.guild.configuration.leveling.message : i18n(locale, 'NOSET'))
-          .addField(`<:reddit_upvote:876106253355585627> ${i18n(locale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, message.member.guild.configuration.leveling.difficulty ? `${message.member.guild.configuration.leveling.difficulty}` : i18n(locale, 'NOSET'))
+          .addField(`<:trendingdown_green:967797814212034601> ${i18n(locale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, message.member.guild.configuration.leveling.difficulty ? `${message.member.guild.configuration.leveling.difficulty}` : i18n(locale, 'NOSET'))
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
           .setTimestamp()
 
