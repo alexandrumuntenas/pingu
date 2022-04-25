@@ -1,4 +1,6 @@
 const Consolex = require('./consolex')
+const { inyectarEnEventoFuncionesDeTerceros } = require('./eventManager')
+
 const modulos = []
 
 /**
@@ -38,8 +40,6 @@ module.exports.registrarModulo = (modulo) => {
 // Leer la carpeta modules y seleccionar de cada módulo la propiedad nombre y descripcion
 
 const { readdirSync } = require('fs')
-const { inyectarEnEventoFuncionesDeTerceros } = require('./eventManager')
-const { hooks } = require('../modules/autoreplies')
 
 module.exports.registrarModulos = () => {
   const directorioDeModulos = readdirSync('./modules')
