@@ -37,8 +37,6 @@ module.exports.registrarModulo = (modulo) => {
   }
 }
 
-// Leer la carpeta modules y seleccionar de cada módulo la propiedad nombre y descripcion
-
 const { readdirSync } = require('fs')
 
 module.exports.registrarModulos = () => {
@@ -56,7 +54,6 @@ module.exports.registrarModulos = () => {
 
 module.exports.registroDeModulos = modulos
 
-// Check if module exists
 module.exports.comprobarSiElModuloExiste = (modulo) => {
   if (!modulos.find(m => m.nombre === modulo)) return false
   return true

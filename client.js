@@ -25,14 +25,9 @@ if (process.env.ENTORNO === 'publico') {
 
 process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
 
+require('./functions/eventManager').cargarEventosDeProceso()
 require('./functions/eventManager').cargarEventos()
 
 process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
 process.Client.eventos = require('./functions/eventManager').funcionesDeTerceros
-
-// TODO: Incorporar los eventos de proceso en eventManager
-
-process.on('exit', () => {
-  process.Client.destroy()
-})

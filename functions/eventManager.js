@@ -9,6 +9,14 @@ module.exports.cargarEventos = () => {
   }
 }
 
+module.exports.cargarEventosDeProceso = () => {
+  for (const file of fs.readdirSync('./events/proceso').filter(files => files.endsWith('.js'))) {
+    const event = require(`../events/proceso/${file}`)
+    Consolex.success(`Evento de proceso ${file} cargado`)
+    process.on(event.name, (...args) => event.execute(...args))
+  }
+}
+
 const funcionesDeTerceros = {}
 
 module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion) => {
