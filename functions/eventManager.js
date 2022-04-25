@@ -25,8 +25,9 @@ module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion) => {
   Consolex.warn(`Funciones de terceros inyectadas en evento ${evento}`)
 }
 
-module.exports.ejecutarFuncionesDeTerceros = (evento, ...args) => {
-  if (funcionesDeTerceros[evento]) funcionesDeTerceros[evento].forEach(funcion => funcion(...args))
+module.exports.ejecutarFuncionesDeTerceros = (evento, tipoDeFuncion, ...args) => {
+  if (funcionesDeTerceros[evento] && tipoDeFuncion) funcionesDeTerceros[evento].filter(funcion => funcion.tipo === tipoDeFuncion).forEach(funcion => funcion(...args))
+  else if (funcionesDeTerceros[evento]) funcionesDeTerceros[evento].forEach(funcion => funcion(...args))
 }
 
 module.exports.funcionesDeTerceros = funcionesDeTerceros
