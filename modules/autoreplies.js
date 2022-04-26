@@ -125,6 +125,7 @@ module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
 
 module.exports.hooks = [{
   evento: 'messageCreate',
+  tipo: 'noPrefix',
   funcion: message => {
     module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
       if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
