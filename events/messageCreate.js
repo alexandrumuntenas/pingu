@@ -39,12 +39,10 @@ module.exports = {
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
             return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
-          } else {
-            return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
           }
-        } else {
-          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+          return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
         }
+        return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
 
       return ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)
