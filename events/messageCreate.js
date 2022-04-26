@@ -6,7 +6,6 @@ const { plantillas } = require('../functions/messageManager')
 const i18n = require('../i18n/i18n')
 const { obtenerConfiguracionDelServidor } = require('../functions/guildManager.js')
 const humanizeduration = require('humanize-duration')
-const { runCustomCommand } = require('../modules/customcommands')
 const { ejecutarFuncionesDeTerceros } = require('../functions/eventManager')
 
 module.exports = {
@@ -40,16 +39,15 @@ module.exports = {
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
             return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
-          } else if (message.guild.configuration.customcommands.enabled) {
-            CooldownManager.add(message.member, message.guild, message.commandName)
-            return runCustomCommand(message, message.commandName)
+          } else {
+            return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
           }
         } else {
           return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
         }
       }
 
-      return ejecutarFuncionesDeTerceros('messageCreate', message)
+      return ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)
     })
   }
 }
