@@ -178,3 +178,16 @@ module.exports.runCustomCommand = (message, command) => {
     } else message.reply(reply)
   })
 }
+
+const CooldownManager = require('../functions/cooldownManager')
+
+module.exports.hooks = [{
+  evento: 'messageCreate',
+  tipo: 'withPrefix',
+  execute: message => {
+    if (message.guild.configuration.customcommands.enabled) {
+      CooldownManager.add(message.member, message.guild, message.commandName)
+      return module.exports.runCustomCommand(message, message.commandName)
+    }
+  }
+}]
