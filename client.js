@@ -37,3 +37,5 @@ for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.j
 process.on('exit', () => {
   process.Client.destroy()
 })
+
+// TODO: Añadir un gestor para los "help" para ser dinámico.

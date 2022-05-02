@@ -41,7 +41,7 @@ module.exports = {
     .addSubcommandGroup(scg => scg
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
-      .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.').addBooleanOption(input => input.setName('configinteractions').setDescription('Deploy the configuration interactions?')))),
+      .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.'))),
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
