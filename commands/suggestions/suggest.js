@@ -29,7 +29,7 @@ module.exports = {
           return message.reply({
             embeds: plantillas.ayuda({
               name: 'suggest',
-              description: i18n(guild.preferredLocale, 'SUGGEST::DESCRIPTION'),
+              description: i18n(message.guild.preferredLocale, 'SUGGEST::DESCRIPTION'),
               module: 'suggestions',
               parameters: '<suggestion ··>',
               cooldown: 'Determined by the guild'
@@ -38,11 +38,11 @@ module.exports = {
         }
 
         createSuggestion(message.member, message.parameters.join(' '), suggestionId => {
-          if (!suggestionId) return message.reply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGEST::ERROR'))] })
-          return message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
+          if (!suggestionId) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'SUGGEST::ERROR'))] })
+          return message.reply({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
         })
       } else {
-        message.reply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
+        message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
       }
     })
   }

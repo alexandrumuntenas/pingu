@@ -41,19 +41,19 @@ module.exports = {
         .fetch(message.mentions.users.first())
         .then(member => {
           embed
-            .setTitle(i18n(guild.preferredLocale, 'USER::EMBED:TITLE', { USER: message.mentions.users.first().tag }))
+            .setTitle(i18n(message.guild.preferredLocale, 'USER::EMBED:TITLE', { USER: message.mentions.users.first().tag }))
             .setColor('#FFFFFF')
             .setThumbnail(message.mentions.users.first().displayAvatarURL({ dynamic: true }))
-            .setDescription(`:crown: **${i18n(guild.preferredLocale, 'USER::EMBED:USERTAG')}**: ${message.mentions.users.first().tag}\n:tada: **${i18n(guild.preferredLocale, 'USER::EMBED:MEMBERNAME')}**: ${member.displayName}\n:id: **${i18n(guild.preferredLocale, 'USER::EMBED:USERID')}**: ${member.id}\n:calendar: **${i18n(guild.preferredLocale, 'USER::EMBED:ACCOUNTCREATIONDATE')}**: <t:${unixTime(message.mentions.users.first().createdTimestamp)}>\n:calendar: **${i18n(guild.preferredLocale, 'USER::EMBED:GUILDJOINDATE')}**: <t:${unixTime(message.member.joinedTimestamp)}>`)
+            .setDescription(`:crown: **${i18n(message.guild.preferredLocale, 'USER::EMBED:USERTAG')}**: ${message.mentions.users.first().tag}\n:tada: **${i18n(message.guild.preferredLocale, 'USER::EMBED:MEMBERNAME')}**: ${member.displayName}\n:id: **${i18n(message.guild.preferredLocale, 'USER::EMBED:USERID')}**: ${member.id}\n:calendar: **${i18n(message.guild.preferredLocale, 'USER::EMBED:ACCOUNTCREATIONDATE')}**: <t:${unixTime(message.mentions.users.first().createdTimestamp)}>\n:calendar: **${i18n(message.guild.preferredLocale, 'USER::EMBED:GUILDJOINDATE')}**: <t:${unixTime(message.member.joinedTimestamp)}>`)
 
           message.reply({ embeds: [embed] })
         })
     } else {
       embed
-        .setTitle(i18n(guild.preferredLocale, 'USER::EMBED:TITLE', { USER: message.author.tag }))
+        .setTitle(i18n(message.guild.preferredLocale, 'USER::EMBED:TITLE', { USER: message.author.tag }))
         .setColor('#FFFFFF')
         .setThumbnail(message.author.displayAvatarURL({ dynamic: true }))
-        .setDescription(`:crown: **${i18n(guild.preferredLocale, 'USER::EMBED:USERTAG')}**: ${message.author.tag}\n:tada: **${i18n(guild.preferredLocale, 'USER::EMBED:MEMBERNAME')}**: ${message.member.displayName}\n:id: **${i18n(guild.preferredLocale, 'USER::EMBED:USERID')}**: ${message.member.id}\n:calendar: **${i18n(guild.preferredLocale, 'USER::EMBED:ACCOUNTCREATIONDATE')}**: <t:${unixTime(message.author.createdTimestamp)}>\n:calendar: **${i18n(guild.preferredLocale, 'USER::EMBED:GUILDJOINDATE')}**: <t:${unixTime(message.member.joinedTimestamp)}>`)
+        .setDescription(`:crown: **${i18n(message.guild.preferredLocale, 'USER::EMBED:USERTAG')}**: ${message.author.tag}\n:tada: **${i18n(message.guild.preferredLocale, 'USER::EMBED:MEMBERNAME')}**: ${message.member.displayName}\n:id: **${i18n(message.guild.preferredLocale, 'USER::EMBED:USERID')}**: ${message.member.id}\n:calendar: **${i18n(message.guild.preferredLocale, 'USER::EMBED:ACCOUNTCREATIONDATE')}**: <t:${unixTime(message.author.createdTimestamp)}>\n:calendar: **${i18n(message.guild.preferredLocale, 'USER::EMBED:GUILDJOINDATE')}**: <t:${unixTime(message.member.joinedTimestamp)}>`)
 
       message.reply({ embeds: [embed] })
     }

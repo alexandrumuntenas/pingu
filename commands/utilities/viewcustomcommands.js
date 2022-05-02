@@ -28,12 +28,12 @@ module.exports = {
   },
   runCommand (message) {
     getCustomCommands(message.guild, customcommands => {
-      if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n(guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
+      if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
       const embed = new MessageEmbed()
         .setColor('#2F3136')
         .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL() })
-        .setTitle(i18n(guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
+        .setTitle(i18n(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
       let customcommandsList = ''

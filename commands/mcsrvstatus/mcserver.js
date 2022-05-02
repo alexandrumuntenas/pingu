@@ -39,7 +39,7 @@ module.exports = {
       })
     }
 
-    message.reply({ embeds: [plantillas.precargador(i18n(guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
+    message.reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       try {
         obtenerDatosDelServidor({ ip: message.parameters[0], port: message.parameters[1] }, datosDelServidor => {
           if (datosDelServidor) {
@@ -53,11 +53,11 @@ module.exports = {
               .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
             _message.edit({ files: [attachment], embeds: [embed] })
           } else {
-            return _message.edit({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
+            return _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
           }
         })
       } catch {
-        _message.edit({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
+        _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
     })
   }
