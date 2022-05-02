@@ -10,7 +10,7 @@ module.exports = {
   isConfigurationCommand: false,
   interactionData: new SlashCommandBuilder()
     .addStringOption(input => input.setName('suggestion').setDescription('The suggestion').setRequired(true)),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     checkIfUserIsBlacklisted(interaction.guild, interaction.member, isBlacklisted => {
       if (!isBlacklisted) {
         createSuggestion(interaction.member, interaction.options.getString('suggestion'), suggestionId => {
@@ -22,7 +22,7 @@ module.exports = {
       }
     })
   },
-  runCommand ( message) {
+  runCommand (message) {
     checkIfUserIsBlacklisted(message.guild, message.member, isBlacklisted => {
       if (!isBlacklisted) {
         if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {

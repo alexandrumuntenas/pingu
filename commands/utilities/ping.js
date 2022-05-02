@@ -6,7 +6,7 @@ module.exports = {
   name: 'ping',
   description: '🏓 Pong!',
   cooldown: 1,
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     const embed = new MessageEmbed()
       .setColor('#57F287')
       .setTitle('🏓 Pong!')
@@ -18,7 +18,7 @@ module.exports = {
 
     interaction.editReply({ embeds: [embed] })
   },
-  runCommand ( message) {
+  runCommand (message) {
     const embed = new MessageEmbed()
       .setColor('#57F287')
       .setTitle('🏓 Pong!')

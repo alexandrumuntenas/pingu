@@ -7,7 +7,7 @@ module.exports = {
   name: 'nasa',
   description: '🚀 Get the NASA\'s image of the day',
   cooldown: 1,
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
       .then(response => response.body)
       .then(resource => {
@@ -39,7 +39,7 @@ module.exports = {
         }
       })
   },
-  runCommand ( message) {
+  runCommand (message) {
     message
       .reply({ embeds: [plantillas.precargador(i18n(guild.preferredLocale, 'FETCHINGDATA'))] })
       .then(msg => {

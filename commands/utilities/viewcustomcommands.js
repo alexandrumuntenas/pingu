@@ -7,7 +7,7 @@ module.exports = {
   name: 'viewcustomcommands',
   description: 'View the custom commands of your server',
   module: 'customcommands',
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     getCustomCommands(interaction.guild, customcommands => {
       if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n(guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
@@ -26,7 +26,7 @@ module.exports = {
       interaction.editReply({ embeds: [embed.setDescription(customcommandsList)] })
     })
   },
-  runCommand ( message) {
+  runCommand (message) {
     getCustomCommands(message.guild, customcommands => {
       if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n(guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 

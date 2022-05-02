@@ -16,7 +16,7 @@ module.exports = {
     .addSubcommand(sc => sc.setName('addnote').setDescription('Add a note to a suggestion').addStringOption(input => input.setName('suggestion').setDescription('The suggestion or the message ID').setRequired(true)).addStringOption(input => input.setName('note').setDescription('The note to add').setRequired(true)))
     .addSubcommand(sc => sc.setName('blacklist').setDescription('Blacklist a user').addUserOption(input => input.setName('user').setDescription('The user to blacklist').setRequired(true)))
     .addSubcommand(sc => sc.setName('unblacklist').setDescription('Blacklist a user').addUserOption(input => input.setName('user').setDescription('The user to unblacklist').setRequired(true))),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'approve': {
         approveSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {

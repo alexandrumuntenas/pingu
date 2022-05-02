@@ -17,7 +17,7 @@ module.exports = {
     .addSubcommand(subcommand => subcommand.setName('setchannel').setDescription('Set the farewell channel').addChannelOption(option => option.setName('channel').setDescription('Select a channel').setRequired(true).addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
     .addSubcommand(subcommand => subcommand.setName('setmessage').setDescription('Set the farewell message').addStringOption(option => option.setName('message').setDescription('The message to be sent. Avaliable placeholders: {member} {guild}').setRequired(true)))
     .addSubcommand(subcommand => subcommand.setName('simulate').setDescription('Simulate the farewell message')),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'viewconfig': {
         const farewellBasicConfig = new MessageEmbed()
@@ -55,7 +55,7 @@ module.exports = {
       }
     }
   },
-  runCommand ( message) {
+  runCommand (message) {
     function sendHelp () {
       message.reply({
         embeds: plantillas.ayuda({

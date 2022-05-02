@@ -5,7 +5,7 @@ module.exports = {
   name: 'help',
   description: 'Feeling lost? 👀',
   cooldown: 1,
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     const helpMessage = new MessageEmbed()
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
@@ -18,7 +18,7 @@ module.exports = {
 
     interaction.editReply({ embeds: [helpMessage] })
   },
-  runCommand ( message) {
+  runCommand (message) {
     const helpMessage = new MessageEmbed()
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
