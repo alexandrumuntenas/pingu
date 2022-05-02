@@ -42,7 +42,7 @@ module.exports = {
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
       .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.').addBooleanOption(input => input.setName('configinteractions').setDescription('Deploy the configuration interactions?')))),
-  runInteraction(locale, interaction) {
+  runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
@@ -93,8 +93,6 @@ module.exports = {
               throw err
             }
 
-            actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') || false } } })
-
             return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'UPDATE::SUCCESS'))] })
           })
         } catch (err) {
@@ -132,8 +130,8 @@ module.exports = {
       }
     }
   },
-  runCommand(locale, message) {
-    function sendHelp() {
+  runCommand (locale, message) {
+    function sendHelp () {
       message.reply({
         embeds: plantillas.ayuda({
           name: 'bot',
@@ -183,16 +181,8 @@ module.exports = {
       }
 
       case 'updateinteractions': {
-        if (message.parameters[1] === 'true') {
-          message.parameters[1] = true
-        } else {
-          message.parameters[1] = false
-        }
-
-        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
-
         try {
-          subirInteraccionesDelServidor(message.guild, message.parameters[1], err => {
+          subirInteraccionesDelServidor(message.guild, err => {
             if (err) {
               message.reply({ embeds: [plantillas.error(i18n(locale, 'UPDATE::ERROR'))] })
               throw err
