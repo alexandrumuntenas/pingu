@@ -13,16 +13,16 @@ module.exports = {
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
-    .addSubcommand(sc => sc.setName('dmupdates').setDescription('Send suggestion status updates to it\'s author?').addBooleanOption(input => input.setName('en-US'able').setDescription('Send suggestion status updates to it\'s author?').setRequired(true)))
+    .addSubcommand(sc => sc.setName('dmupdates').setDescription('Send suggestion status updates to it\'s author?').addBooleanOption(input => input.setName('enable').setDescription('Send suggestion status updates to it\'s author?').setRequired(true)))
     .addSubcommand(sc => sc.setName('setlogs').setDescription('Set the channel where the bot will send the suggestion logs').addChannelOption(input => input.setName('channel').setDescription('Set the channel where the bot will send the suggestion logs').addChannelType(ChannelType.GuildText).setRequired(true)))
     .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the channel where the bot will send the suggestions').addChannelOption(input => input.setName('channel').setDescription('Set the channel where the bot will send the suggestions').addChannelType(ChannelType.GuildText).setRequired(true)))
     .addSubcommand(sc => sc.setName('setcooldown').setDescription('Set the cooldown between suggestions').addIntegerOption(input => input.setName('cooldown').setDescription('Set the cooldown between suggestions'))),
   runInteraction ( interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'dmupdates': {
-        actualizarConfiguracionDelServidor(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('en-US'able') } }, (err) => {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
           if (err) interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
-          if (interaction.options.getBoolean('en-US'able')) interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
+          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
           else interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
         })
         break

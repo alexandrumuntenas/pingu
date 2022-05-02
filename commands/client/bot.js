@@ -18,7 +18,7 @@ module.exports = {
     .addSubcommandGroup(scg => scg
       .setName('modules')
       .setDescription('📦 Manage the modules of your server')
-      .addSubcommand(sc => sc.setName('en-US'able')
+      .addSubcommand(sc => sc.setName('enable')
         .setDescription('Enable a module.')
         .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies').addChoice('mcsrvstatus', 'mcsrvstatus')))
       .addSubcommand(sc => sc.setName('disable')
@@ -104,7 +104,7 @@ module.exports = {
         break
       }
 
-      case 'en-US'able': {
+      case 'enable': {
         const moduleToEnable = interaction.options.getString('module')
 
         actualizarConfiguracionDelServidor(interaction.guild, { column: moduleToEnable, newconfig: { enabled: true } }, err => {
@@ -229,7 +229,7 @@ module.exports = {
             break
           }
 
-          case 'en-US'able': {
+          case 'enable': {
             if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
 
             actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
