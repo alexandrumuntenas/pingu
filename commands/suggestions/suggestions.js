@@ -21,28 +21,28 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'dmupdates': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'suggestions', newconfig: { dmupdates: interaction.options.getBoolean('enable') } }, (err) => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
-          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
-          else interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ERROR'))] })
+          if (interaction.options.getBoolean('enable')) interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:ENABLED'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::DMUPDATES:DISABLED'))] })
         })
         break
       }
       case 'setlogs': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'suggestions', newconfig: { logs: interaction.options.getChannel('channel').id } }, (err) => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTIONS::SETLOGS:ERROR'))] })
-          interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::SETLOGS:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::SETLOGS:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::SETLOGS:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'setchannel': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'suggestions', newconfig: { channel: interaction.options.getChannel('channel').id } }, (err) => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
-          interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::SETCHANNEL:ERROR'))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTIONS::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

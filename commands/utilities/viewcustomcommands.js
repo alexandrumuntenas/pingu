@@ -9,12 +9,12 @@ module.exports = {
   module: 'customcommands',
   runInteraction (interaction) {
     getCustomCommands(interaction.guild, customcommands => {
-      if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n(guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
+      if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
       const embed = new MessageEmbed()
         .setColor('#2F3136')
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle(i18n(guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
+        .setTitle(i18n(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
       let customcommandsList = ''

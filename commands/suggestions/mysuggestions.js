@@ -18,7 +18,7 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         interaction.editReply({ embeds: [memberSuggestions] })
       } else {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   },

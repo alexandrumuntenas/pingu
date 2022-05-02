@@ -20,41 +20,41 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'approve': {
         approveSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTION::APPROVE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTION::APPROVE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTION::APPROVE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTION::APPROVE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'reject': {
         rejectSuggestion(interaction.member, interaction.options.getString('suggestion'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTION::REJECT:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTION::REJECT:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTION::REJECT:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTION::REJECT:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'addnote': {
         addNoteToSuggestion(interaction.member, interaction.options.getString('suggestion'), interaction.options.getString('note'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTION::ADDNOTE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTION::ADDNOTE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTION::ADDNOTE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTION::ADDNOTE:SUCCESS', { SUGGESTIONID: interaction.options.getString('suggestion') }))] })
         })
         break
       }
       case 'blacklist': {
         addUserToBlacklist(interaction.guild, interaction.options.getUser('user'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTION::BLACKLIST:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTION::BLACKLIST:SUCCESS', { USER: interaction.options.getUser('user').tag }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTION::BLACKLIST:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTION::BLACKLIST:SUCCESS', { USER: interaction.options.getUser('user').tag }))] })
         })
         break
       }
       case 'unblacklist': {
         removeUserFromBlacklist(interaction.guild, interaction.options.getUser('user'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGESTION::UNBLACKLIST:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGESTION::UNBLACKLIST:SUCCESS', { USER: interaction.options.getUser('user').tag }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGESTION::UNBLACKLIST:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGESTION::UNBLACKLIST:SUCCESS', { USER: interaction.options.getUser('user').tag }))] })
         })
         break
       }
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

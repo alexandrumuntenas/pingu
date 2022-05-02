@@ -26,9 +26,9 @@ module.exports = {
             .setImage(resource.hdurl)
             .addField(
               '+ Info',
-              `<:blurple_image:892443053359517696> ${resource.copyright || i18n(guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
+              `<:blurple_image:892443053359517696> ${resource.copyright || i18n(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
               }\n<a:ultimahora:876105976573472778> ${i18n(
-                guild.preferredLocale,
+                interaction.guild.preferredLocale,
                 'IMAGEAPI::PROVIDER',
                 { PROVIDER: 'Nasa.gov' }
               )}`

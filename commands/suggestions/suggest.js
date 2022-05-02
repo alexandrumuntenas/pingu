@@ -14,11 +14,11 @@ module.exports = {
     checkIfUserIsBlacklisted(interaction.guild, interaction.member, isBlacklisted => {
       if (!isBlacklisted) {
         createSuggestion(interaction.member, interaction.options.getString('suggestion'), suggestionId => {
-          if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGEST::ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
+          if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGEST::ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
         })
       } else {
-        interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
+        interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
       }
     })
   },

@@ -33,16 +33,16 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'setchannel': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'welcome', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::SETCHANNEL:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::SETCHANNEL:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::SETCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
 
       case 'setmessage': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'welcome', newconfig: { message: interaction.options.getString('message') } }, err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::SETMESSAGE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::SETMESSAGE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::SETMESSAGE:SUCCESS', { MESSAGE: interaction.options.getString('message') }))] })
         })
         break
       }
@@ -59,23 +59,23 @@ module.exports = {
         if (sendcards || backgroundurl || overlayopacity || overlaycolor || title || subtitle) {
           const modifiedconfig = new MessageEmbed()
             .setColor('#2F3136')
-            .setTitle(i18n(guild.preferredLocale, 'WELCOME::CONFIGURECARDS:TITLE'))
-            .setDescription(`${i18n(guild.preferredLocale, 'WELCOME::CONFIGURECARDS:CHANGES')}`)
+            .setTitle(i18n(interaction.guild.preferredLocale, 'WELCOME::CONFIGURECARDS:TITLE'))
+            .setDescription(`${i18n(interaction.guild.preferredLocale, 'WELCOME::CONFIGURECARDS:CHANGES')}`)
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
             .setTimestamp()
 
           if (sendcards) {
-            modifiedconfig.addField(`:incoming_envelope: ${i18n(guild.preferredLocale, 'SENDCARDS')}`, sendcards ? `✅ ${i18n(guild.preferredLocale, 'ENABLED')}` : `❌ ${i18n(guild.preferredLocale, 'DISABLED')}`, true)
+            modifiedconfig.addField(`:incoming_envelope: ${i18n(interaction.guild.preferredLocale, 'SENDCARDS')}`, sendcards ? `✅ ${i18n(interaction.guild.preferredLocale, 'ENABLED')}` : `❌ ${i18n(interaction.guild.preferredLocale, 'DISABLED')}`, true)
             newconfig.welcomecard.enabled = sendcards
           }
 
           if (backgroundurl) {
-            modifiedconfig.addField(`:frame_photo: ${i18n(guild.preferredLocale, 'BACKGROUND')}`, backgroundurl ? `[<:blurple_link:892441999993618532> ${i18n(guild.preferredLocale, 'VIEWLINK')}](${backgroundurl})` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+            modifiedconfig.addField(`:frame_photo: ${i18n(interaction.guild.preferredLocale, 'BACKGROUND')}`, backgroundurl ? `[<:blurple_link:892441999993618532> ${i18n(interaction.guild.preferredLocale, 'VIEWLINK')}](${backgroundurl})` : `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
             newconfig.welcomecard.background = backgroundurl
           }
 
           if (overlayopacity) {
-            modifiedconfig.addField(`:flashlight: ${i18n(guild.preferredLocale, 'OVERLAYOPACITY')}`, overlayopacity ? `${overlayopacity}%` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+            modifiedconfig.addField(`:flashlight: ${i18n(interaction.guild.preferredLocale, 'OVERLAYOPACITY')}`, overlayopacity ? `${overlayopacity}%` : `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
             newconfig.welcomecard.overlay.opacity = overlayopacity
 
             if (newconfig.welcomecard.overlay) newconfig.welcomecard.overlay.opacity = overlayopacity
@@ -83,24 +83,24 @@ module.exports = {
           }
 
           if (overlaycolor && hexRegexTester.test(overlaycolor)) {
-            modifiedconfig.addField(`:art: ${i18n(guild.preferredLocale, 'OVERLAYCOLOR')}`, overlaycolor || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+            modifiedconfig.addField(`:art: ${i18n(interaction.guild.preferredLocale, 'OVERLAYCOLOR')}`, overlaycolor || `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
 
             if (newconfig.welcomecard.overlay) newconfig.welcomecard.overlay.color = overlaycolor
             else newconfig.welcomecard.overlay = { color: overlaycolor }
           }
 
           if (title) {
-            modifiedconfig.addField(`:writing_hand: ${i18n(guild.preferredLocale, 'TITLE')}`, title || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+            modifiedconfig.addField(`:writing_hand: ${i18n(interaction.guild.preferredLocale, 'TITLE')}`, title || `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
             newconfig.welcomecard.title = title
           }
 
           if (subtitle) {
-            modifiedconfig.addField(`:writing_hand: ${i18n(guild.preferredLocale, 'SUBTITLE')}`, subtitle || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+            modifiedconfig.addField(`:writing_hand: ${i18n(interaction.guild.preferredLocale, 'SUBTITLE')}`, subtitle || `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
             newconfig.welcomecard.subtitle = subtitle
           }
 
           actualizarConfiguracionDelServidor(interaction.guild, { column: 'welcome', newconfig }, err => {
-            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
+            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -108,14 +108,14 @@ module.exports = {
             const welcomecard = new MessageAttachment(path, 'welcomecard.png')
             const actualconfig = new MessageEmbed()
               .setColor('#2F3136')
-              .setTitle(i18n(guild.preferredLocale, 'WELCOME::CONFIGURECARDS:TITLE'))
-              .setDescription(`${i18n(guild.preferredLocale, 'WELCOME::CONFIGURECARDS:NOCHANGES')} ${i18n(guild.preferredLocale, 'WELCOME::CONFIGURECARDS:ACTUALCONFIG')}`)
-              .addField(`:incoming_envelope: ${i18n(guild.preferredLocale, 'SENDCARDS')}`, interaction.guild.configuration.welcome.welcomecard.enabled ? `✅ ${i18n(guild.preferredLocale, 'ENABLED')}` : `❌ ${i18n(guild.preferredLocale, 'DISABLED')}`, true)
-              .addField(`:frame_photo: ${i18n(guild.preferredLocale, 'BACKGROUND')}`, interaction.guild.configuration.welcome.welcomecard.background ? `[<:blurple_link:892441999993618532> ${i18n(guild.preferredLocale, 'VIEWLINK')}](${interaction.guild.configuration.welcome.welcomecard.background})` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
-              .addField(`:flashlight: ${i18n(guild.preferredLocale, 'OVERLAYOPACITY')}`, interaction.guild.configuration.welcome.welcomecard.overlay.opacity ? `${interaction.guild.configuration.welcome.welcomecard.overlay.opacity}%` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
-              .addField(`:art: ${i18n(guild.preferredLocale, 'OVERLAYCOLOR')}`, interaction.guild.configuration.welcome.welcomecard.overlay.color || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
-              .addField(`:writing_hand: ${i18n(guild.preferredLocale, 'TITLE')}`, interaction.guild.configuration.welcome.welcomecard.title || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
-              .addField(`:writing_hand: ${i18n(guild.preferredLocale, 'SUBTITLE')}`, interaction.guild.configuration.welcome.welcomecard.subtitle || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+              .setTitle(i18n(interaction.guild.preferredLocale, 'WELCOME::CONFIGURECARDS:TITLE'))
+              .setDescription(`${i18n(interaction.guild.preferredLocale, 'WELCOME::CONFIGURECARDS:NOCHANGES')} ${i18n(interaction.guild.preferredLocale, 'WELCOME::CONFIGURECARDS:ACTUALCONFIG')}`)
+              .addField(`:incoming_envelope: ${i18n(interaction.guild.preferredLocale, 'SENDCARDS')}`, interaction.guild.configuration.welcome.welcomecard.enabled ? `✅ ${i18n(interaction.guild.preferredLocale, 'ENABLED')}` : `❌ ${i18n(interaction.guild.preferredLocale, 'DISABLED')}`, true)
+              .addField(`:frame_photo: ${i18n(interaction.guild.preferredLocale, 'BACKGROUND')}`, interaction.guild.configuration.welcome.welcomecard.background ? `[<:blurple_link:892441999993618532> ${i18n(interaction.guild.preferredLocale, 'VIEWLINK')}](${interaction.guild.configuration.welcome.welcomecard.background})` : `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
+              .addField(`:flashlight: ${i18n(interaction.guild.preferredLocale, 'OVERLAYOPACITY')}`, interaction.guild.configuration.welcome.welcomecard.overlay.opacity ? `${interaction.guild.configuration.welcome.welcomecard.overlay.opacity}%` : `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
+              .addField(`:art: ${i18n(interaction.guild.preferredLocale, 'OVERLAYCOLOR')}`, interaction.guild.configuration.welcome.welcomecard.overlay.color || `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
+              .addField(`:writing_hand: ${i18n(interaction.guild.preferredLocale, 'TITLE')}`, interaction.guild.configuration.welcome.welcomecard.title || `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
+              .addField(`:writing_hand: ${i18n(interaction.guild.preferredLocale, 'SUBTITLE')}`, interaction.guild.configuration.welcome.welcomecard.subtitle || `❌ ${i18n(interaction.guild.preferredLocale, 'NOTSET')}`, true)
               .setImage('attachment://welcomecard.png')
               .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
               .setTimestamp()
@@ -129,16 +129,16 @@ module.exports = {
 
       case 'give': {
         addJoinRole(interaction.guild, interaction.options.getRole('role'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::GIVEROLE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::GIVEROLE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'WELCOME::GIVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
       }
 
       case 'remove': {
         removeJoinRole(interaction.guild, interaction.options.getRole('role'), err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'WELCOME::REMOVEROLE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'WELCOME::REMOVEROLE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'WELCOME::REMOVEROLE:SUCCESS', { ROLE: interaction.options.getRole('role') }))] })
         })
         break
       }
@@ -147,12 +147,12 @@ module.exports = {
         let { roles } = interaction.guild.configuration.welcome
         roles = roles || []
         roles = roles.map(role => `<@&${role}>`).join(', ')
-        interaction.editReply({ embeds: [new MessageEmbed().setColor('#2F3136').setTitle(i18n(guild.preferredLocale, 'WELCOME::LISTROLES:TITLE')).setDescription(roles || i18n(guild.preferredLocale, 'NOSET')).setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()] })
+        interaction.editReply({ embeds: [new MessageEmbed().setColor('#2F3136').setTitle(i18n(interaction.guild.preferredLocale, 'WELCOME::LISTROLES:TITLE')).setDescription(roles || i18n(interaction.guild.preferredLocale, 'NOSET')).setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()] })
         break
       }
 
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

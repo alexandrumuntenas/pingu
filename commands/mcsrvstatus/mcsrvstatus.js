@@ -19,32 +19,32 @@ module.exports = {
     switch (interaction.options.getSubcommand()) {
       case 'setdefaulthost': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { host: interaction.options.getString('host'), port: interaction.options.getNumber('port') } }, err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCSRVSTATUS::SETDEFAULTHOST:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'MCSRVSTATUS::SETDEFAULTHOST:SUCCESS', { HOST: interaction.options.getString('host') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SETDEFAULTHOST:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SETDEFAULTHOST:SUCCESS', { HOST: interaction.options.getString('host') }))] })
         })
         break
       }
       case 'setpanelchannel': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { messagePanelChannel: interaction.options.getChannel('channel').id } }, err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
           interaction.options.getChannel('channel').send('<:Blurple_verified_plain:938094790132764682> ').then(msg => {
             actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: msg.id } }, _err => {
-              if (_err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
+              if (_err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SETPANELCHANNEL:ERROR'))] })
             })
           })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'MCSRVSTATUS::SETPANELCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SETPANELCHANNEL:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       case 'sidebarplayercount': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'mcsrvstatus', newconfig: { sidebarPlayercount: interaction.options.getChannel('channel').id } }, err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCSRVSTATUS::SIDEBARPLAYERCOUNT:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'MCSRVSTATUS::SIDEBARPLAYERCOUNT:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SIDEBARPLAYERCOUNT:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'MCSRVSTATUS::SIDEBARPLAYERCOUNT:SUCCESS', { CHANNEL: interaction.options.getChannel('channel') }))] })
         })
         break
       }
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

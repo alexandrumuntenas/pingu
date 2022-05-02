@@ -9,9 +9,9 @@ module.exports = {
   runInteraction (interaction) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::HEADS')}`)
+      embed.setDescription(`:coin: ${i18n(interaction.guild.preferredLocale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::TAILS')}`)
+      embed.setDescription(`:coin: ${i18n(interaction.guild.preferredLocale, 'FLIP::TAILS')}`)
     }
 
     interaction.editReply({ embeds: [embed] })

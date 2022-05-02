@@ -11,7 +11,7 @@ module.exports = {
     getLeaderboard(interaction.guild, leaderboard => {
       const leaderboardEmbed = new MessageEmbed()
         .setColor('#FEE75C')
-        .setTitle(`:trophy: ${i18n(interaction.guild.preferredLocale, 'RANKING')} TOP 25`)
+        .setTitle(`:trophy: ${i18n(interaction.interaction.guild.preferredLocale, 'RANKING')} TOP 25`)
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
         .setTimestamp()
 
@@ -20,7 +20,7 @@ module.exports = {
 
       leaderboard.forEach(registro => {
         count++
-        leaderboardStr = `${leaderboardStr}\n${count}. **${registro.user.username || 'Mysterious User'}#${registro.user.discriminator || '0000'}** (${i18n(interaction.guild.preferredLocale, 'LEVEL')}: ${registro.lvlLevel}, ${i18n(interaction.guild.preferredLocale, 'EXPERIENCE')} ${registro.lvlExperience}) `
+        leaderboardStr = `${leaderboardStr}\n${count}. **${registro.user.username || 'Mysterious User'}#${registro.user.discriminator || '0000'}** (${i18n(interaction.interaction.guild.preferredLocale, 'LEVEL')}: ${registro.lvlLevel}, ${i18n(interaction.interaction.guild.preferredLocale, 'EXPERIENCE')} ${registro.lvlExperience}) `
 
         if (count === leaderboard.length) {
           interaction.editReply({

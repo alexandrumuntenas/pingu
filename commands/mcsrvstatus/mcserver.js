@@ -23,7 +23,7 @@ module.exports = {
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
         interaction.editReply({ files: [attachment], embeds: [embed] })
       } else {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
     })
   },

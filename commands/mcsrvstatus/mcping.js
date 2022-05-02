@@ -9,7 +9,7 @@ module.exports = {
   description: '🖥️ Ping the configured Minecraft server',
   cooldown: 1,
   runInteraction (interaction) {
-    if (!interaction.guild.configuration.mcsrvstatus.host) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::NO_HOST'))] })
+    if (!interaction.guild.configuration.mcsrvstatus.host) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::NO_HOST'))] })
     obtenerDatosDelServidor({ ip: interaction.guild.configuration.mcsrvstatus.host, port: interaction.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -24,7 +24,7 @@ module.exports = {
         return interaction.editReply({ files: [attachment], embeds: [embed] })
       }
 
-      return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
+      return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
     })
   },
   runCommand (message) {
