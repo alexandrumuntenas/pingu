@@ -26,7 +26,7 @@ async function isCommand (interaction) {
       if (CooldownManager.check(interaction.member, interaction.guild, interactionToRun.name)) {
         CooldownManager.add(interaction.member, interaction.guild, interactionToRun)
 
-        await interactionToRun.runInteraction(interaction.guild.preferredLocale, interaction)
+        await interactionToRun.runInteraction(interaction)
       } else {
         return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
       }

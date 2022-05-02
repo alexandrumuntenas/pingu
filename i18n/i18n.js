@@ -1,5 +1,5 @@
 const stringPlaceholder = require('string-placeholder')
-const { handleError } = require('../functions/consolex')
+const { gestionarError } = require('../functions/consolex')
 const { existsSync } = require('fs')
 
 /**
@@ -10,12 +10,12 @@ const { existsSync } = require('fs')
  */
 module.exports = (language, key, placeholders) => {
   let languageToUse = language || 'es-ES'
-  if (!existsSync(`./i18n/guild.preferredLocales/${languageToUse}.json`)) {
-    handleError(`No se encontró el archivo de idioma ${languageToUse}.json`)
+  if (!existsSync(`./i18n/locales/${languageToUse}.json`)) {
+    gestionarError(`No se encontró el archivo de idioma ${languageToUse}.json`)
     languageToUse = 'es-ES'
   }
 
-  let translation = require(`./guild.preferredLocales/${languageToUse}.json`)[key]
+  let translation = require(`./locales/${languageToUse}.json`)[key]
 
   if (placeholders) {
     try {
@@ -23,7 +23,7 @@ module.exports = (language, key, placeholders) => {
     } catch (err) {
       if (err) {
         translation = 'Error al intentar obtener la traducción para este mensaje (╯°□°）╯︵ ┻━┻'
-        handleError(err)
+        gestionarError(err)
       }
     }
   }
