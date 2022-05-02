@@ -42,7 +42,19 @@ module.exports = {
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
       .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.').addBooleanOption(input => input.setName('configinteractions').setDescription('Deploy the configuration interactions?')))),
-  runInteraction(locale, interaction) {
+  help: {
+    name: 'bot',
+    description: 'BOT::HELP:DESCRIPTION',
+    subcommands: [
+      { name: 'updateinteractions', description: 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION', parameters: '<configinteractions[true/false]>' },
+      { name: 'setprefix', description: 'BOT::HELP:SETPREFIX:DESCRIPTION', parameters: '<prefix>' },
+      { name: 'setlanguage', description: 'BOT::HELP:SETLANGUAGE:DESCRIPTION', parameters: '<language[en/es]>' },
+      { name: 'modules viewconfig', description: 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION' },
+      { name: 'modules enable', description: 'BOT::HELP:MODULESENABLE:DESCRIPTION', parameters: '<module>' },
+      { name: 'modules disable', description: 'BOT::HELP:MODULESDISABLE:DESCRIPTION', parameters: '<module>' }
+    ]
+  },
+  runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
@@ -132,24 +144,7 @@ module.exports = {
       }
     }
   },
-  runCommand(locale, message) {
-    function sendHelp() {
-      message.reply({
-        embeds: plantillas.ayuda({
-          name: 'bot',
-          description: i18n(locale, 'BOT::HELP:DESCRIPTION'),
-          subcommands: [
-            { name: 'updateinteractions', description: i18n(locale, 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION'), parameters: '<configinteractions[true/false]>' },
-            { name: 'setprefix', description: i18n(locale, 'BOT::HELP:SETPREFIX:DESCRIPTION'), parameters: '<prefix>' },
-            { name: 'setlanguage', description: i18n(locale, 'BOT::HELP:SETLANGUAGE:DESCRIPTION'), parameters: '<language[en/es]>' },
-            { name: 'modules viewconfig', description: i18n(locale, 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION') },
-            { name: 'modules enable', description: i18n(locale, 'BOT::HELP:MODULESENABLE:DESCRIPTION'), parameters: '<module>' },
-            { name: 'modules disable', description: i18n(locale, 'BOT::HELP:MODULESDISABLE:DESCRIPTION'), parameters: '<module>' }
-          ]
-        })
-      })
-    }
-
+  runCommand (locale, message) {
     if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return sendHelp()
 
     switch (message.parameters[0]) {
