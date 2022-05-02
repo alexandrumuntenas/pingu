@@ -43,7 +43,7 @@ module.exports = {
         [message.commandName] = message.parameters
         message.parameters.shift()
 
-        if (!message.commandName) return process.Client.comandos.get('help').runCommand(message.guild.configuration.common.language, message)
+        if (!message.commandName) return process.Client.comandos.get('help').runCommand(message.guild.preferredLocale, message)
 
         const commandToExecute = process.Client.comandos.get(message.commandName)
 
@@ -51,17 +51,17 @@ module.exports = {
           if (process.Client.comandos.has(message.commandName)) {
             if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
 
-            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::PERMERROR'))] })
+            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })
 
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
-            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
+            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'COMMAND::ONLYINTERACTION'))] })
           } else if (message.guild.configuration.customcommands.enabled) {
             CooldownManager.add(message.member, message.guild, message.commandName)
             return runCustomCommand(message, message.commandName)
           }
         } else {
-          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.preferredLocale || 'en-US', fallbacks: ['en-US'] }) }))] })
         }
       }
 

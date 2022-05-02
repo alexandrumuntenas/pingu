@@ -10,7 +10,7 @@ module.exports = {
   description: '🖥️ Ping a specified Minecraft server',
   interactionData: new SlashCommandBuilder().addStringOption(input => input.setName('ip_or_address').setRequired(true).setDescription('The IP or address of the server')).addStringOption(input => input.setName('port').setDescription('The port of the server')),
   cooldown: 10000,
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     obtenerDatosDelServidor({ ip: interaction.options.getString('ip_or_address'), port: interaction.options.getString('port') }, datosDelServidor => {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -23,11 +23,11 @@ module.exports = {
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
         interaction.editReply({ files: [attachment], embeds: [embed] })
       } else {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
     })
   },
-  runCommand (locale, message) {
+  runCommand (message) {
     if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
       return message.reply({
         embeds: plantillas.ayuda({
@@ -39,7 +39,7 @@ module.exports = {
       })
     }
 
-    message.reply({ embeds: [plantillas.precargador(i18n(locale, 'OBTAININGDATA'))] }).then(_message => {
+    message.reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       try {
         obtenerDatosDelServidor({ ip: message.parameters[0], port: message.parameters[1] }, datosDelServidor => {
           if (datosDelServidor) {
@@ -53,11 +53,11 @@ module.exports = {
               .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
             _message.edit({ files: [attachment], embeds: [embed] })
           } else {
-            return _message.edit({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
+            return _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
           }
         })
       } catch {
-        _message.edit({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
+        _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
     })
   }

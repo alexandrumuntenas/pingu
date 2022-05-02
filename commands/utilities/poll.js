@@ -31,7 +31,7 @@ module.exports = {
     .addStringOption(option => option.setName('option_r').setDescription('Type your choice'))
     .addStringOption(option => option.setName('option_s').setDescription('Type your choice'))
     .addStringOption(option => option.setName('option_t').setDescription('Type your choice')),
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     let options = []
 
     options.push(
@@ -89,7 +89,7 @@ module.exports = {
       } while (count < options.length)
     }
   },
-  runCommand (locale, message) {
+  runCommand (message) {
     if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
       const options = message.content.replace(`${message.guild.configuration.common.prefix}poll `, '').split(';')
       const embed = new MessageEmbed().setColor('#EB459E')
@@ -97,7 +97,7 @@ module.exports = {
       if (options.length === 1) {
         const question = message.parameters.join(' ')
 
-        if (!question) return message.reply({ embeds: [plantillas.error(i18n(locale, 'POLL::NOQUESTION'))] })
+        if (!question) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'POLL::NOQUESTION'))] })
 
         embed.setTitle(`📊 ${question}`)
 
@@ -134,7 +134,7 @@ module.exports = {
       message.reply({
         embeds: plantillas.ayuda({
           name: 'poll',
-          description: i18n(locale, 'POLL::DESCRIPTION'),
+          description: i18n(message.guild.preferredLocale, 'POLL::DESCRIPTION'),
           cooldown: '1',
           parameters: '<question;option1;option2;option3;...>'
         })

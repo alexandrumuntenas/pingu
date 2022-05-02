@@ -9,7 +9,7 @@ module.exports = {
   module: 'suggestions',
   description: '👀 View your suggestions',
   isConfigurationCommand: false,
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     getMemberSuggestions(interaction.member, suggestions => {
       if (Object.prototype.hasOwnProperty.call(suggestions, '0')) {
         const memberSuggestions = new MessageEmbed()
@@ -18,11 +18,11 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         interaction.editReply({ embeds: [memberSuggestions] })
       } else {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   },
-  runCommand (locale, message) {
+  runCommand (message) {
     getMemberSuggestions(message.member, suggestions => {
       if (Object.prototype.hasOwnProperty.call(suggestions, '0')) {
         const memberSuggestions = new MessageEmbed()
@@ -31,7 +31,7 @@ module.exports = {
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
         message.reply({ embeds: [memberSuggestions] })
       } else {
-        message.reply({ embeds: [plantillas.informacion(i18n(locale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
+        message.reply({ embeds: [plantillas.informacion(i18n(message.guild.preferredLocale, 'MYSSUGESTIONS::NOSUGGESTIONS'))] })
       }
     })
   }

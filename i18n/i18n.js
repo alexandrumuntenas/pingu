@@ -1,5 +1,5 @@
 const stringPlaceholder = require('string-placeholder')
-const { handleError } = require('../functions/consolex')
+const { gestionarError } = require('../functions/consolex')
 const { existsSync } = require('fs')
 
 /**
@@ -9,10 +9,10 @@ const { existsSync } = require('fs')
  * @param {Array<Object>} placeholders Los datos para reemplazar los placeholders
  */
 module.exports = (language, key, placeholders) => {
-  let languageToUse = language || 'es'
+  let languageToUse = language || 'es-ES'
   if (!existsSync(`./i18n/locales/${languageToUse}.json`)) {
-    handleError(`No se encontró el archivo de idioma ${languageToUse}.json`)
-    languageToUse = 'es'
+    gestionarError(`No se encontró el archivo de idioma ${languageToUse}.json`)
+    languageToUse = 'es-ES'
   }
 
   let translation = require(`./locales/${languageToUse}.json`)[key]
@@ -23,7 +23,7 @@ module.exports = (language, key, placeholders) => {
     } catch (err) {
       if (err) {
         translation = 'Error al intentar obtener la traducción para este mensaje (╯°□°）╯︵ ┻━┻'
-        handleError(err)
+        gestionarError(err)
       }
     }
   }
