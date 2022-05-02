@@ -36,6 +36,7 @@ module.exports = {
       .setDescription('💬 Manage the interactions of your server')
       .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.'))
       .addSubcommand(sc => sc.setName('showinteractions').setDescription('Show the interactions of the bot in your server.'))
+      .addSubcommand(sc => sc.setName('enforceusage').setDescription('Enforce the usage of the interactions of your server. This will disable traditional commands.'))
       .addSubcommand(sc => sc.setName('showcfginteractions').setDescription('Show the config interactions of the bot in your server.'))),
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {

@@ -33,6 +33,8 @@ module.exports = {
     obtenerConfiguracionDelServidor(message.guild, guildConfig => {
       message.guild.configuration = guildConfig
 
+      if (!guildConfig.common.interaction.enforceInteractionUsage) return message.reply('Smth') // TODO: Preparar mensaje de error
+
       if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
         if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
           message.parameters = message.content.slice(`<@!${process.Client.user.id}>`.length).trim().split(/ +/)
