@@ -27,7 +27,7 @@ module.exports = {
       .addNumberOption(input => input.setName('overlayopacity').setDescription('Set the overlay opacity.'))
       .addStringOption(input => input.setName('overlaycolor').setDescription('Set the overlay color.')))
     .addSubcommand(sc => sc.setName('resetleaderboard').setDescription('Reset the leaderboard.')),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     function viewConfigFallback () {
       generateRankCard(interaction.member, card => {
         const attachmentRankCard = new MessageAttachment(card, 'rankcard.png')
@@ -187,7 +187,7 @@ module.exports = {
     }
   },
   // eslint-disable-next-line complexity
-  runCommand ( message) {
+  runCommand (message) {
     function sendHelp () {
       message.reply({
         embeds: plantillas.ayuda({

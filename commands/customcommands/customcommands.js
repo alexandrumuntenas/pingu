@@ -28,7 +28,7 @@ module.exports = {
       .addBooleanOption(input => input.setName('sendtodm').setDescription('Whether or not the reply should be sent to the user.')))
     .addSubcommand(sc => sc.setName('delete').setDescription('Delete a custom command.')
       .addStringOption(input => input.setName('name').setRequired(true).setDescription('The name of the custom command.'))),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'create': {
         const customcommand = { command: interaction.options.getString('name'), reply: interaction.options.getString('reply') }

@@ -5,7 +5,7 @@ const unixTime = require('unix-time')
 module.exports = {
   name: 'server',
   description: '👑 Shows information about the server',
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     const serverInfo = new MessageEmbed()
       .setTitle(i18n(guild.preferredLocale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')
@@ -16,7 +16,7 @@ module.exports = {
 
     interaction.editReply({ embeds: [serverInfo] })
   },
-  runCommand ( message) {
+  runCommand (message) {
     const serverInfo = new MessageEmbed()
       .setTitle(i18n(guild.preferredLocale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')

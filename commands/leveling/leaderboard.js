@@ -7,7 +7,7 @@ module.exports = {
   name: 'leaderboard',
   module: 'leveling',
   description: '🏆 Get the guild leveling leaderboard',
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     getLeaderboard(interaction.guild, leaderboard => {
       const leaderboardEmbed = new MessageEmbed()
         .setColor('#FEE75C')
@@ -30,7 +30,7 @@ module.exports = {
       })
     })
   },
-  runCommand ( message) {
+  runCommand (message) {
     message.reply({ embeds: [plantillas.precargador(i18n(guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       getLeaderboard(message.guild, leaderboard => {
         const leaderboardEmbed = new MessageEmbed()

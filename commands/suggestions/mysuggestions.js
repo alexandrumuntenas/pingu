@@ -9,7 +9,7 @@ module.exports = {
   module: 'suggestions',
   description: '👀 View your suggestions',
   isConfigurationCommand: false,
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     getMemberSuggestions(interaction.member, suggestions => {
       if (Object.prototype.hasOwnProperty.call(suggestions, '0')) {
         const memberSuggestions = new MessageEmbed()
@@ -22,7 +22,7 @@ module.exports = {
       }
     })
   },
-  runCommand ( message) {
+  runCommand (message) {
     getMemberSuggestions(message.member, suggestions => {
       if (Object.prototype.hasOwnProperty.call(suggestions, '0')) {
         const memberSuggestions = new MessageEmbed()

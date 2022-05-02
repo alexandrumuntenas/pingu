@@ -31,7 +31,7 @@ module.exports = {
     .addStringOption(option => option.setName('option_r').setDescription('Type your choice'))
     .addStringOption(option => option.setName('option_s').setDescription('Type your choice'))
     .addStringOption(option => option.setName('option_t').setDescription('Type your choice')),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     let options = []
 
     options.push(
@@ -89,7 +89,7 @@ module.exports = {
       } while (count < options.length)
     }
   },
-  runCommand ( message) {
+  runCommand (message) {
     if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
       const options = message.content.replace(`${message.guild.configuration.common.prefix}poll `, '').split(';')
       const embed = new MessageEmbed().setColor('#EB459E')

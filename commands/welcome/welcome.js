@@ -29,7 +29,7 @@ module.exports = {
       .addSubcommand(sc => sc.setName('list').setDescription('List the roles that are granted when someone joins the guild.'))
       .addSubcommand(sc => sc.setName('give').setDescription('Add a role to grant when someone joins the guild.').addRoleOption(input => input.setName('role').setDescription('Add a role to grant when someone joins the guild.').setRequired(true)))
       .addSubcommand(sc => sc.setName('remove').setDescription('Remove a role to grant when someone joins the guild.').addRoleOption(input => input.setName('role').setDescription('Remove a role to grant when someone joins the guild.').setRequired(true)))),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setchannel': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'welcome', newconfig: { channel: interaction.options.getChannel('channel').id } }, err => {
@@ -157,7 +157,7 @@ module.exports = {
       }
     }
   },
-  runCommand ( message) {
+  runCommand (message) {
     function viewConfigFallback () {
       generateWelcomeCard(message.member, path => {
         const welcomecard = new MessageAttachment(path, 'welcomecard.png')

@@ -10,7 +10,7 @@ module.exports = {
     .setName('user')
     .setDescription('👪 Shows information about an user')
     .addUserOption(option => option.setName('user').setDescription('User to get information about.')),
-  runInteraction ( interaction) {
+  runInteraction (interaction) {
     const embed = new MessageEmbed()
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
@@ -33,7 +33,7 @@ module.exports = {
       interaction.editReply({ embeds: [embed] })
     }
   },
-  runCommand ( message) {
+  runCommand (message) {
     const embed = new MessageEmbed().setTimestamp().setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
     if (message.mentions.users.first()) {
