@@ -6,13 +6,13 @@ module.exports = {
   module: 'leveling',
   description: '🏅 Get your rank',
   cooldown: 1,
-  runInteraction (locale, interaction) {
+  runInteraction ( interaction) {
     generateRankCard(interaction.member, card => {
       const rankCardAttachment = new MessageAttachment(card, 'rankcard.png')
       interaction.editReply({ files: [rankCardAttachment] })
     })
   },
-  runCommand (locale, message) {
+  runCommand ( message) {
     generateRankCard(message.member, card => {
       const rankCardAttachment = new MessageAttachment(card, 'rankcard.png')
       message.reply({ files: [rankCardAttachment] })

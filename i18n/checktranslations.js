@@ -1,15 +1,15 @@
-// Cargar traducciones de la carpeta "locales"
+// Cargar traducciones de la carpeta "guild.preferredLocales"
 
 const { readdirSync } = require('fs')
 const chalk = require('chalk')
-const traduccionPrincipal = require('./locales/es.json')
+const traduccionPrincipal = require('./guild.preferredLocales/es.json')
 
 const clavesAComprobar = Object.keys(traduccionPrincipal)
 const clavesNoExistentes = []
 
-readdirSync('i18n/locales').forEach(file => {
+readdirSync('i18n/guild.preferredLocales').forEach(file => {
   console.warn(chalk.yellowBright(`Comprobando traducciones de ${file}`)) // skipqc: JS-0002
-  const traduccion = require(`./locales/${file}`)
+  const traduccion = require(`./guild.preferredLocales/${file}`)
   clavesNoExistentes[file] = []
   clavesAComprobar.forEach(clave => {
     if (!traduccion[clave]) {

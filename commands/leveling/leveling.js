@@ -27,7 +27,7 @@ module.exports = {
       .addNumberOption(input => input.setName('overlayopacity').setDescription('Set the overlay opacity.'))
       .addStringOption(input => input.setName('overlaycolor').setDescription('Set the overlay color.')))
     .addSubcommand(sc => sc.setName('resetleaderboard').setDescription('Reset the leaderboard.')),
-  runInteraction (locale, interaction) {
+  runInteraction ( interaction) {
     function viewConfigFallback () {
       generateRankCard(interaction.member, card => {
         const attachmentRankCard = new MessageAttachment(card, 'rankcard.png')
@@ -38,20 +38,20 @@ module.exports = {
 
         const levelingBasicConfig = new MessageEmbed()
           .setColor('#2F3136')
-          .setTitle(i18n(locale, 'LEVELING::VIEWCONFIG:TITLE'))
-          .setDescription(i18n(locale, 'LEVELING::VIEWCONFIG:DESCRIPTION'))
-          .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPCHANNEL')}`, interaction.member.guild.configuration.leveling.channel ? rankUpChannel : i18n(locale, 'NOSET'))
-          .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPMESSAGE')}`, interaction.member.guild.configuration.leveling.message ? interaction.member.guild.configuration.leveling.message : i18n(locale, 'NOSET'))
-          .addField(`<:trendingdown_green:967797814212034601> ${i18n(locale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, interaction.member.guild.configuration.leveling.difficulty ? `${interaction.member.guild.configuration.leveling.difficulty}` : i18n(locale, 'NOSET'))
+          .setTitle(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:TITLE'))
+          .setDescription(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:DESCRIPTION'))
+          .addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKUPCHANNEL')}`, interaction.member.guild.configuration.leveling.channel ? rankUpChannel : i18n(guild.preferredLocale, 'NOSET'))
+          .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKUPMESSAGE')}`, interaction.member.guild.configuration.leveling.message ? interaction.member.guild.configuration.leveling.message : i18n(guild.preferredLocale, 'NOSET'))
+          .addField(`<:trendingdown_green:967797814212034601> ${i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, interaction.member.guild.configuration.leveling.difficulty ? `${interaction.member.guild.configuration.leveling.difficulty}` : i18n(guild.preferredLocale, 'NOSET'))
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
           .setTimestamp()
 
         const levelingRankCard = new MessageEmbed()
-          .setTitle(i18n(locale, 'LEVELING::VIEWCONFIG:RANKCARD:TITLE'))
-          .setDescription(i18n(locale, 'LEVELING::VIEWCONFIG:RANKCARD:DESCRIPTION'))
-          .addField(`:frame_photo: ${i18n(locale, 'BACKGROUND')}`, interaction.guild.configuration.leveling.card.background ? `[<:blurple_link:892441999993618532> ${i18n(locale, 'VIEWLINK')}](${interaction.guild.configuration.welcome.welcomecard.background})` : `❌ ${i18n(locale, 'NOTSET')}`, true)
-          .addField(`:flashlight: ${i18n(locale, 'OVERLAYOPACITY')}`, interaction.guild.configuration.leveling.card.overlay.opacity ? `${interaction.guild.configuration.welcome.welcomecard.overlay.opacity}%` : `❌ ${i18n(locale, 'NOTSET')}`, true)
-          .addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, interaction.guild.configuration.leveling.card.overlay.color || `❌ ${i18n(locale, 'NOTSET')}`, true)
+          .setTitle(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKCARD:TITLE'))
+          .setDescription(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKCARD:DESCRIPTION'))
+          .addField(`:frame_photo: ${i18n(guild.preferredLocale, 'BACKGROUND')}`, interaction.guild.configuration.leveling.card.background ? `[<:blurple_link:892441999993618532> ${i18n(guild.preferredLocale, 'VIEWLINK')}](${interaction.guild.configuration.welcome.welcomecard.background})` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+          .addField(`:flashlight: ${i18n(guild.preferredLocale, 'OVERLAYOPACITY')}`, interaction.guild.configuration.leveling.card.overlay.opacity ? `${interaction.guild.configuration.welcome.welcomecard.overlay.opacity}%` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+          .addField(`:art: ${i18n(guild.preferredLocale, 'OVERLAYCOLOR')}`, interaction.guild.configuration.leveling.card.overlay.color || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
           .setColor('#2F3136')
           .setImage('attachment://rankcard.png')
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -76,35 +76,35 @@ module.exports = {
         if (rankUpChannel || rankUpMessage || difficulty) {
           const modifiedconfig = new MessageEmbed()
             .setColor('#2F3136')
-            .setTitle(i18n(locale, 'LEVELING::RANKUP:TITLE'))
-            .setDescription(i18n(locale, 'LEVELING::RANKUP:DESCRIPTION'))
+            .setTitle(i18n(guild.preferredLocale, 'LEVELING::RANKUP:TITLE'))
+            .setDescription(i18n(guild.preferredLocale, 'LEVELING::RANKUP:DESCRIPTION'))
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
             .setTimestamp()
 
           if (rankUpChannel) {
             switch (rankUpChannel) {
               case 'this': {
-                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, `<#${interaction.channel.id}>`, true)
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL')}`, `<#${interaction.channel.id}>`, true)
                 newconfig.channel = interaction.channel.id
                 break
               }
               case 'same': {
-                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT'), true)
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT'), true)
                 newconfig.channel = rankUpChannel
                 break
               }
               case 'dm': {
-                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:DM'), true)
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:DM'), true)
                 newconfig.channel = rankUpChannel
                 break
               }
               case 'disabled': {
-                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:DISABLED'), true)
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:DISABLED'), true)
                 newconfig.channel = rankUpChannel
                 break
               }
               default: {
-                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT'), true)
+                modifiedconfig.addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL')}`, i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT'), true)
                 newconfig.channel = rankUpChannel
                 break
               }
@@ -112,17 +112,17 @@ module.exports = {
           }
 
           if (rankUpMessage) {
-            modifiedconfig.addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'LEVELING::RANKUP:MESSAGE')}`, rankUpMessage, true)
+            modifiedconfig.addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:MESSAGE')}`, rankUpMessage, true)
             newconfig.message = rankUpMessage
           }
 
           if (difficulty) {
-            modifiedconfig.addField(`<:trendingdown_green:967797814212034601> ${i18n(locale, 'LEVELING::RANKUP:DIFFICULTY')}`, difficulty, true)
+            modifiedconfig.addField(`<:trendingdown_green:967797814212034601> ${i18n(guild.preferredLocale, 'LEVELING::RANKUP:DIFFICULTY')}`, difficulty, true)
             newconfig.difficulty = difficulty
           }
 
           actualizarConfiguracionDelServidor(interaction.guild, { column: 'leveling', newconfig }, err => {
-            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::RANKUP:ERROR'))] })
+            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'LEVELING::RANKUP:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -141,28 +141,28 @@ module.exports = {
         if (background || overlayOpacity || overlayColor) {
           const modifiedconfig = new MessageEmbed()
             .setColor('#2F3136')
-            .setTitle(i18n(locale, 'LEVELING::CONFIGURECARDS:TITLE'))
-            .setDescription(i18n(locale, 'LEVELING::CONFIGURECARDS:DESCRIPTION'))
+            .setTitle(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:TITLE'))
+            .setDescription(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:DESCRIPTION'))
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
             .setTimestamp()
 
           if (background) {
-            modifiedconfig.addField(`:frame_photo: ${i18n(locale, 'BACKGROUND')}`, `[<:blurple_link:892441999993618532> ${i18n(locale, 'VIEWLINK')}](${background})`, true)
+            modifiedconfig.addField(`:frame_photo: ${i18n(guild.preferredLocale, 'BACKGROUND')}`, `[<:blurple_link:892441999993618532> ${i18n(guild.preferredLocale, 'VIEWLINK')}](${background})`, true)
             newconfig.background = background
           }
 
           if (overlayOpacity) {
-            modifiedconfig.addField(`:flashlight: ${i18n(locale, 'OVERLAYOPACITY')}`, `${overlayOpacity}%`, true)
+            modifiedconfig.addField(`:flashlight: ${i18n(guild.preferredLocale, 'OVERLAYOPACITY')}`, `${overlayOpacity}%`, true)
             newconfig.overlayOpacity = overlayOpacity
           }
 
           if (overlayColor && overlayColor.test(overlayColor)) {
-            modifiedconfig.addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, overlayColor, true)
+            modifiedconfig.addField(`:art: ${i18n(guild.preferredLocale, 'OVERLAYCOLOR')}`, overlayColor, true)
             newconfig.overlayColor = overlayColor
           }
 
           actualizarConfiguracionDelServidor(interaction.guild, { column: 'leveling', newconfig }, err => {
-            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
+            if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:ERROR'))] })
             return interaction.editReply({ embeds: [modifiedconfig] })
           })
         } else {
@@ -174,35 +174,35 @@ module.exports = {
 
       case 'resetleaderboard': {
         resetLeaderboard(interaction.guild, (err) => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::RESETLEADERBOARD:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RESETLEADERBOARD:SUCCESS'))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'LEVELING::RESETLEADERBOARD:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RESETLEADERBOARD:SUCCESS'))] })
         })
         break
       }
 
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }
   },
   // eslint-disable-next-line complexity
-  runCommand (locale, message) {
+  runCommand ( message) {
     function sendHelp () {
       message.reply({
         embeds: plantillas.ayuda({
           name: 'leveling',
-          description: i18n(locale, 'LEVELING::DESCRIPTION'),
+          description: i18n(guild.preferredLocale, 'LEVELING::DESCRIPTION'),
           module: 'leveling',
           subcommands: [
-            { name: 'viewconfig', description: i18n(locale, 'LEVELING::HELP:VIEWCONFIG:DESCRIPTION') },
-            { name: 'configurecards viewconfig', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:VIEWCONFIG:DESCRIPTION') },
-            { name: 'configurecards backgroundurl', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:BACKGROUNDURL:DESCRIPTION'), parameters: '<url>' },
-            { name: 'configurecards overlayopacity', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:OVERLAYOPACITY:DESCRIPTION'), parameters: '<0-100>' },
-            { name: 'configurecards overlaycolor', description: i18n(locale, 'LEVELING::HELP:CONFIGURECARDS:OVERLAYCOLOR:DESCRIPTION'), parameters: '<hex color>' },
-            { name: 'rankup channel', description: i18n(locale, 'LEVELING::HELP:RANKUP:CHANNEL:DESCRIPTION'), parameters: '<this/same/dm/disabled>' },
-            { name: 'rankup message', description: i18n(locale, 'LEVELING::HELP:RANKUP:MESSAGE:DESCRIPTION'), parameters: '<message>' },
-            { name: 'rankup difficulty', description: i18n(locale, 'LEVELING::HELP:RANKUP:DIFFICULTY:DESCRIPTION'), parameters: '<difficulty>' }
+            { name: 'viewconfig', description: i18n(guild.preferredLocale, 'LEVELING::HELP:VIEWCONFIG:DESCRIPTION') },
+            { name: 'configurecards viewconfig', description: i18n(guild.preferredLocale, 'LEVELING::HELP:CONFIGURECARDS:VIEWCONFIG:DESCRIPTION') },
+            { name: 'configurecards backgroundurl', description: i18n(guild.preferredLocale, 'LEVELING::HELP:CONFIGURECARDS:BACKGROUNDURL:DESCRIPTION'), parameters: '<url>' },
+            { name: 'configurecards overlayopacity', description: i18n(guild.preferredLocale, 'LEVELING::HELP:CONFIGURECARDS:OVERLAYOPACITY:DESCRIPTION'), parameters: '<0-100>' },
+            { name: 'configurecards overlaycolor', description: i18n(guild.preferredLocale, 'LEVELING::HELP:CONFIGURECARDS:OVERLAYCOLOR:DESCRIPTION'), parameters: '<hex color>' },
+            { name: 'rankup channel', description: i18n(guild.preferredLocale, 'LEVELING::HELP:RANKUP:CHANNEL:DESCRIPTION'), parameters: '<this/same/dm/disabled>' },
+            { name: 'rankup message', description: i18n(guild.preferredLocale, 'LEVELING::HELP:RANKUP:MESSAGE:DESCRIPTION'), parameters: '<message>' },
+            { name: 'rankup difficulty', description: i18n(guild.preferredLocale, 'LEVELING::HELP:RANKUP:DIFFICULTY:DESCRIPTION'), parameters: '<difficulty>' }
           ]
         })
       })
@@ -218,20 +218,20 @@ module.exports = {
 
         const levelingBasicConfig = new MessageEmbed()
           .setColor('#2F3136')
-          .setTitle(i18n(locale, 'LEVELING::VIEWCONFIG:TITLE'))
-          .setDescription(i18n(locale, 'LEVELING::VIEWCONFIG:DESCRIPTION'))
-          .addField(`<:blurple_chat:892441341827616859> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPCHANNEL')}`, message.member.guild.configuration.leveling.channel ? rankUpChannel : i18n(locale, 'NOSET'))
-          .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(locale, 'LEVELING::VIEWCONFIG:RANKUPMESSAGE')}`, message.member.guild.configuration.leveling.message ? message.member.guild.configuration.leveling.message : i18n(locale, 'NOSET'))
-          .addField(`<:trendingdown_green:967797814212034601> ${i18n(locale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, message.member.guild.configuration.leveling.difficulty ? `${message.member.guild.configuration.leveling.difficulty}` : i18n(locale, 'NOSET'))
+          .setTitle(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:TITLE'))
+          .setDescription(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:DESCRIPTION'))
+          .addField(`<:blurple_chat:892441341827616859> ${i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKUPCHANNEL')}`, message.member.guild.configuration.leveling.channel ? rankUpChannel : i18n(guild.preferredLocale, 'NOSET'))
+          .addField(`<:Blurple_Sparkles:938096139327143958> ${i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKUPMESSAGE')}`, message.member.guild.configuration.leveling.message ? message.member.guild.configuration.leveling.message : i18n(guild.preferredLocale, 'NOSET'))
+          .addField(`<:trendingdown_green:967797814212034601> ${i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:DIFFICULTY')}`, message.member.guild.configuration.leveling.difficulty ? `${message.member.guild.configuration.leveling.difficulty}` : i18n(guild.preferredLocale, 'NOSET'))
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
           .setTimestamp()
 
         const levelingRankCard = new MessageEmbed()
-          .setTitle(i18n(locale, 'LEVELING::VIEWCONFIG:RANKCARD:TITLE'))
-          .setDescription(i18n(locale, 'LEVELING::VIEWCONFIG:RANKCARD:DESCRIPTION'))
-          .addField(`:frame_photo: ${i18n(locale, 'BACKGROUND')}`, message.guild.configuration.leveling.card.background ? `[<:blurple_link:892441999993618532> ${i18n(locale, 'VIEWLINK')}](${message.guild.configuration.leveling.card.background})` : `❌ ${i18n(locale, 'NOTSET')}`, true)
-          .addField(`:flashlight: ${i18n(locale, 'OVERLAYOPACITY')}`, message.guild.configuration.leveling.card.overlay.opacity ? `${message.guild.configuration.leveling.card.overlay.opacity}%` : `❌ ${i18n(locale, 'NOTSET')}`, true)
-          .addField(`:art: ${i18n(locale, 'OVERLAYCOLOR')}`, message.guild.configuration.leveling.card.overlay.color || `❌ ${i18n(locale, 'NOTSET')}`, true)
+          .setTitle(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKCARD:TITLE'))
+          .setDescription(i18n(guild.preferredLocale, 'LEVELING::VIEWCONFIG:RANKCARD:DESCRIPTION'))
+          .addField(`:frame_photo: ${i18n(guild.preferredLocale, 'BACKGROUND')}`, message.guild.configuration.leveling.card.background ? `[<:blurple_link:892441999993618532> ${i18n(guild.preferredLocale, 'VIEWLINK')}](${message.guild.configuration.leveling.card.background})` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+          .addField(`:flashlight: ${i18n(guild.preferredLocale, 'OVERLAYOPACITY')}`, message.guild.configuration.leveling.card.overlay.opacity ? `${message.guild.configuration.leveling.card.overlay.opacity}%` : `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
+          .addField(`:art: ${i18n(guild.preferredLocale, 'OVERLAYCOLOR')}`, message.guild.configuration.leveling.card.overlay.color || `❌ ${i18n(guild.preferredLocale, 'NOTSET')}`, true)
           .setColor('#2F3136')
           .setImage('attachment://rankcard.png')
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -254,8 +254,8 @@ module.exports = {
         switch (message.parameters[1]) {
           case 'backgroundurl': {
             actualizarConfiguracionDelServidor(message.guild, { column: 'leveling', newconfig: { card: { background: message.parameters[2] } } }, err => {
-              if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:ERROR'))
-              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
+              if (err) return message.reply(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:ERROR'))
+              return message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:BACKGROUNDURL:SUCCESS', { URL: message.parameters[2] }))] })
             })
 
             break
@@ -269,19 +269,19 @@ module.exports = {
             }
 
             actualizarConfiguracionDelServidor(message.guild, { column: 'leveling', newconfig: { card: { overlay: { opacity: parseInt(message.parameters[2], 10) } } } }, err => {
-              if (err) return message.reply(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))
-              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
+              if (err) return message.reply(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:ERROR'))
+              return message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:OVERLAYOPACITY:SUCCESS', { OPACITY: parseInt(message.parameters[2], 10) }))] })
             })
 
             break
           }
 
           case 'overlaycolor': {
-            if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
+            if (!hexRegexTester.test(message.parameters[2])) return message.reply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:NOTHEX'))] })
 
             actualizarConfiguracionDelServidor(message.guild, { column: 'leveling', newconfig: { card: { overlay: { color: message.parameters[2] } } } }, err => {
-              if (err) return message.reply({ embeds: [plantillas.error(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
-              return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
+              if (err) return message.reply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:ERROR'))] })
+              return message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::CONFIGURECARDS:OVERLAYCOLOR:SUCCESS', { COLOR: message.parameters[2] }))] })
             })
 
             break
@@ -304,26 +304,26 @@ module.exports = {
             if (message.parameters[2] === 'this') message.parameters[2] = message.channel.id
 
             actualizarConfiguracionDelServidor(message.guild, { column: 'leveling', newconfig: { channel: message.parameters[2] } }, err => {
-              if (err) return message.reply(i18n(locale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
+              if (err) return message.reply(i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:ERROR'))
               switch (message.parameters[2]) {
                 case 'this': {
-                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
                   break
                 }
                 case 'same': {
-                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT') }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SAME_WHERE_MESSAGE_IS_SENT') }))] })
                   break
                 }
                 case 'dm': {
-                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DM') }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:DM') }))] })
                   break
                 }
                 case 'disabled': {
-                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(locale, 'LEVELING::RANKUP:CHANNEL:DISABLED') }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:DISABLED') }))] })
                   break
                 }
                 default: {
-                  message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
+                  message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:CHANNEL:SUCCESS', { CHANNEL: `<#${message.parameters[2]}>` }))] })
                   break
                 }
               }
@@ -336,11 +336,11 @@ module.exports = {
             const rankupMessage = message.parameters.slice(2).join(' ')
             actualizarConfiguracionDelServidor(message.guild, { column: 'leveling', newconfig: { message: rankupMessage } }, err => {
               if (err) {
-                message.reply(i18n(locale, 'LEVELING::RANKUP:MESSAGE:ERROR'))
+                message.reply(i18n(guild.preferredLocale, 'LEVELING::RANKUP:MESSAGE:ERROR'))
                 return
               }
 
-              message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:MESSAGE:SUCCESS', { MESSAGE: rankupMessage }))] })
+              message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:MESSAGE:SUCCESS', { MESSAGE: rankupMessage }))] })
             })
             break
           }
@@ -354,11 +354,11 @@ module.exports = {
 
             actualizarConfiguracionDelServidor(message.guild, { column: 'leveling', newconfig: { difficulty: parseInt(message.parameters[2], 10) } }, err => {
               if (err) {
-                message.reply(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:ERROR'))
+                message.reply(i18n(guild.preferredLocale, 'LEVELING::RANKUP:DIFFICULTY:ERROR'))
                 return
               }
 
-              message.reply({ embeds: [plantillas.conexito(i18n(locale, 'LEVELING::RANKUP:DIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.parameters[2], 10) }))] })
+              message.reply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'LEVELING::RANKUP:DIFFICULTY:SUCCESS', { DIFFICULTY: parseInt(message.parameters[2], 10) }))] })
             })
             break
           }

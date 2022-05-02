@@ -28,7 +28,7 @@ module.exports = {
       .addBooleanOption(input => input.setName('sendtodm').setDescription('Whether or not the reply should be sent to the user.')))
     .addSubcommand(sc => sc.setName('delete').setDescription('Delete a custom command.')
       .addStringOption(input => input.setName('name').setRequired(true).setDescription('The name of the custom command.'))),
-  runInteraction (locale, interaction) {
+  runInteraction ( interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'create': {
         const customcommand = { command: interaction.options.getString('name'), reply: interaction.options.getString('reply') }
@@ -49,9 +49,9 @@ module.exports = {
 
         try {
           createCustomCommand(interaction.guild, customcommand)
-          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'CUSTOMCOMMANDS::CREATE:SUCCESS', { COMMAND: customcommand.command }))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'CUSTOMCOMMANDS::CREATE:SUCCESS', { COMMAND: customcommand.command }))] })
         } catch {
-          interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'CUSTOMCOMMANDS::CREATE:ERROR', { COMMAND: customcommand.command }))] })
+          interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'CUSTOMCOMMANDS::CREATE:ERROR', { COMMAND: customcommand.command }))] })
         }
 
         break
@@ -60,16 +60,16 @@ module.exports = {
       case 'delete': {
         try {
           deleteCustomCommand(interaction.guild, interaction.options.getString('name'))
-          interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'CUSTOMCOMMANDS::DELETE:SUCCESS', { COMMAND: interaction.options.getString('name') }))] })
+          interaction.editReply({ embeds: [plantillas.conexito(i18n(guild.preferredLocale, 'CUSTOMCOMMANDS::DELETE:SUCCESS', { COMMAND: interaction.options.getString('name') }))] })
         } catch {
-          interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'CUSTOMCOMMANDS::DELETE:ERROR', { COMMAND: interaction.options.getString('name') }))] })
+          interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'CUSTOMCOMMANDS::DELETE:ERROR', { COMMAND: interaction.options.getString('name') }))] })
         }
 
         break
       }
 
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }

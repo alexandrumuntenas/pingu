@@ -6,22 +6,22 @@ module.exports = {
   name: 'flip',
   description: '🪙 Flip a coin',
   cooldown: 1,
-  runInteraction (locale, interaction) {
+  runInteraction ( interaction) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::HEADS')}`)
+      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::TAILS')}`)
+      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::TAILS')}`)
     }
 
     interaction.editReply({ embeds: [embed] })
   },
-  runCommand (locale, message) {
+  runCommand ( message) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::HEADS')}`)
+      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n(locale, 'FLIP::TAILS')}`)
+      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::TAILS')}`)
     }
 
     message.reply({ embeds: [embed] })

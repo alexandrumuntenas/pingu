@@ -10,12 +10,12 @@ const { existsSync } = require('fs')
  */
 module.exports = (language, key, placeholders) => {
   let languageToUse = language || 'es-ES'
-  if (!existsSync(`./i18n/locales/${languageToUse}.json`)) {
+  if (!existsSync(`./i18n/guild.preferredLocales/${languageToUse}.json`)) {
     handleError(`No se encontró el archivo de idioma ${languageToUse}.json`)
     languageToUse = 'es-ES'
   }
 
-  let translation = require(`./locales/${languageToUse}.json`)[key]
+  let translation = require(`./guild.preferredLocales/${languageToUse}.json`)[key]
 
   if (placeholders) {
     try {

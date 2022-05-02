@@ -5,14 +5,14 @@ module.exports = {
   name: 'dog',
   description: '🐶 Sends a random dog image',
   cooldown: 1,
-  runInteraction (locale, interaction) {
+  runInteraction ( interaction) {
     fetch('https://nekos.life/api/v2/img/woof')
       .then(response => response.body)
       .then(resource =>
         interaction.editReply({ embeds: [plantillas.imagen(resource.url, 'nekos.life')] })
       )
   },
-  runCommand (locale, message) {
+  runCommand ( message) {
     fetch('https://nekos.life/api/v2/img/woof')
       .then(response => response.body)
       .then(resource =>

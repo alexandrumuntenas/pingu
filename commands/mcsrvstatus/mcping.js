@@ -8,8 +8,8 @@ module.exports = {
   module: 'mcsrvstatus',
   description: '🖥️ Ping the configured Minecraft server',
   cooldown: 1,
-  runInteraction (locale, interaction) {
-    if (!interaction.guild.configuration.mcsrvstatus.host) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCPING::NO_HOST'))] })
+  runInteraction ( interaction) {
+    if (!interaction.guild.configuration.mcsrvstatus.host) return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::NO_HOST'))] })
     obtenerDatosDelServidor({ ip: interaction.guild.configuration.mcsrvstatus.host, port: interaction.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -24,12 +24,12 @@ module.exports = {
         return interaction.editReply({ files: [attachment], embeds: [embed] })
       }
 
-      return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
+      return interaction.editReply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
     })
   },
-  runCommand (locale, message) {
-    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n(locale, 'MCPING::NO_HOST'))] })
-    message.reply({ embeds: [plantillas.precargador(i18n(locale, 'OBTAININGDATA'))] }).then(_message => {
+  runCommand ( message) {
+    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::NO_HOST'))] })
+    message.reply({ embeds: [plantillas.precargador(i18n(guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       obtenerDatosDelServidor({ ip: message.guild.configuration.mcsrvstatus.host, port: message.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
         if (datosDelServidor) {
           const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -44,7 +44,7 @@ module.exports = {
           return _message.edit({ files: [attachment], embeds: [embed] })
         }
 
-        return _message.edit({ embeds: [plantillas.error(i18n(locale, 'MCPING::ERROR'))] })
+        return _message.edit({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
       })
     })
   }

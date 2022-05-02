@@ -5,12 +5,12 @@ module.exports = {
   name: 'help',
   description: 'Feeling lost? 👀',
   cooldown: 1,
-  runInteraction (locale, interaction) {
+  runInteraction ( interaction) {
     const helpMessage = new MessageEmbed()
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
-      .setDescription(`${i18n(locale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
+      .setDescription(`${i18n(guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
 
     helpMessage.addField('Vote us on', `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)`)
@@ -18,12 +18,12 @@ module.exports = {
 
     interaction.editReply({ embeds: [helpMessage] })
   },
-  runCommand (locale, message) {
+  runCommand ( message) {
     const helpMessage = new MessageEmbed()
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
-      .setDescription(`${i18n(locale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
+      .setDescription(`${i18n(guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
 
     helpMessage.addField('Vote us on', `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)`)
