@@ -30,18 +30,13 @@ module.exports = {
     .addSubcommand(sc => sc.setName('setlanguage').setDescription('Set the language of your server.')
       .addStringOption(input => input.setName('language').setDescription('The new language of the bot.').setRequired(true)
         .addChoice('English', 'en')
-        .addChoice('Español', 'es')
-        .addChoice('Français (Not avaliable)', 'es')
-        .addChoice('Italiano (Not avaliable)', 'es')
-        .addChoice('Deutsch (Not avaliable)', 'es')
-        .addChoice('Português (Not avaliable)', 'es')
-        .addChoice('Nederlands (Not avaliable)', 'es')
-        .addChoice('Română (Not avaliable)', 'es'))
-    )
+        .addChoice('Español', 'es')))
     .addSubcommandGroup(scg => scg
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
-      .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.'))),
+      .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.'))
+      .addSubcommand(sc => sc.setName('showinteractions').setDescription('Show the interactions of the bot in your server.'))
+      .addSubcommand(sc => sc.setName('showcfginteractions').setDescription('Show the config interactions of the bot in your server.'))),
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
