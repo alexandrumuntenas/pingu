@@ -16,22 +16,22 @@ async function isCommand (interaction) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)
 
       if (interactionToRun.module && !guildConfig[interactionToRun.module].enabled) {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
       }
 
       if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.configuration.language, 'COMMAND::PERMISSION_ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
       }
 
       if (CooldownManager.check(interaction.member, interaction.guild, interactionToRun.name)) {
         CooldownManager.add(interaction.member, interaction.guild, interactionToRun)
 
-        await interactionToRun.runInteraction(interaction.guild.configuration.common.language, interaction)
+        await interactionToRun.runInteraction(interaction.guild.preferredLocale, interaction)
       } else {
-        return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
+        return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
       }
     } else {
-      return interaction.editReply({ content: i18n(interaction.guild.configuration.common.language, 'COMMAND::NOT_FOUND') })
+      return interaction.editReply({ content: i18n(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
     }
   })
 }
