@@ -13,7 +13,7 @@ module.exports.plantillas = {}
 
 module.exports.plantillas.estado = message => new MessageEmbed()
   .setColor('#2F3136')
-  .setDescription(`<:pingu_null:876103457860370442> ${message}`)
+  .setDescription(`<:system_information:970715198509965342> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
 
@@ -29,7 +29,7 @@ module.exports.plantillas.estado = message => new MessageEmbed()
 
 module.exports.plantillas.precargador = message => new MessageEmbed()
   .setColor('#FEE75C')
-  .setDescription(`<a:loader:927223896330084412> ${message}`)
+  .setDescription(`<a:core_loading:970712845429903461> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
 
@@ -42,7 +42,7 @@ module.exports.plantillas.precargador = message => new MessageEmbed()
 
 module.exports.plantillas.conexito = message => new MessageEmbed()
   .setColor('#57F287')
-  .setDescription(`<:Blurple_verified_plain:938094790132764682> ${message}`)
+  .setDescription(`<:system_check:968432962716713010> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
 
@@ -55,7 +55,7 @@ module.exports.plantillas.conexito = message => new MessageEmbed()
 
 module.exports.plantillas.error = message => new MessageEmbed()
   .setColor('#ED4245')
-  .setDescription(`<:blurple_employee:939096196801257472> ${message}`)
+  .setDescription(`<:system_cross:968432962653782067> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
 
@@ -67,9 +67,11 @@ module.exports.plantillas.error = message => new MessageEmbed()
 
 module.exports.plantillas.informacion = message => new MessageEmbed()
   .setColor('#5865F2')
-  .setDescription(`:information_source: ${message}`)
+  .setDescription(`<:system_information:970715198509965342>    ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
+
+const timeoutEmojis = ['<:system_timeout:970715618938617856>', '<:system_wait:970715593563078707>']
 
 /**
  * Plantilla para los mensajes que solo devuelven una imagen.
@@ -81,7 +83,7 @@ module.exports.plantillas.informacion = message => new MessageEmbed()
 module.exports.plantillas.imagen = (imageURL, imageProvider) => new MessageEmbed()
   .setColor('#2F3136')
   .setImage(imageURL)
-  .setDescription(`<:blurple_image:892443053359517696> Image via ${imageProvider} API.`)
+  .setDescription(`<:system_image:968433418935361576> Image via ${imageProvider} API.`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
 
@@ -94,7 +96,7 @@ module.exports.plantillas.imagen = (imageURL, imageProvider) => new MessageEmbed
 module.exports.plantillas.contador = message => new MessageEmbed()
   .setColor('#F3375C')
   .setImage('https://cdn.discordapp.com/attachments/908413370665938975/939097943036809247/hearties-daniel-lissing.gif')
-  .setDescription(`<:timeout_clock:937404313901359114> ${message}`)
+  .setDescription(`${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
   .setTimestamp()
 
@@ -117,8 +119,8 @@ module.exports.plantillas.ayuda = command => {
 
   const embedOptions = new MessageEmbed()
     .setColor('#5865F2')
-    .setTitle(`${command.name} • Options`)
-    .setDescription(`${command.description || 'No description'}\n\n<:timeout_clock:937404313901359114> Cooldown: ${command.cooldown || '10'}\n<:blurple_guide:937404928706617445> Module: ${command.module || 'No category'}\n${command.parameters ? codeBlock(`${command.name} ${command.parameters}`) : ''}`)
+    .setTitle(`<:system_support:968434674634473493> ${command.name} • Options`)
+    .setDescription(`${command.description || 'No description'}\n\n${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} ${command.cooldown || '10'}\n<:system_settings:968435053963145266> Module: ${command.module || 'No category'}\n${command.parameters ? codeBlock(`${command.name} ${command.parameters}`) : ''}`)
     .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
     .setTimestamp()
 
@@ -127,11 +129,11 @@ module.exports.plantillas.ayuda = command => {
     const subcommandsNSFW = command.subcommands.filter(subcommand => subcommand.isNSFW)
 
     if (subcommands) {
-      subcommands.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:blurple_bot:938094998283501569> Syntax:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true))
+      subcommands.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:system_slashcommand:970718607199846450> Command:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true))
     }
 
     if (subcommandsNSFW) {
-      subcommandsNSFW.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `:underage: Syntax:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true))
+      subcommandsNSFW.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:channel_nsfw:970717952024379462> Command:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true))
     }
   }
 
