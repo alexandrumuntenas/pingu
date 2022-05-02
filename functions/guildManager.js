@@ -163,7 +163,7 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
 
   if (!guildConfig.common.interactions.showConfigurationCommands) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 
-  callback(interactionList.map(command => command.interactionData.toJSON()))
+  return callback(interactionList.map(command => command.interactionData.toJSON()))
 }
 
 /**
