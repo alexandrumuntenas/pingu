@@ -61,7 +61,7 @@ module.exports = {
             return runCustomCommand(message, message.commandName)
           }
         } else {
-          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
         }
       }
 

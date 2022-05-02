@@ -7,7 +7,7 @@ const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = 
 
 module.exports.giveMemberRoles = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
+    if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'en-US'abled')) {
       if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'roles')) {
         if (guildConfig.welcome.roles.length > 0) {
           guildConfig.welcome.roles.forEach(role => {
@@ -39,7 +39,7 @@ module.exports.sendWelcomeMessage = member => {
 
     const message = { content: replaceBracePlaceholdersWithActualData(guildConfig.welcome.message || '{member} joined {server}!', member) }
 
-    if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'card') && Object.prototype.hasOwnProperty.call(guildConfig.welcome.card, 'enabled') && guildConfig.welcome.card.enabled) {
+    if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'card') && Object.prototype.hasOwnProperty.call(guildConfig.welcome.card, 'en-US'abled') && guildConfig.welcome.card.enabled) {
       module.exports.generateWelcomeCard(member, paths => {
         message.files = [new MessageAttachment(paths.attachmentSent)]
       })
@@ -194,7 +194,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
 
 module.exports.doGuildMemberAdd = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
+    if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'en-US'abled')) {
       if (guildConfig.welcome.enabled) {
         module.exports.giveMemberRoles(member)
         module.exports.sendWelcomeMessage(member)

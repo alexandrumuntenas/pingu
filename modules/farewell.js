@@ -7,7 +7,7 @@ const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
 
 module.exports.doGuildMemberRemove = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, 'farewell') && Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'enabled')) {
+    if (Object.prototype.hasOwnProperty.call(guildConfig, 'farewell') && Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'en-US'abled')) {
       if (guildConfig.farewell.enabled) module.exports.sendFarewellMessage(member)
     }
   })

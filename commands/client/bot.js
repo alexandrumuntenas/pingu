@@ -5,7 +5,7 @@ const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor } = re
 const { plantillas } = require('../../functions/messageManager')
 const Consolex = require('../../functions/consolex')
 
-const avaliableLanguages = ['en', 'es']
+const avaliableLanguages = ['en-US', 'es-ES']
 const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', 'customcommands', 'leveling', 'mcsrvstatus']
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
     .addSubcommandGroup(scg => scg
       .setName('modules')
       .setDescription('📦 Manage the modules of your server')
-      .addSubcommand(sc => sc.setName('enable')
+      .addSubcommand(sc => sc.setName('en-US'able')
         .setDescription('Enable a module.')
         .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies').addChoice('mcsrvstatus', 'mcsrvstatus')))
       .addSubcommand(sc => sc.setName('disable')
@@ -29,14 +29,14 @@ module.exports = {
     .addSubcommand(sc => sc.setName('setprefix').setDescription('Set the prefix of your server.').addStringOption(input => input.setName('newprefix').setDescription('The new prefix of the bot.').setRequired(true)))
     .addSubcommand(sc => sc.setName('setlanguage').setDescription('Set the language of your server.')
       .addStringOption(input => input.setName('language').setDescription('The new language of the bot.').setRequired(true)
-        .addChoice('English', 'en')
-        .addChoice('Español', 'es')
-        .addChoice('Français (Not avaliable)', 'es')
-        .addChoice('Italiano (Not avaliable)', 'es')
-        .addChoice('Deutsch (Not avaliable)', 'es')
-        .addChoice('Português (Not avaliable)', 'es')
-        .addChoice('Nederlands (Not avaliable)', 'es')
-        .addChoice('Română (Not avaliable)', 'es'))
+        .addChoice('English', 'en-US')
+        .addChoice('Español', 'es-ES')
+        .addChoice('Français (Not avaliable)', 'es-ES')
+        .addChoice('Italiano (Not avaliable)', 'es-ES')
+        .addChoice('Deutsch (Not avaliable)', 'es-ES')
+        .addChoice('Português (Not avaliable)', 'es-ES')
+        .addChoice('Nederlands (Not avaliable)', 'es-ES')
+        .addChoice('Română (Not avaliable)', 'es-ES'))
     )
     .addSubcommandGroup(scg => scg
       .setName('interactions')
@@ -104,7 +104,7 @@ module.exports = {
         break
       }
 
-      case 'enable': {
+      case 'en-US'able': {
         const moduleToEnable = interaction.options.getString('module')
 
         actualizarConfiguracionDelServidor(interaction.guild, { column: moduleToEnable, newconfig: { enabled: true } }, err => {
@@ -229,7 +229,7 @@ module.exports = {
             break
           }
 
-          case 'enable': {
+          case 'en-US'able': {
             if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
 
             actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {

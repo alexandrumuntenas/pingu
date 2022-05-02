@@ -26,7 +26,7 @@ module.exports.obtenerConfiguracionDelServidor = (guild, callback) => {
       })
 
       if (result[0].common === null) {
-        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
+        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
           if (err2) Consolex.gestionarError(err2)
           return module.exports.obtenerConfiguracionDelServidor(guild, callback)
         })

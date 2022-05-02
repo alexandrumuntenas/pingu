@@ -28,7 +28,7 @@ async function isCommand (interaction) {
 
         await interactionToRun.runInteraction(interaction.guild.configuration.common.language, interaction)
       } else {
-        return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+        return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
       }
     } else {
       return interaction.editReply({ content: i18n(interaction.guild.configuration.common.language, 'COMMAND::NOT_FOUND') })
