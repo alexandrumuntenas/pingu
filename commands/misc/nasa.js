@@ -41,7 +41,7 @@ module.exports = {
   },
   runCommand (message) {
     message
-      .reply({ embeds: [plantillas.precargador(i18n(guild.preferredLocale, 'FETCHINGDATA'))] })
+      .reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'FETCHINGDATA'))] })
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)
@@ -61,9 +61,9 @@ module.exports = {
                 .setImage(resource.hdurl)
                 .addField(
                   '+ Info',
-                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n(guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
+                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
                   }\n<a:ultimahora:876105976573472778> ${i18n(
-                    guild.preferredLocale,
+                    message.guild.preferredLocale,
                     'IMAGEAPI::PROVIDER',
                     { PROVIDER: 'Nasa.gov' }
                   )}`

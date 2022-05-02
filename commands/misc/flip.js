@@ -19,9 +19,9 @@ module.exports = {
   runCommand (message) {
     const embed = new MessageEmbed().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::HEADS')}`)
+      embed.setDescription(`:coin: ${i18n(message.guild.preferredLocale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n(guild.preferredLocale, 'FLIP::TAILS')}`)
+      embed.setDescription(`:coin: ${i18n(message.guild.preferredLocale, 'FLIP::TAILS')}`)
     }
 
     message.reply({ embeds: [embed] })

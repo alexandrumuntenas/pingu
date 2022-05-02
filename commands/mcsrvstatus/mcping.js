@@ -28,8 +28,8 @@ module.exports = {
     })
   },
   runCommand (message) {
-    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::NO_HOST'))] })
-    message.reply({ embeds: [plantillas.precargador(i18n(guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
+    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::NO_HOST'))] })
+    message.reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       obtenerDatosDelServidor({ ip: message.guild.configuration.mcsrvstatus.host, port: message.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
         if (datosDelServidor) {
           const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -44,7 +44,7 @@ module.exports = {
           return _message.edit({ files: [attachment], embeds: [embed] })
         }
 
-        return _message.edit({ embeds: [plantillas.error(i18n(guild.preferredLocale, 'MCPING::ERROR'))] })
+        return _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
       })
     })
   }
