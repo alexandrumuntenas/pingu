@@ -67,7 +67,7 @@ help: {
 },
 */
 
-module.exports.buildHelp = (guild, command) => {
+module.exports.construirHelpDelComando = (guild, command) => {
   // a través de cada opcion, reemplazar el texto referente a la traducción por la traduccion
 
   const datosParaConstruirHelp = { name: command.name }
