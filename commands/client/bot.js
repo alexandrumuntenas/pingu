@@ -5,7 +5,6 @@ const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor } = re
 const { plantillas } = require('../../functions/messageManager')
 const Consolex = require('../../functions/consolex')
 
-const avaliableLanguages = ['en-US', 'es-ES']
 const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', 'customcommands', 'leveling', 'mcsrvstatus']
 
 module.exports = {
