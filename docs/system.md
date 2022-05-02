@@ -9,6 +9,10 @@ icon: cpu
 
 The following commands can only be used by the server owner or by persons with the [MANAGE_GUILDS\*](https://discord.com/developers/docs/topics/permissions) permission.
 
+!!!warning
+setlanguage option will not be avaliable in the future.
+!!!
+
 ## Interactions
 
 ```javascript
