@@ -27,17 +27,6 @@ module.exports = {
       .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the status of the modules of your server.'))
     )
     .addSubcommand(sc => sc.setName('setprefix').setDescription('Set the prefix of your server.').addStringOption(input => input.setName('newprefix').setDescription('The new prefix of the bot.').setRequired(true)))
-    .addSubcommand(sc => sc.setName('setlanguage').setDescription('Set the language of your server.')
-      .addStringOption(input => input.setName('language').setDescription('The new language of the bot.').setRequired(true)
-        .addChoice('English', 'en-US')
-        .addChoice('Español', 'es-ES')
-        .addChoice('Français (Not avaliable)', 'es-ES')
-        .addChoice('Italiano (Not avaliable)', 'es-ES')
-        .addChoice('Deutsch (Not avaliable)', 'es-ES')
-        .addChoice('Português (Not avaliable)', 'es-ES')
-        .addChoice('Nederlands (Not avaliable)', 'es-ES')
-        .addChoice('Română (Not avaliable)', 'es-ES'))
-    )
     .addSubcommandGroup(scg => scg
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
@@ -55,14 +44,6 @@ module.exports = {
           }
 
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
-        })
-        break
-      }
-
-      case 'setlanguage': {
-        actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { language: interaction.options.getString('language') } }, err => {
-          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: interaction.options.getString('language') }))] })
         })
         break
       }
@@ -166,17 +147,6 @@ module.exports = {
           }
 
           return message.channel.send({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: message.parameters[1] }))] })
-        })
-
-        break
-      }
-
-      case 'setlanguage': {
-        if (!(Object.prototype.hasOwnProperty.call(message.parameters, 1) && avaliableLanguages.includes(message.parameters[1]))) return sendHelp()
-
-        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { language: message.parameters[1] } }, err => {
-          if (err) return message.channel.send({ embeds: [plantillas.error(i18n(message.parameters[1], 'BOT::SETLANGUAGE:ERROR'))] })
-          return message.channel.send({ embeds: [plantillas.conexito(i18n(message.parameters[1], 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: message.parameters[1] }))] })
         })
 
         break
