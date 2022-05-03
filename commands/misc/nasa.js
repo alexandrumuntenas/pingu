@@ -7,7 +7,7 @@ module.exports = {
   name: 'nasa',
   description: '🚀 Get the NASA\'s image of the day',
   cooldown: 1,
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
       .then(response => response.body)
       .then(resource => {
@@ -26,9 +26,9 @@ module.exports = {
             .setImage(resource.hdurl)
             .addField(
               '+ Info',
-              `<:blurple_image:892443053359517696> ${resource.copyright || i18n(locale, 'IMAGEAPI::NOCOPYRIGHT')
+              `<:blurple_image:892443053359517696> ${resource.copyright || i18n(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
               }\n<a:ultimahora:876105976573472778> ${i18n(
-                locale,
+                interaction.guild.preferredLocale,
                 'IMAGEAPI::PROVIDER',
                 { PROVIDER: 'Nasa.gov' }
               )}`
@@ -39,9 +39,9 @@ module.exports = {
         }
       })
   },
-  runCommand (locale, message) {
+  runCommand (message) {
     message
-      .reply({ embeds: [plantillas.precargador(i18n(locale, 'FETCHINGDATA'))] })
+      .reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'FETCHINGDATA'))] })
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)
@@ -61,9 +61,9 @@ module.exports = {
                 .setImage(resource.hdurl)
                 .addField(
                   '+ Info',
-                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n(locale, 'IMAGEAPI::NOCOPYRIGHT')
+                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
                   }\n<a:ultimahora:876105976573472778> ${i18n(
-                    locale,
+                    message.guild.preferredLocale,
                     'IMAGEAPI::PROVIDER',
                     { PROVIDER: 'Nasa.gov' }
                   )}`

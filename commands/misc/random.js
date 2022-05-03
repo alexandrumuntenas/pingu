@@ -9,7 +9,7 @@ module.exports = {
     '🔢 Generates a random number between 1 and the specified number',
   interactionData: new SlashCommandBuilder()
     .addIntegerOption(option => option.setName('maxnumber').setDescription('Enter an integer').setRequired(true)),
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     const messageSent = new MessageEmbed().setColor('#007BFF')
     const specifiedRandom = Math.round(
       Math.random(1, parseInt(interaction.options.getInteger('maxnumber'), 10))
@@ -17,7 +17,7 @@ module.exports = {
     messageSent.setDescription(`:abacus: **${specifiedRandom}**`)
     interaction.editReply({ embeds: [messageSent] })
   },
-  runCommand (locale, message) {
+  runCommand (message) {
     const messageSent = new MessageEmbed().setColor('#007BFF')
     if (message.args[0]) {
       const specifiedRandom = Math.round(

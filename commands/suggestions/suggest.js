@@ -10,26 +10,26 @@ module.exports = {
   isConfigurationCommand: false,
   interactionData: new SlashCommandBuilder()
     .addStringOption(input => input.setName('suggestion').setDescription('The suggestion').setRequired(true)),
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     checkIfUserIsBlacklisted(interaction.guild, interaction.member, isBlacklisted => {
       if (!isBlacklisted) {
         createSuggestion(interaction.member, interaction.options.getString('suggestion'), suggestionId => {
-          if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGEST::ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
+          if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGEST::ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
         })
       } else {
-        interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'SUGGEST::BLACKLISTED'))] })
+        interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
       }
     })
   },
-  runCommand (locale, message) {
+  runCommand (message) {
     checkIfUserIsBlacklisted(message.guild, message.member, isBlacklisted => {
       if (!isBlacklisted) {
         if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
           return message.reply({
             embeds: plantillas.ayuda({
               name: 'suggest',
-              description: i18n(locale, 'SUGGEST::DESCRIPTION'),
+              description: i18n(message.guild.preferredLocale, 'SUGGEST::DESCRIPTION'),
               module: 'suggestions',
               parameters: '<suggestion ··>',
               cooldown: 'Determined by the guild'
@@ -38,11 +38,11 @@ module.exports = {
         }
 
         createSuggestion(message.member, message.parameters.join(' '), suggestionId => {
-          if (!suggestionId) return message.reply({ embeds: [plantillas.error(i18n(locale, 'SUGGEST::ERROR'))] })
-          return message.reply({ embeds: [plantillas.conexito(i18n(locale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
+          if (!suggestionId) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'SUGGEST::ERROR'))] })
+          return message.reply({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
         })
       } else {
-        message.reply({ embeds: [plantillas.error(i18n(locale, 'SUGGEST::BLACKLISTED'))] })
+        message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
       }
     })
   }

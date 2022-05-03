@@ -24,19 +24,19 @@ module.exports = {
     .addSubcommand(sc => sc.setName('remove').setDescription('Remove an autoreply.')
       .addStringOption(input => input.setName('trigger').setRequired(true).setDescription('The trigger of the autoreply.')))
     .addSubcommand(sc => sc.setName('list').setDescription('Generates a TXT with all the autoreplies.')),
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'add': {
         crearRespuestaPersonalizada(interaction.guild, { trigger: interaction.options.getString('trigger'), reply: interaction.options.getString('reply'), properties: { sendInEmbed: { enabled: interaction.options.getBoolean('sendinembed'), title: interaction.options.getString('sendinembed_title'), description: interaction.options.getString('sendinembed_description'), thumbnail: interaction.options.getString('sendinembed_thumbnail'), image: interaction.options.getString('sendinembed_image'), url: interaction.options.getString('sendinembed_url'), color: interaction.options.getString('sendinembed_color') } } }, (err) => {
-          if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(locale, 'AUTOREPLY::ADD:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'AUTOREPLY::ADD:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(interaction.guild.preferredLocale, 'AUTOREPLY::ADD:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'AUTOREPLY::ADD:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
         })
         break
       }
       case 'remove': {
         eliminarRespuestaPersonalizada(interaction.guild, interaction.options.getString('trigger'), (err) => {
-          if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(locale, 'AUTOREPLY::REMOVE:ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'AUTOREPLY::REMOVE:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
+          if (err) return interaction.editReply({ embeds: [plantillas.plantillas.error(i18n(interaction.guild.preferredLocale, 'AUTOREPLY::REMOVE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'AUTOREPLY::REMOVE:plantillas.conexito', { MESSAGE: interaction.options.getString('trigger') }))] })
         })
         break
       }
@@ -47,7 +47,7 @@ module.exports = {
         break
       }
       default: {
-        interaction.editReply({ embeds: [plantillas.informacion(i18n(locale, 'INTERACTIONS::NOT_UPDATED'))] })
+        interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
         break
       }
     }
