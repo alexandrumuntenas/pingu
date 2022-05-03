@@ -6,7 +6,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 module.exports = {
   name: 'user',
   description: '👪 Shows information about an user',
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .setName('user')
     .setDescription('👪 Shows information about an user')
     .addUserOption(option => option.setName('user').setDescription('User to get information about.')),

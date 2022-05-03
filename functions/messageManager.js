@@ -120,7 +120,7 @@ module.exports.plantillas.ayuda = command => {
   const embedOptions = new MessageEmbed()
     .setColor('#5865F2')
     .setTitle(`<:system_support:968434674634473493> ${command.name} • Options`)
-    .setDescription(`${command.description || 'No description'}\n\n${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} ${command.cooldown || '10'}\n<:system_settings:968435053963145266> Module: ${command.module || 'No category'}\n${command.parameters ? codeBlock(`${command.name} ${command.parameters}`) : ''}`)
+    .setDescription(`${command.description || 'No description'}\n\n${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} Cooldown: ${command.cooldown || '10'}\n<:system_settings:968435053963145266> Module: ${command.module || 'No category'}\n${command.parameters ? codeBlock(`${command.name} ${command.parameters}`) : ''}`)
     .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
     .setTimestamp()
 
@@ -137,7 +137,7 @@ module.exports.plantillas.ayuda = command => {
     }
   }
 
-  return [embedOptions]
+  return embedOptions
 }
 
 module.exports.acciones = {}
