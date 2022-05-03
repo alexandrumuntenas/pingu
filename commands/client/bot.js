@@ -22,7 +22,7 @@ module.exports = {
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .addSubcommandGroup(scg => scg
       .setName('modules')
       .setDescription('📦 Manage the modules of your server')

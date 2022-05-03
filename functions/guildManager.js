@@ -161,7 +161,7 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig, deployConfigInteract
 
   if (!deployConfigInteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 
-  callback(interactionList.map(command => command.interactionData.toJSON()))
+  callback(interactionList.map(command => command.interaction.toJSON()))
 }
 
 /**

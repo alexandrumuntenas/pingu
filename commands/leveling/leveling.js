@@ -16,7 +16,7 @@ module.exports = {
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   cooldown: 1,
   isConfigurationCommand: true,
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))
     .addSubcommand(sc => sc.setName('rankup').setDescription('Configure the rankup settings')
       .addStringOption(input => input.setName('channel').setDescription('Set the channel where rank up message is sent.').addChoice('This channel', 'this').addChoice('Same channel where message is sent', 'same').addChoice('Send to user DM', 'dm').addChoice('Disable', 'disabled'))

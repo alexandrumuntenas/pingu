@@ -12,7 +12,7 @@ module.exports = {
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('create').setDescription('Create a new custom command.')
       .addStringOption(input => input.setName('name').setRequired(true).setDescription('The name of the command.'))
       .addStringOption(input => input.setName('reply').setRequired(true).setDescription('The reply of the command.'))

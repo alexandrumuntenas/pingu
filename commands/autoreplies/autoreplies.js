@@ -9,7 +9,7 @@ module.exports = {
   module: 'autoreplies',
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('add').setDescription('Create an autoreply.')
       .addStringOption(input => input.setName('trigger').setRequired(true).setDescription('The trigger of the autoreply.'))
       .addStringOption(input => input.setName('reply').setRequired(true).setDescription('The reply for the trigger.'))

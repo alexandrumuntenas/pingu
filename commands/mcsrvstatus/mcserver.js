@@ -8,7 +8,7 @@ module.exports = {
   name: 'mcserver',
   module: 'mcsrvstatus',
   description: '🖥️ Ping a specified Minecraft server',
-  interactionData: new SlashCommandBuilder().addStringOption(input => input.setName('ip_or_address').setRequired(true).setDescription('The IP or address of the server')).addStringOption(input => input.setName('port').setDescription('The port of the server')),
+  interaction: new SlashCommandBuilder().addStringOption(input => input.setName('ip_or_address').setRequired(true).setDescription('The IP or address of the server')).addStringOption(input => input.setName('port').setDescription('The port of the server')),
   cooldown: 10000,
   runInteraction (interaction) {
     obtenerDatosDelServidor({ ip: interaction.options.getString('ip_or_address'), port: interaction.options.getString('port') }, datosDelServidor => {

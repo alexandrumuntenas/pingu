@@ -24,10 +24,10 @@ module.exports.cargarComandoseInteracciones = () => {
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
         if (Object.prototype.hasOwnProperty.call(command, 'name')) {
-          if (Object.prototype.hasOwnProperty.call(command, 'interactionData')) {
-            command.interactionData.setName(command.name).setDescription(command.description || 'Description not set')
+          if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
+            command.interaction.setName(command.name).setDescription(command.description || 'Description not set')
           } else {
-            command.interactionData = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
+            command.interaction = new SlashCommandBuilder().setName(command.name).setDescription(command.description || 'Description not set')
           }
 
           if (!command.isConfigurationCommand) command.isConfigurationCommand = false
@@ -56,7 +56,7 @@ module.exports.construirHelpDelComando = (guild, command) => {
   if (!process.Client.comandos.get(command)) return
 
   const datosParaConstruirHelp = { name: command, parameters: process.Client.comandos.get(command).parameters || '' }
-  const clavesAIgnorar = ['name', 'parameters', 'interactionData']
+  const clavesAIgnorar = ['name', 'parameters', 'interaction']
 
   Object.keys(process.Client.comandos.get(command)).forEach(key => {
     if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n(guild.preferredLocale, process.Client.comandos.get(command)[key])

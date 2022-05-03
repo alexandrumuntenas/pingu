@@ -8,7 +8,7 @@ module.exports = {
   module: 'suggestions',
   description: '💡 Make a suggestion',
   isConfigurationCommand: false,
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .addStringOption(input => input.setName('suggestion').setDescription('The suggestion').setRequired(true)),
   runInteraction (interaction) {
     checkIfUserIsBlacklisted(interaction.guild, interaction.member, isBlacklisted => {

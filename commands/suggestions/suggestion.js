@@ -10,7 +10,7 @@ module.exports = {
   description: '📖 Manage the suggestions',
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: false,
-  interactionData: new SlashCommandBuilder()
+  interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('approve').setDescription('Approve a suggestion').addStringOption(input => input.setName('suggestion').setDescription('The suggestion or the message ID').setRequired(true)))
     .addSubcommand(sc => sc.setName('reject').setDescription('Reject a suggestion').addStringOption(input => input.setName('suggestion').setDescription('The suggestion or the message ID').setRequired(true)))
     .addSubcommand(sc => sc.setName('addnote').setDescription('Add a note to a suggestion').addStringOption(input => input.setName('suggestion').setDescription('The suggestion or the message ID').setRequired(true)).addStringOption(input => input.setName('note').setDescription('The note to add').setRequired(true)))
