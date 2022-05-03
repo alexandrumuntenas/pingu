@@ -52,34 +52,20 @@ module.exports.cargarComandoseInteracciones = () => {
 const { ayuda } = require('./messageManager').plantillas
 const i18n = require('../i18n/i18n')
 
-/* formato de ejemplo
-help: {
-  name: 'bot',
-    description: 'BOT::HELP:DESCRIPTION',
-      subcommands: [
-        { name: 'updateinteractions', description: 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION', parameters: '<configinteractions[true/false]>' },
-        { name: 'setprefix', description: 'BOT::HELP:SETPREFIX:DESCRIPTION', parameters: '<prefix>' },
-        { name: 'setlanguage', description: 'BOT::HELP:SETLANGUAGE:DESCRIPTION', parameters: '<language[en/es]>' },
-        { name: 'modules viewconfig', description: 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION' },
-        { name: 'modules enable', description: 'BOT::HELP:MODULESENABLE:DESCRIPTION', parameters: '<module>' },
-        { name: 'modules disable', description: 'BOT::HELP:MODULESDISABLE:DESCRIPTION', parameters: '<module>' }
-      ]
-},
-*/
-
 module.exports.construirHelpDelComando = (guild, command) => {
-  // a través de cada opcion, reemplazar el texto referente a la traducción por la traduccion
+  if (!process.Client.comandos.get(command)) return
 
-  const datosParaConstruirHelp = { name: command.name }
+  const datosParaConstruirHelp = { name: command, parameters: process.Client.comandos.get(command).parameters || '' }
+  const clavesAIgnorar = ['name', 'parameters', 'interactionData']
 
-  Object.keys(process.Client.comandos[command].help).forEach(key => {
-    if (key !== 'name' && typeof process.Client.comandos[command].help[key] === 'string') datosParaConstruirHelp[key] = i18n(guild.preferredLocale, process.Client.comandos[command].help[key])
-    else if (key !== 'name' && typeof process.Client.comandos[command].help[key] === 'object') {
+  Object.keys(process.Client.comandos.get(command)).forEach(key => {
+    if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n(guild.preferredLocale, process.Client.comandos.get(command)[key])
+    else if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'object') {
       datosParaConstruirHelp[key] = []
-      process.Client.comandos[command].help[key].forEach(subcommand => {
-        const subcommandData = { name: subcommand.name }
+      process.Client.comandos.get(command)[key].forEach(subcommand => {
+        const subcommandData = { name: subcommand.name, parameters: subcommand.parameters }
         Object.keys(subcommand).forEach(key => {
-          if (key !== 'name' && typeof subcommand[key] === 'string') subcommandData[key] = i18n(guild.preferredLocale, subcommand[key])
+          if (!clavesAIgnorar.includes(key) && typeof subcommand[key] === 'string') subcommandData[key] = i18n(guild.preferredLocale, subcommand[key])
         })
         datosParaConstruirHelp[key].push(subcommandData)
       })
