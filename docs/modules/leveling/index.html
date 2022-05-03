@@ -31,12 +31,12 @@
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="/pingu/botavatar.png" rel="icon" />
-    <link href="/pingu/resources/css/retype.css?v=2.2.704902149175" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=2.2.704902684579" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=2.2.704902149175" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=2.2.704902684579" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=2.2.704902149175" defer></script>
-    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=2.2.704902149175" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=2.2.704902684579" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=2.2.704902684579" defer></script>
     <link href="/pingu/resources/css/katex.css?v=2.2" rel="stylesheet" />
     <script id="katex-js" type="text/javascript" src="/pingu/resources/js/katex.js?v=2.2" defer></script>
 </head>
@@ -267,38 +267,6 @@
 
 // Reset the leaderboard
 /leveling resetleaderboard (From 22T2)</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="commands">
-    <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#commands">#</doc-anchor-trigger>
-        <span>Commands</span>
-    </h2>
-</doc-anchor-target>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-javascript"><code v-pre class="language-javascript">// View the current configuration of the module.
-leveling viewconfig
-
-// Configure the rankup channel.
-// This = This channel option will take the channel Where this command is used as the rankup channel
-// Same = Same channel where message is sent
-// Send = Send to user DM
-// Disabled = Disabled
-leveling rankup channel &lt;String(this/same/dm/disabled)&gt;
-
-// Configure the rankup message.
-leveling rankup message &lt;String&gt;
-
-// Configure the rankup difficulty.
-leveling rankup difficulty &lt;Integer&gt;
-
-// Configure the cards background.
-leveling configurecards backgroundurl &lt;URL&gt;
-
-// Configure the overlay opacity.
-leveling configurecards overlayopacity &lt;Integer&gt;
-
-// Configure the overlay color.
-leveling configurecards overlaycolor &lt;Hex Color&gt;</code></pre>
 </doc-codeblock></div>
 <doc-anchor-target id="user-commands">
     <h2>

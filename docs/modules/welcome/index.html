@@ -31,12 +31,12 @@
     <script>(function () { var el = document.documentElement, m = localStorage.getItem("/pingu/doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="/pingu/botavatar.png" rel="icon" />
-    <link href="/pingu/resources/css/retype.css?v=2.2.704902149175" rel="stylesheet" data-turbo-track="reload" />
+    <link href="/pingu/resources/css/retype.css?v=2.2.704902684579" rel="stylesheet" data-turbo-track="reload" />
 
-    <script type="text/javascript" src="/pingu/resources/js/config.js?v=2.2.704902149175" defer data-turbo-track="reload"></script>
+    <script type="text/javascript" src="/pingu/resources/js/config.js?v=2.2.704902684579" defer data-turbo-track="reload"></script>
     <script type="text/javascript" src="/pingu/resources/js/retype.js?v=2.2" defer data-turbo-track="reload"></script>
-    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=2.2.704902149175" defer></script>
-    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=2.2.704902149175" defer></script>
+    <script id="lunr-js" type="text/javascript" src="/pingu/resources/js/lunr.js?v=2.2.704902684579" defer></script>
+    <script id="prism-js" type="text/javascript" src="/pingu/resources/js/prism.js?v=2.2.704902684579" defer></script>
 </head>
 <body>
     <div id="docs-app" class="relative text-base antialiased text-gray-700 bg-white font-body dark:bg-dark-850 dark:text-dark-300">
@@ -258,52 +258,6 @@
 
 // Remove a role from the list of roles that can be assigned to new members
 /welcome configureroles remove role: &lt;role&gt;</code></pre>
-</doc-codeblock></div>
-<doc-anchor-target id="commands">
-    <h1>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#commands">#</doc-anchor-trigger>
-        <span>Commands</span>
-    </h1>
-</doc-anchor-target>
-<div class="codeblock-wrapper"><doc-codeblock>
-<pre class="language-javascript"><code v-pre class="language-javascript">// View the current configuration of the module.
-welcome viewconfig
-
-// Command to configure the welcome channel. (If it does not exist/work, the message is not sent)
-welcome setchannel &lt;TextChannel&gt;
-
-// Command to set the welcome message
-welcome setmessage &lt;String ···&gt;
-
-// Command to view the current configuration of the welcome card
-welcome configurecard viewconfig
-
-// Command to enable or disable sending the welcome card
-welcome configurecard sendcards &lt;Boolean&gt;
-
-// Command to set the background image of the welcome card
-welcome configurecard setbackgroundurl &lt;URL&gt;
-
-// Command to set the overlay color of the welcome card
-welcome configurecard setoverlaycolor &lt;Hex Color&gt;
-
-// Command to set the overlay opacity of the welcome card
-welcome configurecard setoverlayopacity &lt;Integer&gt;
-
-// Command to set the title of the welcome card
-welcome configurecard title &lt;String ···&gt;
-
-// Command to set the subtitle of the welcome card
-welcome configurecard subtitle &lt;String ···&gt;
-
-// List the roles that are granted when someone joins the guild
-welcome configureroles list
-
-// Add a role to the list of roles that are granted when someone joins the guild
-welcome configureroles add &lt;Role&gt;
-
-// Remove a role from the list of roles that are granted when someone joins the guild
-welcome configureroles remove &lt;Role&gt;</code></pre>
 </doc-codeblock></div>
 <p><figure class="content-center">
     <img src="https://cdn.discordapp.com/attachments/883335734608670720/928767503830757437/yboqcdLDOieWRDxPbUxUcWrLIuradzdc.png" alt="Welcome card with custom background." />
