@@ -4,12 +4,21 @@ const i18n = require('../../i18n/i18n')
 const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor } = require('../../functions/guildManager')
 const { plantillas } = require('../../functions/messageManager')
 const Consolex = require('../../functions/consolex')
+const { construirHelpDelComando } = require('../../functions/commandsManager')
 
 const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', 'customcommands', 'leveling', 'mcsrvstatus']
 
 module.exports = {
   name: 'bot',
-  description: '🤖 Manage the bot configuration of your server',
+  description: 'BOT::HELP:DESCRIPTION',
+  subcommands: [
+    { name: 'updateinteractions', description: 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION', parameters: '<configinteractions[true/false]>' },
+    { name: 'setprefix', description: 'BOT::HELP:SETPREFIX:DESCRIPTION', parameters: '<prefix>' },
+    { name: 'setlanguage', description: 'BOT::HELP:SETLANGUAGE:DESCRIPTION', parameters: '<language[en/es]>' },
+    { name: 'modules viewconfig', description: 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION' },
+    { name: 'modules enable', description: 'BOT::HELP:MODULESENABLE:DESCRIPTION', parameters: '<module>' },
+    { name: 'modules disable', description: 'BOT::HELP:MODULESDISABLE:DESCRIPTION', parameters: '<module>' }
+  ],
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
@@ -30,19 +39,7 @@ module.exports = {
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
       .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.').addBooleanOption(input => input.setName('configinteractions').setDescription('Deploy the configuration interactions?')))),
-  help: {
-    name: 'bot',
-    description: 'BOT::HELP:DESCRIPTION',
-    subcommands: [
-      { name: 'updateinteractions', description: 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION', parameters: '<configinteractions[true/false]>' },
-      { name: 'setprefix', description: 'BOT::HELP:SETPREFIX:DESCRIPTION', parameters: '<prefix>' },
-      { name: 'setlanguage', description: 'BOT::HELP:SETLANGUAGE:DESCRIPTION', parameters: '<language[en/es]>' },
-      { name: 'modules viewconfig', description: 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION' },
-      { name: 'modules enable', description: 'BOT::HELP:MODULESENABLE:DESCRIPTION', parameters: '<module>' },
-      { name: 'modules disable', description: 'BOT::HELP:MODULESDISABLE:DESCRIPTION', parameters: '<module>' }
-    ]
-  },
-  runInteraction (locale, interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { prefix: interaction.options.getString('newprefix') } }, err => {
@@ -124,12 +121,12 @@ module.exports = {
       }
     }
   },
-  runCommand (locale, message) {
-    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return sendHelp()
+  runCommand (message) {
+    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
 
     switch (message.parameters[0]) {
       case 'setprefix': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
 
         actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { prefix: message.parameters[1] } }, err => {
           if (err) return message.channel.send({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'BOT::SETPREFIX:ERROR'))] })
@@ -172,7 +169,7 @@ module.exports = {
       }
 
       case 'modules': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return sendHelp()
+        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
 
         switch (message.parameters[1]) {
           case 'viewconfig': {
@@ -194,7 +191,7 @@ module.exports = {
           }
 
           case 'enable': {
-            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
 
             actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
               if (err) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: message.parameters[2] }))] })
@@ -205,7 +202,7 @@ module.exports = {
           }
 
           case 'disable': {
-            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return sendHelp()
+            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
 
             actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
               if (err) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: message.parameters[2] }))] })
@@ -217,7 +214,7 @@ module.exports = {
           }
 
           default: {
-            sendHelp()
+            message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
             break
           }
         }
@@ -226,7 +223,7 @@ module.exports = {
       }
 
       default: {
-        sendHelp()
+        message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
         break
       }
     }
