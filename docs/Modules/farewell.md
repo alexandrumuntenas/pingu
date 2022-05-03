@@ -24,16 +24,3 @@ The commands listed below can only be used by the server owner, or by persons wi
 // Set the farewell message
 /farewell setmessage message: <String>
 ```
-
-## Commands
-
-```javascript
-// View the current configuration of the module.
-farewell viewconfig
-
-// Configure the farewell channel.
-farewell setchannel <TextChannel>
-
-// Set the farewell message.
-farewell setmessage <String>
-```
