@@ -42,36 +42,6 @@ The commands listed below can only be used by the server owner, or by persons wi
 // Reset the leaderboard
 /leveling resetleaderboard (From 22T2)
 ```
-
-## Commands
-
-``` javascript
-// View the current configuration of the module.
-leveling viewconfig
-
-// Configure the rankup channel.
-// This = This channel option will take the channel Where this command is used as the rankup channel
-// Same = Same channel where message is sent
-// Send = Send to user DM
-// Disabled = Disabled
-leveling rankup channel <String(this/same/dm/disabled)>
-
-// Configure the rankup message.
-leveling rankup message <String>
-
-// Configure the rankup difficulty.
-leveling rankup difficulty <Integer>
-
-// Configure the cards background.
-leveling configurecards backgroundurl <URL>
-
-// Configure the overlay opacity.
-leveling configurecards overlayopacity <Integer>
-
-// Configure the overlay color.
-leveling configurecards overlaycolor <Hex Color>
-```
-
 ## User commands
 
 Users will be able to use /rank or `rank` to see their level card and /leaderboard or `leaderboard` to see the server ranking.
