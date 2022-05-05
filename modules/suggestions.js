@@ -175,7 +175,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
 }
 
 const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const i18n = require('../i18n/i18n')
 
 module.exports.events = {}
@@ -183,7 +183,7 @@ module.exports.events = {}
 /** Estructura prederminada de los mensajes enviados a través de los canales */
 
 const defaultEmbed = (member, suggestion) => {
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setAuthor({ name: member.user.tag || 'Mysterious User#0000', iconURL: member.user.displayAvatarURL() || 'https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png' })
     .addField(':bulb: Submitter', `${suggestion.author.user.username || 'Mysterious User'}#${suggestion.author.user.discriminator || '0000'}`, true)
     .addField(':pencil: Suggestion', suggestion.suggestion)
@@ -194,7 +194,7 @@ const defaultEmbed = (member, suggestion) => {
 /** Estructura prederminada de los mensajes enviados a través de MD */
 
 const defaultDMEmbed = (guild) => {
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
     .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 

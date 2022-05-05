@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const Math = require('mathjs')
 const i18n = require('../../i18n/i18n')
 
@@ -7,7 +7,7 @@ module.exports = {
   description: '🏓 Pong!',
   cooldown: 1,
   runInteraction (interaction) {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#57F287')
       .setTitle('🏓 Pong!')
       .addField(`<:blurple_bot:938094998283501569> ${i18n(interaction.guild.preferredLocale, 'PING::BOTPING')}`, `${Math.abs(Date.now() - interaction.createdTimestamp)}ms`, true)
@@ -19,7 +19,7 @@ module.exports = {
     interaction.editReply({ embeds: [embed] })
   },
   runCommand (message) {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#57F287')
       .setTitle('🏓 Pong!')
       .addField(`<:blurple_bot:938094998283501569> ${i18n(message.guild.preferredLocale, 'PING::BOTPING')}`, `${Math.abs(Date.now() - message.createdTimestamp)}ms`, true)

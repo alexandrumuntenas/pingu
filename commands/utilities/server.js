@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const unixTime = require('unix-time')
 
@@ -6,7 +6,7 @@ module.exports = {
   name: 'server',
   description: '👑 Shows information about the server',
   runInteraction (interaction) {
-    const serverInfo = new MessageEmbed()
+    const serverInfo = new EmbedBuilder()
       .setTitle(i18n(interaction.guild.preferredLocale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')
       .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
@@ -17,7 +17,7 @@ module.exports = {
     interaction.editReply({ embeds: [serverInfo] })
   },
   runCommand (message) {
-    const serverInfo = new MessageEmbed()
+    const serverInfo = new EmbedBuilder()
       .setTitle(i18n(message.guild.preferredLocale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')
       .setThumbnail(message.guild.iconURL({ dynamic: true }))

@@ -1,5 +1,5 @@
 const { obtenerDatosDelServidor } = require('../../modules/mcsrvstatus')
-const { MessageAttachment, MessageEmbed } = require('discord.js')
+const { MessageAttachment, EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const { plantillas } = require('../../functions/messageManager')
 
@@ -13,7 +13,7 @@ module.exports = {
     obtenerDatosDelServidor({ ip: interaction.guild.configuration.mcsrvstatus.host, port: interaction.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
           .addField(':radio_button: Version', datosDelServidor.version, true)
           .addField(':busts_in_silhouette: Players', datosDelServidor.jugadores, true)
           .addField(`${datosDelServidor.ping.emoji} Ping`, `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', true)
@@ -33,7 +33,7 @@ module.exports = {
       obtenerDatosDelServidor({ ip: message.guild.configuration.mcsrvstatus.host, port: message.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
         if (datosDelServidor) {
           const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
-          const embed = new MessageEmbed()
+          const embed = new EmbedBuilder()
             .addField(':radio_button: Version', datosDelServidor.version, true)
             .addField(':busts_in_silhouette: Players', datosDelServidor.jugadores, true)
             .addField(`${datosDelServidor.ping.emoji} Ping`, `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', true)

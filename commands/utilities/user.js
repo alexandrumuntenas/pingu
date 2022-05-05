@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const unixTime = require('unix-time')
 const { SlashCommandBuilder } = require('@discordjs/builders')
@@ -11,7 +11,7 @@ module.exports = {
     .setDescription('👪 Shows information about an user')
     .addUserOption(option => option.setName('user').setDescription('User to get information about.')),
   runInteraction (interaction) {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
 
@@ -34,7 +34,7 @@ module.exports = {
     }
   },
   runCommand (message) {
-    const embed = new MessageEmbed().setTimestamp().setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+    const embed = new EmbedBuilder().setTimestamp().setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
     if (message.mentions.users.first()) {
       message.guild.members

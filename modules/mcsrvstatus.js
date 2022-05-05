@@ -218,7 +218,7 @@ function actualizarNumeroDeJugadoresDelSidebar (guild) {
   })
 }
 
-const { MessageAttachment, MessageEmbed } = require('discord.js')
+const { MessageAttachment, EmbedBuilder } = require('discord.js')
 const { createHash } = require('crypto')
 
 function actualizarDatosDelPanel (guild) {
@@ -226,7 +226,7 @@ function actualizarDatosDelPanel (guild) {
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.messagePanelChannel) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
         const attachment = new MessageAttachment(servidor.motd || './setup/defaultresourcesforguilds/emptymotd.png', 'motd.png')
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         if (servidor) {
           embed
             .addField(':radio_button: Version', servidor.version, true)

@@ -85,7 +85,7 @@ module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPe
   })
 }
 
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 
 const randomstring = require('randomstring')
 const fs = require('fs')
@@ -131,7 +131,7 @@ module.exports.hooks = [{
       if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
         const reply = {}
         if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
-          const embed = new MessageEmbed()
+          const embed = new EmbedBuilder()
 
           if (respuestaPersonalizada.propiedades.enviarEnEmbed.title) embed.setTitle(respuestaPersonalizada.propiedades.sendEmbed.title)
 

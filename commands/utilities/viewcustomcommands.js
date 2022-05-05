@@ -1,5 +1,5 @@
 const { getCustomCommands } = require('../../modules/customcommands')
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const { plantillas } = require('../../functions/messageManager')
 
@@ -11,7 +11,7 @@ module.exports = {
     getCustomCommands(interaction.guild, customcommands => {
       if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor('#2F3136')
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle(i18n(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
@@ -30,7 +30,7 @@ module.exports = {
     getCustomCommands(message.guild, customcommands => {
       if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor('#2F3136')
         .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL() })
         .setTitle(i18n(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))

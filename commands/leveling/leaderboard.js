@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const { getLeaderboard } = require('../../modules/leveling')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
@@ -9,7 +9,7 @@ module.exports = {
   description: '🏆 Get the guild leveling leaderboard',
   runInteraction (interaction) {
     getLeaderboard(interaction.guild, leaderboard => {
-      const leaderboardEmbed = new MessageEmbed()
+      const leaderboardEmbed = new EmbedBuilder()
         .setColor('#FEE75C')
         .setTitle(`:trophy: ${i18n(interaction.interaction.guild.preferredLocale, 'RANKING')} TOP 25`)
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -33,7 +33,7 @@ module.exports = {
   runCommand (message) {
     message.reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       getLeaderboard(message.guild, leaderboard => {
-        const leaderboardEmbed = new MessageEmbed()
+        const leaderboardEmbed = new EmbedBuilder()
           .setColor('#FEE75C')
           .setTitle(`:trophy: ${i18n(message.guild.preferredLocale, 'RANKING')} TOP 25`)
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })

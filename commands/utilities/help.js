@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
   description: 'Feeling lost? 👀',
   cooldown: 1,
   runInteraction (interaction) {
-    const helpMessage = new MessageEmbed()
+    const helpMessage = new EmbedBuilder()
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
@@ -19,7 +19,7 @@ module.exports = {
     interaction.editReply({ embeds: [helpMessage] })
   },
   runCommand (message) {
-    const helpMessage = new MessageEmbed()
+    const helpMessage = new EmbedBuilder()
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)

@@ -1,5 +1,5 @@
 const fetch = require('superagent')
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
 const { plantillas } = require('../../functions/messageManager')
 
@@ -11,7 +11,7 @@ module.exports = {
     fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
       .then(response => response.body)
       .then(resource => {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
           .setTitle('Astronomy Picture of The Day')
           .setDescription(resource.explanation)
           .setAuthor({ name: 'NASA', url: 'https://nasa.gov', iconURL: 'https://cdn.discordapp.com/attachments/908413370665938975/939841209629822986/nasa-logo.png' })
@@ -46,7 +46,7 @@ module.exports = {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)
           .then(resource => {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
               .setTitle('Astronomy Picture of The Day')
               .setDescription(resource.explanation)
               .setAuthor({ name: 'NASA', url: 'https://nasa.gov', iconURL: 'https://cdn.discordapp.com/attachments/908413370665938975/939841209629822986/nasa-logo.png' })

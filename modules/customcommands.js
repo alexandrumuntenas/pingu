@@ -123,14 +123,14 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
  * @param {String} command
  */
 
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 
 module.exports.runCustomCommand = (message, command) => {
   module.exports.getCustomCommand(message.guild, command, customCommand => {
     const reply = {}
 
     if (customCommand.sendInEmbed) {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
 
       if (customCommand.sendInEmbed.title) embed.setTitle(customCommand.sendEmbed.title)
 
@@ -157,7 +157,7 @@ module.exports.runCustomCommand = (message, command) => {
 
     if (customCommand.sendDM) {
       try {
-        reply.embeds = reply.embeds || [new MessageEmbed().setDescription(reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member))]
+        reply.embeds = reply.embeds || [new EmbedBuilder().setDescription(reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member))]
         message.author.send(reply)
         try {
           message.delete()

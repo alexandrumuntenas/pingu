@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const { codeBlock } = require('@discordjs/builders')
 
 module.exports.plantillas = {}
@@ -8,10 +8,10 @@ module.exports.plantillas = {}
  * la situación en el cual se encuentra, por ejemplo,
  * la configuración de un módulo,
  * @param {String} message
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.estado = message => new MessageEmbed()
+module.exports.plantillas.estado = message => new EmbedBuilder()
   .setColor('#2F3136')
   .setDescription(`<:system_information:970715198509965342> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -24,10 +24,10 @@ module.exports.plantillas.estado = message => new MessageEmbed()
  * la sensación de que el bot está trabajando en su respuesta
  * y que el usuario no ha sido ignorado.
  * @param {String} message
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.precargador = message => new MessageEmbed()
+module.exports.plantillas.precargador = message => new EmbedBuilder()
   .setColor('#FEE75C')
   .setDescription(`<a:core_loading:970712845429903461> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -37,10 +37,10 @@ module.exports.plantillas.precargador = message => new MessageEmbed()
  * Plantilla para los mensajes que indican que una acción
  * se ha realizado correctamente.
  * @param {String} message
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.conexito = message => new MessageEmbed()
+module.exports.plantillas.conexito = message => new EmbedBuilder()
   .setColor('#57F287')
   .setDescription(`<:system_check:968432962716713010> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -50,10 +50,10 @@ module.exports.plantillas.conexito = message => new MessageEmbed()
  * Plantilla para los mensajes que indican que una acción
  * no ha podido ser realizada debido a un error.
  * @param {String} message
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.error = message => new MessageEmbed()
+module.exports.plantillas.error = message => new EmbedBuilder()
   .setColor('#ED4245')
   .setDescription(`<:system_cross:968432962653782067> ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -62,10 +62,10 @@ module.exports.plantillas.error = message => new MessageEmbed()
 /**
  * Plantilla para los mensajes que solo devuelven una info.
  * @param {String} message
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.informacion = message => new MessageEmbed()
+module.exports.plantillas.informacion = message => new EmbedBuilder()
   .setColor('#5865F2')
   .setDescription(`<:system_information:970715198509965342>    ${message}`)
   .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
@@ -77,10 +77,10 @@ const timeoutEmojis = ['<:system_timeout:970715618938617856>', '<:system_wait:97
  * Plantilla para los mensajes que solo devuelven una imagen.
  * @param {URL} imageURL
  * @param {String} imageProvider
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.imagen = (imageURL, imageProvider) => new MessageEmbed()
+module.exports.plantillas.imagen = (imageURL, imageProvider) => new EmbedBuilder()
   .setColor('#2F3136')
   .setImage(imageURL)
   .setDescription(`<:system_image:968433418935361576> Image via ${imageProvider} API.`)
@@ -90,10 +90,10 @@ module.exports.plantillas.imagen = (imageURL, imageProvider) => new MessageEmbed
 /**
  * Plantilla para los mensajes relacionados con la espera para una acción.
  * @param {String} message
- * @returns MessageEmbed
+ * @returns EmbedBuilder
  */
 
-module.exports.plantillas.contador = message => new MessageEmbed()
+module.exports.plantillas.contador = message => new EmbedBuilder()
   .setColor('#F3375C')
   .setImage('https://cdn.discordapp.com/attachments/908413370665938975/939097943036809247/hearties-daniel-lissing.gif')
   .setDescription(`${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} ${message}`)
@@ -109,7 +109,7 @@ module.exports.plantillas.contador = message => new MessageEmbed()
  * @param {String} command.module - Módulo del comando
  * @param {String} command.parameters - Parámetros del comando.
  * @param {Array.<{name:string,description:string,parameters:string,isNSFW:boolean}>} command.subcommands - Subcomandos del comando
- * @returns {Array.<MessageEmbed>}
+ * @returns {Array.<EmbedBuilder>}
  */
 
 module.exports.plantillas.ayuda = command => {
@@ -117,7 +117,7 @@ module.exports.plantillas.ayuda = command => {
     throw new Error('No command provided')
   }
 
-  const embedOptions = new MessageEmbed()
+  const embedOptions = new EmbedBuilder()
     .setColor('#5865F2')
     .setTitle(`<:system_support:968434674634473493> ${command.name} • Options`)
     .setDescription(`${command.description || 'No description'}\n\n${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} Cooldown: ${command.cooldown || '10'}\n<:system_settings:968435053963145266> Module: ${command.module || 'No category'}\n${command.parameters ? codeBlock(`${command.name} ${command.parameters}`) : ''}`)

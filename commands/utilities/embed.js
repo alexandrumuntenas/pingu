@@ -1,4 +1,4 @@
-const { MessageEmbed, PermissionsBitField } = require('discord.js')
+const { EmbedBuilder, PermissionsBitField } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
     const thumbnail = interaction.options.getString('thumbnail')
     const image = interaction.options.getString('image')
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() })
       .setTitle(title)
       .setDescription(description)

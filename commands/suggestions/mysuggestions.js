@@ -1,7 +1,7 @@
 const { getMemberSuggestions } = require('../../modules/suggestions')
 const { plantillas } = require('../../functions/messageManager')
 const i18n = require('../../i18n/i18n')
-const { MessageEmbed } = require('discord.js')
+const { EmbedBuilder } = require('discord.js')
 const unixTime = require('unix-time')
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
   runInteraction (interaction) {
     getMemberSuggestions(interaction.member, suggestions => {
       if (Object.prototype.hasOwnProperty.call(suggestions, '0')) {
-        const memberSuggestions = new MessageEmbed()
+        const memberSuggestions = new EmbedBuilder()
           .setAuthor({ name: interaction.member.displayName, iconURL: interaction.member.user.displayAvatarURL() })
           .setColor('#2F3136')
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))
@@ -25,7 +25,7 @@ module.exports = {
   runCommand (message) {
     getMemberSuggestions(message.member, suggestions => {
       if (Object.prototype.hasOwnProperty.call(suggestions, '0')) {
-        const memberSuggestions = new MessageEmbed()
+        const memberSuggestions = new EmbedBuilder()
           .setAuthor({ name: message.member.displayName, iconURL: message.member.user.displayAvatarURL() })
           .setColor('#2F3136')
           .setDescription(suggestions.map(suggestion => `:clock1: <t:${unixTime(suggestion.timestamp)}> - sID: ${suggestion.id}\n:pencil: ${suggestion.suggestion}`).join('\n\n'))

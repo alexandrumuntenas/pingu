@@ -1,4 +1,4 @@
-const { PermissionsBitField, MessageEmbed } = require('discord.js')
+const { PermissionsBitField, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { plantillas } = require('../../functions/messageManager')
 
@@ -61,7 +61,7 @@ module.exports = {
 
     const question = interaction.options.getString('question')
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor('#EB459E')
       .setTitle(`📊 ${question}`)
 
@@ -92,7 +92,7 @@ module.exports = {
   runCommand (message) {
     if (Object.prototype.hasOwnProperty.call(message.parameters, 0)) {
       const options = message.content.replace(`${message.guild.configuration.common.prefix}poll `, '').split(';')
-      const embed = new MessageEmbed().setColor('#EB459E')
+      const embed = new EmbedBuilder().setColor('#EB459E')
 
       if (options.length === 1) {
         const question = message.parameters.join(' ')
