@@ -8,7 +8,7 @@ const { existsSync, statSync } = require('fs')
  * @param {String} key La clave del array de los idiomas
  * @param {Array<Object>} placeholders Los datos para reemplazar los placeholders
  */
-module.exports = (language, key, placeholders) => {
+module.exports.getTranslation = (language, key, placeholders) => {
   let languageToUse = language || 'es-ES'
   if (!existsSync(`./i18n/locales/${languageToUse}.json`)) {
     gestionarError(`No se encontró el archivo de idioma ${languageToUse}.json`)
