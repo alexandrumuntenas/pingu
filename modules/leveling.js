@@ -277,4 +277,4 @@ module.exports.resetLeaderboard = (guild, callback) => {
   })
 }
 
-module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience }]
+module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience, type: 'noPrefix' }]
