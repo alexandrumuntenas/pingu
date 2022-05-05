@@ -182,9 +182,9 @@ module.exports.runCustomCommand = (message, command) => {
 const CooldownManager = require('../core/cooldownManager')
 
 module.exports.hooks = [{
-  evento: 'messageCreate',
-  tipo: 'withPrefix',
-  execute: message => {
+  event: 'messageCreate',
+  type: 'withPrefix',
+  function: message => {
     if (message.guild.configuration.customcommands.enabled) {
       CooldownManager.add(message.member, message.guild, message.commandName)
       return module.exports.runCustomCommand(message, message.commandName)
