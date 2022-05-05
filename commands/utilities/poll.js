@@ -1,6 +1,6 @@
 const { PermissionsBitField, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { plantillas } = require('../../functions/messageManager')
+const { plantillas } = require('../../core/messageManager')
 
 const i18n = require('../../i18n/i18n')
 const alphabet = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹']

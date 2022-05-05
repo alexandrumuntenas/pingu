@@ -1,7 +1,7 @@
 const { obtenerDatosDelServidor } = require('../../modules/mcsrvstatus')
 const { MessageAttachment, EmbedBuilder } = require('discord.js')
 const i18n = require('../../i18n/i18n')
-const { plantillas } = require('../../functions/messageManager')
+const { plantillas } = require('../../core/messageManager')
 
 module.exports = {
   name: 'mcping',

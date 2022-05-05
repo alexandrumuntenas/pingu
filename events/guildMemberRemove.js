@@ -1,4 +1,4 @@
-const { deleteMember } = require('../functions/memberManager')
+const { deleteMember } = require('../core/memberManager')
 const farewell = require('../modules/farewell.js')
 
 module.exports = {

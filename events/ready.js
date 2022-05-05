@@ -1,12 +1,12 @@
 const Consolex = require('../core/consolex')
 const { REST } = require('@discordjs/rest')
-const { eliminadorArchivosTemporales } = require('../functions/clientManager')
+const { eliminadorArchivosTemporales } = require('../core/clientManager')
 
 const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKEN)
 else rest.setToken(process.env.PUBLIC_TOKEN)
 
-const initializeThirdParty = require('../functions/initializeThirdParty')
+const initializeThirdParty = require('../core/initializeThirdParty')
 const { comenzarActualizarDatosDeLosServidores } = require('../modules/mcsrvstatus')
 
 module.exports = {

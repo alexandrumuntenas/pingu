@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { PermissionsBitField } = require('discord.js')
 const { approveSuggestion, rejectSuggestion, addNoteToSuggestion, addUserToBlacklist, removeUserFromBlacklist } = require('../../modules/suggestions')
-const { plantillas } = require('../../functions/messageManager')
+const { plantillas } = require('../../core/messageManager')
 
 const i18n = require('../../i18n/i18n')
 

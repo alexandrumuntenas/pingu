@@ -1,9 +1,9 @@
 require('dotenv').config()
-const { obtenerConfiguracionDelServidor } = require('../../functions/guildManager')
+const { obtenerConfiguracionDelServidor } = require('../../core/guildManager')
 const Discord = require('discord.js')
 const Consolex = require('../../core/consolex')
 // Eliminar comentario a la siguiente línea para que funcione el actualizador.
-// const Database = require('../../functions/databaseConnection')
+// const Database = require('../../core/databaseConnection')
 
 const Client = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MEMBERS, Discord.Intents.FLAGS.GUILD_BANS, Discord.Intents.FLAGS.GUILD_INVITES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_VOICE_STATES, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING], partials: ['REACTION', 'MESSAGE', 'USER'] })
 

@@ -1,5 +1,5 @@
 const { getMemberSuggestions } = require('../../modules/suggestions')
-const { plantillas } = require('../../functions/messageManager')
+const { plantillas } = require('../../core/messageManager')
 const i18n = require('../../i18n/i18n')
 const { EmbedBuilder } = require('discord.js')
 const unixTime = require('unix-time')

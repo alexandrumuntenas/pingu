@@ -1,8 +1,8 @@
 const Consolex = require('../core/consolex')
-const CooldownManager = require('../functions/cooldownManager')
+const CooldownManager = require('../core/cooldownManager')
 
-const { plantillas } = require('../functions/messageManager')
-const { obtenerConfiguracionDelServidor } = require('../functions/guildManager.js')
+const { plantillas } = require('../core/messageManager')
+const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
 const i18n = require('../i18n/i18n')
 const humanizeduration = require('humanize-duration')
 

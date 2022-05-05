@@ -175,7 +175,7 @@ module.exports.limpiarFormatoDeLosTextos = (texto) => {
 }
 
 const Gamedig = require('gamedig')
-const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../core/guildManager')
 const consolex = require('../core/consolex')
 
 /**

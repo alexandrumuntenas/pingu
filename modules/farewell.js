@@ -3,7 +3,7 @@
  * @param {GuildMember} member
  */
 
-const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
 
 module.exports.doGuildMemberRemove = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
@@ -18,7 +18,7 @@ module.exports.doGuildMemberRemove = member => {
  * @param {GuildMember} member
  */
 
-const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
+const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendFarewellMessage = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {

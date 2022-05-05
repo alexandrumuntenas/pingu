@@ -1,9 +1,9 @@
 const Consolex = require('../core/consolex')
-const Database = require('../functions/databaseConnection')
+const Database = require('../core/databaseConnection')
 
-const { getMember, updateMember } = require('../functions/memberManager')
-const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
-const CooldownManager = require('../functions/cooldownManager')
+const { getMember, updateMember } = require('../core/memberManager')
+const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
+const CooldownManager = require('../core/cooldownManager')
 
 /**
  * Get experiece by chatting.
@@ -36,7 +36,7 @@ module.exports.getExperience = message => {
   }
 }
 
-const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
+const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendLevelUpMessage = message => {
   obtenerConfiguracionDelServidor(message.guild, guildConfig => {

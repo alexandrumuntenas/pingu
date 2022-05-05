@@ -1,5 +1,5 @@
 const Consolex = require('../core/consolex')
-const Database = require('../functions/databaseConnection')
+const Database = require('../core/databaseConnection')
 
 /**
  * Create a new suggestion in the guild.
@@ -9,7 +9,7 @@ const Database = require('../functions/databaseConnection')
  * @returns {String} - The suggestion id.
  */
 
-const makeId = require('../functions/makeId')
+const makeId = require('../core/makeId')
 
 module.exports.createSuggestion = (member, suggestion, callback) => {
   if (!callback) throw new Error('Callback is required.')
@@ -174,7 +174,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
   })
 }
 
-const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../core/guildManager')
 const { EmbedBuilder } = require('discord.js')
 const i18n = require('../i18n/i18n')
 
@@ -201,7 +201,7 @@ const defaultDMEmbed = (guild) => {
   return embed
 }
 
-const messageManager = require('../functions/messageManager')
+const messageManager = require('../core/messageManager')
 
 /** The actions taken after creating the suggestion */
 

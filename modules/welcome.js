@@ -3,7 +3,7 @@
  * @param {GuildMember} member
  */
 
-const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
+const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../core/guildManager')
 
 module.exports.giveMemberRoles = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
@@ -27,7 +27,7 @@ const { MessageAttachment } = require('discord.js')
  * @param {GuildMember} member
  */
 
-const replaceBracePlaceholdersWithActualData = require('../functions/reemplazarPlaceholdersConDatosReales')
+const replaceBracePlaceholdersWithActualData = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendWelcomeMessage = member => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {

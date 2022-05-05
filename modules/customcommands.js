@@ -1,7 +1,7 @@
 /* eslint-disable node/no-callback-literal */
-const Database = require('../functions/databaseConnection')
+const Database = require('../core/databaseConnection')
 const Consolex = require('../core/consolex')
-const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
+const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
@@ -179,7 +179,7 @@ module.exports.runCustomCommand = (message, command) => {
   })
 }
 
-const CooldownManager = require('../functions/cooldownManager')
+const CooldownManager = require('../core/cooldownManager')
 
 module.exports.hooks = [{
   evento: 'messageCreate',
