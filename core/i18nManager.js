@@ -10,7 +10,7 @@ const { existsSync, statSync } = require('fs')
  */
 module.exports.getTranslation = (language, key, placeholders) => {
   let languageToUse = language || 'es-ES'
-  if (!existsSync(`./locales/${languageToUse}.json`)) {
+  if (!existsSync(`./core/locales/${languageToUse}.json`)) {
     gestionarError(`No se encontró el archivo de idioma ${languageToUse}.json`)
     languageToUse = 'es-ES'
   }
@@ -36,7 +36,7 @@ module.exports.getTranslation = (language, key, placeholders) => {
 const avaliableLocales = []
 
 module.exports.registerLocale = (locale) => {
-  if (statSync(`./locales/${locale}.json`).isFile()) return avaliableLocales.push(locale)
+  if (statSync(`./core/locales/${locale}.json`).isFile()) return avaliableLocales.push(locale)
   throw new Error(`Se ha intentado registrar un idioma que no existe o no está disponible: ${locale}`)
 }
 
