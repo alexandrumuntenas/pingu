@@ -176,7 +176,7 @@ module.exports.limpiarFormatoDeLosTextos = (texto) => {
 
 const Gamedig = require('gamedig')
 const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../functions/guildManager')
-const consolex = require('../functions/consolex')
+const consolex = require('../core/consolex')
 
 /**
  * Conectar con el servidor de minecraft y procesar toda su información

@@ -1,4 +1,4 @@
-const Consolex = require('../functions/consolex')
+const Consolex = require('../core/consolex')
 const { REST } = require('@discordjs/rest')
 const { eliminadorArchivosTemporales } = require('../functions/clientManager')
 

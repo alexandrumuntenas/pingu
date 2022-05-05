@@ -1,4 +1,4 @@
-const Consolex = require('../functions/consolex')
+const Consolex = require('../core/consolex')
 const CooldownManager = require('../functions/cooldownManager')
 
 const { plantillas } = require('../functions/messageManager')

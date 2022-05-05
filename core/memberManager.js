@@ -1,4 +1,4 @@
-const Consolex = require('../functions/consolex')
+const Consolex = require('../core/consolex')
 const Database = require('../functions/databaseConnection')
 
 /**

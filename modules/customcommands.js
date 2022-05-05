@@ -1,6 +1,6 @@
 /* eslint-disable node/no-callback-literal */
 const Database = require('../functions/databaseConnection')
-const Consolex = require('../functions/consolex')
+const Consolex = require('../core/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../functions/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = (guild, callback) => {
