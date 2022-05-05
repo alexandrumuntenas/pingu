@@ -15,7 +15,11 @@ const modulos = []
 module.exports.registrarModulo = (modulo) => {
   // eslint-disable-next-line no-constant-condition
   if (!typeof modulo === 'object') throw new Error('El módulo debe ser un objeto')
-  if (!Object.prototype.hasOwnProperty.call(modulo, 'nombre') && !Object.prototype.hasOwnProperty.call(modulo, 'descripcion') && !Object.prototype.hasOwnProperty.call(modulo, 'comandos')) throw new Error('El módulo no tiene nombre, descripción o comandos')
+
+  if (!Object.prototype.hasOwnProperty.call(modulo, 'nombre') &&
+  !Object.prototype.hasOwnProperty.call(modulo, 'descripcion') &&
+  !Object.prototype.hasOwnProperty.call(modulo, 'comandos')) throw new Error('El módulo no tiene nombre, descripción o comandos')
+
   if (!process.Client.comandos) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
 
   Consolex.warn(`Registrando módulo ${modulo.nombre}`)
@@ -29,7 +33,7 @@ module.exports.registrarModulo = (modulo) => {
     if (modulo.hooks) {
       modulo.hooks.forEach(hook => {
         Consolex.info(`Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
-        inyectarEnEventoFuncionesDeTerceros(hook.evento, hook.funcion)
+        inyectarEnEventoFuncionesDeTerceros(hook.event, hook.function, hook.type)
       })
     }
   } else {
