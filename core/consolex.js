@@ -18,22 +18,19 @@ function getCurrentTime () {
 
 module.exports = {
   debug: message => {
-    process.stdout.write(`${chalk.bgGrey.whiteBright.bold(` [${getCurrentTime()}] D `)} ${message}\n`)
+    process.stdout.write(`${getCurrentTime()} [${chalk.whiteBright.bold('DEBUG')}]    ${message}\n`)
   },
   info: message => {
-    process.stdout.write(`${chalk.bgCyan.blackBright.bold(` [${getCurrentTime()}] I `)} ${message}\n`)
+    process.stdout.write(`${getCurrentTime()} [${chalk.cyanBright.bold('INFORMA')}]   ${message}\n`)
   },
   success: message => {
-    process.stdout.write(`${chalk.bgGreen.blackBright.bold(` [${getCurrentTime()}] S `)} ${message}\n`)
+    process.stdout.write(`${getCurrentTime()} [${chalk.greenBright.bold('SUCCESS')}]   ${message}\n`)
   },
   warn: message => {
-    process.stdout.write(`${chalk.bgYellowBright.whiteBright.bold(` [${getCurrentTime()}] W `)} ${message}\n`)
+    process.stdout.write(`${getCurrentTime()} [${chalk.yellowBright.bold('WARNING')}]   ${message}\n`)
   },
   error: message => {
-    process.stdout.write(`${chalk.bgRed.blackBright.bold(` [${getCurrentTime()}] E `)} ${message}\n`)
-  },
-  fatal: message => {
-    process.stdout.write(`${boxen(`${chalk.yellow('[FATAL]')} ${chalk.yellow(`[${getCurrentTime()}]`)}\n${message}`, { padding: 1, align: 'center' })}\n`)
+    process.stdout.write(`${getCurrentTime()} [${chalk.redBright.bold('ERROR')}]     ${message}\n`)
   },
   gestionarError: err => {
     module.exports.error(err)
