@@ -1,5 +1,4 @@
 const chalk = require('chalk')
-const boxen = require('boxen')
 const moment = require('moment')
 const Sentry = require('@sentry/node')
 
