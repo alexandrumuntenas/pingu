@@ -1,4 +1,5 @@
 const Consolex = require('./consolex')
+const i18n = require('./i18nManager')
 
 const { Collection } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
@@ -18,18 +19,22 @@ module.exports.cargarComandoseInteracciones = () => {
 
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
         const command = require(`.${path}`)
+
         if (Object.prototype.hasOwnProperty.call(command, 'name')) {
           if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
-            command.interaction.setName(command.name).setDescription()
+            command.interaction.setName(command.name)
           } else {
-            command.interaction = new SlashCommandBuilder().setName(command.name).setDescriptionLocalization()
+            command.interaction = new SlashCommandBuilder().setName(command.name)
           }
 
+          i18n.avaliableLocales.forEach(locale => {
+            command.interaction.setDescriptionLocalized(locale, i18n(locale, command.name))
+          })
 
           commands.set(command.name, command)
           Consolex.success(`Comando ${file} cargado`)
         } else {
-          Consolex.warn(`Command ${file} no tiene una propiedad name. Este comando no podrá ser utilizado por el usuario.`)
+          Consolex.warn(`${file} no se ha cargado porque no tiene una propiedad "name"`)
         }
       } else if (lstatSync(path).isDirectory()) load(path)
     })
@@ -41,7 +46,6 @@ module.exports.cargarComandoseInteracciones = () => {
 }
 
 const { ayuda } = require('./messageManager').plantillas
-const i18n = require('./i18nManager')
 
 module.exports.construirHelpDelComando = (guild, command) => {
   if (!process.Client.comandos.get(command)) return

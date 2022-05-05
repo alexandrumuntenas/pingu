@@ -1,6 +1,6 @@
 const stringPlaceholder = require('string-placeholder')
 const { gestionarError } = require('./consolex')
-const { existsSync } = require('fs')
+const { existsSync, statSync } = require('fs')
 
 /**
  * Solicitar la traducción para la i18n a través de string-placeholder
@@ -32,3 +32,12 @@ module.exports = (language, key, placeholders) => {
 
   return translation
 }
+
+const avaliableLocales = []
+
+module.exports.registerLocale = (locale) => {
+  if (statSync(`./i18n/locales/${locale}.json`).isFile()) return avaliableLocales.push(locale)
+  throw new Error(`Se ha intentado registrar un idioma que no existe o no está disponible: ${locale}`)
+}
+
+module.exports.avaliableLocales = avaliableLocales
