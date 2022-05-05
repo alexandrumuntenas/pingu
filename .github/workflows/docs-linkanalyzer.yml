@@ -1,5 +1,4 @@
-name: Check Markdown links
-
+name: Comprobar enlaces de la documentación
 on:
   push:
     branches: [ main ]
