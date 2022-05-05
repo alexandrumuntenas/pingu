@@ -1,4 +1,4 @@
-name: Reiniciar servidor para integrar los últimos cambios
+name: "[Prod] Reiniciar servidor"
 
 # Controls when the workflow will run
 on:
