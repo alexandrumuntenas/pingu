@@ -1,10 +1,10 @@
-const { MessageEmbed, Permissions } = require('discord.js')
+const { MessageEmbed, PermissionsBitField } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
 module.exports = {
   name: 'embed',
   description: '📝 Create an embed message',
-  permissions: [Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.KICK_MEMBERS, Permissions.FLAGS.BAN_MEMBERS],
+  permissions: [PermissionsBitField.Flags.ManageMessages, PermissionsBitField.Flags.KickMembers, PermissionsBitField.Flags.BanMembers],
   interaction: new SlashCommandBuilder()
     .addStringOption(option => option.setName('title').setDescription('Sets the embed title. (256 characters max)').setRequired(true))
     .addStringOption(option => option.setName('description').setDescription('Sets the embed description. (4096 characters max)').setRequired(true))

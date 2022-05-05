@@ -1,14 +1,14 @@
-const { Permissions, MessageEmbed } = require('discord.js')
+const { PermissionsBitField, MessageEmbed } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { plantillas } = require('../../functions/messageManager')
-const i18n = require('../../i18n/i18n')
 
+const i18n = require('../../i18n/i18n')
 const alphabet = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹']
 
 module.exports = {
   name: 'poll',
   description: '📊 Create a poll',
-  permissions: [Permissions.FLAGS.MANAGE_MESSAGES],
+  permissions: [PermissionsBitField.Flags.ManageMessages],
   interaction: new SlashCommandBuilder()
     .addStringOption(option => option.setName('question').setDescription('Type your question. E.g. Did you like the stream?').setRequired(true))
     .addStringOption(option => option.setName('option_a').setDescription('Type your choice'))

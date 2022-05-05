@@ -1,9 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Permissions } = require('discord.js')
+const { PermissionsBitField } = require('discord.js')
 
 module.exports = {
   name: 'boteditor',
-  permissions: [Permissions.FLAGS.MANAGE_GUILD],
+  permissions: [PermissionsBitField.Flags.ManageGuild],
   isconfigurationcommand: true,
   interaction: new SlashCommandBuilder(),
   runInteraction (interaction) {

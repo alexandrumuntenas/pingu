@@ -23,7 +23,7 @@ if (process.env.ENTORNO === 'publico') {
   process.Client.login(process.env.INSIDER_TOKEN)
 }
 
-process.Client.comandos = require('./core/clientManager').cargarComandoseInteracciones()
+process.Client.comandos = require('./core/commandsManager').cargarComandoseInteracciones()
 
 require('./core/eventManager').cargarEventosDeProceso()
 require('./core/eventManager').cargarEventos()

@@ -1,14 +1,15 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Permissions } = require('discord.js')
-const i18n = require('../../i18n/i18n')
+const { PermissionsBitField } = require('discord.js')
 const { approveSuggestion, rejectSuggestion, addNoteToSuggestion, addUserToBlacklist, removeUserFromBlacklist } = require('../../modules/suggestions')
 const { plantillas } = require('../../functions/messageManager')
+
+const i18n = require('../../i18n/i18n')
 
 module.exports = {
   name: 'suggestion',
   module: 'suggestions',
   description: '📖 Manage the suggestions',
-  permissions: [Permissions.FLAGS.MANAGE_GUILD],
+  permissions: [PermissionsBitField.Flags.ManageGuild],
   isConfigurationCommand: false,
   interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('approve').setDescription('Approve a suggestion').addStringOption(input => input.setName('suggestion').setDescription('The suggestion or the message ID').setRequired(true)))
