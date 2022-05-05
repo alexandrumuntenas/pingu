@@ -14,7 +14,7 @@ const Discord = require('discord.js')
 process.Client = new Discord.Client({
   intents: [
     GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping],
+    GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent],
   partials: ['REACTION', 'MESSAGE', 'USER'],
   ws: { properties: { $browser: 'Discord iOS' } }
 })
