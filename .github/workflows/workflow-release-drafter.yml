@@ -1,4 +1,4 @@
-name: Preparación de versión
+name: "[Wkf] Preparación del versionado"
 
 on:
   push:
