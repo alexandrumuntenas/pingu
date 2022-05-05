@@ -11,7 +11,13 @@ require('dotenv').config()
 const { GatewayIntentBits } = require('discord-api-types/v10')
 const Discord = require('discord.js')
 
-process.Client = new Discord.Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping], partials: ['REACTION', 'MESSAGE', 'USER'], ws: { properties: { $browser: 'Discord iOS' } } })
+process.Client = new Discord.Client({
+  intents: [
+    GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping],
+  partials: ['REACTION', 'MESSAGE', 'USER'],
+  ws: { properties: { $browser: 'Discord iOS' } }
+})
 
 const Consolex = require('./core/consolex')
 
