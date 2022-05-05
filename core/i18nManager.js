@@ -36,7 +36,7 @@ module.exports.getTranslation = (language, key, placeholders) => {
 const avaliableLocales = []
 
 module.exports.registerLocale = (locale) => {
-  if (statSync(`./i18n/locales/${locale}.json`).isFile()) return avaliableLocales.push(locale)
+  if (statSync(`./locales/${locale}.json`).isFile()) return avaliableLocales.push(locale)
   throw new Error(`Se ha intentado registrar un idioma que no existe o no está disponible: ${locale}`)
 }
 
