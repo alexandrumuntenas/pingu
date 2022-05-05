@@ -1,4 +1,4 @@
-name: Comprobar enlaces de la documentación
+name: "[Docs] Comprobar enlaces"
 on:
   push:
     branches: [ main ]
