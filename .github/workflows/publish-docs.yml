@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    name: Construir documentación con Retype y cargarlo a la rama indicada.
+    name: Construir documentación con Retype
 
     runs-on: ubuntu-latest
 
