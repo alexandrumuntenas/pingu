@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 const { createCustomCommand, deleteCustomCommand } = require('../../modules/customcommands')
 const i18n = require('../../i18n/i18n')
 const { plantillas } = require('../../functions/messageManager')
-const { ChannelType } = require('discord-api-types/v9')
+const { ChannelType } = require('discord-api-types/v10')
 
 module.exports = {
   name: 'customcommands',
@@ -24,7 +24,7 @@ module.exports = {
       .addStringOption(input => input.setName('sendinembed_url').setDescription('The url of the embed.'))
       .addStringOption(input => input.setName('sendinembed_color').setDescription('The color of the embed.'))
       .addRoleOption(input => input.setName('role').setDescription('Give a role when the command is used.'))
-      .addChannelOption(input => input.setName('channel').setDescription('Send the reply to a specified channel.').addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews]))
+      .addChannelOption(input => input.setName('channel').setDescription('Send the reply to a specified channel.'))
       .addBooleanOption(input => input.setName('sendtodm').setDescription('Whether or not the reply should be sent to the user.')))
     .addSubcommand(sc => sc.setName('delete').setDescription('Delete a custom command.')
       .addStringOption(input => input.setName('name').setRequired(true).setDescription('The name of the custom command.'))),

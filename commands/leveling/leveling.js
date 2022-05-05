@@ -19,7 +19,7 @@ module.exports = {
   interactionData: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the current leveling configuration'))
     .addSubcommand(sc => sc.setName('rankup').setDescription('Configure the rankup settings')
-      .addStringOption(input => input.setName('channel').setDescription('Set the channel where rank up message is sent.').addChoice('This channel', 'this').addChoice('Same channel where message is sent', 'same').addChoice('Send to user DM', 'dm').addChoice('Disable', 'disabled'))
+      .addStringOption(input => input.setName('channel').setDescription('Set the channel where rank up message is sent.').addChoices({ name: 'This channel', value: 'this' }, { name: 'Same channel where message is sent', value: 'same' }, { name: 'Send to user DM', value: 'dm' }, { name: 'Disable', value: 'disabled' }))
       .addStringOption(input => input.setName('message').setDescription('Set the rankup message.'))
       .addNumberOption(input => input.setName('difficulty').setDescription('Set the difficulty of the leveling system.')))
     .addSubcommand(sc => sc.setName('configurecards').setDescription('Configure the rank cards.')
