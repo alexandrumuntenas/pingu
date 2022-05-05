@@ -35,9 +35,9 @@ module.exports = {
       .setName('interactions')
       .setDescription('💬 Manage the interactions of your server')
       .addSubcommand(sc => sc.setName('update').setDescription('Update the interactions of your server.'))
-      .addSubcommand(sc => sc.setName('showinteractions').setDescription('Show the interactions of the bot in your server.'))
-      .addSubcommand(sc => sc.setName('enforceusage').setDescription('Enforce the usage of the interactions of your server. This will disable traditional commands.'))
-      .addSubcommand(sc => sc.setName('showcfginteractions').setDescription('Show the config interactions of the bot in your server.'))),
+      .addSubcommand(sc => sc.setName('showinteractions').setDescription('Show the interactions of the bot in your server.').addBooleanOption(input => input.setName('showall').setDescription('Show all the interactions of the bot.')))
+      .addSubcommand(sc => sc.setName('enforceusage').setDescription('Enforce the usage of the interactions of your server. This will disable traditional commands.').addBooleanOption(input => input.setName('enforce').setDescription('Enforce the usage of the interactions of your server.')))
+      .addSubcommand(sc => sc.setName('showcfginteractions').setDescription('Show the config interactions of the bot in your server.').addBooleanOption(input => input.setName('showall').setDescription('Show all the config interactions of the bot.')))),
   runInteraction (locale, interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'setprefix': {
@@ -51,6 +51,30 @@ module.exports = {
           }
 
           return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
+        })
+        break
+      }
+
+      case 'showinteractions': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { showinteractions: true } }, err => {
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-SHOWINTERACTIONS:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-SHOWINTERACTIONS:SUCCESS'))] })
+        })
+        break
+      }
+
+      case 'enforceusage': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { enforceusage: true } }, err => {
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-ENFORCEUSAGE:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-ENFORCEUSAGE:SUCCESS'))] })
+        })
+        break
+      }
+
+      case 'showcfginteractions': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { showcfginteractions: true } }, err => {
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-SHOWCFGINTERACTIONS:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-SHOWCFGINTERACTIONS:SUCCESS'))] })
         })
         break
       }
