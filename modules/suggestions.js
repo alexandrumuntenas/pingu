@@ -1,5 +1,6 @@
 const Consolex = require('../core/consolex')
 const Database = require('../core/databaseConnection')
+const randomstring = require('randomstring')
 
 /**
  * Create a new suggestion in the guild.
@@ -9,12 +10,10 @@ const Database = require('../core/databaseConnection')
  * @returns {String} - The suggestion id.
  */
 
-const makeId = require('../core/makeId')
-
 module.exports.createSuggestion = (member, suggestion, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  const suggestionId = makeId(5)
+  const suggestionId = randomstring.generate({ charset: 'alphabetic', length: 5 })
   Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
     if (err) {
       Consolex.gestionarError(err)
