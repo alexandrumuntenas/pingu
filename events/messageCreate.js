@@ -1,12 +1,12 @@
 /* eslint consistent-return: "error" */
 
-const CooldownManager = require('../functions/cooldownManager')
+const CooldownManager = require('../core/cooldownManager')
 
-const { plantillas } = require('../functions/messageManager')
-const i18n = require('../i18n/i18n')
-const { obtenerConfiguracionDelServidor } = require('../functions/guildManager.js')
+const { plantillas } = require('../core/messageManager')
+const i18n = require('../core/i18nManager')
+const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
 const humanizeduration = require('humanize-duration')
-const { ejecutarFuncionesDeTerceros } = require('../functions/eventManager')
+const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
 
 module.exports = {
   name: 'messageCreate',

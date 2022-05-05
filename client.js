@@ -13,7 +13,7 @@ const Discord = require('discord.js')
 
 process.Client = new Discord.Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping], partials: ['REACTION', 'MESSAGE', 'USER'], ws: { properties: { $browser: 'Discord iOS' } } })
 
-const Consolex = require('./functions/consolex')
+const Consolex = require('./core/consolex')
 
 if (process.env.ENTORNO === 'publico') {
   Consolex.warn('Iniciando sesión como el bot público.')
@@ -23,12 +23,12 @@ if (process.env.ENTORNO === 'publico') {
   process.Client.login(process.env.INSIDER_TOKEN)
 }
 
-process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
+process.Client.comandos = require('./core/clientManager').cargarComandoseInteracciones()
 
-require('./functions/eventManager').cargarEventosDeProceso()
-require('./functions/eventManager').cargarEventos()
+require('./core/eventManager').cargarEventosDeProceso()
+require('./core/eventManager').cargarEventos()
 
-process.Client.modulos = require('./functions/moduleManager').registrarModulos()
+process.Client.modulos = require('./core/moduleManager').registrarModulos()
 
 process.on('exit', () => {
   process.Client.destroy()
