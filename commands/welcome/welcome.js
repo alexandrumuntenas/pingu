@@ -16,7 +16,7 @@ module.exports = {
   cooldown: 1000,
   isConfigurationCommand: true,
   interactionData: new SlashCommandBuilder()
-    .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true).addChannelTypes([ChannelType.GuildText, ChannelType.GuildNews])))
+    .addSubcommand(sc => sc.setName('setchannel').setDescription('Set the welcome channel.').addChannelOption(input => input.setName('channel').setDescription('Set the welcome channel.').setRequired(true)))
     .addSubcommand(sc => sc.setName('setmessage').setDescription('Set the welcome message.').addStringOption(input => input.setName('message').setDescription('Set the welcome message. Avaliable placeholders: {}').setRequired(true)))
     .addSubcommand(sc => sc.setName('configurecards').setDescription('Configure the welcome card.')
       .addBooleanOption(input => input.setName('sendcards').setDescription('Send welcome card along with the welcome message.'))
