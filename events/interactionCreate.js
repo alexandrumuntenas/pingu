@@ -3,7 +3,7 @@ const CooldownManager = require('../core/cooldownManager')
 
 const { plantillas } = require('../core/messageManager')
 const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
-const i18n = require('../i18n/i18n')
+const i18n = require('../core/i18nManager')
 const humanizeduration = require('humanize-duration')
 
 async function isCommand (interaction) {
@@ -16,11 +16,11 @@ async function isCommand (interaction) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)
 
       if (interactionToRun.module && !guildConfig[interactionToRun.module].enabled) {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
       }
 
       if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
       }
 
       if (CooldownManager.check(interaction.member, interaction.guild, interactionToRun.name)) {
@@ -28,10 +28,10 @@ async function isCommand (interaction) {
 
         await interactionToRun.runInteraction(interaction)
       } else {
-        return interaction.editReply({ embeds: [plantillas.contador(i18n(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
+        return interaction.editReply({ embeds: [plantillas.contador(i18n.getTranslation(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
       }
     } else {
-      return interaction.editReply({ content: i18n(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
+      return interaction.editReply({ content: i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
     }
   })
 }

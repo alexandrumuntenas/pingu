@@ -28,7 +28,7 @@ module.exports.cargarComandoseInteracciones = () => {
           }
 
           i18n.avaliableLocales.forEach(locale => {
-            command.interaction.setDescriptionLocalized(locale, i18n(locale, command.name))
+            command.interaction.setDescriptionLocalized(locale, i18n.getTranslation(locale, command.name))
           })
 
           commands.set(command.name, command)
@@ -54,13 +54,13 @@ module.exports.construirHelpDelComando = (guild, command) => {
   const clavesAIgnorar = ['name', 'parameters', 'interaction']
 
   Object.keys(process.Client.comandos.get(command)).forEach(key => {
-    if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n(guild.preferredLocale, process.Client.comandos.get(command)[key])
+    if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n.getTranslation(guild.preferredLocale, process.Client.comandos.get(command)[key])
     else if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'object') {
       datosParaConstruirHelp[key] = []
       process.Client.comandos.get(command)[key].forEach(subcommand => {
         const subcommandData = { name: subcommand.name, parameters: subcommand.parameters }
         Object.keys(subcommand).forEach(key => {
-          if (!clavesAIgnorar.includes(key) && typeof subcommand[key] === 'string') subcommandData[key] = i18n(guild.preferredLocale, subcommand[key])
+          if (!clavesAIgnorar.includes(key) && typeof subcommand[key] === 'string') subcommandData[key] = i18n.getTranslation(guild.preferredLocale, subcommand[key])
         })
         datosParaConstruirHelp[key].push(subcommandData)
       })

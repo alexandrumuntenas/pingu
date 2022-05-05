@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 
 module.exports = {
   name: 'help',
@@ -10,7 +10,7 @@ module.exports = {
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
-      .setDescription(`${i18n(interaction.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
+      .setDescription(`${i18n.getTranslation(interaction.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
 
     helpMessage.addField('Vote us on', `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)`)
@@ -23,7 +23,7 @@ module.exports = {
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
-      .setDescription(`${i18n(message.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
+      .setDescription(`${i18n.getTranslation(message.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
 
     helpMessage.addField('Vote us on', `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)`)

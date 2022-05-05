@@ -1,6 +1,6 @@
 const { obtenerDatosDelServidor } = require('../../modules/mcsrvstatus')
 const { MessageAttachment, EmbedBuilder } = require('discord.js')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 const { plantillas } = require('../../core/messageManager')
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
   description: '🖥️ Ping the configured Minecraft server',
   cooldown: 1,
   runInteraction (interaction) {
-    if (!interaction.guild.configuration.mcsrvstatus.host) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::NO_HOST'))] })
+    if (!interaction.guild.configuration.mcsrvstatus.host) return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'MCPING::NO_HOST'))] })
     obtenerDatosDelServidor({ ip: interaction.guild.configuration.mcsrvstatus.host, port: interaction.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -24,12 +24,12 @@ module.exports = {
         return interaction.editReply({ files: [attachment], embeds: [embed] })
       }
 
-      return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
+      return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
     })
   },
   runCommand (message) {
-    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::NO_HOST'))] })
-    message.reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
+    if (!message.guild.configuration.mcsrvstatus.host) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'MCPING::NO_HOST'))] })
+    message.reply({ embeds: [plantillas.precargador(i18n.getTranslation(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       obtenerDatosDelServidor({ ip: message.guild.configuration.mcsrvstatus.host, port: message.guild.configuration.mcsrvstatus.port }, datosDelServidor => {
         if (datosDelServidor) {
           const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
@@ -44,7 +44,7 @@ module.exports = {
           return _message.edit({ files: [attachment], embeds: [embed] })
         }
 
-        return _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
+        return _message.edit({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'MCPING::ERROR'))] })
       })
     })
   }

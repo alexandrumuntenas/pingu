@@ -1,6 +1,6 @@
 const { obtenerDatosDelServidor } = require('../../modules/mcsrvstatus')
 const { MessageAttachment, EmbedBuilder } = require('discord.js')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 const { plantillas } = require('../../core/messageManager')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 
@@ -23,7 +23,7 @@ module.exports = {
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
         interaction.editReply({ files: [attachment], embeds: [embed] })
       } else {
-        return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
     })
   },
@@ -39,7 +39,7 @@ module.exports = {
       })
     }
 
-    message.reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
+    message.reply({ embeds: [plantillas.precargador(i18n.getTranslation(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       try {
         obtenerDatosDelServidor({ ip: message.parameters[0], port: message.parameters[1] }, datosDelServidor => {
           if (datosDelServidor) {
@@ -53,11 +53,11 @@ module.exports = {
               .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
             _message.edit({ files: [attachment], embeds: [embed] })
           } else {
-            return _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
+            return _message.edit({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'MCPING::ERROR'))] })
           }
         })
       } catch {
-        _message.edit({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'MCPING::ERROR'))] })
+        _message.edit({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
     })
   }

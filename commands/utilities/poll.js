@@ -2,7 +2,7 @@ const { PermissionsBitField, EmbedBuilder } = require('discord.js')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { plantillas } = require('../../core/messageManager')
 
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 const alphabet = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹']
 
 module.exports = {
@@ -97,7 +97,7 @@ module.exports = {
       if (options.length === 1) {
         const question = message.parameters.join(' ')
 
-        if (!question) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'POLL::NOQUESTION'))] })
+        if (!question) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'POLL::NOQUESTION'))] })
 
         embed.setTitle(`📊 ${question}`)
 
@@ -134,7 +134,7 @@ module.exports = {
       message.reply({
         embeds: plantillas.ayuda({
           name: 'poll',
-          description: i18n(message.guild.preferredLocale, 'POLL::DESCRIPTION'),
+          description: i18n.getTranslation(message.guild.preferredLocale, 'POLL::DESCRIPTION'),
           cooldown: '1',
           parameters: '<question;option1;option2;option3;...>'
         })

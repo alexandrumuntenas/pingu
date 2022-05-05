@@ -1,6 +1,6 @@
 const fetch = require('superagent')
 const { EmbedBuilder } = require('discord.js')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 const { plantillas } = require('../../core/messageManager')
 
 module.exports = {
@@ -26,8 +26,8 @@ module.exports = {
             .setImage(resource.hdurl)
             .addField(
               '+ Info',
-              `<:blurple_image:892443053359517696> ${resource.copyright || i18n(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
-              }\n<a:ultimahora:876105976573472778> ${i18n(
+              `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
+              }\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(
                 interaction.guild.preferredLocale,
                 'IMAGEAPI::PROVIDER',
                 { PROVIDER: 'Nasa.gov' }
@@ -41,7 +41,7 @@ module.exports = {
   },
   runCommand (message) {
     message
-      .reply({ embeds: [plantillas.precargador(i18n(message.guild.preferredLocale, 'FETCHINGDATA'))] })
+      .reply({ embeds: [plantillas.precargador(i18n.getTranslation(message.guild.preferredLocale, 'FETCHINGDATA'))] })
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)
@@ -61,8 +61,8 @@ module.exports = {
                 .setImage(resource.hdurl)
                 .addField(
                   '+ Info',
-                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
-                  }\n<a:ultimahora:876105976573472778> ${i18n(
+                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
+                  }\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(
                     message.guild.preferredLocale,
                     'IMAGEAPI::PROVIDER',
                     { PROVIDER: 'Nasa.gov' }

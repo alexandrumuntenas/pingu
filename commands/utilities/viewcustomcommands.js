@@ -1,6 +1,6 @@
 const { getCustomCommands } = require('../../modules/customcommands')
 const { EmbedBuilder } = require('discord.js')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 const { plantillas } = require('../../core/messageManager')
 
 module.exports = {
@@ -9,12 +9,12 @@ module.exports = {
   module: 'customcommands',
   runInteraction (interaction) {
     getCustomCommands(interaction.guild, customcommands => {
-      if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
+      if (customcommands.length === 0) return interaction.editReply({ embeds: [plantillas.estado(i18n.getTranslation(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
       const embed = new EmbedBuilder()
         .setColor('#2F3136')
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
-        .setTitle(i18n(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
+        .setTitle(i18n.getTranslation(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
       let customcommandsList = ''
@@ -28,12 +28,12 @@ module.exports = {
   },
   runCommand (message) {
     getCustomCommands(message.guild, customcommands => {
-      if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
+      if (customcommands.length === 0) return message.reply({ embeds: [plantillas.estado(i18n.getTranslation(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::NOCUSTOMCOMMANDS'))] })
 
       const embed = new EmbedBuilder()
         .setColor('#2F3136')
         .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL() })
-        .setTitle(i18n(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
+        .setTitle(i18n.getTranslation(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
 
       let customcommandsList = ''

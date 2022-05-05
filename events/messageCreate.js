@@ -34,17 +34,17 @@ module.exports = {
 
         if (CooldownManager.check(message.member, message.guild, message.commandName)) {
           if (process.Client.comandos.has(message.commandName)) {
-            if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
+            if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
 
-            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })
+            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })
 
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
-            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
+            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
           }
           return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
         }
-        return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+        return message.reply({ embeds: [plantillas.contador(i18n.getTranslation(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
 
       return ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)

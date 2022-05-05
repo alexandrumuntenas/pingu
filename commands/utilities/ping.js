@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js')
 const Math = require('mathjs')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 
 module.exports = {
   name: 'ping',
@@ -10,9 +10,9 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor('#57F287')
       .setTitle('🏓 Pong!')
-      .addField(`<:blurple_bot:938094998283501569> ${i18n(interaction.guild.preferredLocale, 'PING::BOTPING')}`, `${Math.abs(Date.now() - interaction.createdTimestamp)}ms`, true)
-      .addField(`<:the_connection_is_excellent:939550716555583508> ${i18n(interaction.guild.preferredLocale, 'PING::GATEWAYPING')}`, `${Math.round(process.Client.ws.ping)}ms`, true)
-      .addField(`<:timeout_clock:937404313901359114> ${i18n(interaction.guild.preferredLocale, 'PING::TOTALPING')}`, `${Math.round(process.Client.ws.ping + (Math.abs(Date.now() - interaction.createdTimestamp)))}ms`, true)
+      .addField(`<:blurple_bot:938094998283501569> ${i18n.getTranslation(interaction.guild.preferredLocale, 'PING::BOTPING')}`, `${Math.abs(Date.now() - interaction.createdTimestamp)}ms`, true)
+      .addField(`<:the_connection_is_excellent:939550716555583508> ${i18n.getTranslation(interaction.guild.preferredLocale, 'PING::GATEWAYPING')}`, `${Math.round(process.Client.ws.ping)}ms`, true)
+      .addField(`<:timeout_clock:937404313901359114> ${i18n.getTranslation(interaction.guild.preferredLocale, 'PING::TOTALPING')}`, `${Math.round(process.Client.ws.ping + (Math.abs(Date.now() - interaction.createdTimestamp)))}ms`, true)
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
 
@@ -22,9 +22,9 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor('#57F287')
       .setTitle('🏓 Pong!')
-      .addField(`<:blurple_bot:938094998283501569> ${i18n(message.guild.preferredLocale, 'PING::BOTPING')}`, `${Math.abs(Date.now() - message.createdTimestamp)}ms`, true)
-      .addField(`<:the_connection_is_excellent:939550716555583508> ${i18n(message.guild.preferredLocale, 'PING::GATEWAYPING')}`, `${Math.round(process.Client.ws.ping)}ms`, true)
-      .addField(`<:timeout_clock:937404313901359114> ${i18n(message.guild.preferredLocale, 'PING::TOTALPING')}`, `${Math.round(process.Client.ws.ping + (Math.abs(Date.now() - message.createdTimestamp)))}ms`, true)
+      .addField(`<:blurple_bot:938094998283501569> ${i18n.getTranslation(message.guild.preferredLocale, 'PING::BOTPING')}`, `${Math.abs(Date.now() - message.createdTimestamp)}ms`, true)
+      .addField(`<:the_connection_is_excellent:939550716555583508> ${i18n.getTranslation(message.guild.preferredLocale, 'PING::GATEWAYPING')}`, `${Math.round(process.Client.ws.ping)}ms`, true)
+      .addField(`<:timeout_clock:937404313901359114> ${i18n.getTranslation(message.guild.preferredLocale, 'PING::TOTALPING')}`, `${Math.round(process.Client.ws.ping + (Math.abs(Date.now() - message.createdTimestamp)))}ms`, true)
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
 

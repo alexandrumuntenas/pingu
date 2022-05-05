@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { createSuggestion, checkIfUserIsBlacklisted } = require('../../modules/suggestions')
 const { plantillas } = require('../../core/messageManager')
-const i18n = require('../../i18n/i18n')
+const i18n = require('../../core/i18nManager')
 
 module.exports = {
   name: 'suggest',
@@ -14,11 +14,11 @@ module.exports = {
     checkIfUserIsBlacklisted(interaction.guild, interaction.member, isBlacklisted => {
       if (!isBlacklisted) {
         createSuggestion(interaction.member, interaction.options.getString('suggestion'), suggestionId => {
-          if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGEST::ERROR'))] })
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
+          if (!suggestionId) return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'SUGGEST::ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n.getTranslation(interaction.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
         })
       } else {
-        interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
+        interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
       }
     })
   },
@@ -29,7 +29,7 @@ module.exports = {
           return message.reply({
             embeds: plantillas.ayuda({
               name: 'suggest',
-              description: i18n(message.guild.preferredLocale, 'SUGGEST::DESCRIPTION'),
+              description: i18n.getTranslation(message.guild.preferredLocale, 'SUGGEST::DESCRIPTION'),
               module: 'suggestions',
               parameters: '<suggestion ··>',
               cooldown: 'Determined by the guild'
@@ -38,11 +38,11 @@ module.exports = {
         }
 
         createSuggestion(message.member, message.parameters.join(' '), suggestionId => {
-          if (!suggestionId) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'SUGGEST::ERROR'))] })
-          return message.reply({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
+          if (!suggestionId) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'SUGGEST::ERROR'))] })
+          return message.reply({ embeds: [plantillas.conexito(i18n.getTranslation(message.guild.preferredLocale, 'SUGGEST::SUCCESS', { SUGGESTIONID: suggestionId }))] })
         })
       } else {
-        message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
+        message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'SUGGEST::BLACKLISTED'))] })
       }
     })
   }
