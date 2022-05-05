@@ -3,7 +3,7 @@
 const Database = require('./databaseConnection')
 const Consolex = require('./consolex')
 const { REST } = require('@discordjs/rest')
-const { Routes } = require('discord-api-types/v9')
+const { Routes } = require('discord-api-types/v10')
 
 /**
  * Obtiene la configuración de un guild específico.
@@ -141,43 +141,42 @@ const { Collection } = require('discord.js')
 /**
  * Crea el listado de interacciones de un servidor bajo demanda
  * @param {Object} guildConfig - La configuración del servidor.
- * @param {Boolean} deployConfigInteractions - Indica si las interacciones de configuración deben ser incluídas.
  * @param {Function} callback - La función que se ejecutará cuando se haya creado el listado de interacciones.
  * @returns {Object} - El listado de interacciones.
  */
 
-function crearListadoDeInteraccionesDeUnGuild (guildConfig, deployConfigInteractions, callback) {
+function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
   if (!callback) throw new Error('Callback function is required')
+
+  // eslint-disable-next-line node/no-callback-literal
+  if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return callback({})
 
   let interactionList = new Collection()
 
   process.Client.modulos.forEach(module => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled) {
-      interactionList = interactionList.concat(module.comandos || [])
+      interactionList = interactionList.concat(process.Client.comandos.filter(command => command.module === module.nombre) || [])
     }
   })
 
   interactionList = interactionList.concat(process.Client.comandos.filter(command => !command.module) || [])
 
-  if (!deployConfigInteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
+  if (!guildConfig.common.interactions.showcfginteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 
-  callback(interactionList.map(command => command.interaction.toJSON()))
+  return callback(interactionList.map(command => command.interactionData.toJSON()))
 }
 
 /**
  * Subir interacciones de un servidor.
  * @param {Guild} guild - El servidor del cual se quiere subir las interacciones.
- * @param {?Boolean} deployConfigInteractions - Deprecated: Indica si las interacciones de configuración deben ser incluídas.
  * @param {Function} callback - La función que se ejecutará cuando se haya subido las interacciones.
  */
 
-module.exports.subirInteraccionesDelServidor = (guild, deployConfigInteractions, callback) => {
-  if (deployConfigInteractions) {
-    Consolex.warn('The parameter "deployConfigInteractions" is being deprecated. The interaction deployment parameters will be pulled off the guild configuration.')
-  }
+module.exports.subirInteraccionesDelServidor = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
   module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
-    crearListadoDeInteraccionesDeUnGuild(guildConfig, deployConfigInteractions, guildInteractionList => {
+    crearListadoDeInteraccionesDeUnGuild(guildConfig, guildInteractionList => {
+      console.log(guildInteractionList)
       rest.put(
         Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
         .catch(err => {

@@ -51,7 +51,39 @@ module.exports = {
             Consolex.gestionarError(err2)
           }
 
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
+        })
+        break
+      }
+
+      case 'showinteractions': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { showinteractions: true } }, err => {
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-SHOWINTERACTIONS:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-SHOWINTERACTIONS:SUCCESS'))] })
+        })
+        break
+      }
+
+      case 'enforceusage': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { enforceusage: true } }, err => {
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-ENFORCEUSAGE:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-ENFORCEUSAGE:SUCCESS'))] })
+        })
+        break
+      }
+
+      case 'showcfginteractions': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { showcfginteractions: true } }, err => {
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-SHOWCFGINTERACTIONS:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-SHOWCFGINTERACTIONS:SUCCESS'))] })
+        })
+        break
+      }
+
+      case 'setlanguage': {
+        actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { language: interaction.options.getString('language') } }, err => {
+          if (err) return interaction.editReply({ embeds: [plantillas.error(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:ERROR'))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.options.getString('language'), 'BOT::SETLANGUAGE:SUCCESS', { LANGUAGE: interaction.options.getString('language') }))] })
         })
         break
       }
@@ -82,9 +114,7 @@ module.exports = {
               throw err
             }
 
-            actualizarConfiguracionDelServidor(interaction.guild, { column: 'common', newconfig: { interactions: { enabled: interaction.options.getBoolean('configinteractions') || false } } })
-
-            return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredLocale, 'UPDATE::SUCCESS'))] })
+            return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'UPDATE::SUCCESS'))] })
           })
         } catch (err) {
           Consolex.gestionarError(err)
@@ -144,16 +174,8 @@ module.exports = {
       }
 
       case 'updateinteractions': {
-        if (message.parameters[1] === 'true') {
-          message.parameters[1] = true
-        } else {
-          message.parameters[1] = false
-        }
-
-        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { interactions: { enabled: message.parameters[1] } } })
-
         try {
-          subirInteraccionesDelServidor(message.guild, message.parameters[1], err => {
+          subirInteraccionesDelServidor(message.guild, err => {
             if (err) {
               message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'UPDATE::ERROR'))] })
               throw err

@@ -32,4 +32,14 @@ require('./functions/eventManager').cargarEventos()
 
 process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
-process.Client.eventos = require('./functions/eventManager').funcionesDeTerceros
+for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.js'))) {
+  const event = require(`./events/${file}`)
+  Consolex.success(`Evento ${file} cargado`)
+  process.Client.on(event.name, (...args) => event.execute(...args))
+}
+
+process.on('exit', () => {
+  process.Client.destroy()
+})
+
+// TODO: Añadir un gestor para los "help" para ser dinámico.
