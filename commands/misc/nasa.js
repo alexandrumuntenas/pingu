@@ -24,15 +24,11 @@ module.exports = {
           embed
             .setTitle(resource.title)
             .setImage(resource.hdurl)
-            .addField(
-              '+ Info',
-              `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
-              }\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(
-                interaction.guild.preferredLocale,
-                'IMAGEAPI::PROVIDER',
-                { PROVIDER: 'Nasa.gov' }
-              )}`
-            )
+            .addFields([
+              {
+                name: '+ Info', value: `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')}\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(interaction.guild.preferredLocale, 'IMAGEAPI::PROVIDER', { PROVIDER: 'Nasa.gov' })}`, inline: true
+              }
+            ])
           interaction.editReply({ embeds: [embed] })
         } else {
           interaction.editReply({ embeds: [embed] })
@@ -59,15 +55,9 @@ module.exports = {
               embed
                 .setTitle(resource.title)
                 .setImage(resource.hdurl)
-                .addField(
-                  '+ Info',
-                  `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')
-                  }\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(
-                    message.guild.preferredLocale,
-                    'IMAGEAPI::PROVIDER',
-                    { PROVIDER: 'Nasa.gov' }
-                  )}`
-                )
+                .addFields([
+                  { name: '+ Info', value: `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')}\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(message.guild.preferredLocale, 'IMAGEAPI::PROVIDER', { PROVIDER: 'Nasa.gov' })}`, inline: true }
+                ])
               msg.edit({ embeds: [embed] })
             } else {
               msg.edit({ embeds: [embed] })

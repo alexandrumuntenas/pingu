@@ -229,10 +229,12 @@ function actualizarDatosDelPanel (guild) {
         const embed = new EmbedBuilder()
         if (servidor) {
           embed
-            .addField(':radio_button: Version', servidor.version, true)
-            .addField(':busts_in_silhouette: Players', servidor.jugadores, true)
-            .addField(`${servidor.ping.emoji} Ping`, `${servidor.ping.ms}ms` || 'Failed to fetch server ping', true)
-            .addField(':desktop: Address', servidor.direccion, false)
+            .addFields([
+              { name: ':radio_button: Version', value: servidor.version, inline: true },
+              { name: ':busts_in_silhouette: Players', value: servidor.jugadores, inline: true },
+              { name: `${servidor.ping.emoji} Ping`, value: `${servidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
+              { name: ':desktop: Address', value: servidor.direccion, inline: true }
+            ])
             .setImage('attachment://motd.png')
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
         } else {

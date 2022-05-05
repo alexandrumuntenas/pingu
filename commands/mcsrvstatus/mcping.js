@@ -14,10 +14,12 @@ module.exports = {
       if (datosDelServidor) {
         const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
         const embed = new EmbedBuilder()
-          .addField(':radio_button: Version', datosDelServidor.version, true)
-          .addField(':busts_in_silhouette: Players', datosDelServidor.jugadores, true)
-          .addField(`${datosDelServidor.ping.emoji} Ping`, `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', true)
-          .addField(':desktop: Address', datosDelServidor.direccion, false)
+          .addFields([
+            { name: ':radio_button: Version', value: datosDelServidor.version, inline: true },
+            { name: ':busts_in_silhouette: Players', value: datosDelServidor.jugadores, inline: true },
+            { name: `${datosDelServidor.ping.emoji} Ping`, value: `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
+            { name: ':desktop: Address', value: datosDelServidor.direccion, inline: true }
+          ])
           .setImage('attachment://motd.png')
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 
@@ -34,10 +36,12 @@ module.exports = {
         if (datosDelServidor) {
           const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
           const embed = new EmbedBuilder()
-            .addField(':radio_button: Version', datosDelServidor.version, true)
-            .addField(':busts_in_silhouette: Players', datosDelServidor.jugadores, true)
-            .addField(`${datosDelServidor.ping.emoji} Ping`, `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', true)
-            .addField(':desktop: Address', datosDelServidor.direccion, false)
+            .addFields([
+              { name: ':radio_button: Version', value: datosDelServidor.version, inline: true },
+              { name: ':busts_in_silhouette: Players', value: datosDelServidor.jugadores, inline: true },
+              { name: `${datosDelServidor.ping.emoji} Ping`, value: `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
+              { name: ':desktop: Address', value: datosDelServidor.direccion, inline: true }
+            ])
             .setImage('attachment://motd.png')
             .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 

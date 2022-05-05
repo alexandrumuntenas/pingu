@@ -12,9 +12,10 @@ module.exports = {
       .setTitle(process.Client.user.username)
       .setDescription(`${i18n.getTranslation(interaction.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
-
-    helpMessage.addField('Vote us on', `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)`)
-    helpMessage.addField('Links', `[Docs](https://alexandrumuntenas.dev/pingu/ ) • [Help Translating](https://gitlocalize.com/repo/7231) • [Support Server](${process.env.GUILDSUPPORTINVITE || null}) • [Invite](https://discord.com/oauth2/authorize?client_id=${process.Client.user.id}&permissions=388627950679&scope=bot%20applications.commands) • [Source Code](https://github.com/alexandrumuntenas/pingu)`)
+      .addFields([
+        { name: 'Vote us on', value: `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)` },
+        { name: 'Links', value: `[Docs](https://alexandrumuntenas.dev/pingu/ ) • [Help Translating](https://gitlocalize.com/repo/7231) • [Support Server](${process.env.GUILDSUPPORTINVITE || null}) • [Invite](https://discord.com/oauth2/authorize?client_id=${process.Client.user.id}&permissions=388627950679&scope=bot%20applications.commands) • [Source Code](https://github.com/alexandrumuntenas/pingu)` }
+      ])
 
     interaction.editReply({ embeds: [helpMessage] })
   },
@@ -25,9 +26,10 @@ module.exports = {
       .setTitle(process.Client.user.username)
       .setDescription(`${i18n.getTranslation(message.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
-
-    helpMessage.addField('Vote us on', `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)`)
-    helpMessage.addField('Links', `[Docs](https://alexandrumuntenas.dev/pingu/ ) • [Help Translating](https://gitlocalize.com/repo/7231) • [Support Server](${process.env.GUILDSUPPORTINVITE || null}) • [Invite](https://discord.com/oauth2/authorize?client_id=${process.Client.user.id}&permissions=388627950679&scope=bot%20applications.commands) • [Source Code](https://github.com/alexandrumuntenas/pingu)`)
+      .addFields([
+        { name: 'Vote us on', value: `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)` },
+        { name: 'Links', value: `[Docs](https://alexandrumuntenas.dev/pingu/ ) • [Help Translating](https://gitlocalize.com/repo/7231) • [Support Server](${process.env.GUILDSUPPORTINVITE || null}) • [Invite](https://discord.com/oauth2/authorize?client_id=${process.Client.user.id}&permissions=388627950679&scope=bot%20applications.commands) • [Source Code](https://github.com/alexandrumuntenas/pingu)` }
+      ])
 
     message.reply({ embeds: [helpMessage] })
   }

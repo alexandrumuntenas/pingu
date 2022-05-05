@@ -129,11 +129,11 @@ module.exports.plantillas.ayuda = command => {
     const subcommandsNSFW = command.subcommands.filter(subcommand => subcommand.isNSFW)
 
     if (subcommands) {
-      subcommands.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:system_slashcommand:970718607199846450> Command:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true))
+      subcommands.forEach(subcommand => embedOptions.addFields([{ name: `${subcommand.name}`, value: `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:system_slashcommand:970718607199846450> Command:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, inline: true }]))
     }
 
     if (subcommandsNSFW) {
-      subcommandsNSFW.forEach(subcommand => embedOptions.addField(`${subcommand.name}`, `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:channel_nsfw:970717952024379462> Command:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, true))
+      subcommandsNSFW.forEach(subcommand => embedOptions.addFields([{ name: `${subcommand.name}`, value: `${subcommand.description ? subcommand.description : 'No description'}\n\n${subcommand.parameters ? `<:channel_nsfw:970717952024379462> Command:\n${codeBlock(`${subcommand.name} ${subcommand.parameters}`)}` : ''}`, inline: true }]))
     }
   }
 

@@ -184,8 +184,10 @@ module.exports.events = {}
 const defaultEmbed = (member, suggestion) => {
   const embed = new EmbedBuilder()
     .setAuthor({ name: member.user.tag || 'Mysterious User#0000', iconURL: member.user.displayAvatarURL() || 'https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png' })
-    .addField(':bulb: Submitter', `${suggestion.author.user.username || 'Mysterious User'}#${suggestion.author.user.discriminator || '0000'}`, true)
-    .addField(':pencil: Suggestion', suggestion.suggestion)
+    .addFields([
+      { name: ':bulb: Submitter', value: `${suggestion.author.user.username || 'Mysterious User'}#${suggestion.author.user.discriminator || '0000'}`, inline: true },
+      { name: ':pencil: Suggestion', value: suggestion.suggestion, inline: true }
+    ])
     .setFooter({ text: `sID: ${suggestion.id}`, iconURL: member.guild.iconURL() }).setTimestamp()
   return embed
 }
@@ -238,7 +240,7 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
           embeds: [defaultEmbed(member, suggestion).setColor('#05d43f')
             .setTitle(i18n.getTranslation(guildConfig.common.language, 'SUGGESTIONS_EVENTS::APPROVED'))
-            .addField(`:white_check_mark: ${i18n.getTranslation(guildConfig.common.language, 'APPROVEDBY')}`, `${member} \`[${member.id}]\``, false)
+            .addFields([{ name: `:white_check_mark: ${i18n.getTranslation(guildConfig.common.language, 'APPROVEDBY')}`, value: `${member} \`[${member.id}]\``, inline: false }])
           ]
         })
       }
@@ -265,7 +267,7 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
           embeds: [defaultEmbed(member, suggestion).setColor('#cf000f')
             .setTitle(i18n.getTranslation(guildConfig.common.language, 'SUGGESTIONS_EVENTS::REJECTED'))
-            .addField(`:x: ${i18n.getTranslation(guildConfig.common.language, 'REJECTEDBY')}`, `${member} \`[${member.id}]\``, false)
+            .addFields([{ name: `:x: ${i18n.getTranslation(guildConfig.common.language, 'REJECTEDBY')}`, value: `${member} \`[${member.id}]\``, inline: false }])
           ]
         })
       }
@@ -293,7 +295,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
           embeds: [defaultEmbed(member, suggestion)
             .setColor('#dd9323')
             .setTitle(i18n.getTranslation(guildConfig.common.language, 'SUGGESTIONS_EVENTS::NOTEADDED'))
-            .addField(`:clipboard: ${i18n.getTranslation(guildConfig.common.language, 'STAFFNOTE')}`, note)
+            .addFields([{ name: `:clipboard: ${i18n.getTranslation(guildConfig.common.language, 'STAFFNOTE')}`, value: note }])
           ]
         })
       }
