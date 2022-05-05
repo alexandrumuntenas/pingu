@@ -6,7 +6,7 @@ const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
 const i18n = require('../core/i18nManager')
 const humanizeduration = require('humanize-duration')
 
-async function isCommand (interaction) {
+async function isChatInputCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
@@ -40,7 +40,7 @@ module.exports = {
   name: 'interactionCreate',
   execute: async interaction => { // skipcq: JS-0116
     if (interaction.isCommand()) {
-      isCommand(interaction).catch(Consolex.gestionarError)
+      isChatInputCommand(interaction).catch(Consolex.gestionarError)
     }
   }
 }

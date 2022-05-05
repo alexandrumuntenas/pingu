@@ -10,7 +10,7 @@ const { existsSync, statSync } = require('fs')
  */
 module.exports.getTranslation = (language, key, placeholders) => {
   let languageToUse = language || 'es-ES'
-  if (!existsSync(`./i18n/locales/${languageToUse}.json`)) {
+  if (!existsSync(`./locales/${languageToUse}.json`)) {
     gestionarError(`No se encontró el archivo de idioma ${languageToUse}.json`)
     languageToUse = 'es-ES'
   }

@@ -18,7 +18,9 @@ module.exports = {
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && guildConfig.interactions.enforceusage) return message.reply('Smth') // TODO: Preparar mensaje de error
+      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && guildConfig.interactions.enforceusage) {
+        return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
+      }
 
       if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
         if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
@@ -42,7 +44,7 @@ module.exports = {
 
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
-            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
+            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message) : message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
           }
           return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
         }
