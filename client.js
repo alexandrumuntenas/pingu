@@ -25,15 +25,11 @@ if (process.env.ENTORNO === 'publico') {
   process.Client.login(process.env.INSIDER_TOKEN)
 }
 
-process.Client.comandos = require('./functions/commandsManager').cargarComandoseInteracciones()
+process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
+
+require('./functions/eventManager').cargarEventosDeProceso()
+require('./functions/eventManager').cargarEventos()
+
 process.Client.modulos = require('./functions/moduleManager').registrarModulos()
 
-for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.js'))) {
-  const event = require(`./events/${file}`)
-  Consolex.success(`Evento ${file} cargado`)
-  process.Client.on(event.name, (...args) => event.execute(...args))
-}
-
-process.on('exit', () => {
-  process.Client.destroy()
-})
+process.Client.eventos = require('./functions/eventManager').funcionesDeTerceros

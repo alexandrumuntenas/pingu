@@ -6,24 +6,7 @@ const { plantillas } = require('../functions/messageManager')
 const i18n = require('../i18n/i18n')
 const { obtenerConfiguracionDelServidor } = require('../functions/guildManager.js')
 const humanizeduration = require('humanize-duration')
-const { runCustomCommand } = require('../modules/customcommands')
-const { getExperience } = require('../modules/leveling')
-const { handleAutoRepliesInMessageCreate } = require('../modules/autoreplies')
-const { GestorIncializadorDeAccionesEnmessageCreate } = require('../modules/moderation')
-
-function ejecutarFunciones (message) { // skipcq: JS-D1001
-  if (message.guild.configuration.leveling.enabled) {
-    getExperience(message)
-  }
-
-  if (message.guild.configuration.autoreplies.enabled) {
-    handleAutoRepliesInMessageCreate(message)
-  }
-
-  if (true || message.guild.configuration.moderation.enabled) { // Ahora se hace un bypass!
-    GestorIncializadorDeAccionesEnmessageCreate(message)
-  }
-}
+const { ejecutarFuncionesDeTerceros } = require('../functions/eventManager')
 
 module.exports = {
   name: 'messageCreate',
@@ -55,17 +38,14 @@ module.exports = {
 
             CooldownManager.add(message.member, message.guild, commandToExecute)
 
-            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'COMMAND::ONLYINTERACTION'))] })
-          } else if (message.guild.configuration.customcommands.enabled) {
-            CooldownManager.add(message.member, message.guild, message.commandName)
-            return runCustomCommand(message, message.commandName)
+            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message.guild.configuration.common.language, message) : message.reply({ embeds: [plantillas.error(i18n(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
           }
-        } else {
-          return message.reply({ embeds: [plantillas.contador(i18n(message.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.preferredLocale || 'en-US', fallbacks: ['en-US'] }) }))] })
+          return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
         }
+        return message.reply({ embeds: [plantillas.contador(i18n(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
 
-      return ejecutarFunciones(message)
+      return ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)
     })
   }
 }

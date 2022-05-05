@@ -87,44 +87,6 @@ module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPe
 
 const { MessageEmbed } = require('discord.js')
 
-// TODO: Incorporar con el eventManager.
-
-module.exports.handleAutoRepliesInMessageCreate = message => {
-  module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
-    if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
-      const reply = {}
-      if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
-        const embed = new MessageEmbed()
-
-        if (respuestaPersonalizada.propiedades.enviarEnEmbed.title) embed.setTitle(respuestaPersonalizada.propiedades.sendEmbed.title)
-
-        if (respuestaPersonalizada.propiedades.enviarEnEmbed.description) {
-          embed.setDescription(respuestaPersonalizada.propiedades.sendEmbed.description)
-        } else embed.setDescription(respuestaPersonalizada.respuesta)
-
-        if (respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail) embed.setThumbnail(respuestaPersonalizada.propiedades.sendEmbed.thumbnail)
-
-        if (respuestaPersonalizada.propiedades.enviarEnEmbed.imagen) embed.setImage(respuestaPersonalizada.propiedades.sendEmbed.image)
-
-        if (respuestaPersonalizada.propiedades.enviarEnEmbed.url) embed.setURL(respuestaPersonalizada.propiedades.sendEmbed.url)
-
-        if (respuestaPersonalizada.propiedades.enviarEnEmbed.color) embed.setColor(respuestaPersonalizada.propiedades.sendEmbed.color)
-        else embed.setColor('#2F3136')
-
-        embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
-
-        reply.embeds = [embed]
-      } else reply.content = respuestaPersonalizada.respuesta
-
-      try {
-        message.channel.send(reply)
-      } catch (err) {
-        Consolex.gestionarError(err)
-      }
-    }
-  })
-}
-
 const randomstring = require('randomstring')
 const fs = require('fs')
 
@@ -160,3 +122,43 @@ module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
     }
   })
 }
+
+module.exports.hooks = [{
+  evento: 'messageCreate',
+  tipo: 'noPrefix',
+  funcion: message => {
+    module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
+      if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
+        const reply = {}
+        if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
+          const embed = new MessageEmbed()
+
+          if (respuestaPersonalizada.propiedades.enviarEnEmbed.title) embed.setTitle(respuestaPersonalizada.propiedades.sendEmbed.title)
+
+          if (respuestaPersonalizada.propiedades.enviarEnEmbed.description) {
+            embed.setDescription(respuestaPersonalizada.propiedades.sendEmbed.description)
+          } else embed.setDescription(respuestaPersonalizada.respuesta)
+
+          if (respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail) embed.setThumbnail(respuestaPersonalizada.propiedades.sendEmbed.thumbnail)
+
+          if (respuestaPersonalizada.propiedades.enviarEnEmbed.imagen) embed.setImage(respuestaPersonalizada.propiedades.sendEmbed.image)
+
+          if (respuestaPersonalizada.propiedades.enviarEnEmbed.url) embed.setURL(respuestaPersonalizada.propiedades.sendEmbed.url)
+
+          if (respuestaPersonalizada.propiedades.enviarEnEmbed.color) embed.setColor(respuestaPersonalizada.propiedades.sendEmbed.color)
+          else embed.setColor('#2F3136')
+
+          embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
+
+          reply.embeds = [embed]
+        } else reply.content = respuestaPersonalizada.respuesta
+
+        try {
+          message.channel.send(reply)
+        } catch (err) {
+          Consolex.gestionarError(err)
+        }
+      }
+    })
+  }
+}]

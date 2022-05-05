@@ -1,4 +1,6 @@
 const Consolex = require('./consolex')
+const { inyectarEnEventoFuncionesDeTerceros } = require('./eventManager')
+
 const modulos = []
 
 /**
@@ -7,6 +9,7 @@ const modulos = []
  * @param {String} modulo.nombre - Nombre del módulo
  * @param {?String} modulo.descripcion - Descripción del módulo
  * @param {Array} modulo.comandos - Comandos del módulo
+ * @param {Array} modulo.hooks - Array de objetos con la información de los hooks
  */
 
 module.exports.registrarModulo = (modulo) => {
@@ -23,12 +26,16 @@ module.exports.registrarModulo = (modulo) => {
   if (!modulos.find(m => m.nombre === modulo.nombre)) {
     Consolex.success(`Módulo ${modulo.nombre} registrado`)
     modulos.push(modulo)
+    if (modulo.hooks) {
+      modulo.hooks.forEach(hook => {
+        Consolex.info(`Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
+        inyectarEnEventoFuncionesDeTerceros(hook.evento, hook.funcion)
+      })
+    }
   } else {
     Consolex.error(`Módulo ${modulo.nombre} ya registrado`)
   }
 }
-
-// Leer la carpeta modules y seleccionar de cada módulo la propiedad nombre y descripcion
 
 const { readdirSync } = require('fs')
 
@@ -37,8 +44,8 @@ module.exports.registrarModulos = () => {
   modulos.push({ nombre: 'common' })
   directorioDeModulos.forEach(modulo => {
     if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
-      const { nombre, descripcion } = require(`../modules/${modulo}`)
-      module.exports.registrarModulo({ nombre: nombre || modulo.replace('.js', ''), descripcion })
+      const { nombre, descripcion, hooks } = require(`../modules/${modulo}`)
+      module.exports.registrarModulo({ nombre: nombre || modulo.replace('.js', ''), descripcion, hooks })
     }
   })
 
@@ -47,7 +54,6 @@ module.exports.registrarModulos = () => {
 
 module.exports.registroDeModulos = modulos
 
-// Check if module exists
 module.exports.comprobarSiElModuloExiste = (modulo) => {
   if (!modulos.find(m => m.nombre === modulo)) return false
   return true
