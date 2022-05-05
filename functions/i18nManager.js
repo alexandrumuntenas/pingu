@@ -1,5 +1,5 @@
 const stringPlaceholder = require('string-placeholder')
-const { gestionarError } = require('../functions/consolex')
+const { gestionarError } = require('./consolex')
 const { existsSync } = require('fs')
 
 /**
