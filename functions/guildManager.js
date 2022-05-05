@@ -155,7 +155,7 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
 
   process.Client.modulos.forEach(module => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled) {
-      interactionList = interactionList.concat(module.comandos || [])
+      interactionList = interactionList.concat(process.Client.comandos.filter(command => command.module === module.nombre) || [])
     }
   })
 
