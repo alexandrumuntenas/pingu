@@ -33,5 +33,3 @@ process.Client.modulos = require('./core/moduleManager').registrarModulos()
 process.on('exit', () => {
   process.Client.destroy()
 })
-
-// TODO: Añadir un gestor para los "help" para ser dinámico.
