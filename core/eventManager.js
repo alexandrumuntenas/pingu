@@ -2,32 +2,35 @@ const fs = require('fs')
 const Consolex = require('./consolex')
 
 module.exports.cargarEventos = () => {
-  for (const file of fs.readdirSync('./events').filter(files => files.endsWith('.js'))) {
-    const event = require(`../events/${file}`)
-    Consolex.success(`Evento ${file} cargado`)
+  fs.readdirSync('./events/').filter(files => files.endsWith('.js')).forEach(archivo => {
+    const event = require(`../events/${archivo}`)
+    Consolex.success(`Evento ${archivo} cargado`)
     process.Client.on(event.name, (...args) => event.execute(...args))
-  }
+  })
 }
 
 module.exports.cargarEventosDeProceso = () => {
-  for (const file of fs.readdirSync('./events/proceso').filter(files => files.endsWith('.js'))) {
-    const event = require(`../events/proceso/${file}`)
-    Consolex.success(`Evento de proceso ${file} cargado`)
-    process.on(event.name, (...args) => event.execute(...args))
-  }
+  fs.readdirSync('./events/proceso').filter(files => files.endsWith('.js')).forEach(archivo => {
+    const evento = require(`../events/proceso/${archivo}`)
+    Consolex.success(`Evento de proceso ${archivo} cargado`)
+    process.on(evento.name, (...args) => evento.execute(...args))
+  })
 }
 
 const funcionesDeTerceros = {}
 
-module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion) => {
-  if (!funcionesDeTerceros[evento]) funcionesDeTerceros[evento] = [funcion]
-  else funcionesDeTerceros[evento].push(funcion)
+module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion, tipo) => {
+  if (!funcionesDeTerceros[evento]) funcionesDeTerceros[evento] = { notype: [] }
+
+  if (tipo && !funcionesDeTerceros[evento][tipo]) funcionesDeTerceros[evento][tipo] = [funcion]
+  else if (tipo) funcionesDeTerceros[evento][tipo].push(funcion)
+  else funcionesDeTerceros[evento].notype.push(funcion)
   Consolex.warn(`Funciones de terceros inyectadas en evento ${evento}`)
 }
 
 module.exports.ejecutarFuncionesDeTerceros = (evento, tipoDeFuncion, ...args) => {
-  if (funcionesDeTerceros[evento] && tipoDeFuncion) funcionesDeTerceros[evento].filter(funcion => funcion.tipo === tipoDeFuncion).forEach(funcion => funcion(...args))
-  else if (funcionesDeTerceros[evento]) funcionesDeTerceros[evento].forEach(funcion => funcion(...args))
+  if (funcionesDeTerceros[evento] && funcionesDeTerceros[evento][tipoDeFuncion]) funcionesDeTerceros[evento][tipoDeFuncion].forEach(funcion => funcion(...args))
+  else if (funcionesDeTerceros[evento].notype) funcionesDeTerceros[evento].notype.forEach(funcion => funcion(...args))
 }
 
 module.exports.funcionesDeTerceros = funcionesDeTerceros
