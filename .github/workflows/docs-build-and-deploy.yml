@@ -1,4 +1,4 @@
-name: Publicar documentación
+name: "[Docs] Construir y publicar"
 on:
   workflow_dispatch:
   push:
