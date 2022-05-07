@@ -1,5 +1,6 @@
 
 const express = require('express')
+const consolex = require('../functions/consolex')
 const app = express()
 const port = 80
 
@@ -19,7 +20,33 @@ Database.config.namedPlaceholders = true
 app.set('view engine', 'ejs')
 
 app.get('/editor/:sedit', (req, res) => {
-  res.render('index')
+  Database.query('SELECT * FROM webeditor_sessions WHERE sedit = ?', [req.params.sedit], (err, rows) => {
+    if (err) consolex.gestionarError(err)
+    if (rows.length > 0) {
+      Database.query('SELECT * FROM guildData WHERE guild = ?', [rows[0].guild], (err, rows) => {
+        if (err) consolex.gestionarError(err)
+        if (rows.length > 0) {
+          res.render('editor', {
+            guild: rows[0].guild,
+            sedit: req.params.sedit,
+            config: rows[0]
+          })
+        } else {
+          res.render('editor', {
+            guild: '',
+            sedit: req.params.sedit,
+            config: {}
+          })
+        }
+      })
+    } else {
+      res.render('editor', {
+        guild: '',
+        sedit: req.params.sedit,
+        config: {}
+      })
+    }
+  })
 })
 
 app.listen(port, () => {
