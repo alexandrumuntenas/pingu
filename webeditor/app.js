@@ -49,13 +49,16 @@ app.get('/editor/:sedit', (req, res) => {
   })
 })
 
+const randomstring = require('randomstring')
+
 app.post('/editor/:sedit', (req, res) => {
   Database.query('SELECT * FROM webeditor_sessions WHERE sedit = ?', [req.params.sedit], (err, rows) => {
     if (err) consolex.gestionarError(err)
     if (rows.length > 0) {
-      Database.query('INSERT INTO webeditor_changes (sedit, guild, newconfiguration) VALUES (?, ?, ?)', [req.params.sedit, rows[0].guild, JSON.stringify(req.body)], (err, rows) => {
+      const codigoactivacion = randomstring.generate({ length: 12, charset: 'alphabetic' })
+      Database.query('INSERT INTO webeditor_changes (codigoactivacion, guild, newconfiguration) VALUES (?, ?, ?)', [codigoactivacion, rows[0].guild, JSON.stringify(req.body)], (err, rows) => {
         if (err) consolex.gestionarError(err)
-        res.status(200).send('ok')
+        res.status(200).send({ codigoactivacion })
       })
     } else {
       res.status(500).send('error')
