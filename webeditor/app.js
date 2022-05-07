@@ -1,8 +1,11 @@
 
+require('dotenv').config()
+
 const express = require('express')
 const consolex = require('../functions/consolex')
+
 const app = express()
-const port = 80
+const port = process.env.WEBEDITOR_PORT
 
 const Database = require('mysql2').createPool({
   host: process.env.DATABASE_HOST,
