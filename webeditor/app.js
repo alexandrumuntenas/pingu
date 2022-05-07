@@ -20,31 +20,19 @@ Database.config.namedPlaceholders = true
 app.set('view engine', 'ejs')
 
 app.get('/editor/:sedit', (req, res) => {
-  Database.query('SELECT * FROM webeditor_sessions WHERE sedit = ?', [req.params.sedit], (err, rows) => {
-    if (err) consolex.gestionarError(err)
-    if (rows.length > 0) {
-      Database.query('SELECT * FROM guildData WHERE guild = ?', [rows[0].guild], (err, rows) => {
-        if (err) consolex.gestionarError(err)
-        if (rows.length > 0) {
-          res.render('editor', {
-            guild: rows[0].guild,
-            sedit: req.params.sedit,
-            config: rows[0]
-          })
+  Database.query('SELECT * FROM webeditorSessions WHERE sedit = ? LIMIT 1', [req.params.sedit], (editorSessionsLookupError, sessions) => {
+    if (editorSessionsLookupError) consolex.gestionarError(editorSessionsLookupError)
+    if (sessions && Object.prototype.hasOwnProperty.call(sessions, 0)) {
+      Database.query('SELECT * FROM guildData WHERE guild = ? LIMIT 1', [sessions[0].guild], (guildDatalookupError, guilds) => {
+        if (guildDatalookupError) consolex.gestionarError(guildDatalookupError)
+        if (guilds && Object.prototype.hasOwnProperty.call(guilds, 0)) {
+          res.render('editor', { session: sessions[0], guild: guilds[0] })
         } else {
-          res.render('editor', {
-            guild: '',
-            sedit: req.params.sedit,
-            config: {}
-          })
+          res.render('editor', { session: sessions[0], guild: null })
         }
       })
     } else {
-      res.render('editor', {
-        guild: '',
-        sedit: req.params.sedit,
-        config: {}
-      })
+      res.render('editor', { session: null, guild: null })
     }
   })
 })
@@ -52,12 +40,12 @@ app.get('/editor/:sedit', (req, res) => {
 const randomstring = require('randomstring')
 
 app.post('/editor/:sedit', (req, res) => {
-  Database.query('SELECT * FROM webeditor_sessions WHERE sedit = ?', [req.params.sedit], (err, rows) => {
-    if (err) consolex.gestionarError(err)
-    if (rows.length > 0) {
+  Database.query('SELECT * FROM webeditorSessions WHERE sedit = ?', [req.params.sedit], (editorSessionsLookupError, sessions) => {
+    if (editorSessionsLookupError) consolex.gestionarError(editorSessionsLookupError)
+    if (sessions && Object.prototype.hasOwnProperty.call(sessions, 0)) {
       const codigoactivacion = randomstring.generate({ length: 12, charset: 'alphabetic' })
-      Database.query('INSERT INTO webeditor_changes (codigoactivacion, guild, newconfiguration) VALUES (?, ?, ?)', [codigoactivacion, rows[0].guild, JSON.stringify(req.body)], (err, rows) => {
-        if (err) consolex.gestionarError(err)
+      Database.query('INSERT INTO webeditorChanges (codigoactivacion, guild, newconfiguration) VALUES (?, ?, ?)', [codigoactivacion, sessions[0].guild, JSON.stringify(req.body)], (editorChangesInsertError, rows) => {
+        if (editorChangesInsertError) consolex.gestionarError(editorChangesInsertError)
         res.status(200).send({ codigoactivacion })
       })
     } else {
@@ -67,5 +55,5 @@ app.post('/editor/:sedit', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Pingu's Web Editor is listening on port ${port}`)
 })
