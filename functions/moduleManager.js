@@ -32,6 +32,10 @@ module.exports.registrarModulo = (modulo) => {
         inyectarEnEventoFuncionesDeTerceros(hook.evento, hook.funcion)
       })
     }
+    if (modulo.dashboard) {
+      Consolex.info(`Registrando hooks de dashboard para módulo ${modulo.nombre}`)
+      modulo.dashboard()
+    }
   } else {
     Consolex.error(`Módulo ${modulo.nombre} ya registrado`)
   }
@@ -44,8 +48,8 @@ module.exports.registrarModulos = () => {
   modulos.push({ nombre: 'common' })
   directorioDeModulos.forEach(modulo => {
     if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
-      const { nombre, descripcion, hooks } = require(`../modules/${modulo}`)
-      module.exports.registrarModulo({ nombre: nombre || modulo.replace('.js', ''), descripcion, hooks })
+      const { nombre, descripcion, hooks, dashboard } = require(`../modules/${modulo}`)
+      module.exports.registrarModulo({ nombre: nombre || modulo.replace('.js', ''), descripcion, hooks, dashboard })
     }
   })
 
