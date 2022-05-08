@@ -4,6 +4,9 @@ require('dotenv').config()
 const express = require('express')
 const consolex = require('../functions/consolex')
 
+const { GatewayIntentBits } = require('discord-api-types/v10')
+const discordjs = require('discord.js')
+
 const app = express()
 const port = process.env.WEBEDITOR_PORT
 
@@ -20,19 +23,23 @@ const Database = require('mysql2').createPool({
 
 Database.config.namedPlaceholders = true
 
+const discordjsClient = new discordjs.Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping], partials: ['REACTION', 'MESSAGE', 'USER'], ws: { properties: { $browser: 'Discord iOS' } } })
+
+if (process.env.ENTORNO === 'publico') {
+  discordjsClient.login(process.env.PUBLIC_TOKEN)
+} else {
+  discordjsClient.login(process.env.INSIDER_TOKEN)
+}
+
 app.set('view engine', 'ejs')
 
 app.get('/editor/:sedit', (req, res) => {
   Database.query('SELECT * FROM webeditorSessions WHERE sedit = ? LIMIT 1', [req.params.sedit], (editorSessionsLookupError, sessions) => {
     if (editorSessionsLookupError) consolex.gestionarError(editorSessionsLookupError)
     if (sessions && Object.prototype.hasOwnProperty.call(sessions, 0)) {
-      Database.query('SELECT * FROM guildData WHERE guild = ? LIMIT 1', [sessions[0].guild], (guildDatalookupError, guilds) => {
-        if (guildDatalookupError) consolex.gestionarError(guildDatalookupError)
-        if (guilds && Object.prototype.hasOwnProperty.call(guilds, 0)) {
-          res.render('editor', { session: sessions[0], guild: guilds[0] })
-        } else {
-          res.render('editor', { session: sessions[0], guild: null })
-        }
+      obtenerConfiguracionDelServidor({ id: sessions[0].guild }, config => {
+        if (config) return res.render('editor', { session: sessions[0], config, guild: discordjsClient.guilds.resolve(sessions[0].guild) })
+        else return res.render('editor', { session: sessions[0], guild: null })
       })
     } else {
       res.render('editor', { session: null, guild: null })
@@ -41,6 +48,7 @@ app.get('/editor/:sedit', (req, res) => {
 })
 
 const randomstring = require('randomstring')
+const { obtenerConfiguracionDelServidor } = require('../functions/guildManager')
 
 app.post('/editor/:sedit', (req, res) => {
   Database.query('SELECT * FROM webeditorSessions WHERE sedit = ?', [req.params.sedit], (editorSessionsLookupError, sessions) => {
