@@ -28,7 +28,6 @@ if (process.env.ENTORNO === 'publico') {
   process.Client.Dashboard = new Dashboard(process.Client, { secret: process.env.INSIDER_SECRET, theme: 'dark' })
 }
 
-
 process.Client.comandos = require('./functions/commandsManager').cargarComandoseInteracciones()
 
 require('./functions/eventManager').cargarEventosDeProceso()
