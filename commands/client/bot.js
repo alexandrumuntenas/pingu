@@ -1,24 +1,18 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions, MessageEmbed } = require('discord.js')
-const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor } = require('../../functions/guildManager')
-const { plantillas } = require('../../functions/messageManager')
-const { construirHelpDelComando } = require('../../functions/commandsManager')
+const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor } = require('../../core/guildManager')
+const { plantillas } = require('../../core/messageManager')
+const { modulosDisponibles } = require('../../core/moduleManager')
 
-const avaliableModules = ['suggestions', 'farewell', 'welcome', 'autoreplies', 'customcommands', 'leveling', 'mcsrvstatus']
-const i18n = require('../../i18n/i18n')
-const Consolex = require('../../functions/consolex')
+const i18n = require('../../core/i18nManager')
+const Consolex = require('../../core/consolex')
+const avaliableModules = []
+
+modulosDisponibles.forEach(modulo => avaliableModules.push({ name: modulo, value: modulo }))
 
 module.exports = {
   name: 'bot',
   description: 'BOT::HELP:DESCRIPTION',
-  subcommands: [
-    { name: 'updateinteractions', description: 'BOT::HELP:UPDATEINTERACTIONS:DESCRIPTION', parameters: '<configinteractions[true/false]>' },
-    { name: 'setprefix', description: 'BOT::HELP:SETPREFIX:DESCRIPTION', parameters: '<prefix>' },
-    { name: 'setlanguage', description: 'BOT::HELP:SETLANGUAGE:DESCRIPTION', parameters: '<language[en/es]>' },
-    { name: 'modules viewconfig', description: 'BOT::HELP:MODULESVIEWCONFIG:DESCRIPTION' },
-    { name: 'modules enable', description: 'BOT::HELP:MODULESENABLE:DESCRIPTION', parameters: '<module>' },
-    { name: 'modules disable', description: 'BOT::HELP:MODULESDISABLE:DESCRIPTION', parameters: '<module>' }
-  ],
   cooldown: 1000,
   permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: true,
@@ -28,10 +22,10 @@ module.exports = {
       .setDescription('📦 Manage the modules of your server')
       .addSubcommand(sc => sc.setName('enable')
         .setDescription('Enable a module.')
-        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies').addChoice('mcsrvstatus', 'mcsrvstatus')))
+        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoices(avaliableModules)))
       .addSubcommand(sc => sc.setName('disable')
         .setDescription('Disable a module.')
-        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoice('customcommands', 'customcommands').addChoice('farewell', 'farewell').addChoice('leveling', 'leveling').addChoice('welcome', 'welcome').addChoice('suggestions', 'suggestions').addChoice('autoreplies', 'autoreplies').addChoice('mcsrvstatus', 'mcsrvstatus')))
+        .addStringOption(input => input.setName('module').setRequired(true).setDescription('The name of the module.').addChoices(avaliableModules)))
       .addSubcommand(sc => sc.setName('viewconfig').setDescription('View the status of the modules of your server.'))
     )
     .addSubcommand(sc => sc.setName('setprefix').setDescription('Set the prefix of your server.').addStringOption(input => input.setName('newprefix').setDescription('The new prefix of the bot.').setRequired(true)))
@@ -51,31 +45,31 @@ module.exports = {
             Consolex.gestionarError(err2)
           }
 
-          return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
+          return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredlocale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: interaction.options.getString('newprefix') }))] })
         })
         break
       }
 
       case 'showinteractions': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { showinteractions: true } }, err => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-SHOWINTERACTIONS:ERROR'))] })
-          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-SHOWINTERACTIONS:SUCCESS'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredlocale, 'BOT-SHOWINTERACTIONS:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredlocale, 'BOT-SHOWINTERACTIONS:SUCCESS'))] })
         })
         break
       }
 
       case 'enforceusage': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { enforceusage: true } }, err => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-ENFORCEUSAGE:ERROR'))] })
-          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-ENFORCEUSAGE:SUCCESS'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredlocale, 'BOT-ENFORCEUSAGE:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredlocale, 'BOT-ENFORCEUSAGE:SUCCESS'))] })
         })
         break
       }
 
       case 'showcfginteractions': {
         actualizarConfiguracionDelServidor(interaction.guild, { column: 'interactions', newconfig: { showcfginteractions: true } }, err => {
-          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(locale, 'BOT-SHOWCFGINTERACTIONS:ERROR'))] })
-          else interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'BOT-SHOWCFGINTERACTIONS:SUCCESS'))] })
+          if (err) interaction.editReply({ embeds: [plantillas.error(i18n(interaction.guild.preferredlocale, 'BOT-SHOWCFGINTERACTIONS:ERROR'))] })
+          else interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredlocale, 'BOT-SHOWCFGINTERACTIONS:SUCCESS'))] })
         })
         break
       }
@@ -114,7 +108,7 @@ module.exports = {
               throw err
             }
 
-            return interaction.editReply({ embeds: [plantillas.conexito(i18n(locale, 'UPDATE::SUCCESS'))] })
+            return interaction.editReply({ embeds: [plantillas.conexito(i18n(interaction.guild.preferredlocale, 'UPDATE::SUCCESS'))] })
           })
         } catch (err) {
           Consolex.gestionarError(err)
@@ -147,105 +141,6 @@ module.exports = {
 
       default: {
         interaction.editReply({ embeds: [plantillas.informacion(i18n(interaction.guild.preferredLocale, 'INTERACTIONS::NOT_UPDATED'))] })
-        break
-      }
-    }
-  },
-  runCommand (message) {
-    if (!Object.prototype.hasOwnProperty.call(message.parameters, 0)) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
-
-    switch (message.parameters[0]) {
-      case 'setprefix': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
-
-        actualizarConfiguracionDelServidor(message.guild, { column: 'common', newconfig: { prefix: message.parameters[1] } }, err => {
-          if (err) return message.channel.send({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'BOT::SETPREFIX:ERROR'))] })
-
-          try {
-            message.guild.members.cache.get(process.Client.user.id).setNickname(`[${message.parameters[1]}] ${process.Client.user.username}`)
-          } catch (err2) {
-            Consolex.gestionarError(err2)
-          }
-
-          return message.channel.send({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'BOT::SETPREFIX:SUCCESS', { PREFIX: message.parameters[1] }))] })
-        })
-
-        break
-      }
-
-      case 'updateinteractions': {
-        try {
-          subirInteraccionesDelServidor(message.guild, err => {
-            if (err) {
-              message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'UPDATE::ERROR'))] })
-              throw err
-            }
-
-            return message.reply({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'UPDATE::SUCCESS'))] })
-          })
-        } catch (err) {
-          Consolex.gestionarError(err)
-        }
-
-        break
-      }
-
-      case 'modules': {
-        if (!Object.prototype.hasOwnProperty.call(message.parameters, 1)) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
-
-        switch (message.parameters[1]) {
-          case 'viewconfig': {
-            const botConfigEmbed = new MessageEmbed()
-              .setColor('#2F3136')
-              .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
-              .setTimestamp()
-              .setTitle(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:TITLE'))
-              .setDescription(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:DESCRIPTION'))
-              .addField(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:CUSTOMCOMMANDS'), message.guild.configuration.customcommands.enabled ? i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-              .addField(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:FAREWELL'), message.guild.configuration.farewell.enabled ? i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-              .addField(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:LEVELING'), message.guild.configuration.leveling.enabled ? i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-              .addField(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:SUGGESTIONS'), message.guild.configuration.suggestions.enabled ? i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-              .addField(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:AUTOREPLY'), message.guild.configuration.autoreplies.enabled ? i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-              .addField(i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:WELCOME'), message.guild.configuration.welcome.enabled ? i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:ENABLED') : i18n(message.guild.preferredLocale, 'BOT::MODULES:VIEWCONFIG:FIELD:DISABLED'), true)
-
-            message.reply({ embeds: [botConfigEmbed] })
-            break
-          }
-
-          case 'enable': {
-            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
-
-            actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: true } }, err => {
-              if (err) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'BOT::MODULES:ENABLE:ERROR', { MODULE: message.parameters[2] }))] })
-              return message.reply({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'BOT::MODULES:ENABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
-            })
-
-            break
-          }
-
-          case 'disable': {
-            if (!(Object.prototype.hasOwnProperty.call(message.parameters, 2) && avaliableModules.includes(message.parameters[2]))) return message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
-
-            actualizarConfiguracionDelServidor(message.guild, { column: message.parameters[2], newconfig: { enabled: false } }, err => {
-              if (err) return message.reply({ embeds: [plantillas.error(i18n(message.guild.preferredLocale, 'BOT::MODULES:DISABLE:ERROR', { MODULE: message.parameters[2] }))] })
-
-              return message.reply({ embeds: [plantillas.conexito(i18n(message.guild.preferredLocale, 'BOT::MODULES:DISABLE:SUCCESS', { MODULE: message.parameters[2] }))] })
-            })
-
-            break
-          }
-
-          default: {
-            message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
-            break
-          }
-        }
-
-        break
-      }
-
-      default: {
-        message.reply({ embeds: [construirHelpDelComando(message.guild, 'bot')] })
         break
       }
     }
