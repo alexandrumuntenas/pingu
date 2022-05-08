@@ -35,6 +35,9 @@ module.exports.cargarComandoseInteracciones = () => {
           if (!(command.runCommand || command.runInteraction)) throw new Error(`El comando ${command.name} no tiene una propiedad runInteraction o runCommand. Este comando no podrá ser utilizado por el usuario.`)
 
           commands.set(command.name, command)
+
+          process.Client.Dashboard.registerCommand(command.name, command.description)
+
           Consolex.success(`Comando ${file} cargado`)
         } else {
           Consolex.warn(`Command ${file} no tiene una propiedad name. Este comando no podrá ser utilizado por el usuario.`)
