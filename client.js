@@ -10,6 +10,7 @@
 require('dotenv').config()
 const { GatewayIntentBits } = require('discord-api-types/v10')
 const Discord = require('discord.js')
+const Dashboard = require('discord-easy-dashboard')
 
 const fs = require('fs')
 
@@ -20,12 +21,15 @@ const Consolex = require('./functions/consolex')
 if (process.env.ENTORNO === 'publico') {
   Consolex.warn('Iniciando sesión como el bot público.')
   process.Client.login(process.env.PUBLIC_TOKEN)
+  process.Client.Dashboard = new Dashboard(process.Client, { secret: process.env.PUBLIC_SECRET, theme: 'dark' })
 } else {
   Consolex.warn('Iniciando sesión como el bot de desarrollo.')
   process.Client.login(process.env.INSIDER_TOKEN)
+  process.Client.Dashboard = new Dashboard(process.Client, { secret: process.env.INSIDER_SECRET, theme: 'dark' })
 }
 
-process.Client.comandos = require('./functions/clientManager').cargarComandoseInteracciones()
+
+process.Client.comandos = require('./functions/commandsManager').cargarComandoseInteracciones()
 
 require('./functions/eventManager').cargarEventosDeProceso()
 require('./functions/eventManager').cargarEventos()

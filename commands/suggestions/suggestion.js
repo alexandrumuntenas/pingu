@@ -8,7 +8,7 @@ module.exports = {
   name: 'suggestion',
   module: 'suggestions',
   description: '📖 Manage the suggestions',
-  permissions: [Permissions.FLAGS.MANAGE_GUILD],
+  // permissions: [Permissions.FLAGS.MANAGE_GUILD],
   isConfigurationCommand: false,
   interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('approve').setDescription('Approve a suggestion').addStringOption(input => input.setName('suggestion').setDescription('The suggestion or the message ID').setRequired(true)))
