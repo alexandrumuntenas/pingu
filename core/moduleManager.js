@@ -56,7 +56,7 @@ module.exports.registrarModulos = () => {
   return modulos
 }
 
-module.exports.registroDeModulos = modulos
+module.exports.modulosDisponibles = modulos
 
 module.exports.comprobarSiElModuloExiste = (modulo) => {
   if (!modulos.find(m => m.nombre === modulo)) return false
