@@ -38,7 +38,8 @@
     "statcord.js": "^3.3.0",
     "string-placeholder": "^1.0.2",
     "superagent": "^7.0.2",
-    "unix-time": "^1.0.1"
+    "unix-time": "^1.0.1",
+    "yaml": "^2.0.1"
   },
   "repository": {
     "type": "git",
