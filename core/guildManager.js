@@ -200,3 +200,22 @@ module.exports.eliminarDatosDelServidor = guild => {
     })
   })
 }
+
+const YAML = require('yaml')
+const randomstring = require('randomstring')
+
+const { writeFileSync } = require('fs')
+
+module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
+  const YAMLdocument = new YAML.Document()
+
+  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
+    if (guildConfig && typeof guildConfig === 'object') {
+      YAMLdocument.contents = guildConfig
+
+      const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
+      writeFileSync(attachmentPath, YAMLdocument.toString())
+      return callback(attachmentPath)
+    }
+  })
+}
