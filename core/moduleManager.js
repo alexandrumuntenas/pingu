@@ -62,3 +62,17 @@ module.exports.comprobarSiElModuloExiste = (modulo) => {
   if (!modulos.find(m => m.nombre === modulo)) return false
   return true
 }
+
+const formatoDeConfiguracionDeLosModulos = {}
+
+module.exports.registrarFormatosDeConfiguracion = (modulo, formato) => {
+  if (!module.exports.comprobarSiElModuloExiste(modulo)) throw new Error(`El módulo ${modulo} no existe`)
+  if (!formato) throw new Error('El formato de configuración no puede ser nulo')
+  if (typeof formato === 'object') {
+    formatoDeConfiguracionDeLosModulos[modulo] = formato
+  } else {
+    throw new Error('El formato de configuración debe ser un objeto')
+  }
+}
+
+module.exports.formatosDeConfiguracionDeLosModulos = formatoDeConfiguracionDeLosModulos
