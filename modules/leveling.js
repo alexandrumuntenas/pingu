@@ -1,5 +1,5 @@
 const Consolex = require('../core/consolex')
-const Database = require('../core/databaseConnection')
+const Database = require('../core/databaseManager')
 
 const { getMember, updateMember } = require('../core/memberManager')
 const { obtenerConfiguracionDelServidor } = require('../core/guildManager')

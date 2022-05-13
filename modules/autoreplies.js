@@ -1,5 +1,5 @@
 const Consolex = require('../core/consolex')
-const Database = require('../core/databaseConnection')
+const Database = require('../core/databaseManager')
 
 function traducirAntiguasPropiedadesALasNuevas (propiedades) {
   if (Object.prototype.hasOwnProperty.call(propiedades, 'sendInEmbed')) {
