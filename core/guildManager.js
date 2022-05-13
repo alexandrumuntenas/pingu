@@ -1,6 +1,6 @@
 /** @module GuildDataManager */
 
-const Database = require('./databaseConnection')
+const Database = require('./databaseManager')
 const Consolex = require('./consolex')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v10')
@@ -256,10 +256,20 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
 const { readFileSync } = require('fs')
 
 module.exports.importarDatosDelServidorEnFormatoYAML = (guild, filePath, callback) => {
+  if (!callback) throw new Error('Se necesita un callback')
+
   const archivoDeConfiguracionProcesado = YAML.load(readFileSync('./modeloejemplo.yml', { encoding: 'utf-8' }))
   ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(archivoDeConfiguracionProcesado, (errores, configuracionProcesada) => {
+    let posicionArrayModulos = 0
     modulosDisponibles.forEach(modulo => {
-      module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: archivoDeConfiguracionProcesado[modulo] })
+      module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: archivoDeConfiguracionProcesado[modulo.nombre] }, (err) => {
+        if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
+      })
+      posicionArrayModulos++
+
+      if (posicionArrayModulos === modulosDisponibles.length) {
+        return callback(errores)
+      }
     })
   })
 }
