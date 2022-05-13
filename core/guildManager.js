@@ -1,6 +1,6 @@
 /** @module GuildDataManager */
 
-const Database = require('./databaseConnection')
+const Database = require('./databaseManager')
 const Consolex = require('./consolex')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v10')
