@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { Permissions, MessageEmbed, BitField, Attachment } = require('discord.js')
-const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor, guardarDatosDelServidorEnFormatoYAML, exportarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
+const { subirInteraccionesDelServidor, actualizarConfiguracionDelServidor, guardarDatosDelServidorEnFormatoYAML, exportarDatosDelServidorEnFormatoYAML, importarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
 const { plantillas } = require('../../core/messageManager')
 const { modulosDisponibles } = require('../../core/moduleManager')
 
@@ -30,6 +30,9 @@ module.exports = {
   runCommand(message) {
     exportarDatosDelServidorEnFormatoYAML(message.guild, (attachmentPath) => {
       message.reply({ files: [new Attachment(attachmentPath, `${message.guild.name}_${message.guild.id}.yml`)] })
+    })
+    importarDatosDelServidorEnFormatoYAML(message.guild, null, (errores) => {
+      console.log(errores)
     })
   }
 }
