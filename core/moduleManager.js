@@ -48,8 +48,8 @@ module.exports.registrarModulos = () => {
   modulos.push({ nombre: 'common' })
   directorioDeModulos.forEach(modulo => {
     if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
-      const { nombre, descripcion, hooks } = require(`../modules/${modulo}`)
-      module.exports.registrarModulo({ nombre: nombre || modulo.replace('.js', ''), descripcion, hooks })
+      const { nombre, descripcion, hooks, modeloDeConfiguracion } = require(`../modules/${modulo}`)
+      module.exports.registrarModulo({ nombre: nombre || modulo.replace('.js', ''), descripcion, hooks, modeloDeConfiguracion })
     }
   })
 
@@ -62,17 +62,3 @@ module.exports.comprobarSiElModuloExiste = (modulo) => {
   if (!modulos.find(m => m.nombre === modulo)) return false
   return true
 }
-
-const formatoDeConfiguracionDeLosModulos = {}
-
-module.exports.registrarFormatosDeConfiguracion = (modulo, formato) => {
-  if (!module.exports.comprobarSiElModuloExiste(modulo)) throw new Error(`El módulo ${modulo} no existe`)
-  if (!formato) throw new Error('El formato de configuración no puede ser nulo')
-  if (typeof formato === 'object') {
-    formatoDeConfiguracionDeLosModulos[modulo] = formato
-  } else {
-    throw new Error('El formato de configuración debe ser un objeto')
-  }
-}
-
-module.exports.formatosDeConfiguracionDeLosModulos = formatoDeConfiguracionDeLosModulos
