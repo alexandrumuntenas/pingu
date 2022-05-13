@@ -258,6 +258,8 @@ const { readFileSync } = require('fs')
 module.exports.importarDatosDelServidorEnFormatoYAML = (guild, filePath, callback) => {
   const archivoDeConfiguracionProcesado = YAML.load(readFileSync('./modeloejemplo.yml', { encoding: 'utf-8' }))
   ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(archivoDeConfiguracionProcesado, (errores, configuracionProcesada) => {
-    callback(errores)
+    modulosDisponibles.forEach(modulo => {
+      module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: archivoDeConfiguracionProcesado[modulo] })
+    })
   })
 }
