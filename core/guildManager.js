@@ -67,7 +67,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
   }
 }
 
-const { comprobarSiElModuloExiste } = require('./moduleManager')
+const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManager')
 
 /**
  * Actualiza la configuración de un guild.
@@ -201,21 +201,58 @@ module.exports.eliminarDatosDelServidor = guild => {
   })
 }
 
-const YAML = require('yaml')
+const YAML = require('js-yaml')
 const randomstring = require('randomstring')
 
 const { writeFileSync } = require('fs')
 
 module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
-  const YAMLdocument = new YAML.Document()
-
   module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (guildConfig && typeof guildConfig === 'object') {
-      YAMLdocument.contents = guildConfig
-
       const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
-      writeFileSync(attachmentPath, YAMLdocument.toString())
+      writeFileSync(attachmentPath, YAML.dump(guildConfig))
       return callback(attachmentPath)
     }
   })
+}
+
+
+
+/**
+ * @param {String} modulo
+ * @param {Object} configuracionParaComparar
+ */
+
+function comprobarSiDatosDeConfiguracionCoincidenConElModeloDeConfiguracion (modulo, configuracionParaComparar) {
+  const errores = []
+  const configuracionProcesada = {}
+
+  configuracionParaComparar = configuracionParaComparar || {}
+
+  if (modulosDisponibles[modulo].configuracion) {
+    modulosDisponibles[modulo].configuracion.forEach(parametro => {
+      if (Object.prototype.hasOwnProperty.call(configuracionParaComparar, parametro.nombre)) {
+        // eslint-disable-next-line valid-typeof
+        if (configuracionParaComparar[parametro.nombre] && typeof configuracionParaComparar[parametro.nombre] === parametro.tipo) {
+          configuracionProcesada[parametro.nombre] = configuracionParaComparar[parametro.nombre]
+        } else {
+          errores.push(`El parámetro ${parametro.nombre} debe ser de tipo ${parametro.tipo}`)
+        }
+      } else {
+        errores.push(`El parámetro ${parametro.nombre} no existe`)
+      }
+    })
+  } else {
+    errores.push(`El módulo ${modulo} no tiene configuración`)
+  }
+
+  return { errores, configuracionProcesada }
+}
+
+const { readFileSync } = require('fs')
+
+module.exports.importarDatosDelServidorEnFormatoYAML = (guild, filePath, callback) => {
+  const archivoDeConfiguracionProcesado = YAML.load(readFileSync(filePath, {encoding: 'utf-8'}))
+
+  console.log(archivoDeConfiguracionProcesado)
 }
