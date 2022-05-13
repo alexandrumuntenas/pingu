@@ -1,6 +1,6 @@
 guild: 967774535803871200
 common:
-  language: es
+  language: uk
   prefix: "!"
   interactions:
     enabled: true
