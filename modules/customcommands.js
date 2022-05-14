@@ -1,5 +1,5 @@
 /* eslint-disable node/no-callback-literal */
-const Database = require('../core/databaseConnection')
+const Database = require('../core/databaseManager')
 const Consolex = require('../core/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 

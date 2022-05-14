@@ -1,5 +1,5 @@
 const Consolex = require('../core/consolex')
-const Database = require('../core/databaseConnection')
+const Database = require('../core/databaseManager')
 const randomstring = require('randomstring')
 
 /**

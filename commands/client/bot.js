@@ -18,7 +18,7 @@ module.exports = {
   isConfigurationCommand: true,
   interaction: new SlashCommandBuilder()
     .addSubcommand(sc => sc.setName('export').setDescription('📩 Export the bot configuration to a YAML file.')),
-  runInteraction(interaction) {
+  runInteraction (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'export': {
         exportarDatosDelServidorEnFormatoYAML(interaction.guild, (attachmentPath) => {
@@ -27,7 +27,7 @@ module.exports = {
       }
     }
   },
-  runCommand(message) {
+  runCommand (message) {
     exportarDatosDelServidorEnFormatoYAML(message.guild, (attachmentPath) => {
       message.reply({ files: [new Attachment(attachmentPath, `${message.guild.name}_${message.guild.id}.yml`)] })
     })
