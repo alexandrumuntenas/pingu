@@ -30,7 +30,7 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
   const tablas = Object.keys(tablasYConsultas)
 
   tablas.forEach(tabla => {
-    Database.query(tablasYConsultas[tabla], (err, rows) => {
+    Database.query(tablasYConsultas[tabla], (err) => {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
         return Consolex.info(`DB: La tabla ${tabla} se encuentra presente.`)
       } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
