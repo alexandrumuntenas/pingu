@@ -253,23 +253,44 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
   })
 }
 
+const Downloader = require('nodejs-file-downloader')
+
+async function descargarArchivoDeConfiguracionYAML (url, callback) {
+  const nombreTemporalAleatorioDelArchivo = `${randomstring.generate({ charset: 'alphabetic' })}.yml`
+
+  const downloader = new Downloader({
+    url,
+    directory: './temp',
+    filename: nombreTemporalAleatorioDelArchivo
+  })
+  try {
+    await downloader.download()
+    return callback({ ubicacionArchivo: `./temp/${nombreTemporalAleatorioDelArchivo}` })
+  } catch (error) {
+    Consolex.gestionarError(error)
+    return callback({ error: 'Error al descargar el archivo' })
+  }
+}
+
 const { readFileSync } = require('fs')
 
-module.exports.importarDatosDelServidorEnFormatoYAML = (guild, filePath, callback) => {
+module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url, callback) => {
   if (!callback) throw new Error('Se necesita un callback')
 
-  const archivoDeConfiguracionProcesado = YAML.load(readFileSync(filePath, { encoding: 'utf-8' }))
-  ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(archivoDeConfiguracionProcesado, (errores, configuracionProcesada) => {
-    let posicionArrayModulos = 0
-    modulosDisponibles.forEach(modulo => {
-      module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] }, (err) => {
-        if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
-      })
-      posicionArrayModulos++
+  descargarArchivoDeConfiguracionYAML(url, descarga => {
+    if (descarga.error) return callback(descarga.error)
+    ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), (errores, configuracionProcesada) => {
+      let posicionArrayModulos = 0
+      modulosDisponibles.forEach(modulo => {
+        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] }, (err) => {
+          if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
+        })
+        posicionArrayModulos++
 
-      if (posicionArrayModulos === modulosDisponibles.length) {
-        return callback(errores)
-      }
+        if (posicionArrayModulos === modulosDisponibles.length) {
+          return callback(errores)
+        }
+      })
     })
   })
 }

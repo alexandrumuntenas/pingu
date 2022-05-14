@@ -30,6 +30,7 @@
     "millify": "^4.0.0",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3",
+    "nodejs-file-downloader": "^4.9.3",
     "perspective-api-client": "^3.1.0",
     "radio-browser": "^2.1.9",
     "random-int": "^3.0.0",
