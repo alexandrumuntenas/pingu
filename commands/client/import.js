@@ -1,14 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { Permissions, MessageEmbed, BitField, Attachment } = require('discord.js')
-const { exportarDatosDelServidorEnFormatoYAML, importarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
+const { BitField } = require('discord.js')
+const { importarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
 const { plantillas } = require('../../core/messageManager')
-const { modulosDisponibles } = require('../../core/moduleManager')
 
 const i18n = require('../../core/i18nManager')
-const Consolex = require('../../core/consolex')
-const avaliableModules = []
-
-modulosDisponibles.forEach(modulo => avaliableModules.push({ name: modulo, value: modulo }))
 
 module.exports = {
   name: 'import',

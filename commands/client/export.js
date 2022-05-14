@@ -1,12 +1,8 @@
 const { BitField, Attachment } = require('discord.js')
 const { exportarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
 const { plantillas } = require('../../core/messageManager')
-const { modulosDisponibles } = require('../../core/moduleManager')
 
 const i18n = require('../../core/i18nManager')
-const avaliableModules = []
-
-modulosDisponibles.forEach(modulo => avaliableModules.push({ name: modulo, value: modulo }))
 
 module.exports = {
   name: 'export',
