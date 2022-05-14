@@ -30,3 +30,9 @@ module.exports.sendFarewellMessage = member => {
     channel.send(reemplazarPlaceholdersConDatosReales(guildConfig.farewell.message || '{member} left {server}!', member))
   })
 }
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean',
+  channel: 'string',
+  message: 'string'
+}

@@ -162,3 +162,7 @@ module.exports.hooks = [{
     })
   }
 }]
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean'
+}

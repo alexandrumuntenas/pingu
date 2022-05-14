@@ -278,3 +278,17 @@ module.exports.resetLeaderboard = (guild, callback) => {
 }
 
 module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience, type: 'noPrefix' }]
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean',
+  channel: 'string',
+  message: 'string',
+  difficulty: 'number',
+  card: {
+    background: 'string',
+    overlay: {
+      color: 'string',
+      opacity: 'number'
+    }
+  }
+}
