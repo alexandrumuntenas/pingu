@@ -256,7 +256,7 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
 const Downloader = require('nodejs-file-downloader')
 
 async function descargarArchivoDeConfiguracionYAML (url, callback) {
-  const nombreTemporalAleatorioDelArchivo = `${randomstring.generate({ charset: 'alphabetic' })}.yml`
+  const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
 
   const downloader = new Downloader({
     url,
@@ -281,6 +281,7 @@ module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url, callback) =>
     if (descarga.error) return callback(descarga.error)
     ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), (errores, configuracionProcesada) => {
       let posicionArrayModulos = 0
+      console.log(configuracionProcesada)
       modulosDisponibles.forEach(modulo => {
         module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] }, (err) => {
           if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
