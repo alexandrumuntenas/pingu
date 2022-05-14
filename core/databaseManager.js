@@ -13,11 +13,11 @@ Database.config.namedPlaceholders = true
 
 module.exports = Database
 
+const Consolex = require('./consolex')
 const { readdirSync, readFileSync } = require('fs')
 
 module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
-  // abrir cada sql de la carpeta database y ejecutar el query
-
+  Consolex.info('DB: Comprobando si existen todas las tablas necesarias...')
   const consultas = readdirSync('./database/')
   const tablasYConsultas = {}
 
@@ -28,4 +28,16 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
   })
 
   const tablas = Object.keys(tablasYConsultas)
+
+  tablas.forEach(tabla => {
+    Database.query(tablasYConsultas[tabla], (err, rows) => {
+      if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
+        return Consolex.info(`DB: La tabla ${tabla} se encuentra presente.`)
+      } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
+        return Consolex.error(`DB: La tabla ${tabla} no existía y no se ha podido crear.`)
+      }
+
+      return Consolex.info(`DB: La tabla ${tabla} se ha creado correctamente.`)
+    })
+  })
 }
