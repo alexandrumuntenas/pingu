@@ -16,6 +16,8 @@ module.exports = Database
 const Consolex = require('./consolex')
 const { readdirSync, readFileSync } = require('fs')
 
+let tablasDisponibles = []
+
 module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
   Consolex.info('DB: Comprobando si existen todas las tablas necesarias...')
   const consultas = readdirSync('./database/')
@@ -27,9 +29,9 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
     }
   })
 
-  const tablas = Object.keys(tablasYConsultas)
+  tablasDisponibles = Object.keys(tablasYConsultas)
 
-  tablas.forEach(tabla => {
+  tablasDisponibles.forEach(tabla => {
     Database.query(tablasYConsultas[tabla], (err) => {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
         return Consolex.info(`DB: La tabla ${tabla} se encuentra presente.`)
@@ -41,3 +43,5 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
     })
   })
 }
+
+module.exports.tablasDisponibles = tablasDisponibles
