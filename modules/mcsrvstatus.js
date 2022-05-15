@@ -227,7 +227,7 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
   })
 }
 
-const { Attachment } = require('discord.js')
+const { Attachment, EmbedBuilder } = require('discord.js')
 
 module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) => {
   module.exports.obtenerDatosDelServidor({ ip: host.ip.trim(), port: host.port }, datosDelServidor => {
@@ -247,7 +247,7 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) =
       return callback({ files: [serverMotd, serverIcon], embeds: [embed] })
     }
 
-    return callback({ files: [serverIcon], embeds: [embed] })
+    return callback({ files: [serverIcon], embeds: [embed.setDescription('Failed to fetch server data...')] })
   })
 }
 
@@ -264,35 +264,15 @@ function actualizarNumeroDeJugadoresDelSidebar (guild) {
   })
 }
 
-const { MessageAttachment, EmbedBuilder } = require('discord.js')
 const { createHash } = require('crypto')
 
 function actualizarDatosDelPanel (guild) {
   obtenerConfiguracionDelServidor(guild, config => {
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.messagePanelChannel) {
-      module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
-        const attachment = new MessageAttachment(servidor.motd || './setup/defaultresourcesforguilds/emptymotd.png', 'motd.png')
-        const embed = new EmbedBuilder()
-        if (servidor) {
-          embed
-            .addFields([
-              { name: ':radio_button: Version', value: servidor.version, inline: true },
-              { name: ':busts_in_silhouette: Players', value: servidor.jugadores, inline: true },
-              { name: `${servidor.ping.emoji} Ping`, value: `${servidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
-              { name: ':desktop: Address', value: servidor.direccion, inline: true }
-            ])
-            .setImage('attachment://motd.png')
-            .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
-        } else {
-          embed
-            .setTitle(':x: Error')
-            .setDescription('Failed to fetch server data')
-            .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
-        }
-
+      module.exports.generarMensajeEnriquecidoConDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, mensaje => {
         function fallback () {
           try {
-            process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send({ embeds: [embed], files: [attachment] }).then(newMessage => {
+            process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send(mensaje).then(newMessage => {
               actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
             })
           } catch {
@@ -302,7 +282,7 @@ function actualizarDatosDelPanel (guild) {
 
         try {
           process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).messages.fetch(config.mcsrvstatus.messagePanelId).then(message => {
-            message.edit({ embeds: [embed], files: [attachment] }).catch(() => {
+            message.edit(mensaje).catch(() => {
               fallback()
             })
           }).catch(() => {
