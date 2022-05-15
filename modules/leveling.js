@@ -20,7 +20,6 @@ const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
 const CooldownManager = require('../core/cooldownManager')
 
 /**
- * Get experiece by chatting.
  * @param {Message} message
  */
 
@@ -86,7 +85,6 @@ module.exports.sendLevelUpMessage = message => {
 }
 
 /**
- *  Get the guild leaderboard.
  * @param {Guild} guild
  * @param {Function} callback
  */
@@ -138,7 +136,6 @@ function applyText (canvas, text, maxlimit) {
 }
 
 // Code from https://stackoverflow.com/a/3368118/17821331
-// Fix: Comprobar si se puede mejorar. ¡Eslint no para de gritar!
 // eslint-disable-next-line max-params
 function roundRect (finalImageComposition, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === 'undefined') {
@@ -185,10 +182,9 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
 }
 
 /**
- * Generate the rank card of the member.
  * @param {GuildMember} member
  * @param {Function} callback
- * @returns {String} The path of the rank card.
+ * @returns {String}
  */
 
 module.exports.generateRankCard = (member, callback) => {
@@ -272,7 +268,6 @@ module.exports.generateRankCard = (member, callback) => {
 }
 
 /**
- * Reset the leaderboard from the guild.
  * @param {Guild} guild
  * @param {Function} callback
  * @returns {?String} Error

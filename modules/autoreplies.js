@@ -39,7 +39,6 @@ module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback)
 const crearTextoAleatorio = require('randomstring').generate
 
 /**
- * Crea una nueva respuesta personalizada.
  * @param {Guild} guild - El servidor
  * @param {Object} respuestaPersonalizada - Un objeto con los datos de la respuesta personalizada.
  * @param {Strong} respuestaPersonalizada.desencadenante - El desencadenante de la respuesta personalizada.

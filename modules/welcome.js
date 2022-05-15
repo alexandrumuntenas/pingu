@@ -16,7 +16,6 @@ module.exports.modeloDeConfiguracion = {
 }
 
 /**
- * Give all the configured roles to the new member
  * @param {GuildMember} member
  */
 
@@ -35,12 +34,11 @@ module.exports.giveMemberRoles = member => {
       }
     }
   })
-} // All this function was made by GH Copilot
+}
 
 const { MessageAttachment } = require('discord.js')
 
 /**
- * Send the welcome message to the channel configured in the guild
  * @param {GuildMember} member
  */
 
@@ -135,7 +133,6 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
 }
 
 /**
- * Create the member welcome card
  * @param {GuildMember} member
  * @param {Function} callback
  */
@@ -205,7 +202,6 @@ module.exports.generateWelcomeCard = async (member, callback) => {
 }
 
 /**
- * Do all the stuff that should be done when a member joins the guild
  * @param {GuildMember} member
  */
 

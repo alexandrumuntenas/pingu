@@ -9,7 +9,6 @@ const Database = require('../core/databaseManager')
 const randomstring = require('randomstring')
 
 /**
- * Create a new suggestion in the guild.
  * @param {GuildMember} member - The member who created the suggestion.
  * @param {String} suggestion - The suggestion to be made.
  * @param {Function} callback - The callback function.
@@ -33,7 +32,6 @@ module.exports.createSuggestion = (member, suggestion, callback) => {
 }
 
 /**
- * Delete a suggestion.
  * @param {Guild} guild - The member who is deleting the suggestion.
  * @param {String} suggestionId - The suggestion id.
  */
@@ -45,7 +43,6 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
 }
 
 /**
- * Get all the suggestions in the guild.
  * @param {Guild} guild - The guild.
  * @param {Function} callback - The callback function.
  * @returns {Array} - Suggestions
@@ -64,7 +61,6 @@ module.exports.getSuggestions = (guild, callback) => {
 }
 
 /**
- * Get a suggestion by id from the guild.
  * @param {Guild} guild - The guild.
  * @param {String} suggestionId - The suggestion id.
  * @param {Function} callback - The callback.
@@ -92,7 +88,6 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
 }
 
 /**
- * Approve a suggestion.
  * @param {GuildMember} member - The member who is approving the suggestion.
  * @param {String} suggestionID - The suggestion ID.
  * @param {Function} callback - The callback function.
@@ -113,7 +108,6 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
 }
 
 /**
- * Reject a suggestion.
  * @param {GuildMember} member - The member who is rejecting the suggestion.
  * @param {String} suggestionID - The suggestion ID.
  * @param {Function} callback - The callback function.
@@ -133,7 +127,6 @@ module.exports.rejectSuggestion = (member, suggestionId, callback) => {
 }
 
 /**
- * Add a note to a suggestion
  * @param {Member} member - The member who is adding a note to the suggestion
  * @param {String} suggestionId - The suggestion ID.
  * @param {String} note - The note to add.
@@ -156,7 +149,6 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
 }
 
 /**
- * Get all the suggestions a member has done in a guild.
  * @param {GuildMember} member - The member we are checking for.
  * @param {Function} callback - The callback function.
  */
@@ -185,8 +177,6 @@ const i18n = require('../core/i18nManager')
 
 module.exports.events = {}
 
-/** Estructura prederminada de los mensajes enviados a través de los canales */
-
 const defaultEmbed = (member, suggestion) => {
   const embed = new EmbedBuilder()
     .setAuthor({ name: member.user.tag || 'Mysterious User#0000', iconURL: member.user.displayAvatarURL() || 'https://discordapp.com/assets/dd4dbc0016779df1378e7812eabaa04d.png' })
@@ -198,8 +188,6 @@ const defaultEmbed = (member, suggestion) => {
   return embed
 }
 
-/** Estructura prederminada de los mensajes enviados a través de MD */
-
 const defaultDMEmbed = (guild) => {
   const embed = new EmbedBuilder()
     .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
@@ -209,8 +197,6 @@ const defaultDMEmbed = (guild) => {
 }
 
 const messageManager = require('../core/messageManager')
-
-/** The actions taken after creating the suggestion */
 
 module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
@@ -237,8 +223,6 @@ module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
   })
 }
 
-/** Actions taken after a suggestion is approved. */
-
 module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
@@ -264,8 +248,6 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
   })
 }
 
-/** Actions taken after a suggestion is rejected. */
-
 module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
@@ -290,8 +272,6 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
     })
   })
 }
-
-/** Actions taken after adding a note to a suggestion */
 
 module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
   obtenerConfiguracionDelServidor(member.guild, guildConfig => {
@@ -320,7 +300,6 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
 }
 
 /**
- * Prohibe que un usuario pueda crear sugerencias en el servidor
  * @param {Guild} guild
  * @param {User} user
  */
@@ -338,7 +317,6 @@ module.exports.addUserToBlacklist = (guild, user, callback) => {
 }
 
 /**
- * Comprueba si el usuario está en la lista negra
  * @param {Guild} guild
  * @param {User} user
  * @param {Function} callback
@@ -356,7 +334,6 @@ module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
 }
 
 /**
- * Elimina un usuario de la lista negra
  * @param {Guild} guild
  * @param {User} user
  * @param {Function} callback

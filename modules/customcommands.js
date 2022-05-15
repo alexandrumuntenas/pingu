@@ -34,7 +34,6 @@ module.exports.getCustomCommands = (guild, callback) => {
 }
 
 /**
- * Get the custom command from the database
  * @param {Guild} guild
  * @param {String} command
  * @param {Function} callback
@@ -60,7 +59,6 @@ module.exports.getCustomCommand = (guild, command, callback) => {
 }
 
 /**
- * Create a new custom command for the guild
  * @param {Guild} guild
  * @param {Object} customcommandproperties
  * @param {String} customcommandproperties.command - The command to be used
@@ -102,7 +100,6 @@ module.exports.deleteCustomCommand = (guild, command) => {
 }
 
 /**
- * Update the custom command properties in the database to use the new structures
  * @param {Guild} guild
  * @param {String} command
  * @param {Function} callback
@@ -123,7 +120,6 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
 }
 
 /**
- * Runs the custom command if it exists
  * @param {Message} message
  * @param {String} command
  */

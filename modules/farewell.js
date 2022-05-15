@@ -5,7 +5,6 @@ module.exports.modeloDeConfiguracion = {
 }
 
 /**
- * Do all the stuff that should be done when a member leaves the guild
  * @param {GuildMember} member
  */
 
@@ -20,7 +19,6 @@ module.exports.doGuildMemberRemove = member => {
 }
 
 /**
- * Send the farewell message to the channel configured in the guild
  * @param {GuildMember} member
  */
 

@@ -1,3 +1,5 @@
+/* eslint-disable node/no-callback-literal */
+
 module.exports.modeloDeConfiguracion = {
   enabled: 'boolean',
   host: 'string',
@@ -7,7 +9,6 @@ module.exports.modeloDeConfiguracion = {
   messagePanelId: 'string'
 }
 
-/* eslint-disable node/no-callback-literal */
 const { createCanvas, registerFont } = require('canvas')
 const { writeFileSync } = require('fs')
 const randomstring = require('randomstring')
@@ -17,18 +18,13 @@ registerFont('./fonts/Courier_Prime/CourierPrime-Italic.ttf', { family: 'Courier
 registerFont('./fonts/Courier_Prime/CourierPrime-Bold.ttf', { family: 'Courier Prime Bold' })
 registerFont('./fonts/Courier_Prime/CourierPrime-BoldItalic.ttf', { family: 'Courier Prime Bold Italic' })
 
-/** Comprobar si texto solo tiene espacios; devuelve falso si solo hay 1 */
-
 function tieneSoloEspacios (texto) {
   if (texto.length === 1) return false
   return texto.trim().length === 0
 }
 
 /**
- * Procesar la descripción recibida de un servidor de Minecraft
- * para convertirla en un bloque de Ansi, mostrando los colores
- * en Discord.
- * @param {Array<{color: String, text: String}>} motd - Resultado del ping del servidor de Minecraft (exactamente la propiedad: state.raw.vanilla.raw.description.extra)
+ * @param {Array<{color: String, text: String}>} motd
  * @param {Function} callback
 */
 
@@ -77,7 +73,6 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
 }
 
 /**
- * Relaciona un emoji con una calificación de ping.
  * @param {Number} ping
  * @returns Emoji
  */
@@ -133,10 +128,6 @@ const formatoDeMinecraft = {
   k: 'Obfuscated'
 }
 
-/** Limpia los textos de los espacios iniciales y finales manteniendo el salto de linea, es decir
-  * String.trim(), manteniendo saltos de línea.
-*/
-
 function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea (texto) {
   if (texto.includes('\n')) {
     const textoProcesado = []
@@ -153,9 +144,7 @@ function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea 
 }
 
 /**
- * Procesa el MOTD de un servidor de Minecraft para convertirlo
- * a una matriz procesable por convertirMOTDaImagen()
- * @param {Array} motd - MOTD de un servidor de Minecraft. Resultado del ping del servidor de Minecraft (exactamente la propiedad: state.raw.vanilla.raw.description.extra)
+ * @param {Array} motd
  */
 
 module.exports.procesarMOTD = motd => {
@@ -179,8 +168,7 @@ module.exports.procesarMOTD = motd => {
 }
 
 /**
- * Retirar de los textos el formato devuelto por los servidores de Minecraft
- * @param {String} texto - Texto a limpiar
+ * @param {String} texto
  * @returns Texto limpio
  */
 
@@ -201,13 +189,11 @@ const Gamedig = require('gamedig')
 const consolex = require('../core/consolex')
 
 /**
- * Conectar con el servidor de minecraft y procesar toda su información
- * para que pueda ser usado por el bot.
- * @param {Object} host - Host de un servidor de Minecraft
- * @param {String} host.ip - IP del servidor de Minecraft
- * @param {Number} host.port - Puerto del servidor de Minecraft
+ * @param {Object} host
+ * @param {String} host.ip
+ * @param {Number} host.port
  * @param {Function} callback
- * @returns {Object} - Objeto con la información del servidor de Minecraft
+ * @returns {Object}
  */
 
 module.exports.obtenerDatosDelServidor = (host, callback) => {
@@ -259,8 +245,6 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) =
     return callback({ files: [serverIcon], embeds: [embed.setDescription('Failed to fetch server data...')] })
   })
 }
-
-/* A partir de aquí solo habrá código relacionado con las tareas de actualización de datos */
 
 function actualizarNumeroDeJugadoresDelSidebar (guild) {
   obtenerConfiguracionDelServidor(guild, config => {
