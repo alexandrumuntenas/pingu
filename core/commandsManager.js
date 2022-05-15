@@ -32,9 +32,9 @@ module.exports.cargarComandoseInteracciones = () => {
           })
 
           commands.set(command.name, command)
-          Consolex.success(`Comando ${file} cargado`)
+          Consolex.success(`CommandsManager: Comando ${file} cargado`)
         } else {
-          Consolex.warn(`${file} no se ha cargado porque no tiene una propiedad "name"`)
+          Consolex.warn(`CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`)
         }
       } else if (lstatSync(path).isDirectory()) load(path)
     })

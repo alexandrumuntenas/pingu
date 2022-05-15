@@ -22,22 +22,20 @@ module.exports.registrarModulo = (modulo) => {
 
   if (!process.Client.comandos) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
 
-  Consolex.warn(`Registrando módulo ${modulo.nombre}`)
-
   modulo.comandos = process.Client.comandos.filter(command => command.module === modulo.nombre) || []
-  Consolex.info(`El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
+  Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
 
   if (!modulos.find(m => m.nombre === modulo.nombre)) {
-    Consolex.success(`Módulo ${modulo.nombre} registrado`)
+    Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
     modulos.push(modulo)
     if (modulo.hooks) {
       modulo.hooks.forEach(hook => {
-        Consolex.info(`Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
+        Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
         inyectarEnEventoFuncionesDeTerceros(hook.event, hook.function, hook.type)
       })
     }
   } else {
-    Consolex.error(`Módulo ${modulo.nombre} ya registrado`)
+    Consolex.error(`ModuleManager: Módulo ${modulo.nombre} ya registrado`)
   }
 }
 

@@ -276,7 +276,7 @@ function actualizarDatosDelPanel (guild) {
               actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
             })
           } catch {
-            consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
+            consolex.error(`Mcsrvstatus: No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
           }
         }
 
@@ -289,7 +289,7 @@ function actualizarDatosDelPanel (guild) {
             fallback()
           })
         } catch {
-          consolex.error(`No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
+          consolex.error(`Mcsrvstatus: No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
         }
       })
     }
@@ -297,7 +297,7 @@ function actualizarDatosDelPanel (guild) {
 }
 
 module.exports.comenzarActualizarDatosDeLosServidores = () => {
-  consolex.info('Actualizando datos de los de minecraft configurados...')
+  consolex.info('Mcsrvstatus: Actualizando datos de los de minecraft configurados...')
   process.Client.guilds.fetch().then(guilds => {
     guilds.forEach(guild => {
       actualizarNumeroDeJugadoresDelSidebar(guild)
@@ -306,7 +306,7 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
   })
 
   setInterval(() => {
-    consolex.info('Actualizando datos de los de minecraft configurados...')
+    consolex.info('Mcsrvstatus: Actualizando datos de los de minecraft configurados...')
     process.Client.guilds.fetch().then(guilds => {
       guilds.forEach(guild => {
         actualizarNumeroDeJugadoresDelSidebar(guild)

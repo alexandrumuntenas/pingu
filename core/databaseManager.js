@@ -19,7 +19,7 @@ const { readdirSync, readFileSync } = require('fs')
 let tablasDisponibles = []
 
 module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
-  Consolex.info('DB: Comprobando si existen todas las tablas necesarias...')
+  Consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
   const consultas = readdirSync('./database/')
   const tablasYConsultas = {}
 
@@ -34,12 +34,12 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
   tablasDisponibles.forEach(tabla => {
     Database.query(tablasYConsultas[tabla], (err) => {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.info(`DB: La tabla ${tabla} se encuentra presente.`)
+        return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
       } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.error(`DB: La tabla ${tabla} no existía y no se ha podido crear.`)
+        return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
       }
 
-      return Consolex.info(`DB: La tabla ${tabla} se ha creado correctamente.`)
+      return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
     })
   })
 }

@@ -12,7 +12,7 @@ function eliminarArchivos (files) {
       const now = new Date()
 
       if (now - fileDate >= 600000) {
-        consolex.info(`Eliminador de Archivos temporales ha eliminado ${file}`)
+        consolex.debug(`ClientManager: Eliminador de Archivos temporales ha eliminado ${file}`)
         unlinkSync(`./temp/${file}`)
       }
     })
