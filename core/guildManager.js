@@ -1,6 +1,8 @@
+/* eslint-disable valid-typeof */
+/* eslint-disable node/no-callback-literal */
 /** @module GuildDataManager */
 
-const Database = require('./databaseConnection')
+const Database = require('./databaseManager')
 const Consolex = require('./consolex')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v10')
@@ -67,7 +69,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
   }
 }
 
-const { comprobarSiElModuloExiste } = require('./moduleManager')
+const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManager')
 
 /**
  * Actualiza la configuración de un guild.
@@ -193,10 +195,127 @@ module.exports.subirInteraccionesDelServidor = (guild, callback) => {
  */
 
 module.exports.eliminarDatosDelServidor = guild => {
-  const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildSuggestions']
-  databaseTables.forEach(table => {
+  Database.tablasDisponibles.forEach(table => {
     Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
       if (err) Consolex.gestionarError(err)
+    })
+  })
+}
+
+const YAML = require('js-yaml')
+const randomstring = require('randomstring')
+
+const { writeFileSync } = require('fs')
+
+module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
+  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
+    if (guildConfig && typeof guildConfig === 'object') {
+      const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
+      writeFileSync(attachmentPath, YAML.dump(guildConfig))
+      return callback(attachmentPath)
+    }
+  })
+}
+
+const Downloader = require('nodejs-file-downloader')
+
+async function descargarArchivoDeConfiguracionYAML (url, callback) {
+  const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
+
+  const downloader = new Downloader({
+    url,
+    directory: './temp',
+    filename: nombreTemporalAleatorioDelArchivo
+  })
+  try {
+    await downloader.download()
+    return callback({ ubicacionArchivo: `./temp/${nombreTemporalAleatorioDelArchivo}` })
+  } catch (error) {
+    return callback({ error: error.message })
+  }
+}
+
+/**
+ * @param {Object} modeloDeConfiguracion
+ * @param {Object} configuracionAComparar
+ * @param {Object} callback
+ */
+
+function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar, callback) {
+  const errores = []
+  const configuracionProcesada = {}
+  const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
+  const propiedadesConfiguracionAComparar = Object.keys(configuracionAComparar || {})
+
+  let posicionArray = 0
+
+  propiedadesModeloConfiguracion.forEach(propiedad => {
+    if (propiedadesConfiguracionAComparar.includes(propiedad)) {
+      if (typeof modeloDeConfiguracion[propiedad] === 'object') {
+        loopDeComprobacion(modeloDeConfiguracion[propiedad], configuracionAComparar[propiedad], procesado => {
+          if (procesado.error) errores.push(procesado.error)
+          else configuracionProcesada[propiedad] = procesado.configuracionProcesada
+          posicionArray++
+        })
+      } else {
+        if (typeof configuracionAComparar[propiedad] === modeloDeConfiguracion[propiedad]) configuracionProcesada[propiedad] = configuracionAComparar[propiedad]
+        else errores.push(`La propiedad ${propiedad} no es del tipo ${modeloDeConfiguracion[propiedad]}`)
+        posicionArray++
+      }
+    } else {
+      errores.push(`La propiedad ${propiedad} no existe en la configuración`)
+      posicionArray++
+    }
+
+    if (posicionArray === propiedadesModeloConfiguracion.length) {
+      return callback({ configuracionProcesada, errores: errores.length ? errores : [] })
+    }
+  })
+}
+
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada, callback) {
+  const errores = []
+  const configuracionProcesada = {}
+
+  let posicionArray = 0
+
+  modulosDisponibles.forEach(module => {
+    if (Object.prototype.hasOwnProperty.call(configuracionImportada, module.nombre)) {
+      loopDeComprobacion(module.modeloDeConfiguracion, configuracionImportada[module.nombre], procesado => {
+        if (procesado.error) errores.concat(procesado.error)
+        configuracionProcesada[module.nombre] = procesado.configuracionProcesada
+      })
+    } else {
+      errores.push(`El módulo ${module.nombre} no existe en la configuración`)
+    }
+
+    posicionArray++
+    if (posicionArray === modulosDisponibles.length) {
+      return callback({ configuracionProcesada, errores: errores.length ? errores : [] })
+    }
+  })
+}
+
+const { readFileSync } = require('fs')
+
+module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url, callback) => {
+  if (!callback) throw new Error('Se necesita un callback')
+
+  descargarArchivoDeConfiguracionYAML(url, descarga => {
+    if (descarga.error) return callback(descarga.error)
+    ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), ({ configuracionProcesada, errores }) => {
+      let posicionArrayModulos = 0
+      modulosDisponibles.forEach(modulo => {
+        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] || {} }, (err) => {
+          if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
+        })
+        posicionArrayModulos++
+
+        if (posicionArrayModulos === modulosDisponibles.length) {
+          const erroresTotalesEnString = errores.length ? errores.join('\n') : null
+          return callback(erroresTotalesEnString)
+        }
+      })
     })
   })
 }

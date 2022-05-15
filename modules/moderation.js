@@ -12,3 +12,5 @@ module.exports.aplicarAcciones = (accion, motivo, callback) => {
 }
 
 module.exports.hooks = [{ event: 'messageCreate', function: module.exports.GestorIncializadorDeAccionesEnmessageCreate }]
+
+module.exports.modeloDeConfiguracion = {}

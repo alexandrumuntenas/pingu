@@ -29,6 +29,8 @@ if (process.env.ENTORNO === 'publico') {
   process.Client.login(process.env.INSIDER_TOKEN)
 }
 
+require('./core/databaseManager').comprobarSiExistenTodasLasTablasNecesarias()
+
 process.Client.comandos = require('./core/commandsManager').cargarComandoseInteracciones()
 
 require('./core/eventManager').cargarEventosDeProceso()

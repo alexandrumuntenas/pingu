@@ -1,5 +1,5 @@
 const Consolex = require('../core/consolex')
-const Database = require('../core/databaseConnection')
+const Database = require('../core/databaseManager')
 const randomstring = require('randomstring')
 
 /**
@@ -369,4 +369,10 @@ module.exports.removeUserFromBlacklist = (guild, user, callback) => {
       return callback()
     })
   })
+}
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean',
+  blacklist: 'array',
+  channel: 'string'
 }

@@ -140,6 +140,21 @@ module.exports.plantillas.ayuda = command => {
   return embedOptions
 }
 
+/**
+ * Plantilla para los mensajes que indican que una acción
+ * no ha podido ser realizada debido a un error + registro.
+ * @param {String} message
+ * @param {String} error
+ * @returns EmbedBuilder
+ */
+
+module.exports.plantillas.errorLog = (message, log) => new EmbedBuilder()
+  .setColor('#ED4245')
+  .setDescription(`<:system_cross:968432962653782067> ${message}`)
+  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .addFields([{ name: '‎ ', value: codeBlock(log) }])
+  .setTimestamp()
+
 module.exports.acciones = {}
 
 const Consolex = require('./consolex')

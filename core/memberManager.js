@@ -1,5 +1,5 @@
 const Consolex = require('../core/consolex')
-const Database = require('../core/databaseConnection')
+const Database = require('../core/databaseManager')
 
 /**
  * Get member data from the database.
