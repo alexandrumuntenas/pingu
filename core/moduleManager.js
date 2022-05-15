@@ -45,7 +45,6 @@ const { readdirSync } = require('fs')
 
 module.exports.registrarModulos = () => {
   const directorioDeModulos = readdirSync('./modules')
-  modulos.push({ nombre: 'common' })
   directorioDeModulos.forEach(modulo => {
     if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
       const { nombre, descripcion, hooks, modeloDeConfiguracion } = require(`../modules/${modulo}`)
