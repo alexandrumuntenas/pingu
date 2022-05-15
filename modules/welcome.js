@@ -238,3 +238,20 @@ module.exports.removeJoinRole = (guild, role, callback) => {
     if (callback) callback()
   })
 }
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean',
+  channel: 'string',
+  message: 'string',
+  welcomecard: {
+    enabled: 'boolean',
+    background: 'string',
+    title: 'string',
+    subtitle: 'string',
+    overlay: {
+      color: 'string',
+      opacity: 'number'
+    }
+  },
+  roles: 'array'
+}

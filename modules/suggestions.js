@@ -370,3 +370,9 @@ module.exports.removeUserFromBlacklist = (guild, user, callback) => {
     })
   })
 }
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean',
+  blacklist: 'array',
+  channel: 'string'
+}
