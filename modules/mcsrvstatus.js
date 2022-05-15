@@ -1,7 +1,6 @@
 const { createCanvas, registerFont } = require('canvas')
 const { writeFileSync } = require('fs')
 const randomstring = require('randomstring')
-const { motdParser } = require('@sfirew/mc-motd-parser')
 
 registerFont('./fonts/Courier_Prime/CourierPrime-Regular.ttf', { family: 'Courier Prime Regular' })
 registerFont('./fonts/Courier_Prime/CourierPrime-Italic.ttf', { family: 'Courier Prime Italic' })
@@ -45,7 +44,7 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
     if (trozoDeTexto.text === '\n') {
       posicionEjeX = 20
       posicionEjeY += 64
-    } else if (!tieneSoloEspacios(trozoDeTexto.text)) {
+    } else if (!tieneSoloEspacios(trozoDeTexto.text) || (tieneSoloEspacios(trozoDeTexto.text) && trozoDeTexto.color)) {
       if (trozoDeTexto.text.startsWith('\n')) {
         posicionEjeX = 20
         posicionEjeY += 64
@@ -74,10 +73,10 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
  */
 
 module.exports.pingAEmoji = ping => {
-  if (ping <= 150) return '<:the_connection_is_excellent:939550716555583508>'
-  else if (ping > 150 && ping <= 350) return '<:the_connection_is_good:939550800965931049>'
-  else if (ping > 350) return '<:the_connection_is_bad:939550935460478987>'
-  return '<:discord_offline:876102753821278238>'
+  if (ping <= 150) return '<:connection_excellent:967782019721490462>'
+  else if (ping > 150 && ping <= 350) return '<:connection_good:967782019713093642>'
+  else if (ping > 350) return '<:connection_bad:967782019654381648>'
+  return '<:connection_offline:975452352372965416>'
 }
 
 const coloresDeMinecraft = {
@@ -103,7 +102,7 @@ const coloresDeMinecraft = {
   3: '#00AAAA',
   4: '#AA0000',
   5: '#AA00AA',
-  6: '#AA5500',
+  6: '#ffaa00',
   7: '#AAAAAA',
   8: '#555555',
   9: '#5555FF',
@@ -113,6 +112,15 @@ const coloresDeMinecraft = {
   d: '#FF55FF',
   e: '#FFFF55',
   f: '#FFFFFF'
+}
+
+const formatoDeMinecraft = {
+  r: 'Regular',
+  o: 'Italic',
+  l: 'Bold',
+  n: 'Underline',
+  m: 'Strike',
+  k: 'Obfuscated'
 }
 
 /** Limpia los textos de los espacios iniciales y finales manteniendo el salto de linea, es decir
@@ -134,28 +142,30 @@ function limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea 
   return texto
 }
 
-const comprobarSiTextoEsUnColorHexadecimal = /^#(?<hex>[0-9a-f]{3}){1,2}$/i
 /**
  * Procesa el MOTD de un servidor de Minecraft para convertirlo
  * a una matriz procesable por convertirMOTDaImagen()
- * @param {String || Array} motd - MOTD de un servidor de Minecraft. Resultado del ping del servidor de Minecraft (exactamente la propiedad: state.raw.vanilla.raw.description.extra)
+ * @param {Array} motd - MOTD de un servidor de Minecraft. Resultado del ping del servidor de Minecraft (exactamente la propiedad: state.raw.vanilla.raw.description.extra)
  */
 
 module.exports.procesarMOTD = motd => {
   const motdProcesado = []
-  if (typeof motd === 'string') {
-    return motdParser.textToJSON(limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(motd)).extra
-  } else if (Array.isArray(motd)) {
-    motd.forEach(trozoDeTexto => {
-      if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text') && Object.prototype.hasOwnProperty.call(trozoDeTexto, 'color') && comprobarSiTextoEsUnColorHexadecimal.test(trozoDeTexto.color)) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text), color: trozoDeTexto.color })
-      else if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text') && Object.prototype.hasOwnProperty.call(trozoDeTexto, 'color')) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text), color: coloresDeMinecraft[trozoDeTexto.color] || coloresDeMinecraft.f })
-      else if (Object.prototype.hasOwnProperty.call(trozoDeTexto, 'text')) motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto.text) })
-      else motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(trozoDeTexto) })
-    })
 
-    return motdProcesado
-  }
-  return [{ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(motd) }]
+  if (!Array.isArray(motd)) motd = [motd]
+
+  motd = motd.join('\n')
+
+  motd.split('§').forEach(lineaDeTexto => {
+    if (coloresDeMinecraft[lineaDeTexto.slice(0, 1)]) {
+      motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(lineaDeTexto.slice(1)), color: coloresDeMinecraft[lineaDeTexto.slice(0, 1)] })
+    } else if (formatoDeMinecraft[lineaDeTexto.slice(0, 1)]) {
+      motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(lineaDeTexto.slice(1)), format: formatoDeMinecraft[lineaDeTexto.slice(0, 1)] })
+    } else {
+      motdProcesado.push({ text: limpiarTextosDeEspaciosInicialesFinalesVaciosManteniendoElSaltodeLinea(lineaDeTexto) })
+    }
+  })
+
+  return motdProcesado
 }
 
 /**
@@ -165,7 +175,7 @@ module.exports.procesarMOTD = motd => {
  */
 
 module.exports.limpiarFormatoDeLosTextos = (texto) => {
-  const textoProcesadoPreparadoConFormato = module.exports.procesarMOTD(texto.text || texto)
+  const textoProcesadoPreparadoConFormato = module.exports.procesarMOTD(texto)
   const textoProcesado = []
   textoProcesadoPreparadoConFormato.forEach(trozoDeTexto => {
     textoProcesado.push(trozoDeTexto.text)
@@ -174,8 +184,10 @@ module.exports.limpiarFormatoDeLosTextos = (texto) => {
   return textoProcesado.join(' ')
 }
 
-const Gamedig = require('gamedig')
 const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../core/guildManager')
+
+const mcsrv = require('mcsrv')
+const Gamedig = require('gamedig')
 const consolex = require('../core/consolex')
 
 /**
@@ -190,16 +202,27 @@ const consolex = require('../core/consolex')
 
 module.exports.obtenerDatosDelServidor = (host, callback) => {
   if (!callback) throw new Error('Debe proporcionar un callback')
+
+  const servidor = {}
+
   Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
-    const servidor = {}
-    module.exports.convertirMOTDaImagen(state.raw.vanilla.raw.description.extra || state.raw.vanilla.raw.description || state.name, motd => {
-      servidor.motd = motd
-    })
-    servidor.version = module.exports.limpiarFormatoDeLosTextos(state.raw.vanilla.raw.version.name) || 'Unknown version'
-    servidor.jugadores = `${state.raw.vanilla.raw.players.online}/${state.raw.vanilla.raw.players.max}` || 'Unknown players'
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
-    servidor.direccion = `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
-    return callback(servidor)
+    mcsrv(host.ip.trim()).then(server => {
+      const iconPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+      writeFileSync(iconPath, server.icon)
+
+      module.exports.convertirMOTDaImagen(server.motd.raw, motd => {
+        servidor.motd = motd
+      })
+      servidor.version = server.version || 'Unknown version'
+      servidor.jugadores = `${server.players.online}/${server.players.max}` || 'Unknown players'
+      servidor.direccion = server.hostname || `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
+      servidor.icono = Buffer.from(server.icon.split(',')[1], 'base64') || 'https://i.imgur.com/tO2mFKz.png'
+      return callback(servidor)
+    }).catch((err) => {
+      console.log(err)
+      return callback()
+    })
   }).catch(() => {
     return callback()
   })
