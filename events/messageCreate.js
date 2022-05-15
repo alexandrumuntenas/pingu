@@ -7,6 +7,7 @@ const i18n = require('../core/i18nManager')
 const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
 const humanizeduration = require('humanize-duration')
 const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
+const { modulosDisponibles } = require('../core/moduleManager')
 
 module.exports = {
   name: 'messageCreate',
@@ -18,7 +19,7 @@ module.exports = {
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && false) {
+      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && Object.prototype.hasOwnProperty.call(guildConfig.interactions, 'enforceusage') && guildConfig.interactions.enforceusage) {
         return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
       }
 
@@ -38,7 +39,7 @@ module.exports = {
 
         if (CooldownManager.check(message.member, message.guild, message.commandName)) {
           if (process.Client.comandos.has(message.commandName)) {
-            if (commandToExecute.module && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
+            if (commandToExecute.module && modulosDisponibles.includes(commandToExecute.module) && !guildConfig[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
 
             if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })
 
