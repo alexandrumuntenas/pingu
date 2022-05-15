@@ -13,9 +13,13 @@ module.exports = {
     interaction.editReply({ embeds: [plantillas.informacion(i18n.getTranslation(interaction.preferredLocale, 'YAMLCONFIGURATION_IMPORT_NOTSUPPORTED'))] })
   },
   runCommand (message) {
-    importarDatosDelServidorEnFormatoYAML(message.guild, message.attachments.first().url, (err) => {
-      if (err) return message.reply({ embeds: [plantillas.errorLog(i18n.getTranslation(message.preferredlocale, 'YAMLCONFIGURATION_IMPORT_ERROR'), err)] })
-      message.reply({ embeds: [plantillas.conexito(i18n.getTranslation(message.preferredlocale, 'YAMLCONFIGURATION_IMPORT_SUCCESS'))] })
-    })
+    if (message.attachments.first()) {
+      importarDatosDelServidorEnFormatoYAML(message.guild, message.attachments.first().url, (err) => {
+        if (err) return message.reply({ embeds: [plantillas.errorLog(i18n.getTranslation(message.preferredLocale, 'YAMLCONFIGURATION_IMPORT_ERROR'), err)] })
+        message.reply({ embeds: [plantillas.conexito(i18n.getTranslation(message.preferredLocale, 'YAMLCONFIGURATION_IMPORT_SUCCESS'))] })
+      })
+    } else {
+      message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.preferredLocale, 'YAMLCONFIGURATION_IMPORT_FILENOTPROVIDED'))] })
+    }
   }
 }

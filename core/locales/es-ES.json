@@ -225,5 +225,6 @@
   "MCSRVSTATUS::SIDEBARPLAYERCOUNT:ERROR": "Se ha producido un error al intentar establecer el canal para mostrar el número de jugadores.",
   "MCSRVSTATUS::SIDEBARPLAYERCOUNT:SUCCESS": "Se ha establecido %CHANNEL% como canal para mostrar el número de jugadores.",
   "YAMLCONFIGURATION_EXPORT_INFORMATION": "Se ha exportado la configuración del servidor a un archivo YAML.",
-  "YAMLCONFIGURATION_IMPORT_NOTSUPPORTED": "Todavía no aceptamos la carga de configuración mediante las interacciones. Por favor, emplee el comando en su forma tradicional."
+  "YAMLCONFIGURATION_IMPORT_NOTSUPPORTED": "Todavía no aceptamos la carga de configuración mediante las interacciones. Por favor, emplee el comando en su forma tradicional.",
+  "YAMLCONFIGURATION_IMPORT_FILENOTPROVIDED": "No se ha adjuntado ningún archivo para importar."
 }
