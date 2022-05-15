@@ -13,34 +13,40 @@ const { Routes } = require('discord-api-types/v10')
  * @returns Object - La configuración del guild.
  */
 
-module.exports.obtenerConfiguracionDelServidor = (guild, callback) => {
-  Database.query('SELECT * FROM `guildData` WHERE guild = ?', [guild.id], (err, result) => {
-    if (err) Consolex.gestionarError(err)
+module.exports.obtenerConfiguracionDelServidor = async (guild) => {
+  try {
+    const [guildData] = await Database.execute('SELECT * FROM `guildData` WHERE guild = ?', [guild.id]).then(result => result[0])
 
-    if (result && Object.prototype.hasOwnProperty.call(result, 0)) {
-      Object.keys(result[0]).forEach(module => {
+    if (guildData) {
+      Object.keys(guildData).forEach(module => {
         try {
-          result[0][module] = JSON.parse(result[0][module].trim())
+          guildData[module] = JSON.parse(guildData[module].trim())
         } catch (err2) {
           if (!err2.constructor.name === 'SyntaxError') Consolex.gestionarError(err2)
         }
       })
 
-      if (result[0].common === null) {
-        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id], err2 => {
-          if (err2) Consolex.gestionarError(err2)
-          return module.exports.obtenerConfiguracionDelServidor(guild, callback)
-        })
+      if (guildData.common === null) {
+        try {
+          Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
+          return module.exports.obtenerConfiguracionDelServidor(guild)
+        } catch (err2) {
+          Consolex.gestionarError(err2)
+        }
       }
 
-      if (callback) callback(result[0] || {})
+      return guildData || {}
     } else {
-      Database.query('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id], err2 => {
-        if (err2) Consolex.gestionarError(err2)
-        module.exports.obtenerConfiguracionDelServidor(guild, callback)
-      })
+      try {
+        Database.execute('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id])
+        return module.exports.obtenerConfiguracionDelServidor(guild)
+      } catch (err2) {
+        Consolex.gestionarError(err2)
+      }
     }
-  })
+  } catch (err) {
+    Consolex.gestionarError(err)
+  }
 }
 
 /** Procesa la configuración de un objeto. */
@@ -88,7 +94,7 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
     if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
       procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
         guildConfig[botmodule.column] = newModuleConfig
-        Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
+        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
           if (err) {
             Consolex.gestionarError(err)
             return callback(err)
@@ -102,7 +108,7 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
         })
       })
     } else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-      Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
+      Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
         if (err) {
           Consolex.gestionarError(err)
           return callback(err)
@@ -115,7 +121,7 @@ module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback)
         return null
       })
     } else {
-      Database.query('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
+      Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
         if (err) {
           Consolex.gestionarError(err)
           return callback(err)
@@ -192,7 +198,7 @@ module.exports.subirInteraccionesDelServidor = (guild, callback) => {
 
 module.exports.eliminarDatosDelServidor = guild => {
   Database.tablasDisponibles.forEach(table => {
-    Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
+    Database.execute(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
       if (err) Consolex.gestionarError(err)
     })
   })
