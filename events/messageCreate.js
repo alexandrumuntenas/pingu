@@ -18,7 +18,7 @@ module.exports = {
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && guildConfig.interactions.enforceusage) {
+      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && false) {
         return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
       }
 
