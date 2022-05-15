@@ -1,4 +1,9 @@
 /* eslint-disable node/no-callback-literal */
+
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean'
+}
+
 const Database = require('../core/databaseManager')
 const Consolex = require('../core/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
@@ -191,7 +196,3 @@ module.exports.hooks = [{
     }
   }
 }]
-
-module.exports.modeloDeConfiguracion = {
-  enabled: 'boolean'
-}

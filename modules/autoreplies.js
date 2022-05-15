@@ -1,3 +1,7 @@
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean'
+}
+
 const Consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
@@ -162,7 +166,3 @@ module.exports.hooks = [{
     })
   }
 }]
-
-module.exports.modeloDeConfiguracion = {
-  enabled: 'boolean'
-}

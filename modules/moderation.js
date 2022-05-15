@@ -1,3 +1,5 @@
+module.exports.modeloDeConfiguracion = {}
+
 const { codeBlock } = require('@discordjs/builders')
 const { analizarMensaje } = require('./moderacion/perspective.ia')
 
@@ -12,5 +14,3 @@ module.exports.aplicarAcciones = (accion, motivo, callback) => {
 }
 
 module.exports.hooks = [{ event: 'messageCreate', function: module.exports.GestorIncializadorDeAccionesEnmessageCreate }]
-
-module.exports.modeloDeConfiguracion = {}

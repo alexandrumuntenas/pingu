@@ -1,3 +1,12 @@
+module.exports.modeloDeConfiguracion = {
+  enabled: 'boolean',
+  host: 'string',
+  port: 'number',
+  sidebarPlayercount: 'string',
+  messagePanelChannel: 'string',
+  messagePanelId: 'string'
+}
+
 /* eslint-disable node/no-callback-literal */
 const { createCanvas, registerFont } = require('canvas')
 const { writeFileSync } = require('fs')
@@ -314,13 +323,4 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
       })
     })
   }, 300000)
-}
-
-module.exports.modeloDeConfiguracion = {
-  enabled: 'boolean',
-  host: 'string',
-  port: 'number',
-  sidebarPlayercount: 'string',
-  messagePanelChannel: 'string',
-  messagePanelId: 'string'
 }
