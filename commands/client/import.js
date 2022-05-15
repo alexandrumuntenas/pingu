@@ -9,9 +9,6 @@ module.exports = {
   cooldown: 1000,
   permissions: [BitField.Flags.ManageGuild],
   isConfigurationCommand: true,
-  runInteraction (interaction) {
-    interaction.editReply({ embeds: [plantillas.informacion(i18n.getTranslation(interaction.preferredLocale, 'YAMLCONFIGURATION_IMPORT_NOTSUPPORTED'))] })
-  },
   runCommand (message) {
     if (message.attachments.first()) {
       importarDatosDelServidorEnFormatoYAML(message.guild, message.attachments.first().url, (err) => {
