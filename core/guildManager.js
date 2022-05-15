@@ -1,3 +1,5 @@
+/* eslint-disable valid-typeof */
+/* eslint-disable node/no-callback-literal */
 /** @module GuildDataManager */
 
 const Database = require('./databaseManager')
@@ -193,8 +195,7 @@ module.exports.subirInteraccionesDelServidor = (guild, callback) => {
  */
 
 module.exports.eliminarDatosDelServidor = guild => {
-  const databaseTables = ['guildData', 'guildAutoReply', 'guildCustomCommands', 'memberData', 'guildSuggestions']
-  databaseTables.forEach(table => {
+  Database.tablasDisponibles.forEach(table => {
     Database.query(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
       if (err) Consolex.gestionarError(err)
     })
@@ -216,43 +217,6 @@ module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
   })
 }
 
-/**
- * @param {String} modulo
- * @param {Object} configuracionParaComparar
- */
-
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionParaComparar, callback) {
-  const errores = []
-  const configuracionProcesada = {}
-  let posicionArrayModulos = 0
-
-  modulosDisponibles.forEach(modulo => {
-    const datosDelModulo = modulosDisponibles.filter(module => module.nombre === modulo)[0]
-    if (datosDelModulo && Object.prototype.hasOwnProperty.call(datosDelModulo, 'configuracion')) {
-      datosDelModulo.configuracion.forEach(parametro => {
-        if (Object.prototype.hasOwnProperty.call(configuracionParaComparar, parametro.nombre)) {
-          // eslint-disable-next-line valid-typeof
-          if (configuracionParaComparar[parametro.nombre] && typeof configuracionParaComparar[parametro.nombre] === parametro.tipo) {
-            configuracionProcesada[parametro.nombre] = configuracionParaComparar[parametro.nombre]
-          } else {
-            errores.push(`El parámetro ${parametro.nombre} debe ser de tipo ${parametro.tipo}`)
-          }
-        } else {
-          errores.push(`El parámetro ${parametro.nombre} no existe`)
-        }
-      })
-    } else {
-      errores.push(`El módulo ${modulo.nombre} no tiene configuración`)
-    }
-
-    posicionArrayModulos++
-
-    if (posicionArrayModulos === modulosDisponibles.length) {
-      return callback(errores, configuracionProcesada)
-    }
-  })
-}
-
 const Downloader = require('nodejs-file-downloader')
 
 async function descargarArchivoDeConfiguracionYAML (url, callback) {
@@ -267,9 +231,69 @@ async function descargarArchivoDeConfiguracionYAML (url, callback) {
     await downloader.download()
     return callback({ ubicacionArchivo: `./temp/${nombreTemporalAleatorioDelArchivo}` })
   } catch (error) {
-    Consolex.gestionarError(error)
-    return callback({ error: 'Error al descargar el archivo' })
+    return callback({ error: error.message })
   }
+}
+
+/**
+ * @param {Object} modeloDeConfiguracion
+ * @param {Object} configuracionAComparar
+ * @param {Object} callback
+ */
+
+function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar, callback) {
+  const errores = []
+  const configuracionProcesada = {}
+  const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
+  const propiedadesConfiguracionAComparar = Object.keys(configuracionAComparar || {})
+
+  let posicionArray = 0
+
+  propiedadesModeloConfiguracion.forEach(propiedad => {
+    if (propiedadesConfiguracionAComparar.includes(propiedad)) {
+      if (typeof modeloDeConfiguracion[propiedad] === 'object') {
+        loopDeComprobacion(modeloDeConfiguracion[propiedad], configuracionAComparar[propiedad], procesado => {
+          if (procesado.error) errores.push(procesado.error)
+          else configuracionProcesada[propiedad] = procesado.configuracionProcesada
+          posicionArray++
+        })
+      } else {
+        if (typeof configuracionAComparar[propiedad] === modeloDeConfiguracion[propiedad]) configuracionProcesada[propiedad] = configuracionAComparar[propiedad]
+        else errores.push(`La propiedad ${propiedad} no es del tipo ${modeloDeConfiguracion[propiedad]}`)
+        posicionArray++
+      }
+    } else {
+      errores.push(`La propiedad ${propiedad} no existe en la configuración`)
+      posicionArray++
+    }
+
+    if (posicionArray === propiedadesModeloConfiguracion.length) {
+      return callback({ configuracionProcesada, errores: errores.length ? errores : [] })
+    }
+  })
+}
+
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada, callback) {
+  const errores = []
+  const configuracionProcesada = {}
+
+  let posicionArray = 0
+
+  modulosDisponibles.forEach(module => {
+    if (Object.prototype.hasOwnProperty.call(configuracionImportada, module.nombre)) {
+      loopDeComprobacion(module.modeloDeConfiguracion, configuracionImportada[module.nombre], procesado => {
+        if (procesado.error) errores.concat(procesado.error)
+        configuracionProcesada[module.nombre] = procesado.configuracionProcesada
+      })
+    } else {
+      errores.push(`El módulo ${module.nombre} no existe en la configuración`)
+    }
+
+    posicionArray++
+    if (posicionArray === modulosDisponibles.length) {
+      return callback({ configuracionProcesada, errores: errores.length ? errores : [] })
+    }
+  })
 }
 
 const { readFileSync } = require('fs')
@@ -279,17 +303,17 @@ module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url, callback) =>
 
   descargarArchivoDeConfiguracionYAML(url, descarga => {
     if (descarga.error) return callback(descarga.error)
-    ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), (errores, configuracionProcesada) => {
+    ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), ({ configuracionProcesada, errores }) => {
       let posicionArrayModulos = 0
-      console.log(configuracionProcesada)
       modulosDisponibles.forEach(modulo => {
-        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] }, (err) => {
+        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] || {} }, (err) => {
           if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
         })
         posicionArrayModulos++
 
         if (posicionArrayModulos === modulosDisponibles.length) {
-          return callback(errores)
+          const erroresTotalesEnString = errores.length ? errores.join('\n') : null
+          return callback(erroresTotalesEnString)
         }
       })
     })
