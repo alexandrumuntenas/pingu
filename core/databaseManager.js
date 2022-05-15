@@ -1,4 +1,4 @@
-const Database = require('mysql2').createPool({
+const Database = require('mysql2/promise').createPool({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
@@ -8,8 +8,6 @@ const Database = require('mysql2').createPool({
   connectionLimit: 100,
   queueLimit: 0
 })
-
-Database.config.namedPlaceholders = true
 
 module.exports = Database
 
@@ -31,16 +29,17 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
 
   tablasDisponibles = Object.keys(tablasYConsultas)
 
-  tablasDisponibles.forEach(tabla => {
-    Database.query(tablasYConsultas[tabla], (err) => {
+  tablasDisponibles.forEach(async tabla => {
+    try {
+      await Database.execute(tablasYConsultas[tabla])
+      return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
+    } catch (err) {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
         return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
       } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
         return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
       }
-
-      return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
-    })
+    }
   })
 }
 

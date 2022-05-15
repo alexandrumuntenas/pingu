@@ -5,7 +5,7 @@ module.exports.cargarEventos = () => {
   fs.readdirSync('./events/').filter(files => files.endsWith('.js')).forEach(archivo => {
     const event = require(`../events/${archivo}`)
     Consolex.success(`EventManager: Evento ${archivo} cargado`)
-    process.Client.on(event.name, (...args) => event.execute(...args))
+    process.Client.on(event.name, async (...args) => event.execute(...args))
   })
 }
 
@@ -13,7 +13,7 @@ module.exports.cargarEventosDeProceso = () => {
   fs.readdirSync('./events/proceso').filter(files => files.endsWith('.js')).forEach(archivo => {
     const evento = require(`../events/proceso/${archivo}`)
     Consolex.success(`ProcessEventManager: Evento de proceso ${archivo} cargado`)
-    process.on(evento.name, (...args) => evento.execute(...args))
+    process.on(evento.name, async (...args) => evento.execute(...args))
   })
 }
 

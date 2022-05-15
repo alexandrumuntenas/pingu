@@ -18,7 +18,7 @@ module.exports.createSuggestion = (member, suggestion, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
   const suggestionId = randomstring.generate({ charset: 'alphabetic', length: 5 })
-  Database.query('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
+  Database.execute('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
     if (err) {
       Consolex.gestionarError(err)
       return callback()
@@ -36,7 +36,7 @@ module.exports.createSuggestion = (member, suggestion, callback) => {
  */
 
 module.exports.deleteSuggestion = (guild, suggestionId) => {
-  Database.query('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], err => {
+  Database.execute('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], err => {
     if (err) Consolex.gestionarError(err)
   })
 }
@@ -49,7 +49,7 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
 module.exports.getSuggestions = (guild, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, suggestions) => {
+  Database.execute('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, suggestions) => {
     if (err) return Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(suggestions, '0')) return callback(suggestions)
@@ -67,7 +67,7 @@ module.exports.getSuggestions = (guild, callback) => {
 module.exports.getSuggestion = (guild, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], async (err, rows) => {
+  Database.execute('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], async (err, rows) => {
     if (err) return Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(rows, '0')) {
@@ -92,7 +92,7 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
 
 module.exports.approveSuggestion = (member, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
-  Database.query('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['approved', member.id, suggestionId, member.guild.id], err => {
+  Database.execute('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['approved', member.id, suggestionId, member.guild.id], err => {
     if (err) {
       Consolex.gestionarError(err)
       return callback(err)
@@ -111,7 +111,7 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
 
 module.exports.rejectSuggestion = (member, suggestionId, callback) => {
   if (!callback) throw new Error('Callback is required.')
-  Database.query('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['rejected', member.id, suggestionId, member.guild.id], err => {
+  Database.execute('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['rejected', member.id, suggestionId, member.guild.id], err => {
     if (err) {
       Consolex.gestionarError(err)
       return callback(err)
@@ -131,7 +131,7 @@ module.exports.rejectSuggestion = (member, suggestionId, callback) => {
 module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
   module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
     suggestion.notes.push({ user: member.id, note, timestamp: new Date() })
-    Database.query('UPDATE `guildSuggestions` SET `notes` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion.notes), suggestionId, member.guild.id], err => {
+    Database.execute('UPDATE `guildSuggestions` SET `notes` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion.notes), suggestionId, member.guild.id], err => {
       if (err) {
         Consolex.gestionarError(err)
         return callback(err)
@@ -149,7 +149,7 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
 module.exports.getMemberSuggestions = (member, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `guildSuggestions` WHERE `author` = ? AND `guild` = ? ORDER BY `timestamp` DESC LIMIT 10', [member.id, member.guild.id], (err, rows) => {
+  Database.execute('SELECT * FROM `guildSuggestions` WHERE `author` = ? AND `guild` = ? ORDER BY `timestamp` DESC LIMIT 10', [member.id, member.guild.id], (err, rows) => {
     if (err) return Consolex.gestionarError(err)
 
     const suggestions = []

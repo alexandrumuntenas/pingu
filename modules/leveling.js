@@ -91,7 +91,7 @@ module.exports.sendLevelUpMessage = message => {
 module.exports.getLeaderboard = (guild, callback) => {
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
+  Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
     if (err) Consolex.gestionarError(err)
 
     if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) {
@@ -274,7 +274,7 @@ module.exports.resetLeaderboard = (guild, callback) => {
   if (!guild) throw new Error('Guild is required.')
   if (!callback) throw new Error('Callback is required.')
 
-  Database.query('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
+  Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
     if (err) {
       Consolex.gestionarError(err)
       return callback(err)

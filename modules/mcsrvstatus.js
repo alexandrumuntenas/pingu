@@ -199,7 +199,7 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
 
   const servidor = {}
 
-  Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
+  Gamedig.execute({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
     mcsrv(host.ip.trim()).then(server => {
       module.exports.convertirMOTDaImagen(server.motd.raw, motd => {

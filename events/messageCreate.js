@@ -11,10 +11,10 @@ const { modulosDisponibles } = require('../core/moduleManager')
 
 module.exports = {
   name: 'messageCreate',
-  execute: async message => { // skipcq: JS-0116
+  execute: message => { // skipcq: JS-0116
     if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
 
-    obtenerConfiguracionDelServidor(message.guild, guildConfig => {
+    obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
       message.guild.configuration = guildConfig
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)

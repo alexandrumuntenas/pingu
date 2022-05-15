@@ -24,7 +24,7 @@ function traducirAntiguasPropiedadesALasNuevas (propiedades) {
 module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
   if (!callback) throw new Error('Se requiere un callback')
 
-  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
+  Database.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
@@ -68,7 +68,7 @@ module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, cal
   respuestaPersonalizada.propiedades.enviarEnEmbed = respuestaPersonalizada.propiedades.enviarEnEmbed || { habilitado: false }
   respuestaPersonalizada.identificador = crearTextoAleatorio({ length: 10, charset: 'alphanumeric' })
 
-  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
+  Database.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
     if (err) {
       Consolex.gestionarError(err)
       callback(err)
@@ -80,7 +80,7 @@ module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, cal
 }
 
 module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPersonalizada) => {
-  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
+  Database.execute('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
     if (err) {
       Consolex.gestionarError(err)
       throw err
@@ -111,7 +111,7 @@ module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = 
 module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
 
-  Database.query('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
+  Database.execute('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
     if (err) {
       Consolex.gestionarError(err)
       throw err

@@ -11,7 +11,7 @@ const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlacehol
 module.exports.getCustomCommands = (guild, callback) => {
   if (!callback) throw new Error('Callback is required')
 
-  Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
+  Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
@@ -42,7 +42,7 @@ module.exports.getCustomCommands = (guild, callback) => {
 module.exports.getCustomCommand = (guild, command, callback) => {
   if (!callback) throw new Error('Callback is required')
 
-  Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
+  Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
@@ -74,7 +74,7 @@ module.exports.getCustomCommand = (guild, command, callback) => {
  * @param {?String} customcommandproperties.sendInEmbed.color - The url field of the embed.
 */
 module.exports.createCustomCommand = (guild, customcommandproperties) => {
-  Database.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
+  Database.execute('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
     if (err) {
       Consolex.gestionarError(err)
       throw err
@@ -88,7 +88,7 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
  * @param {String} command
  */
 module.exports.deleteCustomCommand = (guild, command) => {
-  Database.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
+  Database.execute('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
     if (err) {
       Consolex.gestionarError(err)
       return err
@@ -103,12 +103,12 @@ module.exports.deleteCustomCommand = (guild, command) => {
  * @param {String} command
  */
 module.exports.migrateToNewOrganization = (guild, command, callback) => {
-  Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
+  Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       const customcommandproperties = { command: result[0].customCommand, reply: result[0].messageReturned }
-      Database.query('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
+      Database.execute('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
         if (err2) Consolex.gestionarError(err)
 
         if (callback) callback()
