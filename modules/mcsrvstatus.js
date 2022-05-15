@@ -1,3 +1,4 @@
+/* eslint-disable node/no-callback-literal */
 const { createCanvas, registerFont } = require('canvas')
 const { writeFileSync } = require('fs')
 const randomstring = require('randomstring')
@@ -208,23 +209,45 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
   Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
     mcsrv(host.ip.trim()).then(server => {
-      const iconPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
-      writeFileSync(iconPath, server.icon)
-
       module.exports.convertirMOTDaImagen(server.motd.raw, motd => {
         servidor.motd = motd
       })
+      servidor.online = server.online
       servidor.version = server.version || 'Unknown version'
       servidor.jugadores = `${server.players.online}/${server.players.max}` || 'Unknown players'
       servidor.direccion = server.hostname || `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
-      servidor.icono = Buffer.from(server.icon.split(',')[1], 'base64') || 'https://i.imgur.com/tO2mFKz.png'
+      servidor.icono = Buffer.from(server.icon.split(',')[1], 'base64')
+
       return callback(servidor)
-    }).catch((err) => {
-      console.log(err)
-      return callback()
+    }).catch(() => {
+      return callback({})
     })
   }).catch(() => {
-    return callback()
+    return callback({})
+  })
+}
+
+const { Attachment } = require('discord.js')
+
+module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) => {
+  module.exports.obtenerDatosDelServidor({ ip: host.ip.trim(), port: host.port }, datosDelServidor => {
+    const serverIcon = new Attachment(datosDelServidor.icono || 'https://i.imgur.com/tO2mFKz.png', 'icon.png')
+    const embed = new EmbedBuilder().setThumbnail('attachment://icon.png')
+
+    if (datosDelServidor.online) {
+      const serverMotd = new Attachment(datosDelServidor.motd, 'motd.png')
+      embed.addFields([
+        { name: ':radio_button: Version', value: datosDelServidor.version, inline: true },
+        { name: ':busts_in_silhouette: Players', value: datosDelServidor.jugadores, inline: true },
+        { name: `${datosDelServidor.ping.emoji} Ping`, value: `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
+        { name: ':desktop: Address', value: datosDelServidor.direccion, inline: true }
+      ]).setImage('attachment://motd.png')
+        .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
+
+      return callback({ files: [serverMotd, serverIcon], embeds: [embed] })
+    }
+
+    return callback({ files: [serverIcon], embeds: [embed] })
   })
 }
 
