@@ -14,8 +14,8 @@ module.exports = {
   },
   runCommand (message) {
     importarDatosDelServidorEnFormatoYAML(message.guild, message.attachments.first().url, (err) => {
-      if (err) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.preferredlocale, 'YAMLCONFIGURATION_IMPORT_ERROR'))] })
-      message.reply({ embeds: [plantillas.success(i18n.getTranslation(message.preferredlocale, 'YAMLCONFIGURATION_IMPORT_SUCCESS'))] })
+      if (err) return message.reply({ embeds: [plantillas.errorLog(i18n.getTranslation(message.preferredlocale, 'YAMLCONFIGURATION_IMPORT_ERROR'), err)] })
+      message.reply({ embeds: [plantillas.conexito(i18n.getTranslation(message.preferredlocale, 'YAMLCONFIGURATION_IMPORT_SUCCESS'))] })
     })
   }
 }
