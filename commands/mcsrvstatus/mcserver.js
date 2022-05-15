@@ -1,8 +1,9 @@
 const { obtenerDatosDelServidor } = require('../../modules/mcsrvstatus')
-const { MessageAttachment, EmbedBuilder } = require('discord.js')
-const i18n = require('../../core/i18nManager')
+const { Attachment, EmbedBuilder } = require('discord.js')
 const { plantillas } = require('../../core/messageManager')
 const { SlashCommandBuilder } = require('@discordjs/builders')
+
+const i18n = require('../../core/i18nManager')
 
 module.exports = {
   name: 'mcserver',
@@ -13,7 +14,8 @@ module.exports = {
   runInteraction (interaction) {
     obtenerDatosDelServidor({ ip: interaction.options.getString('ip_or_address'), port: interaction.options.getString('port') }, datosDelServidor => {
       if (datosDelServidor) {
-        const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
+        const serverMotd = new Attachment(datosDelServidor.motd, 'motd.png')
+        const serverIcon = new Attachment(datosDelServidor.icono, 'icon.png')
         const embed = new EmbedBuilder()
           .addFields([
             { name: ':radio_button: Version', value: datosDelServidor.version, inline: true },
@@ -21,9 +23,11 @@ module.exports = {
             { name: `${datosDelServidor.ping.emoji} Ping`, value: `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
             { name: ':desktop: Address', value: datosDelServidor.direccion, inline: true }
           ])
+          .setThumbnail('attachment://icon.png')
           .setImage('attachment://motd.png')
           .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
-        interaction.editReply({ files: [attachment], embeds: [embed] })
+
+        return interaction.editReply({ files: [serverMotd, serverIcon], embeds: [embed] })
       } else {
         return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'MCPING::ERROR'))] })
       }
@@ -45,7 +49,8 @@ module.exports = {
       try {
         obtenerDatosDelServidor({ ip: message.parameters[0], port: message.parameters[1] }, datosDelServidor => {
           if (datosDelServidor) {
-            const attachment = new MessageAttachment(datosDelServidor.motd, 'motd.png')
+            const serverMotd = new Attachment(datosDelServidor.motd, 'motd.png')
+            const serverIcon = new Attachment(datosDelServidor.icono, 'icon.png')
             const embed = new EmbedBuilder()
               .addFields([
                 { name: ':radio_button: Version', value: datosDelServidor.version, inline: true },
@@ -53,9 +58,11 @@ module.exports = {
                 { name: `${datosDelServidor.ping.emoji} Ping`, value: `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
                 { name: ':desktop: Address', value: datosDelServidor.direccion, inline: true }
               ])
+              .setThumbnail('attachment://icon.png')
               .setImage('attachment://motd.png')
               .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
-            _message.edit({ files: [attachment], embeds: [embed] })
+
+            return _message.edit({ files: [serverMotd, serverIcon], embeds: [embed] })
           } else {
             return _message.edit({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'MCPING::ERROR'))] })
           }
