@@ -19,12 +19,10 @@ module.exports = {
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-      if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && Object.prototype.hasOwnProperty.call(guildConfig.interactions, 'enforceusage') && guildConfig.interactions.enforceusage) {
-        return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
-      }
-
-      if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
-        if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
+      if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@${process.Client.user.id}>`) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
+        if (message.content.startsWith(`<@${process.Client.user.id}>`)) {
+          message.parameters = message.content.slice(`<@${process.Client.user.id}>`.length).trim().split(/ +/)
+        } else if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
           message.parameters = message.content.slice(`<@!${process.Client.user.id}>`.length).trim().split(/ +/)
         } else {
           message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/)
@@ -33,7 +31,11 @@ module.exports = {
         [message.commandName] = message.parameters
         message.parameters.shift()
 
-        if (!message.commandName) return process.Client.comandos.get('help').runCommand(message.guild.preferredLocale, message)
+        if (!message.commandName) return process.Client.comandos.get('help').runCommand(message)
+
+        if (guildConfig.interactions && guildConfig.interactions.enforceusage) {
+          return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
+        }
 
         const commandToExecute = process.Client.comandos.get(message.commandName)
 
