@@ -27,6 +27,7 @@
     "is-valid-http-url": "^1.0.3",
     "js-yaml": "^4.1.0",
     "mathjs": "^10.1.0",
+    "mcsrv": "^1.0.1",
     "millify": "^4.0.0",
     "moment": "^2.29.1",
     "mysql2": "^2.3.3",
