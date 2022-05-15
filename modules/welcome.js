@@ -134,7 +134,6 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
 
 /**
  * @param {GuildMember} member
- * @param {Function} callback
  */
 
 module.exports.generateWelcomeCard = async (member, callback) => {

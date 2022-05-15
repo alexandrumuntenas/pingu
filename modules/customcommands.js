@@ -36,7 +36,6 @@ module.exports.getCustomCommands = (guild, callback) => {
 /**
  * @param {Guild} guild
  * @param {String} command
- * @param {Function} callback
  * @returns {Object} customCommand
  */
 
@@ -102,7 +101,6 @@ module.exports.deleteCustomCommand = (guild, command) => {
 /**
  * @param {Guild} guild
  * @param {String} command
- * @param {Function} callback
  */
 module.exports.migrateToNewOrganization = (guild, command, callback) => {
   Database.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {

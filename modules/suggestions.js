@@ -11,7 +11,6 @@ const randomstring = require('randomstring')
 /**
  * @param {GuildMember} member - The member who created the suggestion.
  * @param {String} suggestion - The suggestion to be made.
- * @param {Function} callback - The callback function.
  * @returns {String} - The suggestion id.
  */
 
@@ -44,7 +43,6 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
 
 /**
  * @param {Guild} guild - The guild.
- * @param {Function} callback - The callback function.
  * @returns {Array} - Suggestions
  */
 
@@ -63,7 +61,6 @@ module.exports.getSuggestions = (guild, callback) => {
 /**
  * @param {Guild} guild - The guild.
  * @param {String} suggestionId - The suggestion id.
- * @param {Function} callback - The callback.
  * @returns {{id: Integer, suggestion: String, notes: Array[{user: User.Id, note: String, timestamp: Date}], status: String(approved, pending, reviewed, rejected), timestamp: Date, reviewer: User.Id, ?votingresults: {yes: Integer, no: Integer, abstain: Guild.Member_Count}}} Suggestion
  */
 
@@ -90,7 +87,6 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
 /**
  * @param {GuildMember} member - The member who is approving the suggestion.
  * @param {String} suggestionID - The suggestion ID.
- * @param {Function} callback - The callback function.
  * @returns {?Error} - Error
  */
 
@@ -110,7 +106,6 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
 /**
  * @param {GuildMember} member - The member who is rejecting the suggestion.
  * @param {String} suggestionID - The suggestion ID.
- * @param {Function} callback - The callback function.
  * @returns {?Error} - Error
  */
 
@@ -130,7 +125,6 @@ module.exports.rejectSuggestion = (member, suggestionId, callback) => {
  * @param {Member} member - The member who is adding a note to the suggestion
  * @param {String} suggestionId - The suggestion ID.
  * @param {String} note - The note to add.
- * @param {Function} callback - The callback function.
  * @returns {?Error} - Error
  */
 
@@ -150,7 +144,6 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
 
 /**
  * @param {GuildMember} member - The member we are checking for.
- * @param {Function} callback - The callback function.
  */
 
 module.exports.getMemberSuggestions = (member, callback) => {
@@ -319,7 +312,6 @@ module.exports.addUserToBlacklist = (guild, user, callback) => {
 /**
  * @param {Guild} guild
  * @param {User} user
- * @param {Function} callback
  * @returns {Boolean}
  */
 
@@ -336,7 +328,6 @@ module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
 /**
  * @param {Guild} guild
  * @param {User} user
- * @param {Function} callback
  * @returns {Error}
  */
 

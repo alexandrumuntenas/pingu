@@ -4,7 +4,6 @@ const Database = require('../core/databaseManager')
 /**
  * Get member data from the database.
  * @param {GuildMember} member - The Member to get the data for
- * @param {Function} callback - The callback function
  * @callback memberData - The member data
  */
 
@@ -37,7 +36,6 @@ module.exports.getMember = (member, callback) => {
 /**
  * Create a new member entry in the database.
  * @param {GuildMember} member - The Member to create the data for
- * @param {Function} callback - The callback function
  */
 
 module.exports.createMember = (member, callback) => {
@@ -56,7 +54,6 @@ module.exports.createMember = (member, callback) => {
  * @param {?String} memberDataToUpdate.lvlLevel - Member Level
  * @param {?String} memberDataToUpdate.ecoBalance - Member Balance
  * @param {?Array} memberDataToUpdate.ecoInventory - Member Inventory
- * @param {Function} callback - The callback function
  */
 
 module.exports.updateMember = (member, memberDataToUpdate, callback) => {
@@ -74,7 +71,6 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
 /**
  * Delete a member's data from the database.
  * @param {Member} member
- * @param {Function} callback
  */
 module.exports.deleteMember = (member, callback) => {
   Database.query('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id], err => {

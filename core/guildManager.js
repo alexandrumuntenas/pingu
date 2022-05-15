@@ -10,7 +10,6 @@ const { Routes } = require('discord-api-types/v10')
 /**
  * Obtiene la configuración de un guild específico.
  * @param {Guild} guild - El guild del cual se quiere obtener la configuración.
- * @param {Function} callback - La función que se ejecutará cuando se obtenga la configuración.
  * @returns Object - La configuración del guild.
  */
 
@@ -78,7 +77,6 @@ const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManag
  * @param {?String} botmodule.column - ¡Deprecated! La columna del módulo del cual se quiere actualizar la configuración.
  * @param {?String} botmodule.modulo - La columna del módulo del cual se quiere actualizar la configuración.
  * @param {JSON} botmodule.newconfig - La nueva configuración del módulo.
- * @param {Function} callback - La función que se ejecutará cuando se actualice la configuración.
  */
 
 module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback) => {
@@ -143,7 +141,6 @@ const { Collection } = require('discord.js')
 /**
  * Crea el listado de interacciones de un servidor bajo demanda
  * @param {Object} guildConfig - La configuración del servidor.
- * @param {Function} callback - La función que se ejecutará cuando se haya creado el listado de interacciones.
  * @returns {Object} - El listado de interacciones.
  */
 
@@ -171,7 +168,6 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
 /**
  * Subir interacciones de un servidor.
  * @param {Guild} guild - El servidor del cual se quiere subir las interacciones.
- * @param {Function} callback - La función que se ejecutará cuando se haya subido las interacciones.
  */
 
 module.exports.subirInteraccionesDelServidor = (guild, callback) => {

@@ -25,7 +25,6 @@ function tieneSoloEspacios (texto) {
 
 /**
  * @param {Array<{color: String, text: String}>} motd
- * @param {Function} callback
 */
 
 module.exports.convertirMOTDaImagen = (motd, callback) => {
@@ -192,7 +191,6 @@ const consolex = require('../core/consolex')
  * @param {Object} host
  * @param {String} host.ip
  * @param {Number} host.port
- * @param {Function} callback
  * @returns {Object}
  */
 

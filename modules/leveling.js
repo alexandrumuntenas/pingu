@@ -86,7 +86,6 @@ module.exports.sendLevelUpMessage = message => {
 
 /**
  * @param {Guild} guild
- * @param {Function} callback
  */
 
 module.exports.getLeaderboard = (guild, callback) => {
@@ -183,7 +182,6 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
 
 /**
  * @param {GuildMember} member
- * @param {Function} callback
  * @returns {String}
  */
 
@@ -269,7 +267,6 @@ module.exports.generateRankCard = (member, callback) => {
 
 /**
  * @param {Guild} guild
- * @param {Function} callback
  * @returns {?String} Error
  */
 
