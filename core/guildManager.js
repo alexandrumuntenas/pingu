@@ -133,9 +133,7 @@ const { Collection } = require('discord.js')
  * @returns {Object} - El listado de interacciones.
  */
 
-function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
-  if (!callback) throw new Error('Callback function is required')
-
+function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
   // eslint-disable-next-line node/no-callback-literal
   if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return callback({})
 
@@ -151,7 +149,7 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
 
   if (!guildConfig.common.interactions.showcfginteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 
-  return callback(interactionList.map(command => command.interactionData.toJSON()))
+  return interactionList.map(command => command.interactionData.toJSON())
 }
 
 /**
