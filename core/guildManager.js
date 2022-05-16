@@ -135,7 +135,7 @@ const { Collection } = require('discord.js')
 
 function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
   // eslint-disable-next-line node/no-callback-literal
-  if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return callback({})
+  if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return {}
 
   let interactionList = new Collection()
 
@@ -157,18 +157,15 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
  * @param {Guild} guild - El servidor del cual se quiere subir las interacciones.
  */
 
-module.exports.subirInteraccionesDelServidor = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required')
-  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
-    crearListadoDeInteraccionesDeUnGuild(guildConfig, guildInteractionList => {
-      console.log(guildInteractionList)
-      rest.put(
-        Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
-        .catch(err => {
-          if (err) return callback(err)
-          return callback()
-        }).then(() => { callback() })
-    })
+module.exports.subirInteraccionesDelServidor = async (guild) => {
+  module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
+    const guildInteractionList = crearListadoDeInteraccionesDeUnGuild(guildConfig)
+
+    rest.put(
+      Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
+      .catch(err => {
+        return err
+      }).then(() => { return null })
   })
 }
 
