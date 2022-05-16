@@ -36,40 +36,40 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
       }
 
       return guildData || {}
-    } else {
-      try {
-        Database.execute('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id])
-        return module.exports.obtenerConfiguracionDelServidor(guild)
-      } catch (err2) {
-        Consolex.gestionarError(err2)
-      }
+    }
+
+    try {
+      Database.execute('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id])
+      return module.exports.obtenerConfiguracionDelServidor(guild)
+    } catch (err2) {
+      Consolex.gestionarError(err2)
     }
   } catch (err) {
     Consolex.gestionarError(err)
   }
 }
 
-function procesarObjetosdeConfiguracion (config, newconfig) {
-  let count = 0
+function procesarObjetosdeConfiguracion(config, newconfig) {
   if (newconfig instanceof Object === false) return newconfig
-  else {
-    const newConfigProperties = Object.keys(newconfig)
-    newConfigProperties.forEach(property => {
-      if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
-        procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
-          config[property] = newConfig
-          count += 1
-        })
-      } else {
-        config[property] = newconfig[property]
-        count += 1
-      }
 
-      if (count === newConfigProperties.length) {
-        return config
-      }
-    })
-  }
+  let count = 0
+
+  const newConfigProperties = Object.keys(newconfig)
+  newConfigProperties.forEach(property => {
+    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
+      procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
+        config[property] = newConfig
+        count += 1
+      })
+    } else {
+      config[property] = newconfig[property]
+      count += 1
+    }
+
+    if (count === newConfigProperties.length) {
+      return config
+    }
+  })
 }
 
 const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManager')
@@ -133,7 +133,7 @@ const { Collection } = require('discord.js')
  * @returns {Object} - El listado de interacciones.
  */
 
-function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
+function crearListadoDeInteraccionesDeUnGuild(guildConfig) {
   // eslint-disable-next-line node/no-callback-literal
   if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return {}
 
@@ -199,7 +199,7 @@ module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
 
 const Downloader = require('nodejs-file-downloader')
 
-async function descargarArchivoDeConfiguracionYAML (url, callback) {
+async function descargarArchivoDeConfiguracionYAML(url, callback) {
   const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
 
   const downloader = new Downloader({
@@ -221,7 +221,7 @@ async function descargarArchivoDeConfiguracionYAML (url, callback) {
  * @param {Object} callback
  */
 
-function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar, callback) {
+function loopDeComprobacion(modeloDeConfiguracion, configuracionAComparar, callback) {
   const errores = []
   const configuracionProcesada = {}
   const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
@@ -253,7 +253,7 @@ function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar, call
   })
 }
 
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada, callback) {
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(configuracionImportada, callback) {
   const errores = []
   const configuracionProcesada = {}
 
