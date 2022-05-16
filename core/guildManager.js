@@ -49,7 +49,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
   }
 }
 
-function procesarObjetosdeConfiguracion (config, newconfig) {
+function procesarObjetosdeConfiguracion(config, newconfig) {
   let count = 0
   if (newconfig instanceof Object === false) return newconfig
   else {
@@ -83,54 +83,39 @@ const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManag
  * @param {JSON} botmodule.newconfig - La nueva configuración del módulo.
  */
 
-module.exports.actualizarConfiguracionDelServidor = (guild, botmodule, callback) => {
+module.exports.actualizarConfiguracionDelServidor = async (guild, botmodule) => {
   if (!comprobarSiElModuloExiste(botmodule.column || botmodule.modulo)) throw new Error('The module does not exist')
 
   botmodule.column = botmodule.modulo || botmodule.column
 
-  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
+  module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
       procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
         guildConfig[botmodule.column] = newModuleConfig
-        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id], err => {
-          if (err) {
-            Consolex.gestionarError(err)
-            return callback(err)
-          }
-
-          if (callback) {
-            return callback()
-          }
-
+        try {
+          Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id])
           return null
-        })
-      })
-    } else if (typeof botmodule.newconfig === 'object' && botmodule.newconfig !== null) {
-      Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id], err => {
-        if (err) {
+        } catch (err) {
           Consolex.gestionarError(err)
-          return callback(err)
+          return err
         }
-
-        if (callback) {
-          return callback()
-        }
-
-        return null
       })
+    } else if (typeof botmodule.newconfig === 'object' && Array.isArray(guildConfig[botmodule.column]) && botmodule.newconfig !== null) {
+      try {
+        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id])
+        return null
+      } catch (err) {
+        Consolex.gestionarError(err)
+        return err
+      }
     } else {
-      Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id], err => {
-        if (err) {
-          Consolex.gestionarError(err)
-          return callback(err)
-        }
-
-        if (callback) {
-          return callback()
-        }
-
+      try {
+        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id])
         return null
-      })
+      } catch (err) {
+        Consolex.gestionarError(err)
+        return err
+      }
     }
   })
 }
@@ -148,7 +133,7 @@ const { Collection } = require('discord.js')
  * @returns {Object} - El listado de interacciones.
  */
 
-function crearListadoDeInteraccionesDeUnGuild (guildConfig, callback) {
+function crearListadoDeInteraccionesDeUnGuild(guildConfig, callback) {
   if (!callback) throw new Error('Callback function is required')
 
   // eslint-disable-next-line node/no-callback-literal
@@ -219,7 +204,7 @@ module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
 
 const Downloader = require('nodejs-file-downloader')
 
-async function descargarArchivoDeConfiguracionYAML (url, callback) {
+async function descargarArchivoDeConfiguracionYAML(url, callback) {
   const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
 
   const downloader = new Downloader({
@@ -241,7 +226,7 @@ async function descargarArchivoDeConfiguracionYAML (url, callback) {
  * @param {Object} callback
  */
 
-function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar, callback) {
+function loopDeComprobacion(modeloDeConfiguracion, configuracionAComparar, callback) {
   const errores = []
   const configuracionProcesada = {}
   const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
@@ -273,7 +258,7 @@ function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar, call
   })
 }
 
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada, callback) {
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(configuracionImportada, callback) {
   const errores = []
   const configuracionProcesada = {}
 
