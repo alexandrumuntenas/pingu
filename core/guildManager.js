@@ -1,5 +1,4 @@
 /* eslint-disable valid-typeof */
-/* eslint-disable node/no-callback-literal */
 /** @module GuildDataManager */
 
 const Database = require('./databaseManager')
@@ -199,7 +198,7 @@ module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
 
 const Downloader = require('nodejs-file-downloader')
 
-async function descargarArchivoDeConfiguracionYAML (url, callback) {
+async function descargarArchivoDeConfiguracionYAML (url) {
   const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
 
   const downloader = new Downloader({
@@ -209,9 +208,9 @@ async function descargarArchivoDeConfiguracionYAML (url, callback) {
   })
   try {
     await downloader.download()
-    return callback({ ubicacionArchivo: `./temp/${nombreTemporalAleatorioDelArchivo}` })
+    return { ubicacionArchivo: `./temp/${nombreTemporalAleatorioDelArchivo}` }
   } catch (error) {
-    return callback({ error: error.message })
+    return { error: error.message }
   }
 }
 
