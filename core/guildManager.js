@@ -49,11 +49,9 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
   }
 }
 
-/** Procesa la configuración de un objeto. */
-
-function procesarObjetosdeConfiguracion (config, newconfig, callback) {
+function procesarObjetosdeConfiguracion (config, newconfig) {
   let count = 0
-  if (newconfig instanceof Object === false) callback(newconfig)
+  if (newconfig instanceof Object === false) return newconfig
   else {
     const newConfigProperties = Object.keys(newconfig)
     newConfigProperties.forEach(property => {
@@ -68,7 +66,7 @@ function procesarObjetosdeConfiguracion (config, newconfig, callback) {
       }
 
       if (count === newConfigProperties.length) {
-        callback(config)
+        return config
       }
     })
   }
