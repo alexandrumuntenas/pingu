@@ -48,7 +48,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
   }
 }
 
-function procesarObjetosdeConfiguracion(config, newconfig) {
+function procesarObjetosdeConfiguracion (config, newconfig) {
   if (newconfig instanceof Object === false) return newconfig
 
   let count = 0
@@ -132,7 +132,7 @@ const { Collection } = require('discord.js')
  * @returns {Object} - El listado de interacciones.
  */
 
-function crearListadoDeInteraccionesDeUnGuild(guildConfig) {
+function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
   // eslint-disable-next-line node/no-callback-literal
   if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return {}
 
@@ -198,7 +198,7 @@ module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
 
 const Downloader = require('nodejs-file-downloader')
 
-async function descargarArchivoDeConfiguracionYAML(url) {
+async function descargarArchivoDeConfiguracionYAML (url) {
   const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
 
   const downloader = new Downloader({
@@ -219,7 +219,7 @@ async function descargarArchivoDeConfiguracionYAML(url) {
  * @param {Object} configuracionAComparar
  */
 
-function loopDeComprobacion(modeloDeConfiguracion, configuracionAComparar) {
+function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar) {
   const errores = []
   const configuracionProcesada = {}
   const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
@@ -250,7 +250,7 @@ function loopDeComprobacion(modeloDeConfiguracion, configuracionAComparar) {
   })
 }
 
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(configuracionImportada, callback) {
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada, callback) {
   const errores = []
   const configuracionProcesada = {}
 
