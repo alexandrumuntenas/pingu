@@ -1,8 +1,8 @@
-const welcome = require('../modules/welcome')
+const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
 
 module.exports = {
   name: 'guildMemberAdd',
-  execute: member => { // skipcq: JS-0116
-    welcome.doGuildMemberAdd(member)
+  execute: member => {
+    ejecutarFuncionesDeTerceros('guildMemberAdd', null, member)
   }
 }
