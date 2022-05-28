@@ -22,13 +22,13 @@ module.exports.getTranslation = (language, key, placeholders) => {
       translation = stringPlaceholder(translation, placeholders, { before: '%', after: '%' })
     } catch (err) {
       if (err) {
-        translation = 'Error al intentar obtener la traducción para este mensaje (╯°□°）╯︵ ┻━┻'
+        translation = 'Error al intentar ajustar la traducción'
         gestionarError(err)
       }
     }
   }
 
-  if (!translation) translation = 'Error al intentar obtener la traducción para este mensaje (╯°□°）╯︵ ┻━┻'
+  if (!translation) translation = 'Error al intentar obtener la traducción'
 
   return translation
 }
