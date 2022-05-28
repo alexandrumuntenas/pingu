@@ -1,4 +1,4 @@
-CREATE TABLE `configuracionDelServidor` (
+CREATE TABLE `guildsConfigurations` (
   `guild` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `common` longtext COLLATE utf8mb4_bin DEFAULT '{"language":"es","prefix":"!","interactions":{"enabled":true}}',
   `interactions` longtext COLLATE utf8mb4_bin DEFAULT NULL,
