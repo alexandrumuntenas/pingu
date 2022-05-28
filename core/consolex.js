@@ -34,6 +34,7 @@ module.exports = {
   gestionarError: err => {
     module.exports.error(err)
     module.exports.Sentry.captureException(err)
+    throw err
   },
   Sentry
 }
