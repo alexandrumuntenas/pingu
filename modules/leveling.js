@@ -88,25 +88,25 @@ module.exports.sendLevelUpMessage = message => {
  * @param {Guild} guild
  */
 
-module.exports.getLeaderboard = (guild) => {
-  Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
-    if (err) consolex.gestionarError(err)
+module.exports.getLeaderboard = async (guild) => {
+  try {
+    const [members] = await Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 'length') ? result : [])
 
-    if (members && Object.prototype.hasOwnProperty.call(members, '0')) {
-      let memberCount = 0
-      members.forEach(async member => {
-        try {
-          member.user = await process.Client.users.fetch(member.member) // skipcq: JS-0040
-        } catch {
-          member.user = { username: 'Mysterious User', discriminator: '0000' } // skipcq: JS-0040
-        } finally {
-          memberCount++
-        }
+    let memberCount = 0
+    members.forEach(async member => {
+      try {
+        member.user = await process.Client.users.fetch(member.member) // skipcq: JS-0040
+      } catch {
+        member.user = { username: 'Mysterious User', discriminator: '0000' } // skipcq: JS-0040
+      } finally {
+        memberCount++
+      }
 
-        if (memberCount === members.length) return members
-      })
-    } else return null
-  })
+      if (memberCount === members.length) return members
+    })
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 const { registerFont, createCanvas, loadImage } = require('canvas')
@@ -268,10 +268,8 @@ module.exports.generateRankCard = async (member) => {
 module.exports.resetLeaderboard = (guild) => {
   if (!guild) throw new Error('Guild is required.')
 
-  Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
-    if (err) consolex.gestionarError(err)
-    return null
-  })
+  Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id])
+    .catch(err => consolex.gestionarError(err))
 }
 
 module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience, type: 'noPrefix' }]
