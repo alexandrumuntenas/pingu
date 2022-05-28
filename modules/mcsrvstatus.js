@@ -241,7 +241,7 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host) => {
 }
 
 function actualizarNumeroDeJugadoresDelSidebar (guild) {
-  obtenerConfiguracionDelServidor(guild, config => {
+  obtenerConfiguracionDelServidor(guild).then(config => {
     const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount && sidebarPlayercount) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
@@ -254,7 +254,7 @@ function actualizarNumeroDeJugadoresDelSidebar (guild) {
 const { createHash } = require('crypto')
 
 function actualizarDatosDelPanel (guild) {
-  obtenerConfiguracionDelServidor(guild, config => {
+  obtenerConfiguracionDelServidor(guild).then(config => {
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.messagePanelChannel) {
       module.exports.generarMensajeEnriquecidoConDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, mensaje => {
         function fallback () {

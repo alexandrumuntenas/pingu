@@ -22,7 +22,7 @@ module.exports.modeloDeConfiguracion = {
 const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../core/guildManager')
 
 module.exports.giveMemberRoles = member => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'roles')) {
         if (guildConfig.welcome.roles.length > 0) {
@@ -45,7 +45,7 @@ const { MessageAttachment } = require('discord.js')
 const replaceBracePlaceholdersWithActualData = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendWelcomeMessage = member => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) return
 
     const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
@@ -205,7 +205,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
  */
 
 module.exports.doGuildMemberAdd = member => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
       if (guildConfig.welcome.enabled) {
         module.exports.giveMemberRoles(member)
@@ -216,7 +216,7 @@ module.exports.doGuildMemberAdd = member => {
 }
 
 module.exports.addJoinRole = (guild, role, callback) => {
-  obtenerConfiguracionDelServidor(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (guildConfig.welcome.roles) {
       const { roles } = guildConfig.welcome
 
@@ -238,7 +238,7 @@ module.exports.addJoinRole = (guild, role, callback) => {
 }
 
 module.exports.removeJoinRole = (guild, role, callback) => {
-  obtenerConfiguracionDelServidor(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (guildConfig.welcome.roles) {
       delete guildConfig.welcome.roles[`${role.id}`]
 

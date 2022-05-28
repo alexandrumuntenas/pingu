@@ -10,7 +10,7 @@ async function isChatInputCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
-  obtenerConfiguracionDelServidor(interaction.guild, async guildConfig => {
+  obtenerConfiguracionDelServidor(interaction.guild).then(async guildConfig => {
     interaction.guild.configuration = guildConfig
     if (process.Client.comandos.has(interaction.commandName)) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)

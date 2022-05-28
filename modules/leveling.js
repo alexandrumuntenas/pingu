@@ -27,7 +27,7 @@ module.exports.getExperience = message => {
   if (message.guild.configuration.leveling.enabled) {
     if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
       CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
-      obtenerConfiguracionDelServidor(message.guild, guildConfig => {
+      obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
         getMember(message.member, memberData => {
           memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
@@ -52,7 +52,7 @@ module.exports.getExperience = message => {
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendLevelUpMessage = message => {
-  obtenerConfiguracionDelServidor(message.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
     if (guildConfig.leveling.enabled) {
       getMember(message, memberData => {
         const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)

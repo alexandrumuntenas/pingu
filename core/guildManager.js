@@ -32,6 +32,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
         } catch (err2) {
           consolex.gestionarError(err2)
         }
+        module.exports.actualizarConfiguracionDelServidor(guild, { column: 'common', newconfig: { language: 'es-ES', prefix: '!', interactions: { enabled: true } } }).then()
       }
 
       return guildData || {}

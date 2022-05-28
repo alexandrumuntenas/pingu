@@ -166,7 +166,7 @@ const defaultDMEmbed = (guild) => {
 const messageManager = require('../core/messageManager')
 
 module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.channel) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.channel, {
@@ -191,7 +191,7 @@ module.exports.events.afterCreatingSuggestion = (member, suggestionId) => {
 }
 
 module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.logs) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
@@ -216,7 +216,7 @@ module.exports.events.afterSuggestionApproval = (member, suggestionId) => {
 }
 
 module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.logs) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
@@ -241,7 +241,7 @@ module.exports.events.afterSuggestionRejection = (member, suggestionId) => {
 }
 
 module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, note) => {
-  obtenerConfiguracionDelServidor(member.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
     module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
       if (guildConfig.suggestions.logs) {
         messageManager.acciones.enviarMensajeACanal(member.guild, guildConfig.suggestions.logs, {
@@ -272,7 +272,7 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
  */
 
 module.exports.addUserToBlacklist = (guild, user) => {
-  obtenerConfiguracionDelServidor(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
     actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
@@ -289,7 +289,7 @@ module.exports.addUserToBlacklist = (guild, user) => {
  */
 
 module.exports.checkIfUserIsBlacklisted = (guild, user) => {
-  obtenerConfiguracionDelServidor(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist')) return guildConfig.suggestions.blacklist.includes(user.id)
     return false
   })
@@ -302,7 +302,7 @@ module.exports.checkIfUserIsBlacklisted = (guild, user) => {
  */
 
 module.exports.removeUserFromBlacklist = (guild, user) => {
-  obtenerConfiguracionDelServidor(guild, guildConfig => {
+  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
       delete guildConfig.suggestions.blacklist[guildConfig.suggestions.blacklist.indexOf(user.id)]
     }
