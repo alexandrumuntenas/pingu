@@ -14,7 +14,7 @@ const { Routes } = require('discord-api-types/v10')
 
 module.exports.obtenerConfiguracionDelServidor = async (guild) => {
   try {
-    const [configuracionDelServidor] = await Database.execute('SELECT * FROM `guildsConfigurations` WHERE guild = ?', [guild.id]).then(result => result[0])
+    const [configuracionDelServidor] = await Database.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild.id]).then(result => result[0])
 
     if (configuracionDelServidor) {
       Object.keys(configuracionDelServidor).forEach(module => {
@@ -27,7 +27,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
 
       if (configuracionDelServidor.common === null) {
         try {
-          await Database.execute('UPDATE `guildsConfigurations` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
+          await Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
           return module.exports.obtenerConfiguracionDelServidor(guild)
         } catch (err2) {
           consolex.gestionarError(err2)
@@ -39,7 +39,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
     }
 
     try {
-      await Database.execute('INSERT INTO `guildsConfigurations` (guild) VALUES (?)', [guild.id])
+      await Database.execute('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild.id])
       return module.exports.obtenerConfiguracionDelServidor(guild)
     } catch (err2) {
       consolex.gestionarError(err2)
@@ -70,21 +70,21 @@ module.exports.actualizarConfiguracionDelServidor = async (guild, botmodule) => 
     if (typeof configuracionDelServidor[botmodule.column] === 'object' && !Array.isArray(configuracionDelServidor[botmodule.column]) && configuracionDelServidor[botmodule.column] !== null) {
       configuracionDelServidor[botmodule.column] = procesarObjetosdeConfiguracion(configuracionDelServidor[botmodule.column], botmodule.newconfig)
       try {
-        Database.execute('UPDATE `guildsConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(configuracionDelServidor[botmodule.column]), guild.id])
+        Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(configuracionDelServidor[botmodule.column]), guild.id])
         return null
       } catch (err) {
         consolex.gestionarError(err)
       }
     } else if (typeof botmodule.newconfig === 'object' && Array.isArray(configuracionDelServidor[botmodule.column]) && botmodule.newconfig !== null) {
       try {
-        Database.execute('UPDATE `guildsConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id])
+        Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id])
         return null
       } catch (err) {
         consolex.gestionarError(err)
       }
     } else {
       try {
-        Database.execute('UPDATE `guildsConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id])
+        Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id])
         return null
       } catch (err) {
         consolex.gestionarError(err)
