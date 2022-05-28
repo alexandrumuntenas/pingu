@@ -14,7 +14,7 @@ module.exports = Database
 const consolex = require('./consolex')
 const { readdirSync, readFileSync } = require('fs')
 
-let tablasDisponibles = []
+module.exports.tablasDisponibles = []
 
 module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
   consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
@@ -27,9 +27,9 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
     }
   })
 
-  tablasDisponibles = Object.keys(tablasYConsultas)
+  module.exports.tablasDisponibles = Object.keys(tablasYConsultas)
 
-  tablasDisponibles.forEach(async tabla => {
+  module.exports.tablasDisponibles.forEach(async tabla => {
     try {
       await Database.execute(tablasYConsultas[tabla])
       return consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
@@ -42,5 +42,3 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
     }
   })
 }
-
-module.exports.tablasDisponibles = tablasDisponibles
