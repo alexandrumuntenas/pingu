@@ -27,7 +27,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
 
       if (guildData.common === null) {
         try {
-          Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
+          await Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
           return module.exports.obtenerConfiguracionDelServidor(guild)
         } catch (err2) {
           consolex.gestionarError(err2)
@@ -38,7 +38,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
     }
 
     try {
-      Database.execute('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id])
+      await Database.execute('INSERT INTO `guildData` (guild) VALUES (?)', [guild.id])
       return module.exports.obtenerConfiguracionDelServidor(guild)
     } catch (err2) {
       consolex.gestionarError(err2)
