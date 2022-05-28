@@ -136,7 +136,7 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
  * @param {GuildMember} member
  */
 
-module.exports.generateWelcomeCard = async (member, callback) => {
+module.exports.generateWelcomeCard = async (member) => {
   const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
 
   const canvas = createCanvas(1100, 500)
@@ -197,7 +197,7 @@ module.exports.generateWelcomeCard = async (member, callback) => {
   const buffer = canvas.toBuffer('image/png')
   writeFileSync(attachmentPath, buffer)
 
-  callback(attachmentPath)
+  return attachmentPath
 }
 
 /**
@@ -215,38 +215,44 @@ module.exports.doGuildMemberAdd = member => {
   })
 }
 
-module.exports.addJoinRole = (guild, role, callback) => {
+module.exports.addJoinRole = (guild, role) => {
   obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (guildConfig.welcome.roles) {
       const { roles } = guildConfig.welcome
 
       roles.push(`${role.id}`)
 
-      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles } }, err => {
-        if (err && callback) callback(err)
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles } }).catch(err => {
+        return err
+      }).then(() => {
+        return null
       })
     } else {
       const roles = [`${role.id}`]
 
-      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles } }, err => {
-        if (err && callback) callback(err)
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles } }).catch(err => {
+        return err
+      }).then(() => {
+        return null
       })
     }
 
-    if (callback) callback()
+    return null
   })
 }
 
-module.exports.removeJoinRole = (guild, role, callback) => {
+module.exports.removeJoinRole = (guild, role) => {
   obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (guildConfig.welcome.roles) {
       delete guildConfig.welcome.roles[`${role.id}`]
 
-      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }, err => {
-        if (err && callback) callback(err)
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }).catch(err => {
+        return err
+      }).then(() => {
+        return null
       })
     }
 
-    if (callback) callback()
+    return null
   })
 }

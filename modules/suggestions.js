@@ -275,10 +275,9 @@ module.exports.addUserToBlacklist = (guild, user) => {
   obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
-    actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
-      if (err) consolex.gestionarError(err)
+    actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }).catch(err => {
       return err
-    })
+    }).then(() => { return null })
   })
 }
 

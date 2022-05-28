@@ -260,7 +260,11 @@ function actualizarDatosDelPanel (guild) {
         function fallback () {
           try {
             process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send(mensaje).then(newMessage => {
-              actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
+              try {
+                actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
+              } catch (error) {
+                consolex.gestionarError(error)
+              }
             })
           } catch {
             consolex.error(`Mcsrvstatus: No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)
