@@ -22,16 +22,18 @@ function traducirAntiguasPropiedadesALasNuevas (propiedades) {
 }
 
 module.exports.obtenerRespuestaPersonalizada = async (guild, desencadenante) => {
-  Database.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
-    if (err) consolex.gestionarError(err)
+  try {
+    let [respuestaPersonalizada] = await Database.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id]).then(result => result[0])
 
-    if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
-      return respuestaPersonalizada
+    if (Object.prototype.hasOwnProperty.call(respuestaPersonalizada, '0') && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'autoreplyReply') && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'autoreplyProperties')) {
+      respuestaPersonalizada = { desencadenante: respuestaPersonalizada.autoreplyTrigger, respuesta: respuestaPersonalizada.autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(respuestaPersonalizada.autoreplyProperties)) }
+      return respuestaPersonalizada || {}
     }
 
-    return null
-  })
+    return {}
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 const crearTextoAleatorio = require('randomstring').generate
@@ -61,26 +63,29 @@ module.exports.crearRespuestaPersonalizada = async (guild, respuestaPersonalizad
   respuestaPersonalizada.propiedades.enviarEnEmbed = respuestaPersonalizada.propiedades.enviarEnEmbed || { habilitado: false }
   respuestaPersonalizada.identificador = crearTextoAleatorio({ length: 10, charset: 'alphanumeric' })
 
-  Database.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
-    if (err) {
-      consolex.gestionarError(err)
-      throw err
-    }
-
+  try {
+    await Database.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)])
     return module.exports.obtenerRespuestaPersonalizada(guild, respuestaPersonalizada.desencadenante)
-  })
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPersonalizada) => {
-  Database.execute('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
-    if (err) {
-      consolex.gestionarError(err)
-      throw err
-    }
-  })
+  try {
+    Database.execute('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id])
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
-const { EmbedBuilder } = require('discord.js')
+module.exports.obtenerRespuestasPersonalizadas = async (guild) => {
+  try {
+    return await Database.execute('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result : [])
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
+}
 
 const randomstring = require('randomstring')
 const fs = require('fs')
@@ -100,20 +105,7 @@ module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = 
   })
 }
 
-module.exports.obtenerRespuestasPersonalizadas = async (guild) => {
-  Database.execute('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
-    if (err) {
-      consolex.gestionarError(err)
-      throw err
-    }
-
-    if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      return result
-    }
-
-    return []
-  })
-}
+const { EmbedBuilder } = require('discord.js')
 
 module.exports.hooks = [{
   evento: 'messageCreate',
