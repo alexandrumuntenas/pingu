@@ -56,10 +56,8 @@ function procesarObjetosdeConfiguracion (config, newconfig) {
   const newConfigProperties = Object.keys(newconfig)
   newConfigProperties.forEach(property => {
     if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
-      procesarObjetosdeConfiguracion(config[property], newconfig[property], newConfig => {
-        config[property] = newConfig
-        count += 1
-      })
+      config[property] = procesarObjetosdeConfiguracion(config[property], newconfig[property])
+      count += 1
     } else {
       config[property] = newconfig[property]
       count += 1
@@ -89,23 +87,19 @@ module.exports.actualizarConfiguracionDelServidor = async (guild, botmodule) => 
 
   module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
-      procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig, newModuleConfig => {
-        guildConfig[botmodule.column] = newModuleConfig
-        try {
-          Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id])
-          return null
-        } catch (err) {
-          consolex.gestionarError(err)
-          return err
-        }
-      })
+      guildConfig[botmodule.column] = procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig)
+      try {
+        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id])
+        return null
+      } catch (err) {
+        consolex.gestionarError(err)
+      }
     } else if (typeof botmodule.newconfig === 'object' && Array.isArray(guildConfig[botmodule.column]) && botmodule.newconfig !== null) {
       try {
         Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id])
         return null
       } catch (err) {
         consolex.gestionarError(err)
-        return err
       }
     } else {
       try {
@@ -113,7 +107,6 @@ module.exports.actualizarConfiguracionDelServidor = async (guild, botmodule) => 
         return null
       } catch (err) {
         consolex.gestionarError(err)
-        return err
       }
     }
   })
@@ -133,7 +126,6 @@ const { Collection } = require('discord.js')
  */
 
 function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
-  // eslint-disable-next-line node/no-callback-literal
   if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return {}
 
   let interactionList = new Collection()
@@ -163,7 +155,7 @@ module.exports.subirInteraccionesDelServidor = async (guild) => {
     rest.put(
       Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
       .catch(err => {
-        return err
+        return consolex.gestionarError(err)
       }).then(() => { return null })
   })
 }
@@ -175,9 +167,11 @@ module.exports.subirInteraccionesDelServidor = async (guild) => {
 
 module.exports.eliminarDatosDelServidor = guild => {
   Database.tablasDisponibles.forEach(table => {
-    Database.execute(`DELETE FROM ${table} WHERE guild = ?`, [guild.id], err => {
-      if (err) consolex.gestionarError(err)
-    })
+    try {
+      Database.execute(`DELETE FROM ${table} WHERE guild = ?`, [guild.id])
+    } catch (err) {
+      consolex.gestionarError(err)
+    }
   })
 }
 
@@ -186,12 +180,12 @@ const randomstring = require('randomstring')
 
 const { writeFileSync } = require('fs')
 
-module.exports.exportarDatosDelServidorEnFormatoYAML = (guild, callback) => {
-  module.exports.obtenerConfiguracionDelServidor(guild, guildConfig => {
+module.exports.exportarDatosDelServidorEnFormatoYAML = (guild) => {
+  module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
     if (guildConfig && typeof guildConfig === 'object') {
       const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
       writeFileSync(attachmentPath, YAML.dump(guildConfig))
-      return callback(attachmentPath)
+      return attachmentPath
     }
   })
 }
@@ -276,13 +270,13 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
 const { readFileSync } = require('fs')
 
 module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url) => {
-  descargarArchivoDeConfiguracionYAML(url, descarga => {
+  descargarArchivoDeConfiguracionYAML(url).then(descarga => {
     if (descarga.error) return descarga.error
     ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), ({ configuracionProcesada, errores }) => {
       let posicionArrayModulos = 0
       modulosDisponibles.forEach(modulo => {
-        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] || {} }, (err) => {
-          if (err) errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
+        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] || {} }).catch(err => {
+          errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
         })
         posicionArrayModulos++
 
