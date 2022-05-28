@@ -28,9 +28,9 @@ module.exports.obtenerRespuestaPersonalizada = async (guild, desencadenante) => 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
       const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
       return respuestaPersonalizada
-    } else {
-      return null
     }
+
+    return null
   })
 }
 
@@ -111,9 +111,9 @@ module.exports.obtenerRespuestasPersonalizadas = async (guild) => {
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
       return result
-    } else {
-      return []
     }
+
+    return []
   })
 }
 
