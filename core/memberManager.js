@@ -7,9 +7,7 @@ const Database = require('../core/databaseManager')
  * @callback memberData - The member data
  */
 
-module.exports.getMember = (member, callback) => {
-  if (!callback) throw Error('You didn\'t provide a callback.')
-
+module.exports.getMember = (member) => {
   Database.execute('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
     if (err) Consolex.gestionarError(err)
 
@@ -22,12 +20,12 @@ module.exports.getMember = (member, callback) => {
             memberData[0].lvlRank = r.lvlRank
           })
 
-          callback(memberData[0])
+          return memberData[0]
         }
       })
     } else {
       module.exports.createMember(member, () => {
-        module.exports.getMember(member, callback)
+        return module.exports.getMember(member)
       })
     }
   })
@@ -38,11 +36,10 @@ module.exports.getMember = (member, callback) => {
  * @param {GuildMember} member - The Member to create the data for
  */
 
-module.exports.createMember = (member, callback) => {
+module.exports.createMember = (member) => {
   Database.execute('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], err => {
     if (err) Consolex.gestionarError(err)
-
-    if (callback) callback()
+    return module.exports.getMember(member)
   })
 }
 
@@ -56,14 +53,11 @@ module.exports.createMember = (member, callback) => {
  * @param {?Array} memberDataToUpdate.ecoInventory - Member Inventory
  */
 
-module.exports.updateMember = (member, memberDataToUpdate, callback) => {
-  if (!memberDataToUpdate) throw Error('You didn\' provide any data to update.')
-
+module.exports.updateMember = (member, memberDataToUpdate) => {
   module.exports.getMember(member, memberData => {
     Database.execute('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, member.guild.id, member.id], err => {
       if (err) Consolex.gestionarError(err)
-
-      if (callback) callback()
+      return module.exports.getMember(member)
     })
   })
 }
@@ -72,10 +66,9 @@ module.exports.updateMember = (member, memberDataToUpdate, callback) => {
  * Delete a member's data from the database.
  * @param {Member} member
  */
-module.exports.deleteMember = (member, callback) => {
+module.exports.deleteMember = (member) => {
   Database.execute('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id], err => {
     if (err) Consolex.gestionarError(err)
-
-    if (callback) callback()
+    return 'success'
   })
 }
