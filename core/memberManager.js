@@ -7,7 +7,7 @@ const Database = require('../core/databaseManager')
  * @callback memberData - The member data
  */
 
-module.exports.obtenerDatosDelMiembro = async (member) => {
+module.exports.obtenerDatosDelUsuario = async (member) => {
   try {
     const [memberData] = await Database.execute('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result[0] : module.exports.createMember(member))
     // TODO: GET THIS OUT!
@@ -35,7 +35,7 @@ module.exports.obtenerDatosDelMiembro = async (member) => {
 module.exports.createMember = async (member) => {
   try {
     await Database.execute('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id])
-    return module.exports.obtenerDatosDelMiembro(member)
+    return module.exports.obtenerDatosDelUsuario(member)
   } catch (err) {
     consolex.gestionarError(err)
   }
@@ -52,11 +52,11 @@ module.exports.createMember = async (member) => {
  */
 
 module.exports.updateMember = async (member, memberDataToUpdate) => {
-  module.exports.obtenerDatosDelMiembro(member).then(memberData => {
+  module.exports.obtenerDatosDelUsuario(member).then(memberData => {
     Database.execute('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, member.guild.id, member.id])
       .catch(err => consolex.gestionarError(err))
       .then(() => {
-        return module.exports.obtenerDatosDelMiembro(member)
+        return module.exports.obtenerDatosDelUsuario(member)
       })
   })
 }
