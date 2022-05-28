@@ -1,4 +1,4 @@
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const { REST } = require('@discordjs/rest')
 const { eliminadorArchivosTemporales } = require('../core/clientManager')
 
@@ -6,16 +6,16 @@ const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKEN)
 else rest.setToken(process.env.PUBLIC_TOKEN)
 
-const initializeThirdParty = require('../core/initializeThirdParty')
+const statisticsManager = require('../core/statisticsManager')
 const { comenzarActualizarDatosDeLosServidores } = require('../modules/mcsrvstatus')
 
 module.exports = {
   name: 'ready',
   execute: () => {
-    Consolex.info(`Conectado como ${process.Client.user.tag}!`)
+    consolex.info(`Conectado como ${process.Client.user.tag}!`)
 
     if (process.Client.statcord) process.Client.statcord.autopost()
-    if (process.env.ENTORNO === 'public') initializeThirdParty()
+    if (process.env.ENTORNO === 'public') statisticsManager()
 
     eliminadorArchivosTemporales()
     process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })

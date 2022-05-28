@@ -2,7 +2,7 @@ module.exports.modeloDeConfiguracion = {
   enabled: 'boolean'
 }
 
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
 function traducirAntiguasPropiedadesALasNuevas (propiedades) {
@@ -21,19 +21,19 @@ function traducirAntiguasPropiedadesALasNuevas (propiedades) {
   return propiedades
 }
 
-module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
-  if (!callback) throw new Error('Se requiere un callback')
+module.exports.obtenerRespuestaPersonalizada = async (guild, desencadenante) => {
+  try {
+    let [respuestaPersonalizada] = await Database.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id]).then(result => result[0])
 
-  Database.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
-    if (err) Consolex.gestionarError(err)
-
-    if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
-      callback(respuestaPersonalizada)
-    } else {
-      callback()
+    if (Object.prototype.hasOwnProperty.call(respuestaPersonalizada, '0') && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'autoreplyReply') && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'autoreplyProperties')) {
+      respuestaPersonalizada = { desencadenante: respuestaPersonalizada.autoreplyTrigger, respuesta: respuestaPersonalizada.autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(respuestaPersonalizada.autoreplyProperties)) }
+      return respuestaPersonalizada || {}
     }
-  })
+
+    return {}
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 const crearTextoAleatorio = require('randomstring').generate
@@ -51,15 +51,10 @@ const crearTextoAleatorio = require('randomstring').generate
  * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail - La URL del thumbnail del mensaje enriquecido.
  * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.imagen - La URL de la imagen del mensaje enriquecido.
  * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.url - La URL del mensaje enriquecido.
- * @param {Functions} callback - La función que se ejecutará cuando se haya creado la respuesta personalizada.
  * @returns {String} Identificador de la respuesta personalizada.
  */
 
-// TODO: Pasar a través de callback el identificador de la respuesta personalizada
-
-module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, callback) => {
-  if (!callback) throw new Error('Se requiere un callback')
-
+module.exports.crearRespuestaPersonalizada = async (guild, respuestaPersonalizada) => {
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'respuesta')) throw new Error('Se requiere una respuesta')
@@ -68,69 +63,55 @@ module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, cal
   respuestaPersonalizada.propiedades.enviarEnEmbed = respuestaPersonalizada.propiedades.enviarEnEmbed || { habilitado: false }
   respuestaPersonalizada.identificador = crearTextoAleatorio({ length: 10, charset: 'alphanumeric' })
 
-  Database.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      callback(err)
-      throw err
-    }
-
-    return callback()
-  })
+  try {
+    await Database.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)])
+    return module.exports.obtenerRespuestaPersonalizada(guild, respuestaPersonalizada.desencadenante)
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPersonalizada) => {
-  Database.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      throw err
-    }
-  })
+  try {
+    Database.execute('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id])
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
-const { EmbedBuilder } = require('discord.js')
+module.exports.obtenerRespuestasPersonalizadas = async (guild) => {
+  try {
+    return await Database.execute('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result : [])
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
+}
 
 const randomstring = require('randomstring')
 const fs = require('fs')
 
-module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild, callback) => {
+module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = async (guild) => {
   let fileContent = '𝗣𝗶𝗻𝗴𝘂 · 𝗧𝗵𝗲 𝗢𝗦𝗦 𝗕𝗼𝘁.\n𝘓𝘦𝘢𝘳𝘯 𝘮𝘰𝘳𝘦 𝘢𝘣𝘰𝘶𝘵 𝘗𝘪𝘯𝘨𝘶 𝘢𝘵 𝘩𝘵𝘵𝘱𝘴://𝘢𝘭𝘦𝘹𝘢𝘯𝘥𝘳𝘶𝘮𝘶𝘯𝘵𝘦𝘯𝘢𝘴.𝘥𝘦𝘷/𝘱𝘪𝘯𝘨𝘶'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
-  module.exports.obtenerRespuestasPersonalizadas(guild, (replies) => {
+  module.exports.obtenerRespuestasPersonalizadas(guild).then((replies) => {
     replies.forEach(reply => {
       fileContent += `Autoreply ID: ${reply.autoreplyID}\nAutoreply Trigger: ${reply.autoreplyTrigger}\nAutoreply Reply:${reply.autoreplyReply}\nProperties: ${reply.autoreplyProperties}\n--------------------\n`
     })
 
     fs.writeFileSync(filePath, fileContent)
 
-    callback(filePath)
+    return filePath
   })
 }
 
-module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required')
-
-  Database.query('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
-    if (err) {
-      Consolex.gestionarError(err)
-      throw err
-    }
-
-    if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      callback(result)
-    } else {
-      // eslint-disable-next-line node/no-callback-literal
-      callback([])
-    }
-  })
-}
+const { EmbedBuilder } = require('discord.js')
 
 module.exports.hooks = [{
   evento: 'messageCreate',
   tipo: 'noPrefix',
   funcion: message => {
-    module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
+    module.exports.obtenerRespuestaPersonalizada(message.guild, message.content).then(respuestaPersonalizada => {
       if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
         const reply = {}
         if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
@@ -159,7 +140,7 @@ module.exports.hooks = [{
         try {
           message.channel.send(reply)
         } catch (err) {
-          Consolex.gestionarError(err)
+          consolex.gestionarError(err)
         }
       }
     })

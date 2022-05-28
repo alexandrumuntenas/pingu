@@ -35,7 +35,7 @@ module.exports.ttl = (member, guild, commandName) => {
 
 module.exports.saveCooldownCollectionIntoJsonFile = () => {
   fs.writeFile('./cooldowns.json', JSON.stringify(cooldown), err => {
-    if (err) throw err
+    if (err) consolex.gestionarError(err)
     consolex.debug('CooldownManager: Cooldowns have been saved.')
   })
 }

@@ -25,12 +25,9 @@ function tieneSoloEspacios (texto) {
 
 /**
  * @param {Array<{color: String, text: String}>} motd
- * @param {Function} callback
 */
 
-module.exports.convertirMOTDaImagen = (motd, callback) => {
-  if (!callback) throw new Error('Callback is required')
-
+module.exports.convertirMOTDaImagen = async (motd) => {
   const motdProcesado = module.exports.procesarMOTD(motd)
   const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
   const canvas = createCanvas(1688, 144)
@@ -69,7 +66,7 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
   const buffer = canvas.toBuffer('image/png')
   writeFileSync(attachmentPath, buffer)
 
-  return callback(attachmentPath)
+  return attachmentPath
 }
 
 /**
@@ -192,16 +189,13 @@ const consolex = require('../core/consolex')
  * @param {Object} host
  * @param {String} host.ip
  * @param {Number} host.port
- * @param {Function} callback
  * @returns {Object}
  */
 
-module.exports.obtenerDatosDelServidor = (host, callback) => {
-  if (!callback) throw new Error('Debe proporcionar un callback')
-
+module.exports.obtenerDatosDelServidor = (host) => {
   const servidor = {}
 
-  Gamedig.query({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
+  Gamedig.execute({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
     servidor.ping = { emoji: module.exports.pingAEmoji(state.raw.vanilla.ping), ms: state.raw.vanilla.ping || 'Unknown ping' }
     mcsrv(host.ip.trim()).then(server => {
       module.exports.convertirMOTDaImagen(server.motd.raw, motd => {
@@ -213,18 +207,18 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
       servidor.direccion = server.hostname || `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
       servidor.icono = Buffer.from(server.icon.split(',')[1], 'base64')
 
-      return callback(servidor)
+      return servidor
     }).catch(() => {
-      return callback({})
+      return {}
     })
   }).catch(() => {
-    return callback({})
+    return {}
   })
 }
 
 const { Attachment, EmbedBuilder } = require('discord.js')
 
-module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) => {
+module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host) => {
   module.exports.obtenerDatosDelServidor({ ip: host.ip.trim(), port: host.port }, datosDelServidor => {
     const serverIcon = new Attachment(datosDelServidor.icono || 'https://i.imgur.com/tO2mFKz.png', 'icon.png')
     const embed = new EmbedBuilder().setThumbnail('attachment://icon.png')
@@ -239,15 +233,15 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) =
       ]).setImage('attachment://motd.png')
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 
-      return callback({ files: [serverMotd, serverIcon], embeds: [embed] })
+      return { files: [serverMotd, serverIcon], embeds: [embed] }
     }
 
-    return callback({ files: [serverIcon], embeds: [embed.setDescription('Failed to fetch server data...')] })
+    return { files: [serverIcon], embeds: [embed.setDescription('Failed to fetch server data...')] }
   })
 }
 
 function actualizarNumeroDeJugadoresDelSidebar (guild) {
-  obtenerConfiguracionDelServidor(guild, config => {
+  obtenerConfiguracionDelServidor(guild).then(config => {
     const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount && sidebarPlayercount) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
@@ -260,13 +254,17 @@ function actualizarNumeroDeJugadoresDelSidebar (guild) {
 const { createHash } = require('crypto')
 
 function actualizarDatosDelPanel (guild) {
-  obtenerConfiguracionDelServidor(guild, config => {
+  obtenerConfiguracionDelServidor(guild).then(config => {
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.messagePanelChannel) {
       module.exports.generarMensajeEnriquecidoConDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, mensaje => {
         function fallback () {
           try {
             process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send(mensaje).then(newMessage => {
-              actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
+              try {
+                actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
+              } catch (error) {
+                consolex.gestionarError(error)
+              }
             })
           } catch {
             consolex.error(`Mcsrvstatus: No se pudo actualizar el panel del servidor ${createHash('sha256').update(guild.id).digest('hex')}`)

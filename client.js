@@ -19,13 +19,13 @@ process.Client = new Discord.Client({
   ws: { properties: { $browser: 'Discord iOS' } }
 })
 
-const Consolex = require('./core/consolex')
+const consolex = require('./core/consolex')
 
 if (process.env.ENTORNO === 'publico') {
-  Consolex.warn('Iniciando sesión como el bot público.')
+  consolex.warn('Iniciando sesión como el bot público.')
   process.Client.login(process.env.PUBLIC_TOKEN)
 } else {
-  Consolex.warn('Iniciando sesión como el bot de desarrollo.')
+  consolex.warn('Iniciando sesión como el bot de desarrollo.')
   process.Client.login(process.env.INSIDER_TOKEN)
 }
 

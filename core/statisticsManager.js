@@ -1,4 +1,4 @@
-const Consolex = require('./consolex')
+const consolex = require('./consolex')
 
 const Statcord = require('statcord.js')
 const dbots = require('dbots')
@@ -19,19 +19,19 @@ module.exports = () => {
   poster.post()
 
   poster.addHandler('autopostSuccess', (result) => {
-    Consolex.debug(`Autoposting to ${result.request.host} successful!`)
+    consolex.debug(`Autoposting to ${result.request.host} successful!`)
   })
 
   poster.addHandler('autopostFail', (result) => {
-    Consolex.error(`Autoposting to ${result.request.host} failed!`)
+    consolex.error(`Autoposting to ${result.request.host} failed!`)
   })
 
   poster.addHandler('postSuccess', (result) => {
-    Consolex.success(`Posting to ${result.request.host} successful!`)
+    consolex.success(`Posting to ${result.request.host} successful!`)
   })
 
   poster.addHandler('postFail', (result) => {
-    Consolex.error(`Posting to ${result.request.host} error!`)
+    consolex.error(`Posting to ${result.request.host} error!`)
   })
 
   poster.startInterval()
@@ -46,12 +46,12 @@ module.exports = () => {
     })
 
     process.Client.statcord.on('autopost-start', () => {
-      Consolex.info('Publicando estadísticas en Statcord...')
+      consolex.info('Publicando estadísticas en Statcord...')
     })
 
     process.Client.statcord.on('post', status => {
-      if (status) Consolex.error(status)
-      else Consolex.success('Estadísticas publicadas en Statcord')
+      if (status) consolex.error(status)
+      else consolex.success('Estadísticas publicadas en Statcord')
     })
   }
 }

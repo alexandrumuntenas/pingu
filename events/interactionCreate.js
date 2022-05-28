@@ -1,4 +1,4 @@
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const CooldownManager = require('../core/cooldownManager')
 
 const { plantillas } = require('../core/messageManager')
@@ -10,7 +10,7 @@ async function isChatInputCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
-  obtenerConfiguracionDelServidor(interaction.guild, async guildConfig => {
+  obtenerConfiguracionDelServidor(interaction.guild).then(async guildConfig => {
     interaction.guild.configuration = guildConfig
     if (process.Client.comandos.has(interaction.commandName)) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)
@@ -40,7 +40,7 @@ module.exports = {
   name: 'interactionCreate',
   execute: async interaction => { // skipcq: JS-0116
     if (interaction.isCommand()) {
-      isChatInputCommand(interaction).catch(Consolex.gestionarError)
+      isChatInputCommand(interaction).catch(consolex.gestionarError)
     }
   }
 }

@@ -17,7 +17,7 @@ function getCurrentTime () {
 
 module.exports = {
   debug: message => {
-    process.stdout.write(`${getCurrentTime()} [${chalk.whiteBright.bold(' DEBUG ')}]     ${message}\n`)
+    process.stdout.write(`${getCurrentTime()} [${chalk.whiteBright.bold(' DEBUG ')}]   ${message}\n`)
   },
   info: message => {
     process.stdout.write(`${getCurrentTime()} [${chalk.cyanBright.bold('INFORMA')}]   ${message}\n`)
@@ -34,6 +34,7 @@ module.exports = {
   gestionarError: err => {
     module.exports.error(err)
     module.exports.Sentry.captureException(err)
+    throw err
   },
   Sentry
 }

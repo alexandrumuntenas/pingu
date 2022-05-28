@@ -12,7 +12,7 @@ module.exports.modeloDeConfiguracion = {
   }
 }
 
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
 const { getMember, updateMember } = require('../core/memberManager')
@@ -27,8 +27,8 @@ module.exports.getExperience = message => {
   if (message.guild.configuration.leveling.enabled) {
     if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
       CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
-      obtenerConfiguracionDelServidor(message.guild, guildConfig => {
-        getMember(message.member, memberData => {
+      obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
+        getMember(message.member).then(memberData => {
           memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
           if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
@@ -39,7 +39,7 @@ module.exports.getExperience = message => {
           try {
             updateMember(message.member, { lvlExperience: memberData.lvlExperience })
           } catch (err) {
-            if (err) Consolex.gestionarError(err)
+            if (err) consolex.gestionarError(err)
           }
 
           return null
@@ -52,9 +52,9 @@ module.exports.getExperience = message => {
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendLevelUpMessage = message => {
-  obtenerConfiguracionDelServidor(message.guild, guildConfig => {
+  obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
     if (guildConfig.leveling.enabled) {
-      getMember(message, memberData => {
+      getMember(message).then(memberData => {
         const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)
         const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel, 10) + 1, oldlevel: parseInt(memberData.lvlLevel, 10) })
 
@@ -70,7 +70,7 @@ module.exports.sendLevelUpMessage = message => {
               try {
                 message.author.send({ content })
               } catch (err) {
-                if (err) Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
+                if (err) consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
               }
               break
             }
@@ -86,30 +86,27 @@ module.exports.sendLevelUpMessage = message => {
 
 /**
  * @param {Guild} guild
- * @param {Function} callback
  */
 
-module.exports.getLeaderboard = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required.')
+module.exports.getLeaderboard = async (guild) => {
+  try {
+    const [members] = await Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 'length') ? result : [])
 
-  Database.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
-    if (err) Consolex.gestionarError(err)
+    let memberCount = 0
+    members.forEach(async member => {
+      try {
+        member.user = await process.Client.users.fetch(member.member) // skipcq: JS-0040
+      } catch {
+        member.user = { username: 'Mysterious User', discriminator: '0000' } // skipcq: JS-0040
+      } finally {
+        memberCount++
+      }
 
-    if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) {
-      let memberCount = 0
-      members.forEach(async member => {
-        try {
-          member.user = await process.Client.users.fetch(member.member) // skipcq: JS-0040
-        } catch {
-          member.user = { username: 'Mysterious User', discriminator: '0000' } // skipcq: JS-0040
-        } finally {
-          memberCount++
-        }
-
-        if (memberCount === members.length) return callback(members)
-      })
-    } else callback()
-  })
+      if (memberCount === members.length) return members
+    })
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 const { registerFont, createCanvas, loadImage } = require('canvas')
@@ -183,14 +180,11 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
 
 /**
  * @param {GuildMember} member
- * @param {Function} callback
  * @returns {String}
  */
 
-module.exports.generateRankCard = (member, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
-  getMember(member, async memberData => {
+module.exports.generateRankCard = async (member) => {
+  getMember(member).then(async memberData => {
     const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
 
     const canvas = createCanvas(1100, 320)
@@ -263,27 +257,19 @@ module.exports.generateRankCard = (member, callback) => {
     const buffer = canvas.toBuffer('image/png')
     writeFileSync(attachmentPath, buffer)
 
-    callback(attachmentPath)
+    return attachmentPath
   })
 }
 
 /**
  * @param {Guild} guild
- * @param {Function} callback
- * @returns {?String} Error
  */
 
-module.exports.resetLeaderboard = (guild, callback) => {
+module.exports.resetLeaderboard = (guild) => {
   if (!guild) throw new Error('Guild is required.')
-  if (!callback) throw new Error('Callback is required.')
 
-  Database.query('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      return callback(err)
-    }
-    return callback(null)
-  })
+  Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id])
+    .catch(err => consolex.gestionarError(err))
 }
 
 module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience, type: 'noPrefix' }]
