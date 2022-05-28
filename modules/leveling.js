@@ -88,13 +88,11 @@ module.exports.sendLevelUpMessage = message => {
  * @param {Guild} guild
  */
 
-module.exports.getLeaderboard = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
+module.exports.getLeaderboard = (guild) => {
   Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
     if (err) Consolex.gestionarError(err)
 
-    if (callback && members && Object.prototype.hasOwnProperty.call(members, '0')) {
+    if (members && Object.prototype.hasOwnProperty.call(members, '0')) {
       let memberCount = 0
       members.forEach(async member => {
         try {
@@ -105,9 +103,9 @@ module.exports.getLeaderboard = (guild, callback) => {
           memberCount++
         }
 
-        if (memberCount === members.length) return callback(members)
+        if (memberCount === members.length) return members
       })
-    } else callback()
+    } else return null
   })
 }
 
@@ -185,9 +183,7 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
  * @returns {String}
  */
 
-module.exports.generateRankCard = (member, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
+module.exports.generateRankCard = async (member) => {
   getMember(member, async memberData => {
     const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
 
@@ -261,25 +257,20 @@ module.exports.generateRankCard = (member, callback) => {
     const buffer = canvas.toBuffer('image/png')
     writeFileSync(attachmentPath, buffer)
 
-    callback(attachmentPath)
+    return attachmentPath
   })
 }
 
 /**
  * @param {Guild} guild
- * @returns {?String} Error
  */
 
-module.exports.resetLeaderboard = (guild, callback) => {
+module.exports.resetLeaderboard = (guild) => {
   if (!guild) throw new Error('Guild is required.')
-  if (!callback) throw new Error('Callback is required.')
 
   Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      return callback(err)
-    }
-    return callback(null)
+    if (err) Consolex.gestionarError(err)
+    return null
   })
 }
 
