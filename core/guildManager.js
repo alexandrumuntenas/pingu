@@ -49,28 +49,8 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
   }
 }
 
-function procesarObjetosdeConfiguracion (config, newconfig) {
-  if (newconfig instanceof Object === false) return newconfig
-
-  let count = 0
-
-  const newConfigProperties = Object.keys(newconfig)
-  newConfigProperties.forEach(property => {
-    if (Object.prototype.hasOwnProperty.call(config, property) && typeof newconfig[property] === 'object') {
-      config[property] = procesarObjetosdeConfiguracion(config[property], newconfig[property])
-      count += 1
-    } else {
-      config[property] = newconfig[property]
-      count += 1
-    }
-
-    if (count === newConfigProperties.length) {
-      return config
-    }
-  })
-}
-
 const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManager')
+const procesarObjetosdeConfiguracion = require('./utils/procesarObjetosdeConfiguracion')
 
 /**
  * Actualiza la configuración de un guild.
@@ -118,31 +98,7 @@ const rest = new REST({ version: '9' })
 if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
 else rest.setToken(process.env.INSIDER_TOKEN)
 
-const { Collection } = require('discord.js')
-
-/**
- * Crea el listado de interacciones de un servidor bajo demanda
- * @param {Object} guildConfig - La configuración del servidor.
- * @returns {Object} - El listado de interacciones.
- */
-
-function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
-  if (Object.prototype.hasOwnProperty.call(guildConfig, 'interactions') && !guildConfig.interactions.showinteractions) return {}
-
-  let interactionList = new Collection()
-
-  process.Client.modulos.forEach(module => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, module.nombre) && guildConfig[module.nombre].enabled) {
-      interactionList = interactionList.concat(process.Client.comandos.filter(command => command.module === module.nombre) || [])
-    }
-  })
-
-  interactionList = interactionList.concat(process.Client.comandos.filter(command => !command.module) || [])
-
-  if (!guildConfig.common.interactions.showcfginteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
-
-  return interactionList.map(command => command.interactionData.toJSON())
-}
+const crearListadoDeInteraccionesDeUnGuild = require('./utils/crearListadoDeInteraccionesDeUnGuild')
 
 /**
  * Subir interacciones de un servidor.
@@ -151,10 +107,8 @@ function crearListadoDeInteraccionesDeUnGuild (guildConfig) {
 
 module.exports.subirInteraccionesDelServidor = async (guild) => {
   module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
-    const guildInteractionList = crearListadoDeInteraccionesDeUnGuild(guildConfig)
-
     rest.put(
-      Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: guildInteractionList })
+      Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: crearListadoDeInteraccionesDeUnGuild(guildConfig) })
       .catch(err => {
         return consolex.gestionarError(err)
       }).then(() => { return null })
@@ -191,84 +145,9 @@ module.exports.exportarDatosDelServidorEnFormatoYAML = (guild) => {
   })
 }
 
-const Downloader = require('nodejs-file-downloader')
-
-async function descargarArchivoDeConfiguracionYAML (url) {
-  const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({ charset: 'alphabetic' })}.yml`
-
-  const downloader = new Downloader({
-    url,
-    directory: './temp',
-    filename: nombreTemporalAleatorioDelArchivo
-  })
-  try {
-    await downloader.download()
-    return { ubicacionArchivo: `./temp/${nombreTemporalAleatorioDelArchivo}` }
-  } catch (error) {
-    return { error: error.message }
-  }
-}
-
-/**
- * @param {Object} modeloDeConfiguracion
- * @param {Object} configuracionAComparar
- */
-
-function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar) {
-  const errores = []
-  const configuracionProcesada = {}
-  const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
-  const propiedadesConfiguracionAComparar = Object.keys(configuracionAComparar || {})
-
-  let posicionArray = 0
-
-  propiedadesModeloConfiguracion.forEach(propiedad => {
-    if (propiedadesConfiguracionAComparar.includes(propiedad)) {
-      if (typeof modeloDeConfiguracion[propiedad] === 'object') {
-        const procesado = loopDeComprobacion(modeloDeConfiguracion[propiedad], configuracionAComparar[propiedad])
-        if (procesado.error) errores.push(procesado.error)
-        else configuracionProcesada[propiedad] = procesado.configuracionProcesada
-        posicionArray++
-      } else {
-        if (typeof configuracionAComparar[propiedad] === modeloDeConfiguracion[propiedad]) configuracionProcesada[propiedad] = configuracionAComparar[propiedad]
-        else errores.push(`La propiedad ${propiedad} no es del tipo ${modeloDeConfiguracion[propiedad]}`)
-        posicionArray++
-      }
-    } else {
-      errores.push(`La propiedad ${propiedad} no existe en la configuración`)
-      posicionArray++
-    }
-
-    if (posicionArray === propiedadesModeloConfiguracion.length) {
-      return { configuracionProcesada, errores: errores.length ? errores : [] }
-    }
-  })
-}
-
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada) {
-  const errores = []
-  const configuracionProcesada = {}
-
-  let posicionArray = 0
-
-  modulosDisponibles.forEach(module => {
-    if (Object.prototype.hasOwnProperty.call(configuracionImportada, module.nombre)) {
-      loopDeComprobacion(module.modeloDeConfiguracion, configuracionImportada[module.nombre], procesado => {
-        if (procesado.error) errores.concat(procesado.error)
-        configuracionProcesada[module.nombre] = procesado.configuracionProcesada
-      })
-    } else {
-      errores.push(`El módulo ${module.nombre} no existe en la configuración`)
-    }
-
-    posicionArray++
-    if (posicionArray === modulosDisponibles.length) {
-      return { configuracionProcesada, errores: errores.length ? errores : [] }
-    }
-  })
-}
-
 const { readFileSync } = require('fs')
+const descargarArchivoDeConfiguracionYAML = require('./utils/descargarArchivoDeConfiguracionYAML')
+const ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion = require('./utils/ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion')
 
 module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url) => {
   descargarArchivoDeConfiguracionYAML(url).then(descarga => {
