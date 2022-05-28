@@ -27,9 +27,7 @@ function tieneSoloEspacios (texto) {
  * @param {Array<{color: String, text: String}>} motd
 */
 
-module.exports.convertirMOTDaImagen = (motd, callback) => {
-  if (!callback) throw new Error('Callback is required')
-
+module.exports.convertirMOTDaImagen = async (motd) => {
   const motdProcesado = module.exports.procesarMOTD(motd)
   const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
   const canvas = createCanvas(1688, 144)
@@ -68,7 +66,7 @@ module.exports.convertirMOTDaImagen = (motd, callback) => {
   const buffer = canvas.toBuffer('image/png')
   writeFileSync(attachmentPath, buffer)
 
-  return callback(attachmentPath)
+  return attachmentPath
 }
 
 /**
@@ -194,9 +192,7 @@ const consolex = require('../core/consolex')
  * @returns {Object}
  */
 
-module.exports.obtenerDatosDelServidor = (host, callback) => {
-  if (!callback) throw new Error('Debe proporcionar un callback')
-
+module.exports.obtenerDatosDelServidor = (host) => {
   const servidor = {}
 
   Gamedig.execute({ type: 'minecraft', host: host.ip.trim(), port: host.port ? host.port : 25565 }).then((state) => {
@@ -211,18 +207,18 @@ module.exports.obtenerDatosDelServidor = (host, callback) => {
       servidor.direccion = server.hostname || `${host.ip}${host.port ? `:${host.port}` : ''}` || host.ip
       servidor.icono = Buffer.from(server.icon.split(',')[1], 'base64')
 
-      return callback(servidor)
+      return servidor
     }).catch(() => {
-      return callback({})
+      return {}
     })
   }).catch(() => {
-    return callback({})
+    return {}
   })
 }
 
 const { Attachment, EmbedBuilder } = require('discord.js')
 
-module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) => {
+module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host) => {
   module.exports.obtenerDatosDelServidor({ ip: host.ip.trim(), port: host.port }, datosDelServidor => {
     const serverIcon = new Attachment(datosDelServidor.icono || 'https://i.imgur.com/tO2mFKz.png', 'icon.png')
     const embed = new EmbedBuilder().setThumbnail('attachment://icon.png')
@@ -237,10 +233,10 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host, callback) =
       ]).setImage('attachment://motd.png')
         .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
 
-      return callback({ files: [serverMotd, serverIcon], embeds: [embed] })
+      return { files: [serverMotd, serverIcon], embeds: [embed] }
     }
 
-    return callback({ files: [serverIcon], embeds: [embed.setDescription('Failed to fetch server data...')] })
+    return { files: [serverIcon], embeds: [embed.setDescription('Failed to fetch server data...')] }
   })
 }
 
