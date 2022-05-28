@@ -250,7 +250,7 @@ function loopDeComprobacion (modeloDeConfiguracion, configuracionAComparar) {
   })
 }
 
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada, callback) {
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada) {
   const errores = []
   const configuracionProcesada = {}
 
@@ -268,7 +268,7 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
 
     posicionArray++
     if (posicionArray === modulosDisponibles.length) {
-      return callback({ configuracionProcesada, errores: errores.length ? errores : [] })
+      return { configuracionProcesada, errores: errores.length ? errores : [] }
     }
   })
 }
