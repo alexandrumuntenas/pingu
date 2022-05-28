@@ -14,19 +14,14 @@ const randomstring = require('randomstring')
  * @returns {String} - The suggestion id.
  */
 
-module.exports.createSuggestion = (member, suggestion, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
+module.exports.createSuggestion = (member, suggestion) => {
   const suggestionId = randomstring.generate({ charset: 'alphabetic', length: 5 })
   Database.execute('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      return callback()
-    }
+    if (err) Consolex.gestionarError(err)
 
     module.exports.events.afterCreatingSuggestion(member, suggestionId)
 
-    return callback(suggestionId)
+    return suggestionId
   })
 }
 
@@ -46,15 +41,13 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
  * @returns {Array} - Suggestions
  */
 
-module.exports.getSuggestions = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
+module.exports.getSuggestions = (guild) => {
   Database.execute('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, suggestions) => {
     if (err) return Consolex.gestionarError(err)
 
-    if (Object.prototype.hasOwnProperty.call(suggestions, '0')) return callback(suggestions)
+    if (Object.prototype.hasOwnProperty.call(suggestions, '0')) return suggestions
 
-    return callback()
+    return null
   })
 }
 
@@ -64,9 +57,7 @@ module.exports.getSuggestions = (guild, callback) => {
  * @returns {{id: Integer, suggestion: String, notes: Array[{user: User.Id, note: String, timestamp: Date}], status: String(approved, pending, reviewed, rejected), timestamp: Date, reviewer: User.Id, ?votingresults: {yes: Integer, no: Integer, abstain: Guild.Member_Count}}} Suggestion
  */
 
-module.exports.getSuggestion = (guild, suggestionId, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
+module.exports.getSuggestion = (guild, suggestionId) => {
   Database.execute('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], async (err, rows) => {
     if (err) return Consolex.gestionarError(err)
 
@@ -78,9 +69,9 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
       }
 
       rows[0].author = await guild.members.cache.get(rows[0].author) // skipcq: JS-0040
-      return callback(rows[0])
+      return rows[0]
     }
-    return callback()
+    return null
   })
 }
 
@@ -90,16 +81,10 @@ module.exports.getSuggestion = (guild, suggestionId, callback) => {
  * @returns {?Error} - Error
  */
 
-module.exports.approveSuggestion = (member, suggestionId, callback) => {
-  if (!callback) throw new Error('Callback is required.')
+module.exports.approveSuggestion = (member, suggestionId) => {
   Database.execute('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['approved', member.id, suggestionId, member.guild.id], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      return callback(err)
-    }
-
-    module.exports.events.afterSuggestionApproval(member, suggestionId)
-    return callback(err)
+    if (err) Consolex.gestionarError(err)
+    return module.exports.events.afterSuggestionApproval(member, suggestionId)
   })
 }
 
@@ -109,15 +94,10 @@ module.exports.approveSuggestion = (member, suggestionId, callback) => {
  * @returns {?Error} - Error
  */
 
-module.exports.rejectSuggestion = (member, suggestionId, callback) => {
-  if (!callback) throw new Error('Callback is required.')
+module.exports.rejectSuggestion = (member, suggestionId) => {
   Database.execute('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['rejected', member.id, suggestionId, member.guild.id], err => {
-    if (err) {
-      Consolex.gestionarError(err)
-      return callback(err)
-    }
-    module.exports.events.afterSuggestionRejection(member, suggestionId)
-    return callback(err)
+    if (err) Consolex.gestionarError(err)
+    return module.exports.events.afterSuggestionRejection(member, suggestionId)
   })
 }
 
@@ -128,16 +108,12 @@ module.exports.rejectSuggestion = (member, suggestionId, callback) => {
  * @returns {?Error} - Error
  */
 
-module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
+module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
   module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
     suggestion.notes.push({ user: member.id, note, timestamp: new Date() })
     Database.execute('UPDATE `guildSuggestions` SET `notes` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion.notes), suggestionId, member.guild.id], err => {
-      if (err) {
-        Consolex.gestionarError(err)
-        return callback(err)
-      }
-      module.exports.events.afterAddingANoteToASuggestion(member, suggestionId, note)
-      return callback()
+      if (err) Consolex.gestionarError(err)
+      return module.exports.events.afterAddingANoteToASuggestion(member, suggestionId, note)
     })
   })
 }
@@ -146,9 +122,7 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note, callback) => {
  * @param {GuildMember} member - The member we are checking for.
  */
 
-module.exports.getMemberSuggestions = (member, callback) => {
-  if (!callback) throw new Error('Callback is required.')
-
+module.exports.getMemberSuggestions = (member) => {
   Database.execute('SELECT * FROM `guildSuggestions` WHERE `author` = ? AND `guild` = ? ORDER BY `timestamp` DESC LIMIT 10', [member.id, member.guild.id], (err, rows) => {
     if (err) return Consolex.gestionarError(err)
 
@@ -160,7 +134,7 @@ module.exports.getMemberSuggestions = (member, callback) => {
       }
     }
 
-    return callback(suggestions)
+    return suggestions
   })
 }
 
@@ -297,14 +271,13 @@ module.exports.events.afterAddingANoteToASuggestion = (member, suggestionId, not
  * @param {User} user
  */
 
-module.exports.addUserToBlacklist = (guild, user, callback) => {
-  if (!callback) return new Error('Callback is required')
+module.exports.addUserToBlacklist = (guild, user) => {
   obtenerConfiguracionDelServidor(guild, guildConfig => {
     Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
     actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
-      if (err) return callback(err)
-      return callback()
+      if (err) Consolex.gestionarError(err)
+      return err
     })
   })
 }
@@ -315,13 +288,10 @@ module.exports.addUserToBlacklist = (guild, user, callback) => {
  * @returns {Boolean}
  */
 
-module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
-  if (!callback) return new Error('Callback is required')
+module.exports.checkIfUserIsBlacklisted = (guild, user) => {
   obtenerConfiguracionDelServidor(guild, guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist')) return callback(guildConfig.suggestions.blacklist.includes(user.id))
-
-    // eslint-disable-next-line node/no-callback-literal
-    return callback(false)
+    if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist')) return guildConfig.suggestions.blacklist.includes(user.id)
+    return false
   })
 }
 
@@ -331,16 +301,15 @@ module.exports.checkIfUserIsBlacklisted = (guild, user, callback) => {
  * @returns {Error}
  */
 
-module.exports.removeUserFromBlacklist = (guild, user, callback) => {
-  if (!callback) return new Error('Callback is required')
+module.exports.removeUserFromBlacklist = (guild, user) => {
   obtenerConfiguracionDelServidor(guild, guildConfig => {
     if (Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object') {
       delete guildConfig.suggestions.blacklist[guildConfig.suggestions.blacklist.indexOf(user.id)]
     }
 
     actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
-      if (err) return callback(err)
-      return callback()
+      if (err) Consolex.gestionarError(err)
+      return null
     })
   })
 }
