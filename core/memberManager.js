@@ -24,9 +24,7 @@ module.exports.getMember = (member) => {
         }
       })
     } else {
-      module.exports.createMember(member, () => {
-        return module.exports.getMember(member)
-      })
+      return module.exports.createMember(member)
     }
   })
 }
