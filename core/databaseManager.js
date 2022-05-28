@@ -11,13 +11,13 @@ const Database = require('mysql2/promise').createPool({
 
 module.exports = Database
 
-const Consolex = require('./consolex')
+const consolex = require('./consolex')
 const { readdirSync, readFileSync } = require('fs')
 
 let tablasDisponibles = []
 
 module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
-  Consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
+  consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
   const consultas = readdirSync('./database/')
   const tablasYConsultas = {}
 
@@ -32,12 +32,12 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
   tablasDisponibles.forEach(async tabla => {
     try {
       await Database.execute(tablasYConsultas[tabla])
-      return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
+      return consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
     } catch (err) {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
+        return consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
       } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
+        return consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
       }
     }
   })

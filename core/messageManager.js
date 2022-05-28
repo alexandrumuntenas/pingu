@@ -157,7 +157,7 @@ module.exports.plantillas.errorLog = (message, log) => new EmbedBuilder()
 
 module.exports.acciones = {}
 
-const Consolex = require('./consolex')
+const consolex = require('./consolex')
 
 /**
  * Envía un mensaje directo a un usuario.
@@ -169,7 +169,7 @@ module.exports.acciones.enviarMD = (user, message) => {
   try {
     user.send(message)
   } catch {
-    Consolex.error(`Error al enviar el mensaje privado a ${user.id}.`)
+    consolex.error(`Error al enviar el mensaje privado a ${user.id}.`)
   }
 }
 
@@ -185,6 +185,6 @@ module.exports.acciones.enviarMensajeACanal = (guild, channel, message) => {
   try {
     channelToSend.send(message)
   } catch {
-    Consolex.error(`Error al enviar el mensaje a ${channelToSend.id}. El canal no existe o no tengo permisos para enviar mensajes.`)
+    consolex.error(`Error al enviar el mensaje a ${channelToSend.id}. El canal no existe o no tengo permisos para enviar mensajes.`)
   }
 }

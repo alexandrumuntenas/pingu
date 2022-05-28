@@ -2,7 +2,7 @@ module.exports.modeloDeConfiguracion = {
   enabled: 'boolean'
 }
 
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
 function traducirAntiguasPropiedadesALasNuevas (propiedades) {
@@ -23,7 +23,7 @@ function traducirAntiguasPropiedadesALasNuevas (propiedades) {
 
 module.exports.obtenerRespuestaPersonalizada = async (guild, desencadenante) => {
   Database.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
       const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
@@ -63,7 +63,7 @@ module.exports.crearRespuestaPersonalizada = async (guild, respuestaPersonalizad
 
   Database.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
     if (err) {
-      Consolex.gestionarError(err)
+      consolex.gestionarError(err)
       throw err
     }
 
@@ -74,7 +74,7 @@ module.exports.crearRespuestaPersonalizada = async (guild, respuestaPersonalizad
 module.exports.eliminarRespuestaPersonalizada = (guild, identificadorRespuestaPersonalizada) => {
   Database.execute('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [identificadorRespuestaPersonalizada, guild.id], err => {
     if (err) {
-      Consolex.gestionarError(err)
+      consolex.gestionarError(err)
       throw err
     }
   })
@@ -103,7 +103,7 @@ module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = 
 module.exports.obtenerRespuestasPersonalizadas = async (guild) => {
   Database.execute('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
     if (err) {
-      Consolex.gestionarError(err)
+      consolex.gestionarError(err)
       throw err
     }
 
@@ -148,7 +148,7 @@ module.exports.hooks = [{
         try {
           message.channel.send(reply)
         } catch (err) {
-          Consolex.gestionarError(err)
+          consolex.gestionarError(err)
         }
       }
     })

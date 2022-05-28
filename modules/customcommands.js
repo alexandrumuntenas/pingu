@@ -5,12 +5,12 @@ module.exports.modeloDeConfiguracion = {
 }
 
 const Database = require('../core/databaseManager')
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = async (guild) => {
   Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       const customcommands = []
@@ -39,7 +39,7 @@ module.exports.getCustomCommands = async (guild) => {
 
 module.exports.getCustomCommand = (guild, command) => {
   Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       if (Object.prototype.hasOwnProperty.call(result[0], 'customcommandproperties') && result[0].customcommandproperties !== null) {
@@ -70,7 +70,7 @@ module.exports.getCustomCommand = (guild, command) => {
 module.exports.createCustomCommand = (guild, customcommandproperties) => {
   Database.execute('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
     if (err) {
-      Consolex.gestionarError(err)
+      consolex.gestionarError(err)
       throw err
     }
 
@@ -86,7 +86,7 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
 module.exports.deleteCustomCommand = (guild, command) => {
   Database.execute('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
     if (err) {
-      Consolex.gestionarError(err)
+      consolex.gestionarError(err)
       return err
     }
 
@@ -100,12 +100,12 @@ module.exports.deleteCustomCommand = (guild, command) => {
  */
 module.exports.migrateToNewOrganization = (guild, command) => {
   Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       const customcommandproperties = { command: result[0].customCommand, reply: result[0].messageReturned }
       Database.execute('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
-        if (err2) Consolex.gestionarError(err)
+        if (err2) consolex.gestionarError(err)
 
         return module.exports.getCustomCommand(guild, command)
       })
@@ -157,12 +157,12 @@ module.exports.runCustomCommand = (message, command) => {
         try {
           message.delete()
         } catch (err) {
-          Consolex.gestionarError(err)
+          consolex.gestionarError(err)
         }
 
         return
       } catch (err) {
-        Consolex.gestionarError(err)
+        consolex.gestionarError(err)
       }
     }
 

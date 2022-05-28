@@ -1,4 +1,4 @@
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const CooldownManager = require('../core/cooldownManager')
 
 const { plantillas } = require('../core/messageManager')
@@ -40,7 +40,7 @@ module.exports = {
   name: 'interactionCreate',
   execute: async interaction => { // skipcq: JS-0116
     if (interaction.isCommand()) {
-      isChatInputCommand(interaction).catch(Consolex.gestionarError)
+      isChatInputCommand(interaction).catch(consolex.gestionarError)
     }
   }
 }

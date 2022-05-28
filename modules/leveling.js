@@ -12,7 +12,7 @@ module.exports.modeloDeConfiguracion = {
   }
 }
 
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
 const { getMember, updateMember } = require('../core/memberManager')
@@ -39,7 +39,7 @@ module.exports.getExperience = message => {
           try {
             updateMember(message.member, { lvlExperience: memberData.lvlExperience })
           } catch (err) {
-            if (err) Consolex.gestionarError(err)
+            if (err) consolex.gestionarError(err)
           }
 
           return null
@@ -70,7 +70,7 @@ module.exports.sendLevelUpMessage = message => {
               try {
                 message.author.send({ content })
               } catch (err) {
-                if (err) Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
+                if (err) consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
               }
               break
             }
@@ -90,7 +90,7 @@ module.exports.sendLevelUpMessage = message => {
 
 module.exports.getLeaderboard = (guild) => {
   Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id], (err, members) => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     if (members && Object.prototype.hasOwnProperty.call(members, '0')) {
       let memberCount = 0
@@ -269,7 +269,7 @@ module.exports.resetLeaderboard = (guild) => {
   if (!guild) throw new Error('Guild is required.')
 
   Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
     return null
   })
 }

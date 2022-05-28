@@ -1,4 +1,4 @@
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const { REST } = require('@discordjs/rest')
 const { eliminadorArchivosTemporales } = require('../core/clientManager')
 
@@ -12,7 +12,7 @@ const { comenzarActualizarDatosDeLosServidores } = require('../modules/mcsrvstat
 module.exports = {
   name: 'ready',
   execute: () => {
-    Consolex.info(`Conectado como ${process.Client.user.tag}!`)
+    consolex.info(`Conectado como ${process.Client.user.tag}!`)
 
     if (process.Client.statcord) process.Client.statcord.autopost()
     if (process.env.ENTORNO === 'public') initializeThirdParty()

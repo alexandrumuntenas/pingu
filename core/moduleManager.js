@@ -1,4 +1,4 @@
-const Consolex = require('./consolex')
+const consolex = require('./consolex')
 const { inyectarEnEventoFuncionesDeTerceros } = require('./eventManager')
 
 const modulos = []
@@ -23,19 +23,19 @@ module.exports.registrarModulo = (modulo) => {
   if (!process.Client.comandos) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
 
   modulo.comandos = process.Client.comandos.filter(command => command.module === modulo.nombre) || []
-  Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
+  consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
 
   if (!modulos.find(m => m.nombre === modulo.nombre)) {
-    Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
+    consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
     modulos.push(modulo)
     if (modulo.hooks) {
       modulo.hooks.forEach(hook => {
-        Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
+        consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
         inyectarEnEventoFuncionesDeTerceros(hook.event, hook.function, hook.type)
       })
     }
   } else {
-    Consolex.error(`ModuleManager: Módulo ${modulo.nombre} ya registrado`)
+    consolex.error(`ModuleManager: Módulo ${modulo.nombre} ya registrado`)
   }
 }
 

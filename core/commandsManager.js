@@ -1,4 +1,4 @@
-const Consolex = require('./consolex')
+const consolex = require('./consolex')
 const i18n = require('./i18nManager')
 
 const { Collection } = require('discord.js')
@@ -32,9 +32,9 @@ module.exports.cargarComandoseInteracciones = () => {
           })
 
           commands.set(command.name, command)
-          Consolex.success(`CommandsManager: Comando ${file} cargado`)
+          consolex.success(`CommandsManager: Comando ${file} cargado`)
         } else {
-          Consolex.warn(`CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`)
+          consolex.warn(`CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`)
         }
       } else if (lstatSync(path).isDirectory()) load(path)
     })

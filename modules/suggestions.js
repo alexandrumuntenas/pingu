@@ -4,7 +4,7 @@ module.exports.modeloDeConfiguracion = {
   channel: 'string'
 }
 
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 const randomstring = require('randomstring')
 
@@ -17,7 +17,7 @@ const randomstring = require('randomstring')
 module.exports.createSuggestion = (member, suggestion) => {
   const suggestionId = randomstring.generate({ charset: 'alphabetic', length: 5 })
   Database.execute('INSERT INTO `guildSuggestions` (`id`, `guild`, `author`, `suggestion`) VALUES (?, ?, ?, ?)', [suggestionId, member.guild.id, member.id, suggestion], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     module.exports.events.afterCreatingSuggestion(member, suggestionId)
 
@@ -32,7 +32,7 @@ module.exports.createSuggestion = (member, suggestion) => {
 
 module.exports.deleteSuggestion = (guild, suggestionId) => {
   Database.execute('DELETE FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
   })
 }
 
@@ -43,7 +43,7 @@ module.exports.deleteSuggestion = (guild, suggestionId) => {
 
 module.exports.getSuggestions = (guild) => {
   Database.execute('SELECT * FROM `guildSuggestions` WHERE `guild` = ?', [guild.id], (err, suggestions) => {
-    if (err) return Consolex.gestionarError(err)
+    if (err) return consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(suggestions, '0')) return suggestions
 
@@ -59,7 +59,7 @@ module.exports.getSuggestions = (guild) => {
 
 module.exports.getSuggestion = (guild, suggestionId) => {
   Database.execute('SELECT * FROM `guildSuggestions` WHERE `id` = ? AND `guild` = ?', [suggestionId, guild.id], async (err, rows) => {
-    if (err) return Consolex.gestionarError(err)
+    if (err) return consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(rows, '0')) {
       try {
@@ -83,7 +83,7 @@ module.exports.getSuggestion = (guild, suggestionId) => {
 
 module.exports.approveSuggestion = (member, suggestionId) => {
   Database.execute('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['approved', member.id, suggestionId, member.guild.id], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
     return module.exports.events.afterSuggestionApproval(member, suggestionId)
   })
 }
@@ -96,7 +96,7 @@ module.exports.approveSuggestion = (member, suggestionId) => {
 
 module.exports.rejectSuggestion = (member, suggestionId) => {
   Database.execute('UPDATE `guildSuggestions` SET `status` = ?, reviewer = ? WHERE `id` = ? AND `guild` = ?', ['rejected', member.id, suggestionId, member.guild.id], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
     return module.exports.events.afterSuggestionRejection(member, suggestionId)
   })
 }
@@ -112,7 +112,7 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
   module.exports.getSuggestion(member.guild, suggestionId, suggestion => {
     suggestion.notes.push({ user: member.id, note, timestamp: new Date() })
     Database.execute('UPDATE `guildSuggestions` SET `notes` = ? WHERE `id` = ? AND `guild` = ?', [JSON.stringify(suggestion.notes), suggestionId, member.guild.id], err => {
-      if (err) Consolex.gestionarError(err)
+      if (err) consolex.gestionarError(err)
       return module.exports.events.afterAddingANoteToASuggestion(member, suggestionId, note)
     })
   })
@@ -124,7 +124,7 @@ module.exports.addNoteToSuggestion = (member, suggestionId, note) => {
 
 module.exports.getMemberSuggestions = (member) => {
   Database.execute('SELECT * FROM `guildSuggestions` WHERE `author` = ? AND `guild` = ? ORDER BY `timestamp` DESC LIMIT 10', [member.id, member.guild.id], (err, rows) => {
-    if (err) return Consolex.gestionarError(err)
+    if (err) return consolex.gestionarError(err)
 
     const suggestions = []
 
@@ -276,7 +276,7 @@ module.exports.addUserToBlacklist = (guild, user) => {
     Object.prototype.hasOwnProperty.call(guildConfig.suggestions, 'blacklist') && typeof guildConfig.suggestions.blacklist === 'object' ? guildConfig.suggestions.blacklist.push(user.id) : guildConfig.suggestions.blacklist = [user.id]
 
     actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
-      if (err) Consolex.gestionarError(err)
+      if (err) consolex.gestionarError(err)
       return err
     })
   })
@@ -308,7 +308,7 @@ module.exports.removeUserFromBlacklist = (guild, user) => {
     }
 
     actualizarConfiguracionDelServidor(guild, { column: 'suggestions', newconfig: { blacklist: JSON.stringify(guildConfig.suggestions.blacklist) } }, err => {
-      if (err) Consolex.gestionarError(err)
+      if (err) consolex.gestionarError(err)
       return null
     })
   })

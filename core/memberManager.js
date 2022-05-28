@@ -1,4 +1,4 @@
-const Consolex = require('../core/consolex')
+const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
 /**
@@ -9,11 +9,11 @@ const Database = require('../core/databaseManager')
 
 module.exports.getMember = (member) => {
   Database.execute('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id], (err, memberData) => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
 
     if (memberData && Object.prototype.hasOwnProperty.call(memberData, 0)) { //! THIS SECTION HAS TO BE REMOVED AND SPLIT IN THE FUTURE
       Database.execute('SELECT member, ROW_NUMBER() OVER (ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err2, result) => {
-        if (err2) Consolex.gestionarError(err2)
+        if (err2) consolex.gestionarError(err2)
 
         if (result && Object.prototype.hasOwnProperty.call(result, '0')) {
           result.filter(r => r.member === member.id).forEach(r => {
@@ -36,7 +36,7 @@ module.exports.getMember = (member) => {
 
 module.exports.createMember = (member) => {
   Database.execute('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
     return module.exports.getMember(member)
   })
 }
@@ -54,7 +54,7 @@ module.exports.createMember = (member) => {
 module.exports.updateMember = (member, memberDataToUpdate) => {
   module.exports.getMember(member, memberData => {
     Database.execute('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, member.guild.id, member.id], err => {
-      if (err) Consolex.gestionarError(err)
+      if (err) consolex.gestionarError(err)
       return module.exports.getMember(member)
     })
   })
@@ -66,7 +66,7 @@ module.exports.updateMember = (member, memberDataToUpdate) => {
  */
 module.exports.deleteMember = (member) => {
   Database.execute('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id], err => {
-    if (err) Consolex.gestionarError(err)
+    if (err) consolex.gestionarError(err)
     return 'success'
   })
 }
