@@ -52,8 +52,6 @@ const crearTextoAleatorio = require('randomstring').generate
  * @returns {String} Identificador de la respuesta personalizada.
  */
 
-// TODO: Pasar a través de callback el identificador de la respuesta personalizada
-
 module.exports.crearRespuestaPersonalizada = async (guild, respuestaPersonalizada) => {
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
