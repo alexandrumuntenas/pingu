@@ -21,17 +21,15 @@ function traducirAntiguasPropiedadesALasNuevas (propiedades) {
   return propiedades
 }
 
-module.exports.obtenerRespuestaPersonalizada = (guild, desencadenante, callback) => {
-  if (!callback) throw new Error('Se requiere un callback')
-
+module.exports.obtenerRespuestaPersonalizada = async (guild, desencadenante) => {
   Database.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
       const respuestaPersonalizada = { desencadenante: result[0].autoreplyTrigger, respuesta: result[0].autoreplyReply, propiedades: traducirAntiguasPropiedadesALasNuevas(JSON.parse(result[0].autoreplyProperties)) }
-      callback(respuestaPersonalizada)
+      return respuestaPersonalizada
     } else {
-      callback()
+      return null
     }
   })
 }
@@ -57,9 +55,7 @@ const crearTextoAleatorio = require('randomstring').generate
 
 // TODO: Pasar a través de callback el identificador de la respuesta personalizada
 
-module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, callback) => {
-  if (!callback) throw new Error('Se requiere un callback')
-
+module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada) => {
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'respuesta')) throw new Error('Se requiere una respuesta')
@@ -71,11 +67,10 @@ module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada, cal
   Database.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyReply`, `autoreplyProperties`) VALUES (?, ?, ?, ?, ?)', [guild.id, respuestaPersonalizada.identificador, respuestaPersonalizada.desencadenante, respuestaPersonalizada.respuesta, JSON.stringify(respuestaPersonalizada.propiedades)], err => {
     if (err) {
       Consolex.gestionarError(err)
-      callback(err)
       throw err
     }
 
-    return callback()
+    return null
   })
 }
 
@@ -93,24 +88,22 @@ const { EmbedBuilder } = require('discord.js')
 const randomstring = require('randomstring')
 const fs = require('fs')
 
-module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild, callback) => {
+module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild) => {
   let fileContent = '𝗣𝗶𝗻𝗴𝘂 · 𝗧𝗵𝗲 𝗢𝗦𝗦 𝗕𝗼𝘁.\n𝘓𝘦𝘢𝘳𝘯 𝘮𝘰𝘳𝘦 𝘢𝘣𝘰𝘶𝘵 𝘗𝘪𝘯𝘨𝘶 𝘢𝘵 𝘩𝘵𝘵𝘱𝘴://𝘢𝘭𝘦𝘹𝘢𝘯𝘥𝘳𝘶𝘮𝘶𝘯𝘵𝘦𝘯𝘢𝘴.𝘥𝘦𝘷/𝘱𝘪𝘯𝘨𝘶'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
-  module.exports.obtenerRespuestasPersonalizadas(guild, (replies) => {
+  module.exports.obtenerRespuestasPersonalizadas(guild).then((replies) => {
     replies.forEach(reply => {
       fileContent += `Autoreply ID: ${reply.autoreplyID}\nAutoreply Trigger: ${reply.autoreplyTrigger}\nAutoreply Reply:${reply.autoreplyReply}\nProperties: ${reply.autoreplyProperties}\n--------------------\n`
     })
 
     fs.writeFileSync(filePath, fileContent)
 
-    callback(filePath)
+    return filePath
   })
 }
 
-module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required')
-
+module.exports.obtenerRespuestasPersonalizadas = async (guild) => {
   Database.execute('SELECT * FROM `guildAutoReply` WHERE `guild` = ?', [guild.id], (err, result) => {
     if (err) {
       Consolex.gestionarError(err)
@@ -118,10 +111,9 @@ module.exports.obtenerRespuestasPersonalizadas = (guild, callback) => {
     }
 
     if (Object.prototype.hasOwnProperty.call(result, '0') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyTrigger') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyReply') && Object.prototype.hasOwnProperty.call(result[0], 'autoreplyProperties')) {
-      callback(result)
+      return result
     } else {
-      // eslint-disable-next-line node/no-callback-literal
-      callback([])
+      return []
     }
   })
 }
@@ -130,7 +122,7 @@ module.exports.hooks = [{
   evento: 'messageCreate',
   tipo: 'noPrefix',
   funcion: message => {
-    module.exports.obtenerRespuestaPersonalizada(message.guild, message.content, respuestaPersonalizada => {
+    module.exports.obtenerRespuestaPersonalizada(message.guild, message.content).then(respuestaPersonalizada => {
       if (respuestaPersonalizada && Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'propiedades')) {
         const reply = {}
         if (respuestaPersonalizada.propiedades.enviarEnEmbed.enabled) {
