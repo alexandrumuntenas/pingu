@@ -49,13 +49,12 @@ const crearTextoAleatorio = require('randomstring').generate
  * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.thumbnail - La URL del thumbnail del mensaje enriquecido.
  * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.imagen - La URL de la imagen del mensaje enriquecido.
  * @param {?Object} respuestaPersonalizada.propiedades.enviarEnEmbed.url - La URL del mensaje enriquecido.
- * @param {Functions} callback - La función que se ejecutará cuando se haya creado la respuesta personalizada.
  * @returns {String} Identificador de la respuesta personalizada.
  */
 
 // TODO: Pasar a través de callback el identificador de la respuesta personalizada
 
-module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada) => {
+module.exports.crearRespuestaPersonalizada = async (guild, respuestaPersonalizada) => {
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'desencadenante')) throw new Error('Se requiere un desencadenante')
 
   if (!Object.prototype.hasOwnProperty.call(respuestaPersonalizada, 'respuesta')) throw new Error('Se requiere una respuesta')
@@ -70,7 +69,7 @@ module.exports.crearRespuestaPersonalizada = (guild, respuestaPersonalizada) => 
       throw err
     }
 
-    return null
+    return module.exports.obtenerRespuestaPersonalizada(guild, respuestaPersonalizada.desencadenante)
   })
 }
 
@@ -88,7 +87,7 @@ const { EmbedBuilder } = require('discord.js')
 const randomstring = require('randomstring')
 const fs = require('fs')
 
-module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = (guild) => {
+module.exports.generarDocumentoConTodasLasRespuestasPersonalizadasDelServidor = async (guild) => {
   let fileContent = '𝗣𝗶𝗻𝗴𝘂 · 𝗧𝗵𝗲 𝗢𝗦𝗦 𝗕𝗼𝘁.\n𝘓𝘦𝘢𝘳𝘯 𝘮𝘰𝘳𝘦 𝘢𝘣𝘰𝘶𝘵 𝘗𝘪𝘯𝘨𝘶 𝘢𝘵 𝘩𝘵𝘵𝘱𝘴://𝘢𝘭𝘦𝘹𝘢𝘯𝘥𝘳𝘶𝘮𝘶𝘯𝘵𝘦𝘯𝘢𝘴.𝘥𝘦𝘷/𝘱𝘪𝘯𝘨𝘶'
   const filePath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.txt`
 
