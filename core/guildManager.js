@@ -275,11 +275,9 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
 
 const { readFileSync } = require('fs')
 
-module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url, callback) => {
-  if (!callback) throw new Error('Se necesita un callback')
-
+module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url) => {
   descargarArchivoDeConfiguracionYAML(url, descarga => {
-    if (descarga.error) return callback(descarga.error)
+    if (descarga.error) return descarga.error
     ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), ({ configuracionProcesada, errores }) => {
       let posicionArrayModulos = 0
       modulosDisponibles.forEach(modulo => {
@@ -290,7 +288,7 @@ module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url, callback) =>
 
         if (posicionArrayModulos === modulosDisponibles.length) {
           const erroresTotalesEnString = errores.length ? errores.join('\n') : null
-          return callback(erroresTotalesEnString)
+          return erroresTotalesEnString
         }
       })
     })
