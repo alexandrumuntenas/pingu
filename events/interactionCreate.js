@@ -10,12 +10,12 @@ async function isChatInputCommand (interaction) {
   if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
-  obtenerConfiguracionDelServidor(interaction.guild).then(async guildConfig => {
-    interaction.guild.configuration = guildConfig
+  obtenerConfiguracionDelServidor(interaction.guild).then(async configuracionDelServidor => {
+    interaction.guild.configuration = configuracionDelServidor
     if (process.Client.comandos.has(interaction.commandName)) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)
 
-      if (interactionToRun.module && !guildConfig[interactionToRun.module].enabled) {
+      if (interactionToRun.module && !configuracionDelServidor[interactionToRun.module].enabled) {
         return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
       }
 

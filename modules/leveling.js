@@ -27,13 +27,13 @@ module.exports.getExperience = message => {
   if (message.guild.configuration.leveling.enabled) {
     if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
       CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
-      obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
+      obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
         getMember(message.member).then(memberData => {
           memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
-          if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100)) {
+          if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100)) {
             module.exports.sendLevelUpMessage(message)
-            return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * guildConfig.leveling.difficulty) * 100) })
+            return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100) })
           }
 
           try {
@@ -52,16 +52,16 @@ module.exports.getExperience = message => {
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendLevelUpMessage = message => {
-  obtenerConfiguracionDelServidor(message.guild).then(guildConfig => {
-    if (guildConfig.leveling.enabled) {
+  obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
+    if (configuracionDelServidor.leveling.enabled) {
       getMember(message).then(memberData => {
-        const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(guildConfig.leveling.channel)
-        const content = reemplazarPlaceholdersConDatosReales(guildConfig.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel, 10) + 1, oldlevel: parseInt(memberData.lvlLevel, 10) })
+        const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(configuracionDelServidor.leveling.channel)
+        const content = reemplazarPlaceholdersConDatosReales(configuracionDelServidor.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel, 10) + 1, oldlevel: parseInt(memberData.lvlLevel, 10) })
 
         if (channelWhereLevelUpMessageIsSent) {
           channelWhereLevelUpMessageIsSent.send({ content })
         } else {
-          switch (guildConfig.leveling.channel) {
+          switch (configuracionDelServidor.leveling.channel) {
             case 'same': {
               message.reply({ content })
               break

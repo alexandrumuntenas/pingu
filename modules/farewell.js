@@ -11,9 +11,9 @@ module.exports.modeloDeConfiguracion = {
 const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
 
 module.exports.doGuildMemberRemove = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, 'farewell') && Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'enabled')) {
-      if (guildConfig.farewell.enabled) module.exports.sendFarewellMessage(member)
+  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
+    if (Object.prototype.hasOwnProperty.call(configuracionDelServidor, 'farewell') && Object.prototype.hasOwnProperty.call(configuracionDelServidor.farewell, 'enabled')) {
+      if (configuracionDelServidor.farewell.enabled) module.exports.sendFarewellMessage(member)
     }
   })
 }
@@ -25,13 +25,13 @@ module.exports.doGuildMemberRemove = member => {
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendFarewellMessage = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
-    if (!Object.prototype.hasOwnProperty.call(guildConfig.farewell, 'channel')) return
+  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
+    if (!Object.prototype.hasOwnProperty.call(configuracionDelServidor.farewell, 'channel')) return
 
-    const channel = member.guild.channels.cache.get(guildConfig.farewell.channel)
+    const channel = member.guild.channels.cache.get(configuracionDelServidor.farewell.channel)
     if (!channel) return
 
-    channel.send(reemplazarPlaceholdersConDatosReales(guildConfig.farewell.message || '{member} left {server}!', member))
+    channel.send(reemplazarPlaceholdersConDatosReales(configuracionDelServidor.farewell.message || '{member} left {server}!', member))
   })
 }
 

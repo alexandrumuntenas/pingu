@@ -14,18 +14,18 @@ const { Routes } = require('discord-api-types/v10')
 
 module.exports.obtenerConfiguracionDelServidor = async (guild) => {
   try {
-    const [guildData] = await Database.execute('SELECT * FROM `guildData` WHERE guild = ?', [guild.id]).then(result => result[0])
+    const [configuracionDelServidor] = await Database.execute('SELECT * FROM `guildData` WHERE guild = ?', [guild.id]).then(result => result[0])
 
-    if (guildData) {
-      Object.keys(guildData).forEach(module => {
+    if (configuracionDelServidor) {
+      Object.keys(configuracionDelServidor).forEach(module => {
         try {
-          guildData[module] = JSON.parse(guildData[module].trim())
+          configuracionDelServidor[module] = JSON.parse(configuracionDelServidor[module].trim())
         } catch (err2) {
           if (!err2.constructor.name === 'SyntaxError') consolex.gestionarError(err2)
         }
       })
 
-      if (guildData.common === null) {
+      if (configuracionDelServidor.common === null) {
         try {
           await Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
           return module.exports.obtenerConfiguracionDelServidor(guild)
@@ -35,7 +35,7 @@ module.exports.obtenerConfiguracionDelServidor = async (guild) => {
         module.exports.actualizarConfiguracionDelServidor(guild, { column: 'common', newconfig: { language: 'es-ES', prefix: '!', interactions: { enabled: true } } }).then()
       }
 
-      return guildData || {}
+      return configuracionDelServidor || {}
     }
 
     try {
@@ -66,16 +66,16 @@ module.exports.actualizarConfiguracionDelServidor = async (guild, botmodule) => 
 
   botmodule.column = botmodule.modulo || botmodule.column
 
-  module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
-    if (typeof guildConfig[botmodule.column] === 'object' && !Array.isArray(guildConfig[botmodule.column]) && guildConfig[botmodule.column] !== null) {
-      guildConfig[botmodule.column] = procesarObjetosdeConfiguracion(guildConfig[botmodule.column], botmodule.newconfig)
+  module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
+    if (typeof configuracionDelServidor[botmodule.column] === 'object' && !Array.isArray(configuracionDelServidor[botmodule.column]) && configuracionDelServidor[botmodule.column] !== null) {
+      configuracionDelServidor[botmodule.column] = procesarObjetosdeConfiguracion(configuracionDelServidor[botmodule.column], botmodule.newconfig)
       try {
-        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(guildConfig[botmodule.column]), guild.id])
+        Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(configuracionDelServidor[botmodule.column]), guild.id])
         return null
       } catch (err) {
         consolex.gestionarError(err)
       }
-    } else if (typeof botmodule.newconfig === 'object' && Array.isArray(guildConfig[botmodule.column]) && botmodule.newconfig !== null) {
+    } else if (typeof botmodule.newconfig === 'object' && Array.isArray(configuracionDelServidor[botmodule.column]) && botmodule.newconfig !== null) {
       try {
         Database.execute('UPDATE `guildData` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id])
         return null
@@ -106,9 +106,9 @@ const crearListadoDeInteraccionesDeUnGuild = require('./utils/crearListadoDeInte
  */
 
 module.exports.subirInteraccionesDelServidor = async (guild) => {
-  module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
+  module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
     rest.put(
-      Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: crearListadoDeInteraccionesDeUnGuild(guildConfig) })
+      Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: crearListadoDeInteraccionesDeUnGuild(configuracionDelServidor) })
       .catch(err => {
         return consolex.gestionarError(err)
       }).then(() => { return null })
@@ -136,10 +136,10 @@ const randomstring = require('randomstring')
 const { writeFileSync } = require('fs')
 
 module.exports.exportarDatosDelServidorEnFormatoYAML = (guild) => {
-  module.exports.obtenerConfiguracionDelServidor(guild).then(guildConfig => {
-    if (guildConfig && typeof guildConfig === 'object') {
+  module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
+    if (configuracionDelServidor && typeof configuracionDelServidor === 'object') {
       const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
-      writeFileSync(attachmentPath, YAML.dump(guildConfig))
+      writeFileSync(attachmentPath, YAML.dump(configuracionDelServidor))
       return attachmentPath
     }
   })

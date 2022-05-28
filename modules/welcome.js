@@ -22,11 +22,11 @@ module.exports.modeloDeConfiguracion = {
 const { obtenerConfiguracionDelServidor, actualizarConfiguracionDelServidor } = require('../core/guildManager')
 
 module.exports.giveMemberRoles = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
-      if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'roles')) {
-        if (guildConfig.welcome.roles.length > 0) {
-          guildConfig.welcome.roles.forEach(role => {
+  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
+    if (Object.prototype.hasOwnProperty.call(configuracionDelServidor, 'welcome') && Object.prototype.hasOwnProperty.call(configuracionDelServidor.welcome, 'enabled')) {
+      if (Object.prototype.hasOwnProperty.call(configuracionDelServidor.welcome, 'roles')) {
+        if (configuracionDelServidor.welcome.roles.length > 0) {
+          configuracionDelServidor.welcome.roles.forEach(role => {
             const roleToGive = member.guild.roles.cache.get(role)
             if (roleToGive) member.roles.add(roleToGive)
           })
@@ -45,16 +45,16 @@ const { MessageAttachment } = require('discord.js')
 const replaceBracePlaceholdersWithActualData = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendWelcomeMessage = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
-    if (!Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'channel')) return
+  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
+    if (!Object.prototype.hasOwnProperty.call(configuracionDelServidor.welcome, 'channel')) return
 
-    const channel = member.guild.channels.cache.get(guildConfig.welcome.channel)
+    const channel = member.guild.channels.cache.get(configuracionDelServidor.welcome.channel)
 
     if (!channel) return
 
-    const message = { content: replaceBracePlaceholdersWithActualData(guildConfig.welcome.message || '{member} joined {server}!', member) }
+    const message = { content: replaceBracePlaceholdersWithActualData(configuracionDelServidor.welcome.message || '{member} joined {server}!', member) }
 
-    if (Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'card') && Object.prototype.hasOwnProperty.call(guildConfig.welcome.card, 'enabled') && guildConfig.welcome.card.enabled) {
+    if (Object.prototype.hasOwnProperty.call(configuracionDelServidor.welcome, 'card') && Object.prototype.hasOwnProperty.call(configuracionDelServidor.welcome.card, 'enabled') && configuracionDelServidor.welcome.card.enabled) {
       module.exports.generateWelcomeCard(member, paths => {
         message.files = [new MessageAttachment(paths.attachmentSent)]
       })
@@ -205,9 +205,9 @@ module.exports.generateWelcomeCard = async (member) => {
  */
 
 module.exports.doGuildMemberAdd = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(guildConfig => {
-    if (Object.prototype.hasOwnProperty.call(guildConfig, 'welcome') && Object.prototype.hasOwnProperty.call(guildConfig.welcome, 'enabled')) {
-      if (guildConfig.welcome.enabled) {
+  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
+    if (Object.prototype.hasOwnProperty.call(configuracionDelServidor, 'welcome') && Object.prototype.hasOwnProperty.call(configuracionDelServidor.welcome, 'enabled')) {
+      if (configuracionDelServidor.welcome.enabled) {
         module.exports.giveMemberRoles(member)
         module.exports.sendWelcomeMessage(member)
       }
@@ -216,9 +216,9 @@ module.exports.doGuildMemberAdd = member => {
 }
 
 module.exports.addJoinRole = (guild, role) => {
-  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
-    if (guildConfig.welcome.roles) {
-      const { roles } = guildConfig.welcome
+  obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
+    if (configuracionDelServidor.welcome.roles) {
+      const { roles } = configuracionDelServidor.welcome
 
       roles.push(`${role.id}`)
 
@@ -242,11 +242,11 @@ module.exports.addJoinRole = (guild, role) => {
 }
 
 module.exports.removeJoinRole = (guild, role) => {
-  obtenerConfiguracionDelServidor(guild).then(guildConfig => {
-    if (guildConfig.welcome.roles) {
-      delete guildConfig.welcome.roles[`${role.id}`]
+  obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
+    if (configuracionDelServidor.welcome.roles) {
+      delete configuracionDelServidor.welcome.roles[`${role.id}`]
 
-      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles: guildConfig.welcome.roles } }).catch(err => {
+      actualizarConfiguracionDelServidor(guild, { column: 'welcome', newconfig: { roles: configuracionDelServidor.welcome.roles } }).catch(err => {
         return err
       }).then(() => {
         return null
