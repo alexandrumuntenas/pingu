@@ -15,7 +15,7 @@ module.exports.modeloDeConfiguracion = {
 const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
-const { getMember, updateMember } = require('../core/memberManager')
+const { obtenerDatosDelMiembro, updateMember } = require('../core/memberManager')
 const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
 const CooldownManager = require('../core/cooldownManager')
 
@@ -28,7 +28,7 @@ module.exports.getExperience = message => {
     if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
       CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
       obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
-        getMember(message.member).then(memberData => {
+        obtenerDatosDelMiembro(message.member).then(memberData => {
           memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
 
           if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100)) {
@@ -54,7 +54,7 @@ const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlacehol
 module.exports.sendLevelUpMessage = message => {
   obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
     if (configuracionDelServidor.leveling.enabled) {
-      getMember(message).then(memberData => {
+      obtenerDatosDelMiembro(message).then(memberData => {
         const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(configuracionDelServidor.leveling.channel)
         const content = reemplazarPlaceholdersConDatosReales(configuracionDelServidor.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel, 10) + 1, oldlevel: parseInt(memberData.lvlLevel, 10) })
 
@@ -184,7 +184,7 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
  */
 
 module.exports.generateRankCard = async (member) => {
-  getMember(member).then(async memberData => {
+  obtenerDatosDelMiembro(member).then(async memberData => {
     const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
 
     const canvas = createCanvas(1100, 320)
