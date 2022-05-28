@@ -34,3 +34,5 @@ module.exports.sendFarewellMessage = member => {
     channel.send(reemplazarPlaceholdersConDatosReales(guildConfig.farewell.message || '{member} left {server}!', member))
   })
 }
+
+module.exports.hooks = [{ event: 'guildMemberRemove', function: module.exports.doGuildMemberRemove }]

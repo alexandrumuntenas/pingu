@@ -306,3 +306,5 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
     })
   }, 300000)
 }
+
+module.exports.hooks = [{ event: 'ready', function: module.exports.comenzarActualizarDatosDeLosServidores }]

@@ -256,3 +256,5 @@ module.exports.removeJoinRole = (guild, role) => {
     return null
   })
 }
+
+module.exports.hooks = [{ event: 'guildMemberAdd', function: module.exports.doGuildMemberAdd }]
