@@ -8,9 +8,7 @@ const Database = require('../core/databaseManager')
 const Consolex = require('../core/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
-module.exports.getCustomCommands = (guild, callback) => {
-  if (!callback) throw new Error('Callback is required')
-
+module.exports.getCustomCommands = async (guild) => {
   Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
@@ -26,10 +24,10 @@ module.exports.getCustomCommands = (guild, callback) => {
         }
       }
 
-      callback(customcommands || [])
-    } else {
-      callback([])
+      return customcommands || []
     }
+
+    return []
   })
 }
 
@@ -39,20 +37,16 @@ module.exports.getCustomCommands = (guild, callback) => {
  * @returns {Object} customCommand
  */
 
-module.exports.getCustomCommand = (guild, command, callback) => {
-  if (!callback) throw new Error('Callback is required')
-
+module.exports.getCustomCommand = (guild, command) => {
   Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
     if (Object.prototype.hasOwnProperty.call(result, '0')) {
       if (Object.prototype.hasOwnProperty.call(result[0], 'customcommandproperties') && result[0].customcommandproperties !== null) {
-        callback(JSON.parse(result[0].customcommandproperties))
-      } else {
-        module.exports.migrateToNewOrganization(guild, command, () => {
-          callback({ command, reply: result[0].messageReturned })
-        })
+        return JSON.parse(result[0].customcommandproperties)
       }
+
+      return module.exports.migrateToNewOrganization(guild, command)
     }
   })
 }
@@ -79,6 +73,8 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
       Consolex.gestionarError(err)
       throw err
     }
+
+    return module.exports.getCustomCommand(guild, customcommandproperties.command)
   })
 }
 
@@ -102,7 +98,7 @@ module.exports.deleteCustomCommand = (guild, command) => {
  * @param {Guild} guild
  * @param {String} command
  */
-module.exports.migrateToNewOrganization = (guild, command, callback) => {
+module.exports.migrateToNewOrganization = (guild, command) => {
   Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
     if (err) Consolex.gestionarError(err)
 
@@ -111,7 +107,7 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
       Database.execute('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
         if (err2) Consolex.gestionarError(err)
 
-        if (callback) callback()
+        return module.exports.getCustomCommand(guild, command)
       })
     }
   })
@@ -125,7 +121,7 @@ module.exports.migrateToNewOrganization = (guild, command, callback) => {
 const { EmbedBuilder } = require('discord.js')
 
 module.exports.runCustomCommand = (message, command) => {
-  module.exports.getCustomCommand(message.guild, command, customCommand => {
+  module.exports.getCustomCommand(message.guild, command).then((customCommand) => {
     const reply = {}
 
     if (customCommand.sendInEmbed) {
