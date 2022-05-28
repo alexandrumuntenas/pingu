@@ -9,26 +9,18 @@ const consolex = require('../core/consolex')
 const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = async (guild) => {
-  Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id], (err, result) => {
-    if (err) consolex.gestionarError(err)
+  try {
+    const [customCommands] = await Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result : [])
 
-    if (Object.prototype.hasOwnProperty.call(result, '0')) {
-      const customcommands = []
-      for (let i = 0; i < result.length; i++) {
-        if (Object.prototype.hasOwnProperty.call(result[i], 'customcommandproperties') && result[i].customcommandproperties !== null) {
-          customcommands.push(JSON.parse(result[i].customcommandproperties))
-        } else {
-          module.exports.migrateToNewOrganization(guild, result[i].customCommand, () => {
-            customcommands.push({ command: result[i].customCommand, reply: result[i].messageReturned })
-          })
-        }
-      }
+    // TODO: Comprobar si esto funciona...
+    customCommands.forEach(customCommand => {
+      return JSON.parse(customCommand.customcommandproperties)
+    })
 
-      return customcommands || []
-    }
-
-    return []
-  })
+    return customCommands || []
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 /**
@@ -37,18 +29,14 @@ module.exports.getCustomCommands = async (guild) => {
  * @returns {Object} customCommand
  */
 
-module.exports.getCustomCommand = (guild, command) => {
-  Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
-    if (err) consolex.gestionarError(err)
+module.exports.getCustomCommand = async (guild, command) => {
+  try {
+    const [customCommand] = await Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result : {})
 
-    if (Object.prototype.hasOwnProperty.call(result, '0')) {
-      if (Object.prototype.hasOwnProperty.call(result[0], 'customcommandproperties') && result[0].customcommandproperties !== null) {
-        return JSON.parse(result[0].customcommandproperties)
-      }
-
-      return module.exports.migrateToNewOrganization(guild, command)
-    }
-  })
+    return JSON.parse(customCommand.customcommandproperties)
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 /**
@@ -67,15 +55,13 @@ module.exports.getCustomCommand = (guild, command) => {
  * @param {?String} customcommandproperties.sendInEmbed.url - The url field of the embed.
  * @param {?String} customcommandproperties.sendInEmbed.color - The url field of the embed.
 */
-module.exports.createCustomCommand = (guild, customcommandproperties) => {
-  Database.execute('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)], err => {
-    if (err) {
-      consolex.gestionarError(err)
-      throw err
-    }
-
+module.exports.createCustomCommand = async (guild, customcommandproperties) => {
+  try {
+    await Database.execute('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [guild.id, customcommandproperties.command, JSON.stringify(customcommandproperties)])
     return module.exports.getCustomCommand(guild, customcommandproperties.command)
-  })
+  } catch (err) {
+    consolex.gestionarError(err)
+  }
 }
 
 /**
@@ -84,33 +70,8 @@ module.exports.createCustomCommand = (guild, customcommandproperties) => {
  * @param {String} command
  */
 module.exports.deleteCustomCommand = (guild, command) => {
-  Database.execute('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command], err => {
-    if (err) {
-      consolex.gestionarError(err)
-      return err
-    }
-
-    return null
-  })
-}
-
-/**
- * @param {Guild} guild
- * @param {String} command
- */
-module.exports.migrateToNewOrganization = (guild, command) => {
-  Database.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command], (err, result) => {
-    if (err) consolex.gestionarError(err)
-
-    if (Object.prototype.hasOwnProperty.call(result, '0')) {
-      const customcommandproperties = { command: result[0].customCommand, reply: result[0].messageReturned }
-      Database.execute('UPDATE `guildCustomCommands` SET `customcommand` = ?, `customcommandproperties` = ? WHERE `guild` = ? AND `customCommand` = ?', [command, JSON.stringify(customcommandproperties), guild.id, result[0].customCommand], err2 => {
-        if (err2) consolex.gestionarError(err)
-
-        return module.exports.getCustomCommand(guild, command)
-      })
-    }
-  })
+  Database.execute('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [guild.id, command])
+    .catch(err => consolex.gestionarError(err))
 }
 
 /**
