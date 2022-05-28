@@ -22,7 +22,7 @@ module.exports.doGuildMemberRemove = member => {
  * @param {GuildMember} member
  */
 
-const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
+const reemplazarPlaceholdersConDatosReales = require('../core/utils/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendFarewellMessage = member => {
   obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {

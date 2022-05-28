@@ -49,7 +49,7 @@ module.exports.getExperience = message => {
   }
 }
 
-const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
+const reemplazarPlaceholdersConDatosReales = require('../core/utils/reemplazarPlaceholdersConDatosReales')
 
 module.exports.sendLevelUpMessage = message => {
   obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {

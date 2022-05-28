@@ -6,7 +6,7 @@ module.exports.modeloDeConfiguracion = {
 
 const Database = require('../core/databaseManager')
 const consolex = require('../core/consolex')
-const reemplazarPlaceholdersConDatosReales = require('../core/reemplazarPlaceholdersConDatosReales')
+const reemplazarPlaceholdersConDatosReales = require('../core/utils/reemplazarPlaceholdersConDatosReales')
 
 module.exports.getCustomCommands = async (guild) => {
   try {
