@@ -7,10 +7,10 @@ module.exports = {
   description: '👑 Shows information about the server',
   runInteraction (interaction) {
     const serverInfo = new EmbedBuilder()
-      .setTitle(i18n.getTranslation(interaction.guild.preferredLocale, 'SERVER::EMBED:TITLE'))
+      .setTitle(i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')
       .setThumbnail(interaction.guild.iconURL({ dynamic: true }))
-      .setDescription(`:medal: **${i18n.getTranslation(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVERNAME')}**: ${interaction.guild.name}\n:id: **${i18n.getTranslation(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVERID')}**: ${interaction.guild.id}\n:calendar: **${i18n.getTranslation(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVERCREATIONDATE')}**: <t:${unixTime(interaction.guild.createdTimestamp)}>\n:crown: **${i18n.getTranslation(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVEROWNER')}**: ${process.Client.users.cache.get(interaction.guild.ownerId).tag}\n<a:nitro:927222194034053161> **${i18n.getTranslation(interaction.guild.preferredLocale, 'SERVER::EMBED:NITROSTATUS')}**: ${interaction.guild.premiumTier} (${interaction.guild.premiumSubscriptionCount || '0'})`)
+      .setDescription(`:medal: **${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVERNAME')}**: ${interaction.guild.name}\n:id: **${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVERID')}**: ${interaction.guild.id}\n:calendar: **${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVERCREATIONDATE')}**: <t:${unixTime(interaction.guild.createdTimestamp)}>\n:crown: **${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'SERVER::EMBED:SERVEROWNER')}**: ${process.Client.users.cache.get(interaction.guild.ownerId).tag}\n<a:nitro:927222194034053161> **${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'SERVER::EMBED:NITROSTATUS')}**: ${interaction.guild.premiumTier} (${interaction.guild.premiumSubscriptionCount || '0'})`)
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
 
@@ -18,10 +18,10 @@ module.exports = {
   },
   runCommand (message) {
     const serverInfo = new EmbedBuilder()
-      .setTitle(i18n.getTranslation(message.guild.preferredLocale, 'SERVER::EMBED:TITLE'))
+      .setTitle(i18n.obtenerTraduccion(message.guild.preferredLocale, 'SERVER::EMBED:TITLE'))
       .setColor('#FFFFFF')
       .setThumbnail(message.guild.iconURL({ dynamic: true }))
-      .setDescription(`:medal: **${i18n.getTranslation(message.guild.preferredLocale, 'SERVER::EMBED:SERVERNAME')}**: ${message.guild.name}\n:id: **${i18n.getTranslation(message.guild.preferredLocale, 'SERVER::EMBED:SERVERID')}**: ${message.guild.id}\n:calendar: **${i18n.getTranslation(message.guild.preferredLocale, 'SERVER::EMBED:SERVERCREATIONDATE')}**: <t:${unixTime(message.guild.createdTimestamp)}>\n:crown: **${i18n.getTranslation(message.guild.preferredLocale, 'SERVER::EMBED:SERVEROWNER')}**: ${process.Client.users.cache.get(message.guild.ownerId).tag}\n<a:nitro:927222194034053161> **${i18n.getTranslation(message.guild.preferredLocale, 'SERVER::EMBED:NITROSTATUS')}**: ${message.guild.premiumTier} (${message.guild.premiumSubscriptionCount || '0'})`)
+      .setDescription(`:medal: **${i18n.obtenerTraduccion(message.guild.preferredLocale, 'SERVER::EMBED:SERVERNAME')}**: ${message.guild.name}\n:id: **${i18n.obtenerTraduccion(message.guild.preferredLocale, 'SERVER::EMBED:SERVERID')}**: ${message.guild.id}\n:calendar: **${i18n.obtenerTraduccion(message.guild.preferredLocale, 'SERVER::EMBED:SERVERCREATIONDATE')}**: <t:${unixTime(message.guild.createdTimestamp)}>\n:crown: **${i18n.obtenerTraduccion(message.guild.preferredLocale, 'SERVER::EMBED:SERVEROWNER')}**: ${process.Client.users.cache.get(message.guild.ownerId).tag}\n<a:nitro:927222194034053161> **${i18n.obtenerTraduccion(message.guild.preferredLocale, 'SERVER::EMBED:NITROSTATUS')}**: ${message.guild.premiumTier} (${message.guild.premiumSubscriptionCount || '0'})`)
       .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
       .setTimestamp()
 

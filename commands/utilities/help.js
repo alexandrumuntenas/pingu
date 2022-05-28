@@ -10,7 +10,7 @@ module.exports = {
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
-      .setDescription(`${i18n.getTranslation(interaction.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
+      .setDescription(`${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
       .addFields([
         { name: 'Vote us on', value: `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)` },
@@ -24,7 +24,7 @@ module.exports = {
       .setColor('#2F3136')
       .setThumbnail(process.Client.user.displayAvatarURL())
       .setTitle(process.Client.user.username)
-      .setDescription(`${i18n.getTranslation(message.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
+      .setDescription(`${i18n.obtenerTraduccion(message.guild.preferredLocale, 'HELP::HELPINGGUILDS', { GUILDS: Math.floor(process.Client.guilds.cache.size) })}`)
       .setFooter({ text: `©️ ${new Date().getFullYear()} Alexandru Muntenas`, iconURL: 'https://avatars.githubusercontent.com/u/59341776' })
       .addFields([
         { name: 'Vote us on', value: `[Top.GG](https://top.gg/bot/${process.Client.user.id}/vote)` },

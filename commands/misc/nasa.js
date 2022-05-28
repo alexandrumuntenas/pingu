@@ -26,7 +26,7 @@ module.exports = {
             .setImage(resource.hdurl)
             .addFields([
               {
-                name: '+ Info', value: `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')}\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(interaction.guild.preferredLocale, 'IMAGEAPI::PROVIDER', { PROVIDER: 'Nasa.gov' })}`, inline: true
+                name: '+ Info', value: `<:blurple_image:892443053359517696> ${resource.copyright || i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')}\n<a:ultimahora:876105976573472778> ${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'IMAGEAPI::PROVIDER', { PROVIDER: 'Nasa.gov' })}`, inline: true
               }
             ])
           interaction.editReply({ embeds: [embed] })
@@ -37,7 +37,7 @@ module.exports = {
   },
   runCommand (message) {
     message
-      .reply({ embeds: [plantillas.precargador(i18n.getTranslation(message.guild.preferredLocale, 'FETCHINGDATA'))] })
+      .reply({ embeds: [plantillas.precargador(i18n.obtenerTraduccion(message.guild.preferredLocale, 'FETCHINGDATA'))] })
       .then(msg => {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_KEY}`)
           .then(response => response.body)
@@ -56,7 +56,7 @@ module.exports = {
                 .setTitle(resource.title)
                 .setImage(resource.hdurl)
                 .addFields([
-                  { name: '+ Info', value: `<:blurple_image:892443053359517696> ${resource.copyright || i18n.getTranslation(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')}\n<a:ultimahora:876105976573472778> ${i18n.getTranslation(message.guild.preferredLocale, 'IMAGEAPI::PROVIDER', { PROVIDER: 'Nasa.gov' })}`, inline: true }
+                  { name: '+ Info', value: `<:blurple_image:892443053359517696> ${resource.copyright || i18n.obtenerTraduccion(message.guild.preferredLocale, 'IMAGEAPI::NOCOPYRIGHT')}\n<a:ultimahora:876105976573472778> ${i18n.obtenerTraduccion(message.guild.preferredLocale, 'IMAGEAPI::PROVIDER', { PROVIDER: 'Nasa.gov' })}`, inline: true }
                 ])
               msg.edit({ embeds: [embed] })
             } else {

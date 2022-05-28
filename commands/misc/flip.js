@@ -9,9 +9,9 @@ module.exports = {
   runInteraction (interaction) {
     const embed = new EmbedBuilder().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n.getTranslation(interaction.guild.preferredLocale, 'FLIP::HEADS')}`)
+      embed.setDescription(`:coin: ${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n.getTranslation(interaction.guild.preferredLocale, 'FLIP::TAILS')}`)
+      embed.setDescription(`:coin: ${i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'FLIP::TAILS')}`)
     }
 
     interaction.editReply({ embeds: [embed] })
@@ -19,9 +19,9 @@ module.exports = {
   runCommand (message) {
     const embed = new EmbedBuilder().setColor('#007BFF')
     if (flip() === 'head') {
-      embed.setDescription(`:coin: ${i18n.getTranslation(message.guild.preferredLocale, 'FLIP::HEADS')}`)
+      embed.setDescription(`:coin: ${i18n.obtenerTraduccion(message.guild.preferredLocale, 'FLIP::HEADS')}`)
     } else {
-      embed.setDescription(`:coin: ${i18n.getTranslation(message.guild.preferredLocale, 'FLIP::TAILS')}`)
+      embed.setDescription(`:coin: ${i18n.obtenerTraduccion(message.guild.preferredLocale, 'FLIP::TAILS')}`)
     }
 
     message.reply({ embeds: [embed] })

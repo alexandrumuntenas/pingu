@@ -11,7 +11,7 @@ module.exports = {
   isConfigurationCommand: true,
   runCommand (message) {
     exportarDatosDelServidorEnFormatoYAML(message.guild, rutaLocalDelArchivo => {
-      message.reply({ embeds: [plantillas.informacion(i18n.getTranslation(message.preferredLocale, 'YAMLCONFIGURATION_EXPORT_INFORMATION'))], files: [new Attachment(rutaLocalDelArchivo, `${message.guild}_${message.guild.id}.yaml`)] })
+      message.reply({ embeds: [plantillas.informacion(i18n.obtenerTraduccion(message.preferredLocale, 'YAMLCONFIGURATION_EXPORT_INFORMATION'))], files: [new Attachment(rutaLocalDelArchivo, `${message.guild}_${message.guild.id}.yaml`)] })
     })
   }
 }

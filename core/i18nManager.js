@@ -7,7 +7,7 @@ const { existsSync, statSync } = require('fs')
  * @param {String} traduccion
  * @param {Array<Object>} parametros
  */
-module.exports.getTranslation = (idioma, traduccion, parametros) => {
+module.exports.obtenerTraduccion = (idioma, traduccion, parametros) => {
   let idiomaAUsar = idioma || 'es-ES'
   if (!existsSync(`./core/locales/${idiomaAUsar}.json`)) {
     gestionarError(`No se encontró el archivo de idioma ${idiomaAUsar}.json`)

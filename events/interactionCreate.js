@@ -16,11 +16,11 @@ async function isChatInputCommand (interaction) {
       const interactionToRun = process.Client.comandos.get(interaction.commandName)
 
       if (interactionToRun.module && !configuracionDelServidor[interactionToRun.module].enabled) {
-        return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
       }
 
       if (interactionToRun.permissions && !interaction.member.permissions.has(interactionToRun.permissions)) {
-        return interaction.editReply({ embeds: [plantillas.error(i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
+        return interaction.editReply({ embeds: [plantillas.error(i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
       }
 
       if (CooldownManager.check(interaction.member, interaction.guild, interactionToRun.name)) {
@@ -28,10 +28,10 @@ async function isChatInputCommand (interaction) {
 
         await interactionToRun.runInteraction(interaction)
       } else {
-        return interaction.editReply({ embeds: [plantillas.contador(i18n.getTranslation(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
+        return interaction.editReply({ embeds: [plantillas.contador(i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(interaction.member, interaction.guild, interactionToRun.name), { round: true, language: interaction.guild.configuration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
       }
     } else {
-      return interaction.editReply({ content: i18n.getTranslation(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
+      return interaction.editReply({ content: i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
     }
   })
 }

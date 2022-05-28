@@ -27,7 +27,7 @@ module.exports = {
       })
     }
 
-    message.reply({ embeds: [plantillas.precargador(i18n.getTranslation(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
+    message.reply({ embeds: [plantillas.precargador(i18n.obtenerTraduccion(message.guild.preferredLocale, 'OBTAININGDATA'))] }).then(_message => {
       generarMensajeEnriquecidoConDatosDelServidor({ ip: message.parameters[0], port: message.parameters[1] }, messageData => {
         _message.edit(messageData)
       })

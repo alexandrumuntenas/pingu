@@ -97,7 +97,7 @@ module.exports = {
       if (options.length === 1) {
         const question = message.parameters.join(' ')
 
-        if (!question) return message.reply({ embeds: [plantillas.error(i18n.getTranslation(message.guild.preferredLocale, 'POLL::NOQUESTION'))] })
+        if (!question) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.preferredLocale, 'POLL::NOQUESTION'))] })
 
         embed.setTitle(`📊 ${question}`)
 
@@ -134,7 +134,7 @@ module.exports = {
       message.reply({
         embeds: plantillas.ayuda({
           name: 'poll',
-          description: i18n.getTranslation(message.guild.preferredLocale, 'POLL::DESCRIPTION'),
+          description: i18n.obtenerTraduccion(message.guild.preferredLocale, 'POLL::DESCRIPTION'),
           cooldown: '1',
           parameters: '<question;option1;option2;option3;...>'
         })
