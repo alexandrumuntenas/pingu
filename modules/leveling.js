@@ -15,7 +15,7 @@ module.exports.modeloDeConfiguracion = {
 const consolex = require('../core/consolex')
 const Database = require('../core/databaseManager')
 
-const { obtenerDatosDelUsuario, updateMember } = require('../core/memberManager')
+const { obtenerDatosDelUsuario, actualizarDatosDelUsuario } = require('../core/memberManager')
 const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
 const CooldownManager = require('../core/cooldownManager')
 
@@ -33,11 +33,11 @@ module.exports.getExperience = message => {
 
           if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100)) {
             module.exports.sendLevelUpMessage(message)
-            return updateMember(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100) })
+            return actualizarDatosDelUsuario(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100) })
           }
 
           try {
-            updateMember(message.member, { lvlExperience: memberData.lvlExperience })
+            actualizarDatosDelUsuario(message.member, { lvlExperience: memberData.lvlExperience })
           } catch (err) {
             if (err) consolex.gestionarError(err)
           }

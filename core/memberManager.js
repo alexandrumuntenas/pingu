@@ -9,7 +9,7 @@ const Database = require('../core/databaseManager')
 
 module.exports.obtenerDatosDelUsuario = async (member) => {
   try {
-    const [memberData] = await Database.execute('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result[0] : module.exports.createMember(member))
+    const [memberData] = await Database.execute('SELECT * FROM `memberData` WHERE member = ? AND guild = ?', [member.id, member.guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 0) ? result[0] : module.exports.crearUsuario(member))
     // TODO: GET THIS OUT!
     Database.execute('SELECT member, ROW_NUMBER() OVER (ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC) AS lvlRank FROM memberData WHERE guild = ? ORDER BY lvlLevel DESC, lvlExperience DESC', [member.guild.id], (err2, result) => {
       if (err2) consolex.gestionarError(err2)
@@ -32,7 +32,7 @@ module.exports.obtenerDatosDelUsuario = async (member) => {
  * @param {GuildMember} member - The Member to create the data for
  */
 
-module.exports.createMember = async (member) => {
+module.exports.crearUsuario = async (member) => {
   try {
     await Database.execute('INSERT INTO `memberData` (`guild`, `member`) VALUES (?, ?)', [member.guild.id, member.id])
     return module.exports.obtenerDatosDelUsuario(member)
@@ -51,7 +51,7 @@ module.exports.createMember = async (member) => {
  * @param {?Array} memberDataToUpdate.ecoInventory - Member Inventory
  */
 
-module.exports.updateMember = async (member, memberDataToUpdate) => {
+module.exports.actualizarDatosDelUsuario = async (member, memberDataToUpdate) => {
   module.exports.obtenerDatosDelUsuario(member).then(memberData => {
     Database.execute('UPDATE `memberData` SET `lvlLevel` = ?, `lvlExperience` = ? WHERE `guild` = ? AND `member` = ?', [memberDataToUpdate.lvlLevel || memberData.lvlLevel, memberDataToUpdate.lvlExperience || memberData.lvlExperience, member.guild.id, member.id])
       .catch(err => consolex.gestionarError(err))
@@ -65,7 +65,7 @@ module.exports.updateMember = async (member, memberDataToUpdate) => {
  * Delete a member's data from the database.
  * @param {Member} member
  */
-module.exports.deleteMember = (member) => {
+module.exports.eliminarDatosDelUsuario = (member) => {
   try {
     Database.execute('DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?', [member.guild.id, member.id])
   } catch (err) {
