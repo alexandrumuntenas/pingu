@@ -3,34 +3,33 @@ const { gestionarError } = require('./consolex')
 const { existsSync, statSync } = require('fs')
 
 /**
- * Solicitar la traducción para la i18n a través de string-placeholder
- * @param {String} language El idioma del servidor
- * @param {String} key La clave del array de los idiomas
- * @param {Array<Object>} placeholders Los datos para reemplazar los placeholders
+ * @param {String} idioma
+ * @param {String} traduccion
+ * @param {Array<Object>} parametros
  */
-module.exports.getTranslation = (language, key, placeholders) => {
-  let languageToUse = language || 'es-ES'
-  if (!existsSync(`./core/locales/${languageToUse}.json`)) {
-    gestionarError(`No se encontró el archivo de idioma ${languageToUse}.json`)
-    languageToUse = 'es-ES'
+module.exports.getTranslation = (idioma, traduccion, parametros) => {
+  let idiomaAUsar = idioma || 'es-ES'
+  if (!existsSync(`./core/locales/${idiomaAUsar}.json`)) {
+    gestionarError(`No se encontró el archivo de idioma ${idiomaAUsar}.json`)
+    idiomaAUsar = 'es-ES'
   }
 
-  let translation = require(`./locales/${languageToUse}.json`)[key]
+  let textoTraducido = require(`./locales/${idiomaAUsar}.json`)[traduccion]
 
-  if (placeholders) {
+  if (parametros) {
     try {
-      translation = stringPlaceholder(translation, placeholders, { before: '%', after: '%' })
+      textoTraducido = stringPlaceholder(textoTraducido, parametros, { before: '%', after: '%' })
     } catch (err) {
       if (err) {
-        translation = 'Error al intentar ajustar la traducción'
+        textoTraducido = 'Error al intentar ajustar la traducción'
         gestionarError(err)
       }
     }
   }
 
-  if (!translation) translation = 'Error al intentar obtener la traducción'
+  if (!textoTraducido) textoTraducido = 'Error al intentar obtener la traducción'
 
-  return translation
+  return textoTraducido
 }
 
 const avaliableLocales = []
