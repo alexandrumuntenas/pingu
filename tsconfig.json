@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./compiled",
     "allowJs": true,
-    "target": "es5"
+    "target": "ES2021"
   },
   "exclude": [
     "./node_modules"
