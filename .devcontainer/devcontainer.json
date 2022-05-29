@@ -2,5 +2,15 @@
   "build": {
     "dockerfile": "./Dockerfile"
   },
-  "remoteUser": "node"
+  "remoteUser": "node",
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "GitHub.copilot",
+    "eamodio.gitlens",
+    "tal7aouy.icons",
+    "oderwat.indent-rainbow",
+    "eg2.vscode-npm-script",
+    "esbenp.prettier-vscode",
+    "Gruntfuggly.todo-tree"
+  ]
 }
