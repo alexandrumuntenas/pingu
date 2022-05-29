@@ -7,15 +7,19 @@
  * Versión pública: 22T4                 *
  * * * * * * * * * * * * * * * * * * * * */
 
-require('dotenv').config()
-const { GatewayIntentBits } = require('discord-api-types/v10')
-const Discord = require('discord.js')
+import 'dotenv/config'
+import * as Discord from 'discord.js'
+import { GatewayIntentBits } from 'discord-api-types/v10'
+
+interface PinguClient extends NodeJS.Process {
+  client: Discord.Client
+}
 
 process.Client = new Discord.Client({
   intents: [
     GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildBans, GatewayIntentBits.GuildInvites, GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping, GatewayIntentBits.MessageContent],
-  partials: ['REACTION', 'MESSAGE', 'USER'],
+  partials: [Discord.Partials.Reaction, Discord.Partials.Message, Discord.Partials.User],
   ws: { properties: { $browser: 'Discord iOS' } }
 })
 

@@ -2,13 +2,14 @@
   "compilerOptions": {
     "outDir": "./built",
     "allowJs": true,
-    "target": "ES2021"
+    "target": "ES2021",
+    "moduleResolution": "node",
   },
   "include": [
     "./src/**/*"
   ],
   "exclude": [
-    "./node_modules",
+    "node_modules",
     "./built"
-  ]
+  ],
 }
