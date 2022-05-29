@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
-    "outDir": "./compiled",
+    "outDir": "./built",
     "allowJs": true,
     "target": "ES2021"
   },
+  "include": [
+    "./src/**/*"
+  ],
   "exclude": [
-    "./node_modules"
+    "./node_modules",
+    "./built"
   ]
 }
