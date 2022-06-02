@@ -1,21 +1,18 @@
-const chalk = require('chalk')
-const moment = require('moment')
-const Sentry = require('@sentry/node')
+import chalk from 'chalk';
+import * as moment from 'moment';
+import * as Sentry from '@sentry/node';
 
-if (process.env.SENTRY_DSN) {
-  const sentryConfig = { dsn: process.env.SENTRY_DSN, tracesSampleRate: 1.0 }
-
-  if (process.env.ENTORNO === 'public') sentryConfig.environment = 'production'
-  else sentryConfig.environment = 'development'
-
-  Sentry.init(sentryConfig)
-}
+if (process.env.SENTRY_DSN) Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  tracesSampleRate: 1.0,
+  environment: process.env.NODE_ENV,
+});
 
 function getCurrentTime () {
   return moment().format('MMM Do YY H:mm:ss')
 }
 
-module.exports = {
+const Consolex = {
   debug: message => {
     process.stdout.write(`${getCurrentTime()} [${chalk.whiteBright.bold(' DEBUG ')}]   ${message}\n`)
   },
@@ -38,3 +35,5 @@ module.exports = {
   },
   Sentry
 }
+
+export default Consolex;
