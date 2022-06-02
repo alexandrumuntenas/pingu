@@ -1,71 +1,86 @@
-const consolex = require('./consolex')
-const i18n = require('./i18nManager')
+import Consolex from "./consolex";
+import Command from "../classes/Command";
 
-const { Collection } = require('discord.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { readdirSync, lstatSync } = require('fs')
+import { Collection, SlashCommandBuilder } from "discord.js";
+import { lstatSync } from "fs";
+class CommandsManager {
+  commands: Collection<string, Command>;
 
-/**
- * Carga los comandos e interacciones del bot.
- * @returns {Collection} - Colección con los comandos y las interacciones.
- */
-
-module.exports.cargarComandoseInteracciones = () => {
-  const commands = new Collection()
-
-  function load (directory) {
-    readdirSync(directory).forEach(file => {
-      const path = `${directory}/${file}`
-
-      if (file.endsWith('.js') && !file.endsWith('dev.js')) {
-        const command = require(`.${path}`)
-
-        if (Object.prototype.hasOwnProperty.call(command, 'name')) {
-          if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
-            command.interaction.setName(command.name)
-          } else {
-            command.interaction = new SlashCommandBuilder().setName(command.name)
-          }
-
-          i18n.avaliableLocales.forEach(locale => {
-            command.interaction.setDescriptionLocalized(locale, i18n.obtenerTraduccion(locale, command.name))
-          })
-
-          commands.set(command.name, command)
-          consolex.success(`CommandsManager: Comando ${file} cargado`)
-        } else {
-          consolex.warn(`CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`)
-        }
-      } else if (lstatSync(path).isDirectory()) load(path)
-    })
+  constructor() {
+    this.commands = new Collection();
   }
 
-  load('./commands')
+  add(command: Command) {
+    this.commands.set(command.name, command);
+  }
 
-  return commands
+  remove(command: Command) {
+    this.commands.delete(command.name);
+  }
+
+  loadCommands(directory) {
+    readdirSync(directory).forEach((file) => {
+      const path = `${directory}/${file}`;
+
+      if (file.endsWith(".js") && !file.endsWith("dev.js")) {
+        const command = require(`.${path}`);
+
+        if (Object.prototype.hasOwnProperty.call(command, "name")) {
+          if (Object.prototype.hasOwnProperty.call(command, "interaction")) {
+            command.interaction.setName(command.name);
+          } else {
+            command.interaction = new SlashCommandBuilder().setName(
+              command.name
+            );
+          }
+
+          i18n.avaliableLocales.forEach((locale) => {
+            command.interaction.setDescriptionLocalized(
+              locale,
+              i18n.obtenerTraduccion(locale, command.name)
+            );
+          });
+
+          this.add(
+            new Command({
+              name: command.name,
+              description: command.description,
+              module: command.module,
+              cooldown: command.cooldown,
+              parameters: command.parameters,
+              interaction: command.interaction,
+              runInteraction: command.runInteraction,
+              runCommand: command.runCommand,
+            })
+          );
+
+          Consolex.success(`CommandsManager: Comando ${file} cargado`);
+        } else {
+          consolex.warn(
+            `CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`
+          );
+        }
+      } else if (lstatSync(path).isDirectory()) this.loadCommands(path);
+    });
+  }
+
+  getCommand(name: string) {
+    return this.commands.get(name);
+  }
+
+  getCommands() {
+    return this.commands;
+  }
+
+  getCommandsByModule(module: string) {
+    return this.commands.filter((command) => command.module === module);
+  }
+
+  getCommandsByModuleAndName(module: string, name: string) {
+    return this.commands.filter(
+      (command) => command.module === module && command.name === name
+    );
+  }
 }
 
-const { ayuda } = require('./messageManager').plantillas
-
-module.exports.construirHelpDelComando = (guild, command) => {
-  if (!Client.comandos.get(command)) return
-
-  const datosParaConstruirHelp = { name: command, parameters: Client.comandos.get(command).parameters || '' }
-  const clavesAIgnorar = ['name', 'parameters', 'interaction']
-
-  Object.keys(Client.comandos.get(command)).forEach(key => {
-    if (!clavesAIgnorar.includes(key) && typeof Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n.obtenerTraduccion(guild.preferredLocale, Client.comandos.get(command)[key])
-    else if (!clavesAIgnorar.includes(key) && typeof Client.comandos.get(command)[key] === 'object') {
-      datosParaConstruirHelp[key] = []
-      Client.comandos.get(command)[key].forEach(subcommand => {
-        const subcommandData = { name: subcommand.name, parameters: subcommand.parameters }
-        Object.keys(subcommand).forEach(key => {
-          if (!clavesAIgnorar.includes(key) && typeof subcommand[key] === 'string') subcommandData[key] = i18n.obtenerTraduccion(guild.preferredLocale, subcommand[key])
-        })
-        datosParaConstruirHelp[key].push(subcommandData)
-      })
-    }
-  })
-
-  return ayuda(datosParaConstruirHelp)
-}
+export default CommandsManager;
