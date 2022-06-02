@@ -1,3 +1,5 @@
+import Client from "../../client"
+
 const fetch = require('superagent')
 const { EmbedBuilder } = require('discord.js')
 const i18n = require('../../core/i18nManager')
@@ -15,7 +17,7 @@ module.exports = {
           .setTitle('Astronomy Picture of The Day')
           .setDescription(resource.explanation)
           .setAuthor({ name: 'NASA', url: 'https://nasa.gov', iconURL: 'https://cdn.discordapp.com/attachments/908413370665938975/939841209629822986/nasa-logo.png' })
-          .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+          .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
           .setTimestamp(resource.date)
           .setURL(`https://apod.nasa.gov/apod/ap${resource.date.slice(2).replace('-', '').replace('-', '')}.html`)
           .setColor('#0B3D91')
@@ -46,7 +48,7 @@ module.exports = {
               .setTitle('Astronomy Picture of The Day')
               .setDescription(resource.explanation)
               .setAuthor({ name: 'NASA', url: 'https://nasa.gov', iconURL: 'https://cdn.discordapp.com/attachments/908413370665938975/939841209629822986/nasa-logo.png' })
-              .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+              .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
               .setTimestamp(resource.date)
               .setURL(`https://apod.nasa.gov/apod/ap${resource.date.slice(2).replace('-', '').replace('-', '')}.html`)
               .setColor('#0B3D91')

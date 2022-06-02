@@ -12,7 +12,7 @@ module.exports = {
     .addUserOption(option => option.setName('user').setDescription('User to get information about.')),
   runInteraction (interaction) {
     const embed = new EmbedBuilder()
-      .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+      .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
       .setTimestamp()
 
     if (interaction.options.getUser('user')) {
@@ -34,7 +34,7 @@ module.exports = {
     }
   },
   runCommand (message) {
-    const embed = new EmbedBuilder().setTimestamp().setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+    const embed = new EmbedBuilder().setTimestamp().setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
 
     if (message.mentions.users.first()) {
       message.guild.members

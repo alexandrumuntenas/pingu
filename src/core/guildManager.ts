@@ -108,7 +108,7 @@ const crearListadoDeInteraccionesDeUnGuild = require('./utils/crearListadoDeInte
 module.exports.subirInteraccionesDelServidor = async (guild) => {
   module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
     rest.put(
-      Routes.applicationGuildCommands(process.Client.user.id, guild.id), { body: crearListadoDeInteraccionesDeUnGuild(configuracionDelServidor) })
+      Routes.applicationGuildCommands(Client.user.id, guild.id), { body: crearListadoDeInteraccionesDeUnGuild(configuracionDelServidor) })
       .catch(err => {
         return consolex.gestionarError(err)
       }).then(() => { return null })

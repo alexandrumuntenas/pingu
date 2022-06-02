@@ -20,9 +20,9 @@ module.exports.registrarModulo = (modulo) => {
   !Object.prototype.hasOwnProperty.call(modulo, 'descripcion') &&
   !Object.prototype.hasOwnProperty.call(modulo, 'comandos')) throw new Error('El módulo no tiene nombre, descripción o comandos')
 
-  if (!process.Client.comandos) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
+  if (!Client.comandos) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
 
-  modulo.comandos = process.Client.comandos.filter(command => command.module === modulo.nombre) || []
+  modulo.comandos = Client.comandos.filter(command => command.module === modulo.nombre) || []
   consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
 
   if (!modulos.find(m => m.nombre === modulo.nombre)) {

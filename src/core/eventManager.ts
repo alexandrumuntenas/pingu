@@ -5,7 +5,7 @@ module.exports.cargarEventos = () => {
   fs.readdirSync('./events/').filter(files => files.endsWith('.js')).forEach(archivo => {
     const event = require(`../events/${archivo}`)
     consolex.success(`EventManager: Evento ${archivo} cargado`)
-    process.Client.on(event.name, async (...args) => event.execute(...args))
+    Client.on(event.name, async (...args) => event.execute(...args))
   })
 }
 

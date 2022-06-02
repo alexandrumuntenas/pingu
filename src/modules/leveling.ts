@@ -95,7 +95,7 @@ module.exports.getLeaderboard = async (guild) => {
     let memberCount = 0
     members.forEach(async member => {
       try {
-        member.user = await process.Client.users.fetch(member.member) // skipcq: JS-0040
+        member.user = await Client.users.fetch(member.member) // skipcq: JS-0040
       } catch {
         member.user = { username: 'Mysterious User', discriminator: '0000' } // skipcq: JS-0040
       } finally {

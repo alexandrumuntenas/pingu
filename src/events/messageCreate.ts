@@ -12,18 +12,18 @@ const { modulosDisponibles } = require('../core/moduleManager')
 module.exports = {
   name: 'messageCreate',
   execute: message => { // skipcq: JS-0116
-    if (message.channel.type === 'dm' || message.author.bot || message.author === process.Client.user) return
+    if (message.channel.type === 'dm' || message.author.bot || message.author === Client.user) return
 
     obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
       message.guild.configuration = configuracionDelServidor
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-      if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@${process.Client.user.id}>`) || message.content.startsWith(`<@!${process.Client.user.id}>`)) {
-        if (message.content.startsWith(`<@${process.Client.user.id}>`)) {
-          message.parameters = message.content.slice(`<@${process.Client.user.id}>`.length).trim().split(/ +/)
-        } else if (message.content.startsWith(`<@!${process.Client.user.id}>`)) {
-          message.parameters = message.content.slice(`<@!${process.Client.user.id}>`.length).trim().split(/ +/)
+      if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@${Client.user.id}>`) || message.content.startsWith(`<@!${Client.user.id}>`)) {
+        if (message.content.startsWith(`<@${Client.user.id}>`)) {
+          message.parameters = message.content.slice(`<@${Client.user.id}>`.length).trim().split(/ +/)
+        } else if (message.content.startsWith(`<@!${Client.user.id}>`)) {
+          message.parameters = message.content.slice(`<@!${Client.user.id}>`.length).trim().split(/ +/)
         } else {
           message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/)
         }
@@ -31,16 +31,16 @@ module.exports = {
         [message.commandName] = message.parameters
         message.parameters.shift()
 
-        if (!message.commandName) return process.Client.comandos.get('help').runCommand(message)
+        if (!message.commandName) return Client.comandos.get('help').runCommand(message)
 
         if (configuracionDelServidor.interactions && configuracionDelServidor.interactions.enforceusage) {
           return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
         }
 
-        const commandToExecute = process.Client.comandos.get(message.commandName)
+        const commandToExecute = Client.comandos.get(message.commandName)
 
         if (CooldownManager.check(message.member, message.guild, message.commandName)) {
-          if (process.Client.comandos.has(message.commandName)) {
+          if (Client.comandos.has(message.commandName)) {
             if (commandToExecute.module && modulosDisponibles.includes(commandToExecute.module) && !configuracionDelServidor[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
 
             if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })

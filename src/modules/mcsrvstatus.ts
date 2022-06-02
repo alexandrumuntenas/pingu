@@ -231,7 +231,7 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host) => {
         { name: `${datosDelServidor.ping.emoji} Ping`, value: `${datosDelServidor.ping.ms}ms` || 'Failed to fetch server ping', inline: true },
         { name: ':desktop: Address', value: datosDelServidor.direccion, inline: true }
       ]).setImage('attachment://motd.png')
-        .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() }).setTimestamp()
+        .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() }).setTimestamp()
 
       return { files: [serverMotd, serverIcon], embeds: [embed] }
     }
@@ -242,7 +242,7 @@ module.exports.generarMensajeEnriquecidoConDatosDelServidor = (host) => {
 
 function actualizarNumeroDeJugadoresDelSidebar (guild) {
   obtenerConfiguracionDelServidor(guild).then(config => {
-    const sidebarPlayercount = process.Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
+    const sidebarPlayercount = Client.guilds.resolve(guild.id).channels.resolve(config.mcsrvstatus.sidebarPlayercount)
     if (config.mcsrvstatus.enabled && config.mcsrvstatus.sidebarPlayercount && sidebarPlayercount) {
       module.exports.obtenerDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, servidor => {
         sidebarPlayercount.edit({ name: `🎭 Players: ${servidor.jugadores}` })
@@ -259,7 +259,7 @@ function actualizarDatosDelPanel (guild) {
       module.exports.generarMensajeEnriquecidoConDatosDelServidor({ ip: config.mcsrvstatus.host, port: config.mcsrvstatus.port }, mensaje => {
         function fallback () {
           try {
-            process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send(mensaje).then(newMessage => {
+            Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).send(mensaje).then(newMessage => {
               try {
                 actualizarConfiguracionDelServidor(guild, { column: 'mcsrvstatus', newconfig: { messagePanelId: newMessage.id } })
               } catch (error) {
@@ -272,7 +272,7 @@ function actualizarDatosDelPanel (guild) {
         }
 
         try {
-          process.Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).messages.fetch(config.mcsrvstatus.messagePanelId).then(message => {
+          Client.channels.resolve(config.mcsrvstatus.messagePanelChannel).messages.fetch(config.mcsrvstatus.messagePanelId).then(message => {
             message.edit(mensaje).catch(() => {
               fallback()
             })
@@ -289,7 +289,7 @@ function actualizarDatosDelPanel (guild) {
 
 module.exports.comenzarActualizarDatosDeLosServidores = () => {
   consolex.info('Mcsrvstatus: Actualizando datos de los de minecraft configurados...')
-  process.Client.guilds.fetch().then(guilds => {
+  Client.guilds.fetch().then(guilds => {
     guilds.forEach(guild => {
       actualizarNumeroDeJugadoresDelSidebar(guild)
       actualizarDatosDelPanel(guild)
@@ -298,7 +298,7 @@ module.exports.comenzarActualizarDatosDeLosServidores = () => {
 
   setInterval(() => {
     consolex.info('Mcsrvstatus: Actualizando datos de los de minecraft configurados...')
-    process.Client.guilds.fetch().then(guilds => {
+    Client.guilds.fetch().then(guilds => {
       guilds.forEach(guild => {
         actualizarNumeroDeJugadoresDelSidebar(guild)
         actualizarDatosDelPanel(guild)

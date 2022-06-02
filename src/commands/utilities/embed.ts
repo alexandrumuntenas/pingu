@@ -23,7 +23,7 @@ module.exports = {
       .setTitle(title)
       .setDescription(description)
       .setColor('#000000'.replace(/0/g, () => (~~(Math.random() * 16)).toString(16)))
-      .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+      .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
       .setTimestamp()
     if (footer) embed.setFooter({ text: footer })
     if (thumbnail) embed.setThumbnail(thumbnail)

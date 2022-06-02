@@ -12,18 +12,18 @@ const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
 module.exports = {
   name: 'ready',
   execute: () => {
-    consolex.info(`Conectado como ${process.Client.user.tag}!`)
+    consolex.info(`Conectado como ${Client.user.tag}!`)
 
-    if (process.Client.statcord) process.Client.statcord.autopost()
+    if (Client.statcord) Client.statcord.autopost()
     if (process.env.ENTORNO === 'public') statisticsManager()
 
     eliminadorArchivosTemporales()
-    process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
+    Client.user.setActivity(`${Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
 
     ejecutarFuncionesDeTerceros('guildMemberAdd')
 
     setInterval(() => {
-      process.Client.user.setActivity(`${process.Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
+      Client.user.setActivity(`${Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
     }, 600000)
   }
 }

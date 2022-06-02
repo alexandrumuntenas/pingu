@@ -14,7 +14,7 @@ module.exports.plantillas = {}
 module.exports.plantillas.estado = message => new EmbedBuilder()
   .setColor('#2F3136')
   .setDescription(`<:system_information:970715198509965342> ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 /**
@@ -30,7 +30,7 @@ module.exports.plantillas.estado = message => new EmbedBuilder()
 module.exports.plantillas.precargador = message => new EmbedBuilder()
   .setColor('#FEE75C')
   .setDescription(`<a:core_loading:970712845429903461> ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 /**
@@ -43,7 +43,7 @@ module.exports.plantillas.precargador = message => new EmbedBuilder()
 module.exports.plantillas.conexito = message => new EmbedBuilder()
   .setColor('#57F287')
   .setDescription(`<:system_check:968432962716713010> ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 /**
@@ -56,7 +56,7 @@ module.exports.plantillas.conexito = message => new EmbedBuilder()
 module.exports.plantillas.error = message => new EmbedBuilder()
   .setColor('#ED4245')
   .setDescription(`<:system_cross:968432962653782067> ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 /**
@@ -68,7 +68,7 @@ module.exports.plantillas.error = message => new EmbedBuilder()
 module.exports.plantillas.informacion = message => new EmbedBuilder()
   .setColor('#5865F2')
   .setDescription(`<:system_information:970715198509965342>    ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 const timeoutEmojis = ['<:system_timeout:970715618938617856>', '<:system_wait:970715593563078707>']
@@ -84,7 +84,7 @@ module.exports.plantillas.imagen = (imageURL, imageProvider) => new EmbedBuilder
   .setColor('#2F3136')
   .setImage(imageURL)
   .setDescription(`<:system_image:968433418935361576> Image via ${imageProvider} API.`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 /**
@@ -97,7 +97,7 @@ module.exports.plantillas.contador = message => new EmbedBuilder()
   .setColor('#F3375C')
   .setImage('https://cdn.discordapp.com/attachments/908413370665938975/939097943036809247/hearties-daniel-lissing.gif')
   .setDescription(`${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .setTimestamp()
 
 /**
@@ -121,7 +121,7 @@ module.exports.plantillas.ayuda = command => {
     .setColor('#5865F2')
     .setTitle(`<:system_support:968434674634473493> ${command.name} • Options`)
     .setDescription(`${command.description || 'No description'}\n\n${timeoutEmojis[Math.floor(Math.random() * (timeoutEmojis.length))]} Cooldown: ${command.cooldown || '10'}\n<:system_settings:968435053963145266> Module: ${command.module || 'No category'}\n${command.parameters ? codeBlock(`${command.name} ${command.parameters}`) : ''}`)
-    .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+    .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
     .setTimestamp()
 
   if (command.subcommands) {
@@ -151,7 +151,7 @@ module.exports.plantillas.ayuda = command => {
 module.exports.plantillas.errorLog = (message, log) => new EmbedBuilder()
   .setColor('#ED4245')
   .setDescription(`<:system_cross:968432962653782067> ${message}`)
-  .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+  .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
   .addFields([{ name: '‎ ', value: codeBlock(log) }])
   .setTimestamp()
 

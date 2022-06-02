@@ -11,13 +11,13 @@ module.exports = (configuracionDelServidor) => {
 
   let interactionList = new Collection()
 
-  process.Client.modulos.forEach(module => {
+  Client.modulos.forEach(module => {
     if (Object.prototype.hasOwnProperty.call(configuracionDelServidor, module.nombre) && configuracionDelServidor[module.nombre].enabled) {
-      interactionList = interactionList.concat(process.Client.comandos.filter(command => command.module === module.nombre) || [])
+      interactionList = interactionList.concat(Client.comandos.filter(command => command.module === module.nombre) || [])
     }
   })
 
-  interactionList = interactionList.concat(process.Client.comandos.filter(command => !command.module) || [])
+  interactionList = interactionList.concat(Client.comandos.filter(command => !command.module) || [])
 
   if (!configuracionDelServidor.common.interactions.showcfginteractions) interactionList = interactionList.filter(command => !command.isConfigurationCommand)
 

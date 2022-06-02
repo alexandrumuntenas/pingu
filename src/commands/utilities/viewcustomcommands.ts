@@ -15,7 +15,7 @@ module.exports = {
         .setColor('#2F3136')
         .setAuthor({ name: interaction.guild.name, iconURL: interaction.guild.iconURL() })
         .setTitle(i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
-        .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+        .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
 
       let customcommandsList = ''
 
@@ -34,7 +34,7 @@ module.exports = {
         .setColor('#2F3136')
         .setAuthor({ name: message.guild.name, iconURL: message.guild.iconURL() })
         .setTitle(i18n.obtenerTraduccion(message.guild.preferredLocale, 'VIEWCUSTOMCOMMANDS::TITLE'))
-        .setFooter({ text: 'Powered by Pingu', iconURL: process.Client.user.displayAvatarURL() })
+        .setFooter({ text: 'Powered by Pingu', iconURL: Client.user.displayAvatarURL() })
 
       let customcommandsList = ''
 

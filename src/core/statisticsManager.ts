@@ -14,7 +14,7 @@ module.exports = () => {
     }
   }
 
-  const poster = new dbots.Poster({ client: process.Client, apiKeys, clientLibrary: 'discord.js' })
+  const poster = new dbots.Poster({ client: Client, apiKeys, clientLibrary: 'discord.js' })
 
   poster.post()
 
@@ -37,19 +37,19 @@ module.exports = () => {
   poster.startInterval()
 
   if (process.env.STATCORD_API_KEY) {
-    process.Client.statcord = new Statcord.Client({
-      Client: process.Client,
+    Client.statcord = new Statcord.Client({
+      Client: Client,
       key: process.env.STATCORD_API_KEY,
       postCpuStatistics: true,
       postMemStatistics: true,
       postNetworkStatistics: true
     })
 
-    process.Client.statcord.on('autopost-start', () => {
+    Client.statcord.on('autopost-start', () => {
       consolex.info('Publicando estadísticas en Statcord...')
     })
 
-    process.Client.statcord.on('post', status => {
+    Client.statcord.on('post', status => {
       if (status) consolex.error(status)
       else consolex.success('Estadísticas publicadas en Statcord')
     })

@@ -7,13 +7,13 @@ const i18n = require('../core/i18nManager')
 const humanizeduration = require('humanize-duration')
 
 async function isChatInputCommand (interaction) {
-  if (interaction.channel.type === 'dm' || interaction.author === process.Client.user) return
+  if (interaction.channel.type === 'dm' || interaction.author === Client.user) return
 
   interaction.deferredReply = await interaction.deferReply({ fetchReply: true }) // skipcq: JS-0040
   obtenerConfiguracionDelServidor(interaction.guild).then(async configuracionDelServidor => {
     interaction.guild.configuration = configuracionDelServidor
-    if (process.Client.comandos.has(interaction.commandName)) {
-      const interactionToRun = process.Client.comandos.get(interaction.commandName)
+    if (Client.comandos.has(interaction.commandName)) {
+      const interactionToRun = Client.comandos.get(interaction.commandName)
 
       if (interactionToRun.module && !configuracionDelServidor[interactionToRun.module].enabled) {
         return interaction.editReply({ embeds: [plantillas.error(i18n.obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })

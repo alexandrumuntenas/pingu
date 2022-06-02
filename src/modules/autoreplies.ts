@@ -132,7 +132,7 @@ module.exports.hooks = [{
           if (respuestaPersonalizada.propiedades.enviarEnEmbed.color) embed.setColor(respuestaPersonalizada.propiedades.sendEmbed.color)
           else embed.setColor('#2F3136')
 
-          embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: process.Client.user.displayAvatarURL() })
+          embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: Client.user.displayAvatarURL() })
 
           reply.embeds = [embed]
         } else reply.content = respuestaPersonalizada.respuesta

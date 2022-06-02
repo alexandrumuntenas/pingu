@@ -104,7 +104,7 @@ module.exports.runCustomCommand = (message, command) => {
       if (customCommand.sendInEmbed.color) embed.setColor(customCommand.sendEmbed.color)
       else embed.setColor('#2F3136')
 
-      embed.setFooter({ text: `Powered by Pingu || ⚠️ This is a custom command made by ${message.guild.name}.`, iconURL: process.Client.user.displayAvatarURL() })
+      embed.setFooter({ text: `Powered by Pingu || ⚠️ This is a custom command made by ${message.guild.name}.`, iconURL: Client.user.displayAvatarURL() })
 
       reply.embeds = [embed]
     } else reply.content = reemplazarPlaceholdersConDatosReales(customCommand.reply, message.member)

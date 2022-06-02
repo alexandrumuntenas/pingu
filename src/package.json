@@ -54,6 +54,7 @@
   },
   "homepage": "https://github.com/alexandrumuntenas/pingu#readme",
   "devDependencies": {
+    "@types/node": "^17.0.38",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",

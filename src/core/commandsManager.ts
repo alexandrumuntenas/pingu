@@ -48,16 +48,16 @@ module.exports.cargarComandoseInteracciones = () => {
 const { ayuda } = require('./messageManager').plantillas
 
 module.exports.construirHelpDelComando = (guild, command) => {
-  if (!process.Client.comandos.get(command)) return
+  if (!Client.comandos.get(command)) return
 
-  const datosParaConstruirHelp = { name: command, parameters: process.Client.comandos.get(command).parameters || '' }
+  const datosParaConstruirHelp = { name: command, parameters: Client.comandos.get(command).parameters || '' }
   const clavesAIgnorar = ['name', 'parameters', 'interaction']
 
-  Object.keys(process.Client.comandos.get(command)).forEach(key => {
-    if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n.obtenerTraduccion(guild.preferredLocale, process.Client.comandos.get(command)[key])
-    else if (!clavesAIgnorar.includes(key) && typeof process.Client.comandos.get(command)[key] === 'object') {
+  Object.keys(Client.comandos.get(command)).forEach(key => {
+    if (!clavesAIgnorar.includes(key) && typeof Client.comandos.get(command)[key] === 'string') datosParaConstruirHelp[key] = i18n.obtenerTraduccion(guild.preferredLocale, Client.comandos.get(command)[key])
+    else if (!clavesAIgnorar.includes(key) && typeof Client.comandos.get(command)[key] === 'object') {
       datosParaConstruirHelp[key] = []
-      process.Client.comandos.get(command)[key].forEach(subcommand => {
+      Client.comandos.get(command)[key].forEach(subcommand => {
         const subcommandData = { name: subcommand.name, parameters: subcommand.parameters }
         Object.keys(subcommand).forEach(key => {
           if (!clavesAIgnorar.includes(key) && typeof subcommand[key] === 'string') subcommandData[key] = i18n.obtenerTraduccion(guild.preferredLocale, subcommand[key])
