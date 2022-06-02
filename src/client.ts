@@ -11,6 +11,7 @@ import "dotenv/config";
 import * as Discord from "discord.js";
 import { GatewayIntentBits } from "discord-api-types/v10";
 import Consolex from "./core/consolex";
+import CommandsManager from "./core/commandsManager";
 
 const Client = new Discord.Client({
   intents: [
@@ -43,5 +44,8 @@ if (process.env.ENTORNO === "publico") {
 process.on("exit", () => {
   Client.destroy();
 });
+
+const ClientCommandsManager = new CommandsManager();
+ClientCommandsManager.loadCommands("src/client/commands");
 
 export default Client;

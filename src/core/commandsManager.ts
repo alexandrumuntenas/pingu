@@ -10,7 +10,7 @@ class CommandsManager {
     this.commands = new Collection();
   }
 
-  add(command: Command) {
+  add(command: Command): void {
     this.commands.set(command.name, command);
   }
 
