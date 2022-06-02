@@ -12,7 +12,7 @@ import * as Discord from "discord.js";
 import { GatewayIntentBits } from "discord-api-types/v10";
 import Consolex from "./core/consolex";
 
-const BotClient = new Discord.Client({
+const Client = new Discord.Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
@@ -34,16 +34,14 @@ const BotClient = new Discord.Client({
 
 if (process.env.ENTORNO === "publico") {
   Consolex.warn("Iniciando sesión como el bot público.");
-  BotClient.login(process.env.PUBLIC_TOKEN);
+  Client.login(process.env.PUBLIC_TOKEN);
 } else {
   Consolex.warn("Iniciando sesión como el bot de desarrollo.");
-  BotClient.login(process.env.INSIDER_TOKEN);
+  Client.login(process.env.INSIDER_TOKEN);
 }
 
 process.on("exit", () => {
-  BotClient.destroy();
+  Client.destroy();
 });
 
-const CommandsManager = new (require("./core/commandsManager"))();
-
-export default {BotClient, CommandsManager};
+export default Client;
