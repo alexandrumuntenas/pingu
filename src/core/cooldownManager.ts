@@ -1,4 +1,5 @@
 import { existsSync } from "fs";
+import Command from "../classes/Command";
 import Consolex from "./consolex";
 
 let JSON_Cooldown = {};
@@ -44,24 +45,24 @@ class CooldownManager {
     }, 60000);
   }
 
-  add(member, guild, command) {
+  add(member, guild, command: Command) {
     this.cooldown[`${command.name}${member.id}${guild.id}`] =
-      Date.now() + parseInt(command.cooldown || 10000, 10);
+      Date.now() + (command.cooldown || 10000);
     setTimeout(() => {
       delete this.cooldown[`${command.name}${member.id}${guild.id}`];
     }, command.cooldown || 10000);
   }
 
-  check(member, guild, commandName) {
-    if (this.cooldown[`${commandName}${member.id}${guild.id}`] >= Date.now())
+  check(member, guild, command: Command) {
+    if (this.cooldown[`${command.name}${member.id}${guild.id}`] >= Date.now())
       return false;
 
-    delete this.cooldown[`${commandName}${member.id}${guild.id}`];
+    delete this.cooldown[`${command.name}${member.id}${guild.id}`];
     return true;
   }
 
-  ttl(member, guild, commandName) {
-    return this.cooldown[`${commandName}${member.id}${guild.id}`] - Date.now();
+  ttl(member, guild, command: Command) {
+    return this.cooldown[`${command.name}${member.id}${guild.id}`] - Date.now();
   }
 
   saveCooldownCollectionIntoJsonFile() {
