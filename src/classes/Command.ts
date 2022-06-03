@@ -1,10 +1,11 @@
-import { SlashCommandBuilder } from "discord.js";
+import { BitField, SlashCommandBuilder } from "discord.js";
 class Command {
   name: string;
   description: string;
   module: string;
   cooldown: number;
   parameters: string;
+  permissions: Array<typeof BitField.Flags>;
   interaction: SlashCommandBuilder;
   runInteraction: Function;
   runCommand: Function;
@@ -15,6 +16,7 @@ class Command {
     module?: string;
     cooldown?: number;
     parameters?: string;
+    permissions?: Array<typeof BitField.Flags>;
     interaction: SlashCommandBuilder;
     runInteraction: (interaction) => void;
     runCommand: (message) => void;
@@ -24,6 +26,7 @@ class Command {
     this.module = command.module;
     this.cooldown = command.cooldown;
     this.parameters = command.parameters;
+    this.permissions = command.permissions;
     this.interaction = command.interaction;
     this.runInteraction = command.runInteraction;
     this.runCommand = command.runCommand;
