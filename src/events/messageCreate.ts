@@ -1,57 +1,67 @@
 /* eslint consistent-return: "error" */
 
-const CooldownManager = require('../core/cooldownManager')
+import { ChannelType, Message } from "discord.js";
+import Command from "../classes/Command";
+import { ClientCommandsManager, ClientCooldownManager, ClientUser } from "../client";
 
-const { plantillas } = require('../core/messageManager')
-const i18n = require('../core/i18nManager')
-const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
-const humanizeduration = require('humanize-duration')
-const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
-const { modulosDisponibles } = require('../core/moduleManager')
+interface PinguMessage extends Message {
+  command: string | Command;
+  args: Array<string>;
+  guildConfiguration: Object;
+}
 
 module.exports = {
   name: 'messageCreate',
-  execute: message => { // skipcq: JS-0116
-    if (message.channel.type === 'dm' || message.author.bot || message.author === Client.user) return
+  execute: (message: PinguMessage) => {
+    if (message.channel.type === ChannelType.DM || message.author.bot || message.author === ClientUser.user) return
 
     obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
-      message.guild.configuration = configuracionDelServidor
+      message.guildConfiguration = configuracionDelServidor
 
       ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-      if ((message.content.startsWith(message.guild.configuration.common.prefix) && message.content !== message.guild.configuration.common.prefix) || message.content.startsWith(`<@${Client.user.id}>`) || message.content.startsWith(`<@!${Client.user.id}>`)) {
-        if (message.content.startsWith(`<@${Client.user.id}>`)) {
-          message.parameters = message.content.slice(`<@${Client.user.id}>`.length).trim().split(/ +/)
-        } else if (message.content.startsWith(`<@!${Client.user.id}>`)) {
-          message.parameters = message.content.slice(`<@!${Client.user.id}>`.length).trim().split(/ +/)
+      if ((message.content.startsWith(message.guildConfiguration.common.prefix) && message.content !== message.guildConfiguration.common.prefix) || message.content.startsWith(`<@${ClientUser.user.id}>`) || message.content.startsWith(`<@!${ClientUser.user.id}>`)) {
+        if (message.content.startsWith(`<@${ClientUser.user.id}>`)) {
+          message.args = message.content
+            .slice(`<@${ClientUser.user.id}>`.length)
+            .trim()
+            .split(/ +/);
+        } else if (message.content.startsWith(`<@!${ClientUser.user.id}>`)) {
+          message.args = message.content
+            .slice(`<@!${ClientUser.user.id}>`.length)
+            .trim()
+            .split(/ +/);
         } else {
-          message.parameters = message.content.slice(message.guild.configuration.common.prefix.length).trim().split(/ +/)
+          message.args = message.content
+            .slice(message.guildConfiguration.common.prefix.length)
+            .trim()
+            .split(/ +/);
         }
 
-        [message.commandName] = message.parameters
-        message.parameters.shift()
+        [message.command] = message.args;
+        message.args.shift();
 
-        if (!message.commandName) return Client.comandos.get('help').runCommand(message)
+        if (!message.command) return ClientCommandsManager.getCommand('help').runCommand(message)
 
-        if (configuracionDelServidor.interactions && configuracionDelServidor.interactions.enforceusage) {
-          return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.configuration.language, 'INTERACTION-ENFORCEUSAGE'))] })
+        if (message.guildConfiguration.interactions && message.guildConfiguration.interactions.enforceusage) {
+          return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guildConfiguration.language, 'INTERACTION-ENFORCEUSAGE'))] })
         }
 
-        const commandToExecute = Client.comandos.get(message.commandName)
+        message.command = ClientCommandsManager.getCommand(message.command)
 
-        if (CooldownManager.check(message.member, message.guild, message.commandName)) {
-          if (Client.comandos.has(message.commandName)) {
-            if (commandToExecute.module && modulosDisponibles.includes(commandToExecute.module) && !configuracionDelServidor[commandToExecute.module].enabled) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.configuration.language, 'COMMAND::NOT_ENABLED'))] })
+        if (ClientCooldownManager.check(message.member, message.guild, message.command)) {
+          if (ClientCommandsManager.has(message.command.name)) {
+            if (message.command.module && modulosDisponibles.includes(message.command.module) && !message.guildConfiguration[message.command.module].enabled) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
 
-            if (commandToExecute.permissions && !message.member.permissions.has(commandToExecute.permissions)) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })
+            if (message.command.permissions && !message.member.permissions.has(message.command.permissions)) return message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.preferredLocale, 'COMMAND::PERMERROR'))] })
 
-            CooldownManager.add(message.member, message.guild, commandToExecute)
+            CooldownManager.add(message.member, message.guild, message.command);
 
-            return Object.prototype.hasOwnProperty.call(commandToExecute, 'runCommand') ? commandToExecute.runCommand(message) : message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guild.configuration.common.language, 'COMMAND::ONLYINTERACTION'))] })
+            return Object.prototype.hasOwnProperty.call(message.command, 'runCommand') ? message.command.runCommand(message) : message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.guildConfiguration.common.language, 'COMMAND::ONLYINTERACTION'))] })
           }
           return ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
         }
-        return message.reply({ embeds: [plantillas.contador(i18n.obtenerTraduccion(message.guild.configuration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.commandName), { round: true, language: message.guild.configuration.common.language || 'en', fallbacks: ['en'] }) }))] })
+        return message.reply({ embeds: [plantillas.contador(i18n.obtenerTraduccion(message.guildConfiguration.common.language, 'COOLDOWN', { COOLDOWN: humanizeduration(CooldownManager.ttl(message.member, message.guild, message.command), { round: true, language: message.guildConfiguration.common.language || 'en', fallbacks: ['en'] }) }))] })
       }
 
       return ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)
