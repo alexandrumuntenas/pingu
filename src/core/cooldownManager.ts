@@ -1,43 +1,75 @@
-const fs = require('fs')
-const consolex = require('./consolex')
+import { existsSync } from "fs";
+import Consolex from "./consolex";
 
-let cooldownJson = {}
+let JSON_Cooldown = {};
 
-if (fs.existsSync('./cooldowns.json')) cooldownJson = require('../cooldowns.json')
-else {
-  fs.writeFile('./cooldowns.json', '{}', err => {
-    if (err) consolex.handleError(err)
+try {
+  if (existsSync("./cooldowns.json")) {
+    try {
+      JSON_Cooldown = require("../cooldowns.json");
+    } catch (error) {
+      // comprobar si el error es SyntaxError
+      if (error.code === "SyntaxError") {
+        Consolex.debug(
+          "CooldownManager: Cooldowns file is corrupted. Creating new one."
+        );
 
-    consolex.debug('CooldownManager: Cooldowns file has been created.')
-    cooldownJson = require('../cooldowns.json')
-  })
+        fs.writeFile("./cooldowns.json", JSON.stringify({}), (err) => {
+          if (err) Consolex.gestionarError(err);
+          Consolex.debug("CooldownManager: Cooldowns file created.");
+        });
+        JSON_Cooldown = {};
+      }
+    }
+  } else {
+    fs.writeFile("./cooldowns.json", "{}", (err) => {
+      if (err) Consolex.gestionarError(err);
+
+      Consolex.debug("CooldownManager: Cooldowns file has been created.");
+      JSON_Cooldown = require("../cooldowns.json");
+    });
+  }
+} catch (err) {
+  Consolex.gestionarError(err);
 }
 
-const cooldown = { ...cooldownJson }
+const cooldown = { ...JSON_Cooldown };
 
-module.exports = {}
+class CooldownManager {
+  cooldown: Object;
+  constructor() {
+    this.cooldown = cooldown;
+    setInterval(() => {
+      this.saveCooldownCollectionIntoJsonFile();
+    }, 60000);
+  }
 
-module.exports.add = (member, guild, command) => {
-  cooldown[`${command.name}${member.id}${guild.id}`] = (Date.now() + (parseInt(command.cooldown || 10000, 10)))
-  setTimeout(() => { delete cooldown[`${command.name}${member.id}${guild.id}`] }, command.cooldown || 10000)
+  add(member, guild, command) {
+    this.cooldown[`${command.name}${member.id}${guild.id}`] =
+      Date.now() + parseInt(command.cooldown || 10000, 10);
+    setTimeout(() => {
+      delete this.cooldown[`${command.name}${member.id}${guild.id}`];
+    }, command.cooldown || 10000);
+  }
+
+  check(member, guild, commandName) {
+    if (this.cooldown[`${commandName}${member.id}${guild.id}`] >= Date.now())
+      return false;
+
+    delete this.cooldown[`${commandName}${member.id}${guild.id}`];
+    return true;
+  }
+
+  ttl(member, guild, commandName) {
+    return this.cooldown[`${commandName}${member.id}${guild.id}`] - Date.now();
+  }
+
+  saveCooldownCollectionIntoJsonFile() {
+    fs.writeFile("./cooldowns.json", JSON.stringify(cooldown), (err) => {
+      if (err) consolex.gestionarError(err);
+      Consolex.debug("CooldownManager: Cooldowns have been saved.");
+    });
+  }
 }
 
-module.exports.check = (member, guild, commandName) => {
-  if (cooldown[`${commandName}${member.id}${guild.id}`] >= Date.now()) return false
-
-  delete cooldown[`${commandName}${member.id}${guild.id}`]
-  return true
-}
-
-module.exports.ttl = (member, guild, commandName) => {
-  return cooldown[`${commandName}${member.id}${guild.id}`] - Date.now()
-}
-
-module.exports.saveCooldownCollectionIntoJsonFile = () => {
-  fs.writeFile('./cooldowns.json', JSON.stringify(cooldown), err => {
-    if (err) consolex.gestionarError(err)
-    consolex.debug('CooldownManager: Cooldowns have been saved.')
-  })
-}
-
-setInterval(() => { module.exports.saveCooldownCollectionIntoJsonFile() }, 60000)
+export default CooldownManager;
