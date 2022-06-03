@@ -11,7 +11,6 @@ import "dotenv/config";
 import * as Discord from "discord.js";
 import { GatewayIntentBits } from "discord-api-types/v10";
 import Consolex from "./core/consolex";
-import CommandsManager from "./core/commandsManager";
 
 const Client = new Discord.Client({
   intents: [
@@ -45,7 +44,12 @@ process.on("exit", () => {
   Client.destroy();
 });
 
+import CommandsManager from "./core/commandsManager";
+import CooldownMananger from "./core/cooldownManager";
+
 const ClientCommandsManager = new CommandsManager();
 ClientCommandsManager.loadCommands("src/client/commands");
 
-export default Client;
+const ClientCooldownManager = new CooldownMananger();
+
+export default { Client, ClientCommandsManager, ClientCooldownManager };
