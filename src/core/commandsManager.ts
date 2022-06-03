@@ -81,6 +81,10 @@ class CommandsManager {
       (command) => command.module === module && command.name === name
     );
   }
+
+  has (name: string) {
+    return this.commands.has(name);
+  }
 }
 
 export default CommandsManager;
