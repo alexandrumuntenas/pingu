@@ -14,11 +14,11 @@ class CommandsManager {
     this.commands.set(command.name, command);
   }
 
-  remove(command: Command) {
+  remove(command: Command): void {
     this.commands.delete(command.name);
   }
 
-  loadCommands(directory) {
+  loadCommands(directory): void {
     readdirSync(directory).forEach((file) => {
       const path = `${directory}/${file}`;
 
