@@ -1,16 +1,16 @@
-import * as fs from 'fs';
-import Client from '../client';
-import Consolex from './consolex';
+import * as fs from 'fs'
+import { ClientUser } from '../client'
+import Consolex from './consolex'
 
-module.exports.cargarEventos = () => {
+function cargarEventos () {
   fs.readdirSync('./events/').filter(files => files.endsWith('.js')).forEach(archivo => {
     const event = require(`../events/${archivo}`)
     Consolex.success(`EventManager: Evento ${archivo} cargado`)
-    Client.on(event.name, async (...args) => event.execute(...args))
+    ClientUser.on(event.name, async (...args) => event.execute(...args))
   })
 }
 
-module.exports.cargarEventosDeProceso = () => {
+function cargarEventosDeProceso () {
   fs.readdirSync('./events/proceso').filter(files => files.endsWith('.js')).forEach(archivo => {
     const evento = require(`../events/proceso/${archivo}`)
     Consolex.success(`ProcessEventManager: Evento de proceso ${archivo} cargado`)
@@ -20,7 +20,7 @@ module.exports.cargarEventosDeProceso = () => {
 
 const funcionesDeTerceros = {}
 
-module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion, tipo) => {
+function inyectarEnEventoFuncionesDeTerceros (evento: string, funcion: Function, tipo: string | number) {
   if (!funcionesDeTerceros[evento]) funcionesDeTerceros[evento] = { notype: [] }
 
   if (tipo && !funcionesDeTerceros[evento][tipo]) funcionesDeTerceros[evento][tipo] = [funcion]
@@ -29,9 +29,9 @@ module.exports.inyectarEnEventoFuncionesDeTerceros = (evento, funcion, tipo) => 
   Consolex.warn(`EventManager: Funciones de terceros inyectadas en evento ${evento}`)
 }
 
-module.exports.ejecutarFuncionesDeTerceros = (evento, tipoDeFuncion, ...args) => {
-  if (funcionesDeTerceros[evento] && funcionesDeTerceros[evento][tipoDeFuncion]) funcionesDeTerceros[evento][tipoDeFuncion].forEach(funcion => funcion(...args))
-  else if (funcionesDeTerceros[evento].notype) funcionesDeTerceros[evento].notype.forEach(funcion => funcion(...args))
+function ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion?: string | number, ...argumentos: any[]) {
+  if (funcionesDeTerceros[evento] && funcionesDeTerceros[evento][tipoDeFuncion]) funcionesDeTerceros[evento][tipoDeFuncion].forEach(funcion => funcion(...argumentos))
+  else if (funcionesDeTerceros[evento].notype) funcionesDeTerceros[evento].notype.forEach(funcion => funcion(...argumentos))
 }
 
-module.exports.funcionesDeTerceros = funcionesDeTerceros
+export { cargarEventos, cargarEventosDeProceso, inyectarEnEventoFuncionesDeTerceros, ejecutarFuncionesDeTerceros, funcionesDeTerceros }
