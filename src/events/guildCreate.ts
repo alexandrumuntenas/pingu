@@ -1,5 +1,5 @@
-const { ejecutarFuncionesDeTerceros } = require('../core/eventManager.js')
-const { obtenerConfiguracionDelServidor } = require('../core/guildManager.js')
+import { ejecutarFuncionesDeTerceros } from '../core/eventManager'
+import { obtenerConfiguracionDelServidor } from '../core/guildManager.js'
 
 module.exports = {
   name: 'guildCreate',
