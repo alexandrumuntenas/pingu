@@ -8,8 +8,9 @@ import { avaliableLocales, obtenerTraduccion } from './i18nManager'
 class CommandsManager {
   commands: Collection<string, Command>
 
-  constructor () {
+  constructor (commandsDirectory: string) {
     this.commands = new Collection()
+    this.loadCommands(commandsDirectory)
   }
 
   add (command: Command): void {
