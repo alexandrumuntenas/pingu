@@ -29,7 +29,7 @@ function inyectarEnEventoFuncionesDeTerceros (evento: string, funcion: Function,
   Consolex.warn(`EventManager: Funciones de terceros inyectadas en evento ${evento}`)
 }
 
-function ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion?: string | number, ...argumentos: any[]) {
+function ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion?: string | number, ...argumentos: Array<any>) {
   if (funcionesDeTerceros[evento] && funcionesDeTerceros[evento][tipoDeFuncion]) funcionesDeTerceros[evento][tipoDeFuncion].forEach(funcion => funcion(...argumentos))
   else if (funcionesDeTerceros[evento].notype) funcionesDeTerceros[evento].notype.forEach(funcion => funcion(...argumentos))
 }
