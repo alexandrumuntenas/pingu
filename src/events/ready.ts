@@ -1,29 +1,21 @@
-const consolex = require('../core/consolex')
-const { REST } = require('@discordjs/rest')
-const { eliminadorArchivosTemporales } = require('../core/clientManager')
-
-const rest = new REST({ version: '9' })
-if (process.env.ENTORNO === 'desarrollo') rest.setToken(process.env.INSIDER_TOKEN)
-else rest.setToken(process.env.PUBLIC_TOKEN)
-
-const statisticsManager = require('../core/statisticsManager')
-const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
+import Consolex from '../core/consolex'
+import { ClientUser } from '../client'
+import eliminadorArchivosTemporales from '../core/utils/eliminadorArchivosTemporales'
+import { ejecutarFuncionesDeTerceros } from '../core/eventManager'
+import { ActivityType } from 'discord.js'
 
 module.exports = {
   name: 'ready',
   execute: () => {
-    consolex.info(`Conectado como ${Client.user.tag}!`)
-
-    if (Client.statcord) Client.statcord.autopost()
-    if (process.env.ENTORNO === 'public') statisticsManager()
+    Consolex.info(`Conectado como ${ClientUser.user.tag}!`)
 
     eliminadorArchivosTemporales()
-    Client.user.setActivity(`${Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
+    ClientUser.user.setActivity('new update TS2203', { type: ActivityType.Watching })
 
     ejecutarFuncionesDeTerceros('guildMemberAdd')
 
     setInterval(() => {
-      Client.user.setActivity(`${Client.guilds.cache.size} guilds`, { type: 'WATCHING' })
+      ClientUser.user.setActivity(`${ClientUser.guilds.cache.size} guilds`, { type: ActivityType.Watching })
     }, 600000)
   }
 }
