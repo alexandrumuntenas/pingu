@@ -4,45 +4,54 @@ import Consolex from './consolex'
 import { ClientCommandsManager } from '../client'
 import { inyectarEnEventoFuncionDeTercero } from './eventManager'
 import { readdirSync } from 'fs'
+class ModuleManager {
+  modulosDisponibles: Array<Module>
 
-const modulosDisponibles = []
+  constructor () {
+    if (!ClientCommandsManager) throw new Error('¡Se ha ejecutado el constructor de ModuleManager antes de CommandsManager!')
 
-function registrarModulo (modulo: Module): Array<Module> {
-  if (!ClientCommandsManager) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
+    this.modulosDisponibles = []
 
-  modulo.asignarComandos(ClientCommandsManager.toArray().filter(command => command.module === modulo.nombre) || [])
-  Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map(command => command.name).join(', ')}`)
-
-  if (!modulosDisponibles.find((m) => m.nombre === modulo.nombre)) {
-    Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
-    modulosDisponibles.push(modulo)
-    if (modulo.hooks) {
-      modulo.hooks.forEach((hook) => {
-        Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
-        inyectarEnEventoFuncionDeTercero(hook)
-      })
-    }
-  } else {
-    Consolex.error(`ModuleManager: Módulo ${modulo.nombre} ya registrado`)
+    const directorioDeModulos = readdirSync('./modules')
+    directorioDeModulos.forEach((modulo) => {
+      if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
+        this.registrarModulo(require(`../modules/${modulo}`))
+      }
+    })
   }
 
-  return modulosDisponibles
-}
+  registrarModulo (modulo: Module): Array<Module> {
+    modulo.asignarComandos(ClientCommandsManager.toArray().filter((command) => command.module === modulo.nombre) || [])
+    Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map((command) => command.name).join(', ')}`)
 
-function registrarModulos () {
-  const directorioDeModulos = readdirSync('./modules')
-  directorioDeModulos.forEach(modulo => {
-    if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
-      registrarModulo(require(`../modules/${modulo}`))
+    if (!this.modulosDisponibles.find((m) => m.nombre === modulo.nombre)) {
+      Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
+      this.modulosDisponibles.push(modulo)
+      if (modulo.hooks) {
+        modulo.hooks.forEach((hook) => {
+          Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
+          inyectarEnEventoFuncionDeTercero(hook)
+        })
+      }
+    } else {
+      Consolex.error(`ModuleManager: Módulo ${modulo.nombre} ya registrado`)
     }
-  })
 
-  return modulosDisponibles
+    return this.modulosDisponibles
+  }
+
+  getModulosDisponibles (): Array<Module> {
+    return this.modulosDisponibles
+  }
+
+  getModulo (modulo: string): Module {
+    return this.modulosDisponibles.find((m) => m.nombre === modulo)
+  }
+
+  comprobarSiElModuloExiste (modulo: string): Boolean {
+    if (!this.modulosDisponibles.find((m) => m.nombre === modulo)) return false
+    return true
+  }
 }
 
-function comprobarSiElModuloExiste (modulo: string): Boolean {
-  if (!modulosDisponibles.find((m) => m.nombre === modulo)) return false
-  return true
-}
-
-export { registrarModulo, registrarModulos, comprobarSiElModuloExiste, modulosDisponibles }
+export default ModuleManager
