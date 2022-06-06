@@ -1,4 +1,8 @@
-const Database = require('mysql2/promise').createPool({
+import Consolex from './consolex'
+import { createPool } from 'mysql2/promise'
+import { readdirSync, readFileSync } from 'fs'
+
+const PoolConnection = createPool({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
@@ -9,15 +13,10 @@ const Database = require('mysql2/promise').createPool({
   queueLimit: 0
 })
 
-module.exports = Database
+let tablasDisponibles = []
 
-const consolex = require('./consolex')
-const { readdirSync, readFileSync } = require('fs')
-
-module.exports.tablasDisponibles = []
-
-module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
-  consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
+function comprobarSiExistenTodasLasTablasNecesarias () {
+  Consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
   const consultas = readdirSync('./database/')
   const tablasYConsultas = {}
 
@@ -27,18 +26,20 @@ module.exports.comprobarSiExistenTodasLasTablasNecesarias = () => {
     }
   })
 
-  module.exports.tablasDisponibles = Object.keys(tablasYConsultas)
+  tablasDisponibles = Object.keys(tablasYConsultas)
 
-  module.exports.tablasDisponibles.forEach(async tabla => {
+  tablasDisponibles.forEach(async tabla => {
     try {
-      await Database.execute(tablasYConsultas[tabla])
-      return consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
+      await PoolConnection.execute(tablasYConsultas[tabla])
+      return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
     } catch (err) {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
-        return consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
+        return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
       } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
-        return consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
+        return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
       }
     }
   })
 }
+
+export { PoolConnection, tablasDisponibles, comprobarSiExistenTodasLasTablasNecesarias }
