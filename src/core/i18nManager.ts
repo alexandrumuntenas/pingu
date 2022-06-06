@@ -1,5 +1,5 @@
 import stringPlaceholder from 'string-placeholder'
-import { existsSync, statSync } from 'fs'
+import { existsSync } from 'fs'
 import Consolex from './consolex'
 
 function obtenerTraduccion (idioma: string, traduccion: string, parametros?: Array<object>) {
