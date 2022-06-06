@@ -7,10 +7,14 @@
  * Versión pública: 22T4                 *
  * * * * * * * * * * * * * * * * * * * * */
 
-import "dotenv/config";
-import * as Discord from "discord.js";
-import { GatewayIntentBits } from "discord-api-types/v10";
-import Consolex from "./core/consolex";
+import 'dotenv/config'
+import * as Discord from 'discord.js'
+import { GatewayIntentBits } from 'discord-api-types/v10'
+import Consolex from './core/consolex'
+
+import CommandsManager from './core/commandsManager'
+import CooldownMananger from './core/cooldownManager'
+import ModuleManager from './core/moduleManager'
 
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
@@ -22,34 +26,30 @@ const ClientUser: Discord.Client = new Discord.Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildMessageTyping,
-    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.MessageContent
   ],
   partials: [
     Discord.Partials.Reaction,
     Discord.Partials.Message,
-    Discord.Partials.User,
+    Discord.Partials.User
   ],
-  ws: { properties: { $browser: "Discord iOS" } },
-});
+  ws: { properties: { $browser: 'Discord iOS' } }
+})
 
-if (process.env.ENTORNO === "publico") {
-  Consolex.warn("Iniciando sesión como el bot público.");
-  ClientUser.login(process.env.PUBLIC_TOKEN);
+if (process.env.ENTORNO === 'publico') {
+  Consolex.warn('Iniciando sesión como el bot público.')
+  ClientUser.login(process.env.PUBLIC_TOKEN)
 } else {
-  Consolex.warn("Iniciando sesión como el bot de desarrollo.");
-  ClientUser.login(process.env.INSIDER_TOKEN);
+  Consolex.warn('Iniciando sesión como el bot de desarrollo.')
+  ClientUser.login(process.env.INSIDER_TOKEN)
 }
 
-process.on("exit", () => {
-  ClientUser.destroy();
-});
+process.on('exit', () => {
+  ClientUser.destroy()
+})
 
-import CommandsManager from "./core/commandsManager";
-import CooldownMananger from "./core/cooldownManager";
+const ClientCommandsManager = new CommandsManager('src/client/commands')
+const ClientCooldownManager = new CooldownMananger()
+const ClientModuleManager = new ModuleManager()
 
-const ClientCommandsManager = new CommandsManager();
-ClientCommandsManager.loadCommands("src/client/commands");
-
-const ClientCooldownManager = new CooldownMananger();
-
-export { ClientUser, ClientCommandsManager, ClientCooldownManager };
+export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager }
