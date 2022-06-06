@@ -87,6 +87,10 @@ class CommandsManager {
   has (name: string) {
     return this.commands.has(name)
   }
+
+  toArray () {
+    return [...this.commands.values()]
+  }
 }
 
 export default CommandsManager
