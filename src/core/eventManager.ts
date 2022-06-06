@@ -1,6 +1,8 @@
 import * as fs from 'fs'
-import { ClientUser } from '../client'
+import EventHook from '../classes/EventHook'
 import Consolex from './consolex'
+
+import { ClientUser } from '../client'
 
 function cargarEventos () {
   fs.readdirSync('./events/').filter(files => files.endsWith('.js')).forEach(archivo => {
@@ -20,13 +22,13 @@ function cargarEventosDeProceso () {
 
 const funcionesDeTerceros = {}
 
-function inyectarEnEventoFuncionesDeTerceros (evento: string, funcion: Function, tipo: string | number) {
-  if (!funcionesDeTerceros[evento]) funcionesDeTerceros[evento] = { notype: [] }
+function inyectarEnEventoFuncionesDeTerceros (funcionDeTercero: EventHook) {
+  if (!funcionesDeTerceros[funcionDeTercero.evento]) funcionesDeTerceros[funcionDeTercero.evento] = { notype: [] }
 
-  if (tipo && !funcionesDeTerceros[evento][tipo]) funcionesDeTerceros[evento][tipo] = [funcion]
-  else if (tipo) funcionesDeTerceros[evento][tipo].push(funcion)
-  else funcionesDeTerceros[evento].notype.push(funcion)
-  Consolex.warn(`EventManager: Funciones de terceros inyectadas en evento ${evento}`)
+  if (funcionDeTercero.tipo && !funcionesDeTerceros[funcionDeTercero.evento][funcionDeTercero.tipo]) funcionesDeTerceros[funcionDeTercero.evento][funcionDeTercero.tipo] = [funcionDeTercero.funcion]
+  else if (funcionDeTercero.tipo) funcionesDeTerceros[funcionDeTercero.evento][funcionDeTercero.tipo].push(funcionDeTercero.funcion)
+  else funcionesDeTerceros[funcionDeTercero.evento].notype.push(funcionDeTercero.funcion)
+  Consolex.warn(`EventManager: Funciones de terceros inyectadas en evento ${funcionDeTercero.evento}`)
 }
 
 function ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion?: string | number, ...argumentos: Array<any>) {
