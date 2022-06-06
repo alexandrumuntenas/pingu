@@ -2,12 +2,12 @@ import Module from '../classes/Module'
 import Consolex from './consolex'
 
 import { ClientCommandsManager } from '../client'
-import { inyectarEnEventoFuncionesDeTerceros } from './eventManager'
+import { inyectarEnEventoFuncionDeTercero } from './eventManager'
 import { readdirSync } from 'fs'
 
 const modulosDisponibles = []
 
-function registrarModulo (modulo: Module) {
+function registrarModulo (modulo: Module): Array<Module> {
   if (!ClientCommandsManager) throw new Error('Debe ejecutar esta función después de que el cliente haya cargado los comandos.')
 
   modulo.asignarComandos(ClientCommandsManager.toArray().filter(command => command.module === modulo.nombre) || [])
@@ -19,12 +19,14 @@ function registrarModulo (modulo: Module) {
     if (modulo.hooks) {
       modulo.hooks.forEach((hook) => {
         Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
-        inyectarEnEventoFuncionesDeTerceros(hook)
+        inyectarEnEventoFuncionDeTercero(hook)
       })
     }
   } else {
     Consolex.error(`ModuleManager: Módulo ${modulo.nombre} ya registrado`)
   }
+
+  return modulosDisponibles
 }
 
 function registrarModulos () {
@@ -38,7 +40,7 @@ function registrarModulos () {
   return modulosDisponibles
 }
 
-function comprobarSiElModuloExiste (modulo: string) {
+function comprobarSiElModuloExiste (modulo: string): Boolean {
   if (!modulosDisponibles.find((m) => m.nombre === modulo)) return false
   return true
 }
