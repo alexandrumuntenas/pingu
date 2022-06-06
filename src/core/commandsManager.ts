@@ -80,9 +80,7 @@ class CommandsManager {
   }
 
   getCommandsByModuleAndName (module: string, name: string) {
-    return this.commands.filter(
-      (command) => command.module === module && command.name === name
-    )
+    return this.commands.filter((command) => command.module === module && command.name === name)
   }
 
   has (name: string) {
@@ -91,6 +89,20 @@ class CommandsManager {
 
   toArray () {
     return [...this.commands.values()]
+  }
+
+  createInteractionList (configuration: Object): Array<Object> {
+    const interactionList = []
+
+    this.commands.forEach((command) => {
+      if (Object.prototype.hasOwnProperty.call(configuration, command.module) && configuration[command.module].enabled) {
+        interactionList.push(command.interaction.toJSON())
+      } else {
+        interactionList.push(command.interaction.toJSON())
+      }
+    })
+
+    return interactionList
   }
 }
 
