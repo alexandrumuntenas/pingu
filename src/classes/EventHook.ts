@@ -11,7 +11,7 @@ class EventHook {
     this.tipo = tipo
   }
 
-  execute (...args: Array<any>) {
+  execute (...args: Array<any>): void {
     this.funcion(...args)
   }
 }

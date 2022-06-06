@@ -7,7 +7,7 @@ class Event {
     this.funcion = funcion
   }
 
-  execute (...args: Array<any>) {
+  execute (...args: Array<any>): void {
     this.funcion(...args)
   }
 }
