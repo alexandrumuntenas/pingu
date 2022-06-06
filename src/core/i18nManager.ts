@@ -29,11 +29,4 @@ function obtenerTraduccion (idioma: string, traduccion: string, parametros?: Arr
 
 const avaliableLocales = []
 
-function registrarIdioma (locale: string) {
-  if (statSync(`./core/locales/${locale}.json`).isFile()) return avaliableLocales.push(locale)
-  throw new Error(`Se ha intentado registrar un idioma que no existe o no está disponible: ${locale}`)
-}
-
-module.exports.avaliableLocales = avaliableLocales
-
-export { obtenerTraduccion, registrarIdioma, avaliableLocales }
+export { obtenerTraduccion, avaliableLocales }
