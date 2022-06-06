@@ -1,4 +1,4 @@
-module.exports = (config, newconfig) => {
+function procesarObjetosdeConfiguracion (config, newconfig) {
   if (newconfig instanceof Object === false) return newconfig
 
   let count = 0
@@ -18,3 +18,5 @@ module.exports = (config, newconfig) => {
     }
   })
 }
+
+export default procesarObjetosdeConfiguracion
