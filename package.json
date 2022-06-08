@@ -8,7 +8,7 @@
     "@discordjs/builders": "^0.12.0",
     "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.4.1",
-    "@sentry/node": "^6.16.1",
+    "@sentry/node": "^7.1.1",
     "@sentry/tracing": "^6.16.1",
     "@sfirew/mc-motd-parser": "^1.0.8",
     "@top-gg/sdk": "^3.1.3",
