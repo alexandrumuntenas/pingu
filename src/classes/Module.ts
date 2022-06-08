@@ -7,12 +7,14 @@ class Module {
   hooks: Array<EventHook>
   comandos?: Array<Command>
   modeloDeConfiguracion: Object
+  configuracionPredeterminada: Object
 
-  constructor (nombre: string, descripcion: string, hooks: Array<EventHook>, modeloDeConfiguracion: Object) {
+  constructor (nombre: string, descripcion: string, hooks: Array<EventHook>, modeloDeConfiguracion: Object, configuracionPredeterminada: Object) {
     this.nombre = nombre
     this.descripcion = descripcion
     this.hooks = hooks
     this.modeloDeConfiguracion = modeloDeConfiguracion
+    this.configuracionPredeterminada = configuracionPredeterminada
   }
 
   asignarComandos (comandos: Array<Command>): void {
