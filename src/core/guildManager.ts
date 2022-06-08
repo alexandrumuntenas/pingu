@@ -1,170 +1,190 @@
-/* eslint-disable valid-typeof */
-/** @module GuildDataManager */
+import Consolex from "./consolex";
+import Module from "../classes/Module";
+import procesarObjetosdeConfiguracion from "./utils/procesarObjetosdeConfiguracion";
 
-const Database = require('./databaseManager')
-const consolex = require('./consolex')
-const { REST } = require('@discordjs/rest')
-const { Routes } = require('discord-api-types/v10')
+import * as YAML from "js-yaml";
+import * as randomstring from "randomstring";
 
-/**
- * Obtiene la configuración de un guild específico.
- * @param {Guild} guild - El guild del cual se quiere obtener la configuración.
- * @returns Object - La configuración del guild.
- */
+import { PoolConnection, tablasDisponibles } from "./databaseManager";
+import { Guild } from "discord.js";
+import { ClientModuleManager, ClientUser } from "../client";
+import { writeFileSync, readFileSync } from "fs";
 
-module.exports.obtenerConfiguracionDelServidor = async (guild) => {
-  try {
-    const [configuracionDelServidor] = await Database.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild.id]).then(result => result[0])
+module.exports.exportarDatosDelServidorEnFormatoYAML = (guild) => {
+  module.exports
+    .obtenerConfiguracionDelServidor(guild)
+    .then((configuracionDelServidor) => {
+      if (
+        configuracionDelServidor &&
+        typeof configuracionDelServidor === "object"
+      ) {
+        const attachmentPath = `./temp/${randomstring.generate({
+          charset: "alphabetic",
+        })}.yml`;
+        writeFileSync(attachmentPath, YAML.dump(configuracionDelServidor));
+        return attachmentPath;
+      }
+    });
+};
 
-    if (configuracionDelServidor) {
-      Object.keys(configuracionDelServidor).forEach(module => {
-        try {
-          configuracionDelServidor[module] = JSON.parse(configuracionDelServidor[module].trim())
-        } catch (err2) {
-          if (!err2.constructor.name === 'SyntaxError') consolex.gestionarError(err2)
+module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url) => {
+  descargarArchivoDeConfiguracionYAML(url).then((descarga) => {
+    if (descarga.error) return descarga.error;
+    ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(
+      YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: "utf-8" })),
+      ({ configuracionProcesada, errores }) => {
+        let posicionArrayModulos = 0;
+        ClientModuleManager.modulosDisponibles.forEach((modulo) => {
+          module.exports
+            .actualizarConfiguracionDelServidor(guild, {
+              column: modulo.nombre,
+              newconfig: configuracionProcesada[modulo.nombre] || {},
+            })
+            .catch((err) => {
+              errores.push(
+                `Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`
+              );
+            });
+          posicionArrayModulos++;
+
+          if (
+            posicionArrayModulos ===
+            ClientModuleManager.modulosDisponibles.length
+          ) {
+            const erroresTotalesEnString = errores.length
+              ? errores.join("\n")
+              : null;
+            return erroresTotalesEnString;
+          }
+        });
+      }
+    );
+  });
+};
+
+class GuildManager {
+  guilds: Object;
+
+  constructor() {
+    this.guilds = ClientUser.guilds.cache.toJSON();
+  }
+
+  actulizarConfiguracionDelServidor (guild: Guild, datos: { modulo: Module, nuevaConfiguracion: Object }) {
+    if (!ClientModuleManager.comprobarSiElModuloExiste(datos.modulo.nombre)) { 
+      throw new Error("The module does not exist");
+  }
+    this.obtenerConfiguracionDelServidor(guild).then((configuracionDelServidor) => {
+        if (typeof configuracionDelServidor[datos.modulo.nombre] === "object" && !Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && configuracionDelServidor[datos.modulo.nombre] !== null) {
+          configuracionDelServidor[datos.modulo.nombre] =
+            procesarObjetosdeConfiguracion(configuracionDelServidor[datos.modulo.nombre], datos.nuevaConfiguracion);
+          try {
+            PoolConnection.execute("UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?", [datos.modulo.nombre, JSON.stringify(configuracionDelServidor[datos.modulo.nombre]), guild.id]);
+            return null;
+          } catch (err) {
+            Consolex.gestionarError(err);
+          }
+        } else if (typeof datos.nuevaConfiguracion === "object" && Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && datos.nuevaConfiguracion !== null) {
+          try {
+            PoolConnection.execute("UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?", [datos.modulo.nombre, JSON.stringify(datos.nuevaConfiguracion), guild.id]);
+            return null;
+          } catch (err) {
+            Consolex.gestionarError(err);
+          }
+        } else {
+          try {
+            PoolConnection.execute("UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?", [datos.modulo.nombre, datos.nuevaConfiguracion, guild.id]);
+            return null;
+          } catch (err) {
+            Consolex.gestionarError(err);
+          }
         }
-      })
+      });
+  };
 
-      if (configuracionDelServidor.common === null) {
-        try {
-          await Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', ['common', JSON.stringify({ language: 'es-ES', prefix: '!', interactions: { enabled: true } }), guild.id])
-          return module.exports.obtenerConfiguracionDelServidor(guild)
-        } catch (err2) {
-          consolex.gestionarError(err2)
-        }
-        module.exports.actualizarConfiguracionDelServidor(guild, { column: 'common', newconfig: { language: 'es-ES', prefix: '!', interactions: { enabled: true } } }).then()
+  async crearNuevoRegistroDeServidor(guild: Guild) {
+    const configuracionDelServidor = {};
+
+    PoolConnection.execute("INSERT INTO `guildConfigurations` (guild) VALUES (?)", [guild.id]).then(() => {
+      ClientModuleManager.modulosDisponibles.forEach((modulo) => {
+        configuracionDelServidor[modulo.nombre] = modulo.configuracionPredeterminada;
+        this.actulizarConfiguracionDelServidor(guild, { modulo, nuevaConfiguracion: modulo.configuracionPredeterminada });
+    });
+  });
+}
+
+  async obtenerConfiguracionDelServidor(guild: Guild): Promise<Object> {
+    try {
+      const configuracionDelServidor = await PoolConnection.execute("SELECT * FROM `guildConfigurations` WHERE guild = ?", [guild.id]).then((result) => result[0]);
+
+      if (configuracionDelServidor) {
+        Object.keys(configuracionDelServidor).forEach((module) => {
+          try {
+            configuracionDelServidor[module] = JSON.parse(configuracionDelServidor[module].trim());
+          } catch (err2) {
+            if (err2.constructor.name !== SyntaxError.name) {
+              Consolex.gestionarError(err2);
+            }
+          }
+        });
+
+        return configuracionDelServidor || { guild: guild.id };
       }
 
-      return configuracionDelServidor || {}
+      try {
+        this.crearNuevoRegistroDeServidor(guild).then(() => {
+          return this.obtenerConfiguracionDelServidor(guild);
+        });
+      } catch (err2) {
+        Consolex.gestionarError(err2);
+      }
+    } catch (err) {
+      Consolex.gestionarError(err);
     }
+  }
 
+  async obtenerConfiguracionDelServidorPorModulo(guild: Guild, modulo: Module) {
     try {
-      await Database.execute('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild.id])
-      return module.exports.obtenerConfiguracionDelServidor(guild)
-    } catch (err2) {
-      consolex.gestionarError(err2)
+      const configuracionDelServidor = await PoolConnection.execute("SELECT * FROM `guildConfigurations` WHERE guild = ?", [guild.id]).then((result) => result[0]);
+
+      if (configuracionDelServidor) {
+        return configuracionDelServidor[modulo.nombre] || { guild: guild.id };
+      }
+
+      try {
+        this.crearNuevoRegistroDeServidor(guild).then(() => {
+          return this.obtenerConfiguracionDelServidorPorModulo(guild, modulo);
+        });
+      } catch (err2) {
+        Consolex.gestionarError(err2);
+      }
+    } catch (err) {
+      Consolex.gestionarError(err);
     }
-  } catch (err) {
-    consolex.gestionarError(err)
+  }
+
+  async eliminarRegistroDeServidor(guild: Guild) {
+    try {
+        tablasDisponibles.forEach((table) => {
+          try {
+            PoolConnection.execute(`DELETE FROM ${table} WHERE guild = ?`, [guild.id]);
+          } catch (err) {
+            Consolex.gestionarError(err);
+          }
+        });
+    } catch (err) {
+      Consolex.gestionarError(err);
+    }
+  }
+
+  async importarConfiguracionDelServidor(guild: Guild, configuracionDelServidor: Object) {
+    try {
+      Object.keys(configuracionDelServidor).forEach((modulo) => {
+        this.actulizarConfiguracionDelServidor(guild, { modulo, nuevaConfiguracion: configuracionDelServidor[module] });
+      });
+    } catch (err) {
+      Consolex.gestionarError(err);
+    }
   }
 }
 
-const { comprobarSiElModuloExiste, modulosDisponibles } = require('./moduleManager')
-const procesarObjetosdeConfiguracion = require('./utils/procesarObjetosdeConfiguracion')
-
-/**
- * Actualiza la configuración de un guild.
- * @param {Guild} guild - El guild del cual se quiere actualizar la configuración.
- * @param {Object} botmodule - El módulo del cual se quiere actualizar la configuración.
- * @param {?String} botmodule.column - ¡Deprecated! La columna del módulo del cual se quiere actualizar la configuración.
- * @param {?String} botmodule.modulo - La columna del módulo del cual se quiere actualizar la configuración.
- * @param {JSON} botmodule.newconfig - La nueva configuración del módulo.
- */
-
-module.exports.actualizarConfiguracionDelServidor = async (guild, botmodule) => {
-  if (!comprobarSiElModuloExiste(botmodule.column || botmodule.modulo)) throw new Error('The module does not exist')
-
-  botmodule.column = botmodule.modulo || botmodule.column
-
-  module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
-    if (typeof configuracionDelServidor[botmodule.column] === 'object' && !Array.isArray(configuracionDelServidor[botmodule.column]) && configuracionDelServidor[botmodule.column] !== null) {
-      configuracionDelServidor[botmodule.column] = procesarObjetosdeConfiguracion(configuracionDelServidor[botmodule.column], botmodule.newconfig)
-      try {
-        Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(configuracionDelServidor[botmodule.column]), guild.id])
-        return null
-      } catch (err) {
-        consolex.gestionarError(err)
-      }
-    } else if (typeof botmodule.newconfig === 'object' && Array.isArray(configuracionDelServidor[botmodule.column]) && botmodule.newconfig !== null) {
-      try {
-        Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, JSON.stringify(botmodule.newconfig), guild.id])
-        return null
-      } catch (err) {
-        consolex.gestionarError(err)
-      }
-    } else {
-      try {
-        Database.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [botmodule.column, botmodule.newconfig, guild.id])
-        return null
-      } catch (err) {
-        consolex.gestionarError(err)
-      }
-    }
-  })
-}
-
-const rest = new REST({ version: '9' })
-
-if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
-else rest.setToken(process.env.INSIDER_TOKEN)
-
-const crearListadoDeInteraccionesDeUnGuild = require('./utils/crearListadoDeInteraccionesDeUnGuild')
-
-/**
- * Subir interacciones de un servidor.
- * @param {Guild} guild - El servidor del cual se quiere subir las interacciones.
- */
-
-module.exports.subirInteraccionesDelServidor = async (guild) => {
-  module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
-    rest.put(
-      Routes.applicationGuildCommands(Client.user.id, guild.id), { body: crearListadoDeInteraccionesDeUnGuild(configuracionDelServidor) })
-      .catch(err => {
-        return consolex.gestionarError(err)
-      }).then(() => { return null })
-  })
-}
-
-/**
- * Elimina todos los datos de un servidor de la base de datos del bot.
- * @param {Guild} guild - El servidor del cual se quiere eliminar los datos.
- */
-
-module.exports.eliminarDatosDelServidor = guild => {
-  Database.tablasDisponibles.forEach(table => {
-    try {
-      Database.execute(`DELETE FROM ${table} WHERE guild = ?`, [guild.id])
-    } catch (err) {
-      consolex.gestionarError(err)
-    }
-  })
-}
-
-const YAML = require('js-yaml')
-const randomstring = require('randomstring')
-
-const { writeFileSync } = require('fs')
-
-module.exports.exportarDatosDelServidorEnFormatoYAML = (guild) => {
-  module.exports.obtenerConfiguracionDelServidor(guild).then(configuracionDelServidor => {
-    if (configuracionDelServidor && typeof configuracionDelServidor === 'object') {
-      const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
-      writeFileSync(attachmentPath, YAML.dump(configuracionDelServidor))
-      return attachmentPath
-    }
-  })
-}
-
-const { readFileSync } = require('fs')
-const descargarArchivoDeConfiguracionYAML = require('./utils/descargarArchivoDeConfiguracionYAML')
-const ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion = require('./utils/ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion')
-
-module.exports.importarDatosDelServidorEnFormatoYAML = (guild, url) => {
-  descargarArchivoDeConfiguracionYAML(url).then(descarga => {
-    if (descarga.error) return descarga.error
-    ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })), ({ configuracionProcesada, errores }) => {
-      let posicionArrayModulos = 0
-      modulosDisponibles.forEach(modulo => {
-        module.exports.actualizarConfiguracionDelServidor(guild, { column: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] || {} }).catch(err => {
-          errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}`)
-        })
-        posicionArrayModulos++
-
-        if (posicionArrayModulos === modulosDisponibles.length) {
-          const erroresTotalesEnString = errores.length ? errores.join('\n') : null
-          return erroresTotalesEnString
-        }
-      })
-    })
-  })
-}
+export default GuildManager;
