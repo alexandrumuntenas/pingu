@@ -2,13 +2,13 @@ import Consolex from './consolex'
 import Module from '../classes/Module'
 import procesarObjetosdeConfiguracion from './utils/procesarObjetosdeConfiguracion'
 
-// import * as YAML from 'js-yaml'
-// import * as randomstring from 'randomstring'
+import * as YAML from 'js-yaml'
+import * as randomstring from 'randomstring'
 
 import { PoolConnection, tablasDisponibles } from './databaseManager'
 import { Guild } from 'discord.js'
 import { ClientModuleManager, ClientUser } from '../client'
-// import { writeFileSync, readFileSync } from 'fs'
+import { writeFileSync, readFileSync } from 'fs'
 
 class GuildManager {
   guilds: Object
@@ -51,13 +51,15 @@ class GuildManager {
 
   async crearNuevoRegistroDeServidor (guild: Guild) {
     const configuracionDelServidor = {}
-
-    PoolConnection.execute('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild.id]).then(() => {
+    try {
+      await PoolConnection.execute('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild.id])
       ClientModuleManager.modulosDisponibles.forEach((modulo) => {
         configuracionDelServidor[modulo.nombre] = modulo.configuracionPredeterminada
         this.actulizarConfiguracionDelServidor(guild, { modulo, nuevaConfiguracion: modulo.configuracionPredeterminada })
       })
-    })
+    } catch (err) {
+      Consolex.gestionarError(err)
+    }
   }
 
   async obtenerConfiguracionDelServidor (guild: Guild): Promise<Object> {
@@ -124,16 +126,19 @@ class GuildManager {
     }
   }
 
-  /* async importarConfiguracionDelServidor (guild: Guild, configuracionDelServidor: Object) {
-    const configuracionDelFicheroYAML = {}
-    try {
-      Object.keys().forEach((modulo) => {
-        this.actulizarConfiguracionDelServidor(guild, { modulo: ClientModuleManager.getModulo(modulo), nuevaConfiguracion: configuracionDelServidor[modulo] })
+  async exportarConfiguracionDelServidor (guild: Guild): Promise<string> {
+    const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.yml`
+    const configuracionDelServidor = await this.obtenerConfiguracionDelServidor(guild)
+
+    if (configuracionDelServidor && typeof configuracionDelServidor === 'object') {
+      writeFileSync(attachmentPath, YAML.dump(configuracionDelServidor))
+      return attachmentPath
+    } else {
+      this.crearNuevoRegistroDeServidor(guild).then(() => {
+        return this.exportarConfiguracionDelServidor(guild)
       })
-    } catch (err) {
-      Consolex.gestionarError(err)
     }
-  } */
+  }
 }
 
 export default GuildManager
