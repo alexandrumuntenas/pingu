@@ -2,9 +2,9 @@ import Consolex from './consolex'
 import Module from '../classes/Module'
 import procesarObjetosdeConfiguracion from './utils/procesarObjetosdeConfiguracion'
 import ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion from './utils/ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion'
-import descargarArchivoDeConfiguracion from './utils/descargarArchivoDeConfiguracionYAML'
 
 import * as YAML from 'js-yaml'
+import * as Downloader from 'nodejs-file-downloader'
 import * as randomstring from 'randomstring'
 
 import { PoolConnection, tablasDisponibles } from './databaseManager'
@@ -199,33 +199,64 @@ class GuildManager {
     }
   }
 
-  async importarConfiguracionDelServidor (guild: Guild, attachmentSource: string) {
-    descargarArchivoDeConfiguracion(attachmentSource)
-      .catch(error => { throw new Error(error) })
-      .then((descarga) => {
-        const configuracionProcesada = ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(descarga.ubicacionArchivo, { encoding: 'utf-8' })))
+  async importarConfiguracionDelServidor (
+    guild: Guild,
+    attachmentSource: string
+  ) {
+    const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({
+      charset: 'alphabetic'
+    })}.yml`
 
-        let posicionArrayModulos = 0
-        ClientModuleManager.modulosDisponibles.forEach((modulo) => {
-          module.exports
-            .actualizarConfiguracionDelServidor(guild, {modulo: modulo.nombre, newconfig: configuracionProcesada[modulo.nombre] || {}
-            }).catch((err) => {
-              errores.push(`Base de datos: Error al actualizar la configuración del módulo ${modulo.nombre}. Error:\n${err}`)
-            })
-          posicionArrayModulos++
+    // eslint-disable-next-line new-cap
+    await new Downloader.default({
+      url: attachmentSource,
+      directory: './temp',
+      fileName: nombreTemporalAleatorioDelArchivo
+    }).download()
 
-          if (
-            posicionArrayModulos ===
-              ClientModuleManager.modulosDisponibles.length
-          ) {
-            const erroresTotalesEnString = errores.length
-              ? errores.join('\n')
-              : null
-            return erroresTotalesEnString
-          }
-        }
+    const registro = [
+      `Importando configuración para el servidor ${guild.name}`,
+      `Guild: ${guild.id}`,
+      `Fecha (horario del bot): ${new Date().toLocaleString()}`
+    ]
+
+    const { configuracionProcesada, errores } =
+      ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(
+        YAML.load(
+          readFileSync(nombreTemporalAleatorioDelArchivo, { encoding: 'utf-8' })
         )
-      })
+      )
+
+    registro.concat(errores)
+
+    let posicionArrayModulos = 0
+
+    ClientModuleManager.modulosDisponibles.forEach((modulo) => {
+      try {
+        registro.push(`INF: Importando configuración para el módulo ${modulo.nombre}`)
+        this.actulizarConfiguracionDelServidor(guild, {
+          modulo,
+          nuevaConfiguracion: configuracionProcesada[modulo.nombre] || {}
+        })
+      } catch (err) {
+        registro.push(`ERR: Problemas al importar la configuración para el módulo ${modulo.nombre}: ${err.message}`)
+      }
+      posicionArrayModulos++
+
+      if (
+        posicionArrayModulos === ClientModuleManager.modulosDisponibles.length
+      ) {
+        registro.push('INF: Importación finalizada')
+        const cantidadDeErrores = registro.filter((registro) =>
+          registro.startsWith('ERR:')
+        ).length
+
+        const registroProcesado = registro.length
+          ? registro.join('\n')
+          : null
+        return { registroProcesado, cantidadDeErrores }
+      }
+    })
   }
 }
 
