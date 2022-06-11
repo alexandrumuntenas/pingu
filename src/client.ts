@@ -16,6 +16,7 @@ import CommandsManager from './core/commandsManager'
 import CooldownMananger from './core/cooldownManager'
 import ModuleManager from './core/moduleManager'
 import GuildManager from './core/guildManager'
+import EventManager from './core/eventManager'
 
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
@@ -53,5 +54,6 @@ const ClientCommandsManager = new CommandsManager('src/client/commands')
 const ClientCooldownManager = new CooldownMananger()
 const ClientModuleManager = new ModuleManager()
 const ClientGuildManager = new GuildManager()
+const ClientEventManager = new EventManager()
 
-export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager }
+export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager }
