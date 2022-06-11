@@ -92,6 +92,14 @@ class MessageTemplate {
       .setFooter({ text: 'Powered by Pingu', iconURL: ClientUser.user.displayAvatarURL() })
       .setTimestamp()
   }
+
+  timeout (message: string): EmbedBuilder {
+    return new EmbedBuilder()
+      .setColor(this.messageTemplateSettings.timeout.color)
+      .setDescription(`${this.messageTemplateSettings.timeout.emoji} ${message}`)
+      .setFooter({ text: 'Powered by Pingu', iconURL: ClientUser.user.displayAvatarURL() })
+      .setTimestamp()
+  }
 }
 
 export default MessageTemplate

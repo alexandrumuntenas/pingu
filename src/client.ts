@@ -70,7 +70,8 @@ const ClientMessageTemplate = new MessageTemplate({
   debug: { color: Discord.Colors.LuminousVividPink, emoji: '🔧' },
   question: { color: Discord.Colors.Gold, emoji: '❓' },
   loading: { color: Discord.Colors.Blurple, emoji: '<a:core_loading:970712845429903461>' },
-  help: { color: Discord.Colors.Gold, emoji: '❓' }
+  help: { color: Discord.Colors.Gold, emoji: '❓' },
+  timeout: { color: Discord.Colors.Red, emoji: '<:system_timeout:970715618938617856>' }
 })
 
 export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager, ClientMessageTemplate }
