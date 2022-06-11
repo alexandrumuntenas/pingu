@@ -11,7 +11,7 @@ class EventHook {
     this.tipo = tipo
   }
 
-  execute (...args: Array<any>): void {
+  execute (...args: Array<any>): void { // skipcq: JS-0323
     this.funcion(...args)
   }
 }

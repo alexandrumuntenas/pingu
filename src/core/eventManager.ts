@@ -44,7 +44,7 @@ function inyectarEnEventoFuncionDeTercero (funcionDeTercero: EventHook): Object 
   return funcionesDeTerceros
 }
 
-function ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion?: string | number, ...argumentos: Array<any>): void {
+function ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion?: string | number, ...argumentos: Array<any>): void { // skipcq: JS-0323
   if (funcionesDeTerceros[evento] && funcionesDeTerceros[evento][tipoDeFuncion]) return funcionesDeTerceros[evento][tipoDeFuncion].forEach(funcion => funcion(...argumentos))
   else return funcionesDeTerceros[evento].notype.forEach(funcion => funcion(...argumentos))
 }
