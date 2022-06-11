@@ -1,8 +1,7 @@
 import { codeBlock, EmbedBuilder } from '@discordjs/builders'
-import { Colors } from 'discord.js'
 import { ClientUser } from '../client'
 
-class messages {
+class MessageTemplate {
   messageTemplateSettings: {
     [key: string]: {
       color: number,
@@ -10,45 +9,8 @@ class messages {
     }
   }
 
-  constructor () {
-    this.messageTemplateSettings = {
-      status: {
-        color: Colors.Blurple,
-        emoji: '📝'
-      },
-      success: {
-        color: Colors.Green,
-        emoji: '✅'
-      },
-      error: {
-        color: Colors.Red,
-        emoji: '❌'
-      },
-      warning: {
-        color: Colors.Orange,
-        emoji: '⚠'
-      },
-      info: {
-        color: Colors.Blue,
-        emoji: 'ℹ'
-      },
-      debug: {
-        color: Colors.LuminousVividPink,
-        emoji: '🔧'
-      },
-      question: {
-        color: Colors.Gold,
-        emoji: '❓'
-      },
-      loading: {
-        color: Colors.Blurple,
-        emoji: '<a:core_loading:970712845429903461>'
-      },
-      help: {
-        color: Colors.Gold,
-        emoji: '❓'
-      }
-    }
+  constructor (messageTemplateSettings: { [key: string]: { color: number, emoji: string } }) {
+    this.messageTemplateSettings = messageTemplateSettings
   }
 
   status (message: string): EmbedBuilder {
@@ -132,4 +94,4 @@ class messages {
   }
 }
 
-export default messages
+export default MessageTemplate

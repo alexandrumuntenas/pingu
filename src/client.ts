@@ -17,6 +17,7 @@ import CooldownMananger from './core/cooldownManager'
 import ModuleManager from './core/moduleManager'
 import GuildManager from './core/guildManager'
 import EventManager from './core/eventManager'
+import MessageTemplate from './templates/messageTemplate'
 
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
@@ -50,10 +51,26 @@ process.on('exit', () => {
   ClientUser.destroy()
 })
 
+// Managers
+
 const ClientCommandsManager = new CommandsManager('src/client/commands')
 const ClientCooldownManager = new CooldownMananger()
 const ClientModuleManager = new ModuleManager()
 const ClientGuildManager = new GuildManager()
 const ClientEventManager = new EventManager()
 
-export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager }
+// Templates
+
+const ClientMessageTemplate = new MessageTemplate({
+  status: { color: Discord.Colors.Blurple, emoji: '📝' },
+  success: { color: Discord.Colors.Green, emoji: '✅' },
+  error: { color: Discord.Colors.Red, emoji: '❌' },
+  warning: { color: Discord.Colors.Orange, emoji: '⚠' },
+  info: { color: Discord.Colors.Blue, emoji: 'ℹ' },
+  debug: { color: Discord.Colors.LuminousVividPink, emoji: '🔧' },
+  question: { color: Discord.Colors.Gold, emoji: '❓' },
+  loading: { color: Discord.Colors.Blurple, emoji: '<a:core_loading:970712845429903461>' },
+  help: { color: Discord.Colors.Gold, emoji: '❓' }
+})
+
+export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager, ClientMessageTemplate }
