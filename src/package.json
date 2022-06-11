@@ -27,6 +27,7 @@
     "is-image-url": "^1.1.8",
     "is-valid-http-url": "^1.0.3",
     "js-yaml": "^4.1.0",
+    "logger": "^0.0.1",
     "mathjs": "^10.1.0",
     "mcsrv": "^1.0.1",
     "millify": "^4.0.0",
