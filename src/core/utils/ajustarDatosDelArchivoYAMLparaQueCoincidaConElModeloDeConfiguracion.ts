@@ -39,7 +39,7 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (co
     }
   })
 
-  return configuracionProcesada
+  return { configuracionProcesada, errores }
 }
 
 export default ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion
