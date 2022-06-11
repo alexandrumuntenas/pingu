@@ -1,7 +1,9 @@
+const { ClientUser } = require('../../client')
+
 module.exports = {
   name: 'exit',
   execute: () => {
-    Client.destroy()
+    ClientUser.destroy()
     process.exit()
   }
 }
