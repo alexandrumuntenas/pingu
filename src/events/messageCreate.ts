@@ -19,7 +19,7 @@ interface PinguMessage extends Message {
   command: string | Command;
   args: Array<string>;
   guildConfiguration: {
-    [key: string]: any;
+    [key: string]: any; // skipcq: JS-0323
   };
 }
 

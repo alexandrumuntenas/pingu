@@ -12,7 +12,7 @@ import Event from '../classes/Event'
 
 class PinguChatInputCommandInteraction extends ChatInputCommandInteraction {
   deferredReply?: InteractionDeferReplyOptions
-  guildConfiguration?: { [key: string]: any }
+  guildConfiguration?: { [key: string]: any } // skipcq: JS-0323
 }
 
 async function isChatInputCommand (interaction: PinguChatInputCommandInteraction) {
