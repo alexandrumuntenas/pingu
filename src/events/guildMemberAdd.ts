@@ -1,8 +1,6 @@
-const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
+import Event from '../classes/Event'
+import { ClientEventManager } from '../client'
 
-module.exports = {
-  name: 'guildMemberAdd',
-  execute: member => {
-    ejecutarFuncionesDeTerceros('guildMemberAdd', null, member)
-  }
-}
+export default new Event('guildMemberAdd', (member) => {
+  ClientEventManager.ejecutarFuncionesDeTerceros('guildMemberAdd', null, member)
+})
