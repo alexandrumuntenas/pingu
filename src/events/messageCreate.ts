@@ -9,7 +9,9 @@ import { obtenerTraduccion } from '../core/i18nManager'
 interface PinguMessage extends Message {
   command: string | Command;
   args: Array<string>;
-  guildConfiguration: Object;
+  guildConfiguration: {
+    [ key: string ]: any;
+  };
 }
 
 module.exports = {
