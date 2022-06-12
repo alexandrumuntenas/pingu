@@ -4,6 +4,10 @@ version = 1
 name = "javascript"
 enabled = true
 
+  [analyzers.meta]
+  environment = ["nodejs"]
+  module_system = "es-modules"
+
 [[transformers]]
 name = "standardjs"
 enabled = true

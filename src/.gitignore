@@ -1,7 +1,6 @@
 .env
 package-lock.json
 cooldowns.json
-.vscode/
 node_modules/
 /temp
 */dist/
