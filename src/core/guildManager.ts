@@ -21,7 +21,7 @@ class GuildManager {
 
   actulizarConfiguracionDelServidor (
     guild: Guild,
-    datos: { modulo: Module; nuevaConfiguracion: { [key: string]: any } }
+    datos: { modulo: Module; nuevaConfiguracion: { [key: string]: any } } // skipcq: JS-0323
   ) {
     if (!ClientModuleManager.comprobarSiElModuloExiste(datos.modulo.nombre)) {
       throw new Error('The module does not exist')
