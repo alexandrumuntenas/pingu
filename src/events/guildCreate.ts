@@ -1,10 +1,8 @@
-import { ejecutarFuncionesDeTerceros } from '../core/eventManager'
-import { obtenerConfiguracionDelServidor } from '../core/guildManager.js'
+import Event from '../classes/Event'
+import { Guild } from 'discord.js'
+import { ClientEventManager, ClientGuildManager } from '../client'
 
-module.exports = {
-  name: 'guildCreate',
-  execute: guild => {
-    obtenerConfiguracionDelServidor(guild)
-    ejecutarFuncionesDeTerceros('guildCreate', null, guild)
-  }
-}
+export default new Event('guildCreate', (guild: Guild) => {
+  ClientGuildManager.crearNuevoRegistroDeServidor(guild)
+  ClientEventManager.ejecutarFuncionesDeTerceros('guildCreate', null, guild)
+})
