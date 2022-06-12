@@ -28,21 +28,19 @@ class MemberManager {
     member: GuildMember,
     datos: { modulo: Module, nuevosDatos: { [key: string]: any } } // skipcq: JS-0323
   ) {
-    this.obtenerDatosDelUsuario(member).then((memberData) => {
-      PoolConnection.execute(
-        'UPDATE `memberData` SET ?? = ? WHERE `guild` = ? AND `member` = ?',
-        [
-          datos.modulo.nombre,
-          JSON.stringify(datos.nuevosDatos),
-          member.guild.id,
-          member.id
-        ]
-      )
-        .catch((err) => Consolex.gestionarError(err))
-        .then(() => {
-          return this.obtenerDatosDelUsuario(member)
-        })
-    })
+    PoolConnection.execute(
+      'UPDATE `memberData` SET ?? = ? WHERE `guild` = ? AND `member` = ?',
+      [
+        datos.modulo.nombre,
+        JSON.stringify(datos.nuevosDatos),
+        member.guild.id,
+        member.id
+      ]
+    )
+      .catch((err) => Consolex.gestionarError(err))
+      .then(() => {
+        return this.obtenerDatosDelUsuario(member)
+      })
   }
 
   async crearUsuario (member: GuildMember) {
