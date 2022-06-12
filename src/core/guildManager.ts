@@ -21,7 +21,7 @@ class GuildManager {
 
   actulizarConfiguracionDelServidor (
     guild: Guild,
-    datos: { modulo: Module; nuevaConfiguracion: Object }
+    datos: { modulo: Module; nuevaConfiguracion: { [key: string]: any } }
   ) {
     if (!ClientModuleManager.comprobarSiElModuloExiste(datos.modulo.nombre)) {
       throw new Error('The module does not exist')
