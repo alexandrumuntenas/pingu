@@ -14,8 +14,7 @@ class PinguChatInputCommandInteraction extends ChatInputCommandInteraction {
   deferredReply?: InteractionDeferReplyOptions
   guildConfiguration?: { [key: string]: any } // skipcq: JS-0323
 }
-
-async function isChatInputCommand (interaction: PinguChatInputCommandInteraction) {
+function isChatInputCommand (interaction: PinguChatInputCommandInteraction) {
   ClientGuildManager.obtenerConfiguracionDelServidor(interaction.guild).then(async configuracionDelServidor => {
     interaction.guildConfiguration = configuracionDelServidor
     if (ClientCommandsManager.has(interaction.commandName)) {
@@ -46,6 +45,6 @@ async function isChatInputCommand (interaction: PinguChatInputCommandInteraction
 
 export default new Event('interactionCreate', (interaction: Interaction) => {
   if (interaction.isChatInputCommand()) {
-    isChatInputCommand(interaction).catch(Consolex.gestionarError)
+    isChatInputCommand(interaction)
   }
 })

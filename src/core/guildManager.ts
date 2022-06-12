@@ -164,7 +164,7 @@ class GuildManager {
     }
   }
 
-  async eliminarRegistroDeServidor (guild: Guild) {
+  eliminarRegistroDeServidor (guild: Guild) {
     try {
       tablasDisponibles.forEach((table) => {
         try {

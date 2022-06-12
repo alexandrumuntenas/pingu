@@ -17,7 +17,7 @@ class EventManager {
         const event = require(`../events/${archivo}`) // skipcq: JS-0359
         Consolex.success(`EventManager: Evento ${archivo} cargado`)
         this.eventosDisponibles.push(event)
-        ClientUser.on(event.name, async (...args) => event.execute(...args))
+        ClientUser.on(event.name, async (...args) => event.execute(...args)) // skipcq: JS-0376
       })
 
     fs.readdirSync('./events/proceso')
@@ -28,7 +28,7 @@ class EventManager {
           `ProcessEventManager: Evento de proceso ${archivo} cargado`
         )
         this.eventosDisponiblesProceso.push(evento)
-        process.on(evento.name, async (...args) => evento.execute(...args))
+        process.on(evento.name, async (...args) => evento.execute(...args)) // skipcq: JS-0376
       })
   }
 

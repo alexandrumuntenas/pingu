@@ -55,7 +55,7 @@ class MemberManager {
     }
   }
 
-  async eliminarDatosDelUsuario (member: GuildMember) {
+  eliminarDatosDelUsuario (member: GuildMember) {
     try {
       PoolConnection.execute(
         'DELETE FROM `memberData` WHERE `guild` = ? AND `member` = ?',
