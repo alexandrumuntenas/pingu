@@ -16,11 +16,13 @@ const PoolConnection = createPool({
 let tablasDisponibles = []
 
 function comprobarSiExistenTodasLasTablasNecesarias () {
-  Consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
+  Consolex.info(
+    'DatabaseManager: Comprobando si existen todas las tablas necesarias...'
+  )
   const consultas = readdirSync('./database/')
   const tablasYConsultas = {}
 
-  consultas.forEach(file => {
+  consultas.forEach((file) => {
     if (file.endsWith('.sql')) {
       tablasYConsultas[file] = readFileSync(`./database/${file}`, 'utf8')
     }
@@ -28,18 +30,29 @@ function comprobarSiExistenTodasLasTablasNecesarias () {
 
   tablasDisponibles = Object.keys(tablasYConsultas)
 
-  tablasDisponibles.forEach(async tabla => {
+  tablasDisponibles.forEach((tabla) => {
     try {
-      await PoolConnection.execute(tablasYConsultas[tabla])
-      return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
+      PoolConnection.execute(tablasYConsultas[tabla]).then(() => {
+        return Consolex.info(
+          `DatabaseManager: La tabla ${tabla} se ha creado correctamente.`
+        )
+      })
     } catch (err) {
       if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
+        return Consolex.info(
+          `DatabaseManager: La tabla ${tabla} se encuentra presente.`
+        )
       } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
+        return Consolex.error(
+          `DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`
+        )
       }
     }
   })
 }
 
-export { PoolConnection, tablasDisponibles, comprobarSiExistenTodasLasTablasNecesarias }
+export {
+  PoolConnection,
+  tablasDisponibles,
+  comprobarSiExistenTodasLasTablasNecesarias
+}
