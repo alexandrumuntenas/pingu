@@ -1,8 +1,7 @@
 import Module from '../classes/Module'
 import Consolex from './consolex'
 
-import { ClientCommandsManager } from '../client'
-import { inyectarEnEventoFuncionDeTercero } from './eventManager'
+import { ClientCommandsManager, ClientEventManager } from '../client'
 import { readdirSync } from 'fs'
 class ModuleManager {
   modulosDisponibles: Array<Module>
@@ -30,7 +29,7 @@ class ModuleManager {
       if (modulo.hooks) {
         modulo.hooks.forEach((hook) => {
           Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
-          inyectarEnEventoFuncionDeTercero(hook)
+          ClientEventManager.inyectarEnEventoFuncionDeTercero(hook)
         })
       }
     } else {
