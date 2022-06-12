@@ -1,11 +1,11 @@
 import Event from '../classes/Event'
-
+import Consolex from '../core/consolex'
 import { ClientEventManager, ClientMemberManager, ClientUser } from '../client'
 import { GuildMember } from 'discord.js'
 
 export default new Event('guildMemberRemove', (member: GuildMember) => {
   if (member.user.id !== ClientUser.user.id) {
     ClientEventManager.ejecutarFuncionesDeTerceros('guildMemberRemove', null, member)
-    ClientMemberManager.eliminarDatosDelUsuario(member)
+    ClientMemberManager.eliminarDatosDelUsuario(member).catch((err) => Consolex.gestionarError(err))
   }
 })
