@@ -15,6 +15,7 @@ import {
 
 import { obtenerTraduccion } from '../core/i18nManager'
 import Event from '../classes/Event'
+import Consolex from '../core/consolex'
 interface PinguMessage extends Message {
   command: string | Command;
   args: Array<string>;
@@ -193,5 +194,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
         message
       )
     }
-  )
+  ).catch((err) => {
+    Consolex.gestionarError(err)
+  })
 })

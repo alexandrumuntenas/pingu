@@ -131,7 +131,7 @@ class CommandsManager {
             return null
           })
       }
-    )
+    ).catch(Consolex.gestionarError)
   }
 }
 

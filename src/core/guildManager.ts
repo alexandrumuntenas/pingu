@@ -81,7 +81,7 @@ class GuildManager {
           }
         }
       }
-    )
+    ).catch(err => Consolex.gestionarError(err))
   }
 
   async crearNuevoRegistroDeServidor (guild: Guild) {
@@ -130,7 +130,7 @@ class GuildManager {
       try {
         this.crearNuevoRegistroDeServidor(guild).then(() => {
           return this.obtenerConfiguracionDelServidor(guild)
-        })
+        }).catch(err => Consolex.gestionarError(err))
       } catch (err2) {
         Consolex.gestionarError(err2)
       }
@@ -151,9 +151,11 @@ class GuildManager {
       }
 
       try {
-        this.crearNuevoRegistroDeServidor(guild).then(() => {
-          return this.obtenerConfiguracionDelServidorPorModulo(guild, modulo)
-        })
+        this.crearNuevoRegistroDeServidor(guild)
+          .then(() => {
+            return this.obtenerConfiguracionDelServidorPorModulo(guild, modulo)
+          })
+          .catch((err) => Consolex.gestionarError(err))
       } catch (err2) {
         Consolex.gestionarError(err2)
       }
@@ -193,9 +195,13 @@ class GuildManager {
       writeFileSync(attachmentPath, YAML.dump(configuracionDelServidor))
       return attachmentPath
     } else {
-      this.crearNuevoRegistroDeServidor(guild).then(() => {
-        return this.exportarConfiguracionDelServidor(guild)
-      })
+      this.crearNuevoRegistroDeServidor(guild)
+        .then(() => {
+          return this.exportarConfiguracionDelServidor(guild)
+        })
+        .catch((err) => {
+          Consolex.gestionarError(err)
+        })
     }
   }
 

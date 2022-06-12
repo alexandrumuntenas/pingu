@@ -39,6 +39,8 @@ async function isChatInputCommand (interaction: PinguChatInputCommandInteraction
     } else {
       return interaction.editReply({ content: obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
     }
+  }).catch((err) => {
+    Consolex.gestionarError(err)
   })
 }
 
