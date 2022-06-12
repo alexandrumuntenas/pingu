@@ -18,6 +18,7 @@ import ModuleManager from './core/moduleManager'
 import GuildManager from './core/guildManager'
 import EventManager from './core/eventManager'
 import MessageTemplate from './templates/messageTemplate'
+import MemberManager from './core/memberManager'
 
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
@@ -58,6 +59,7 @@ const ClientCooldownManager = new CooldownMananger()
 const ClientModuleManager = new ModuleManager()
 const ClientGuildManager = new GuildManager()
 const ClientEventManager = new EventManager()
+const ClientMemberManager = new MemberManager()
 
 // Templates
 
@@ -74,4 +76,4 @@ const ClientMessageTemplate = new MessageTemplate({
   timeout: { color: Discord.Colors.Red, emoji: '<:system_timeout:970715618938617856>' }
 })
 
-export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager, ClientMessageTemplate }
+export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager, ClientMessageTemplate, ClientMemberManager }
