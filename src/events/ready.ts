@@ -1,4 +1,4 @@
-import Event from '../classes/Event'
+import Event from '../core/classes/Event'
 import Consolex from '../core/consolex'
 import eliminadorArchivosTemporales from '../core/utils/eliminadorArchivosTemporales'
 

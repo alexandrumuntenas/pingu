@@ -1,4 +1,4 @@
-import Event from '../classes/Event'
+import Event from '../core/classes/Event'
 import { GuildMember } from 'discord.js'
 import { ClientEventManager } from '../client'
 

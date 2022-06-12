@@ -1,5 +1,5 @@
 import Consolex from './consolex'
-import Module from '../classes/Module'
+import Module from './classes/Module'
 import procesarObjetosdeConfiguracion from './utils/procesarObjetosdeConfiguracion'
 import ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion from './utils/ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion'
 

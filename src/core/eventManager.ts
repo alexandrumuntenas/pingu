@@ -1,6 +1,6 @@
 import * as fs from 'fs'
-import EventHook from '../classes/EventHook'
-import Event from '../classes/Event'
+import EventHook from './classes/EventHook'
+import Event from './classes/Event'
 import Consolex from './consolex'
 
 import { ClientUser } from '../client'

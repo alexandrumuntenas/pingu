@@ -1,5 +1,5 @@
 import { existsSync, writeFile } from 'fs'
-import Command from '../classes/Command'
+import Command from './classes/Command'
 import Consolex from './consolex'
 
 let JSONCooldown = {}
