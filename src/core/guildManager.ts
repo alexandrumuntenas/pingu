@@ -214,32 +214,37 @@ class GuildManager {
       fileName: nombreTemporalAleatorioDelArchivo
     }).download()
 
-    const registro = [
-      `Importando configuración para el servidor ${guild.name}`,
-      `Guild: ${guild.id}`,
-      `Fecha (horario del bot): ${new Date().toLocaleString()}`
-    ]
-
     const { configuracionProcesada, errores } =
       ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(
         YAML.load(
-          readFileSync(nombreTemporalAleatorioDelArchivo, { encoding: 'utf-8' })
+          readFileSync(nombreTemporalAleatorioDelArchivo, {
+            encoding: 'utf-8'
+          })
         )
       )
 
-    registro.concat(errores)
+    const registro = [
+      `Importando configuración para el servidor ${guild.name}`,
+      `Guild: ${guild.id}`,
+      `Fecha (horario del bot): ${new Date().toLocaleString()}`,
+      ...errores
+    ]
 
     let posicionArrayModulos = 0
 
     ClientModuleManager.modulosDisponibles.forEach((modulo) => {
       try {
-        registro.push(`INF: Importando configuración para el módulo ${modulo.nombre}`)
+        registro.push(
+          `INF: Importando configuración para el módulo ${modulo.nombre}`
+        )
         this.actulizarConfiguracionDelServidor(guild, {
           modulo,
           nuevaConfiguracion: configuracionProcesada[modulo.nombre] || {}
         })
       } catch (err) {
-        registro.push(`ERR: Problemas al importar la configuración para el módulo ${modulo.nombre}: ${err.message}`)
+        registro.push(
+          `ERR: Problemas al importar la configuración para el módulo ${modulo.nombre}: ${err.message}`
+        )
       }
       posicionArrayModulos++
 
@@ -251,9 +256,7 @@ class GuildManager {
           registro.startsWith('ERR:')
         ).length
 
-        const registroProcesado = registro.length
-          ? registro.join('\n')
-          : null
+        const registroProcesado = registro.length ? registro.join('\n') : null
         return { registroProcesado, cantidadDeErrores }
       }
     })
