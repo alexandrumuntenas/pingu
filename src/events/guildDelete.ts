@@ -1,10 +1,8 @@
-const { ejecutarFuncionesDeTerceros } = require('../core/eventManager')
-const { eliminarDatosDelServidor } = require('../core/guildManager')
+import Event from '../classes/Event'
+import { Guild } from 'discord.js'
+import { ClientEventManager, ClientGuildManager } from '../client'
 
-module.exports = {
-  name: 'guildDelete',
-  execute: guild => {
-    eliminarDatosDelServidor(guild)
-    ejecutarFuncionesDeTerceros('guildDelete', null, guild)
-  }
-}
+export default new Event('guildDelete', (guild: Guild) => {
+  ClientGuildManager.eliminarRegistroDeServidor(guild)
+  ClientEventManager.ejecutarFuncionesDeTerceros('guildDelete', null, guild)
+})
