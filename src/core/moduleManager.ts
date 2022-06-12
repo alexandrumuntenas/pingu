@@ -15,7 +15,7 @@ class ModuleManager {
     const directorioDeModulos = readdirSync('./modules')
     directorioDeModulos.forEach((modulo) => {
       if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
-        this.registrarModulo(require(`../modules/${modulo}`))
+        this.registrarModulo(require(`../modules/${modulo}`)) // skipcq: JS-0359
       }
     })
   }

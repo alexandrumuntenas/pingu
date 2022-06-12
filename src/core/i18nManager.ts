@@ -9,7 +9,7 @@ function obtenerTraduccion (idioma: string, traduccion: string, parametros?: Obj
     idiomaAUsar = 'es-ES'
   }
 
-  let textoTraducido = require(`./locales/${idiomaAUsar}.json`)[traduccion]
+  let textoTraducido = require(`./locales/${idiomaAUsar}.json`)[traduccion] // skipcq: JS-0359
 
   if (parametros) {
     try {

@@ -33,7 +33,7 @@ class CommandsManager {
       const path = `${directory}/${file}`
 
       if (file.endsWith('.js') && !file.endsWith('dev.js')) {
-        const command = require(`.${path}`)
+        const command = require(`.${path}`) // skipcq: JS-0359
 
         if (Object.prototype.hasOwnProperty.call(command, 'name')) {
           if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
