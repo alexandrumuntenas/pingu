@@ -1,10 +1,12 @@
 import * as randomstring from 'randomstring'
+import Consolex from '../../core/consolex'
+import { PoolConnection } from '../../core/databaseManager'
 
 class AutoReply {
   guild: string
   desencadenante: string
-  respuesta: string
   propiedades: {
+    respuesta: string;
     enviarEnEmbed: {
       habilitado: boolean;
       titulo: string;
@@ -21,8 +23,8 @@ class AutoReply {
     guild,
     respuestaPersonalizada: {
       desencadenante: string;
-      respuesta: string;
       propiedades: {
+        respuesta: string;
         enviarEnEmbed: {
           habilitado: boolean;
           titulo: string;
@@ -36,12 +38,32 @@ class AutoReply {
   ) {
     this.guild = guild
     this.desencadenante = respuestaPersonalizada.desencadenante
-    this.respuesta = respuestaPersonalizada.respuesta
     this.propiedades = respuestaPersonalizada.propiedades
     this.identificador = randomstring.generate({
       length: 10,
       charset: 'alphanumeric'
     })
+
+    this.guardarRespuestaPersonalizada()
+  }
+
+  async guardarRespuestaPersonalizada (): Promise<void> {
+    await PoolConnection.execute(
+      'INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyProperties`) VALUES (?, ?, ?, ?)',
+      [
+        this.guild,
+        this.identificador,
+        this.desencadenante,
+        JSON.stringify(this.propiedades)
+      ]
+    ).catch((err) => Consolex.gestionarError(err))
+  }
+
+  async eliminarRespuestaPersonalizada (): Promise<void> {
+    await PoolConnection.execute(
+      'DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?',
+      [this.identificador, this.guild]
+    ).catch((err) => Consolex.gestionarError(err))
   }
 }
 
