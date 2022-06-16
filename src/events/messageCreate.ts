@@ -1,4 +1,4 @@
-import Command from '../classes/Command'
+import Command from '../core/classes/Command'
 
 import * as humanizarTiempo from 'humanize-duration'
 
@@ -14,7 +14,7 @@ import {
 } from '../client'
 
 import { obtenerTraduccion } from '../core/i18nManager'
-import Event from '../classes/Event'
+import Event from '../core/classes/Event'
 import Consolex from '../core/consolex'
 interface PinguMessage extends Message {
   command: string | Command;

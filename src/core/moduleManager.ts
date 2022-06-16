@@ -1,4 +1,4 @@
-import Module from '../classes/Module'
+import Module from './classes/Module'
 import Consolex from './consolex'
 
 import { ClientCommandsManager, ClientEventManager } from '../client'

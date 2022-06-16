@@ -1,5 +1,5 @@
 import Consolex from './consolex'
-import Command from '../classes/Command'
+import Command from './classes/Command'
 
 import { Collection, Guild, SlashCommandBuilder } from 'discord.js'
 import { lstatSync, readdirSync } from 'fs'

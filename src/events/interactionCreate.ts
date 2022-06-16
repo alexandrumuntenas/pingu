@@ -8,7 +8,7 @@ import {
   ClientGuildManager,
   ClientMessageTemplate
 } from '../client'
-import Event from '../classes/Event'
+import Event from '../core/classes/Event'
 
 class PinguChatInputCommandInteraction extends ChatInputCommandInteraction {
   deferredReply?: InteractionDeferReplyOptions

@@ -1,5 +1,5 @@
 import { GuildMember } from 'discord.js'
-import Module from '../classes/Module'
+import Module from './classes/Module'
 import Consolex from './consolex'
 import { PoolConnection } from './databaseManager'
 class MemberManager {
