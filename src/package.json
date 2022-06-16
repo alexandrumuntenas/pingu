@@ -15,7 +15,7 @@
     "bufferutil": "^4.0.6",
     "canvas": "^2.8.0",
     "chalk": "^5.0.1",
-    "discord-api-types": "^0.32.0",
+    "discord-api-types": "^0.34.0",
     "discord-modals": "^1.2.8",
     "discord.js": "^14.0.0-dev.1654519696-fba9710",
     "dotenv": "^16.0.0",
