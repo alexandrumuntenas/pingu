@@ -1,11 +1,6 @@
-/**
- * Replace the custom bot placeholders with real data.
- * @param {String} string
- * @param {GuildMember} member´
- * @param {{placeholder: value}} customplaceholders
- */
+import { GuildMember } from 'discord.js'
 
-module.exports = (string, member, customplaceholders) => {
+function reemplazarPlaceholdersConDatosReales (string: string, member: GuildMember, customplaceholders: [{ placeholder: string }]) {
   if (!string || !member) throw new Error('Missing required parameters')
 
   let finalstring = string
@@ -50,3 +45,5 @@ module.exports = (string, member, customplaceholders) => {
 
   return finalstring
 }
+
+export default reemplazarPlaceholdersConDatosReales
