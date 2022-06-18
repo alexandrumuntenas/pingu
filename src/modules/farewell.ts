@@ -1,38 +1,55 @@
-module.exports.modeloDeConfiguracion = {
-  enabled: 'boolean',
-  channel: 'string',
-  message: 'string'
-}
+import EventHook from '../classes/EventHook'
+import Module from '../classes/Module'
+import { ClientGuildManager } from '../client'
+import { GuildMember } from 'discord.js'
+import reemplazarPlaceholdersConDatosReales from '../core/utils/reemplazarPlaceholdersConDatosReales'
 
-/**
- * @param {GuildMember} member
- */
+export default new Module(
+  'Farewell',
+  'Module for farewell messages',
+  [
+    new EventHook('guildMemberRemove', (member: GuildMember) => {
+      ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(
+        member.guild,
+        'farewell'
+      ).then((configuracionDelServidor) => {
+        if (
+          Object.prototype.hasOwnProperty.call(
+            configuracionDelServidor,
+            'farewell'
+          ) &&
+          Object.prototype.hasOwnProperty.call(
+            configuracionDelServidor.farewell,
+            'enabled'
+          )
+        ) {
+          if (configuracionDelServidor.farewell.enabled) {
+            if (
+              !Object.prototype.hasOwnProperty.call(
+                configuracionDelServidor.farewell,
+                'channel'
+              )
+            ) {
+              return
+            }
 
-const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
+            const channel = member.guild.channels.cache.get(
+              configuracionDelServidor.farewell.channel
+            )
+            if (!channel) return
 
-module.exports.doGuildMemberRemove = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
-    if (Object.prototype.hasOwnProperty.call(configuracionDelServidor, 'farewell') && Object.prototype.hasOwnProperty.call(configuracionDelServidor.farewell, 'enabled')) {
-      if (configuracionDelServidor.farewell.enabled) module.exports.sendFarewellMessage(member)
-    }
-  })
-}
-
-/**
- * @param {GuildMember} member
- */
-
-const reemplazarPlaceholdersConDatosReales = require('../core/utils/reemplazarPlaceholdersConDatosReales')
-
-module.exports.sendFarewellMessage = member => {
-  obtenerConfiguracionDelServidor(member.guild).then(configuracionDelServidor => {
-    if (!Object.prototype.hasOwnProperty.call(configuracionDelServidor.farewell, 'channel')) return
-
-    const channel = member.guild.channels.cache.get(configuracionDelServidor.farewell.channel)
-    if (!channel) return
-
-    channel.send(reemplazarPlaceholdersConDatosReales(configuracionDelServidor.farewell.message || '{member} left {server}!', member))
-  })
-}
-
-module.exports.hooks = [{ event: 'guildMemberRemove', function: module.exports.doGuildMemberRemove }]
+            channel.send(
+              reemplazarPlaceholdersConDatosReales(
+                configuracionDelServidor.farewell.message ||
+                  '{member} left {server}!',
+                member
+              )
+            )
+          }
+        }
+      })
+    })
+  ],
+  { enabled: 'boolean', channel: 'string', message: 'string' },
+  { enabled: false }
+)
