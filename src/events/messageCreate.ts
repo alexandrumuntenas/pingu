@@ -198,3 +198,5 @@ export default new Event('messageCreate', (message: PinguMessage) => {
     Consolex.gestionarError(err)
   })
 })
+
+export { PinguMessage }
