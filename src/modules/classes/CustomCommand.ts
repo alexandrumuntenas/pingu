@@ -1,6 +1,7 @@
 import Consolex from '../../core/consolex'
-import { Guild, Message, EmbedBuilder, Role } from 'discord.js'
+import { Guild, EmbedBuilder, Role } from 'discord.js'
 import { PoolConnection } from '../../core/databaseManager'
+import { PinguMessage } from '../../events/messageCreate'
 import { ClientUser } from '../../client'
 import reemplazarPlaceholdersConDatosReales from '../../core/utils/reemplazarPlaceholdersConDatosReales'
 class CustomCommand {
@@ -27,8 +28,6 @@ class CustomCommand {
     sendDM: boolean
     sendChannel: string
   }
-
-  execute: Function
 
   constructor (
     guild: Guild,
@@ -70,7 +69,7 @@ class CustomCommand {
     }
   }
 
-  executeCommand (message: Message, args: string[]) {
+  executeCommand (message: PinguMessage) {
     const reply = { embeds: [], content: '' }
 
     if (this.properties.sendInEmbed) {
