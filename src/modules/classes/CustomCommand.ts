@@ -33,7 +33,6 @@ class CustomCommand {
   constructor (
     guild: Guild,
     name: string,
-    reply: string,
     properties: {
       description: string;
       usage: string;
