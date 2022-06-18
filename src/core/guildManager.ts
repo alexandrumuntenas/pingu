@@ -139,15 +139,15 @@ class GuildManager {
     }
   }
 
-  async obtenerConfiguracionDelServidorPorModulo (guild: Guild, modulo: Module) {
+  async obtenerConfiguracionDelServidorPorModulo (guild: Guild, modulo: string) {
     try {
       const configuracionDelServidor = await PoolConnection.execute(
         'SELECT * FROM `guildConfigurations` WHERE guild = ?',
         [guild.id]
       ).then((result) => result[0])
 
-      if (configuracionDelServidor) {
-        return configuracionDelServidor[modulo.nombre] || { guild: guild.id }
+      if (configuracionDelServidor && typeof modulo === 'string') {
+        return configuracionDelServidor[modulo.toLowerCase()] || { guild: guild.id }
       }
 
       try {
