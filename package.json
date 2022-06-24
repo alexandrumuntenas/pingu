@@ -39,7 +39,7 @@
     "stackblur-canvas": "^2.5.0",
     "statcord.js": "^3.3.0",
     "string-placeholder": "^1.0.2",
-    "superagent": "^7.0.2",
+    "superagent": "^8.0.0",
     "unix-time": "^1.0.1"
   },
   "repository": {
