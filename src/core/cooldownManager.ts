@@ -1,3 +1,4 @@
+import { Guild, GuildMember } from 'discord.js'
 import { existsSync, writeFile } from 'fs'
 import Command from './classes/Command'
 import Consolex from './consolex'
@@ -9,7 +10,6 @@ try {
     try {
       JSONCooldown = require('../cooldowns.json')
     } catch (error) {
-      // comprobar si el error es SyntaxError
       if (error.code === 'SyntaxError') {
         Consolex.debug(
           'CooldownManager: Cooldowns file is corrupted. Creating new one.'
@@ -45,7 +45,7 @@ class CooldownManager {
     }, 60000)
   }
 
-  add (member, guild, command: Command): void {
+  add (member: GuildMember, guild: Guild, command: Command): void {
     this.cooldown[`${command.name}${member.id}${guild.id}`] =
       Date.now() + (command.cooldown || 10000)
     setTimeout(() => {
@@ -53,14 +53,14 @@ class CooldownManager {
     }, command.cooldown || 10000)
   }
 
-  check (member, guild, command: Command): boolean {
+  check (member: GuildMember, guild: Guild, command: Command): boolean {
     if (this.cooldown[`${command.name}${member.id}${guild.id}`] >= Date.now()) { return false }
 
     delete this.cooldown[`${command.name}${member.id}${guild.id}`]
     return true
   }
 
-  ttl (member, guild, command: Command): number {
+  ttl (member: GuildMember, guild: Guild, command: Command): number {
     return this.cooldown[`${command.name}${member.id}${guild.id}`] - Date.now()
   }
 
