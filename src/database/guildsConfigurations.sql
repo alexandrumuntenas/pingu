@@ -8,7 +8,6 @@ CREATE TABLE `guildConfigurations` (
   `suggestions` longtext COLLATE utf8mb4_bin DEFAULT '{enable:false}',
   `autoreplies` longtext COLLATE utf8mb4_bin DEFAULT '{enable:false}',
   `customcommands` longtext COLLATE utf8mb4_bin DEFAULT '{enable:false}',
-  `mcsrvstatus` longtext COLLATE utf8mb4_bin NOT NULL DEFAULT '{"enabled":false}',
   `moderation` longtext COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`guild`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
