@@ -37,7 +37,10 @@ try {
 const cooldown = { ...JSONCooldown }
 
 class CooldownManager {
-  cooldown: Object
+  cooldown: {
+    [key: string]: number
+  }
+
   constructor () {
     this.cooldown = cooldown
     setInterval(() => {
@@ -45,7 +48,7 @@ class CooldownManager {
     }, 60000)
   }
 
-  add (member: GuildMember, guild: Guild, command: Command): void {
+  add (member: GuildMember, guild: Guild, command: Command | { name: string, cooldown: number }): void {
     this.cooldown[`${command.name}${member.id}${guild.id}`] =
       Date.now() + (command.cooldown || 10000)
     setTimeout(() => {
@@ -53,14 +56,14 @@ class CooldownManager {
     }, command.cooldown || 10000)
   }
 
-  check (member: GuildMember, guild: Guild, command: Command): boolean {
+  check (member: GuildMember, guild: Guild, command: Command | { name: string }): boolean {
     if (this.cooldown[`${command.name}${member.id}${guild.id}`] >= Date.now()) { return false }
 
     delete this.cooldown[`${command.name}${member.id}${guild.id}`]
     return true
   }
 
-  ttl (member: GuildMember, guild: Guild, command: Command): number {
+  ttl (member: GuildMember, guild: Guild, command: Command | { name: string }): number {
     return this.cooldown[`${command.name}${member.id}${guild.id}`] - Date.now()
   }
 
