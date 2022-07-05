@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js'
 
-function reemplazarPlaceholdersConDatosReales (string: string, member: GuildMember, customplaceholders?: [{ placeholder: string }]) {
+function reemplazarPlaceholdersConDatosReales (string: string, member: GuildMember, customplaceholders?: { [key: string]: any }) {
   if (!string || !member) throw new Error('Missing required parameters')
 
   let finalstring = string

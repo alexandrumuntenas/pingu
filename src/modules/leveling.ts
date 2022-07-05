@@ -1,85 +1,107 @@
-module.exports.modeloDeConfiguracion = {
-  enabled: 'boolean',
-  channel: 'string',
-  message: 'string',
-  difficulty: 'number',
-  card: {
-    background: 'string',
-    overlay: {
-      color: 'string',
-      opacity: 'number'
-    }
-  }
+import { Guild, GuildMember } from 'discord.js'
+import EventHook from '../classes/EventHook'
+import { ClientCooldownManager } from '../client'
+import Command from '../core/classes/Command'
+import Module from '../core/classes/Module'
+import Consolex from '../core/consolex'
+import { PoolConnection } from '../core/databaseManager'
+import reemplazarPlaceholdersConDatosReales from '../core/utils/reemplazarPlaceholdersConDatosReales'
+import { PinguMessage } from '../events/messageCreate'
+
+async function obtenerDatosDelUsuario(guild: Guild, member: GuildMember): Promise<{ guild: string; member: string; level: string; experience: string }> {
+  PoolConnection.execute('SELECT * FROM memberLevelingData WHERE guild = ? AND member = ? LIMIT 1', [guild.id, member.id]).then((rawMemberLevelingData) => {
+    if (Object.prototype.hasOwnProperty.call(rawMemberLevelingData, '0')) return rawMemberLevelingData
+    return { guild: guild.id, member: member.id, experience: '0', level: '1' }
+  }).catch((error) => Consolex.gestionarError(error))
 }
 
-const consolex = require('../core/consolex')
-const Database = require('../core/databaseManager')
-
-const { obtenerDatosDelUsuario, actualizarDatosDelUsuario } = require('../core/memberManager')
-const { obtenerConfiguracionDelServidor } = require('../core/guildManager')
-const CooldownManager = require('../core/cooldownManager')
-
-/**
- * @param {Message} message
- */
-
-module.exports.getExperience = message => {
-  if (message.guild.configuration.leveling.enabled) {
-    if (CooldownManager.check(message.member, message.guild, 'module.leveling.getexperience')) {
-      CooldownManager.add(message.member, message.guild, { name: 'module.leveling.getexperience', cooldown: 60000 })
-      obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
-        obtenerDatosDelUsuario(message.member).then(memberData => {
-          memberData.lvlExperience = parseInt(memberData.lvlExperience, 10) + Math.round((Math.random() * (25 - 15)) + 15)
-
-          if (memberData.lvlExperience >= (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100)) {
-            module.exports.sendLevelUpMessage(message)
-            return actualizarDatosDelUsuario(message.member, { lvlLevel: parseInt(memberData.lvlLevel, 10) + 1, lvlExperience: memberData.lvlExperience - (((memberData.lvlLevel * memberData.lvlLevel) * configuracionDelServidor.leveling.difficulty) * 100) })
-          }
-
-          try {
-            actualizarDatosDelUsuario(message.member, { lvlExperience: memberData.lvlExperience })
-          } catch (err) {
-            if (err) consolex.gestionarError(err)
-          }
-
-          return null
-        })
-      })
-    }
-  }
+async function actualizarDatosDelUsuario(guild: Guild, member: GuildMember, experience: string, level: string) {
+  PoolConnection.execute('UPDATE `memberLevelingData` SET `level`= ?,`experience`= ? WHERE guild = ? AND member = ?', [level, experience, guild.id, member.id]).then(() => {
+    return { guild: guild.id, member: member.id, experience, level }
+  }).catch((error) => Consolex.gestionarError(error))
 }
 
-const reemplazarPlaceholdersConDatosReales = require('../core/utils/reemplazarPlaceholdersConDatosReales')
+async function obtenerExperiencia(message: PinguMessage) {
+  if (message.guildConfiguration.leveling.enabled) {
+    if (ClientCooldownManager.check(message.member, message.guild, 'leveling.obtenerExperiencia')) {
+      obtenerDatosDelUsuario(message.guild, message.member).then((memberLevelingData) => {
+        const newExperience = Math.floor(Math.random() * 25) + parseInt(memberLevelingData.experience, 10)
+        const userLevelParsed = parseInt(memberLevelingData.level, 10)
 
-module.exports.sendLevelUpMessage = message => {
-  obtenerConfiguracionDelServidor(message.guild).then(configuracionDelServidor => {
-    if (configuracionDelServidor.leveling.enabled) {
-      obtenerDatosDelUsuario(message).then(memberData => {
-        const channelWhereLevelUpMessageIsSent = message.guild.channels.cache.get(configuracionDelServidor.leveling.channel)
-        const content = reemplazarPlaceholdersConDatosReales(configuracionDelServidor.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member, { newlevel: parseInt(memberData.lvlLevel, 10) + 1, oldlevel: parseInt(memberData.lvlLevel, 10) })
-
-        if (channelWhereLevelUpMessageIsSent) {
-          channelWhereLevelUpMessageIsSent.send({ content })
+        if (newExperience >= (((userLevelParsed + 1) ^ 2) * message.guildConfiguration.leveling.difficulty) * 100) {
+          actualizarDatosDelUsuario(message.guild, message.member, newExperience.toString(), (userLevelParsed + 1).toString())
         } else {
-          switch (configuracionDelServidor.leveling.channel) {
-            case 'same': {
-              message.reply({ content })
-              break
-            }
-            case 'dm': {
-              try {
-                message.author.send({ content })
-              } catch (err) {
-                if (err) consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
-              }
-              break
-            }
-            default: {
-              break
-            }
-          }
+          actualizarDatosDelUsuario(message.guild, message.member, newExperience.toString(), userLevelParsed.toString())
         }
-      })
+
+        ClientCooldownManager.add(message.member, message.guild, new Command({ name: 'leveling.obtenerExperiencia', description: 'Obtener experiencia', cooldown: 60000 }))
+      }
+      )
+    }
+  }
+}
+
+export default new Module(
+  'Leveling',
+  'Leveling',
+  [new EventHook('messageCreate', obtenerExperiencia, 'noPrefix')],
+  {
+    enabled: 'boolean',
+    channel: 'string',
+    message: 'string',
+    difficulty: 'number',
+    card: {
+      background: 'string',
+      overlay: { color: 'string', opacity: 'number' }
+    }
+  },
+  {
+    enabled: false,
+    channel: '0000000000',
+    message: 'GG {user}, you just advanced to level {newlevel}!',
+    difficulty: 1,
+    card: {
+      background:
+        'https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/setup/defaultresourcesforguilds/backgroundforlevelingcards.jpg',
+      overlay: { color: '#030305', opacity: 75 }
+    }
+  }
+)
+
+async function sendLevelUpMessage(message: PinguMessage) {
+  obtenerDatosDelUsuario(message.guild, message.member).then((memberLevelingData) => {
+    const channelWhereLevelUpMessageIsSent = message.guild?.channels.cache.get(message.guildConfiguration.leveling.channel)
+
+    const content = reemplazarPlaceholdersConDatosReales(
+      message.guildConfiguration.leveling.message ||
+      'GG {player}, you just advanced to level {level}!',
+      message.member,
+      {
+        newlevel: (parseInt(memberData.level, 10) + 1).toString(),
+        oldlevel: parseInt(memberData.level, 10)
+      }
+    )
+
+    if (channelWhereLevelUpMessageIsSent) {
+      channelWhereLevelUpMessageIsSent.send({ content })
+    } else {
+      switch (message.guildConfiguration.leveling.channel) {
+        case 'same': {
+          message.reply({ content })
+          break
+        }
+        case 'dm': {
+          try {
+            message.author.send({ content })
+          } catch (err) {
+            Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
+          }
+          break
+        }
+        default: {
+          break
+        }
+      }
     }
   })
 }
@@ -90,10 +112,15 @@ module.exports.sendLevelUpMessage = message => {
 
 module.exports.getLeaderboard = async (guild) => {
   try {
-    const [members] = await Database.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id]).then(result => Object.prototype.hasOwnProperty.call(result, 'length') ? result : [])
+    const [members] = await Database.execute(
+      'SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25',
+      [guild.id]
+    ).then((result) =>
+      Object.prototype.hasOwnProperty.call(result, 'length') ? result : []
+    )
 
     let memberCount = 0
-    members.forEach(async member => {
+    members.forEach(async (member) => {
       try {
         member.user = await Client.users.fetch(member.member) // skipcq: JS-0040
       } catch {
@@ -109,19 +136,11 @@ module.exports.getLeaderboard = async (guild) => {
   }
 }
 
-const { registerFont, createCanvas, loadImage } = require('canvas')
-const { writeFileSync } = require('fs')
-const randomstring = require('randomstring')
-const isValidUrl = require('is-valid-http-url')
-const isImageUrl = require('is-image-url')
-const hexToRgba = require('hex-rgba')
-const { millify } = require('millify')
-
 registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
 
-function applyText (canvas, text, maxlimit) {
+function applyText(canvas, text, maxlimit) {
   const finalImageComposition = canvas.getContext('2d')
   let fontSize = maxlimit || 100
 
@@ -134,7 +153,16 @@ function applyText (canvas, text, maxlimit) {
 
 // Code from https://stackoverflow.com/a/3368118/17821331
 // eslint-disable-next-line max-params
-function roundRect (finalImageComposition, x, y, width, height, radius, fill, stroke) {
+function roundRect(
+  finalImageComposition,
+  x,
+  y,
+  width,
+  height,
+  radius,
+  fill,
+  stroke
+) {
   if (typeof stroke === 'undefined') {
     stroke = true
   }
@@ -156,7 +184,12 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
   finalImageComposition.beginPath()
   finalImageComposition.moveTo(x + radius.tl, y)
   finalImageComposition.lineTo(x + width - radius.tr, y)
-  finalImageComposition.quadraticCurveTo(x + width, y, x + width, y + radius.tr)
+  finalImageComposition.quadraticCurveTo(
+    x + width,
+    y,
+    x + width,
+    y + radius.tr
+  )
   finalImageComposition.lineTo(x + width, y + height - radius.br)
   finalImageComposition.quadraticCurveTo(
     x + width,
@@ -165,7 +198,12 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
     y + height
   )
   finalImageComposition.lineTo(x + radius.bl, y + height)
-  finalImageComposition.quadraticCurveTo(x, y + height, x, y + height - radius.bl)
+  finalImageComposition.quadraticCurveTo(
+    x,
+    y + height,
+    x,
+    y + height - radius.bl
+  )
   finalImageComposition.lineTo(x, y + radius.tl)
   finalImageComposition.quadraticCurveTo(x, y, x + radius.tl, y)
   finalImageComposition.closePath()
@@ -184,8 +222,10 @@ function roundRect (finalImageComposition, x, y, width, height, radius, fill, st
  */
 
 module.exports.generateRankCard = async (member) => {
-  obtenerDatosDelUsuario(member).then(async memberData => {
-    const attachmentPath = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`
+  obtenerDatosDelUsuario(member).then(async (memberData) => {
+    const attachmentPath = `./temp/${randomstring.generate({
+      charset: 'alphabetic'
+    })}.png`
 
     const canvas = createCanvas(1100, 320)
     const finalImageComposition = canvas.getContext('2d')
@@ -193,16 +233,22 @@ module.exports.generateRankCard = async (member) => {
     finalImageComposition.strokeStyle = 'rgba(0,0,0,0)'
 
     // Establecer fondo del canvas
-    if (member.guild.configuration.leveling.card.background && isValidUrl(member.guild.configuration.leveling.card.background) && isImageUrl(member.guild.configuration.leveling.card.background)) {
-      const background = await loadImage(member.guild.configuration.leveling.card.background)
+    if (
+      member.guild.configuration.leveling.card.background &&
+      isValidUrl(member.guild.configuration.leveling.card.background) &&
+      isImageUrl(member.guild.configuration.leveling.card.background)
+    ) {
+      const background = await loadImage(
+        member.guild.configuration.leveling.card.background
+      )
       const scale = Math.max(
         canvas.width / background.width,
         canvas.height / background.height
       )
       finalImageComposition.drawImage(
         background,
-        (canvas.width / 2) - ((background.width / 2) * scale),
-        (canvas.height / 2) - ((background.height / 2) * scale),
+        canvas.width / 2 - (background.width / 2) * scale,
+        canvas.height / 2 - (background.height / 2) * scale,
         background.width * scale,
         background.height * scale
       )
@@ -211,9 +257,19 @@ module.exports.generateRankCard = async (member) => {
         member.guild.configuration.leveling.card.overlay.color || '#272934',
         member.guild.configuration.leveling.card.overlay.opacity || 50
       )
-      roundRect(finalImageComposition, 16, 16, 1068, 290, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
+      roundRect(
+        finalImageComposition,
+        16,
+        16,
+        1068,
+        290,
+        10,
+        finalImageComposition.fillStyle,
+        finalImageComposition.strokeStyle
+      )
     } else {
-      finalImageComposition.fillStyle = member.guild.configuration.leveling.card.overlay.color || '#272934'
+      finalImageComposition.fillStyle =
+        member.guild.configuration.leveling.card.overlay.color || '#272934'
       finalImageComposition.fillRect(0, 0, canvas.width, canvas.height)
     }
 
@@ -227,10 +283,19 @@ module.exports.generateRankCard = async (member) => {
     finalImageComposition.font = '50px "Montserrat SemiBold"'
     finalImageComposition.fillStyle = 'rgba(255, 255, 255, 0.5)'
     finalImageComposition.textAlign = 'right'
-    finalImageComposition.fillText(`Rank #${memberData.lvlRank}  Level ${millify(memberData.lvlLevel)}`, 1050, 100)
+    finalImageComposition.fillText(
+      `Rank #${memberData.lvlRank}  Level ${millify(memberData.lvlLevel)}`,
+      1050,
+      100
+    )
 
     // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)} XP`
+    const actualVSrequired = `${millify(memberData.lvlExperience)} / ${millify(
+      memberData.lvlLevel *
+      memberData.lvlLevel *
+      member.guild.configuration.leveling.difficulty *
+      100
+    )} XP`
 
     finalImageComposition.font = '30px "Montserrat SemiBold"'
     finalImageComposition.textAlign = 'right'
@@ -239,11 +304,35 @@ module.exports.generateRankCard = async (member) => {
 
     // Añadir barra de progreso (backdrop)
     finalImageComposition.fillStyle = 'rgba(255,255,255, 0.3)'
-    roundRect(finalImageComposition, 295, 200, 755, 70, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
+    roundRect(
+      finalImageComposition,
+      295,
+      200,
+      755,
+      70,
+      10,
+      finalImageComposition.fillStyle,
+      finalImageComposition.strokeStyle
+    )
 
     // Añadir barra de progreso
     finalImageComposition.fillStyle = 'rgb(255,255,255)'
-    roundRect(finalImageComposition, 295, 200, Math.abs(memberData.lvlExperience / (((memberData.lvlLevel * memberData.lvlLevel) * member.guild.configuration.leveling.difficulty) * 100)) * 755, 70, 10, finalImageComposition.fillStyle, finalImageComposition.strokeStyle)
+    roundRect(
+      finalImageComposition,
+      295,
+      200,
+      Math.abs(
+        memberData.lvlExperience /
+        (memberData.lvlLevel *
+          memberData.lvlLevel *
+          member.guild.configuration.leveling.difficulty *
+          100)
+      ) * 755,
+      70,
+      10,
+      finalImageComposition.fillStyle,
+      finalImageComposition.strokeStyle
+    )
 
     // Añadir avatar de usuario
     finalImageComposition.beginPath()
@@ -251,7 +340,9 @@ module.exports.generateRankCard = async (member) => {
     finalImageComposition.closePath()
     finalImageComposition.clip()
 
-    const avatar = await loadImage(member.user.displayAvatarURL({ format: 'png', size: 512 }))
+    const avatar = await loadImage(
+      member.user.displayAvatarURL({ format: 'png', size: 512 })
+    )
     finalImageComposition.drawImage(avatar, 57, 57, 204, 204)
 
     const buffer = canvas.toBuffer('image/png')
@@ -268,8 +359,7 @@ module.exports.generateRankCard = async (member) => {
 module.exports.resetLeaderboard = (guild) => {
   if (!guild) throw new Error('Guild is required.')
 
-  Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id])
-    .catch(err => consolex.gestionarError(err))
+  Database.execute('DELETE FROM memberData WHERE guild = ?', [guild.id]).catch(
+    (err) => consolex.gestionarError(err)
+  )
 }
-
-module.exports.hooks = [{ event: 'messageCreate', function: module.exports.getExperience, type: 'noPrefix' }]
