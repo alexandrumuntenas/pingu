@@ -4,6 +4,8 @@
     "allowJs": true,
     "target": "ES2021",
     "moduleResolution": "node16",
+    "strict": true,
+    "alwaysStrict": true
   },
   "include": [
     "./src/**/*"

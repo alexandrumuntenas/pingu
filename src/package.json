@@ -58,6 +58,7 @@
   },
   "homepage": "https://github.com/alexandrumuntenas/pingu#readme",
   "devDependencies": {
+    "@types/hex-rgba": "^1.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.38",
     "@types/randomstring": "^1.1.8",
