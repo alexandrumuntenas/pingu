@@ -27,7 +27,10 @@ function loopDeComprobacion (modeloDeConfiguracion: { [index: string]: any }, co
   return { configuracionProcesada, errores }
 }
 
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada: { [key: string]: any }) {
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportadaUnknown: unknown) {
+  if (!(configuracionImportadaUnknown instanceof Object)) throw new Error('configuracionImportada no es un objeto.')
+
+  const configuracionImportada: { [index: string]: any } = { ...configuracionImportadaUnknown }
   const errores: string[] = []
   const configuracionProcesada: { [index: string]: any } = {}
 
