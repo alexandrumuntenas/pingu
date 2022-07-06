@@ -19,34 +19,16 @@ class GuildManager {
     this.guilds = ClientUser.guilds.cache.toJSON()
   }
 
-  actulizarConfiguracionDelServidor (
-    guild: Guild,
-    datos: { modulo: Module; nuevaConfiguracion: { [key: string]: any } } // skipcq: JS-0323
-  ) {
+  actulizarConfiguracionDelServidor (guild: Guild, datos: { modulo: Module; nuevaConfiguracion: { [key: string]: any } }) { // skipcq: JS-0323
     if (!ClientModuleManager.comprobarSiElModuloExiste(datos.modulo.nombre)) {
       throw new Error('The module does not exist')
     }
     this.obtenerConfiguracionDelServidor(guild).then(
-      (configuracionDelServidor) => {
-        if (
-          typeof configuracionDelServidor[datos.modulo.nombre] === 'object' &&
-          !Array.isArray(configuracionDelServidor[datos.modulo.nombre]) &&
-          configuracionDelServidor[datos.modulo.nombre] !== null
-        ) {
-          configuracionDelServidor[datos.modulo.nombre] =
-            procesarObjetosdeConfiguracion(
-              configuracionDelServidor[datos.modulo.nombre],
-              datos.nuevaConfiguracion
-            )
+      (configuracionDelServidor: { [index: string]: any }) => {
+        if (typeof configuracionDelServidor[datos.modulo.nombre] === 'object' && !Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && configuracionDelServidor[datos.modulo.nombre] !== null) {
+          configuracionDelServidor[datos.modulo.nombre] = procesarObjetosdeConfiguracion(configuracionDelServidor[datos.modulo.nombre], datos.nuevaConfiguracion)
           try {
-            PoolConnection.execute(
-              'UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?',
-              [
-                datos.modulo.nombre,
-                JSON.stringify(configuracionDelServidor[datos.modulo.nombre]),
-                guild.id
-              ]
-            )
+            PoolConnection.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(configuracionDelServidor[datos.modulo.nombre]), guild?.id])
             return null
           } catch (err) {
             Consolex.gestionarError(err)
@@ -62,7 +44,7 @@ class GuildManager {
               [
                 datos.modulo.nombre,
                 JSON.stringify(datos.nuevaConfiguracion),
-                guild.id
+                guild?.id
               ]
             )
             return null
@@ -73,7 +55,7 @@ class GuildManager {
           try {
             PoolConnection.execute(
               'UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?',
-              [datos.modulo.nombre, datos.nuevaConfiguracion, guild.id]
+              [datos.modulo.nombre, datos.nuevaConfiguracion, guild?.id]
             )
             return null
           } catch (err) {
@@ -85,69 +67,45 @@ class GuildManager {
   }
 
   async crearNuevoRegistroDeServidor (guild: Guild) {
-    const configuracionDelServidor = {}
+    const configuracionDelServidor: { [index: string]: any } = {}
     try {
-      await PoolConnection.execute(
-        'INSERT INTO `guildConfigurations` (guild) VALUES (?)',
-        [guild.id]
-      )
+      await PoolConnection.execute('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild?.id])
       ClientModuleManager.modulosDisponibles.forEach((modulo) => {
-        configuracionDelServidor[modulo.nombre] =
-          modulo.configuracionPredeterminada
-        this.actulizarConfiguracionDelServidor(guild, {
-          modulo,
-          nuevaConfiguracion: modulo.configuracionPredeterminada
-        })
+        configuracionDelServidor[modulo.nombre] = modulo.configuracionPredeterminada
+        this.actulizarConfiguracionDelServidor(guild, { modulo, nuevaConfiguracion: modulo.configuracionPredeterminada })
       })
     } catch (err) {
       Consolex.gestionarError(err)
     }
   }
 
-  async obtenerConfiguracionDelServidor (guild: Guild): Promise<Object> {
-    try {
-      const configuracionDelServidor = await PoolConnection.execute(
-        'SELECT * FROM `guildConfigurations` WHERE guild = ?',
-        [guild.id]
-      ).then((result) => result[0])
-      const configuracionDelServidorProcesado = {}
-      if (configuracionDelServidor) {
-        Object.keys(configuracionDelServidor).forEach((module) => {
-          try {
-            configuracionDelServidorProcesado[module] = JSON.parse(
-              configuracionDelServidor[module].trim()
-            )
-          } catch (err2) {
-            if (err2.constructor.name !== SyntaxError.name) {
-              Consolex.gestionarError(err2)
-            }
-          }
-        })
+  async obtenerConfiguracionDelServidor (guild: Guild): Promise<{ [key: string]: any }> {
+    const configuracionDelServidor: { [index: string]: any } = await PoolConnection.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0]).catch((obtenerDatosError) => Consolex.gestionarError(obtenerDatosError))
+    const configuracionDelServidorProcesado: { [index: string]: any } = {}
 
-        return configuracionDelServidorProcesado || { guild: guild.id }
-      }
-
-      try {
-        this.crearNuevoRegistroDeServidor(guild).then(() => {
-          return this.obtenerConfiguracionDelServidor(guild)
-        }).catch(err => Consolex.gestionarError(err))
-      } catch (err2) {
-        Consolex.gestionarError(err2)
-      }
-    } catch (err) {
-      Consolex.gestionarError(err)
+    if (!configuracionDelServidor) {
+      this.crearNuevoRegistroDeServidor(guild).then(() => {
+        return this.obtenerConfiguracionDelServidor(guild)
+      }).catch(err => Consolex.gestionarError(err))
     }
+
+    Object.keys(configuracionDelServidor).forEach((module) => {
+      try {
+        configuracionDelServidorProcesado[module] = JSON.parse(configuracionDelServidor[module].trim())
+      } catch (jsonParseError) {
+        if (jsonParseError instanceof Error && jsonParseError.constructor.name !== SyntaxError.name) { Consolex.gestionarError(jsonParseError) }
+      }
+    })
+
+    return configuracionDelServidorProcesado
   }
 
   async obtenerConfiguracionDelServidorPorModulo (guild: Guild, modulo: string) {
     try {
-      const configuracionDelServidor = await PoolConnection.execute(
-        'SELECT * FROM `guildConfigurations` WHERE guild = ?',
-        [guild.id]
-      ).then((result) => result[0])
+      const configuracionDelServidor: { [index: string]: any } = await PoolConnection.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0])
 
       if (configuracionDelServidor && typeof modulo === 'string') {
-        return configuracionDelServidor[modulo.toLowerCase()] || { guild: guild.id }
+        return configuracionDelServidor[modulo.toLowerCase()] || { guild: guild?.id }
       }
 
       try {
@@ -169,7 +127,7 @@ class GuildManager {
       tablasDisponibles.forEach((table) => {
         try {
           PoolConnection.execute(`DELETE FROM ${table} WHERE guild = ?`, [
-            guild.id
+            guild?.id
           ])
         } catch (err) {
           Consolex.gestionarError(err)
@@ -180,13 +138,11 @@ class GuildManager {
     }
   }
 
-  async exportarConfiguracionDelServidor (guild: Guild): Promise<string> {
+  async exportarConfiguracionDelServidor (guild: Guild): Promise<string | undefined> {
     const attachmentPath = `./temp/${randomstring.generate({
       charset: 'alphabetic'
     })}.yml`
-    const configuracionDelServidor = await this.obtenerConfiguracionDelServidor(
-      guild
-    )
+    const configuracionDelServidor = await this.obtenerConfiguracionDelServidor(guild)
 
     if (
       configuracionDelServidor &&
@@ -220,18 +176,13 @@ class GuildManager {
       fileName: nombreTemporalAleatorioDelArchivo
     }).download()
 
-    const { configuracionProcesada, errores } =
-      ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(
-        YAML.load(
-          readFileSync(nombreTemporalAleatorioDelArchivo, {
-            encoding: 'utf-8'
-          })
-        )
-      )
+    const datosAjustados = ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(nombreTemporalAleatorioDelArchivo, { encoding: 'utf-8' })))
+    const errores = datosAjustados.errores
+    const configuracionProcesada: { [index: string]: any } = datosAjustados.configuracionProcesada
 
     const registro = [
-      `Importando configuración para el servidor ${guild.name}`,
-      `Guild: ${guild.id}`,
+      `Importando configuración para el servidor ${guild?.name}`,
+      `Guild: ${guild?.id}`,
       `Fecha (horario del bot): ${new Date().toLocaleString()}`,
       ...errores
     ]
@@ -240,17 +191,13 @@ class GuildManager {
 
     ClientModuleManager.modulosDisponibles.forEach((modulo) => {
       try {
-        registro.push(
-          `INF: Importando configuración para el módulo ${modulo.nombre}`
-        )
+        registro.push(`INF: Importando configuración para el módulo ${modulo.nombre}`)
         this.actulizarConfiguracionDelServidor(guild, {
           modulo,
           nuevaConfiguracion: configuracionProcesada[modulo.nombre] || {}
         })
-      } catch (err) {
-        registro.push(
-          `ERR: Problemas al importar la configuración para el módulo ${modulo.nombre}: ${err.message}`
-        )
+      } catch (actualizarConfiguracionDelServidorError) {
+        registro.push(`ERR: Problemas al importar la configuración para el módulo ${modulo.nombre}: ${actualizarConfiguracionDelServidorError}`)
       }
       posicionArrayModulos++
 
