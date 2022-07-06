@@ -1,4 +1,4 @@
-import { Attachment, PermissionsBitField } from 'discord.js'
+import { AttachmentBuilder, PermissionsBitField } from 'discord.js'
 import { ClientGuildManager, ClientMessageTemplate } from '../../client'
 import { obtenerTraduccion } from '../../core/i18nManager'
 import Command from '../../classes/Command'
@@ -9,7 +9,7 @@ export default new Command({
   permissions: [PermissionsBitField.Flags.ManageGuild],
   runCommand: (message) => {
     ClientGuildManager.exportarConfiguracionDelServidor(message.guild).then((rutaLocalDelArchivo) => {
-      message.reply({ embeds: [ClientMessageTemplate.info(obtenerTraduccion('YAMLCONFIGURATION_EXPORT_INFORMATION', message.guild?.preferredLocale))], files: [new Attachment(`${message.guild?.id}_configuration.yaml`)] })
+      message.reply({ embeds: [ClientMessageTemplate.info(obtenerTraduccion('YAMLCONFIGURATION_EXPORT_INFORMATION', message.guild?.preferredLocale))], files: [new AttachmentBuilder(`${message.guild?.id}_configuration.yaml`)] })
     })
   }
 })
