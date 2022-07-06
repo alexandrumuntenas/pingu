@@ -76,5 +76,6 @@
   "scripts": {
     "dev": "nodemon . --ignore cooldowns.json",
     "checktranslations": "node i18n/checktranslations.js"
-  }
+  },
+  "type": "module"
 }
