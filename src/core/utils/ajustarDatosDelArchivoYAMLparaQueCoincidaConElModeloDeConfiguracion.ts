@@ -1,12 +1,12 @@
 /* eslint-disable valid-typeof */
 import { ClientModuleManager } from '../../client'
 
-function loopDeComprobacion (modeloDeConfiguracion: Object, configuracionAComparar: Object) {
-  const configuracionProcesada = {}
+function loopDeComprobacion (modeloDeConfiguracion: { [index: string]: any }, configuracionAComparar: { [index: string]: any }) {
+  const configuracionProcesada: { [index: string]: any } = {}
   const propiedadesModeloConfiguracion = Object.keys(modeloDeConfiguracion)
   const propiedadesConfiguracionAComparar = Object.keys(configuracionAComparar || {})
 
-  const errores = []
+  const errores: string[] = []
 
   propiedadesModeloConfiguracion.forEach(propiedad => {
     if (propiedadesConfiguracionAComparar.includes(propiedad)) {
@@ -27,9 +27,9 @@ function loopDeComprobacion (modeloDeConfiguracion: Object, configuracionACompar
   return { configuracionProcesada, errores }
 }
 
-function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada: Object) {
-  const errores = []
-  const configuracionProcesada = {}
+function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion (configuracionImportada: { [key: string]: any }) {
+  const errores: string[] = []
+  const configuracionProcesada: { [index: string]: any } = {}
 
   ClientModuleManager.modulosDisponibles.forEach(module => {
     if (Object.prototype.hasOwnProperty.call(configuracionImportada, module.nombre)) {
