@@ -13,6 +13,7 @@ import * as randomstring from 'randomstring'
 import * as isValidUrl from 'is-valid-http-url'
 import * as isImageUrl from 'is-image-url'
 import * as hexToRgba from 'hex-rgba'
+import { ChannelType } from 'discord-api-types/v10'
 
 function giveMemberRoles (member: GuildMember) {
   ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'welcome').then((configuracionDelModulo) => {
@@ -30,17 +31,17 @@ function sendWelcomeMessage (member: GuildMember) {
     if (configuracionDelModulo.enabled && configuracionDelModulo.channel) {
       const canalDondeSeEnviaElMensaje = member.guild.channels.cache.get(configuracionDelModulo.channel)
 
-      if (!canalDondeSeEnviaElMensaje) return
+      if (canalDondeSeEnviaElMensaje && canalDondeSeEnviaElMensaje?.type === ChannelType.GuildText) {
+        const message: { content: string, files: Attachment[] } = { content: reemplazarPlaceholdersConDatosReales(configuracionDelModulo.message || '{member} joined {server}!', member), files: [] }
 
-      const message = { content: reemplazarPlaceholdersConDatosReales(configuracionDelModulo.message || '{member} joined {server}!', member), files: [] }
+        if (configuracionDelModulo.card && Object.prototype.hasOwnProperty.call(configuracionDelModulo.card, 'enabled') && configuracionDelModulo.card.enabled) {
+          generateWelcomeCard(member).then((path) => {
+            message.files.push(new Attachment(path))
+          })
+        }
 
-      if (configuracionDelModulo.card && Object.prototype.hasOwnProperty.call(configuracionDelModulo.card, 'enabled') && configuracionDelModulo.card.enabled) {
-        generateWelcomeCard(member).then((path) => {
-          message.files = [new Attachment(path)]
-        })
+        canalDondeSeEnviaElMensaje?.send(message)
       }
-
-      canalDondeSeEnviaElMensaje?.send(message)
     }
   })
 }

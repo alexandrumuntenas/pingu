@@ -3,6 +3,8 @@ import Module from '../classes/Module'
 import { ClientGuildManager } from '../client'
 import { GuildMember } from 'discord.js'
 import reemplazarPlaceholdersConDatosReales from '../core/utils/reemplazarPlaceholdersConDatosReales'
+import Consolex from '../core/consolex'
+import { ChannelType } from 'discord-api-types/v10'
 
 export default new Module(
   'Farewell',
@@ -33,23 +35,20 @@ export default new Module(
               return
             }
 
-            const channel = member.guild.channels.cache.get(
-              configuracionDelServidor.farewell.channel
-            )
-            if (!channel) return
+            try {
+              const channel = member.guild.channels.cache.get(configuracionDelServidor.farewell.channel)
 
-            channel.send(
-              reemplazarPlaceholdersConDatosReales(
-                configuracionDelServidor.farewell.message ||
-                '{member} left {server}!',
-                member
-              )
-            )
+              if (channel?.type === ChannelType.GuildText) {
+                channel.send(reemplazarPlaceholdersConDatosReales(configuracionDelServidor.farewell.message || '{member} left {server}!', member))
+              }
+            } catch {
+              Consolex.debug('No se ha podido entregar un mensaje de despedida. El canal especificado no era el apropiado.')
+            }
           }
         }
       })
     })
   ],
   { enabled: 'boolean', channel: 'string', message: 'string' },
-  { enabled: false, message: "**{user.tag}** just left the server" }
+  { enabled: false, message: '**{user.tag}** just left the server' }
 )
