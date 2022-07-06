@@ -138,8 +138,10 @@ class GuildManager {
     }
   }
 
-  async exportarConfiguracionDelServidor (guild: Guild): Promise<string | undefined> {
-    const attachmentPath = `./temp/${randomstring.generate({
+  async exportarConfiguracionDelServidor (guild: Guild | null): Promise<string | undefined> {
+    if (!(guild instanceof Guild)) throw new Error('El "Guild" especificado no existe.')
+
+    const AttachmentBuilderPath = `./temp/${randomstring.generate({
       charset: 'alphabetic'
     })}.yml`
     const configuracionDelServidor = await this.obtenerConfiguracionDelServidor(guild)
@@ -148,8 +150,8 @@ class GuildManager {
       configuracionDelServidor &&
       typeof configuracionDelServidor === 'object'
     ) {
-      writeFileSync(attachmentPath, YAML.dump(configuracionDelServidor))
-      return attachmentPath
+      writeFileSync(AttachmentBuilderPath, YAML.dump(configuracionDelServidor))
+      return AttachmentBuilderPath
     } else {
       this.crearNuevoRegistroDeServidor(guild)
         .then(() => {
@@ -161,17 +163,17 @@ class GuildManager {
     }
   }
 
-  async importarConfiguracionDelServidor (
-    guild: Guild,
-    attachmentSource: string
-  ) {
+  async importarConfiguracionDelServidor (guild: Guild | null, attachmentBuilderSource: string | undefined) {
+    if (!(guild instanceof Guild)) throw new Error('El "Guild" especificado no existe.')
+    if (typeof attachmentBuilderSource !== 'string') throw new Error('El "Guild" especificado no existe.')
+
     const nombreTemporalAleatorioDelArchivo = `import_${randomstring.generate({
       charset: 'alphabetic'
     })}.yml`
 
     // eslint-disable-next-line new-cap
     await new Downloader.default({
-      url: attachmentSource,
+      url: attachmentBuilderSource,
       directory: './temp',
       fileName: nombreTemporalAleatorioDelArchivo
     }).download()
