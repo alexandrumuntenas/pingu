@@ -1,22 +1,21 @@
-const { BitField } = require('discord.js')
-const { importarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
-const { plantillas } = require('../../core/messageManager')
+import { PermissionsBitField } from 'discord.js'
+import { ClientGuildManager, ClientMessageTemplate } from '../../client'
+import { obtenerTraduccion } from '../../core/i18nManager'
+import Command from '../../classes/Command'
 
-const i18n = require('../../core/i18nManager')
-
-module.exports = {
+export default new Command({
   name: 'import',
-  cooldown: 1000,
-  permissions: [BitField.Flags.ManageGuild],
-  isConfigurationCommand: true,
-  runCommand (message) {
+  description: 'Importar la configuración de un servidor',
+  permissions: [PermissionsBitField.Flags.ManageGuild],
+  runCommand: (message) => {
     if (message.attachments.first()) {
-      importarDatosDelServidorEnFormatoYAML(message.guild, message.attachments.first().url, (err) => {
-        if (err) return message.reply({ embeds: [plantillas.errorLog(i18n.obtenerTraduccion(message.preferredLocale, 'YAMLCONFIGURATION_IMPORT_ERROR'), err)] })
-        message.reply({ embeds: [plantillas.conexito(i18n.obtenerTraduccion(message.preferredLocale, 'YAMLCONFIGURATION_IMPORT_SUCCESS'))] })
+      ClientGuildManager.importarConfiguracionDelServidor(message.guild, message.attachments.first()?.url).then(() => {
+        message.reply({ embeds: [ClientMessageTemplate.success(obtenerTraduccion('YAMLCONFIGURATION_IMPORT_SUCCESS', message.guild?.preferredLocale))] })
+      }).catch((error) => {
+        message.reply({ embeds: [ClientMessageTemplate.error(obtenerTraduccion('YAMLCONFIGURATION_IMPORT_ERROR', message.guild?.preferredLocale), error)] })
       })
     } else {
-      message.reply({ embeds: [plantillas.error(i18n.obtenerTraduccion(message.preferredLocale, 'YAMLCONFIGURATION_IMPORT_FILENOTPROVIDED'))] })
+      message.reply({ embeds: [ClientMessageTemplate.error(obtenerTraduccion('YAMLCONFIGURATION_IMPORT_FILENOTPROVIDED', message.guild?.preferredLocale))] })
     }
   }
-}
+})

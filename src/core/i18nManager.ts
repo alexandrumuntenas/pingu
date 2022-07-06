@@ -2,7 +2,7 @@ import stringPlaceholder from 'string-placeholder'
 import { existsSync } from 'fs'
 import Consolex from './consolex'
 
-function obtenerTraduccion (idioma: string, traduccion: string, parametros?: Object): string {
+function obtenerTraduccion (traduccion: string, idioma?: string, parametros?: Object): string {
   let idiomaAUsar = idioma || 'es-ES'
   if (!existsSync(`./core/locales/${idiomaAUsar}.json`)) {
     Consolex.gestionarError(`No se encontró el archivo de idioma ${idiomaAUsar}.json`)
@@ -27,6 +27,6 @@ function obtenerTraduccion (idioma: string, traduccion: string, parametros?: Obj
   return textoTraducido
 }
 
-const avaliableLocales = []
+const avaliableLocales: string[] = []
 
 export { obtenerTraduccion, avaliableLocales }

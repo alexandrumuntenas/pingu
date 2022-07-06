@@ -1,17 +1,15 @@
-const { BitField, Attachment } = require('discord.js')
-const { exportarDatosDelServidorEnFormatoYAML } = require('../../core/guildManager')
-const { plantillas } = require('../../core/messageManager')
+import { Attachment, PermissionsBitField } from 'discord.js'
+import { ClientGuildManager, ClientMessageTemplate } from '../../client'
+import { obtenerTraduccion } from '../../core/i18nManager'
+import Command from '../../classes/Command'
 
-const i18n = require('../../core/i18nManager')
-
-module.exports = {
+export default new Command({
   name: 'export',
-  cooldown: 1000,
-  permissions: [BitField.Flags.ManageGuild],
-  isConfigurationCommand: true,
-  runCommand (message) {
-    exportarDatosDelServidorEnFormatoYAML(message.guild, rutaLocalDelArchivo => {
-      message.reply({ embeds: [plantillas.informacion(i18n.obtenerTraduccion(message.preferredLocale, 'YAMLCONFIGURATION_EXPORT_INFORMATION'))], files: [new Attachment(rutaLocalDelArchivo, `${message.guild}_${message.guild.id}.yaml`)] })
+  description: 'Exportar la configuración de un servidor',
+  permissions: [PermissionsBitField.Flags.ManageGuild],
+  runCommand: (message) => {
+    ClientGuildManager.exportarConfiguracionDelServidor(message.guild).then((rutaLocalDelArchivo) => {
+      message.reply({ embeds: [ClientMessageTemplate.info(obtenerTraduccion('YAMLCONFIGURATION_EXPORT_INFORMATION', message.guild?.preferredLocale))], files: [new Attachment(`${message.guild?.id}_configuration.yaml`)] })
     })
   }
-}
+})

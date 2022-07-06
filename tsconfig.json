@@ -5,7 +5,8 @@
     "target": "ES2021",
     "moduleResolution": "node16",
     "strict": true,
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "allowSyntheticDefaultImports": true,
   },
   "include": [
     "./src/**/*"

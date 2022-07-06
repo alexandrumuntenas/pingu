@@ -1,14 +1,15 @@
-import { PermissionsBitField, SlashCommandBuilder } from 'discord.js'
+import { Interaction, PermissionsBitField, SlashCommandBuilder } from 'discord.js'
+import { PinguMessage } from '../events/messageCreate'
 class Command {
   name: string
   description: string
-  module: string
-  cooldown: number
-  parameters: string
-  permissions: Array<PermissionsBitField>
-  interaction: SlashCommandBuilder
-  runInteraction: Function
-  runCommand: Function
+  module?: string
+  cooldown?: number
+  parameters?: string
+  permissions?: Array<PermissionsBitField | bigint>
+  interaction?: SlashCommandBuilder
+  runInteraction?: Function
+  runCommand?: Function
 
   constructor (command: {
     name: string;
@@ -16,10 +17,10 @@ class Command {
     module?: string;
     cooldown?: number;
     parameters?: string;
-    permissions?: Array<PermissionsBitField>,
-    interaction: SlashCommandBuilder;
-    runInteraction: (interaction) => void;
-    runCommand: (message) => void;
+    permissions?: Array<PermissionsBitField | bigint>,
+    interaction?: SlashCommandBuilder;
+    runInteraction?: (interaction: Interaction) => void;
+    runCommand?: (message: PinguMessage) => void;
   }) {
     this.name = command.name
     this.description = command.description
