@@ -3,7 +3,7 @@
     "outDir": "./built",
     "allowJs": true,
     "target": "ES2021",
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "strict": true,
     "alwaysStrict": true,
     "allowSyntheticDefaultImports": true,
