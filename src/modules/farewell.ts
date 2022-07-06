@@ -41,7 +41,7 @@ export default new Module(
             channel.send(
               reemplazarPlaceholdersConDatosReales(
                 configuracionDelServidor.farewell.message ||
-                  '{member} left {server}!',
+                '{member} left {server}!',
                 member
               )
             )
@@ -51,5 +51,5 @@ export default new Module(
     })
   ],
   { enabled: 'boolean', channel: 'string', message: 'string' },
-  { enabled: false }
+  { enabled: false, message: "**{user.tag}** just left the server" }
 )

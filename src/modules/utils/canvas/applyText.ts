@@ -1,6 +1,6 @@
 import { Canvas } from 'canvas'
 
-function applyText (canvas: Canvas, text: string, maxlimit: number) {
+function applyText (canvas: Canvas, text: string, maxlimit?: number) {
   const finalImageComposition = canvas.getContext('2d')
   let fontSize = maxlimit || 100
 
