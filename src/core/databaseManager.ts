@@ -1,4 +1,5 @@
 import Consolex from './consolex'
+
 import { createPool } from 'mysql2/promise'
 import { readdirSync, readFileSync } from 'fs'
 
@@ -13,14 +14,13 @@ const PoolConnection = createPool({
   queueLimit: 0
 })
 
-let tablasDisponibles = []
+let tablasDisponibles: string[] = []
 
 function comprobarSiExistenTodasLasTablasNecesarias () {
-  Consolex.info(
-    'DatabaseManager: Comprobando si existen todas las tablas necesarias...'
-  )
+  Consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
+
   const consultas = readdirSync('./database/')
-  const tablasYConsultas = {}
+  const tablasYConsultas: { [key: string]: string } = {}
 
   consultas.forEach((file) => {
     if (file.endsWith('.sql')) {
@@ -33,26 +33,17 @@ function comprobarSiExistenTodasLasTablasNecesarias () {
   tablasDisponibles.forEach((tabla) => {
     try {
       PoolConnection.execute(tablasYConsultas[tabla]).then(() => {
-        return Consolex.info(
-          `DatabaseManager: La tabla ${tabla} se ha creado correctamente.`
-        )
+        return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
       })
-    } catch (err) {
-      if (err && err.code === 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.info(
-          `DatabaseManager: La tabla ${tabla} se encuentra presente.`
-        )
-      } else if (err && err.code !== 'ER_TABLE_EXISTS_ERROR') {
-        return Consolex.error(
-          `DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`
-        )
-      }
+    } catch (error: unknown) {
+      console.log(typeof error)
+      /* if (error.code === 'ER_TABLE_EXISTS_ERROR') {
+        return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
+      } else if (error.code !== 'ER_TABLE_EXISTS_ERROR') {
+        return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
+      } */
     }
   })
 }
 
-export {
-  PoolConnection,
-  tablasDisponibles,
-  comprobarSiExistenTodasLasTablasNecesarias
-}
+export { PoolConnection, tablasDisponibles, comprobarSiExistenTodasLasTablasNecesarias }
