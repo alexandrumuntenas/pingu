@@ -5,7 +5,6 @@
   "remoteUser": "node",
   "extensions": [
     "dbaeumer.vscode-eslint",
-    "GitHub.copilot",
     "eamodio.gitlens",
     "tal7aouy.icons",
     "oderwat.indent-rainbow",
