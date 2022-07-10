@@ -4,7 +4,7 @@ import { GuildMember } from 'discord.js'
 
 export default new Event('guildMemberRemove', (member: GuildMember) => {
   if (member.user.id !== ClientUser.user.id) {
-    ClientEventManager.ejecutarFuncionesDeTerceros('guildMemberRemove', null, member)
+    ClientEventManager.deprecatedEjecutarFuncionesDeterceros('guildMemberRemove', null, member)
     ClientMemberManager.eliminarDatosDelUsuario(member)
   }
 })
