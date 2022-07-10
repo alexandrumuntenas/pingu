@@ -79,11 +79,10 @@ async function obtenerExperiencia (message: PinguMessage) {
       const userLevelParsed = parseInt(memberLevelingData.level, 10)
 
       if (newExperience >= ((((userLevelParsed + 1) ^ 2) * message.guildConfiguration.leveling.difficulty) * 100)) {
-        actualizarDatosDelUsuario(message.member, newExperience.toString(), (userLevelParsed + 1).toString()).then(() => {
-          sendLevelUpMessage(message)
-        })
+        await actualizarDatosDelUsuario(message.member, newExperience.toString(), (userLevelParsed + 1).toString())
+        sendLevelUpMessage(message).catch((sendLevelUpMessageError) => Consolex.gestionarError(sendLevelUpMessageError))
       } else {
-        actualizarDatosDelUsuario(message.member, newExperience.toString(), userLevelParsed.toString())
+        await actualizarDatosDelUsuario(message.member, newExperience.toString(), userLevelParsed.toString())
       }
 
       ClientCooldownManager.add(message.member, { name: 'leveling.obtenerExperiencia', cooldown: 60000 })
@@ -124,81 +123,80 @@ async function generateRankCard (member: GuildMember): Promise<string> {
 
   const configuracionDelModulo = await ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'leveling')
 
-  obtenerDatosDelUsuario(member).then(async (memberLevelingData) => {
-    const canvasWidth = 1100
-    const canvasHeight = 320
+  const memberLevelingData = await obtenerDatosDelUsuario(member)
+  const canvasWidth = 1100
+  const canvasHeight = 320
 
-    const canvasContext = createCanvas(canvasWidth, canvasHeight)
-    const canvas = canvasContext.getContext('2d')
+  const canvasContext = createCanvas(canvasWidth, canvasHeight)
+  const canvas = canvasContext.getContext('2d')
 
-    canvas.strokeStyle = 'rgba(0,0,0,0)'
+  canvas.strokeStyle = 'rgba(0,0,0,0)'
 
-    // Establecer fondo del canvas
-    if (configuracionDelModulo.card.background && isValidUrl(configuracionDelModulo.card.background) && isImageUrl(configuracionDelModulo.card.background)) {
-      const background = await loadImage(configuracionDelModulo.card.background)
-      const scale = Math.max(
-        canvasWidth / background.width,
-        canvasHeight / background.height
-      )
-      canvas.drawImage(
-        background,
-        canvasWidth / 2 - (background.width / 2) * scale,
-        canvasHeight / 2 - (background.height / 2) * scale,
-        background.width * scale,
-        background.height * scale
-      )
-
-      canvas.fillStyle = hexToRgba(configuracionDelModulo.card.overlay.color || '#272934', configuracionDelModulo.card.overlay.opacity || 50)
-      rectangulosConBordesRedondeados(canvas, { x: 16, y: 16, width: 1068, height: 290, radius: 10 })
-    } else {
-      canvas.fillStyle =
-        configuracionDelModulo.card.overlay.color || '#272934'
-      canvas.fillRect(0, 0, canvasWidth, canvasHeight)
-    }
-
-    // Escribir usuario
-    canvas.font = applyText(canvasContext, member.user.tag, 40)
-    canvas.textAlign = 'left'
-    canvas.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    canvas.fillText(`${member.user.tag}`, 295, 180, 500)
-
-    // Escribir nivel, experiencia y rango
-    canvas.font = '50px "Montserrat SemiBold"'
-    canvas.fillStyle = 'rgba(255, 255, 255, 0.5)'
-    canvas.textAlign = 'right'
-    canvas.fillText(`Rank #${memberLevelingData.rank}  Level ${millify(parseInt(memberLevelingData.level, 10))}`, 1050, 100)
-
-    // Escribir progreso actual (actual/necesario)
-    const actualVSrequired = `${millify(parseInt(memberLevelingData.experience, 10))} / ${millify(((((parseInt(memberLevelingData.level, 10) + 1) ^ 2) * configuracionDelModulo.difficulty) * 100))} XP`
-
-    canvas.font = '30px "Montserrat SemiBold"'
-    canvas.textAlign = 'right'
-    canvas.fillStyle = 'rgba(255, 255, 255, 0.8)'
-    canvas.fillText(actualVSrequired, 1050, 180)
-
-    // Añadir barra de progreso (backdrop)
-    canvas.fillStyle = 'rgba(255,255,255, 0.3)'
-    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10 })
-    // Añadir barra de progreso
-    canvas.fillStyle = 'rgb(255,255,255)'
-    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10 })
-
-    canvas.fillStyle = 'rgb(255,255,255)'
-    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: Math.abs(parseInt(memberLevelingData.level, 10) / ((((parseInt(memberLevelingData.level, 10) + 1) ^ 2) * configuracionDelModulo.difficulty) * 100) * 755), height: 70, radius: 10 })
-
-    // Añadir avatar de usuario
-    canvas.beginPath()
-    canvas.arc(159, 159, 102, 0, Math.PI * 2, true)
-    canvas.closePath()
-    canvas.clip()
-
-    const avatar = await loadImage(
-      member.user.displayAvatarURL({ size: 512 })
+  // Establecer fondo del canvas
+  if (configuracionDelModulo.card.background && isValidUrl(configuracionDelModulo.card.background) && isImageUrl(configuracionDelModulo.card.background)) {
+    const background = await loadImage(configuracionDelModulo.card.background)
+    const scale = Math.max(
+      canvasWidth / background.width,
+      canvasHeight / background.height
     )
-    canvas.drawImage(avatar, 57, 57, 204, 204)
+    canvas.drawImage(
+      background,
+      canvasWidth / 2 - (background.width / 2) * scale,
+      canvasHeight / 2 - (background.height / 2) * scale,
+      background.width * scale,
+      background.height * scale
+    )
 
-    writeFileSync(AttachmentBuilderPath, canvasContext.toBuffer('image/png'))
-  })
+    canvas.fillStyle = hexToRgba(configuracionDelModulo.card.overlay.color || '#272934', configuracionDelModulo.card.overlay.opacity || 50)
+    rectangulosConBordesRedondeados(canvas, { x: 16, y: 16, width: 1068, height: 290, radius: 10 })
+  } else {
+    canvas.fillStyle =
+      configuracionDelModulo.card.overlay.color || '#272934'
+    canvas.fillRect(0, 0, canvasWidth, canvasHeight)
+  }
+
+  // Escribir usuario
+  canvas.font = applyText(canvasContext, member.user.tag, 40)
+  canvas.textAlign = 'left'
+  canvas.fillStyle = 'rgba(255, 255, 255, 0.8)'
+  canvas.fillText(`${member.user.tag}`, 295, 180, 500)
+
+  // Escribir nivel, experiencia y rango
+  canvas.font = '50px "Montserrat SemiBold"'
+  canvas.fillStyle = 'rgba(255, 255, 255, 0.5)'
+  canvas.textAlign = 'right'
+  canvas.fillText(`Rank #${memberLevelingData.rank}  Level ${millify(parseInt(memberLevelingData.level, 10))}`, 1050, 100)
+
+  // Escribir progreso actual (actual/necesario)
+  const actualVSrequired = `${millify(parseInt(memberLevelingData.experience, 10))} / ${millify(((((parseInt(memberLevelingData.level, 10) + 1) ^ 2) * configuracionDelModulo.difficulty) * 100))} XP`
+
+  canvas.font = '30px "Montserrat SemiBold"'
+  canvas.textAlign = 'right'
+  canvas.fillStyle = 'rgba(255, 255, 255, 0.8)'
+  canvas.fillText(actualVSrequired, 1050, 180)
+
+  // Añadir barra de progreso (backdrop)
+  canvas.fillStyle = 'rgba(255,255,255, 0.3)'
+  rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10 })
+  // Añadir barra de progreso
+  canvas.fillStyle = 'rgb(255,255,255)'
+  rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10 })
+
+  canvas.fillStyle = 'rgb(255,255,255)'
+  rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: Math.abs(parseInt(memberLevelingData.level, 10) / ((((parseInt(memberLevelingData.level, 10) + 1) ^ 2) * configuracionDelModulo.difficulty) * 100) * 755), height: 70, radius: 10 })
+
+  // Añadir avatar de usuario
+  canvas.beginPath()
+  canvas.arc(159, 159, 102, 0, Math.PI * 2, true)
+  canvas.closePath()
+  canvas.clip()
+
+  const avatar = await loadImage(
+    member.user.displayAvatarURL({ size: 512 })
+  )
+  canvas.drawImage(avatar, 57, 57, 204, 204)
+
+  writeFileSync(AttachmentBuilderPath, canvasContext.toBuffer('image/png'))
 
   return AttachmentBuilderPath
 }
