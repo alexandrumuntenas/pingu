@@ -3,7 +3,6 @@ name: "[Wkf] Preparación del versionado"
 on:
   push:
     branches:
-      - main
       - develop
   pull_request:
     types: [opened, reopened, synchronize]
