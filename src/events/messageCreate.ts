@@ -17,7 +17,8 @@ import { obtenerTraduccion } from '../core/i18nManager'
 import Event from '../core/classes/Event'
 import Consolex from '../core/consolex'
 interface PinguMessage extends Message {
-  command: string | Command;
+  rawCommand: string;
+  command?: Command;
   args: Array<string>;
   guildConfiguration: {
     [key: string]: any; // skipcq: JS-0323
@@ -25,36 +26,28 @@ interface PinguMessage extends Message {
 }
 
 export default new Event('messageCreate', (message: PinguMessage) => {
-  if (
-    message.channel.type === ChannelType.DM ||
-    message.author.bot ||
-    message.author === ClientUser.user
-  ) { return }
+  if (message.channel.type === ChannelType.DM || message.author.bot || message.author === ClientUser.user) { return }
 
   ClientGuildManager.obtenerConfiguracionDelServidor(message.guild).then(
     (configuracionDelServidor) => {
       message.guildConfiguration = configuracionDelServidor
 
-      ClientEventManager.ejecutarFuncionesDeTerceros(
-        'messageCreate',
-        null,
-        message
-      )
+      ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
       if (
         (message.content.startsWith(message.guildConfiguration.common.prefix) &&
           message.content !== message.guildConfiguration.common.prefix) ||
-        message.content.startsWith(`<@${ClientUser.user.id}>`) ||
-        message.content.startsWith(`<@!${ClientUser.user.id}>`)
+        message.content.startsWith(`<@${ClientUser.user?.id}>`) ||
+        message.content.startsWith(`<@!${ClientUser.user?.id}>`)
       ) {
-        if (message.content.startsWith(`<@${ClientUser.user.id}>`)) {
+        if (message.content.startsWith(`<@${ClientUser.user?.id}>`)) {
           message.args = message.content
-            .slice(`<@${ClientUser.user.id}>`.length)
+            .slice(`<@${ClientUser.user?.id}>`.length)
             .trim()
             .split(/ +/)
-        } else if (message.content.startsWith(`<@!${ClientUser.user.id}>`)) {
+        } else if (message.content.startsWith(`<@!${ClientUser.user?.id}>`)) {
           message.args = message.content
-            .slice(`<@!${ClientUser.user.id}>`.length)
+            .slice(`<@!${ClientUser.user?.id}>`.length)
             .trim()
             .split(/ +/)
         } else {
@@ -64,87 +57,45 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             .split(/ +/)
         }
 
-        [message.command] = message.args
+        [message.rawCommand] = message.args
         message.args.shift()
 
-        if (!message.command) { return ClientCommandsManager.getCommand('help').runCommand(message) }
-
-        if (
-          message.guildConfiguration.interactions &&
-          message.guildConfiguration.interactions.enforceusage
-        ) {
+        if (message.guildConfiguration.interactions && message.guildConfiguration.interactions.enforceusage) {
           return message.reply({
             embeds: [
               ClientMessageTemplate.error(
-                obtenerTraduccion(
-                  message.guildConfiguration.language,
-                  'INTERACTION-ENFORCEUSAGE'
-                )
+                obtenerTraduccion(message.guildConfiguration.language, 'INTERACTION-ENFORCEUSAGE')
               )
             ]
           })
         }
 
-        message.command = ClientCommandsManager.getCommand(message.command)
+        message.command = ClientCommandsManager.getCommand(message.rawCommand)
 
-        if (
-          ClientCooldownManager.check(
-            message.member,
-            message.guild,
-            message.command
-          )
-        ) {
-          if (ClientCommandsManager.has(message.command.name)) {
-            if (
-              message.command.module &&
-              ClientModuleManager.modulosDisponibles.includes(
-                ClientModuleManager.getModulo(message.command.module)
-              ) &&
-              !message.guildConfiguration[message.command.module].enabled
-            ) {
+        if (ClientCooldownManager.check(message.member, message.command || { name: message.rawCommand })) {
+          if (ClientCommandsManager.has(message.command?.name || message.rawCommand)) {
+            if (message.command && message.command.module && ClientModuleManager.nombresModulosDisponibles.includes(message.command.module) && !message.guildConfiguration[message.command.module].enabled) {
               return message.reply({
                 embeds: [
-                  ClientMessageTemplate.error(
-                    obtenerTraduccion(
-                      message.guild.preferredLocale,
-                      'COMMAND::NOT_ENABLED'
-                    )
-                  )
+                  ClientMessageTemplate.error(obtenerTraduccion('COMMAND::NOT_ENABLED', message.guild?.preferredLocale))
                 ]
               })
             }
 
-            if (
-              message.command.permissions &&
-              !message.member.permissions.has(
-                message.command.permissions,
-                false
-              )
-            ) {
+            if (message.command?.permissions && !message.member?.permissions.has(message.command.permissions, false)) {
               return message.reply({
                 embeds: [
-                  ClientMessageTemplate.error(
-                    obtenerTraduccion(
-                      message.guild.preferredLocale,
-                      'COMMAND::PERMERROR'
-                    )
-                  )
+                  ClientMessageTemplate.error(obtenerTraduccion('COMMAND::PERMERROR', message.guild?.preferredLocale))
                 ]
               })
             }
 
-            ClientCooldownManager.add(
-              message.member,
-              message.guild,
-              message.command
-            )
+            ClientCooldownManager.add(message.member, message.command || { name: message.rawCommand })
 
-            return Object.prototype.hasOwnProperty.call(
-              message.command,
-              'runCommand'
-            )
-              ? message.command.runCommand(message)
-              : message.reply({
+            if (message.command && Object.prototype.hasOwnProperty.call(message.command, 'runCommand') && message.command.runCommand instanceof Function) {
+              return message.command?.runCommand(message)
+            } else if (message.command) {
+              return message.reply({
                 embeds: [
                   ClientMessageTemplate.error(
                     obtenerTraduccion(
@@ -154,6 +105,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
                   )
                 ]
               })
+            }
           }
           return ClientEventManager.ejecutarFuncionesDeTerceros(
             'messageCreate',
@@ -165,15 +117,10 @@ export default new Event('messageCreate', (message: PinguMessage) => {
           embeds: [
             ClientMessageTemplate.timeout(
               obtenerTraduccion(
-                message.guildConfiguration.common.language,
                 'COOLDOWN',
                 {
                   COOLDOWN: humanizarTiempo(
-                    ClientCooldownManager.ttl(
-                      message.member,
-                      message.guild,
-                      message.command
-                    ),
+                    ClientCooldownManager.ttl(message.member, message.command || { name: message.rawCommand }),
                     {
                       round: true,
                       language:
