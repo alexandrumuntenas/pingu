@@ -11,6 +11,7 @@ import applyText from './utils/canvas/applyText'
 
 import * as randomstring from 'randomstring'
 import EventHook from '../core/classes/EventHook'
+import Consolex from '../core/consolex'
 
 const isValidUrl = require('is-valid-http-url')
 const isImageUrl = require('is-image-url')
@@ -24,7 +25,7 @@ function giveMemberRoles (member: GuildMember) {
         if (roleToGive) member.roles.add(roleToGive)
       })
     }
-  })
+  }).catch((giveMemberRolesError) => Consolex.gestionarError(giveMemberRolesError))
 }
 
 registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
@@ -110,13 +111,13 @@ function sendWelcomeMessage (member: GuildMember) {
         if (configuracionDelModulo.card && Object.prototype.hasOwnProperty.call(configuracionDelModulo.card, 'enabled') && configuracionDelModulo.card.enabled) {
           generateWelcomeCard(member).then((path) => {
             message.files.push(new AttachmentBuilder(path))
-          })
+          }).catch((generateWelcomeCardError) => Consolex.gestionarError(generateWelcomeCardError))
         }
 
         canalDondeSeEnviaElMensaje?.send(message)
       }
     }
-  })
+  }).catch((sendWelcomeMessageError) => Consolex.gestionarError(sendWelcomeMessageError))
 }
 
 function doGuildMemberAdd (member: GuildMember) {
@@ -125,7 +126,7 @@ function doGuildMemberAdd (member: GuildMember) {
       giveMemberRoles(member)
       sendWelcomeMessage(member)
     }
-  })
+  }).catch((doGuildMemberAddError) => Consolex.gestionarError(doGuildMemberAddError))
 }
 
 export default new Module(
