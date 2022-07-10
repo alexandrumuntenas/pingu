@@ -10,7 +10,6 @@
 import 'dotenv/config'
 import * as Discord from 'discord.js'
 import { GatewayIntentBits } from 'discord-api-types/v10'
-import Consolex from './core/consolex'
 
 import CommandsManager from './core/commandsManager'
 import CooldownMananger from './core/cooldownManager'
@@ -40,13 +39,8 @@ const ClientUser: Discord.Client = new Discord.Client({
   ws: { properties: { $browser: 'Discord iOS' } }
 })
 
-if (process.env.ENTORNO === 'publico') {
-  Consolex.warn('Iniciando sesión como el bot público.')
-  ClientUser.login(process.env.PUBLIC_TOKEN)
-} else {
-  Consolex.warn('Iniciando sesión como el bot de desarrollo.')
-  ClientUser.login(process.env.INSIDER_TOKEN)
-}
+if (!process.env.CLIENT_TOKEN) throw new Error('GTW000: CLIENT_TOKEN not declared.')
+ClientUser.login(process.env.CLIENT_TOKEN)
 
 process.on('exit', () => {
   ClientUser.destroy()
