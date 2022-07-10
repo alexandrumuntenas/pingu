@@ -54,12 +54,12 @@ process.on('exit', () => {
 
 // Managers
 
+const ClientInternationalizationManager = new InternationalizationManager()
 const ClientCommandsManager = new CommandsManager('src/client/commands')
 const ClientCooldownManager = new CooldownMananger()
 const ClientModuleManager = new ModuleManager()
 const ClientGuildManager = new GuildManager()
 const ClientEventManager = new EventManager()
-const ClientInternationalizationManager = new InternationalizationManager()
 
 // Templates
 

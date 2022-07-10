@@ -3,10 +3,9 @@ import Command from './classes/Command'
 
 import { Collection, Guild, SlashCommandBuilder } from 'discord.js'
 import { lstatSync, readdirSync } from 'fs'
-import { avaliableLocales, obtenerTraduccion } from './i18nManager'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v10'
-import { ClientGuildManager, ClientUser } from '../client'
+import { ClientGuildManager, ClientInternationalizationManager, ClientUser } from '../client'
 
 const rest = new REST({ version: '9' })
 
@@ -44,8 +43,8 @@ class CommandsManager {
             )
           }
 
-          avaliableLocales.forEach((idioma) => {
-            command.interaction.setDescriptionLocalized(idioma, obtenerTraduccion({ clave: `COMMANDS:${command.name}_DESCRIPTION`, idioma }))
+          ClientInternationalizationManager.idiomasDisponibles.forEach((idioma) => {
+            command.interaction.setDescriptionLocalized(idioma, ClientInternationalizationManager.obtenerTraduccion({ clave: `COMMANDS:${command.name}_DESCRIPTION`, idioma }))
           })
 
           this.add(
