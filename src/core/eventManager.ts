@@ -6,9 +6,9 @@ import Consolex from './consolex'
 import { ClientUser } from '../client'
 
 class EventManager {
-  eventosDisponibles: Array<Event>
-  eventosDisponiblesProceso: Array<Event>
-  funcionesDeTerceros: Object
+  eventosDisponibles!: Array<Event>
+  eventosDisponiblesProceso!: Array<Event>
+  funcionesDeTerceros!: { [index: string]: { [index: string]: Array<Function> } }
 
   constructor () {
     fs.readdirSync('./events/')
@@ -59,12 +59,7 @@ class EventManager {
     return this.funcionesDeTerceros
   }
 
-  ejecutarFuncionesDeTerceros (
-    evento: string,
-    tipoDeFuncion?: string | number,
-    ...argumentos: Array<any>
-  ): void {
-    // skipcq: JS-0323
+  ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion: string | number, ...argumentos: Array<any>): void { // skipcq: JS-0323
     if (
       this.funcionesDeTerceros[evento] &&
       this.funcionesDeTerceros[evento][tipoDeFuncion]
