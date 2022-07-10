@@ -33,64 +33,60 @@ async function obtenerDatosDelUsuario (member: GuildMember | null): Promise<{ gu
 async function actualizarDatosDelUsuario (member: GuildMember | null, experience: string, level: string) {
   if (!(member instanceof GuildMember)) throw new Error('El "GuildMember" especificado no existe.')
 
-  PoolConnection.execute('UPDATE `memberLevelingData` SET `level`= ?,`experience`= ? WHERE guild = ? AND member = ?', [level, experience, member.guild.id, member.id]).then(() => {
-    return { guild: member.guild.id, member: member.id, experience, level }
-  }).catch((error) => Consolex.gestionarError(error))
+  await PoolConnection.execute('UPDATE `memberLevelingData` SET `level`= ?,`experience`= ? WHERE guild = ? AND member = ?', [level, experience, member.guild.id, member.id]).catch((error) => Consolex.gestionarError(error))
+  return { guild: member.guild.id, member: member.id, experience, level }
 }
 
 async function sendLevelUpMessage (message: PinguMessage) {
-  obtenerDatosDelUsuario(message.member).then((memberLevelingData) => {
-    const canalDondeSeEnviaElMensaje = message.guild?.channels.cache.get(message.guildConfiguration.leveling.channel)
+  const memberLevelingData = await obtenerDatosDelUsuario(message.member)
+  const canalDondeSeEnviaElMensaje = message.guild?.channels.cache.get(message.guildConfiguration.leveling.channel)
 
-    const content = reemplazarPlaceholdersConDatosReales(message.guildConfiguration.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member,
-      {
-        newlevel: (parseInt(memberLevelingData.level, 10) + 1).toString(),
-        oldlevel: parseInt(memberLevelingData.level, 10)
+  const content = reemplazarPlaceholdersConDatosReales(message.guildConfiguration.leveling.message || 'GG {player}, you just advanced to level {level}!', message.member,
+    {
+      newlevel: (parseInt(memberLevelingData.level, 10) + 1).toString(),
+      oldlevel: parseInt(memberLevelingData.level, 10)
+    }
+  )
+
+  if (canalDondeSeEnviaElMensaje && canalDondeSeEnviaElMensaje?.type === ChannelType.GuildText) {
+    canalDondeSeEnviaElMensaje.send({ content })
+  } else {
+    switch (message.guildConfiguration.leveling.channel) {
+      case 'same': {
+        message.reply({ content })
+        break
       }
-    )
-
-    if (canalDondeSeEnviaElMensaje && canalDondeSeEnviaElMensaje?.type === ChannelType.GuildText) {
-      canalDondeSeEnviaElMensaje.send({ content })
-    } else {
-      switch (message.guildConfiguration.leveling.channel) {
-        case 'same': {
-          message.reply({ content })
-          break
+      case 'dm': {
+        try {
+          message.author.send({ content })
+        } catch (err) {
+          Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
         }
-        case 'dm': {
-          try {
-            message.author.send({ content })
-          } catch (err) {
-            Consolex.debug('Error al intentar entregar mensaje de avance de nivel a un usuario')
-          }
-          break
-        }
-        default: {
-          break
-        }
+        break
+      }
+      default: {
+        break
       }
     }
-  })
+  }
 }
 
 async function obtenerExperiencia (message: PinguMessage) {
   if (message.guildConfiguration.leveling.enabled) {
     if (ClientCooldownManager.check(message.member, { name: 'leveling.obtenerExperiencia' })) {
-      obtenerDatosDelUsuario(message.member).then((memberLevelingData) => {
-        const newExperience = Math.floor(Math.random() * 25) + parseInt(memberLevelingData.experience, 10)
-        const userLevelParsed = parseInt(memberLevelingData.level, 10)
+      const memberLevelingData = await obtenerDatosDelUsuario(message.member)
+      const newExperience = Math.floor(Math.random() * 25) + parseInt(memberLevelingData.experience, 10)
+      const userLevelParsed = parseInt(memberLevelingData.level, 10)
 
-        if (newExperience >= ((((userLevelParsed + 1) ^ 2) * message.guildConfiguration.leveling.difficulty) * 100)) {
-          actualizarDatosDelUsuario(message.member, newExperience.toString(), (userLevelParsed + 1).toString()).then(() => {
-            sendLevelUpMessage(message)
-          })
-        } else {
-          actualizarDatosDelUsuario(message.member, newExperience.toString(), userLevelParsed.toString())
-        }
-
-        ClientCooldownManager.add(message.member, { name: 'leveling.obtenerExperiencia', cooldown: 60000 })
+      if (newExperience >= ((((userLevelParsed + 1) ^ 2) * message.guildConfiguration.leveling.difficulty) * 100)) {
+        actualizarDatosDelUsuario(message.member, newExperience.toString(), (userLevelParsed + 1).toString()).then(() => {
+          sendLevelUpMessage(message)
+        })
+      } else {
+        actualizarDatosDelUsuario(message.member, newExperience.toString(), userLevelParsed.toString())
       }
-      )
+
+      ClientCooldownManager.add(message.member, { name: 'leveling.obtenerExperiencia', cooldown: 60000 })
     }
   }
 }
