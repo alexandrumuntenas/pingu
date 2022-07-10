@@ -22,7 +22,7 @@ class Module {
   }
 
   obtenerComandos (): Array<Command> {
-    return this.comandos
+    return this.comandos || []
   }
 }
 
