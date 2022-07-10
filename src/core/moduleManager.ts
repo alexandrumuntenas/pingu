@@ -21,7 +21,7 @@ class ModuleManager {
 
   registrarModulo (modulo: Module): Array<Module> {
     modulo.asignarComandos(ClientCommandsManager.toArray().filter((command) => command.module === modulo.nombre) || [])
-    Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos.map((command) => command.name).join(', ')}`)
+    Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos?.map((command) => command.name).join(', ')}`)
 
     if (!this.modulosDisponibles.find((m) => m.nombre === modulo.nombre)) {
       Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
@@ -43,7 +43,7 @@ class ModuleManager {
     return this.modulosDisponibles
   }
 
-  getModulo (modulo: string): Module {
+  getModulo (modulo: string): Module | undefined {
     return this.modulosDisponibles.find((m) => m.nombre === modulo)
   }
 
