@@ -18,6 +18,7 @@ import GuildManager from './core/guildManager'
 import EventManager from './core/eventManager'
 import MessageTemplate from './templates/messageTemplate'
 import InternationalizationManager from './core/internationalizationManager'
+import PrivacyManager from './core/privacyManager'
 
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
@@ -54,6 +55,7 @@ const ClientCooldownManager = new CooldownMananger()
 const ClientModuleManager = new ModuleManager()
 const ClientGuildManager = new GuildManager()
 const ClientEventManager = new EventManager()
+const ClientPrivacyManager = new PrivacyManager()
 
 // Templates
 
@@ -78,5 +80,6 @@ export {
   ClientGuildManager,
   ClientEventManager,
   ClientMessageTemplate,
-  ClientInternationalizationManager
+  ClientInternationalizationManager,
+  ClientPrivacyManager
 }
