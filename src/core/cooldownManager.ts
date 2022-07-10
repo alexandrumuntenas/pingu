@@ -46,7 +46,7 @@ class CooldownManager {
     }, 60000)
   }
 
-  add (member: GuildMember | null, command: Command | { name: string, cooldown: number }): void {
+  add (member: GuildMember | null, command: Command | { name: string, cooldown?: number }): void {
     if (!(member instanceof GuildMember)) throw new Error('El "GuildMember" especificado no existe.')
     this.cooldown[`${command.name}${member.id}${member.guild.id}`] =
       Date.now() + (command.cooldown || 10000)
