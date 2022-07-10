@@ -3,7 +3,7 @@ import Command from './classes/Command'
 
 import { Collection, Guild, SlashCommandBuilder } from 'discord.js'
 import { lstatSync, readdirSync } from 'fs'
-import { avaliableLocales, obtenerTraduccion } from './i18nManager'
+import { avaliableLocales, deprecatedObtenerTraduccion } from './i18nManager'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v10'
 import { ClientGuildManager, ClientUser } from '../client'
@@ -47,7 +47,7 @@ class CommandsManager {
           avaliableLocales.forEach((locale) => {
             command.interaction.setDescriptionLocalized(
               locale,
-              obtenerTraduccion(locale, command.name)
+              deprecatedObtenerTraduccion(locale, command.name)
             )
           })
 

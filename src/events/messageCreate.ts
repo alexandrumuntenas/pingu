@@ -13,7 +13,7 @@ import {
   ClientUser
 } from '../client'
 
-import { obtenerTraduccion } from '../core/i18nManager'
+import { deprecatedObtenerTraduccion } from '../core/i18nManager'
 import Event from '../core/classes/Event'
 import Consolex from '../core/consolex'
 interface PinguMessage extends Message {
@@ -64,7 +64,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
           return message.reply({
             embeds: [
               ClientMessageTemplate.error(
-                obtenerTraduccion(message.guildConfiguration.language, 'INTERACTION-ENFORCEUSAGE')
+                deprecatedObtenerTraduccion(message.guildConfiguration.language, 'INTERACTION-ENFORCEUSAGE')
               )
             ]
           })
@@ -77,7 +77,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             if (message.command && message.command.module && ClientModuleManager.nombresModulosDisponibles.includes(message.command.module) && !message.guildConfiguration[message.command.module].enabled) {
               return message.reply({
                 embeds: [
-                  ClientMessageTemplate.error(obtenerTraduccion('COMMAND::NOT_ENABLED', message.guild?.preferredLocale))
+                  ClientMessageTemplate.error(deprecatedObtenerTraduccion('COMMAND::NOT_ENABLED', message.guild?.preferredLocale))
                 ]
               })
             }
@@ -85,7 +85,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             if (message.command?.permissions && !message.member?.permissions.has(message.command.permissions, false)) {
               return message.reply({
                 embeds: [
-                  ClientMessageTemplate.error(obtenerTraduccion('COMMAND::PERMERROR', message.guild?.preferredLocale))
+                  ClientMessageTemplate.error(deprecatedObtenerTraduccion('COMMAND::PERMERROR', message.guild?.preferredLocale))
                 ]
               })
             }
@@ -98,7 +98,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
               return message.reply({
                 embeds: [
                   ClientMessageTemplate.error(
-                    obtenerTraduccion(
+                    deprecatedObtenerTraduccion(
                       message.guildConfiguration.common.language,
                       'COMMAND::ONLYINTERACTION'
                     )
@@ -116,7 +116,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
         return message.reply({
           embeds: [
             ClientMessageTemplate.timeout(
-              obtenerTraduccion(
+              deprecatedObtenerTraduccion(
                 'COOLDOWN',
                 {
                   COOLDOWN: humanizarTiempo(
