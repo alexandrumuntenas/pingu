@@ -79,7 +79,9 @@ class GuildManager {
     }
   }
 
-  async obtenerConfiguracionDelServidor (guild: Guild): Promise<{ [key: string]: any }> {
+  async obtenerConfiguracionDelServidor (guild: Guild | null): Promise<{ [key: string]: any }> {
+    if (!(guild instanceof Guild)) throw new Error('El "Guild"" especificado no existe.')
+
     const configuracionDelServidor: { [index: string]: any } = await PoolConnection.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0]).catch((obtenerDatosError) => Consolex.gestionarError(obtenerDatosError))
     const configuracionDelServidorProcesado: { [index: string]: any } = {}
 
