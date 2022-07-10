@@ -11,10 +11,7 @@ export default new Module(
   'Module for farewell messages',
   [
     new EventHook('guildMemberRemove', (member: GuildMember) => {
-      ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(
-        member.guild,
-        'farewell'
-      ).then((configuracionDelServidor) => {
+      ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'farewell').then((configuracionDelServidor) => {
         if (
           Object.prototype.hasOwnProperty.call(
             configuracionDelServidor,
@@ -46,7 +43,7 @@ export default new Module(
             }
           }
         }
-      })
+      }).catch((guildMemberRemoveHookError) => Consolex.gestionarError(guildMemberRemoveHookError))
     })
   ],
   { enabled: 'boolean', channel: 'string', message: 'string' },

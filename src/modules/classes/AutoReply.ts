@@ -20,7 +20,7 @@ class AutoReply {
   identificador: string
 
   constructor (
-    guild,
+    guild: string,
     respuestaPersonalizada: {
       desencadenante: string;
       propiedades: {
@@ -44,7 +44,7 @@ class AutoReply {
       charset: 'alphanumeric'
     })
 
-    this.guardarRespuestaPersonalizada()
+    this.guardarRespuestaPersonalizada().catch((guardarRespuestaPersonalizadaError) => Consolex.gestionarError(guardarRespuestaPersonalizadaError))
   }
 
   async guardarRespuestaPersonalizada (): Promise<void> {

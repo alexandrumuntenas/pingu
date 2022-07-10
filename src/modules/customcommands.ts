@@ -23,9 +23,7 @@ export default new Module(
   [
     new EventHook('messageCreate', (message: PinguMessage) => {
       if (message.guildConfiguration.customcommands.enabled) {
-        getCustomCommand(message.guild, message.content).then(
-          (customCommand) => { customCommand.executeCommand(message) }
-        )
+        getCustomCommand(message.guild, message.content).then((customCommand) => { customCommand.executeCommand(message) }).catch((getCustomCommandError) => Consolex.gestionarError(getCustomCommandError))
       }
     })
   ],

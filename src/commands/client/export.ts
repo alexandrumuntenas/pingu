@@ -1,6 +1,7 @@
 import { AttachmentBuilder, PermissionsBitField } from 'discord.js'
 import { ClientGuildManager, ClientMessageTemplate } from '../../client'
 import Command from '../../core/classes/Command'
+import Consolex from '../../core/consolex'
 import { obtenerTraduccion } from '../../core/i18nManager'
 
 export default new Command({
@@ -10,6 +11,6 @@ export default new Command({
   runCommand: (message) => {
     ClientGuildManager.exportarConfiguracionDelServidor(message.guild).then((rutaLocalDelArchivo) => {
       message.reply({ embeds: [ClientMessageTemplate.info(obtenerTraduccion('YAMLCONFIGURATION_EXPORT_INFORMATION', message.guild?.preferredLocale))], files: [new AttachmentBuilder(rutaLocalDelArchivo, { name: `${message.guild?.id}_configuration.yaml` })] })
-    })
+    }).catch((exportarConfiguracionDelServidorError) => Consolex.gestionarError(exportarConfiguracionDelServidorError))
   }
 })

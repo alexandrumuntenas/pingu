@@ -67,7 +67,7 @@ function messageCreateHook (message: Message): void {
         }
       }
     }
-  )
+  ).catch((enviarRespuestaPersonalizadaError) => Consolex.gestionarError(enviarRespuestaPersonalizadaError))
 }
 
 export default new Module(
