@@ -3,7 +3,7 @@
 class EventHook {
   evento: string
   funcion: Function
-  tipo: string | number
+  tipo?: string | number
 
   constructor (evento: string, funcion: Function, tipo?: string | number) {
     this.evento = evento
