@@ -11,6 +11,7 @@ function obtenerTraduccion (claveTraduccionSolicitada: string, parametrosTraducc
 
   if (!textoTraducido) {
     Consolex.gestionarError(`[i18n Utils] INE002: The key specified "${claveTraduccionSolicitada}" to obtain your translation does not exist. Returning error to the requester.`)
+    return `INE002: The key specified "${claveTraduccionSolicitada}" to obtain your translation does not exist. Returning error to the requester.`
   }
 
   if (parametrosTraduccionSolicitada) {
@@ -28,6 +29,10 @@ function obtenerTraduccion (claveTraduccionSolicitada: string, parametrosTraducc
 
   return textoTraducido
 }
+
+/**
+ * @deprecated
+ */
 
 function deprecatedObtenerTraduccion (traduccion: string, parametros?: Object, idioma?: string): string {
   let idiomaAUsar = idioma || 'es-ES'
