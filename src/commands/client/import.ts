@@ -1,7 +1,7 @@
 import { PermissionsBitField } from 'discord.js'
 import { ClientGuildManager, ClientMessageTemplate } from '../../client'
 import { obtenerTraduccion } from '../../core/i18nManager'
-import Command from '../../classes/Command'
+import Command from '../../core/classes/Command'
 
 export default new Command({
   name: 'import',
