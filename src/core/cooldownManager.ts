@@ -1,4 +1,4 @@
-import { Guild, GuildMember } from 'discord.js'
+import { GuildMember } from 'discord.js'
 import { existsSync, writeFile } from 'fs'
 import Command from './classes/Command'
 import Consolex from './consolex'
@@ -9,11 +9,9 @@ try {
   if (existsSync('./cooldowns.json')) {
     try {
       JSONCooldown = require('../cooldowns.json')
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'SyntaxError') {
-        Consolex.debug(
-          'CooldownManager: Cooldowns file is corrupted. Creating new one.'
-        )
+        Consolex.debug('CooldownManager: Cooldowns file is corrupted. Creating new one.')
 
         writeFile('./cooldowns.json', JSON.stringify({}), (err) => {
           if (err) Consolex.gestionarError(err)
@@ -48,23 +46,26 @@ class CooldownManager {
     }, 60000)
   }
 
-  add (member: GuildMember, guild: Guild, command: Command | { name: string, cooldown: number }): void {
-    this.cooldown[`${command.name}${member.id}${guild.id}`] =
+  add (member: GuildMember | null, command: Command | { name: string, cooldown: number }): void {
+    if (!(member instanceof GuildMember)) throw new Error('El "GuildMember" especificado no existe.')
+    this.cooldown[`${command.name}${member.id}${member.guild.id}`] =
       Date.now() + (command.cooldown || 10000)
     setTimeout(() => {
-      delete this.cooldown[`${command.name}${member.id}${guild.id}`]
+      delete this.cooldown[`${command.name}${member.id}${member.guild.id}`]
     }, command.cooldown || 10000)
   }
 
-  check (member: GuildMember, guild: Guild, command: Command | { name: string }): boolean {
-    if (this.cooldown[`${command.name}${member.id}${guild.id}`] >= Date.now()) { return false }
+  check (member: GuildMember | null, command: Command | { name: string }): boolean {
+    if (!(member instanceof GuildMember)) throw new Error('El "GuildMember" especificado no existe.')
+    if (this.cooldown[`${command.name}${member.id}${member.guild.id}`] >= Date.now()) { return false }
 
-    delete this.cooldown[`${command.name}${member.id}${guild.id}`]
+    delete this.cooldown[`${command.name}${member.id}${member.guild.id}`]
     return true
   }
 
-  ttl (member: GuildMember, guild: Guild, command: Command | { name: string }): number {
-    return this.cooldown[`${command.name}${member.id}${guild.id}`] - Date.now()
+  ttl (member: GuildMember | null, command: Command | { name: string }): number {
+    if (!(member instanceof GuildMember)) throw new Error('El "GuildMember" especificado no existe.')
+    return this.cooldown[`${command.name}${member.id}${member.guild.id}`] - Date.now()
   }
 
   saveCooldownCollectionIntoJsonFile (): void {
