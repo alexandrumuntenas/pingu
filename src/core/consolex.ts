@@ -31,8 +31,8 @@ const Consolex = {
     process.stdout.write(`${getCurrentTime()} [${chalk.redBright.bold('ERROR')}]     ${message}\n`)
   },
   gestionarError: (err: string | unknown) => {
-    module.exports.error(err)
-    module.exports.Sentry.captureException(err)
+    Consolex.error(err)
+    Consolex.Sentry.captureException(err)
     throw err
   },
   Sentry
