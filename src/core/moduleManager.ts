@@ -5,11 +5,13 @@ import { ClientCommandsManager, ClientEventManager } from '../client'
 import { readdirSync } from 'fs'
 class ModuleManager {
   modulosDisponibles: Array<Module>
+  nombresModulosDisponibles: Array<String>
 
   constructor () {
     if (!ClientCommandsManager) throw new Error('¡Se ha ejecutado el constructor de ModuleManager antes de CommandsManager!')
 
     this.modulosDisponibles = []
+    this.nombresModulosDisponibles = []
 
     const directorioDeModulos = readdirSync('./modules')
     directorioDeModulos.forEach((modulo) => {
@@ -26,6 +28,7 @@ class ModuleManager {
     if (!this.modulosDisponibles.find((m) => m.nombre === modulo.nombre)) {
       Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
       this.modulosDisponibles.push(modulo)
+      this.nombresModulosDisponibles.push(modulo.nombre)
       if (modulo.hooks) {
         modulo.hooks.forEach((hook) => {
           Consolex.info(`ModuleManager: Registrando hook en evento ${hook.evento} para módulo ${modulo.nombre}`)
