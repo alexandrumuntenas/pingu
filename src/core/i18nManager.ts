@@ -2,7 +2,7 @@ import stringPlaceholder from 'string-placeholder'
 import { existsSync } from 'fs'
 import Consolex from './consolex'
 
-function obtenerTraduccion (claveTraduccionSolicitada: string, parametrosTraduccionSolicitada: Array<string>, idiomaTraduccionSolicitada?: string): string {
+function obtenerTraduccion (claveTraduccionSolicitada: string, parametrosTraduccionSolicitada?: Array<string>, idiomaTraduccionSolicitada?: string): string {
   if (idiomaTraduccionSolicitada && !existsSync(`-/core/locales/${idiomaTraduccionSolicitada}.json`)) {
     Consolex.gestionarError(`[i18n Utils] INE001: The requested translation file ${idiomaTraduccionSolicitada} has not been found. Using es-ES as fallback.`)
   }
