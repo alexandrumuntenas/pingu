@@ -38,28 +38,6 @@ async function actualizarDatosDelUsuario (member: GuildMember | null, experience
   }).catch((error) => Consolex.gestionarError(error))
 }
 
-async function obtenerExperiencia (message: PinguMessage) {
-  if (message.guildConfiguration.leveling.enabled) {
-    if (ClientCooldownManager.check(message.member, { name: 'leveling.obtenerExperiencia' })) {
-      obtenerDatosDelUsuario(message.member).then((memberLevelingData) => {
-        const newExperience = Math.floor(Math.random() * 25) + parseInt(memberLevelingData.experience, 10)
-        const userLevelParsed = parseInt(memberLevelingData.level, 10)
-
-        if (newExperience >= ((((userLevelParsed + 1) ^ 2) * message.guildConfiguration.leveling.difficulty) * 100)) {
-          actualizarDatosDelUsuario(message.member, newExperience.toString(), (userLevelParsed + 1).toString()).then(() => {
-            sendLevelUpMessage(message)
-          })
-        } else {
-          actualizarDatosDelUsuario(message.member, newExperience.toString(), userLevelParsed.toString())
-        }
-
-        ClientCooldownManager.add(message.member, { name: 'leveling.obtenerExperiencia', cooldown: 60000 })
-      }
-      )
-    }
-  }
-}
-
 async function sendLevelUpMessage (message: PinguMessage) {
   obtenerDatosDelUsuario(message.member).then((memberLevelingData) => {
     const canalDondeSeEnviaElMensaje = message.guild?.channels.cache.get(message.guildConfiguration.leveling.channel)
@@ -93,6 +71,28 @@ async function sendLevelUpMessage (message: PinguMessage) {
       }
     }
   })
+}
+
+async function obtenerExperiencia (message: PinguMessage) {
+  if (message.guildConfiguration.leveling.enabled) {
+    if (ClientCooldownManager.check(message.member, { name: 'leveling.obtenerExperiencia' })) {
+      obtenerDatosDelUsuario(message.member).then((memberLevelingData) => {
+        const newExperience = Math.floor(Math.random() * 25) + parseInt(memberLevelingData.experience, 10)
+        const userLevelParsed = parseInt(memberLevelingData.level, 10)
+
+        if (newExperience >= ((((userLevelParsed + 1) ^ 2) * message.guildConfiguration.leveling.difficulty) * 100)) {
+          actualizarDatosDelUsuario(message.member, newExperience.toString(), (userLevelParsed + 1).toString()).then(() => {
+            sendLevelUpMessage(message)
+          })
+        } else {
+          actualizarDatosDelUsuario(message.member, newExperience.toString(), userLevelParsed.toString())
+        }
+
+        ClientCooldownManager.add(message.member, { name: 'leveling.obtenerExperiencia', cooldown: 60000 })
+      }
+      )
+    }
+  }
 }
 
 async function obtenerLeaderboard (guild: Guild) {
@@ -208,9 +208,7 @@ async function generateRankCard (member: GuildMember): Promise<string> {
 }
 
 async function resetLeaderboard (guild: Guild) {
-  PoolConnection.execute('DELETE FROM memberLevelingData WHERE guild = ?', [guild.id]).catch(
-    (err) => Consolex.gestionarError(err)
-  )
+  await PoolConnection.execute('DELETE FROM memberLevelingData WHERE guild = ?', [guild.id]).catch((err) => Consolex.gestionarError(err))
 }
 
 export default new Module(

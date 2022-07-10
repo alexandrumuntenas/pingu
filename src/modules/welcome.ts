@@ -27,26 +27,6 @@ function giveMemberRoles (member: GuildMember) {
   })
 }
 
-function sendWelcomeMessage (member: GuildMember) {
-  ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'welcome').then((configuracionDelModulo) => {
-    if (configuracionDelModulo.enabled && configuracionDelModulo.channel) {
-      const canalDondeSeEnviaElMensaje = member.guild.channels.cache.get(configuracionDelModulo.channel)
-
-      if (canalDondeSeEnviaElMensaje && canalDondeSeEnviaElMensaje?.type === ChannelType.GuildText) {
-        const message: { content: string, files: AttachmentBuilder[] } = { content: reemplazarPlaceholdersConDatosReales(configuracionDelModulo.message || '{member} joined {server}!', member), files: [] }
-
-        if (configuracionDelModulo.card && Object.prototype.hasOwnProperty.call(configuracionDelModulo.card, 'enabled') && configuracionDelModulo.card.enabled) {
-          generateWelcomeCard(member).then((path) => {
-            message.files.push(new AttachmentBuilder(path))
-          })
-        }
-
-        canalDondeSeEnviaElMensaje?.send(message)
-      }
-    }
-  })
-}
-
 registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
@@ -117,6 +97,26 @@ async function generateWelcomeCard (member: GuildMember): Promise<string> {
   writeFileSync(AttachmentBuilderPath, buffer)
 
   return AttachmentBuilderPath
+}
+
+function sendWelcomeMessage (member: GuildMember) {
+  ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'welcome').then((configuracionDelModulo) => {
+    if (configuracionDelModulo.enabled && configuracionDelModulo.channel) {
+      const canalDondeSeEnviaElMensaje = member.guild.channels.cache.get(configuracionDelModulo.channel)
+
+      if (canalDondeSeEnviaElMensaje && canalDondeSeEnviaElMensaje?.type === ChannelType.GuildText) {
+        const message: { content: string, files: AttachmentBuilder[] } = { content: reemplazarPlaceholdersConDatosReales(configuracionDelModulo.message || '{member} joined {server}!', member), files: [] }
+
+        if (configuracionDelModulo.card && Object.prototype.hasOwnProperty.call(configuracionDelModulo.card, 'enabled') && configuracionDelModulo.card.enabled) {
+          generateWelcomeCard(member).then((path) => {
+            message.files.push(new AttachmentBuilder(path))
+          })
+        }
+
+        canalDondeSeEnviaElMensaje?.send(message)
+      }
+    }
+  })
 }
 
 function doGuildMemberAdd (member: GuildMember) {

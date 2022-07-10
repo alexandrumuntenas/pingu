@@ -1,5 +1,5 @@
-import EventHook from '../classes/EventHook'
-import Module from '../classes/Module'
+import EventHook from '../core/classes/EventHook'
+import Module from '../core/classes/Module'
 import { ClientGuildManager } from '../client'
 import { GuildMember } from 'discord.js'
 import reemplazarPlaceholdersConDatosReales from '../core/utils/reemplazarPlaceholdersConDatosReales'
