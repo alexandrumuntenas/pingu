@@ -14,7 +14,7 @@ welcome:
   message: Hey {user}, welcome to **{server}**!
   welcomecard:
     enabled: true
-    background: https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/setup/defaultresourcesforguilds/backgroundforwelcomecard.jpg
+    background: https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/defaultresourcesforguilds/backgroundforwelcomecard.jpg
     title: "{user.tag} just joined the server"
     subtitle: "Member #{server.member_count}"
     overlay:
@@ -31,7 +31,7 @@ leveling:
   message: GG {user}, you just advanced to level {newlevel}!
   difficulty: 1
   card:
-    background: https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/setup/defaultresourcesforguilds/backgroundforlevelingcards.jpg
+    background: https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/defaultresourcesforguilds/backgroundforlevelingcards.jpg
     overlay:
       color: "#030305"
       opacity: 75

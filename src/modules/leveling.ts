@@ -230,7 +230,7 @@ export default new Module(
     difficulty: 1,
     card: {
       background:
-        'https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/setup/defaultresourcesforguilds/backgroundforlevelingcards.jpg',
+        'https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/defaultresourcesforguilds/backgroundforlevelingcards.jpg',
       overlay: { color: '#030305', opacity: 75 }
     }
   }

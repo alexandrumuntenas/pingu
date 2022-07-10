@@ -154,7 +154,7 @@ export default new Module(
     enabled: false,
     channel: '000000000',
     message: 'Hey {user}, welcome to **{server}**!',
-    welcomecard: { enabled: true, background: 'https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/setup/defaultresourcesforguilds/backgroundforwelcomecard.jpg', title: '{user.tag} just joined the server', subtitle: 'Member #{server.member_count}', overlay: { color: '#044860', opacity: 50 } },
+    welcomecard: { enabled: true, background: 'https://raw.githubusercontent.com/alexandrumuntenas/pingu/main/defaultresourcesforguilds/backgroundforwelcomecard.jpg', title: '{user.tag} just joined the server', subtitle: 'Member #{server.member_count}', overlay: { color: '#044860', opacity: 50 } },
     roles: []
   }
 )
