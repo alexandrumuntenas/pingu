@@ -33,7 +33,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
   ClientGuildManager.obtenerConfiguracionDelServidor(message.guild).then((configuracionDelServidor) => {
     message.guildConfiguration = configuracionDelServidor
 
-    ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', null, message)
+    ClientEventManager.deprecatedEjecutarFuncionesDeterceros('messageCreate', null, message)
 
     if (message.content.startsWith(ClientUser.user?.toString() || `<@!${ClientUser.user?.id}>`) && (message.content.trim() === ClientUser.user?.toString() || message.content.trim() === `<@!${ClientUser.user?.id}>`)) {
       message.args = message.content
@@ -78,12 +78,12 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             })
           }
         }
-        return ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
+        return ClientEventManager.deprecatedEjecutarFuncionesDeterceros('messageCreate', 'withPrefix', message)
       }
       return message.reply({ embeds: [ClientMessageTemplate.timeout(obtenerTraduccion({ clave: 'DEBE_ESPERAR_X_TIEMPO_PARA_PODER_EJECUTAR_ESTE_COMANDO', idioma: message.guild?.preferredLocale, placeholders: [humanizarTiempo(ClientCooldownManager.ttl(message.member, message.command || { name: message.rawCommand }), { round: true, language: message.guild?.preferredLocale, fallbacks: ['en'] })] }))] })
     }
 
-    return ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)
+    return ClientEventManager.deprecatedEjecutarFuncionesDeterceros('messageCreate', 'noPrefix', message)
   }
   ).catch((err) => {
     Consolex.gestionarError(err)

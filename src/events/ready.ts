@@ -11,7 +11,7 @@ export default new Event('ready', () => {
   eliminadorArchivosTemporales()
   ClientUser.user.setActivity('new update TS2203', { type: ActivityType.Watching })
 
-  ClientEventManager.ejecutarFuncionesDeTerceros('guildMemberAdd')
+  ClientEventManager.deprecatedEjecutarFuncionesDeterceros('guildMemberAdd')
 
   setInterval(() => {
     ClientUser.user.setActivity(`${ClientUser.guilds.cache.size} guilds`, { type: ActivityType.Watching })

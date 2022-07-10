@@ -6,11 +6,15 @@ import Consolex from './consolex'
 import { ClientUser } from '../client'
 
 class EventManager {
-  eventosDisponibles!: Array<Event>
-  eventosDisponiblesProceso!: Array<Event>
-  funcionesDeTerceros!: { [index: string]: { [index: string]: Array<Function> } }
+  eventosDisponibles: Array<Event>
+  eventosDisponiblesProceso: Array<Event>
+  funcionesDeTerceros: { [index: string]: { [index: string]: Array<Function> } }
 
   constructor () {
+    this.eventosDisponibles = []
+    this.eventosDisponiblesProceso = []
+    this.funcionesDeTerceros = {}
+
     fs.readdirSync('./events/')
       .filter((files) => files.endsWith('.js'))
       .forEach((archivo) => {
@@ -47,7 +51,21 @@ class EventManager {
     return this.funcionesDeTerceros
   }
 
-  ejecutarFuncionesDeTerceros (evento: string, tipoDeFuncion: string | number | null, ...argumentos: Array<any>): void { // skipcq: JS-0323
+  ejecutarFuncionesDeTerceros (parametros: { evento: string, tipoDeFuncion?: string | number | null }, ...argumentos: any): void { // skipcq: JS-0323
+    if (parametros.tipoDeFuncion && this.funcionesDeTerceros[parametros.evento] && this.funcionesDeTerceros[parametros.evento][parametros.tipoDeFuncion]) {
+      return this.funcionesDeTerceros[parametros.evento][parametros.tipoDeFuncion].forEach((funcion) => funcion(...argumentos))
+    } else {
+      return this.funcionesDeTerceros[parametros.evento].notype.forEach((funcion) =>
+        funcion(...argumentos)
+      )
+    }
+  }
+
+  /**
+   * @deprecated
+   */
+
+  deprecatedEjecutarFuncionesDeterceros (evento: string, tipoDeFuncion: string | number | null, ...argumentos: Array<any>): void { // skipcq: JS-0323
     if (tipoDeFuncion && this.funcionesDeTerceros[evento] && this.funcionesDeTerceros[evento][tipoDeFuncion]) {
       return this.funcionesDeTerceros[evento][tipoDeFuncion].forEach((funcion) => funcion(...argumentos))
     } else {

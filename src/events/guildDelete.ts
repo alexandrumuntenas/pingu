@@ -4,5 +4,5 @@ import { ClientEventManager, ClientGuildManager } from '../client'
 
 export default new Event('guildDelete', (guild: Guild) => {
   ClientGuildManager.eliminarRegistroDeServidor(guild)
-  ClientEventManager.ejecutarFuncionesDeTerceros('guildDelete', null, guild)
+  ClientEventManager.deprecatedEjecutarFuncionesDeterceros('guildDelete', null, guild)
 })
