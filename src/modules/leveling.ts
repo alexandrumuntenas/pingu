@@ -153,7 +153,7 @@ async function generateRankCard (member: GuildMember): Promise<string> {
       )
 
       canvas.fillStyle = hexToRgba(configuracionDelModulo.card.overlay.color || '#272934', configuracionDelModulo.card.overlay.opacity || 50)
-      rectangulosConBordesRedondeados(canvas, { x: 16, y: 16, width: 1068, height: 290, radius: 10, fill: canvas.fillStyle })
+      rectangulosConBordesRedondeados(canvas, { x: 16, y: 16, width: 1068, height: 290, radius: 10 })
     } else {
       canvas.fillStyle =
         configuracionDelModulo.card.overlay.color || '#272934'
@@ -182,13 +182,13 @@ async function generateRankCard (member: GuildMember): Promise<string> {
 
     // Añadir barra de progreso (backdrop)
     canvas.fillStyle = 'rgba(255,255,255, 0.3)'
-    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10, fill: canvas.fillStyle })
+    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10 })
     // Añadir barra de progreso
     canvas.fillStyle = 'rgb(255,255,255)'
-    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10, fill: canvas.fillStyle })
+    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: 755, height: 70, radius: 10 })
 
     canvas.fillStyle = 'rgb(255,255,255)'
-    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: Math.abs(parseInt(memberLevelingData.level, 10) / ((((parseInt(memberLevelingData.level, 10) + 1) ^ 2) * configuracionDelModulo.difficulty) * 100) * 755), height: 70, radius: 10, fill: canvas.fillStyle })
+    rectangulosConBordesRedondeados(canvas, { x: 295, y: 200, width: Math.abs(parseInt(memberLevelingData.level, 10) / ((((parseInt(memberLevelingData.level, 10) + 1) ^ 2) * configuracionDelModulo.difficulty) * 100) * 755), height: 70, radius: 10 })
 
     // Añadir avatar de usuario
     canvas.beginPath()

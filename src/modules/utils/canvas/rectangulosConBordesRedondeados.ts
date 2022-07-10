@@ -1,4 +1,4 @@
-function rectangulosConBordesRedondeados (canvas: CanvasRenderingContext2D, propiedades: { x: number, y: number, width: number, height: number, radius?: number, fill: any }) {
+function rectangulosConBordesRedondeados (canvas: CanvasRenderingContext2D, propiedades: { x: number, y: number, width: number, height: number, radius?: number }) {
   propiedades.radius = propiedades.radius || 5
 
   canvas.beginPath()
@@ -12,8 +12,7 @@ function rectangulosConBordesRedondeados (canvas: CanvasRenderingContext2D, prop
   canvas.lineTo(propiedades.x, propiedades.y + propiedades.radius)
   canvas.quadraticCurveTo(propiedades.x, propiedades.y, propiedades.x + propiedades.radius, propiedades.y)
   canvas.closePath()
-
-  if (propiedades.fill) canvas.fill()
+  canvas.fill()
 }
 
 export default rectangulosConBordesRedondeados

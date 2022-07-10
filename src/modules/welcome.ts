@@ -80,7 +80,7 @@ async function generateWelcomeCard (member: GuildMember): Promise<string> {
       configuracionDelModulo.welcomecard.overlay.color || '#272934',
       configuracionDelModulo.welcomecard.overlay.opacity || 50
     )
-    rectangulosConBordesRedondeados(canvas, { x: 25, y: 25, width: 1050, height: 450, radius: 10, fill: canvas.fillStyle })
+    rectangulosConBordesRedondeados(canvas, { x: 25, y: 25, width: 1050, height: 450, radius: 10 })
   } else {
     canvas.fillStyle = configuracionDelModulo.welcomecard.overlay.color || '#272934'
     canvas.fillRect(0, 0, canvasContext.width, canvasContext.height)
