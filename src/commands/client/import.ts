@@ -1,6 +1,6 @@
 import { PermissionsBitField } from 'discord.js'
 import { ClientGuildManager, ClientMessageTemplate } from '../../client'
-import { deprecatedObtenerTraduccion } from '../../core/i18nManager'
+import { obtenerTraduccion } from '../../core/i18nManager'
 import Command from '../../core/classes/Command'
 
 export default new Command({
@@ -10,12 +10,12 @@ export default new Command({
   runCommand: (message) => {
     if (message.attachments.first()) {
       ClientGuildManager.importarConfiguracionDelServidor(message.guild, message.attachments.first()?.url).then(() => {
-        message.reply({ embeds: [ClientMessageTemplate.success(deprecatedObtenerTraduccion('YAMLCONFIGURATION_IMPORT_SUCCESS', message.guild?.preferredLocale))] })
+        message.reply({ embeds: [ClientMessageTemplate.success(obtenerTraduccion({ clave: 'SE_HA_IMPORTADO_CORRECTAMENTE_EL_ARCHIVO_DE_CONFIGURACION', idioma: message.guild?.preferredLocale }))] })
       }).catch((error) => {
-        message.reply({ embeds: [ClientMessageTemplate.error(deprecatedObtenerTraduccion('YAMLCONFIGURATION_IMPORT_ERROR', message.guild?.preferredLocale), error)] })
+        message.reply({ embeds: [ClientMessageTemplate.error(obtenerTraduccion({ clave: 'SE_HA_PRODUCIDO_UN_ERROR_AL_IMPORTAR_EL_ARCHIVO_DE_CONFIGURACION', idioma: message.guild?.preferredLocale }), error)] })
       })
     } else {
-      message.reply({ embeds: [ClientMessageTemplate.error(deprecatedObtenerTraduccion('YAMLCONFIGURATION_IMPORT_FILENOTPROVIDED', message.guild?.preferredLocale))] })
+      message.reply({ embeds: [ClientMessageTemplate.error(obtenerTraduccion({ clave: 'NO_SE_HA_ESPECIFICADO_NINGUN_ARCHIVO_YAML_PARA_IMPORTAR', idioma: message.guild?.preferredLocale }))] })
     }
   }
 })

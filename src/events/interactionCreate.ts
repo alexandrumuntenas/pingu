@@ -1,7 +1,9 @@
+// TODO: TERMINAR DE ARREGLAR ESTO
+
 import { ChatInputCommandInteraction, Interaction, InteractionDeferReplyOptions } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import Consolex from '../core/consolex'
-import { deprecatedObtenerTraduccion } from '../core/i18nManager'
+import { obtenerTraduccion } from '../core/i18nManager'
 import {
   ClientCommandsManager,
   ClientCooldownManager,
@@ -21,11 +23,11 @@ function isChatInputCommand (interaction: PinguChatInputCommandInteraction) {
       const interactionToRun = ClientCommandsManager.getCommand(interaction.commandName)
 
       if (interactionToRun.module && !configuracionDelServidor[interactionToRun.module].enabled) {
-        return interaction.editReply({ embeds: [ClientMessageTemplate.error(deprecatedObtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_ENABLED'))] })
+        return interaction.editReply({ embeds: [ClientMessageTemplate.error(obtenerTraduccion({interaction.guild.preferredLocale, }))] })
       }
 
       if (interactionToRun.permissions && !interaction.memberPermissions.has(interactionToRun.permissions)) {
-        return interaction.editReply({ embeds: [ClientMessageTemplate.error(deprecatedObtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
+        return interaction.editReply({ embeds: [ClientMessageTemplate.error(obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::PERMISSION_ERROR'))] })
       }
 
       if (ClientCooldownManager.check(interaction.member, interaction.guild, interactionToRun)) {
@@ -33,10 +35,10 @@ function isChatInputCommand (interaction: PinguChatInputCommandInteraction) {
 
         await interactionToRun.runInteraction(interaction)
       } else {
-        return interaction.editReply({ embeds: [ClientMessageTemplate.timeout(deprecatedObtenerTraduccion(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeDuration(ClientCooldownManager.ttl(interaction.member, interaction.guild, interactionToRun), { round: true, language: interaction.guildConfiguration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
+        return interaction.editReply({ embeds: [ClientMessageTemplate.timeout(obtenerTraduccion(interaction.guild.preferredLocale, 'COOLDOWN', { COOLDOWN: humanizeDuration(ClientCooldownManager.ttl(interaction.member, interaction.guild, interactionToRun), { round: true, language: interaction.guildConfiguration.common.language || 'en-US', fallbacks: ['en-US'] }) }))] })
       }
     } else {
-      return interaction.editReply({ content: deprecatedObtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
+      return interaction.editReply({ content: obtenerTraduccion(interaction.guild.preferredLocale, 'COMMAND::NOT_FOUND') })
     }
   }).catch((err) => {
     Consolex.gestionarError(err)

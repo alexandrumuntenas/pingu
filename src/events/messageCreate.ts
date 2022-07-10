@@ -1,3 +1,5 @@
+// TODO: TERMINAR DE ARREGLAR ESTO
+
 import Command from '../core/classes/Command'
 
 import * as humanizarTiempo from 'humanize-duration'
@@ -13,7 +15,7 @@ import {
   ClientUser
 } from '../client'
 
-import { deprecatedObtenerTraduccion } from '../core/i18nManager'
+import { obtenerTraduccion } from '../core/i18nManager'
 import Event from '../core/classes/Event'
 import Consolex from '../core/consolex'
 interface PinguMessage extends Message {
@@ -34,6 +36,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
 
       ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
+      // TODO: ELIMINAR LA PARTE DEL USO DEL PREFIJO PERSONALIZADO.
       if (
         (message.content.startsWith(message.guildConfiguration.common.prefix) &&
           message.content !== message.guildConfiguration.common.prefix) ||
@@ -60,12 +63,11 @@ export default new Event('messageCreate', (message: PinguMessage) => {
         [message.rawCommand] = message.args
         message.args.shift()
 
+        // TODO: ELIMINAR ESTO. SE DESCONTINUA LA OBLIGACIÓN DE USAR INTERACCIONES. EL PREFIJO PREDETERMINADO SERÁ EL PING DEL BOT.
         if (message.guildConfiguration.interactions && message.guildConfiguration.interactions.enforceusage) {
           return message.reply({
             embeds: [
-              ClientMessageTemplate.error(
-                deprecatedObtenerTraduccion(message.guildConfiguration.language, 'INTERACTION-ENFORCEUSAGE')
-              )
+              ClientMessageTemplate.error(obtenerTraduccion('INTERACTION-ENFORCEUSAGE'))
             ]
           })
         }
@@ -77,7 +79,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             if (message.command && message.command.module && ClientModuleManager.nombresModulosDisponibles.includes(message.command.module) && !message.guildConfiguration[message.command.module].enabled) {
               return message.reply({
                 embeds: [
-                  ClientMessageTemplate.error(deprecatedObtenerTraduccion('COMMAND::NOT_ENABLED', message.guild?.preferredLocale))
+                  ClientMessageTemplate.error(obtenerTraduccion({ clave: 'EL_MODULO_AL_QUE_PERTENECE_EL_COMANDO_NO_ESTA_ACTIVO', idioma: message.guild?.preferredLocale }))
                 ]
               })
             }
@@ -85,7 +87,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             if (message.command?.permissions && !message.member?.permissions.has(message.command.permissions, false)) {
               return message.reply({
                 embeds: [
-                  ClientMessageTemplate.error(deprecatedObtenerTraduccion('COMMAND::PERMERROR', message.guild?.preferredLocale))
+                  ClientMessageTemplate.error(obtenerTraduccion({ clave: 'NO_DISPONES_DE_LOS_SUFICIENTES_PERMISOS_PARA_EJECUTAR_ESTE_COMANDO', idioma: message.guild?.preferredLocale }))
                 ]
               })
             }
@@ -98,10 +100,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
               return message.reply({
                 embeds: [
                   ClientMessageTemplate.error(
-                    deprecatedObtenerTraduccion(
-                      message.guildConfiguration.common.language,
-                      'COMMAND::ONLYINTERACTION'
-                    )
+                    obtenerTraduccion({ clave: 'EL_COMANDO_SOLICITADO_SOLO_ESTA_DISPONIBLE_COMO_INTERACCION', idioma: message.guild?.preferredLocale })
                   )
                 ]
               })
@@ -113,26 +112,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             message
           )
         }
-        return message.reply({
-          embeds: [
-            ClientMessageTemplate.timeout(
-              deprecatedObtenerTraduccion(
-                'COOLDOWN',
-                {
-                  COOLDOWN: humanizarTiempo(
-                    ClientCooldownManager.ttl(message.member, message.command || { name: message.rawCommand }),
-                    {
-                      round: true,
-                      language:
-                        message.guildConfiguration.common.language || 'en',
-                      fallbacks: ['en']
-                    }
-                  )
-                }
-              )
-            )
-          ]
-        })
+        return message.reply({embeds: [ClientMessageTemplate.timeout(obtenerTraduccion({ clave: 'DEBE_ESPERAR_X_TIEMPO_PARA_PODER_EJECUTAR_ESTE_COMANDO', idioma: message.guild?.preferredLocale, placeholders: [humanizarTiempo(ClientCooldownManager.ttl(message.member, message.command || { name: message.rawCommand }), { round: true, language: message.guild?.preferredLocale, fallbacks: ['en'] })] }))]})
       }
 
       return ClientEventManager.ejecutarFuncionesDeTerceros(
