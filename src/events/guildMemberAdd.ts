@@ -3,5 +3,5 @@ import { GuildMember } from 'discord.js'
 import { ClientEventManager } from '../client'
 
 export default new Event('guildMemberAdd', (member: GuildMember) => {
-  ClientEventManager.deprecatedEjecutarFuncionesDeterceros('guildMemberAdd', null, member)
+  ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'guildMemberAdd' }, member)
 })

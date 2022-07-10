@@ -5,5 +5,5 @@ import { ClientEventManager, ClientGuildManager } from '../client'
 
 export default new Event('guildCreate', (guild: Guild) => {
   ClientGuildManager.crearNuevoRegistroDeServidor(guild).catch(Consolex.gestionarError)
-  ClientEventManager.deprecatedEjecutarFuncionesDeterceros('guildCreate', null, guild)
+  ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'guildCreate' }, guild)
 })
