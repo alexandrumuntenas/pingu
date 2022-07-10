@@ -2,7 +2,7 @@ import stringPlaceholder from 'string-placeholder'
 import { existsSync, readdirSync } from 'fs'
 import Consolex from './consolex'
 
-class i18nManager {
+class InternationalizationManager {
   idiomasDisponibles: string[]
 
   constructor () {
@@ -45,4 +45,4 @@ class i18nManager {
   }
 }
 
-export default i18nManager
+export default InternationalizationManager
