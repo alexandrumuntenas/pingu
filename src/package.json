@@ -5,7 +5,6 @@
   "main": "client.js",
   "dependencies": {
     "@blac-sheep/character-count": "^0.2.0",
-    "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.5.0",
     "@sentry/node": "^7.1.1",
     "@sentry/tracing": "^7.1.1",
