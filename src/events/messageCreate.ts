@@ -35,13 +35,13 @@ export default new Event('messageCreate', (message: PinguMessage) => {
 
     ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', null, message)
 
-    if (message.content.startsWith(ClientUser.user?.toString() || `<@!${ClientUser.user?.id}>`)) {
+    if (message.content.startsWith(ClientUser.user?.toString() || `<@!${ClientUser.user?.id}>`) && (message.content.trim() === ClientUser.user?.toString() || message.content.trim() === `<@!${ClientUser.user?.id}>`)) {
       message.args = message.content
         .slice(ClientUser.user?.toString().length)
         .trim()
         .split(/ +/)
 
-      [message.rawCommand] = message.args
+      message.rawCommand = message.args[0]
       message.args.shift()
 
       message.command = ClientCommandsManager.getCommand(message.rawCommand)
@@ -78,20 +78,12 @@ export default new Event('messageCreate', (message: PinguMessage) => {
             })
           }
         }
-        return ClientEventManager.ejecutarFuncionesDeTerceros(
-          'messageCreate',
-          'withPrefix',
-          message
-        )
+        return ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', 'withPrefix', message)
       }
       return message.reply({ embeds: [ClientMessageTemplate.timeout(obtenerTraduccion({ clave: 'DEBE_ESPERAR_X_TIEMPO_PARA_PODER_EJECUTAR_ESTE_COMANDO', idioma: message.guild?.preferredLocale, placeholders: [humanizarTiempo(ClientCooldownManager.ttl(message.member, message.command || { name: message.rawCommand }), { round: true, language: message.guild?.preferredLocale, fallbacks: ['en'] })] }))] })
     }
 
-    return ClientEventManager.ejecutarFuncionesDeTerceros(
-      'messageCreate',
-      'noPrefix',
-      message
-    )
+    return ClientEventManager.ejecutarFuncionesDeTerceros('messageCreate', 'noPrefix', message)
   }
   ).catch((err) => {
     Consolex.gestionarError(err)
