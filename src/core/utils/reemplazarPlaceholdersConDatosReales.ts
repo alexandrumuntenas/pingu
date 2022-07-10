@@ -1,7 +1,7 @@
 import { GuildMember } from 'discord.js'
 
-function reemplazarPlaceholdersConDatosReales (string: string, member: GuildMember, customplaceholders?: { [key: string]: any }) {
-  if (!string || !member) throw new Error('Missing required parameters')
+function reemplazarPlaceholdersConDatosReales (string: string, member: GuildMember | null, customplaceholders?: { [key: string]: any }) {
+  if (!(member instanceof GuildMember)) throw new Error('El "GuildMember" especificado no existe.')
 
   let finalstring = string
     .replaceAll('{user}', member.toString())
@@ -25,13 +25,13 @@ function reemplazarPlaceholdersConDatosReales (string: string, member: GuildMemb
     .replaceAll('{guild}', member.guild.name)
     .replaceAll('{guild.name}', member.guild.name)
     .replaceAll('{guild.member_count}', `${member.guild.memberCount}`)
-    .replaceAll('{guild.icon_url}', member.guild.iconURL({ size: 1024 }))
+    .replaceAll('{guild.icon_url}', member.guild.iconURL({ size: 1024 }) || '')
     .replaceAll('{guild.id}', `${member.guild.id}`)
     .replaceAll('{guild.verification_level}', member.guild.verificationLevel.toString())
     .replaceAll('{server}', member.guild.name)
     .replaceAll('{server.name}', member.guild.name)
     .replaceAll('{server.member_count}', `${member.guild.memberCount}`)
-    .replaceAll('{server.icon_url}', member.guild.iconURL({ size: 1024 }))
+    .replaceAll('{server.icon_url}', member.guild.iconURL({ size: 1024 }) || '')
     .replaceAll('{server.id}', `${member.guild.id}`)
     .replaceAll('{server.verification_level}', member.guild.verificationLevel.toString())
 
