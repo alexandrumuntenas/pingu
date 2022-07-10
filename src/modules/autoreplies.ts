@@ -13,14 +13,10 @@ function autoReplyFromDatabase (databaseAutoReply: any): AutoReply {
   })
 }
 
-async function obtenerRespuestaPersonalizada (
-  guild: Guild,
-  desencadenante: string
-): Promise<AutoReply> {
-  const autoReply = await PoolConnection.execute(
-    'SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1',
-    [desencadenante.toLowerCase(), guild.id]
-  )
+async function obtenerRespuestaPersonalizada (guild: Guild | null, desencadenante: string): Promise<AutoReply> {
+  if (!(guild instanceof Guild)) throw new Error('El "Guild especificado no existe.')
+
+  const autoReply = await PoolConnection.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id])
     .then((result) => result[0])
     .catch((err) => Consolex.gestionarError(err))
 
@@ -31,7 +27,7 @@ function messageCreateHook (message: Message): void {
   obtenerRespuestaPersonalizada(message.guild, message.content).then(
     (autoReply) => {
       if (autoReply) {
-        const reply = { embeds: [], content: '' }
+        const reply: { embeds: EmbedBuilder[], content: string } = { embeds: [], content: '' }
         if (autoReply.propiedades.enviarEnEmbed.habilitado) {
           const embed = new EmbedBuilder()
 
@@ -59,7 +55,7 @@ function messageCreateHook (message: Message): void {
             embed.setURL(autoReply.propiedades.enviarEnEmbed.url)
           }
 
-          embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: ClientUser.user.displayAvatarURL() })
+          embed.setFooter({ text: 'Powered by Pingu || ⚠️ This is an autoreply made by this server.', iconURL: ClientUser.user?.displayAvatarURL() })
 
           reply.embeds.push(embed)
         } else reply.content = autoReply.propiedades.respuesta
