@@ -1,7 +1,7 @@
 import Consolex from './consolex'
 import Command from './classes/Command'
 
-import { Collection, Guild, SlashCommandBuilder } from 'discord.js'
+import { Collection, Guild, RESTPostAPIApplicationCommandsJSONBody, SlashCommandBuilder } from 'discord.js'
 import { lstatSync, readdirSync } from 'fs'
 import { REST } from '@discordjs/rest'
 import { Routes } from 'discord-api-types/v10'
@@ -9,8 +9,8 @@ import { ClientGuildManager, ClientInternationalizationManager, ClientUser } fro
 
 const rest = new REST({ version: '9' })
 
-if (process.env.ENTORNO === 'publico') rest.setToken(process.env.PUBLIC_TOKEN)
-else rest.setToken(process.env.INSIDER_TOKEN)
+if (!process.env.CLIENT_TOKEN) throw new Error('GTW000: CLIENT_TOKEN not declared.')
+rest.setToken(process.env.CLIENT_TOKEN)
 class CommandsManager {
   commands: Collection<string, Command>
 
@@ -27,7 +27,7 @@ class CommandsManager {
     this.commands.delete(command.name)
   }
 
-  loadCommands (directory): void {
+  loadCommands (directory: string): void {
     readdirSync(directory).forEach((file) => {
       const path = `${directory}/${file}`
 
@@ -38,9 +38,7 @@ class CommandsManager {
           if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
             command.interaction.setName(command.name)
           } else {
-            command.interaction = new SlashCommandBuilder().setName(
-              command.name
-            )
+            command.interaction = new SlashCommandBuilder().setName(command.name)
           }
 
           ClientInternationalizationManager.idiomasDisponibles.forEach((idioma) => {
@@ -62,9 +60,7 @@ class CommandsManager {
 
           Consolex.success(`CommandsManager: Comando ${file} cargado`)
         } else {
-          Consolex.warn(
-            `CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`
-          )
+          Consolex.warn(`CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`)
         }
       } else if (lstatSync(path).isDirectory()) this.loadCommands(path)
     })
@@ -96,17 +92,12 @@ class CommandsManager {
     return [...this.commands.values()]
   }
 
-  createInteractionList (configuration: Object): Array<Object> {
-    const interactionList = []
+  createInteractionList (configuration: { [index: string]: any }): Array<Object> {
+    const interactionList: RESTPostAPIApplicationCommandsJSONBody[] = []
 
     this.commands.forEach((command) => {
-      if (
-        Object.prototype.hasOwnProperty.call(configuration, command.module) &&
-        configuration[command.module].enabled
-      ) {
-        interactionList.push(command.interaction.toJSON())
-      } else {
-        interactionList.push(command.interaction.toJSON())
+      if (((command.module && Object.prototype.hasOwnProperty.call(configuration, command.module) && configuration[command.module].enabled) || !command.module) && command.interaction) {
+        interactionList.push(command.interaction?.toJSON())
       }
     })
 
@@ -117,7 +108,7 @@ class CommandsManager {
     ClientGuildManager.obtenerConfiguracionDelServidor(guild).then(
       (configuracion) => {
         rest
-          .put(Routes.applicationGuildCommands(ClientUser.user.id, guild.id), {
+          .put(Routes.applicationGuildCommands(ClientUser.user?.id || '', guild.id), {
             body: this.createInteractionList(configuracion)
           })
           .catch((err) => {
