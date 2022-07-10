@@ -138,7 +138,7 @@ class GuildManager {
     }
   }
 
-  async exportarConfiguracionDelServidor (guild: Guild | null): Promise<string | undefined> {
+  async exportarConfiguracionDelServidor (guild: Guild | null): Promise<string> {
     if (!(guild instanceof Guild)) throw new Error('El "Guild" especificado no existe.')
 
     const AttachmentBuilderPath = `./temp/${randomstring.generate({
@@ -146,12 +146,9 @@ class GuildManager {
     })}.yml`
     const configuracionDelServidor = await this.obtenerConfiguracionDelServidor(guild)
 
-    if (
-      configuracionDelServidor &&
-      typeof configuracionDelServidor === 'object'
+    if (configuracionDelServidor && typeof configuracionDelServidor === 'object'
     ) {
       writeFileSync(AttachmentBuilderPath, YAML.dump(configuracionDelServidor))
-      return AttachmentBuilderPath
     } else {
       this.crearNuevoRegistroDeServidor(guild)
         .then(() => {
@@ -161,6 +158,8 @@ class GuildManager {
           Consolex.gestionarError(err)
         })
     }
+
+    return AttachmentBuilderPath
   }
 
   async importarConfiguracionDelServidor (guild: Guild | null, attachmentBuilderSource: string | undefined) {
