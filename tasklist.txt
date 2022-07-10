@@ -10,6 +10,3 @@
 === INSTANCIAS DEL BOT ===
 
 == A trabajar =
-// TODO: Comenzar a experimentar con Docker para facilitar la instalación del bot y su mantenimiento.
-// TODO: Para sumar, se deberá reformar los commandHandler e interactionHandler para comprobar que el usuario tiene X rol, si es posible.
-// TODO: Crear nueva organización de datos del usuario.
