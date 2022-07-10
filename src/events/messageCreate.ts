@@ -44,15 +44,6 @@ export default new Event('messageCreate', (message: PinguMessage) => {
       [message.rawCommand] = message.args
       message.args.shift()
 
-      // TODO: ELIMINAR ESTO. SE DESCONTINUA LA OBLIGACIÓN DE USAR INTERACCIONES. EL PREFIJO PREDETERMINADO SERÁ EL PING DEL BOT.
-      if (message.guildConfiguration.interactions && message.guildConfiguration.interactions.enforceusage) {
-        return message.reply({
-          embeds: [
-            ClientMessageTemplate.error(obtenerTraduccion('INTERACTION-ENFORCEUSAGE'))
-          ]
-        })
-      }
-
       message.command = ClientCommandsManager.getCommand(message.rawCommand)
 
       if (ClientCooldownManager.check(message.member, message.command || { name: message.rawCommand })) {
