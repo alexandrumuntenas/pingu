@@ -60,20 +60,6 @@ class EventManager {
       )
     }
   }
-
-  /**
-   * @deprecated
-   */
-
-  deprecatedEjecutarFuncionesDeterceros (evento: string, tipoDeFuncion: string | number | null, ...argumentos: Array<any>): void { // skipcq: JS-0323
-    if (tipoDeFuncion && this.funcionesDeTerceros[evento] && this.funcionesDeTerceros[evento][tipoDeFuncion]) {
-      return this.funcionesDeTerceros[evento][tipoDeFuncion].forEach((funcion) => funcion(...argumentos))
-    } else {
-      return this.funcionesDeTerceros[evento].notype.forEach((funcion) =>
-        funcion(...argumentos)
-      )
-    }
-  }
 }
 
 export default EventManager
