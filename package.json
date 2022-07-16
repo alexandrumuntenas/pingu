@@ -1,66 +1,16 @@
 {
-  "name": "pingu",
-  "version": "22.2.0",
-  "description": "Bot de Discord by Alexandru Theodor Muntenas",
-  "main": "client.js",
-  "dependencies": {
-    "@blac-sheep/character-count": "^0.2.0",
-    "@discordjs/builders": "^0.12.0",
-    "@discordjs/opus": "^0.7.0",
-    "@discordjs/rest": "^0.4.1",
-    "@sentry/node": "^6.16.1",
-    "@sentry/tracing": "^6.16.1",
-    "@sfirew/mc-motd-parser": "^1.0.8",
-    "@top-gg/sdk": "^3.1.3",
-    "boxen": "5.1.2",
-    "canvas": "^2.8.0",
-    "chalk": "4.1.2",
-    "dbots": "^11.0.0",
-    "discord-api-types": "^0.32.0",
-    "discord-modals": "^1.2.8",
-    "discord.js": "^13.6.0",
-    "dotenv": "^16.0.0",
-    "flipacoin": "^1.0.0",
-    "gamedig": "^4.0.2",
-    "hex-rgba": "^1.0.2",
-    "humanize-duration": "^3.27.1",
-    "is-hexcolor": "^1.0.0",
-    "is-image-url": "^1.1.8",
-    "is-valid-http-url": "^1.0.3",
-    "mathjs": "^10.1.0",
-    "millify": "^4.0.0",
-    "moment": "^2.29.1",
-    "mysql2": "^2.3.3",
-    "perspective-api-client": "^3.1.0",
-    "radio-browser": "^2.1.9",
-    "random-int": "^3.0.0",
-    "randomstring": "^1.2.1",
-    "rss-parser": "^3.12.0",
-    "stackblur-canvas": "^2.5.0",
-    "statcord.js": "^3.3.0",
-    "string-placeholder": "^1.0.2",
-    "superagent": "^7.0.2",
-    "unix-time": "^1.0.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alexandrumuntenas/pingu.git"
-  },
-  "author": "Alexandru Theodor Muntenas",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/alexandrumuntenas/pingu/issues"
-  },
-  "homepage": "https://github.com/alexandrumuntenas/pingu#readme",
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.0.0"
+    "typescript": "^4.7.4"
   },
   "scripts": {
-    "dev": "nodemon . --ignore cooldowns.json",
-    "checktranslations": "node i18n/checktranslations.js"
+    "gh:build": "npx tsc --build",
+    "gh:install-dependencies": "cd src/ && npm i && cd ..",
+    "dev:build": "clear && npx tsc --build",
+    "dev:run": "clear && cd dist/ && node --experimental-specifier-resolution=node client.js && cd ..",
+    "dev": "clear && npx tsc --build && cd dist/ && echo 'In Dist' && node --experimental-specifier-resolution=node client.js && cd .."
+  },
+  "dependencies": {
+    "hex-to-rgba": "^2.0.1",
+    "image-url-validator": "^1.0.4"
   }
 }
