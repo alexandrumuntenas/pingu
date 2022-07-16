@@ -1,4 +1,4 @@
-"use strict";
+'use strict'
 // TODO: TERMINAR DE ARREGLAR ESTO
 /*
 import { ChatInputCommandInteraction, Interaction, InteractionDeferReplyOptions } from 'discord.js'
