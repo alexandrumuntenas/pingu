@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import * as moment from 'moment'
+import moment from 'moment'
 import * as Sentry from '@sentry/node'
 
 if (process.env.SENTRY_DSN) {

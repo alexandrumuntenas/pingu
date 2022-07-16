@@ -1,7 +1,7 @@
 import { AttachmentBuilder, PermissionsBitField } from 'discord.js'
-import { ClientGuildManager, ClientInternationalizationManager, ClientMessageTemplate } from '../../client'
-import Command from '../../core/classes/Command'
-import Consolex from '../../core/consolex'
+import { ClientGuildManager, ClientInternationalizationManager, ClientMessageTemplate } from '../../client.js'
+import Command from '../../core/classes/Command.js'
+import Consolex from '../../core/consolex.js'
 
 export default new Command({
   name: 'export',

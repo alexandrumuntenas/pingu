@@ -1,7 +1,7 @@
 import { GuildMember } from 'discord.js'
 import { existsSync, writeFile } from 'fs'
-import Command from './classes/Command'
-import Consolex from './consolex'
+import Command from './classes/Command.js'
+import Consolex from './consolex.js'
 
 let JSONCooldown = {}
 

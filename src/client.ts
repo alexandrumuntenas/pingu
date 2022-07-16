@@ -11,14 +11,14 @@ import 'dotenv/config'
 import * as Discord from 'discord.js'
 import { GatewayIntentBits } from 'discord-api-types/v10'
 
-import CommandsManager from './core/commandsManager'
-import CooldownMananger from './core/cooldownManager'
-import ModuleManager from './core/moduleManager'
-import GuildManager from './core/guildManager'
-import EventManager from './core/eventManager'
-import MessageTemplate from './templates/messageTemplate'
-import InternationalizationManager from './core/internationalizationManager'
-import PrivacyManager from './core/privacyManager'
+import CommandsManager from './core/commandsManager.js'
+import CooldownMananger from './core/cooldownManager.js'
+import ModuleManager from './core/moduleManager.js'
+import GuildManager from './core/guildManager.js'
+import EventManager from './core/eventManager.js'
+import MessageTemplate from './templates/messageTemplate.js'
+import InternationalizationManager from './core/internationalizationManager.js'
+import PrivacyManager from './core/privacyManager.js'
 
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
@@ -50,7 +50,7 @@ process.on('exit', () => {
 // Managers
 
 const ClientInternationalizationManager = new InternationalizationManager()
-const ClientCommandsManager = new CommandsManager('src/client/commands')
+const ClientCommandsManager = new CommandsManager('commands')
 const ClientCooldownManager = new CooldownMananger()
 const ClientModuleManager = new ModuleManager()
 const ClientGuildManager = new GuildManager()

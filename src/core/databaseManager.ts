@@ -1,4 +1,4 @@
-import Consolex from './consolex'
+import Consolex from './consolex.js'
 
 import { createPool } from 'mysql2/promise'
 import { readdirSync, readFileSync } from 'fs'

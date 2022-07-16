@@ -1,5 +1,5 @@
 import { Interaction, PermissionsBitField, SlashCommandBuilder } from 'discord.js'
-import { PinguMessage } from '../../events/messageCreate'
+import { PinguMessage } from '../../events/messageCreate.js'
 class Command {
   name: string
   description: string

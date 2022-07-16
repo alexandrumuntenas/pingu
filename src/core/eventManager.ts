@@ -1,9 +1,9 @@
 import * as fs from 'fs'
-import EventHook from './classes/EventHook'
-import Event from './classes/Event'
-import Consolex from './consolex'
+import EventHook from './classes/EventHook.js'
+import Event from './classes/Event.js'
+import Consolex from './consolex.js'
 
-import { ClientUser } from '../client'
+import { ClientUser } from '../client.js'
 
 class EventManager {
   eventosDisponibles: Array<Event>

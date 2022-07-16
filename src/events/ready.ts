@@ -1,6 +1,6 @@
-import Event from '../core/classes/Event'
-import Consolex from '../core/consolex'
-import eliminadorArchivosTemporales from '../core/utils/eliminadorArchivosTemporales'
+import Event from '../core/classes/Event.js'
+import Consolex from '../core/consolex.js'
+import eliminadorArchivosTemporales from '../core/utils/eliminadorArchivosTemporales.js'
 
 import { ActivityType } from 'discord.js'
 import { ClientEventManager, ClientUser } from '../client'
@@ -11,7 +11,7 @@ export default new Event('ready', () => {
   eliminadorArchivosTemporales()
   ClientUser.user?.setActivity('new update TS2203', { type: ActivityType.Watching })
 
-  ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'guildMemberAdd'})
+  ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'guildMemberAdd' })
 
   setInterval(() => {
     ClientUser.user?.setActivity(`${ClientUser.guilds.cache.size} guilds`, { type: ActivityType.Watching })

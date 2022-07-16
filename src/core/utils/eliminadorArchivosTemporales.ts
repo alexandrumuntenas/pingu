@@ -1,5 +1,5 @@
 import { readdirSync, mkdirSync, unlinkSync, stat } from 'fs'
-import Consolex from '../consolex'
+import Consolex from '../consolex.js'
 
 function eliminarArchivos (files: string[]) {
   for (const file of files) {

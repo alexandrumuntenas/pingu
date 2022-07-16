@@ -1,6 +1,6 @@
 import stringPlaceholder from 'string-placeholder'
 import { existsSync, readdirSync } from 'fs'
-import Consolex from './consolex'
+import Consolex from './consolex.js'
 
 class InternationalizationManager {
   idiomasDisponibles: string[]

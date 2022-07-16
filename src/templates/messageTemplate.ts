@@ -1,5 +1,5 @@
 import { codeBlock, EmbedBuilder } from '@discordjs/builders'
-import { ClientUser } from '../client'
+import { ClientUser } from '../client.js'
 
 class MessageTemplate {
   messageTemplateSettings: {

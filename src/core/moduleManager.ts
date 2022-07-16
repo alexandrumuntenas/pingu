@@ -1,7 +1,7 @@
-import Module from './classes/Module'
-import Consolex from './consolex'
+import Module from './classes/Module.js'
+import Consolex from './consolex.js'
 
-import { ClientCommandsManager, ClientEventManager } from '../client'
+import { ClientCommandsManager, ClientEventManager } from '../client.js'
 import { readdirSync } from 'fs'
 class ModuleManager {
   modulosDisponibles: Array<Module>

@@ -1,15 +1,15 @@
-import Consolex from './consolex'
-import Module from './classes/Module'
-import procesarObjetosdeConfiguracion from './utils/procesarObjetosdeConfiguracion'
-import ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion from './utils/ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion'
+import Consolex from './consolex.js'
+import Module from './classes/Module.js'
+import procesarObjetosdeConfiguracion from './utils/procesarObjetosdeConfiguracion.js'
+import ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion from './utils/ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion.js'
 
 import * as YAML from 'js-yaml'
 import * as Downloader from 'nodejs-file-downloader'
 import * as randomstring from 'randomstring'
 
-import { PoolConnection, tablasDisponibles } from './databaseManager'
+import { PoolConnection, tablasDisponibles } from './databaseManager.js'
 import { Guild } from 'discord.js'
-import { ClientModuleManager, ClientUser } from '../client'
+import { ClientModuleManager, ClientUser } from '../client.js'
 import { writeFileSync, readFileSync } from 'fs'
 
 class GuildManager {

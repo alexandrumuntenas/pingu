@@ -1,8 +1,8 @@
 import { Guild, GuildMember, User } from 'discord.js'
 import { writeFileSync } from 'fs'
-import { PoolConnection, tablasDisponibles } from './databaseManager'
+import { PoolConnection, tablasDisponibles } from './databaseManager.js'
 
-import Consolex from './consolex'
+import Consolex from './consolex.js'
 import * as randomstring from 'randomstring'
 
 class PrivacyManager {

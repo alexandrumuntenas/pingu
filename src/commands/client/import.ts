@@ -1,6 +1,6 @@
 import { PermissionsBitField } from 'discord.js'
-import { ClientGuildManager, ClientInternationalizationManager, ClientMessageTemplate } from '../../client'
-import Command from '../../core/classes/Command'
+import { ClientGuildManager, ClientInternationalizationManager, ClientMessageTemplate } from '../../client.js'
+import Command from '../../core/classes/Command.js'
 
 export default new Command({
   name: 'import',

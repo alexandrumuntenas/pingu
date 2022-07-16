@@ -1,5 +1,5 @@
 /* eslint-disable valid-typeof */
-import { ClientModuleManager } from '../../client'
+import { ClientModuleManager } from '../../client.js'
 
 function loopDeComprobacion (modeloDeConfiguracion: { [index: string]: any }, configuracionAComparar: { [index: string]: any }) {
   const configuracionProcesada: { [index: string]: any } = {}
