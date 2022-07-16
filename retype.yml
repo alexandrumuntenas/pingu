@@ -8,7 +8,7 @@ output: .retype
 
 # -----------------------------------------------------------------------------
 
-url: https://alexandrumuntenas.dev/pingu/
+url: https://atheodor.muntenas.es/pingu
 
 # -----------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ branding:
   title: Pingu
   logo: botavatar.png
   logoAlign: left
-  label: 22T1
+  label: LATEST
 
 # -----------------------------------------------------------------------------
 
@@ -30,22 +30,22 @@ links:
   icon: home
 
 - text: GitHub
-  link: https://github.com/alexandrumuntenas/pingu
+  link: https://muntenas.es/6a07bb/repository
   icon: mark-github
   target: blank
 
 - text: Support Server
-  link: https://discord.com/invite/dgFHBSuUst
+  link: https://muntenas.es/6a07bb/support
   icon: comment-discussion
   target: blank
 
 - text: Add to Server
-  link: https://discord.com/oauth2/authorize?client_id=827199539185975417&permissions=388627950679&scope=bot%20applications.commands
+  link: https://muntenas.es/6a07bb/invite
   icon: diff-added
   target: blank
 
 footer:
-  copyright: "&copy; Copyright {{ year }} Alexandru Muntenas. All rights reserved."
+  copyright: "&copy; Copyright {{ year }} @amun06. All rights reserved."
 
 cname: alexandrumuntenas.dev
 
