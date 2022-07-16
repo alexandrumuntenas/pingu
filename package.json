@@ -5,6 +5,7 @@
   "scripts": {
     "gh:build": "npx tsc --build",
     "gh:install-dependencies": "cd src/ && npm i && cd ..",
+    "gh:switch-tsconfig": "rm tsconfig.json && mv tsconfig.prod.json tsconfig.json",
     "dev:build": "clear && npx tsc --build",
     "dev:run": "clear && cd src/ && node --experimental-specifier-resolution=node client.js && cd ..",
     "dev": "clear && npx tsc --build && cd src/ && node --experimental-specifier-resolution=node client.js && cd .."

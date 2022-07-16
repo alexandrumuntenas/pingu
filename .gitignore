@@ -1,6 +1,6 @@
 *.env
 cooldowns.json
-*.js
+/src/*.js
 
 .vscode/
 node_modules/
