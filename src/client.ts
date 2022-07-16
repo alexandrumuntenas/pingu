@@ -37,7 +37,7 @@ const ClientUser: Discord.Client = new Discord.Client({
     Discord.Partials.Message,
     Discord.Partials.User
   ],
-  ws: { properties: { $browser: 'Discord iOS' } }
+  ws: { properties: { browser: 'Discord iOS' } }
 })
 
 if (!process.env.CLIENT_TOKEN) throw new Error('GTW000: CLIENT_TOKEN not declared.')
