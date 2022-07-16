@@ -29,7 +29,7 @@
     "mathjs": "^10.1.0",
     "mcsrv": "^1.0.1",
     "millify": "^4.0.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "mysql2": "^2.3.3",
     "nodejs-file-downloader": "^4.9.3",
     "perspective-api-client": "^3.1.0",
