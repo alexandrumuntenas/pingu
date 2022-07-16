@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alexandrumuntenas.dev/pingu/sitemap.xml.gz
+Sitemap: https://atheodor.muntenas.es/pingu/sitemap.xml.gz
