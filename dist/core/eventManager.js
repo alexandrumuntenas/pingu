@@ -20,7 +20,7 @@ class EventManager {
         fs.readdirSync('./events/proceso')
             .filter((files) => files.endsWith('.js'))
             .forEach(async (archivo) => {
-            const evento = import(`../events/proceso/${archivo}`);
+            const evento = await import(`../events/proceso/${archivo}`);
             Consolex.success(`ProcessEventManager: Evento de proceso ${archivo} cargado`);
             this.eventosDisponiblesProceso.push(evento);
             process.on(evento.name, async (...args) => evento.execute(...args)); // skipcq: JS-0376

@@ -4,4 +4,3 @@ cooldowns.json
 node_modules/
 /temp
 */dist/
-*.dev.js

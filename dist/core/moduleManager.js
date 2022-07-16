@@ -11,8 +11,10 @@ class ModuleManager {
         this.nombresModulosDisponibles = [];
         const directorioDeModulos = readdirSync('./modules');
         directorioDeModulos.forEach(async (modulo) => {
-            if (modulo.endsWith('.js') && !modulo.endsWith('dev.js')) {
-                this.registrarModulo(await import(`../modules/${modulo}`)); // skipcq: JS-0359
+            if (modulo.endsWith('.js')) {
+                import(`../modules/${modulo}`).then((modulo) => {
+                    this.registrarModulo(modulo.default);
+                });
             }
         });
     }

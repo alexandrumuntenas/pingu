@@ -5,18 +5,18 @@ class InternationalizationManager {
     idiomasDisponibles;
     constructor() {
         this.idiomasDisponibles = [];
-        const idiomas = readdirSync('./core/locales/');
+        const idiomas = readdirSync('./core/locales');
         idiomas.forEach((archivoIdioma) => {
             if (archivoIdioma.endsWith('@latest.json')) {
                 this.idiomasDisponibles.push(archivoIdioma.replace('@latest.json', '').trim());
             }
         });
     }
-    async obtenerTraduccion(traduccionSolicitada) {
-        if (traduccionSolicitada?.idioma && !existsSync(`-/core/locales/${traduccionSolicitada?.idioma}.json`)) {
+    obtenerTraduccion(traduccionSolicitada) {
+        if (traduccionSolicitada?.idioma && !existsSync(`./core/locales/${traduccionSolicitada?.idioma}.json`)) {
             Consolex.gestionarError(`[i18n Utils] INE001: The requested translation file ${traduccionSolicitada?.idioma} has not been found. Using es-ES as fallback.`);
         }
-        let textoTraducido = await import(`./locales/${traduccionSolicitada?.idioma || 'es-ES'}.json`)[traduccionSolicitada.clave];
+        let textoTraducido = require(`./locales/${traduccionSolicitada?.idioma || 'es-ES'}.json`)[traduccionSolicitada.clave];
         if (!textoTraducido) {
             Consolex.gestionarError(`[i18n Utils] INE002: The key specified "${traduccionSolicitada.clave}" to obtain your translation does not exist. Returning error to the requester.`);
             return `INE002: The key specified "${traduccionSolicitada.clave}" to obtain your translation does not exist. Returning error to the requester.`;

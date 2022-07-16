@@ -17,8 +17,8 @@ class EventManager {
 
     fs.readdirSync('./events/')
       .filter((files) => files.endsWith('.js'))
-      .forEach((archivo) => {
-        const event = require(`../events/${archivo}`) // skipcq: JS-0359
+      .forEach(async (archivo) => {
+        const event = await import(`../events/${archivo}`)
         Consolex.success(`EventManager: Evento ${archivo} cargado`)
         this.eventosDisponibles.push(event)
         ClientUser.on(event.name, async (...args) => event.execute(...args)) // skipcq: JS-0376
@@ -26,8 +26,8 @@ class EventManager {
 
     fs.readdirSync('./events/proceso')
       .filter((files) => files.endsWith('.js'))
-      .forEach((archivo) => {
-        const evento = require(`../events/proceso/${archivo}`) // skipcq: JS-0359
+      .forEach(async (archivo) => {
+        const evento = await import(`../events/proceso/${archivo}`)
         Consolex.success(`ProcessEventManager: Evento de proceso ${archivo} cargado`)
         this.eventosDisponiblesProceso.push(evento)
         process.on(evento.name, async (...args) => evento.execute(...args)) // skipcq: JS-0376

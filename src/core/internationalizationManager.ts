@@ -8,7 +8,7 @@ class InternationalizationManager {
   constructor () {
     this.idiomasDisponibles = []
 
-    const idiomas = readdirSync('./core/locales/')
+    const idiomas = readdirSync('./core/locales')
     idiomas.forEach((archivoIdioma) => {
       if (archivoIdioma.endsWith('@latest.json')) {
         this.idiomasDisponibles.push(archivoIdioma.replace('@latest.json', '').trim())
@@ -17,7 +17,7 @@ class InternationalizationManager {
   }
 
   obtenerTraduccion (traduccionSolicitada: { clave: string, idioma?: string, placeholders?: Array<string> }): string {
-    if (traduccionSolicitada?.idioma && !existsSync(`-/core/locales/${traduccionSolicitada?.idioma}.json`)) {
+    if (traduccionSolicitada?.idioma && !existsSync(`./core/locales/${traduccionSolicitada?.idioma}.json`)) {
       Consolex.gestionarError(`[i18n Utils] INE001: The requested translation file ${traduccionSolicitada?.idioma} has not been found. Using es-ES as fallback.`)
     }
 

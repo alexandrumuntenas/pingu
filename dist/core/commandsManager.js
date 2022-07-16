@@ -1,5 +1,4 @@
 import Consolex from './consolex.js';
-import Command from './classes/Command.js';
 import { Collection, SlashCommandBuilder } from 'discord.js';
 import { lstatSync, readdirSync } from 'fs';
 import { REST } from '@discordjs/rest';
@@ -22,32 +21,26 @@ class CommandsManager {
         this.commands.delete(command.name);
     }
     loadCommands(directory) {
-        if (!directory.startsWith('./'))
+        if (!directory.startsWith('./')) {
             throw new Error('CMD007: Directory does not start with "./"');
+        }
         readdirSync(directory).forEach((file) => {
             const path = `${directory}/${file}`;
-            if (file.endsWith('.js') && !file.endsWith('dev.js')) {
+            if (file.endsWith('.js')) {
                 import(`.${path}`).then((command) => {
+                    command = command.default;
                     if (Object.prototype.hasOwnProperty.call(command, 'name')) {
                         if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
-                            command.interaction.setName(command.name);
+                            command.interaction?.setName(command.name);
                         }
                         else {
                             command.interaction = new SlashCommandBuilder().setName(command.name);
                         }
                         ClientInternationalizationManager.idiomasDisponibles.forEach((idioma) => {
-                            command.interaction.setDescriptionLocalized(idioma, ClientInternationalizationManager.obtenerTraduccion({ clave: `COMMANDS:${command.name}_DESCRIPTION`, idioma }));
+                            // TODO: IDIOMA DINÁMICO
+                            command.interaction?.setDescriptionLocalization('es-ES', ClientInternationalizationManager.obtenerTraduccion({ clave: `COMMANDS:${command.name}_DESCRIPTION`, idioma }));
                         });
-                        this.add(new Command({
-                            name: command.name,
-                            description: command.description,
-                            module: command.module,
-                            cooldown: command.cooldown,
-                            parameters: command.parameters,
-                            interaction: command.interaction,
-                            runInteraction: command.runInteraction,
-                            runCommand: command.runCommand
-                        }));
+                        this.add(command);
                         Consolex.success(`CommandsManager: Comando ${file} cargado`);
                     }
                     else {
