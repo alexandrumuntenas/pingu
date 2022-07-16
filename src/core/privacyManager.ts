@@ -1,4 +1,4 @@
-import { GuildMember } from "discord.js"
+import { Guild, GuildMember } from "discord.js"
 import Consolex from "./consolex"
 import { PoolConnection, tablasDisponibles } from "./databaseManager"
 
@@ -17,8 +17,14 @@ class PrivacyManager {
     })
   }
 
-  eliminarGuildData () {
-    return 'Not implemented'
+  eliminarGuildData (guild: Guild) {
+    const tablasConDatosDeServidor = tablasDisponibles.filter((tabla) => tabla.startsWith('guild'))
+
+    tablasConDatosDeServidor.forEach((tabla) => {
+      PoolConnection.execute('DELETE FROM ?? WHERE guild = ?', [tabla, guild.id]).catch((error) => {
+        Consolex.gestionarError(error)
+      })
+    })
   }
 }
 
