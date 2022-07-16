@@ -18,7 +18,7 @@ class ModuleManager {
       if (modulo.endsWith('.js')) {
         import(`../modules/${modulo}`).then((modulo) => {
           this.registrarModulo(modulo.default)
-        })
+        }).catch((error) => Consolex.gestionarError(error))
       }
     })
   }
@@ -26,7 +26,6 @@ class ModuleManager {
   registrarModulo (modulo: Module): Array<Module> {
     modulo.asignarComandos(ClientCommandsManager.toArray().filter((command) => command.module === modulo.nombre) || [])
     Consolex.info(`ModuleManager: El módulo ${modulo.nombre} acoge los comandos ${modulo.comandos?.map((command) => command.name).join(', ')}`)
-
     if (!this.modulosDisponibles.find((m) => m.nombre === modulo.nombre)) {
       Consolex.success(`ModuleManager: Módulo ${modulo.nombre} registrado`)
       this.modulosDisponibles.push(modulo)

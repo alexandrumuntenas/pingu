@@ -102,7 +102,8 @@ class GuildManager {
     return configuracionDelServidorProcesado
   }
 
-  async obtenerConfiguracionDelServidorPorModulo (guild: Guild, modulo: string) {
+  async obtenerConfiguracionDelServidorPorModulo (guild: Guild | null, modulo: string) {
+    if (!(guild instanceof Guild)) throw new Error('El "Guild"" especificado no existe.')
     try {
       const configuracionDelServidor: { [index: string]: any } = await PoolConnection.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0])
 

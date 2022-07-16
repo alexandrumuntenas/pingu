@@ -46,7 +46,7 @@ class CommandsManager {
                     else {
                         Consolex.warn(`CommandsManager: ${file} no se ha cargado porque no tiene una propiedad "name"`);
                     }
-                });
+                }).catch((error) => Consolex.gestionarError(error));
             }
             else if (lstatSync(path).isDirectory())
                 this.loadCommands(path);

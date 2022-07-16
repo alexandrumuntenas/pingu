@@ -8,14 +8,12 @@ import Module from '../core/classes/Module'
 import reemplazarPlaceholdersConDatosReales from '../core/utils/reemplazarPlaceholdersConDatosReales'
 import rectangulosConBordesRedondeados from './utils/canvas/rectangulosConBordesRedondeados'
 import applyText from './utils/canvas/applyText'
-
-import * as randomstring from 'randomstring'
 import EventHook from '../core/classes/EventHook'
 import Consolex from '../core/consolex'
+import isImageURL from 'image-url-validator'
+import hexToRgba from 'hex-to-rgba'
 
-const isValidUrl = require('is-valid-http-url')
-const isImageUrl = require('is-image-url')
-const hexToRgba = require('hex-rgba')
+import * as randomstring from 'randomstring'
 
 function giveMemberRoles (member: GuildMember) {
   ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'welcome').then((configuracionDelModulo) => {
@@ -44,7 +42,7 @@ async function generateWelcomeCard (member: GuildMember): Promise<string> {
 
   canvas.strokeStyle = 'rgba(0,0,0,0)'
 
-  if (configuracionDelModulo.welcomecard.background && isValidUrl(configuracionDelModulo.welcomecard.background) && isImageUrl(configuracionDelModulo.welcomecard.background)) {
+  if (configuracionDelModulo.welcomecard.background && await isImageURL(configuracionDelModulo.welcomecard.background)) {
     const background = await loadImage(configuracionDelModulo.welcomecard.background)
     const scale = Math.max(
       canvasContext.width / background.width,

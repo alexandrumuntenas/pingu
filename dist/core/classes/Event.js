@@ -1,12 +1,12 @@
 class Event {
-    nombre;
-    funcion;
-    constructor(nombre, funcion) {
-        this.nombre = nombre;
-        this.funcion = funcion;
+    name;
+    eventFunction;
+    constructor(name, eventFunction) {
+        this.name = name;
+        this.eventFunction = eventFunction;
     }
     execute(...args) {
-        this.funcion(...args);
+        this.eventFunction(...args);
     }
 }
 export default Event;

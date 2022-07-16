@@ -1,14 +1,14 @@
 class Event {
-  nombre: string
-  funcion: Function
+  name: string
+  eventFunction: Function
 
-  constructor (nombre: string, funcion: Function) {
-    this.nombre = nombre
-    this.funcion = funcion
+  constructor (name: string, eventFunction: Function) {
+    this.name = name
+    this.eventFunction = eventFunction
   }
 
   execute (...args: Array<any>): void { // skipcq: JS-0323
-    this.funcion(...args)
+    this.eventFunction(...args)
   }
 }
 

@@ -11,19 +11,26 @@ class EventManager {
         this.funcionesDeTerceros = {};
         fs.readdirSync('./events/')
             .filter((files) => files.endsWith('.js'))
-            .forEach(async (archivo) => {
-            const event = await import(`../events/${archivo}`);
-            Consolex.success(`EventManager: Evento ${archivo} cargado`);
-            this.eventosDisponibles.push(event);
-            ClientUser.on(event.name, async (...args) => event.execute(...args)); // skipcq: JS-0376
+            .forEach((archivo) => {
+            import(`../events/${archivo}`).then((evento) => {
+                evento = evento.default;
+                if (!evento.name) {
+                    return;
+                }
+                Consolex.success(`EventManager: Evento ${archivo} cargado`);
+                this.eventosDisponibles.push(evento);
+                ClientUser.on(evento.name, async (...args) => evento.execute(...args)); // skipcq: JS-0376
+            }).catch((error) => Consolex.gestionarError(error));
         });
         fs.readdirSync('./events/proceso')
             .filter((files) => files.endsWith('.js'))
-            .forEach(async (archivo) => {
-            const evento = await import(`../events/proceso/${archivo}`);
-            Consolex.success(`ProcessEventManager: Evento de proceso ${archivo} cargado`);
-            this.eventosDisponiblesProceso.push(evento);
-            process.on(evento.name, async (...args) => evento.execute(...args)); // skipcq: JS-0376
+            .forEach((archivo) => {
+            import(`../events/proceso/${archivo}`).then((evento) => {
+                evento = evento.default;
+                Consolex.success(`ProcessEventManager: Evento de proceso ${archivo} cargado`);
+                this.eventosDisponiblesProceso.push(evento);
+                process.on(evento.name, async (...args) => evento.execute(...args)); // skipcq: JS-0376
+            }).catch((error) => Consolex.gestionarError(error));
         });
     }
     inyectarEnEventoFuncionDeTercero(funcionDeTercero) {
@@ -46,7 +53,7 @@ class EventManager {
         if (parametros.tipoDeFuncion && this.funcionesDeTerceros[parametros.evento] && this.funcionesDeTerceros[parametros.evento][parametros.tipoDeFuncion]) {
             return this.funcionesDeTerceros[parametros.evento][parametros.tipoDeFuncion].forEach((funcion) => funcion(...argumentos));
         }
-        else {
+        else if (this.funcionesDeTerceros[parametros.evento] && this.funcionesDeTerceros[parametros.evento].notype) {
             return this.funcionesDeTerceros[parametros.evento].notype.forEach((funcion) => funcion(...argumentos));
         }
     }

@@ -14,7 +14,7 @@ class ModuleManager {
             if (modulo.endsWith('.js')) {
                 import(`../modules/${modulo}`).then((modulo) => {
                     this.registrarModulo(modulo.default);
-                });
+                }).catch((error) => Consolex.gestionarError(error));
             }
         });
     }

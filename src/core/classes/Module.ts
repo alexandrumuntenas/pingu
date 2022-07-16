@@ -1,5 +1,5 @@
-import Command from './Command.js'
-import EventHook from './EventHook.js'
+import Command from './Command'
+import EventHook from './EventHook'
 
 class Module {
   nombre: string

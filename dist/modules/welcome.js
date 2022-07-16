@@ -7,12 +7,11 @@ import Module from '../core/classes/Module';
 import reemplazarPlaceholdersConDatosReales from '../core/utils/reemplazarPlaceholdersConDatosReales';
 import rectangulosConBordesRedondeados from './utils/canvas/rectangulosConBordesRedondeados';
 import applyText from './utils/canvas/applyText';
-import * as randomstring from 'randomstring';
 import EventHook from '../core/classes/EventHook';
 import Consolex from '../core/consolex';
-const isValidUrl = require('is-valid-http-url');
-const isImageUrl = require('is-image-url');
-const hexToRgba = require('hex-rgba');
+import isImageURL from 'image-url-validator';
+import hexToRgba from 'hex-to-rgba';
+import * as randomstring from 'randomstring';
 function giveMemberRoles(member) {
     ClientGuildManager.obtenerConfiguracionDelServidorPorModulo(member.guild, 'welcome').then((configuracionDelModulo) => {
         if (configuracionDelModulo.enabled && configuracionDelModulo.roles && Array.isArray(configuracionDelModulo.roles)) {
@@ -35,7 +34,7 @@ async function generateWelcomeCard(member) {
     const canvasContext = createCanvas(canvasWidth, canvasHeight);
     const canvas = canvasContext.getContext('2d');
     canvas.strokeStyle = 'rgba(0,0,0,0)';
-    if (configuracionDelModulo.welcomecard.background && isValidUrl(configuracionDelModulo.welcomecard.background) && isImageUrl(configuracionDelModulo.welcomecard.background)) {
+    if (configuracionDelModulo.welcomecard.background && await isImageURL(configuracionDelModulo.welcomecard.background)) {
         const background = await loadImage(configuracionDelModulo.welcomecard.background);
         const scale = Math.max(canvasContext.width / background.width, canvasContext.height / background.height);
         canvas.drawImage(background, (canvasContext.width / 2) - ((background.width / 2) * scale), (canvasContext.height / 2) - ((background.height / 2) * scale), background.width * scale, background.height * scale);
