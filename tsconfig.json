@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./built",
+    "outDir": "./dist",
     "allowJs": true,
     "target": "ES2021",
     "moduleResolution": "node",
     "strict": true,
     "alwaysStrict": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "./src/**/*"
