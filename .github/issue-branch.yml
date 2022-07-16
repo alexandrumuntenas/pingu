@@ -1,5 +1,0 @@
-branchName: tiny
-silent: false
-autoCloseIssue: true
-openPR: false
-commentMessage: 'Branch ${branchName} created for issue: ${issue.title}'
