@@ -15,8 +15,6 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run:  npm run gh:install-dependencies
-      - name: Switch to the good tsconfig
-        run:  npm run gh:switch-tsconfig
       - name: Build and push
         uses: alexthemaster/action-build-typescript@v1.2.1
         with:
