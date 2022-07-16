@@ -1,0 +1,113 @@
+{
+    "nav": {
+        "lightMeUp": "Toggle Lights",
+        "getMeOut": "Log Out"
+    },
+    "sidebar": {
+        "overview": "Overview",
+        "system": "System",
+        "welcome": "Welcomes",
+        "farewell": "Farewells",
+        "moderation": "Moderation",
+        "customCommands": "Custom Commands",
+        "autoResponder": "Autoresponder",
+        "leveling": "Leveling"
+    },
+    "main": {
+        "header": {
+            "members": "members",
+            "textChannels": "text channels",
+            "voiceChannels": "voice channels"
+        },
+        "stats": {
+            "members": "Members",
+            "onlineMembers": "Online Members",
+            "idleMembers": "Idle Members",
+            "dndMembers": "DND Members"
+        },
+        "save": "Save",
+        "settings": {
+            "system": {
+                "cardTitle": "System",
+                "cardBody": {
+                    "EEScEqQw": {
+                        "formLabel": "Command prefix",
+                        "formSmall": "You can change the prefix used to trigger the bot."
+                    }
+                }
+            },
+            "welcome": {
+                "cardTitle": "Arrivals",
+                "cardBody": {
+                    "LNV5Ljl": {
+                        "formLabel": "Send a message when a user joins the server"
+                    },
+                     "AZGW50Tc4p": {
+                         "formLabel": "Welcome Message"
+                     },
+                     "daLuxtTuG5":{
+                        "formLabel": "Channel where the Welcome Message is sent"
+                     },
+                     "vyKS7bC": {
+                         "formLabel": "Send a welcome card when a user joins the server"
+                     },
+                     "nviCCd9jDc": {
+                         "formLabel": "Roles are given to users when they accept the server rules"
+                     }
+                }
+            },
+            "farewell": {
+                "cardTitle": "Farewells",
+                "cardBody":{
+                    "noLp3EI": {
+                        "formLabel": "Send a message when a user leaves the server"
+                    },
+                    "pfeZmgU": {
+                        "formLabel": "Goodbye Message"
+                    },
+                    "tKDIdy1": {
+                        "formLabel": "Channel where the Goodbye Message"
+                    }
+                }
+            },
+            "moderation": {
+                "cardTitle": "Moderation",
+                "cardBody": {
+                    "Y2adeog": {
+                        "formLabel": "Enable moderator commands"
+                    },
+                    "OxV1juz": {
+                        "formLabel": "Take action automatically if a user reaches a certain amount of violations"
+                    },
+                    "DHLJ2YI": {
+                        "formLabel": "Required amount of warnings to take action"
+                    },
+                    "AkeMlvn": {
+                        "formLabel": "What action should be taken when a user reaches a certain number of warnings?"
+                    }
+
+                }
+            },
+            "leveling": {
+                "cardTitle": "Leveling",
+                "cardBody": {
+                    "QTMVmdD": {
+                        "formLabel": "Enable module"
+                    },
+                    "Q8xq8vO": {
+                        "formLabel": "Mensaje de avance de nivel"
+                    },
+                    "ELMb9ge": {
+                        "formLabel": "Channel where the Level Up Announcement is sent"
+                    }
+                }
+            }
+        }
+    },
+    "footer": {
+        "addPingu": "Add Pingu",
+        "pinguSupport": "Pingu Support Server",
+        "votePingu": "Vote Pingu",
+        "pinguIssues": "Reportar Problems"
+    }
+}

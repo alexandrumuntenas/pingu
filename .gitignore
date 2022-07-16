@@ -1,0 +1,10 @@
+/node_modules
+/usuarios
+/brand
+/.vscode
+/services/update.js
+/logs/*
+package-lock.json
+.env
+*/dist/
+*.dev.js

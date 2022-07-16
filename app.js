@@ -1,226 +1,224 @@
-//https://discord.com/api/oauth2/authorize?client_id=827199539185975417&permissions=8&scope=bot%20applications.commands
-const { Client, Intents, MessageAttachment, MessageEmbed, MessageReaction, MessageCollector, Collection } = require('discord.js');
-const mysql = require('mysql2');
-const fs = require('fs');
-const webp = require('webp-converter');
-const talkedRecently = new Set();
+/* * * * * * * * * * * * * * * *
+ * Pingu                       *
+ * Versión: 2108               *
+ * * * * * * * * * * * * * * * */
+require('dotenv').config()
+const makeId = require('./modules/makeId')
+const { Client, Collection, Intents } = require('discord.js')
+const mysql = require('mysql2')
+const fs = require('fs')
+const express = require('express')
+const log = require('simple-node-logger').createRollingFileLogger({
+  logDirectory: './logs',
+  fileNamePattern: `<date>_${makeId(5)}.log`,
+  dateFormat: 'YYYY.MM.DD'
+})
 
-//Services Workers
-const guildcreate = require('./services/guildcreate');
-const guilddelete = require('./services/guilddelete');
-const guildmemberadd = require('./services/guildmemberadd');
-const guildmemberremove = require('./services/guildmemberremove');
-const leveling = require('./services/leveling');
-const antispamworker = require('./services/antispam');
-console.log('[OK] Services Workers Cargados');
-
-// Funciones globales
-async function comprobarcarpetas() {
-    console.log('Comprobando carpetas...');
-    if (!fs.existsSync('./usuarios')) {
-        fs.mkdirSync('./usuarios/');
-        console.log('Carpeta usuarios no existe >> creando...');
-        fs.mkdirSync('./usuarios/moderacion');
-        console.log('Carpeta moderacion no existe >> creando...');
-        fs.mkdirSync('./usuarios/avatares');
-        console.log('Carpeta avatares no existe >> creando...');
-        fs.mkdirSync('./usuarios/leveling');
-        console.log('Carpeta leveling no existe >> creando...');
-        fs.mkdirSync('./usuarios/bievenidas');
-        console.log('Carpeta bienvenidas no existe >> creando...');
-    }
-    if (!fs.existsSync('./usuarios/moderacion')) {
-        console.log('Carpeta moderacion no existe >> creando...');
-        fs.mkdirSync('./usuarios/moderacion');
-    }
-    if (!fs.existsSync('./usuarios/avatares')) {
-        console.log('Carpeta avatares no existe >> creando...');
-        fs.mkdirSync('./usuarios/avatares');
-    }
-    if (!fs.existsSync('./usuarios/leveling')) {
-        console.log('Carpeta leveling no existe >> creando...');
-        fs.mkdirSync('./usuarios/leveling');
-    }
-    if (!fs.existsSync('./usuarios/bienvenidas')) {
-        console.log('Carpeta bienvenidas no existe >> creando...');
-        fs.mkdirSync('./usuarios/bienvenidas');
-    }
-    console.log('Comprobación finalizada...');
+// Redireccionar console.log a @package/simple-node-logger
+console.log = function (d) {
+  process.stdout.write(`${d}\n`)
+  log.info(d)
 }
+
+process.on('uncaughtException', function (err) {
+  log.warn((err && err.stack) ? err.stack : err)
+})
+
+const talkedRecently = new Set()
+
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING, Intents.FLAGS.DIRECT_MESSAGES] })
+
+console.log('[··] Cargando Eventos')
+const guildCreate = require('./events/guildCreate')
+const guildDelete = require('./events/guildDelete')
+const guildMemberAdd = require('./events/guildMemberAdd')
+const guildMemberRemove = require('./events/guildMemberRemove')
+console.log('[OK] Eventos Cargados')
+
+console.log('[··] Cargando Módulos')
+const levelingRankUp = require('./modules/levelingRankUp')
+const noMoreInvites = require('./modules/noMoreInvites')
+const checkFolder = require('./modules/checkFolders')
+console.log('[OK] Módulos Cargados')
+
+console.log('[··] Cargando Servicios Third-Party')
+const topggSDK = require('./modules/third-party/topggSDK')
+console.log('[OK] Servicios Third-Party Cargados')
 
 // Bot
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "wiredpenguin",
-    password: "",
-    database: "wiredpenguin",
-    charset: "utf8_unicode_ci",
-});
-
-con.connect(function (err) {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log('Me he conectado a MariaDB! Continuando el inicio del script...');
-    }
-});
-
-const client = new Client();
-
-//Cargar comandos
-console.log('Cargando comandos...');
-
-client.commands = new Collection();
-
-const commandFiles = fs.readdirSync('./tools').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-    console.log('[··] Cargando ' + file);
-    const command = require(`./tools/${file}`);
-    client.commands.set(command.name, command);
-    console.log('[OK] Cargado ' + file);
+if (process.env.ENTORNO === 'public') {
+  topggSDK(client)
+  client.login(process.env.PUBLIC_TOKEN)
+  const app = express()
+  app.get('/', (req, res) => {
+    res.send('Pingu is online!')
+  })
+  app.listen(25699, () => {
+    console.log('[OK] Running web-server')
+  })
+} else {
+  client.login(process.env.INSIDER_TOKEN)
 }
 
-client.on('ready', () => {
-    comprobarcarpetas()
-    console.log('Yo también estoy listo! Ya puedo comenzar a trabajar...');
-    client.user.setPresence({
-        status: 'idle',
-        activity: {
-            name: '1 y 0',
-            type: 'WATCHING',
-            url: 'https://pingu.duoestudios.es'
-        }
-    })
-    setInterval(() => {
-        client.user.setPresence({
-            status: 'idle',
-            activity: {
-                name: 'pingu.duoestudios.es',
-                type: 'WATCHING',
-                url: 'https://pingu.duoestudios.es'
-            }
-        })
-    }, 3600000);
-    webp.grant_permission();
-});
+// Cargar comandos
+console.log('--Cargando comandos--')
 
-client.on('guildCreate', guild => {
-    guildcreate(con, guild);
-});
+client.commands = new Collection()
+
+loadCommands(client.commands, './tools')
+
+/**
+ * Load Pingu Commands
+ * @param {collection} collection Discord Collection for Commands
+ * @param {directory} directory The Directory Where Commands are stored
+ */
+function loadCommands (collection, directory) {
+  const files = fs.readdirSync(directory)
+
+  for (const file of files) {
+    const path = `${directory}/${file}`
+
+    if (file.endsWith('.js')) {
+      const command = require(path)
+      console.log(`[··] Cargando ${command.name}`)
+      collection.set(command.name, command)
+      console.log(`[OK] Cargado ${command.name}`)
+    } else if (fs.lstatSync(path).isDirectory()) {
+      loadCommands(collection, path)
+    }
+  }
+};
+
+const con = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATA,
+  charset: 'utf8_unicode_ci',
+  waitForConnections: true,
+  connectionLimit: 1000,
+  queueLimit: 0
+})
+
+con.config.namedPlaceholders = true
+
+client.on('ready', () => {
+  checkFolder()
+  console.log('[OK] Bot inicializado...')
+  console.log(`[IF] Logged in as ${client.user.tag}!`)
+  client.user.setPresence({
+    status: 'idle',
+    activities: [{
+      name: 'Discord',
+      type: 'WATCHING'
+    }]
+  })
+  setInterval(() => {
+    client.user.setPresence({
+      status: 'idle',
+      activities: [{
+        name: 'Discord',
+        type: 'WATCHING'
+      }]
+    })
+  }, 3600000)
+})
+
+client.on('guildCreate', (guild) => {
+  guildCreate(con, guild)
+})
 
 client.on('guildDelete', (guild) => {
-    guilddelete(con, guild);
-});
+  guildDelete(con, guild)
+})
 
-client.on('guildMemberAdd', member => {
-    guildmemberadd(client, con, member);
-});
+client.on('guildMemberAdd', (member) => {
+  guildMemberAdd(client, con, member)
+})
 
-client.on('guildMemberRemove', member => {
-    guildmemberremove(client, con, member);
-});
-client.on('message', (message) => {
-    //Comprobamos que no hemos recibido mensaje a través de DM, que no es un bot, o que el propio autor del mensaje sea el bot
-    if (message.channel.type === "dm" || message.author.bot || message.author === client.user) return;
+client.on('guildMemberRemove', (member) => {
+  guildMemberRemove(client, con, member)
+})
 
-    global = [];
-    global.id = message.guild.id;
-    global.name = message.guild.name;
-    //Conectamos con Mariadb y obtenemos datos del servidor
-    con.query("SELECT * FROM `servidores` WHERE guild = '" + global.id + "'", function (err, result, rows) {
-        if (result.hasOwnProperty(0)) {
-            global.prefix = result[0].prefix;
-            var id = global.id;
-            //Comprobamos si el mensaje ha comenzado con prefijo
-            if (message.content.startsWith(global.prefix) && message.content != global.prefix) {
-
-                //Retirar el comandomsg.content.split(' ').splice(1).join(' ')
-                var cortar = message.content.trim().split(' ');
-
-                //Solo retira el prefijo del comando, por lo que cuenta también la acción deseada en el array
-                var mensajeprocesado = message.content.replace(global.prefix, '');
-                //Regex para los argumentos con ""
-
-                const regex = new RegExp('"[^"]+"|[\\S]+', 'g');
-                var args = [];
-                mensajeprocesado.match(regex).forEach(element => {
-                    if (!element) return;
-                    return args.push(element.replace(/"/g, ''));
-                });
-
+client.on('messageCreate', (message) => {
+  if (
+    message.channel.type === 'dm' ||
+    message.author.bot ||
+    message.author === client.user
+  ) return
+  con.query('SELECT * FROM `guildData` WHERE guild = ?', [message.guild.id], (err, result, rows) => {
+    if (err) throw console.log(err)
+    if (Object.prototype.hasOwnProperty.call(result, 0)) {
+      let args = []
+      if (message.content.startsWith(result[0].guild_prefix) && message.content !== result[0].guild_prefix) {
+        args = message.content.slice(result[0].guild_prefix.length).trim().split(/ +/)
+      }
+      const command = args[0]
+      args.shift()
+      const contenido = message.content.toLowerCase()
+      if (message.content.startsWith(result[0].guild_prefix)) {
+        if (args) {
+          if (client.commands.has(command)) {
+            try {
+              client.commands.get(command).execute(args, client, con, result[0].guild_language || 'en', message, result)
+            } catch (err) {
+              if (process.env.ENTORNO !== 'desarrollo') {
+                message.reply('Se ha producido un error cuando ha intentado ejecutar este comando...')
+              } else {
+                message.reply(err)
+              }
             }
-            var tolower = message.content;
-            var contenido = tolower.toLowerCase();
-            if (message.content.startsWith(global.prefix)) {
-                if (args) {
-                    if (client.commands.has(args[0])) {
-                        try {
-                            client.commands.get(args[0]).execute(args, client, con, contenido, global, message, result);
-                        } catch (e) {
-                            console.log(e);
-                            message.reply(' se ha producido un error cuando ha intentado ejecutar este comando...');
-                        }
-                    } else {
-                        var consultacomandoscustom = "SELECT * FROM `comandos_custom` WHERE `guild` = " + global.id;
-                        con.query(consultacomandoscustom, function (err, result) {
-                            if (result.hasOwnProperty(0)) {
-                                var buscarcomando = "SELECT * FROM `comandos_custom` WHERE `guild` = '" + global.id + "' AND `cmd` = '" + args[0] + "'";
-                                con.query(buscarcomando, function (err, result) {
-                                    if (result.hasOwnProperty(0)) {
-                                        message.channel.send("<:comandoscustom:858671400424046602>" + result[0].returns);
-                                    }
-                                });
-                            }
-                        });
-                    };
-                }
-            }
-
-            if (result[0].aspam_activado != 0) {
-                antispamworker(message);
-            }
-            //Leveling
-            if (!contenido.startsWith(global.prefix)) {
-                if (!talkedRecently.has(message.author.id)) {
-                    if (result[0].niveles_activado != "0") {
-                        talkedRecently.add(message.author.id);
-                        setTimeout(() => {
-                            talkedRecently.delete(message.author.id);
-                        }, 60000);
-                        leveling(result, client, con, message, global);
-                    }
-                }
-            }
-
-            // Respuestas personalizadas
-            var consultarespuestacustom = "SELECT * FROM `respuestas_custom` WHERE `guild` = " + global.id;
-            con.query(consultarespuestacustom, function (err, result) {
-                if (result) {
-                    if (result.hasOwnProperty(0)) {
-                        var buscarrespuesta = "SELECT * FROM `respuestas_custom` WHERE `guild` = '" + global.id + "' AND `action` = '" + contenido + "'";
-                        con.query(buscarrespuesta, function (err, result) {
-                            if (result) {
-                                if (result.hasOwnProperty(0)) {
-                                    message.channel.send("<:respuestacustom:858671300024074240> " + result[0].returns);
-                                }
-                            }
-                        });
-                    }
-                }
-            });
+          } else {
+            con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+              if (err) console.log(err)
+              if (Object.prototype.hasOwnProperty.call(result, 0)) {
+                con.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `cmd` = ?', [message.guild.id, command], (err, result) => {
+                  if (err) console.log(err)
+                  if (Object.prototype.hasOwnProperty.call(result, 0)) {
+                    message.channel.send('<:comandoscustom:858671400424046602>' + result[0].returns)
+                  }
+                })
+              }
+            })
+          };
         }
-        else {
-            var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);
-            var id = global.id;
-            var sql = "INSERT INTO `servidores` (`guild`, `prefix`,`bienvenida_canal_id`,`bienvenida_mensaje`,`salida_canal`,`salida_mensaje`,`niveles_canal_id`,`niveles_canal_mensaje`) VALUES (" + id + ", '/','" + chx.id + "','Bienvenido {user} a {server}','" + chx.id + "','¡Adiós {user}!','" + chx.id + "','GG! {user} ha subido al nivel {nivel-nuevo}');";
-            con.query(sql, function (err, result) {
-                if (err) console.log(err);
-            });
+      }
+
+      if (result[0].moderator_noMoreInvites_enabled !== 0) {
+        noMoreInvites(message, result, con)
+      }
+      // Leveling
+      if (!contenido.startsWith(result[0].guild_prefix)) {
+        if (!talkedRecently.has(`${message.author.id}_${message.guild.id}`)) {
+          if (result[0].leveling_enabled !== 0) {
+            talkedRecently.add(`${message.author.id}_${message.guild.id}`)
+            setTimeout(() => {
+              talkedRecently.delete(`${message.author.id}_${message.guild.id}`)
+            }, 60000)
+            levelingRankUp(result, client, con, message, global)
+          }
         }
+      }
+
+      // Respuestas personalizadas
+      con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ?', [message.guild.id], (err, result) => {
+        if (err) console.log(err)
+        if (result) {
+          if (Object.prototype.hasOwnProperty.call(result, 0)) {
+            con.query('SELECT * FROM `guildAutoResponder` WHERE `guild` = ? AND `action` = ?', [message.guild.id, contenido], (err, result) => {
+              if (err) console.log(err)
+              if (result) {
+                if (Object.prototype.hasOwnProperty.call(result, 0)) {
+                  message.channel.send('<:respuestacustom:858671300024074240> ' + result[0].returns)
+                }
+              }
+            })
+          }
+        }
+      })
+    } else {
+      guildCreate(con, message.guild)
     }
-    )
-});
-
-client.login('ODI3MTk5NTM5MTg1OTc1NDE3.YGXjmg.GqMdOfnGC6HVLu4Ql-kdBoAtcFU');
-
+  }
+  )
+})
