@@ -19,11 +19,11 @@ class EventManager {
       .filter((files) => files.endsWith('.js'))
       .forEach((archivo) => {
         import(`../events/${archivo}`).then((evento) => {
-          evento = evento.default
-
-          if (!evento.name) {
+          if (!(evento && evento.default)) {
             return
           }
+
+          evento = evento.default
 
           Consolex.success(`EventManager: Evento ${archivo} cargado`)
           this.eventosDisponibles.push(evento)
