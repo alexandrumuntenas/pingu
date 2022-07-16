@@ -1,6 +1,0 @@
-module.exports = {
-    name: 'lock',
-    execute(args, client, con, locale, message, result) {
-
-    }
-}
