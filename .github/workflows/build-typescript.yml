@@ -16,6 +16,4 @@ jobs:
       - name: Build and push
         uses: alexthemaster/action-build-typescript@v1.2.1
         with:
-          pushToBranch: true # optional; can either be true or false | defaults to false
-          branch: 'main' # optional; the name of the branch the action should push the compiled code to | defaults to dist
           githubToken: ${{ secrets.GITHUB_TOKEN }} # required if you use the pushToBranch option
