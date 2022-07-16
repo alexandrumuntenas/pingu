@@ -4,10 +4,11 @@ import { PoolConnection } from '../../core/databaseManager'
 import { PinguMessage } from '../../events/messageCreate'
 import { ClientUser } from '../../client'
 import reemplazarPlaceholdersConDatosReales from '../../core/utils/reemplazarPlaceholdersConDatosReales'
+import { ChannelType } from 'discord-api-types/v10'
 class CustomCommand {
   guild: Guild
   name: string
-  reply: string
+  reply!: string
   properties: {
     description: string;
     usage: string;
@@ -70,7 +71,7 @@ class CustomCommand {
   }
 
   executeCommand (message: PinguMessage) {
-    const reply = { embeds: [], content: '' }
+    const reply: { embeds: EmbedBuilder[], content: string } = { embeds: [], content: '' }
 
     if (this.properties.sendInEmbed) {
       const embed = new EmbedBuilder()
@@ -114,8 +115,8 @@ class CustomCommand {
       embed.setColor('#2F3136')
 
       embed.setFooter({
-        text: `Powered by Pingu || ⚠️ This is a custom command made by ${message.guild.name}.`,
-        iconURL: ClientUser.user.displayAvatarURL()
+        text: `Powered by Pingu || ⚠️ This is a custom command made by ${message.guild?.name}.`,
+        iconURL: ClientUser.user?.displayAvatarURL()
       })
 
       reply.embeds = [embed]
@@ -128,7 +129,7 @@ class CustomCommand {
 
     if (this.properties.setRole) {
       this.properties.setRole.forEach(role => {
-        message.member.roles.add(role)
+        message.member?.roles.add(role)
       })
     }
 
@@ -156,10 +157,9 @@ class CustomCommand {
     }
 
     if (this.properties.sendChannel) {
-      const customChannelToSend = message.guild.channels.resolve(
-        this.properties.sendChannel
-      )
-      if (customChannelToSend) customChannelToSend.send(reply)
+      const customChannelToSend = message.guild?.channels.resolve(this.properties.sendChannel)
+
+      if (customChannelToSend && customChannelToSend.type === ChannelType.GuildText) customChannelToSend.send(reply)
       else message.reply(reply)
     } else message.reply(reply)
   }

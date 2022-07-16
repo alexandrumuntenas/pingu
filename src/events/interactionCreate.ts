@@ -1,5 +1,6 @@
 // TODO: TERMINAR DE ARREGLAR ESTO
 
+/*
 import { ChatInputCommandInteraction, Interaction, InteractionDeferReplyOptions } from 'discord.js'
 import * as humanizeDuration from 'humanize-duration'
 import Consolex from '../core/consolex'
@@ -50,3 +51,4 @@ export default new Event('interactionCreate', (interaction: Interaction) => {
     isChatInputCommand(interaction)
   }
 })
+*/
