@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-node@v2.1.4
         with:
           node-version: 16
-      - name: Install dependencies for source code
+      - name: Install dependencies
         run:  npm run gh:install-dependencies
       - name: Build and push
         uses: alexthemaster/action-build-typescript@v1.2.1

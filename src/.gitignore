@@ -1,6 +1,0 @@
-.env
-package-lock.json
-cooldowns.json
-node_modules/
-/temp
-*/dist/

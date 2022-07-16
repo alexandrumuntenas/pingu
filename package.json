@@ -6,11 +6,7 @@
     "gh:build": "npx tsc --build",
     "gh:install-dependencies": "cd src/ && npm i && cd ..",
     "dev:build": "clear && npx tsc --build",
-    "dev:run": "clear && cd dist/ && node --experimental-specifier-resolution=node client.js && cd ..",
-    "dev": "clear && npx tsc --build && cd dist/ && echo 'In Dist' && node --experimental-specifier-resolution=node client.js && cd .."
-  },
-  "dependencies": {
-    "hex-to-rgba": "^2.0.1",
-    "image-url-validator": "^1.0.4"
+    "dev:run": "clear && cd src/ && node --experimental-specifier-resolution=node client.js && cd ..",
+    "dev": "clear && npx tsc --build && cd src/ && node --experimental-specifier-resolution=node client.js && cd .."
   }
 }
