@@ -28,6 +28,8 @@ class CommandsManager {
   }
 
   loadCommands (directory: string): void {
+    if (!directory.startsWith('./')) throw new Error('CMD007: Directory does not start with "./"')
+
     readdirSync(directory).forEach((file) => {
       const path = `${directory}/${file}`
 

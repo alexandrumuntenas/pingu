@@ -22,10 +22,12 @@ class CommandsManager {
         this.commands.delete(command.name);
     }
     loadCommands(directory) {
+        if (!directory.startsWith('./'))
+            throw new Error('CMD007: Directory does not start with "./"');
         readdirSync(directory).forEach((file) => {
-            const path = `./${directory}/${file}`;
+            const path = `${directory}/${file}`;
             if (file.endsWith('.js') && !file.endsWith('dev.js')) {
-                import(`.${path.replace('.js', '').trim()}`).then((command) => {
+                import(`.${path}`).then((command) => {
                     if (Object.prototype.hasOwnProperty.call(command, 'name')) {
                         if (Object.prototype.hasOwnProperty.call(command, 'interaction')) {
                             command.interaction.setName(command.name);

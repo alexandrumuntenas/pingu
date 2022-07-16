@@ -44,7 +44,7 @@ process.on('exit', () => {
 });
 // Managers
 const ClientInternationalizationManager = new InternationalizationManager();
-const ClientCommandsManager = new CommandsManager('commands');
+const ClientCommandsManager = new CommandsManager('./commands');
 const ClientCooldownManager = new CooldownMananger();
 const ClientModuleManager = new ModuleManager();
 const ClientGuildManager = new GuildManager();
