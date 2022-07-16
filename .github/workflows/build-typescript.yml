@@ -1,4 +1,4 @@
-name: '[Prod] Compile TS to JS'
+name: '[Build] Compile TS to JS'
 on:
   push:
     branches:
@@ -16,4 +16,6 @@ jobs:
       - name: Build and push
         uses: alexthemaster/action-build-typescript@v1.2.1
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }} # required if you use the pushToBranch option
+          pushToBranch: true
+          branch: 'main'
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
