@@ -1,7 +1,6 @@
 {
   "name": "pingu",
   "version": "22.2.0",
-  "description": "Bot de Discord by Alexandru Theodor Muntenas",
   "main": "client.js",
   "dependencies": {
     "@blac-sheep/character-count": "^0.2.0",
@@ -15,16 +14,15 @@
     "canvas": "^2.8.0",
     "chalk": "^5.0.1",
     "discord-api-types": "^0.34.0",
-    "discord-modals": "^1.2.8",
     "discord.js": "^14.0.0-dev.1657757514-fe34f48",
     "dotenv": "^16.0.0",
     "erlpack": "github:discord/erlpack",
     "flipacoin": "^1.0.0",
     "gamedig": "^4.0.2",
-    "humanize-duration": "^3.27.1",
-    "is-hexcolor": "^1.0.0",
     "hex-to-rgba": "^2.0.1",
+    "humanize-duration": "^3.27.1",
     "image-url-validator": "^1.0.4",
+    "is-hexcolor": "^1.0.0",
     "js-yaml": "^4.1.0",
     "mathjs": "^10.1.0",
     "mcsrv": "^1.0.1",
@@ -47,14 +45,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexandrumuntenas/pingu.git"
+    "url": "git+https://github.com/amun06/pingu.git"
   },
-  "author": "Alexandru Theodor Muntenas",
+  "author": "amun06",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/alexandrumuntenas/pingu/issues"
+    "url": "https://github.com/amun06/pingu/issues"
   },
-  "homepage": "https://github.com/alexandrumuntenas/pingu#readme",
+  "homepage": "https://github.com/amun06/pingu#readme",
   "devDependencies": {
     "@types/hex-rgba": "^1.0.1",
     "@types/js-yaml": "^4.0.5",
