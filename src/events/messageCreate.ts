@@ -2,7 +2,7 @@ import Command from '../core/classes/Command.js'
 
 import * as humanizarTiempo from 'humanize-duration'
 
-import { ChannelType, Message } from 'discord.js'
+import { ChannelType, codeBlock, Message } from 'discord.js'
 import {
   ClientCommandsManager,
   ClientCooldownManager,
@@ -29,6 +29,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
   if (message.channel.type === ChannelType.DM || message.author.bot || message.author === ClientUser.user) { return }
 
   ClientGuildManager.obtenerConfiguracionDelServidor(message.guild).then((configuracionDelServidor) => {
+    message.reply(codeBlock('json', JSON.stringify(configuracionDelServidor)))
     message.guildConfiguration = configuracionDelServidor
 
     ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'messageCreate' }, message)

@@ -23,46 +23,33 @@ class GuildManager {
     if (!ClientModuleManager.comprobarSiElModuloExiste(datos.modulo.nombre)) {
       throw new Error('The module does not exist')
     }
-    this.obtenerConfiguracionDelServidor(guild).then(
-      (configuracionDelServidor: { [index: string]: any }) => {
-        if (typeof configuracionDelServidor[datos.modulo.nombre] === 'object' && !Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && configuracionDelServidor[datos.modulo.nombre] !== null) {
-          configuracionDelServidor[datos.modulo.nombre] = procesarObjetosdeConfiguracion(configuracionDelServidor[datos.modulo.nombre], datos.nuevaConfiguracion)
-          try {
-            PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(configuracionDelServidor[datos.modulo.nombre]), guild?.id])
-            return null
-          } catch (err) {
-            Consolex.gestionarError(err)
-          }
-        } else if (
-          typeof datos.nuevaConfiguracion === 'object' &&
-          Array.isArray(configuracionDelServidor[datos.modulo.nombre]) &&
-          datos.nuevaConfiguracion !== null
-        ) {
-          try {
-            PoolConnection.query(
-              'UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?',
-              [
-                datos.modulo.nombre,
-                JSON.stringify(datos.nuevaConfiguracion),
-                guild?.id
-              ]
-            )
-            return null
-          } catch (err) {
-            Consolex.gestionarError(err)
-          }
-        } else {
-          try {
-            PoolConnection.query(
-              'UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?',
-              [datos.modulo.nombre, datos.nuevaConfiguracion, guild?.id]
-            )
-            return null
-          } catch (err) {
-            Consolex.gestionarError(err)
-          }
+
+    datos.modulo.nombre = datos.modulo.nombre.toLocaleLowerCase()
+    this.obtenerConfiguracionDelServidor(guild).then((configuracionDelServidor: { [index: string]: any }) => {
+      if (typeof configuracionDelServidor[datos.modulo.nombre] === 'object' && !Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && configuracionDelServidor[datos.modulo.nombre] !== null) {
+        configuracionDelServidor[datos.modulo.nombre] = procesarObjetosdeConfiguracion(configuracionDelServidor[datos.modulo.nombre], datos.nuevaConfiguracion)
+        try {
+          PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(configuracionDelServidor[datos.modulo.nombre]), guild?.id])
+          return null
+        } catch (err) {
+          Consolex.gestionarError(err)
+        }
+      } else if (typeof datos.nuevaConfiguracion === 'object' && Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && datos.nuevaConfiguracion !== null) {
+        try {
+          PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(datos.nuevaConfiguracion), guild?.id])
+          return null
+        } catch (err) {
+          Consolex.gestionarError(err)
+        }
+      } else {
+        try {
+          PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(datos.nuevaConfiguracion), guild?.id])
+          return null
+        } catch (err) {
+          Consolex.gestionarError(err)
         }
       }
+    }
     ).catch(err => Consolex.gestionarError(err))
   }
 
@@ -93,7 +80,7 @@ class GuildManager {
 
     Object.keys(configuracionDelServidor).forEach((module) => {
       try {
-        configuracionDelServidorProcesado[module] = JSON.parse(configuracionDelServidor[module].trim())
+        configuracionDelServidorProcesado[module] = JSON.parse(configuracionDelServidor[module])
       } catch (jsonParseError) {
         if (jsonParseError instanceof Error && jsonParseError.constructor.name !== SyntaxError.name) { Consolex.gestionarError(jsonParseError) }
       }
@@ -129,9 +116,7 @@ class GuildManager {
     try {
       tablasDisponibles.forEach((table) => {
         try {
-          PoolConnection.query(`DELETE FROM ${table} WHERE guild = ?`, [
-            guild?.id
-          ])
+          PoolConnection.query(`DELETE FROM ${table} WHERE guild = ?`, [guild?.id])
         } catch (err) {
           Consolex.gestionarError(err)
         }
