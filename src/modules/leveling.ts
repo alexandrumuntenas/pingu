@@ -70,7 +70,7 @@ async function sendLevelUpMessage (message: PinguMessage) {
 }
 
 async function obtenerExperiencia (message: PinguMessage) {
-  if (message.guildConfiguration.leveling.enabled) {
+  if (Object.prototype.hasOwnProperty.call(message.guildConfiguration, 'leveling') && message.guildConfiguration.leveling.enabled) {
     if (ClientCooldownManager.check(message.member, { name: 'leveling.obtenerExperiencia' })) {
       const memberLevelingData = await obtenerDatosDelUsuario(message.member)
       const newExperience = Math.floor(Math.random() * 25) + parseInt(memberLevelingData.experience, 10)

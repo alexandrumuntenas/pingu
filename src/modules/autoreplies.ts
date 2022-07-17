@@ -2,9 +2,10 @@ import Consolex from '../core/consolex'
 import EventHook from '../core/classes/EventHook'
 import AutoReply from './classes/AutoReply'
 import Module from '../core/classes/Module'
-import { Guild, Message, EmbedBuilder } from 'discord.js'
+import { Guild, EmbedBuilder } from 'discord.js'
 import { ClientUser } from '../client'
 import { PoolConnection } from '../core/databaseManager'
+import { PinguMessage } from '../events/messageCreate.js'
 
 function autoReplyFromDatabase (databaseAutoReply: any): AutoReply {
   return new AutoReply(databaseAutoReply.guild, {
@@ -23,7 +24,11 @@ async function obtenerRespuestaPersonalizada (guild: Guild | null, desencadenant
   return autoReplyFromDatabase(autoReply)
 }
 
-function messageCreateHook (message: Message): void {
+function messageCreateHook (message: PinguMessage): void {
+  if (Object.prototype.hasOwnProperty.call(message.guildConfiguration, 'autoreply') && !message.guildConfiguration.autoreply.enabled) {
+    return
+  }
+
   obtenerRespuestaPersonalizada(message.guild, message.content).then(
     (autoReply) => {
       if (autoReply) {
