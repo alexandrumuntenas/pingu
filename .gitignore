@@ -1,8 +1,7 @@
-*.env
+.env
 cooldowns.json
-/src/*.js
 
 .vscode/
 node_modules/
-/temp
-*/dist/
+temp/
+dist/
