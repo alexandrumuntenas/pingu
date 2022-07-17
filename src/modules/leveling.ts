@@ -112,7 +112,7 @@ async function obtenerLeaderboard (guild: Guild) {
   }
 }
 
-registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
+registerFont('../fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
 

@@ -26,7 +26,7 @@ function giveMemberRoles (member: GuildMember) {
   }).catch((giveMemberRolesError) => Consolex.gestionarError(giveMemberRolesError))
 }
 
-registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
+registerFont('../fonts/Montserrat/Montserrat-SemiBold.ttf', {
   family: 'Montserrat'
 })
 
