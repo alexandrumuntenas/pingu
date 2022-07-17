@@ -31,7 +31,7 @@ function comprobarSiExistenTodasLasTablasNecesarias () {
   tablasDisponibles = Object.keys(tablasYConsultas)
 
   tablasDisponibles.forEach((tabla) => {
-    PoolConnection.execute(tablasYConsultas[tabla]).then(() => {
+    PoolConnection.query(tablasYConsultas[tabla]).then(() => {
       return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`)
     }).catch((error) => {
       if (error.code === 'ER_TABLE_EXISTS_ERROR') {

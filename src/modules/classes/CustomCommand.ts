@@ -61,7 +61,7 @@ class CustomCommand {
 
   async guardarComandoPersonalizado () {
     try {
-      await PoolConnection.execute(
+      await PoolConnection.query(
         'INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)',
         [this.guild.id, this.name, JSON.stringify(this.properties)]
       )
@@ -165,7 +165,7 @@ class CustomCommand {
   }
 
   deleteCommand () {
-    PoolConnection.execute(
+    PoolConnection.query(
       'DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?',
       [this.guild.id, this.name]
     )

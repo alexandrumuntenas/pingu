@@ -48,7 +48,7 @@ class AutoReply {
   }
 
   async guardarRespuestaPersonalizada (): Promise<void> {
-    await PoolConnection.execute(
+    await PoolConnection.query(
       'INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyProperties`) VALUES (?, ?, ?, ?)',
       [
         this.guild,
@@ -60,7 +60,7 @@ class AutoReply {
   }
 
   async eliminarRespuestaPersonalizada (): Promise<void> {
-    await PoolConnection.execute(
+    await PoolConnection.query(
       'DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?',
       [this.identificador, this.guild]
     ).catch((err) => Consolex.gestionarError(err))
