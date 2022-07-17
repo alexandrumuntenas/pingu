@@ -1,4 +1,3 @@
-// TODO: TERMINAR DE ARREGLAR ESTO
 import * as humanizarTiempo from 'humanize-duration';
 import { ChannelType } from 'discord.js';
 import { ClientCommandsManager, ClientCooldownManager, ClientEventManager, ClientGuildManager, ClientInternationalizationManager, ClientMessageTemplate, ClientModuleManager, ClientUser } from '../client';
