@@ -1,9 +1,9 @@
 import Consolex from './consolex.js'
 
-import { createPool } from 'mysql2/promise'
+import { createPool } from 'promise-mysql'
 import { readdirSync, readFileSync } from 'fs'
 
-const PoolConnection = createPool({
+const PoolConnection = await createPool({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,

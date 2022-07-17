@@ -6,5 +6,9 @@
   "scripts": {
     "gh:install-dependencies": "cd src/ && npm i && cd ..",
     "dev": "clear && npx tsc --build && cd dist/ && cp ../src/package.json package.json && npm i && node --experimental-specifier-resolution=node client.js && cd .."
+  },
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "promise-mysql": "^5.2.0"
   }
 }
