@@ -20,6 +20,9 @@ async function obtenerRespuestaPersonalizada(guild, desencadenante) {
     return autoReplyFromDatabase(autoReply);
 }
 function messageCreateHook(message) {
+    if (Object.prototype.hasOwnProperty.call(message.guildConfiguration, 'autoreply') && !message.guildConfiguration.autoreply.enabled) {
+        return;
+    }
     obtenerRespuestaPersonalizada(message.guild, message.content).then((autoReply) => {
         if (autoReply) {
             const reply = { embeds: [], content: '' };
