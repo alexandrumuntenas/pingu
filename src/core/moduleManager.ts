@@ -14,7 +14,7 @@ class ModuleManager {
     this.nombresModulosDisponibles = []
 
     const directorioDeModulos = readdirSync('./modules')
-    directorioDeModulos.forEach(async (modulo) => {
+    directorioDeModulos.forEach((modulo) => {
       if (modulo.endsWith('.js')) {
         import(`../modules/${modulo}`).then((modulo) => {
           this.registrarModulo(modulo.default)
