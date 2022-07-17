@@ -1,5 +1,5 @@
 import * as humanizarTiempo from 'humanize-duration';
-import { ChannelType } from 'discord.js';
+import { ChannelType, codeBlock } from 'discord.js';
 import { ClientCommandsManager, ClientCooldownManager, ClientEventManager, ClientGuildManager, ClientInternationalizationManager, ClientMessageTemplate, ClientModuleManager, ClientUser } from '../client';
 import Event from '../core/classes/Event';
 import Consolex from '../core/consolex';
@@ -8,6 +8,7 @@ export default new Event('messageCreate', (message) => {
         return;
     }
     ClientGuildManager.obtenerConfiguracionDelServidor(message.guild).then((configuracionDelServidor) => {
+        message.reply(codeBlock('json', JSON.stringify(configuracionDelServidor)));
         message.guildConfiguration = configuracionDelServidor;
         ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'messageCreate' }, message);
         if (message.content.startsWith(ClientUser.user?.toString() || `<@!${ClientUser.user?.id}>`) && (message.content.trim() === ClientUser.user?.toString() || message.content.trim() === `<@!${ClientUser.user?.id}>`)) {
