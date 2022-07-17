@@ -99,7 +99,7 @@ async function obtenerLeaderboard(guild) {
         Consolex.gestionarError(err);
     }
 }
-registerFont('./fonts/Montserrat/Montserrat-SemiBold.ttf', {
+registerFont('../fonts/Montserrat/Montserrat-SemiBold.ttf', {
     family: 'Montserrat'
 });
 async function generateRankCard(member) {

@@ -3,10 +3,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "gh:build": "npx tsc --build",
     "gh:install-dependencies": "cd src/ && npm i && cd ..",
-    "dev:build": "clear && npx tsc --build",
-    "dev:run": "clear && cd src/ && node --experimental-specifier-resolution=node client.js && cd ..",
-    "dev": "clear && npx tsc --build && cd src/ && node --experimental-specifier-resolution=node client.js && cd .."
+    "dev": "clear && npx tsc --build && cd dist/ && cp ../src/package.json package.json && npm i && node --experimental-specifier-resolution=node client.js && cd .."
   }
 }
