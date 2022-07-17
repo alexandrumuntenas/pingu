@@ -23,19 +23,16 @@ function comprobarSiExistenTodasLasTablasNecesarias() {
     });
     tablasDisponibles = Object.keys(tablasYConsultas);
     tablasDisponibles.forEach((tabla) => {
-        try {
-            PoolConnection.execute(tablasYConsultas[tabla]).then(() => {
-                return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`);
-            });
-        }
-        catch (error) {
-            console.log(typeof error);
-            /* if (error.code === 'ER_TABLE_EXISTS_ERROR') {
-              return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`)
-            } else if (error.code !== 'ER_TABLE_EXISTS_ERROR') {
-              return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`)
-            } */
-        }
+        PoolConnection.execute(tablasYConsultas[tabla]).then(() => {
+            return Consolex.info(`DatabaseManager: La tabla ${tabla} se ha creado correctamente.`);
+        }).catch((error) => {
+            if (error.code === 'ER_TABLE_EXISTS_ERROR') {
+                return Consolex.info(`DatabaseManager: La tabla ${tabla} se encuentra presente.`);
+            }
+            else if (error.code !== 'ER_TABLE_EXISTS_ERROR') {
+                return Consolex.error(`DatabaseManager: La tabla ${tabla} no existía y no se ha podido crear.`);
+            }
+        });
     });
 }
 export { PoolConnection, tablasDisponibles, comprobarSiExistenTodasLasTablasNecesarias };
