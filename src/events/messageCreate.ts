@@ -1,5 +1,3 @@
-// TODO: TERMINAR DE ARREGLAR ESTO
-
 import Command from '../core/classes/Command.js'
 
 import * as humanizarTiempo from 'humanize-duration'
