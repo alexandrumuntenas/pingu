@@ -14,7 +14,7 @@ function autoReplyFromDatabase(databaseAutoReply) {
 async function obtenerRespuestaPersonalizada(guild, desencadenante) {
     if (!(guild instanceof Guild))
         throw new Error('El "Guild especificado no existe.');
-    const autoReply = await PoolConnection.execute('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id])
+    const autoReply = await PoolConnection.query('SELECT * FROM `guildAutoReply` WHERE `autoreplyTrigger` LIKE ? AND `guild` = ? LIMIT 1', [desencadenante.toLowerCase(), guild.id])
         .then((result) => result[0])
         .catch((err) => Consolex.gestionarError(err));
     return autoReplyFromDatabase(autoReply);

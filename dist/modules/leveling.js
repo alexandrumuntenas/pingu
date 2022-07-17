@@ -17,7 +17,7 @@ import * as randomstring from 'randomstring';
 async function obtenerDatosDelUsuario(member) {
     if (!(member instanceof GuildMember))
         throw new Error('El "Guild Member" especificado no existe.');
-    const rawMemberLevelingData = await PoolConnection.execute('SELECT * FROM memberLevelingData WHERE guild = ? AND member = ? LIMIT 1', [member.guild.id, member.id]).then((result) => result[0]).catch((error) => Consolex.gestionarError(error));
+    const rawMemberLevelingData = await PoolConnection.query('SELECT * FROM memberLevelingData WHERE guild = ? AND member = ? LIMIT 1', [member.guild.id, member.id]).then((result) => result[0]).catch((error) => Consolex.gestionarError(error));
     const memberLevelingData = { guild: member.guild.id, member: member.id, level: rawMemberLevelingData.level, experience: rawMemberLevelingData.experience, rank: '0' };
     if (Object.prototype.hasOwnProperty.call(rawMemberLevelingData, '0'))
         return memberLevelingData;
@@ -26,7 +26,7 @@ async function obtenerDatosDelUsuario(member) {
 async function actualizarDatosDelUsuario(member, experience, level) {
     if (!(member instanceof GuildMember))
         throw new Error('El "GuildMember" especificado no existe.');
-    await PoolConnection.execute('UPDATE `memberLevelingData` SET `level`= ?,`experience`= ? WHERE guild = ? AND member = ?', [level, experience, member.guild.id, member.id]).catch((error) => Consolex.gestionarError(error));
+    await PoolConnection.query('UPDATE `memberLevelingData` SET `level`= ?,`experience`= ? WHERE guild = ? AND member = ?', [level, experience, member.guild.id, member.id]).catch((error) => Consolex.gestionarError(error));
     return { guild: member.guild.id, member: member.id, experience, level };
 }
 async function sendLevelUpMessage(message) {
@@ -79,7 +79,7 @@ async function obtenerExperiencia(message) {
 }
 async function obtenerLeaderboard(guild) {
     try {
-        const members = await PoolConnection.execute('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id]).then((result) => Object.prototype.hasOwnProperty.call(result, 'length') ? result : []);
+        const members = await PoolConnection.query('SELECT * FROM `memberData` WHERE guild = ? ORDER BY CAST(lvlLevel AS unsigned) DESC, CAST(lvlExperience AS unsigned) DESC LIMIT 25', [guild.id]).then((result) => Object.prototype.hasOwnProperty.call(result, 'length') ? result : []);
         console.log(members);
         /*
         let memberCount = 0
@@ -159,7 +159,7 @@ async function generateRankCard(member) {
     return AttachmentBuilderPath;
 }
 async function resetLeaderboard(guild) {
-    await PoolConnection.execute('DELETE FROM memberLevelingData WHERE guild = ?', [guild.id]).catch((err) => Consolex.gestionarError(err));
+    await PoolConnection.query('DELETE FROM memberLevelingData WHERE guild = ?', [guild.id]).catch((err) => Consolex.gestionarError(err));
 }
 export default new Module('Leveling', 'Leveling', [
     new EventHook('messageCreate', obtenerExperiencia, 'noPrefix')

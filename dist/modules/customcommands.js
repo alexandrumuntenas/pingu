@@ -8,7 +8,7 @@ import CustomCommand from './classes/CustomCommand';
 async function getCustomCommand(guild, command) {
     if (!(guild instanceof Guild))
         throw new Error('El "Guild" especificado no existe.');
-    const [customCommand] = await PoolConnection.execute('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command]).then((result) => Object.prototype.hasOwnProperty.call(result, 0) ? result : {}).catch((error) => Consolex.gestionarError(error));
+    const [customCommand] = await PoolConnection.query('SELECT * FROM `guildCustomCommands` WHERE `guild` = ? AND `customCommand` = ? LIMIT 1', [guild.id, command]).then((result) => Object.prototype.hasOwnProperty.call(result, 0) ? result : {}).catch((error) => Consolex.gestionarError(error));
     const customCommandProperties = JSON.parse(customCommand.customCommandProperties);
     return new CustomCommand(ClientUser.guilds.resolve(customCommand.guild), customCommand.customCommand, customCommandProperties);
 }

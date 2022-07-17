@@ -16,7 +16,7 @@ class CustomCommand {
     }
     async guardarComandoPersonalizado() {
         try {
-            await PoolConnection.execute('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [this.guild.id, this.name, JSON.stringify(this.properties)]);
+            await PoolConnection.query('INSERT INTO `guildCustomCommands` (`guild`, `customcommand`, `customcommandproperties`) VALUES (?,?,?)', [this.guild.id, this.name, JSON.stringify(this.properties)]);
         }
         catch (err) {
             Consolex.gestionarError(err);
@@ -89,7 +89,7 @@ class CustomCommand {
             message.reply(reply);
     }
     deleteCommand() {
-        PoolConnection.execute('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [this.guild.id, this.name]);
+        PoolConnection.query('DELETE FROM `guildCustomCommands` WHERE `guild` = ? AND `customcommand` = ?', [this.guild.id, this.name]);
     }
 }
 export default CustomCommand;

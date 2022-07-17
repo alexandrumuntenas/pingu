@@ -17,7 +17,7 @@ class AutoReply {
         this.guardarRespuestaPersonalizada().catch((guardarRespuestaPersonalizadaError) => Consolex.gestionarError(guardarRespuestaPersonalizadaError));
     }
     async guardarRespuestaPersonalizada() {
-        await PoolConnection.execute('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyProperties`) VALUES (?, ?, ?, ?)', [
+        await PoolConnection.query('INSERT INTO `guildAutoReply` (`guild`, `autoreplyID`, `autoreplyTrigger`, `autoreplyProperties`) VALUES (?, ?, ?, ?)', [
             this.guild,
             this.identificador,
             this.desencadenante,
@@ -25,7 +25,7 @@ class AutoReply {
         ]).catch((err) => Consolex.gestionarError(err));
     }
     async eliminarRespuestaPersonalizada() {
-        await PoolConnection.execute('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [this.identificador, this.guild]).catch((err) => Consolex.gestionarError(err));
+        await PoolConnection.query('DELETE FROM `guildAutoReply` WHERE `autoreplyID` = ? AND `guild` = ?', [this.identificador, this.guild]).catch((err) => Consolex.gestionarError(err));
     }
 }
 export default AutoReply;

@@ -21,7 +21,7 @@ class GuildManager {
             if (typeof configuracionDelServidor[datos.modulo.nombre] === 'object' && !Array.isArray(configuracionDelServidor[datos.modulo.nombre]) && configuracionDelServidor[datos.modulo.nombre] !== null) {
                 configuracionDelServidor[datos.modulo.nombre] = procesarObjetosdeConfiguracion(configuracionDelServidor[datos.modulo.nombre], datos.nuevaConfiguracion);
                 try {
-                    PoolConnection.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(configuracionDelServidor[datos.modulo.nombre]), guild?.id]);
+                    PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, JSON.stringify(configuracionDelServidor[datos.modulo.nombre]), guild?.id]);
                     return null;
                 }
                 catch (err) {
@@ -32,7 +32,7 @@ class GuildManager {
                 Array.isArray(configuracionDelServidor[datos.modulo.nombre]) &&
                 datos.nuevaConfiguracion !== null) {
                 try {
-                    PoolConnection.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [
+                    PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [
                         datos.modulo.nombre,
                         JSON.stringify(datos.nuevaConfiguracion),
                         guild?.id
@@ -45,7 +45,7 @@ class GuildManager {
             }
             else {
                 try {
-                    PoolConnection.execute('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, datos.nuevaConfiguracion, guild?.id]);
+                    PoolConnection.query('UPDATE `guildConfigurations` SET ?? = ? WHERE guild = ?', [datos.modulo.nombre, datos.nuevaConfiguracion, guild?.id]);
                     return null;
                 }
                 catch (err) {
@@ -57,7 +57,7 @@ class GuildManager {
     async crearNuevoRegistroDeServidor(guild) {
         const configuracionDelServidor = {};
         try {
-            await PoolConnection.execute('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild?.id]);
+            await PoolConnection.query('INSERT INTO `guildConfigurations` (guild) VALUES (?)', [guild?.id]);
             ClientModuleManager.modulosDisponibles.forEach((modulo) => {
                 configuracionDelServidor[modulo.nombre] = modulo.configuracionPredeterminada;
                 this.actulizarConfiguracionDelServidor(guild, { modulo, nuevaConfiguracion: modulo.configuracionPredeterminada });
@@ -70,7 +70,7 @@ class GuildManager {
     async obtenerConfiguracionDelServidor(guild) {
         if (!(guild instanceof Guild))
             throw new Error('El "Guild"" especificado no existe.');
-        const configuracionDelServidor = await PoolConnection.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0]).catch((obtenerDatosError) => Consolex.gestionarError(obtenerDatosError));
+        const configuracionDelServidor = await PoolConnection.query('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0]).catch((obtenerDatosError) => Consolex.gestionarError(obtenerDatosError));
         const configuracionDelServidorProcesado = {};
         if (!configuracionDelServidor) {
             this.crearNuevoRegistroDeServidor(guild).then(() => {
@@ -93,7 +93,7 @@ class GuildManager {
         if (!(guild instanceof Guild))
             throw new Error('El "Guild"" especificado no existe.');
         try {
-            const configuracionDelServidor = await PoolConnection.execute('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0]);
+            const configuracionDelServidor = await PoolConnection.query('SELECT * FROM `guildConfigurations` WHERE guild = ?', [guild?.id]).then((result) => result[0]);
             if (configuracionDelServidor && typeof modulo === 'string') {
                 return configuracionDelServidor[modulo.toLowerCase()] || { guild: guild?.id };
             }
@@ -116,7 +116,7 @@ class GuildManager {
         try {
             tablasDisponibles.forEach((table) => {
                 try {
-                    PoolConnection.execute(`DELETE FROM ${table} WHERE guild = ?`, [
+                    PoolConnection.query(`DELETE FROM ${table} WHERE guild = ?`, [
                         guild?.id
                     ]);
                 }

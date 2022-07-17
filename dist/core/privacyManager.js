@@ -13,7 +13,7 @@ class PrivacyManager {
         const documentoConTodosLosDatos = {};
         const rutaDocumento = `./temp/${randomstring.generate({ charset: 'alphabetic' })}.png`;
         this.tablasConDatosDeUsuario.forEach((tabla) => {
-            PoolConnection.execute('SELECT * FROM ?? WHERE member ?', [tabla, user.id]).catch((error) => {
+            PoolConnection.query('SELECT * FROM ?? WHERE member ?', [tabla, user.id]).catch((error) => {
                 Consolex.gestionarError(error);
             }).then((datos) => {
                 if (Object.prototype.hasOwnProperty.call(datos, 0)) {
@@ -26,14 +26,14 @@ class PrivacyManager {
     }
     eliminarGuildMemberData(member) {
         this.tablasConDatosDeUsuario.forEach((tabla) => {
-            PoolConnection.execute('DELETE FROM ?? WHERE member = ? AND guild = ?', [tabla, member.id, member.guild.id]).catch((error) => {
+            PoolConnection.query('DELETE FROM ?? WHERE member = ? AND guild = ?', [tabla, member.id, member.guild.id]).catch((error) => {
                 Consolex.gestionarError(error);
             });
         });
     }
     eliminarGuildData(guild) {
         this.tablasConDatosDeServidor.forEach((tabla) => {
-            PoolConnection.execute('DELETE FROM ?? WHERE guild = ?', [tabla, guild.id]).catch((error) => {
+            PoolConnection.query('DELETE FROM ?? WHERE guild = ?', [tabla, guild.id]).catch((error) => {
                 Consolex.gestionarError(error);
             });
         });
