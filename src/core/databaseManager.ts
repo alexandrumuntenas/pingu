@@ -19,12 +19,12 @@ let tablasDisponibles: string[] = []
 function comprobarSiExistenTodasLasTablasNecesarias () {
   Consolex.info('DatabaseManager: Comprobando si existen todas las tablas necesarias...')
 
-  const consultas = readdirSync('./database/')
+  const consultas = readdirSync('../database/')
   const tablasYConsultas: { [key: string]: string } = {}
 
   consultas.forEach((file) => {
     if (file.endsWith('.sql')) {
-      tablasYConsultas[file] = readFileSync(`./database/${file}`, 'utf8')
+      tablasYConsultas[file] = readFileSync(`../database/${file}`, 'utf8')
     }
   })
 
