@@ -18,6 +18,7 @@ import EventManager from './core/eventManager.js';
 import MessageTemplate from './templates/messageTemplate.js';
 import InternationalizationManager from './core/internationalizationManager.js';
 import PrivacyManager from './core/privacyManager.js';
+const ClientBuild = '2207';
 const ClientUser = new Discord.Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -65,4 +66,4 @@ const ClientMessageTemplate = new MessageTemplate({
     help: { color: Discord.Colors.Gold, emoji: '❓' },
     timeout: { color: Discord.Colors.Red, emoji: '<:system_timeout:970715618938617856>' }
 });
-export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager, ClientMessageTemplate, ClientInternationalizationManager, ClientPrivacyManager };
+export { ClientUser, ClientCommandsManager, ClientCooldownManager, ClientModuleManager, ClientGuildManager, ClientEventManager, ClientMessageTemplate, ClientInternationalizationManager, ClientPrivacyManager, ClientBuild };
