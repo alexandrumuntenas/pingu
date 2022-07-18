@@ -21,6 +21,8 @@ import MessageTemplate from './templates/messageTemplate.js'
 import InternationalizationManager from './core/internationalizationManager.js'
 import PrivacyManager from './core/privacyManager.js'
 
+const ClientBuild = '2207'
+
 const ClientUser: Discord.Client = new Discord.Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -84,5 +86,6 @@ export {
   ClientEventManager,
   ClientMessageTemplate,
   ClientInternationalizationManager,
-  ClientPrivacyManager
+  ClientPrivacyManager,
+  ClientBuild
 }
