@@ -2,6 +2,7 @@ import { EmbedBuilder } from '@discordjs/builders'
 import { Colors } from 'discord.js'
 import { ClientBuild, ClientInternationalizationManager, ClientUser } from '../../client.js'
 import Command from '../../core/classes/Command.js'
+import Randomstring from 'randomstring'
 
 export default new Command({
   name: 'help',
@@ -19,7 +20,7 @@ export default new Command({
         { name: `<:status_online:967782470726615070> ${ClientInternationalizationManager.obtenerTraduccion({ clave: 'BOT_PING', idioma: message.guild?.preferredLocale })}`, value: `${Math.round(ClientUser.ws.ping + (Math.abs(Date.now() - message.createdTimestamp)))}ms`, inline: true },
         { name: `<:core_update:967782470525259777> ${ClientInternationalizationManager.obtenerTraduccion({ clave: 'BOT_VERSION', idioma: message.guild?.preferredLocale })}`, value: `${ClientBuild} ([View Changelog](https://atheodor.muntenas.es/pingu/changelog/${ClientBuild}))`, inline: true }
       ])
-      .setFooter({ text: 'Powered by Pingu', iconURL: ClientUser.user?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/5.png' })
+      .setFooter({ text: `©️ Copyright ${new Date().getFullYear()} amun06#6277`, iconURL: `https://avatars.githubusercontent.com/u/59341776?v=${Randomstring.generate({ length: 256 })}` })
       .setTimestamp()
 
     message.channel.send({ embeds: [embed] })
