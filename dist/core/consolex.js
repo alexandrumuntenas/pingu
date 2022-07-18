@@ -25,7 +25,7 @@ const Consolex = {
         process.stdout.write(`${getCurrentTime()} [${chalk.yellowBright.bold('WARNING')}]   ${message}\n`);
     },
     error: (message) => {
-        process.stdout.write(`${getCurrentTime()} [${chalk.redBright.bold('ERROR')}]     ${message}\n`);
+        process.stdout.write(`${getCurrentTime()} [ ${chalk.redBright.bold('ERROR')} ]   ${message}\n`);
     },
     gestionarError: (err) => {
         Consolex.error(err);
