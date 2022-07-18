@@ -2,7 +2,7 @@ import Command from '../core/classes/Command.js'
 
 import * as humanizarTiempo from 'humanize-duration'
 
-import { ChannelType, codeBlock, Message } from 'discord.js'
+import { ChannelType, Message } from 'discord.js'
 import {
   ClientCommandsManager,
   ClientCooldownManager,
@@ -29,12 +29,11 @@ export default new Event('messageCreate', (message: PinguMessage) => {
   if (message.channel.type === ChannelType.DM || message.author.bot || message.author === ClientUser.user) { return }
 
   ClientGuildManager.obtenerConfiguracionDelServidor(message.guild).then((configuracionDelServidor) => {
-    message.reply(codeBlock('json', JSON.stringify(configuracionDelServidor)))
     message.guildConfiguration = configuracionDelServidor
 
     ClientEventManager.ejecutarFuncionesDeTerceros({ evento: 'messageCreate' }, message)
 
-    if (message.content.startsWith(ClientUser.user?.toString() || `<@!${ClientUser.user?.id}>`) && (message.content.trim() === ClientUser.user?.toString() || message.content.trim() === `<@!${ClientUser.user?.id}>`)) {
+    if (message.content.startsWith(ClientUser.user?.toString() || `<@${ClientUser.user?.id}>`) || message.content.startsWith(`<@!${ClientUser.user?.id}>`)) {
       message.args = message.content
         .slice(ClientUser.user?.toString().length)
         .trim()
@@ -43,7 +42,7 @@ export default new Event('messageCreate', (message: PinguMessage) => {
       message.rawCommand = message.args[0]
       message.args.shift()
 
-      message.command = ClientCommandsManager.getCommand(message.rawCommand)
+      message.command = ClientCommandsManager.getCommand(message.rawCommand || 'help')
 
       if (ClientCooldownManager.check(message.member, message.command || { name: message.rawCommand })) {
         if (ClientCommandsManager.has(message.command?.name || message.rawCommand)) {
