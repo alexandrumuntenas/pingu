@@ -1,24 +1,31 @@
 import stringPlaceholder from 'string-placeholder';
-import { existsSync, readdirSync } from 'fs';
+import { readdirSync } from 'fs';
 import Consolex from './consolex.js';
 class InternationalizationManager {
     idiomasDisponibles;
+    traducciones;
     constructor() {
         this.idiomasDisponibles = [];
+        this.traducciones = {};
         const idiomas = readdirSync('../locales');
         idiomas.forEach((archivoIdioma) => {
-            if (archivoIdioma.endsWith('@latest.json')) {
-                this.idiomasDisponibles.push(archivoIdioma.replace('@latest.json', '').trim());
+            if (archivoIdioma.endsWith('.json')) {
+                this.idiomasDisponibles.push(archivoIdioma.replace('.json', '').trim());
+                import(`../../locales/${archivoIdioma.replace('.json', '').trim()}`, { assert: { type: 'json' } }).then((contenidos) => {
+                    this.traducciones[archivoIdioma.replace('.json', '').trim()] = contenidos.default;
+                });
             }
         });
     }
     obtenerTraduccion(traduccionSolicitada) {
-        if (traduccionSolicitada?.idioma && !existsSync(`../locales${traduccionSolicitada?.idioma}.json`)) {
-            Consolex.gestionarError(`[i18n Utils] INE001: The requested translation file ${traduccionSolicitada?.idioma} has not been found. Using es-ES as fallback.`);
+        let textoTraducido;
+        if (traduccionSolicitada?.idioma && !this.idiomasDisponibles.includes(traduccionSolicitada.idioma)) {
+            Consolex.error(`[i18n Utils] INE001: The requested translation file ${traduccionSolicitada.idioma} has not been found. Using es-ES as fallback.`);
+            traduccionSolicitada.idioma = 'es-ES';
         }
-        let textoTraducido = require(`../locales/${traduccionSolicitada?.idioma || 'es-ES'}.json`)[traduccionSolicitada.clave];
+        textoTraducido = this.traducciones[traduccionSolicitada.idioma || 'es-ES'][traduccionSolicitada.clave];
         if (!textoTraducido) {
-            Consolex.gestionarError(`[i18n Utils] INE002: The key specified "${traduccionSolicitada.clave}" to obtain your translation does not exist. Returning error to the requester.`);
+            Consolex.error(`[i18n Utils] INE002: The key specified "${traduccionSolicitada.clave}" to obtain your translation does not exist. Returning error to the requester.`);
             return `INE002: The key specified "${traduccionSolicitada.clave}" to obtain your translation does not exist. Returning error to the requester.`;
         }
         if (traduccionSolicitada?.placeholders) {
@@ -29,7 +36,7 @@ class InternationalizationManager {
                     textoTraducido = stringPlaceholder(textoTraducido, placeholder, { before: '{', after: '}' });
                 }
                 catch (error) {
-                    Consolex.gestionarError('[i18n Utils] INE003: Error when trying to adjust the translation.');
+                    Consolex.error('[i18n Utils] INE003: Error when trying to adjust the translation.');
                 }
             });
         }
