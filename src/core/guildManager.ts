@@ -78,13 +78,17 @@ class GuildManager {
       }).catch(err => Consolex.gestionarError(err))
     }
 
-    Object.keys(configuracionDelServidor).forEach((module) => {
-      try {
-        configuracionDelServidorProcesado[module] = JSON.parse(configuracionDelServidor[module])
-      } catch (jsonParseError) {
-        if (jsonParseError instanceof Error && jsonParseError.constructor.name !== SyntaxError.name) { Consolex.gestionarError(jsonParseError) }
-      }
-    })
+    try {
+      Object.keys(configuracionDelServidor).forEach((module) => {
+        try {
+          configuracionDelServidorProcesado[module] = JSON.parse(configuracionDelServidor[module])
+        } catch (jsonParseError) {
+          if (jsonParseError instanceof Error && jsonParseError.constructor.name !== SyntaxError.name) { Consolex.gestionarError(jsonParseError) }
+        }
+      })
+    } catch (error) {
+      Consolex.gestionarError(error)
+    }
 
     return configuracionDelServidorProcesado
   }
@@ -150,7 +154,7 @@ class GuildManager {
     return AttachmentBuilderPath
   }
 
-  async importarConfiguracionDelServidor (guild: Guild | null, attachmentBuilderSource: string | undefined) {
+  async importarConfiguracionDelServidor (guild: Guild | null, attachmentBuilderSource: string | undefined): Promise<string> {
     if (!(guild instanceof Guild)) throw new Error('El "Guild" especificado no existe.')
     if (typeof attachmentBuilderSource !== 'string') throw new Error('El "Guild" especificado no existe.')
 
@@ -165,7 +169,7 @@ class GuildManager {
       fileName: nombreTemporalAleatorioDelArchivo
     }).download()
 
-    const datosAjustados = ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(nombreTemporalAleatorioDelArchivo, { encoding: 'utf-8' })))
+    const datosAjustados = ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(YAML.load(readFileSync(`./temp/${nombreTemporalAleatorioDelArchivo}`, { encoding: 'utf-8' })))
     const errores = datosAjustados.errores
     const configuracionProcesada: { [index: string]: any } = datosAjustados.configuracionProcesada
 
@@ -194,14 +198,10 @@ class GuildManager {
         posicionArrayModulos === ClientModuleManager.modulosDisponibles.length
       ) {
         registro.push('INF: Importación finalizada')
-        const cantidadDeErrores = registro.filter((registro) =>
-          registro.startsWith('ERR:')
-        ).length
-
-        const registroProcesado = registro.length ? registro.join('\n') : null
-        return { registroProcesado, cantidadDeErrores }
       }
     })
+
+    return registro.length ? registro.join('\n') : 'No log'
   }
 }
 

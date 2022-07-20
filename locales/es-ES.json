@@ -4,5 +4,9 @@
   "BOT_PING": "Ping del bot",
   "BOT_VERSION": "Versión del bot",
   "GET_HELP": "Obtener ayuda",
-  "CONTRIBUTE_TO_DEVELOPMENT": "Contribuir al desarrollo"
+  "CONTRIBUTE_TO_DEVELOPMENT": "Contribuir al desarrollo",
+  "HERE_IS_YOUR_SERVER_CONFIGURATION_FILE": "Aquí tienes el archivo de configuración de tu servidor.",
+  "AN_ERROR_OCCURRED_WHEN_IMPORTING_THE_SETTINGS_FILE": "Se ha producido un error al importar el archivo de configuración.",
+  "THE_CONFIGURATION_FILE_HAS_BEEN_IMPORTED_CORRECTLY": "Se ha importado correctamente el archivo de configuración.",
+  "NO_YAML_FILE_SPECIFIED_FOR_IMPORT": "No se ha especificado ningún archivo YAML para importar."
 }
