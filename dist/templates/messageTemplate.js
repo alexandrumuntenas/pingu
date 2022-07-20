@@ -12,12 +12,14 @@ class MessageTemplate {
             .setFooter({ text: 'Powered by Pingu', iconURL: ClientUser.user?.displayAvatarURL() })
             .setTimestamp();
     }
-    success(message) {
-        return new EmbedBuilder()
+    success(message, debugLog) {
+        const successEmbed = new EmbedBuilder()
             .setColor(this.messageTemplateSettings.success.color)
             .setDescription(`${this.messageTemplateSettings.success.emoji} ${message}`)
             .setFooter({ text: 'Powered by Pingu', iconURL: ClientUser.user?.displayAvatarURL() })
             .setTimestamp();
+        debugLog ? successEmbed.addFields({ name: 'Debug', value: codeBlock(debugLog) }) : successEmbed.addFields();
+        return successEmbed;
     }
     error(message, debugLog) {
         const errorEmbed = new EmbedBuilder()

@@ -36,7 +36,7 @@ function ajustarDatosDelArchivoYAMLparaQueCoincidaConElModeloDeConfiguracion(con
     const configuracionProcesada = {};
     ClientModuleManager.modulosDisponibles.forEach(module => {
         if (Object.prototype.hasOwnProperty.call(configuracionImportada, module.nombre)) {
-            configuracionProcesada[module.nombre] = loopDeComprobacion(module.modeloDeConfiguracion, configuracionImportada[module.nombre]);
+            configuracionProcesada[module.nombre.toLocaleLowerCase()] = loopDeComprobacion(module.modeloDeConfiguracion, configuracionImportada[module.nombre]);
         }
         else {
             errores.push(`El módulo ${module.nombre} no existe en la configuración`);
